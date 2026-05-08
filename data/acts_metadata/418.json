@@ -1,0 +1,124 @@
+{
+  "act_number": "418",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:50:20.710502+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=418&lang=BI",
+  "timeline": [
+    {
+      "date": "10/02/1934",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "28/07/1937",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/07/1950",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/08/1966",
+      "project_id": "3403174",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3403174_BI/Malacca Enact. No 5 of 1966.pdf"
+    },
+    {
+      "date": "14/08/1967",
+      "project_id": "3403191",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3403191_BI/Penang Enact. No.4 of 1967.pdf"
+    },
+    {
+      "date": "04/07/1971",
+      "project_id": "3403206",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3403206_BI/N.S. Enact. No.12 of 1971 - BM.pdf"
+    },
+    {
+      "date": "22/09/1971",
+      "project_id": "3403421",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3403421_BI/Malacca Enact. No 16 of 1971.pdf"
+    },
+    {
+      "date": "09/02/1974",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "02/03/1974",
+      "project_id": "3386359",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3386359/PUA 66 1974.pdf"
+    },
+    {
+      "date": "10/01/1986",
+      "project_id": "3403474",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3403474_BI/Pahang Enact No.8 of 1985.pdf"
+    },
+    {
+      "date": "01/01/1990",
+      "project_id": "430",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/01/1990",
+      "project_id": "2220017",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2220017_BI/Water Act 1920 [Act 418].pdf"
+    },
+    {
+      "date": "14/01/2001",
+      "project_id": "2259890",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259890_BI/ACT 418 REPRINT 2001.pdf"
+    },
+    {
+      "date": "15/01/2006",
+      "project_id": "15898",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 418.pdf"
+    },
+    {
+      "date": "21/12/2007",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "31/08/2009",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "18/02/2018",
+      "project_id": "16575",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 418-DRAF LULUS TP 22 2 2018.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 418-DRAF LULUS TP 22 2 2018.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3403474_BI/Pahang Enact No.8 of 1985.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

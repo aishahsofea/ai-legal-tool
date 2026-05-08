@@ -1,0 +1,60 @@
+{
+  "act_number": "363",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:03:02.697832+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=363&lang=BI",
+  "timeline": [
+    {
+      "date": "02/01/1967",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/1967",
+      "project_id": "375",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 363 - asal.pdf"
+    },
+    {
+      "date": "14/07/1968",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/10/1971",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/02/1972",
+      "project_id": "71",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/71_BI/ACT 59 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "04/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "29/12/1988",
+      "project_id": "1712923",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 363 -Revised.pdf"
+    },
+    {
+      "date": "09/09/1997",
+      "project_id": "1727268",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 363 -Repelaed by Act 572.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

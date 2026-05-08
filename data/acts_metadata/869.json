@@ -1,0 +1,18 @@
+{
+  "act_number": "869",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:29:58.105974+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=869&lang=BI",
+  "timeline": [
+    {
+      "date": "19/07/2025",
+      "project_id": "2969226",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2969226_BI/Act 869- PARLIAMENTARY SERVICE ACT 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,84 @@
+{
+  "act_number": "280",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:24:55.814854+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=280&lang=BI",
+  "timeline": [
+    {
+      "date": "11/03/1983",
+      "project_id": "292",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/06/1987",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "18/06/1992",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/03/1993",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/03/1993",
+      "project_id": "510",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/02/1997",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "08/04/1998",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/11/1998",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/08/2001",
+      "project_id": "2258403",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "15/01/2004",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "12/01/2006",
+      "project_id": "2258404",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "10/10/2007",
+      "project_id": "1727265",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Muka surat depan Act 671 - Capital Markets and Services Act 2007.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

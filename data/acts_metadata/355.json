@@ -1,0 +1,76 @@
+{
+  "act_number": "355",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:04:31.568020+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=355&lang=BI",
+  "timeline": [
+    {
+      "date": "02/04/1965",
+      "project_id": "367",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/367_BI/No. 23 of 1965 BI.pdf"
+    },
+    {
+      "date": "02/01/1985",
+      "project_id": "1728017",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728017_BI/01. Act A612.pdf"
+    },
+    {
+      "date": "27/11/1988",
+      "project_id": "2263446",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263446_BI/Act 355 Revised.pdf"
+    },
+    {
+      "date": "08/05/1989",
+      "project_id": "1728018",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728018_BI/02. Act A730.pdf"
+    },
+    {
+      "date": "29/07/1997",
+      "project_id": "1728006",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BI/ACT A996.pdf"
+    },
+    {
+      "date": "06/11/2001",
+      "project_id": "2259631",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259631_BI/Act 355 Reprint 2001.pdf"
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "15470",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 355.pdf"
+    },
+    {
+      "date": "09/12/2014",
+      "project_id": "16295",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 355 - Syariah Courts (Criminal Jurisdiction) 1965.pdf"
+    },
+    {
+      "date": "17/09/2021",
+      "project_id": "1709426",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1709426/PUB 458.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 355 - Syariah Courts (Criminal Jurisdiction) 1965.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BI/ACT A996.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

@@ -1,0 +1,18 @@
+{
+  "act_number": "845",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:32:21.619889+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=845&lang=BI",
+  "timeline": [
+    {
+      "date": "01/06/2023",
+      "project_id": "1822437",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1822437_BI/Act 845.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

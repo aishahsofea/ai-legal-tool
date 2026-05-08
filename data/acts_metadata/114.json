@@ -1,0 +1,60 @@
+{
+  "act_number": "114",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:55:14.342521+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=114&lang=BI",
+  "timeline": [
+    {
+      "date": "14/09/1962",
+      "project_id": "126",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/126_BI/AKTA 114-WARTA ASAL.pdf"
+    },
+    {
+      "date": "02/10/1965",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/08/1973",
+      "project_id": "2271037",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2271037_BI/AKTA 114- REVISED.pdf"
+    },
+    {
+      "date": "02/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "06/03/1982",
+      "project_id": "176",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/176_BI/ACT 164.pdf"
+    },
+    {
+      "date": "07/01/1995",
+      "project_id": "2256967",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2256967_BI/AKTA 114- CETAKAN 1995 (BI).pdf"
+    },
+    {
+      "date": "07/03/2000",
+      "project_id": "2258173",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258173_BI/AKTA 114- CETAKAN 2000 (BI).pdf"
+    },
+    {
+      "date": "09/01/2006",
+      "project_id": "15485",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 114.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 114.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/176_BI/ACT 164.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

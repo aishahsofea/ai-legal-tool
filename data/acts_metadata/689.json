@@ -1,0 +1,49 @@
+{
+  "act_number": "689",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:58:37.465505+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=689&lang=BI",
+  "timeline": [
+    {
+      "date": "28/08/2008",
+      "project_id": "701",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Warta Act 689.pdf"
+    },
+    {
+      "date": "03/05/2015",
+      "project_id": "16499",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 689 24_4_2015.pdf"
+    },
+    {
+      "date": "04/10/2018",
+      "project_id": "1700499",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 689 (REPRINT 2018).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 689 (REPRINT 2018).pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

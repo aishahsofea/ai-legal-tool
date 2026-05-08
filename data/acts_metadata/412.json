@@ -1,0 +1,36 @@
+{
+  "act_number": "412",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:51:06.888779+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=412&lang=BI",
+  "timeline": [
+    {
+      "date": "11/04/1963",
+      "project_id": "424",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/424_BI/ACT NO 14 OF 1963.pdf"
+    },
+    {
+      "date": "30/12/1989",
+      "project_id": "2259862",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259862_BI/ACT 412 REVISED 1989.pdf"
+    },
+    {
+      "date": "04/01/2001",
+      "project_id": "2259876",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259876_BI/2604_001 (1).pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "15891",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 412.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 412.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

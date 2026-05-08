@@ -1,0 +1,30 @@
+{
+  "act_number": "691",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:58:23.331822+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=691&lang=BI",
+  "timeline": [
+    {
+      "date": "02/01/2008",
+      "project_id": "703",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/2015",
+      "project_id": "16211",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 691 - Emergency (Essential Powers) Act 1964.pdf"
+    },
+    {
+      "date": "04/01/2018",
+      "project_id": "1700502",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 691 (REPRINT 2018).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 691 - Emergency (Essential Powers) Act 1964.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

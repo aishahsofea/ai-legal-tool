@@ -1,0 +1,43 @@
+{
+  "act_number": "727",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:51:40.426033+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=727&lang=BI",
+  "timeline": [
+    {
+      "date": "03/06/2011",
+      "project_id": "739",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20110602_727_BI_Food Analysts Act 2011.pdf"
+    },
+    {
+      "date": "03/06/2015",
+      "project_id": "16407",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 727- 3.06.2015.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 727- 3.06.2015.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

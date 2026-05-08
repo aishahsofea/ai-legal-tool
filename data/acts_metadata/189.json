@@ -1,0 +1,66 @@
+{
+  "act_number": "189",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T00:44:29.276732+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=189&lang=BI",
+  "timeline": [
+    {
+      "date": "02/08/1946",
+      "project_id": "201",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/No. 21 of 1946 (Original).pdf"
+    },
+    {
+      "date": "03/01/1947",
+      "project_id": "1727850",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/No. 31 of 1946.pdf"
+    },
+    {
+      "date": "09/03/1948",
+      "project_id": "1727851",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/No.1 of 1948.pdf"
+    },
+    {
+      "date": "17/11/1958",
+      "project_id": "1727852",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727852_BI/LN 75 1958.pdf"
+    },
+    {
+      "date": "26/09/1961",
+      "project_id": "1727853",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/No. 29 of 1961.pdf"
+    },
+    {
+      "date": "04/08/1977",
+      "project_id": "1727570",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 189 Revised 1977.pdf"
+    },
+    {
+      "date": "07/05/2001",
+      "project_id": "1727337",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 189 Reprint 2001.pdf"
+    },
+    {
+      "date": "09/01/2006",
+      "project_id": "15920",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 189.pdf"
+    },
+    {
+      "date": "10/01/2013",
+      "project_id": "16629",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 189 - Second-Hand Dealers Act 1946.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 189 - Second-Hand Dealers Act 1946.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/No. 29 of 1961.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

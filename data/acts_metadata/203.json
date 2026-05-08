@@ -1,0 +1,76 @@
+{
+  "act_number": "203",
+  "act_type": "updated",
+  "scraped_at": "2026-05-05T12:46:13.957421+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=203&lang=BI",
+  "timeline": [
+    {
+      "date": "03/03/1978",
+      "project_id": "215",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Salinan warta Act 203.pdf"
+    },
+    {
+      "date": "30/05/1981",
+      "project_id": "1734883",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1734883_BI/ACT A520.pdf"
+    },
+    {
+      "date": "24/02/1992",
+      "project_id": "490",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BI/ACT 478.pdf"
+    },
+    {
+      "date": "30/09/1996",
+      "project_id": "1727876",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/003. Act A968.pdf"
+    },
+    {
+      "date": "06/04/2001",
+      "project_id": "2258303",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258303_BI/Act 203 reprint 2001.pdf"
+    },
+    {
+      "date": "06/08/2003",
+      "project_id": "3129816",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3129816/004. P.U.(A) 285 thn 2003_unlocked.pdf"
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "15941",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 203.pdf"
+    },
+    {
+      "date": "11/10/2017",
+      "project_id": "974",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20171003_A1543_BI_A1543 BI.pdf"
+    },
+    {
+      "date": "10/11/2018",
+      "project_id": "1727348",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 203-reprint 2018.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 203-reprint 2018.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20171003_A1543_BI_A1543 BI.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

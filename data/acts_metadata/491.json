@@ -1,0 +1,42 @@
+{
+  "act_number": "491",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:37:40.951172+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=491&lang=BI",
+  "timeline": [
+    {
+      "date": "17/07/1992",
+      "project_id": "503",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/1995",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/08/1996",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "21/02/2000",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "21/05/2006",
+      "project_id": "1712817",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 491 KULIT.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,46 @@
+{
+  "act_number": "602",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:16:51.327375+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=602&lang=BI",
+  "timeline": [
+    {
+      "date": "16/06/2000",
+      "project_id": "614",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/614_BI/act 602.pdf"
+    },
+    {
+      "date": "02/12/2001",
+      "project_id": "2257349",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257349_BI/Act 602 Reprint 2001.pdf"
+    },
+    {
+      "date": "27/01/2002",
+      "project_id": "3490798",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3490798_BI/Act A1141 BI_unlocked.pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "1727503",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727503_BI/Act 602-Reprint 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727503_BI/Act 602-Reprint 2006.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3490798_BI/Act A1141 BI_unlocked.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

@@ -1,0 +1,24 @@
+{
+  "act_number": "718",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:54:14.910194+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=718&lang=BI",
+  "timeline": [
+    {
+      "date": "31/12/2010",
+      "project_id": "730",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 718 ori.pdf"
+    },
+    {
+      "date": "03/12/2016",
+      "project_id": "16395",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/7. Act 718 - 22.12.2016.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/7. Act 718 - 22.12.2016.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

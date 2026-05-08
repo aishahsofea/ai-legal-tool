@@ -1,0 +1,36 @@
+{
+  "act_number": "314",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:17:03.827802+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=314&lang=BI",
+  "timeline": [
+    {
+      "date": "01/01/1985",
+      "project_id": "326",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/326_BI/314 BI.pdf"
+    },
+    {
+      "date": "02/09/2001",
+      "project_id": "2259547",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259547_BI/314 reprint BI 2001.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "16097",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/16097_BI/Act 314 2006.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16739",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 314 - Wood-based Industries (State Legislatures Competen.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 314 - Wood-based Industries (State Legislatures Competen.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

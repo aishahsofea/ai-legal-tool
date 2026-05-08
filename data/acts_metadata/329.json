@@ -1,0 +1,30 @@
+{
+  "act_number": "329",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:13:37.076822+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=329&lang=BI",
+  "timeline": [
+    {
+      "date": "01/01/1987",
+      "project_id": "341",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/341_BI/12. 329 BI_repaired.pdf"
+    },
+    {
+      "date": "02/09/2001",
+      "project_id": "2259568",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259568_BI/ACT 329 reprint 2001.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15337",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 329.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 329.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

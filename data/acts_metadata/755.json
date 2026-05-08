@@ -1,0 +1,18 @@
+{
+  "act_number": "755",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:48:20.315719+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=755&lang=BI",
+  "timeline": [
+    {
+      "date": "11/01/2013",
+      "project_id": "767",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/767_BI/ACT 755.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

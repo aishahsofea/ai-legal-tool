@@ -1,0 +1,54 @@
+{
+  "act_number": "362",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:03:11.192661+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=362&lang=BI",
+  "timeline": [
+    {
+      "date": "19/12/1954",
+      "project_id": "374",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/374_BI/01.Act 362 - original.pdf"
+    },
+    {
+      "date": "15/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "02/10/1977",
+      "project_id": "1728032",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728032_BI/02. Act A417.pdf"
+    },
+    {
+      "date": "03/07/1984",
+      "project_id": "1728033",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728033_BI/03. Act A591.pdf"
+    },
+    {
+      "date": "27/11/1988",
+      "project_id": "2263435",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263435_BI/Act 362 Revised.pdf"
+    },
+    {
+      "date": "06/12/2001",
+      "project_id": "2259592",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259592_BI/Act 362 Reprint 2001.pdf"
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "15507",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 362(1).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 362(1).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728033_BI/03. Act A591.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

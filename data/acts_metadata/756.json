@@ -1,0 +1,18 @@
+{
+  "act_number": "756",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:48:15.417876+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=756&lang=BI",
+  "timeline": [
+    {
+      "date": "09/02/2013",
+      "project_id": "768",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/aktaBI_20160310_PW5450.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

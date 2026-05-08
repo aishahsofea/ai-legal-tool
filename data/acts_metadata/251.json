@@ -1,0 +1,36 @@
+{
+  "act_number": "251",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:30:15.883073+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=251&lang=BI",
+  "timeline": [
+    {
+      "date": "24/07/1981",
+      "project_id": "263",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 251- Original.pdf"
+    },
+    {
+      "date": "02/08/2001",
+      "project_id": "2258356",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258356_BI/ACT 251 REPRINT 2001.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "1727462",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 251 (reprint 2006).pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16140",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 251 - Planters Loans Fund (Dissolution) Act 1981.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 251 - Planters Loans Fund (Dissolution) Act 1981.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

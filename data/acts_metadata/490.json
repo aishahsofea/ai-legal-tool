@@ -1,0 +1,42 @@
+{
+  "act_number": "490",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:37:48.158485+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=490&lang=BI",
+  "timeline": [
+    {
+      "date": "17/07/1992",
+      "project_id": "502",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Salinan Warta Act 490 - Original (1992).pdf"
+    },
+    {
+      "date": "19/02/1995",
+      "project_id": "1712812",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2002",
+      "project_id": "2260192",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "16026",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 490.pdf"
+    },
+    {
+      "date": "06/01/2013",
+      "project_id": "16687",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 490 - Malaysia External Trade Development Corporation Act 1992.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 490 - Malaysia External Trade Development Corporation Act 1992.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

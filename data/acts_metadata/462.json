@@ -1,0 +1,36 @@
+{
+  "act_number": "462",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:41:47.374123+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=462&lang=BI",
+  "timeline": [
+    {
+      "date": "19/07/1991",
+      "project_id": "2259783",
+      "log_type": "REVISED",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/2001",
+      "project_id": "2260010",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15985",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 462.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16660",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 462 - Asian Development Bank Act 1966.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 462 - Asian Development Bank Act 1966.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

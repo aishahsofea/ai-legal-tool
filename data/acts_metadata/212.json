@@ -1,0 +1,211 @@
+{
+  "act_number": "212",
+  "act_type": "updated",
+  "scraped_at": "2026-05-05T01:19:50.331038+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=212&lang=BI",
+  "timeline": [
+    {
+      "date": "22/03/1968",
+      "project_id": "3180774",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3180774_BI/4 OF 1968 ACT OF PARLIAMENT.pdf"
+    },
+    {
+      "date": "13/04/1968",
+      "project_id": "224",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/224_BI/24-1967 original 212.pdf"
+    },
+    {
+      "date": "30/03/1969",
+      "project_id": "1727884",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727884_BI/02. A20 HIRE PURCHASE 1969 AMEND.pdf"
+    },
+    {
+      "date": "02/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "02/03/1976",
+      "project_id": "1727885",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727885_BI/04. A332 HIRE PURCHASE 1976 AMEND_repaired_repaired.pdf"
+    },
+    {
+      "date": "01/11/1978",
+      "project_id": "2263502",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263502_BI/212 HIRE PURCHASE 1967.pdf"
+    },
+    {
+      "date": "08/08/1980",
+      "project_id": "3166488",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3166488/05. P.U. A 221 [] 80_repaired_repaired_repaired.pdf"
+    },
+    {
+      "date": "09/05/1983",
+      "project_id": "3166446",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3166446/06. P.U. A 149 [] 83 SEWA BELI_repaired_repaired_repaired.pdf"
+    },
+    {
+      "date": "10/06/1992",
+      "project_id": "1742040",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A813.pdf"
+    },
+    {
+      "date": "10/05/2001",
+      "project_id": "2258314",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258314_BI/HIRE PURCHASE 1967 REPRINT 2001.pdf"
+    },
+    {
+      "date": "11/01/2005",
+      "project_id": "1727886",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727886_BI/08. A1234 HIRE-PURCHASE 2004 AMEND_unlocked.pdf"
+    },
+    {
+      "date": "26/04/2005",
+      "project_id": "3165487",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3165487/09. P.U.(A) 163 [] 2005_unlocked.pdf"
+    },
+    {
+      "date": "14/01/2006",
+      "project_id": "1727350",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 212 (Reprint 2006).pdf"
+    },
+    {
+      "date": "14/10/2010",
+      "project_id": "1727887",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/A1384.pdf"
+    },
+    {
+      "date": "14/08/2012",
+      "project_id": "16359",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 212 - Hire-Purchase Act 1967.pdf"
+    },
+    {
+      "date": "17/03/2013",
+      "project_id": "16020",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 212.pdf"
+    },
+    {
+      "date": "18/05/2019",
+      "project_id": "1732946",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 212 -online version as at 1 May 2019.pdf"
+    },
+    {
+      "date": "06/10/2019",
+      "project_id": "1695989",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20190118_A1587_BI_BI.pdf"
+    },
+    {
+      "date": "31/07/2024",
+      "project_id": "2209235",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2209235/PUA 190_2024.pdf"
+    },
+    {
+      "date": "19/02/2026",
+      "project_id": "3340880",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3340880_BI/Act A1783.pdf"
+    },
+    {
+      "date": "06/05/2026",
+      "project_id": "3464777",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3464777/P.U. (A) 171_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 212 -online version as at 1 May 2019.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3340880_BI/Act A1783.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 8
+}

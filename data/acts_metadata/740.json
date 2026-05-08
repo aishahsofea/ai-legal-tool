@@ -1,0 +1,43 @@
+{
+  "act_number": "740",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:49:50.724183+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=740&lang=BI",
+  "timeline": [
+    {
+      "date": "10/02/2012",
+      "project_id": "752",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20120209_740_BI_JW001760 BI Act 740(BI).pdf"
+    },
+    {
+      "date": "03/04/2020",
+      "project_id": "1674701",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1674701_BI/Act 740 -Draf Bersih.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1674701_BI/Act 740 -Draf Bersih.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

@@ -1,0 +1,54 @@
+{
+  "act_number": "13",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:25:13.167465+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=13&lang=BI",
+  "timeline": [
+    {
+      "date": "02/01/1960",
+      "project_id": "25",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/25_BI/ACT 13 REVISED 1969.pdf"
+    },
+    {
+      "date": "03/01/1960",
+      "project_id": "1700566",
+      "log_type": "REPEALED",
+      "pdf_url": ""
+    },
+    {
+      "date": "01/12/1968",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/08/1992",
+      "project_id": "2255655",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/09/1999",
+      "project_id": "2255693",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "2255690",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "24/11/2016",
+      "project_id": "",
+      "log_type": "SUPERSEDED",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

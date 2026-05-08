@@ -1,0 +1,30 @@
+{
+  "act_number": "523",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:29:58.299139+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=523&lang=BI",
+  "timeline": [
+    {
+      "date": "08/07/1994",
+      "project_id": "535",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/535_BI/ACT 523 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/01/2006",
+      "project_id": "16029",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 523-reprint2006_Latest.pdf"
+    },
+    {
+      "date": "04/12/2011",
+      "project_id": "16712",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 523 - Lembaga Padi dan Beras Negara (Successor Company).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 523 - Lembaga Padi dan Beras Negara (Successor Company).pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,52 @@
+{
+  "act_number": "465",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:41:26.888394+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=465&lang=BI",
+  "timeline": [
+    {
+      "date": "13/09/1991",
+      "project_id": "477",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Salinan Warta Postal Services Act 1991 [Act 465].pdf"
+    },
+    {
+      "date": "03/01/2001",
+      "project_id": "2260169",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/11/2001",
+      "project_id": "1712841",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1120 - Postal Services (Amendment) Act 2001.pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "15989",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Postal Services Act 1991 [Act 465].pdf"
+    },
+    {
+      "date": "14/02/2012",
+      "project_id": "1709484",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/465 BI_REPEALED.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Postal Services Act 1991 [Act 465].pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1120 - Postal Services (Amendment) Act 2001.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

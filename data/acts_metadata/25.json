@@ -1,0 +1,85 @@
+{
+  "act_number": "25",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:19:27.232577+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=25&lang=BI",
+  "timeline": [
+    {
+      "date": "30/04/1971",
+      "project_id": "37",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/37_BI/ACT 25 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "30/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "12/01/1976",
+      "project_id": "1712784",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712784_BI/ACT A324.pdf"
+    },
+    {
+      "date": "23/07/1984",
+      "project_id": "3219766",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3219766/P.U. (A) 253-1984.pdf"
+    },
+    {
+      "date": "26/05/1987",
+      "project_id": "1700335",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700335_BI/ACT A671.pdf"
+    },
+    {
+      "date": "07/08/1992",
+      "project_id": "1712879",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712879_BI/ACT 25 - REPRINT 1992.pdf"
+    },
+    {
+      "date": "02/09/1999",
+      "project_id": "3219778",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3219778/P.U. (A) 356-1999.pdf"
+    },
+    {
+      "date": "08/09/1999",
+      "project_id": "1727292",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727292_BI/ACT 25 - REPRINT 1999.pdf"
+    },
+    {
+      "date": "10/01/2006",
+      "project_id": "15997",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15997_BI/ACT 25 - REPRINT 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15997_BI/ACT 25 - REPRINT 2006.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3219778/P.U. (A) 356-1999.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

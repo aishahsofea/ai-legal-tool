@@ -1,0 +1,133 @@
+{
+  "act_number": "357",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:04:13.973260+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=357&lang=BI",
+  "timeline": [
+    {
+      "date": "02/01/1959",
+      "project_id": "369",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/01.Act 357- original.pdf"
+    },
+    {
+      "date": "27/05/1961",
+      "project_id": "1728019",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728019_BI/ACT 16-1961.pdf"
+    },
+    {
+      "date": "19/09/1963",
+      "project_id": "1727934",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727934_BI/L.N. 232-1963.pdf"
+    },
+    {
+      "date": "14/01/1976",
+      "project_id": "1712784",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712784_BI/ACT A324.pdf"
+    },
+    {
+      "date": "27/01/1976",
+      "project_id": "1727735",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727735_BI/Act A327 (1).pdf"
+    },
+    {
+      "date": "18/10/1978",
+      "project_id": "1728266",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728266/P.U. (A) 294-1978.pdf"
+    },
+    {
+      "date": "14/12/1978",
+      "project_id": "3342102",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3342102/P.U. (A) 341-1978.pdf"
+    },
+    {
+      "date": "28/07/1984",
+      "project_id": "1728267",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728267/P.U. (A) 252-1984.pdf"
+    },
+    {
+      "date": "03/12/1988",
+      "project_id": "2263445",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263445_BI/ACT 357 - REVISED 1988.pdf"
+    },
+    {
+      "date": "24/02/1989",
+      "project_id": "1728268",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728268/P.U. (B) 131-1989.pdf"
+    },
+    {
+      "date": "10/02/1992",
+      "project_id": "1728269",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728269/P.U. (A) 23-1992.pdf"
+    },
+    {
+      "date": "12/11/2001",
+      "project_id": "2259632",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259632_BI/ACT 357 REPRINT (31-10-2001).pdf"
+    },
+    {
+      "date": "14/01/2006",
+      "project_id": "15472",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 357.pdf"
+    },
+    {
+      "date": "16/07/2014",
+      "project_id": "894",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20140701_1463_BI_WJW002640 BI.pdf"
+    },
+    {
+      "date": "16/10/2014",
+      "project_id": "16433",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 357 2014.pdf"
+    },
+    {
+      "date": "06/10/2024",
+      "project_id": "2364467",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2364467/PUA_248.pdf"
+    },
+    {
+      "date": "08/10/2024",
+      "project_id": "3227115",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3227115_BI/Act 357 as at 21 September 2024 (online 2026).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3227115_BI/Act 357 as at 21 September 2024 (online 2026).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20140701_1463_BI_WJW002640 BI.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

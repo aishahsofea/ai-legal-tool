@@ -1,0 +1,60 @@
+{
+  "act_number": "494",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:37:18.824695+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=494&lang=BI",
+  "timeline": [
+    {
+      "date": "29/09/1967",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/03/1972",
+      "project_id": "77",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/77_BI/ACT 65 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "01/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "19/04/1992",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/09/1992",
+      "project_id": "2259762",
+      "log_type": "REVISED",
+      "pdf_url": ""
+    },
+    {
+      "date": "14/10/1992",
+      "project_id": "506",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "08/01/2002",
+      "project_id": "2260195",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/01/2006",
+      "project_id": "16033",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 494.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 494.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,124 @@
+{
+  "act_number": "101",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:58:13.228852+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=101&lang=BI",
+  "timeline": [
+    {
+      "date": "23/03/1973",
+      "project_id": "113",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/113_BI/ACT 101 - ASAL.pdf"
+    },
+    {
+      "date": "31/05/1980",
+      "project_id": "1727800",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727800_BI/ACT A489.pdf"
+    },
+    {
+      "date": "18/05/1986",
+      "project_id": "1727801",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727801_BI/ACT A646.pdf"
+    },
+    {
+      "date": "11/07/1994",
+      "project_id": "1727802",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727802_BI/ACT A896.pdf"
+    },
+    {
+      "date": "13/09/1994",
+      "project_id": "1727803",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727803_BI/ACT A905.pdf"
+    },
+    {
+      "date": "07/10/1994",
+      "project_id": "15456",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 101 - (Reprint 1994)(BI).pdf"
+    },
+    {
+      "date": "16/11/1995",
+      "project_id": "1727804",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727804_BI/ACT A929.pdf"
+    },
+    {
+      "date": "08/03/2000",
+      "project_id": "15459",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 101 - (Reprint 2000)(BI).pdf"
+    },
+    {
+      "date": "01/01/2001",
+      "project_id": "1727805",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727805_BI/ACT A1094.pdf"
+    },
+    {
+      "date": "07/10/2001",
+      "project_id": "1006114",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1006114_BI/ACT A1130.pdf"
+    },
+    {
+      "date": "12/01/2006",
+      "project_id": "1738000",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 101 - (Reprint 2006)(BI).pdf"
+    },
+    {
+      "date": "19/03/2016",
+      "project_id": "937",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/937_BI/Act A1506 (Mac 2016).pdf"
+    },
+    {
+      "date": "13/10/2016",
+      "project_id": "16468",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/16468_BI/Act 101 as at 30 Sept 2016 (online).pdf"
+    },
+    {
+      "date": "31/10/2017",
+      "project_id": "978",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/978_BI/ACT A1547.pdf"
+    },
+    {
+      "date": "16/11/2018",
+      "project_id": "2249728",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2249728_BI/Act 101 BI (REPRINT 2018).pdf"
+    },
+    {
+      "date": "06/10/2022",
+      "project_id": "1742946",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1742946_BI/Act A1668 BI.pdf"
+    },
+    {
+      "date": "18/11/2022",
+      "project_id": "1747884",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1747884_BI/Final Act 101 (1.11.2022) (Online).docx.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1747884_BI/Final Act 101 (1.11.2022) (Online).docx.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1742946_BI/Act A1668 BI.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

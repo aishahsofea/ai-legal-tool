@@ -1,0 +1,18 @@
+{
+  "act_number": "865",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:30:22.608362+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=865&lang=BI",
+  "timeline": [
+    {
+      "date": "15/05/2025",
+      "project_id": "2864054",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2864054_BI/Act 865 CO-OPERATIVE INSTITUTE (INCORPORATION) ACT 1968.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

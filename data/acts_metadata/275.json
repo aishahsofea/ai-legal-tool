@@ -1,0 +1,54 @@
+{
+  "act_number": "275",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:25:33.350104+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=275&lang=BI",
+  "timeline": [
+    {
+      "date": "11/03/1983",
+      "project_id": "287",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/287_BI/ACT 275 (1).pdf"
+    },
+    {
+      "date": "24/02/1990",
+      "project_id": "3270527",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3270527_BI/ACT A749.pdf"
+    },
+    {
+      "date": "03/08/2001",
+      "project_id": "2258391",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258391_BI/ACT 275 REPRINT 2001.pdf"
+    },
+    {
+      "date": "05/01/2005",
+      "project_id": "2258392",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258392_BI/ACT 275 REPRINT 2005.pdf"
+    },
+    {
+      "date": "21/06/2005",
+      "project_id": "3199491",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3199491_BI/A1242y2005bi_unlocked.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15766",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 275.pdf"
+    },
+    {
+      "date": "08/11/2013",
+      "project_id": "16526",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 275 (10.3.2015).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 275 (10.3.2015).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3199491_BI/A1242y2005bi_unlocked.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

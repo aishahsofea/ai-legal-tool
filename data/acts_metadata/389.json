@@ -1,0 +1,54 @@
+{
+  "act_number": "389",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:55:02.135518+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=389&lang=BI",
+  "timeline": [
+    {
+      "date": "29/07/1966",
+      "project_id": "401",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/401_BI/No. 43 of 1966 BI.pdf"
+    },
+    {
+      "date": "21/10/1989",
+      "project_id": "2259965",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259965_BI/Act 389 Revised.pdf"
+    },
+    {
+      "date": "03/01/1999",
+      "project_id": "3446575",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3446575_BI/Act A1045_unlocked.pdf"
+    },
+    {
+      "date": "04/01/2002",
+      "project_id": "2259698",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259698_BI/Act 389 Reprint 2001.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "15535",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 389.pdf"
+    },
+    {
+      "date": "20/09/2006",
+      "project_id": "3446437",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3446437_BI/Act 1272 _unlocked.pdf"
+    },
+    {
+      "date": "13/06/2025",
+      "project_id": "2899249",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2899249_BI/Act A1765 - TUNKU ABDUL RAHMAN FOUNDATION FUND (AMENDMENT) ACT 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 389.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2899249_BI/Act A1765 - TUNKU ABDUL RAHMAN FOUNDATION FUND (AMENDMENT) ACT 2025.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

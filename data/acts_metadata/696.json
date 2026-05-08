@@ -1,0 +1,30 @@
+{
+  "act_number": "696",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:57:38.520611+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=696&lang=BI",
+  "timeline": [
+    {
+      "date": "01/05/2009",
+      "project_id": "708",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/708_BI/ACT 696 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/05/2013",
+      "project_id": "16212",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 696 - Witness Protection Act 2009.pdf"
+    },
+    {
+      "date": "04/09/2019",
+      "project_id": "1700405",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 696 (Reprint 2019).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 696 - Witness Protection Act 2009.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

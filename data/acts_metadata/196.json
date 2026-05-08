@@ -1,0 +1,48 @@
+{
+  "act_number": "196",
+  "act_type": "updated",
+  "scraped_at": "2026-05-05T13:47:33.886947+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=196&lang=BI",
+  "timeline": [
+    {
+      "date": "31/12/1949",
+      "project_id": "208",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 196 Original.pdf"
+    },
+    {
+      "date": "03/11/1951",
+      "project_id": "1727857",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/LN 610 - 1951.pdf"
+    },
+    {
+      "date": "20/11/1977",
+      "project_id": "1727575",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 196 Revised.pdf"
+    },
+    {
+      "date": "27/11/1990",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/05/2001",
+      "project_id": "1727342",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 196 Reprint 2001.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15930",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 196.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 196.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/LN 610 - 1951.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

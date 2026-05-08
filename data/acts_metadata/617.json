@@ -1,0 +1,42 @@
+{
+  "act_number": "617",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:10:18.735846+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=617&lang=BI",
+  "timeline": [
+    {
+      "date": "25/01/2002",
+      "project_id": "629",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/001. Gazette copy - Act 617 of 2002(1).pdf"
+    },
+    {
+      "date": "03/01/2004",
+      "project_id": "2257324",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15624",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 617.pdf"
+    },
+    {
+      "date": "15/01/2018",
+      "project_id": "991",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20180110_A1560_BI_Act A1560.pdf"
+    },
+    {
+      "date": "06/10/2020",
+      "project_id": "1680816",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1680816_BI/Act 617 (REPRINT 2020).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1680816_BI/Act 617 (REPRINT 2020).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20180110_A1560_BI_Act A1560.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

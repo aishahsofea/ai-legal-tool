@@ -1,0 +1,26 @@
+# HTTP cache
+data/cache/
+
+# PDF downloads (large binaries, regenerable from metadata)
+data/pdfs/
+
+# Extracted text chunks (regenerable from PDFs)
+data/chunks/
+
+# Logs
+scraper.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# Environment variables
+.env
+.env.*
+
+# IDE
+.DS_Store

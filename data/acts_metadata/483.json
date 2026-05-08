@@ -1,0 +1,36 @@
+{
+  "act_number": "483",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:39:03.791799+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=483&lang=BI",
+  "timeline": [
+    {
+      "date": "21/02/1992",
+      "project_id": "495",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/2001",
+      "project_id": "2260185",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "16010",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 483.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16679",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 483 - International Fund for Agricultural Development Ac.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 483 - International Fund for Agricultural Development Ac.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

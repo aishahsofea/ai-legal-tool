@@ -1,0 +1,24 @@
+{
+  "act_number": "73",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:04:28.407853+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=73&lang=BI",
+  "timeline": [
+    {
+      "date": "31/03/1972",
+      "project_id": "85",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 73 (Original).pdf"
+    },
+    {
+      "date": "03/01/1985",
+      "project_id": "1727251",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727251_BI/Act 73 (Repeal).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

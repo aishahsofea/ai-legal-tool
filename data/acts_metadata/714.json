@@ -1,0 +1,30 @@
+{
+  "act_number": "714",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:54:53.520484+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=714&lang=BI",
+  "timeline": [
+    {
+      "date": "02/06/2010",
+      "project_id": "726",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 714 ori.pdf"
+    },
+    {
+      "date": "03/07/2015",
+      "project_id": "16489",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 714 1_07_2015.pdf"
+    },
+    {
+      "date": "16/12/2018",
+      "project_id": "1695975",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1695975_BI/WJW240906 Act 714 (Repealed by Act 811).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 714 1_07_2015.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

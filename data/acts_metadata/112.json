@@ -1,0 +1,24 @@
+{
+  "act_number": "112",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:55:26.324705+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=112&lang=BI",
+  "timeline": [
+    {
+      "date": "22/06/1973",
+      "project_id": "124",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "12/03/1983",
+      "project_id": "1815378",
+      "log_type": "REPEALED",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

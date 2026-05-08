@@ -1,0 +1,166 @@
+{
+  "act_number": "344",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:06:24.423013+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=344&lang=BI",
+  "timeline": [
+    {
+      "date": "31/01/1964",
+      "project_id": "3430583",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3430583_BI/L.N. 33-1964.pdf"
+    },
+    {
+      "date": "01/05/1971",
+      "project_id": "3101515",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3101515_BI/01. A45 POLICE 1971.pdf"
+    },
+    {
+      "date": "01/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "04/06/1976",
+      "project_id": "1728009",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728009_BI/03. A347 POLICE 1976.pdf"
+    },
+    {
+      "date": "01/10/1976",
+      "project_id": "1006123",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1006123_BI/ACT A354.pdf"
+    },
+    {
+      "date": "20/05/1981",
+      "project_id": "1006126",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1006126_BI/Act A514.pdf"
+    },
+    {
+      "date": "22/05/1981",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/06/1981",
+      "project_id": "1728010",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728010_BI/06. A516 POLICE 1981.pdf"
+    },
+    {
+      "date": "24/06/1982",
+      "project_id": "356",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/356_BI/ACT 344 POLICE REVISED 1988.pdf"
+    },
+    {
+      "date": "17/01/1988",
+      "project_id": "1728011",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728011_BI/06. A685 POLICE 1987.pdf"
+    },
+    {
+      "date": "10/10/1988",
+      "project_id": "2263459",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263459_BI/ACT 344 POLICE REVISED 1988.pdf"
+    },
+    {
+      "date": "12/11/2001",
+      "project_id": "2259601",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259601_BI/ACT 344 POLICE 2001.pdf"
+    },
+    {
+      "date": "14/01/2006",
+      "project_id": "15394",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Police Act 1967 [Act 344] (Cetakan Semula Tahun 2006).pdf"
+    },
+    {
+      "date": "24/01/2012",
+      "project_id": "1727541",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 344 - Police Act 1967 (cetakan semula 2012).pdf"
+    },
+    {
+      "date": "08/05/2012",
+      "project_id": "852",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20120209_A1421_BI_JW001763 Act A1421 (2) -BI.pdf"
+    },
+    {
+      "date": "03/02/2016",
+      "project_id": "926",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20150824_A1495_BI_A1495 BI.pdf"
+    },
+    {
+      "date": "18/06/2016",
+      "project_id": "16253",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 344.pdf"
+    },
+    {
+      "date": "27/05/2024",
+      "project_id": "2118824",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2118824_BI/A1705 BI.pdf"
+    },
+    {
+      "date": "29/05/2024",
+      "project_id": "2849831",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2849831_BI/Act 344 - (Online 2026).pdf"
+    },
+    {
+      "date": "01/05/2025",
+      "project_id": "2807605",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2807605/P.U. (A) 115_2025.pdf"
+    },
+    {
+      "date": "12/09/2025",
+      "project_id": "3038548",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3038548/PUA 266_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2849831_BI/Act 344 - (Online 2026).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2118824_BI/A1705 BI.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 3
+}

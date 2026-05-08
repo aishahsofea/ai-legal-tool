@@ -1,0 +1,42 @@
+{
+  "act_number": "416",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:50:35.149039+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=416&lang=BI",
+  "timeline": [
+    {
+      "date": "01/02/1966",
+      "project_id": "428",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/428_BI/ACT NO 11 OF 1965.pdf"
+    },
+    {
+      "date": "30/12/1989",
+      "project_id": "2259853",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259853_BI/ACT 416 REVISED 1989.pdf"
+    },
+    {
+      "date": "27/07/1997",
+      "project_id": "1728006",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BI/ACT A996.pdf"
+    },
+    {
+      "date": "05/01/2001",
+      "project_id": "2259885",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259885_BI/ACT 416 REPRINT 2001.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "15896",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 416.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 416.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BI/ACT A996.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

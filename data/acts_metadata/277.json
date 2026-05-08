@@ -1,0 +1,24 @@
+{
+  "act_number": "277",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:25:16.445757+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=277&lang=BI",
+  "timeline": [
+    {
+      "date": "11/03/1983",
+      "project_id": "289",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 277 - Electrical Inspectorate Act 1983.pdf"
+    },
+    {
+      "date": "03/09/1990",
+      "project_id": "1727263",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Muka surat depan Act 277 (Repealed by Act 447).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

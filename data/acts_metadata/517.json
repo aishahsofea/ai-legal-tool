@@ -1,0 +1,42 @@
+{
+  "act_number": "517",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:32:04.820982+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=517&lang=BI",
+  "timeline": [
+    {
+      "date": "28/09/1949",
+      "project_id": "529",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/529_BI/NO. 34 OF 1949 (ACT 517).pdf"
+    },
+    {
+      "date": "05/07/1955",
+      "project_id": "3402967",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3402967_BI/ORD. NO. 46 OF 1955.pdf"
+    },
+    {
+      "date": "03/04/1994",
+      "project_id": "3353781",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3353781_BI/ACT 517 - REVISED 1994.pdf"
+    },
+    {
+      "date": "04/03/2002",
+      "project_id": "2258295",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258295_BI/ACT 517 - REPRINT 2002.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "16078",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/16078_BI/ACT 517 - REPRINT 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/16078_BI/ACT 517 - REPRINT 2006.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3402967_BI/ORD. NO. 46 OF 1955.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,72 @@
+{
+  "act_number": "386",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:55:44.975707+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=386&lang=BI",
+  "timeline": [
+    {
+      "date": "24/06/1953",
+      "project_id": "398",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/398_BI/No. 31 of 1953.pdf"
+    },
+    {
+      "date": "03/09/1956",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "14/12/1956",
+      "project_id": "3436094",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3436094_BI/No. 44 of 1956.pdf"
+    },
+    {
+      "date": "12/12/1957",
+      "project_id": "1728016",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728016_BI/PTM ORD 60 1956.pdf"
+    },
+    {
+      "date": "18/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "04/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "05/07/1985",
+      "project_id": "3098677",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3098677_BI/ACT A587.pdf"
+    },
+    {
+      "date": "29/09/1989",
+      "project_id": "2259971",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259971_BI/Act 386 Revised.pdf"
+    },
+    {
+      "date": "09/01/2002",
+      "project_id": "2259694",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259694_BI/Act 386 Reprint 2001.pdf"
+    },
+    {
+      "date": "11/01/2006",
+      "project_id": "15532",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 386.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 386.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3098677_BI/ACT A587.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

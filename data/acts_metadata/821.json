@@ -1,0 +1,18 @@
+{
+  "act_number": "821",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:38:58.317549+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=821&lang=BI",
+  "timeline": [
+    {
+      "date": "28/12/2019",
+      "project_id": "1696009",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20191227_821_BI_WJW014498 Penang and Province Wallesley Jubilee Fund Act 1965 [Act 821].pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

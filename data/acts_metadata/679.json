@@ -1,0 +1,61 @@
+{
+  "act_number": "679",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:59:58.603302+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=679&lang=BI",
+  "timeline": [
+    {
+      "date": "31/08/2007",
+      "project_id": "691",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Ogos 2007  Original Act 679.pdf"
+    },
+    {
+      "date": "03/10/2014",
+      "project_id": "16569",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 679 online version as at 1_10_2014.pdf"
+    },
+    {
+      "date": "04/11/2017",
+      "project_id": "15859",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 679.pdf"
+    },
+    {
+      "date": "14/09/2025",
+      "project_id": "3068913",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3068913/PUB 332 (2025).pdf"
+    },
+    {
+      "date": "15/09/2025",
+      "project_id": "3069046",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3069046/PUB 333 (2025).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 679 online version as at 1_10_2014.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

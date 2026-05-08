@@ -1,0 +1,70 @@
+{
+  "act_number": "435",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:47:52.034196+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=435&lang=BI",
+  "timeline": [
+    {
+      "date": "01/06/1965",
+      "project_id": "447",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/447_BI/ACT NO 12 OF 1965.pdf"
+    },
+    {
+      "date": "03/10/1971",
+      "project_id": "62",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/62_BI/Akta 50 Akta Perubatan, 1971-BI.pdf"
+    },
+    {
+      "date": "01/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "04/04/1990",
+      "project_id": "2259819",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259819_BI/ACT 435 REVISED 1990.pdf"
+    },
+    {
+      "date": "06/01/2001",
+      "project_id": "2259946",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259946_BI/ACT 435 REPRINT 2001.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15953",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 435.pdf"
+    },
+    {
+      "date": "08/01/2013",
+      "project_id": "16643",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 435 - Estate Hospital Assistants (Registration) Act 1965.pdf"
+    },
+    {
+      "date": "15/06/2024",
+      "project_id": "2151141",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2151141/PUA_152.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 435 - Estate Hospital Assistants (Registration) Act 1965.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

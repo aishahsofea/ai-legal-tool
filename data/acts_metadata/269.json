@@ -1,0 +1,66 @@
+{
+  "act_number": "269",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:26:45.528094+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=269&lang=BI",
+  "timeline": [
+    {
+      "date": "14/05/1982",
+      "project_id": "281",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 269 - Original.pdf"
+    },
+    {
+      "date": "24/01/1987",
+      "project_id": "1728241",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728241/PU (A) 28.pdf"
+    },
+    {
+      "date": "25/01/1987",
+      "project_id": "1728240",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728240/PU (A) 28.pdf"
+    },
+    {
+      "date": "26/01/1987",
+      "project_id": "1728239",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728239/PU (A) 28.pdf"
+    },
+    {
+      "date": "28/03/1995",
+      "project_id": "1728242",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728242/PU (A) 76.pdf"
+    },
+    {
+      "date": "06/08/2001",
+      "project_id": "2258387",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258387_BI/ACT 269 REPRINT 2001.pdf"
+    },
+    {
+      "date": "27/06/2002",
+      "project_id": "1728243",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728243/pua063y2002_unlocked.pdf"
+    },
+    {
+      "date": "09/01/2006",
+      "project_id": "15708",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 269.pdf"
+    },
+    {
+      "date": "10/09/2012",
+      "project_id": "16349",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 269 - Civil List Act 1982.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 269 - Civil List Act 1982.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728243/pua063y2002_unlocked.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

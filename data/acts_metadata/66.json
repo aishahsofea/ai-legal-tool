@@ -1,0 +1,36 @@
+{
+  "act_number": "66",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:05:34.106957+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=66&lang=BI",
+  "timeline": [
+    {
+      "date": "01/03/1972",
+      "project_id": "78",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/78_BI/ACT 66 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/03/1993",
+      "project_id": "2257193",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257193_BI/ACT 66 - REPRINT 1993.pdf"
+    },
+    {
+      "date": "03/09/1999",
+      "project_id": "1727436",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727436_BI/ACT 66 - REPRINT 1999.pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "1734856",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1734856_BI/ACT 66 - REPRINT 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1734856_BI/ACT 66 - REPRINT 2006.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

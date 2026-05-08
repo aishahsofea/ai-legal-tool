@@ -1,0 +1,24 @@
+{
+  "act_number": "157",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T00:57:47.180435+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=157&lang=BI",
+  "timeline": [
+    {
+      "date": "23/05/1975",
+      "project_id": "169",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 157 original.pdf"
+    },
+    {
+      "date": "27/07/1996",
+      "project_id": "1727280",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 157 - (Repealed by Act 549).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

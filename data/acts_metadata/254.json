@@ -1,0 +1,70 @@
+{
+  "act_number": "254",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:29:50.175392+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=254&lang=BI",
+  "timeline": [
+    {
+      "date": "01/02/1953",
+      "project_id": "266",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/266_BI/ORDINANCE 4-1953 LIMITATION.pdf"
+    },
+    {
+      "date": "15/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "01/11/1981",
+      "project_id": "2263495",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263495_BI/254 REVISED BI.pdf"
+    },
+    {
+      "date": "25/04/1982",
+      "project_id": "3190636",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3190636/P.U. (A) 109-1982.pdf"
+    },
+    {
+      "date": "06/09/2000",
+      "project_id": "2258359",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258359_BI/ACT 254 REPRINT 2000 BI.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15272",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 254.pdf"
+    },
+    {
+      "date": "11/05/2018",
+      "project_id": "1076",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1076_BI/Act A1566 BI 2018_unlocked.pdf"
+    },
+    {
+      "date": "09/09/2019",
+      "project_id": "1727530",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727530_BI/ACT 254-Online version as at 1 Sept 2019 (2).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727530_BI/ACT 254-Online version as at 1 Sept 2019 (2).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1076_BI/Act A1566 BI 2018_unlocked.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

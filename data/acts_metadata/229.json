@@ -1,0 +1,24 @@
+{
+  "act_number": "229",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T22:04:06.413302+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=229&lang=BI",
+  "timeline": [
+    {
+      "date": "13/06/1980",
+      "project_id": "241",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/03/1986",
+      "project_id": "1742062",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1742062_BI/Act 229- repealed by Act 324.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

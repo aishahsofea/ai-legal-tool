@@ -1,0 +1,42 @@
+{
+  "act_number": "143",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:49:39.009482+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=143&lang=BI",
+  "timeline": [
+    {
+      "date": "23/08/1974",
+      "project_id": "155",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/1997",
+      "project_id": "2257127",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2001",
+      "project_id": "2257130",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "15746",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 143.pdf"
+    },
+    {
+      "date": "22/11/2016",
+      "project_id": "",
+      "log_type": "SUPERSEDED",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 143.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,100 @@
+{
+  "act_number": "242",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:31:40.475391+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=242&lang=BI",
+  "timeline": [
+    {
+      "date": "06/02/1981",
+      "project_id": "254",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/254_BI/ACT 242.pdf"
+    },
+    {
+      "date": "08/09/1984",
+      "project_id": "3190699",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3190699_BI/Act A598.pdf"
+    },
+    {
+      "date": "02/02/1997",
+      "project_id": "3190749",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3190749_BI/ACT A980.pdf"
+    },
+    {
+      "date": "12/07/1999",
+      "project_id": "3208976",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3208976_BI/03. ACT A1056.pdf"
+    },
+    {
+      "date": "05/06/2001",
+      "project_id": "3209017",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3209017_BI/ACT 242 REPRINT 2001 (2).pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "16128",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 242.pdf"
+    },
+    {
+      "date": "26/08/2011",
+      "project_id": "835",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20110818_A1404_BI_A1404 BI.pdf"
+    },
+    {
+      "date": "09/08/2016",
+      "project_id": "16464",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 242 - diluluskan TPPUU (24-08-2016).pdf"
+    },
+    {
+      "date": "11/01/2018",
+      "project_id": "981",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20171017_A1550_BI_Act A1550 BI.pdf"
+    },
+    {
+      "date": "11/08/2018",
+      "project_id": "1727528",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 242-1 August 2018 Online.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 242-1 August 2018 Online.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20171017_A1550_BI_Act A1550 BI.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 3
+}

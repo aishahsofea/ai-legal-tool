@@ -1,0 +1,144 @@
+{
+  "act_number": "336",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:08:25.404360+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=336&lang=BI",
+  "timeline": [
+    {
+      "date": "25/02/1955",
+      "project_id": "348",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/No. 3 of 1955.pdf"
+    },
+    {
+      "date": "29/12/1958",
+      "project_id": "1727995",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727995_BI/ORD. 63-1958.pdf"
+    },
+    {
+      "date": "04/01/1959",
+      "project_id": "1727996",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727996_BI/ORD. 43-1958.pdf"
+    },
+    {
+      "date": "12/01/1959",
+      "project_id": "1727998",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727998_BI/LN 297-1959.pdf"
+    },
+    {
+      "date": "26/03/1959",
+      "project_id": "1727997",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727997_BI/ORD. 15-1959.pdf"
+    },
+    {
+      "date": "05/08/1960",
+      "project_id": "1727999",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727999_BI/ACT 23-1960.pdf"
+    },
+    {
+      "date": "30/03/1961",
+      "project_id": "1728000",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728000_BI/ACT 15-1961.pdf"
+    },
+    {
+      "date": "09/03/1965",
+      "project_id": "1728001",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728001_BI/ACT 19-1965.pdf"
+    },
+    {
+      "date": "23/04/1966",
+      "project_id": "1728002",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728002_BI/ACT 27-1966.pdf"
+    },
+    {
+      "date": "08/09/1967",
+      "project_id": "1728003",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728003_BI/ACT 40-1967.pdf"
+    },
+    {
+      "date": "20/07/1970",
+      "project_id": "1728262",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728262/11. P.U (A) 235-1970.pdf"
+    },
+    {
+      "date": "11/05/1971",
+      "project_id": "1728004",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728004_BI/12. A44 BI.pdf"
+    },
+    {
+      "date": "11/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "24/01/1976",
+      "project_id": "1712784",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712784_BI/ACT A324.pdf"
+    },
+    {
+      "date": "11/09/1976",
+      "project_id": "1006123",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1006123_BI/ACT A354.pdf"
+    },
+    {
+      "date": "07/03/1983",
+      "project_id": "1728005",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728005_BI/17. Act A551 BI.pdf"
+    },
+    {
+      "date": "08/11/1987",
+      "project_id": "2263460",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263460_BI/Act 336 (disemak 1987).pdf"
+    },
+    {
+      "date": "16/04/1990",
+      "project_id": "444",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/444_BI/ACT NO 23 OF 1960.pdf"
+    },
+    {
+      "date": "15/02/1995",
+      "project_id": "195",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 183 (Original).pdf"
+    },
+    {
+      "date": "13/08/1997",
+      "project_id": "1728006",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BI/ACT A996.pdf"
+    },
+    {
+      "date": "22/09/2000",
+      "project_id": "1727472",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727472_BI/Act 336 (Reprint 2000).pdf"
+    },
+    {
+      "date": "23/01/2006",
+      "project_id": "15380",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 336.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 336.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BI/ACT A996.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,42 @@
+{
+  "act_number": "431",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:48:19.978637+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=431&lang=BI",
+  "timeline": [
+    {
+      "date": "30/07/1960",
+      "project_id": "443",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/443_BI/ORD 19 1960.pdf"
+    },
+    {
+      "date": "02/04/1990",
+      "project_id": "2259829",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259829_BI/ACT 431 REVISED 1990.pdf"
+    },
+    {
+      "date": "04/01/2001",
+      "project_id": "2259940",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259940_BI/2735_001 (1).pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "15951",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 431.pdf"
+    },
+    {
+      "date": "06/12/2011",
+      "project_id": "16641",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 431 - International Development Association Act 1960.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 431 - International Development Association Act 1960.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

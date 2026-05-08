@@ -1,0 +1,36 @@
+{
+  "act_number": "292",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:22:46.732189+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=292&lang=BI",
+  "timeline": [
+    {
+      "date": "16/12/1983",
+      "project_id": "304",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/304_BI/ACT 292.pdf"
+    },
+    {
+      "date": "02/09/2001",
+      "project_id": "2258626",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258626_BI/ACT 292 REPRINT 2001.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15301",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 292.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16159",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 292 - Lembaga Kemajuan Ternakan Negara (Dissolution) Act.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 292 - Lembaga Kemajuan Ternakan Negara (Dissolution) Act.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

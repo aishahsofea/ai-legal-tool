@@ -1,0 +1,48 @@
+{
+  "act_number": "373",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:00:26.461790+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=373&lang=BI",
+  "timeline": [
+    {
+      "date": "31/12/1957",
+      "project_id": "385",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/385_BI/NO. 72 OF 1957.pdf"
+    },
+    {
+      "date": "02/09/1989",
+      "project_id": "2260325",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2260325_BI/Act 373 Revised.pdf"
+    },
+    {
+      "date": "26/06/1994",
+      "project_id": "1006135",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1006135_BI/ACT A885.pdf"
+    },
+    {
+      "date": "04/12/2001",
+      "project_id": "3398960",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3398960_BI/Act 373 Reprint 2001.pdf"
+    },
+    {
+      "date": "05/05/2004",
+      "project_id": "2259659",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259659_BI/Act 373 Reprint 2004.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15517",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 373.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 373.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1006135_BI/ACT A885.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

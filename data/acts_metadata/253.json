@@ -1,0 +1,88 @@
+{
+  "act_number": "253",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:30:01.178291+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=253&lang=BI",
+  "timeline": [
+    {
+      "date": "15/10/1952",
+      "project_id": "265",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/265_BI/ORDINAN 54-1952.pdf"
+    },
+    {
+      "date": "28/08/1957",
+      "project_id": "3193794",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3193794_BI/ORD. 47-1957.pdf"
+    },
+    {
+      "date": "04/06/1958",
+      "project_id": "3193860",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3193860_BI/02. ORD. 10-1958.pdf"
+    },
+    {
+      "date": "17/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "06/11/1972",
+      "project_id": "1728095",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728095_BI/04. Act 91(Revised) 1972.pdf"
+    },
+    {
+      "date": "02/09/1976",
+      "project_id": "1006123",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1006123_BI/ACT A354.pdf"
+    },
+    {
+      "date": "24/09/1981",
+      "project_id": "1742115",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 253 Revised.pdf"
+    },
+    {
+      "date": "21/05/1982",
+      "project_id": "3193089",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3193089/06. P.U. A 133-1982.pdf"
+    },
+    {
+      "date": "09/08/2001",
+      "project_id": "2258358",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258358_BI/253 REPRINT BI 2001.pdf"
+    },
+    {
+      "date": "11/01/2006",
+      "project_id": "15271",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 253.pdf"
+    },
+    {
+      "date": "12/08/2014",
+      "project_id": "16142",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 253 - Registration of Adoptions Act 1952.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 253 - Registration of Adoptions Act 1952.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3193089/06. P.U. A 133-1982.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

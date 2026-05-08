@@ -1,0 +1,42 @@
+{
+  "act_number": "401",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:52:48.188938+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=401&lang=BI",
+  "timeline": [
+    {
+      "date": "02/01/1971",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/09/1973",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "13/10/1985",
+      "project_id": "333",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/333_BI/Original_Act 321.pdf"
+    },
+    {
+      "date": "18/12/1989",
+      "project_id": "2259923",
+      "log_type": "REVISED",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/01/1998",
+      "project_id": "1727270",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 401 repealed by act 551.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/333_BI/Original_Act 321.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

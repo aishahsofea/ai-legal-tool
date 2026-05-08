@@ -1,0 +1,58 @@
+{
+  "act_number": "774",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:45:46.034069+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=774&lang=BI",
+  "timeline": [
+    {
+      "date": "19/02/2016",
+      "project_id": "786",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/aktaBI_20160218_ACT776-BI.pdf"
+    },
+    {
+      "date": "25/03/2022",
+      "project_id": "1726489",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1726489/PUA 72 (2022).pdf"
+    },
+    {
+      "date": "18/07/2022",
+      "project_id": "1726661",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1726661_BI/001. 15072022_ Act 774 final.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1726661_BI/001. 15072022_ Act 774 final.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 3
+}

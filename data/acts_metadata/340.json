@@ -1,0 +1,36 @@
+{
+  "act_number": "340",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:07:47.570160+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=340&lang=BI",
+  "timeline": [
+    {
+      "date": "10/06/1988",
+      "project_id": "352",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 340.pdf"
+    },
+    {
+      "date": "02/11/2001",
+      "project_id": "2259583",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259583_BI/340 2001.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15383",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 340.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16240",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 340 - Dangerous Drugs (Forfeiture of Property) Act 1988.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 340 - Dangerous Drugs (Forfeiture of Property) Act 1988.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

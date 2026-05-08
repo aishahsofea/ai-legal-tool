@@ -1,0 +1,36 @@
+{
+  "act_number": "642",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:05:37.440476+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=642&lang=BI",
+  "timeline": [
+    {
+      "date": "12/08/2001",
+      "project_id": "654",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/ACT 642- MANSUH.pdf"
+    },
+    {
+      "date": "03/01/2006",
+      "project_id": "2255820",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "19/10/2008",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2011",
+      "project_id": "",
+      "log_type": "REPEALED",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,60 @@
+{
+  "act_number": "165",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T00:50:41.411863+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=165&lang=BI",
+  "timeline": [
+    {
+      "date": "12/03/1976",
+      "project_id": "177",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 165 original.pdf"
+    },
+    {
+      "date": "03/06/1981",
+      "project_id": "1712494",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1712494/008 - P.U. (A) 357-1980.pdf"
+    },
+    {
+      "date": "26/02/1982",
+      "project_id": "1727828",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A532.pdf"
+    },
+    {
+      "date": "26/05/1987",
+      "project_id": "1700335",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700335_BI/ACT A671.pdf"
+    },
+    {
+      "date": "14/10/1997",
+      "project_id": "1727829",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A711.pdf"
+    },
+    {
+      "date": "07/01/1998",
+      "project_id": "2258245",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/04/2001",
+      "project_id": "1727326",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 165 reprint 2001.pdf"
+    },
+    {
+      "date": "09/01/2006",
+      "project_id": "15838",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 165.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 165.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A711.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

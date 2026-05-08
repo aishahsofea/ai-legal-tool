@@ -1,0 +1,58 @@
+{
+  "act_number": "175",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T00:48:01.425155+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=175&lang=BI",
+  "timeline": [
+    {
+      "date": "02/12/1997",
+      "project_id": "1727837",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A881.pdf"
+    },
+    {
+      "date": "03/03/2001",
+      "project_id": "1727328",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 175 - 2001.pdf"
+    },
+    {
+      "date": "04/08/2001",
+      "project_id": "1727838",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1078.pdf"
+    },
+    {
+      "date": "07/03/2003",
+      "project_id": "1727839",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1138.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "15870",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 175.pdf"
+    },
+    {
+      "date": "02/01/2020",
+      "project_id": "187",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 175 original.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 175.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1138.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

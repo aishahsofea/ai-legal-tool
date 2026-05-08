@@ -1,0 +1,199 @@
+{
+  "act_number": "77",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:03:55.088648+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=77&lang=BI",
+  "timeline": [
+    {
+      "date": "05/05/1972",
+      "project_id": "89",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/89_BI/ACT 77_repaired.pdf"
+    },
+    {
+      "date": "31/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "22/05/1978",
+      "project_id": "1727730",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A440.pdf"
+    },
+    {
+      "date": "05/01/1984",
+      "project_id": "1727731",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A583.pdf"
+    },
+    {
+      "date": "06/01/1993",
+      "project_id": "2256601",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2256601_BI/ACT 77 REPRINT 1993.pdf"
+    },
+    {
+      "date": "03/10/1996",
+      "project_id": "1727732",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A974.pdf"
+    },
+    {
+      "date": "07/09/1999",
+      "project_id": "15404",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 77 (Reprint 1999).pdf"
+    },
+    {
+      "date": "19/08/2005",
+      "project_id": "1727733",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1243.pdf"
+    },
+    {
+      "date": "10/01/2006",
+      "project_id": "1727443",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 77 (Reprint 2006).pdf"
+    },
+    {
+      "date": "28/01/2016",
+      "project_id": "923",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20150824_A1492_BI_A1492 BI.pdf"
+    },
+    {
+      "date": "26/06/2016",
+      "project_id": "16454",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Armed Forces Act 1972  second draft as at 11 6 2016.pdf"
+    },
+    {
+      "date": "20/06/2021",
+      "project_id": "1702379",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1702379/PUA260.pdf"
+    },
+    {
+      "date": "07/12/2021",
+      "project_id": "1715610",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1715610/PUB582.pdf"
+    },
+    {
+      "date": "29/07/2022",
+      "project_id": "1719769",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1719769_BI/15072022 Act 77 - Final.pdf"
+    },
+    {
+      "date": "16/11/2024",
+      "project_id": "2459424",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2459424_BI/Act A1735.pdf"
+    },
+    {
+      "date": "04/09/2025",
+      "project_id": "3030996",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3030996/PUA 258.pdf"
+    },
+    {
+      "date": "05/09/2025",
+      "project_id": "3032670",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3032670/PUA 259.pdf"
+    },
+    {
+      "date": "06/09/2025",
+      "project_id": "3031000",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3031000/PUA 260_2025.pdf"
+    },
+    {
+      "date": "07/09/2025",
+      "project_id": "3031001",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3031001/PUA 261_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1719769_BI/15072022 Act 77 - Final.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2459424_BI/Act A1735.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 8
+}

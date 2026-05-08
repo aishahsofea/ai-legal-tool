@@ -1,0 +1,115 @@
+{
+  "act_number": "299",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:21:36.911481+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=299&lang=BI",
+  "timeline": [
+    {
+      "date": "01/08/1958",
+      "project_id": "1727935",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727935_BI/ORD 6 1958.pdf"
+    },
+    {
+      "date": "03/08/1958",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/08/1958",
+      "project_id": "311",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/311_BI/ORD 61 1957.pdf"
+    },
+    {
+      "date": "27/03/1961",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "28/09/1965",
+      "project_id": "1727936",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727936_BI/LN 348 1965.pdf"
+    },
+    {
+      "date": "07/10/1971",
+      "project_id": "62",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/62_BI/Akta 50 Akta Perubatan, 1971-BI.pdf"
+    },
+    {
+      "date": "07/01/1972",
+      "project_id": "72",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/72_BI/ACT 60 - REVISED 1971.pdf"
+    },
+    {
+      "date": "06/06/1975",
+      "project_id": "1727937",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727937_BI/ACT A296.pdf"
+    },
+    {
+      "date": "07/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "14/08/1983",
+      "project_id": "2263466",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263466_BI/AKTA 299 REVISED 1983.pdf"
+    },
+    {
+      "date": "11/09/2001",
+      "project_id": "2259527",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259527_BI/ACT 299 REPRINT 2001.pdf"
+    },
+    {
+      "date": "13/01/2006",
+      "project_id": "15318",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 299.pdf"
+    },
+    {
+      "date": "08/02/2017",
+      "project_id": "955",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/955_BI/Act A1524_unlocked.pdf"
+    },
+    {
+      "date": "15/03/2018",
+      "project_id": "1727535",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 299 - Reprint Online Version 2018.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 299 - Reprint Online Version 2018.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/955_BI/Act A1524_unlocked.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

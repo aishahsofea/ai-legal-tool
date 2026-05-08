@@ -1,0 +1,60 @@
+{
+  "act_number": "381",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:56:24.965724+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=381&lang=BI",
+  "timeline": [
+    {
+      "date": "02/10/1965",
+      "project_id": "393",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/393_BI/No. 73 of 1965.pdf"
+    },
+    {
+      "date": "16/04/1966",
+      "project_id": "3430312",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3430312_BI/No. 26 Of 1966.pdf"
+    },
+    {
+      "date": "01/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "25/09/1989",
+      "project_id": "2259981",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259981_BI/Act 381 Revised.pdf"
+    },
+    {
+      "date": "05/01/2002",
+      "project_id": "2259686",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259686_BI/Act 381 Reprint 2001.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15527",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 381.pdf"
+    },
+    {
+      "date": "08/09/2013",
+      "project_id": "1727479",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/11/2013",
+      "project_id": "1727479",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 381.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

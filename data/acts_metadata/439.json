@@ -1,0 +1,42 @@
+{
+  "act_number": "439",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:46:11.547503+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=439&lang=BI",
+  "timeline": [
+    {
+      "date": "11/05/1990",
+      "project_id": "451",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/451_BI/ACT 439 (1).pdf"
+    },
+    {
+      "date": "29/12/2001",
+      "project_id": "3435255",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3435255_BI/A1136y2001_unlocked.pdf"
+    },
+    {
+      "date": "03/01/2002",
+      "project_id": "2259957",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259957_BI/ACT 439 REPRINT 2001.pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "15958",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 439.pdf"
+    },
+    {
+      "date": "06/01/2013",
+      "project_id": "16646",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 439 - Seri Pahlawan Gagah Perkasa (Remembrance Allowance) Act 1990.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 439 - Seri Pahlawan Gagah Perkasa (Remembrance Allowance) Act 1990.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3435255_BI/A1136y2001_unlocked.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

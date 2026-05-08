@@ -1,0 +1,148 @@
+{
+  "act_number": "441",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:45:57.642369+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=441&lang=BI",
+  "timeline": [
+    {
+      "date": "31/08/1990",
+      "project_id": "453",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/453_BI/Act 441- Gazette copy.pdf"
+    },
+    {
+      "date": "22/02/1992",
+      "project_id": "3439782",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3439782_BI/Act A817_1992.pdf"
+    },
+    {
+      "date": "17/02/1996",
+      "project_id": "3440091",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3440091/ilovepdf_merged (3).pdf"
+    },
+    {
+      "date": "10/03/1997",
+      "project_id": "3439834",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3439834_BI/Act A988_1997.pdf"
+    },
+    {
+      "date": "05/09/2000",
+      "project_id": "3439902",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3439902_BI/Act A1090_2000.pdf"
+    },
+    {
+      "date": "07/01/2001",
+      "project_id": "2259962",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "15960",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 441.pdf"
+    },
+    {
+      "date": "19/02/2010",
+      "project_id": "3439943",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3439943_BI/Act A1367_2010.pdf"
+    },
+    {
+      "date": "01/07/2012",
+      "project_id": "859",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/859_BI/Act A1428_2012_unlocked.pdf"
+    },
+    {
+      "date": "11/09/2012",
+      "project_id": "1727551",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 441 Online Version 2012.pdf"
+    },
+    {
+      "date": "20/06/2022",
+      "project_id": "1733748",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1733748_BI/Act A1653.pdf"
+    },
+    {
+      "date": "22/06/2022",
+      "project_id": "1734157",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1734157_BI/100622_Act 441_final.pdf"
+    },
+    {
+      "date": "10/11/2022",
+      "project_id": "1747484",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1747484/PUA346.pdf"
+    },
+    {
+      "date": "12/01/2023",
+      "project_id": "1754667",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1754667/PUA401_2022.pdf"
+    },
+    {
+      "date": "07/05/2025",
+      "project_id": "2813155",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2813155_BI/A1756 BI - LABUAN COMPANIES (AMENDMENT) ACT 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1734157_BI/100622_Act 441_final.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2813155_BI/A1756 BI - LABUAN COMPANIES (AMENDMENT) ACT 2025.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 5
+}

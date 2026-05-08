@@ -1,0 +1,100 @@
+{
+  "act_number": "414",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:50:52.535414+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=414&lang=BI",
+  "timeline": [
+    {
+      "date": "01/09/1963",
+      "project_id": "426",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/426_BI/ACT NO 19 OF 1963.pdf"
+    },
+    {
+      "date": "31/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "21/02/1982",
+      "project_id": "3358055",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3358055/PUB 74 1982.pdf"
+    },
+    {
+      "date": "01/01/1990",
+      "project_id": "2259859",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259859_BI/ACT 414 REVISED 1989.pdf"
+    },
+    {
+      "date": "07/11/1995",
+      "project_id": "3358060",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3358060/PUB 501 1995.pdf"
+    },
+    {
+      "date": "07/01/2001",
+      "project_id": "2259881",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259881_BI/ACT 414 REPRINT 2001.pdf"
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "15893",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 414.pdf"
+    },
+    {
+      "date": "09/11/2012",
+      "project_id": "2517",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2517/04. P.U. (B) 360 2012-PEMBERITAHUAN DI BAWAH SEKSYEN 7.pdf"
+    },
+    {
+      "date": "03/11/2017",
+      "project_id": "956",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/956_BI/05. Act A1525 BI_unlocked.pdf"
+    },
+    {
+      "date": "11/03/2018",
+      "project_id": "16614",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 414 (7_3_2018).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 414 (7_3_2018).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/956_BI/05. Act A1525 BI_unlocked.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 3
+}

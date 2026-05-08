@@ -1,0 +1,82 @@
+{
+  "act_number": "500",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:36:29.672058+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=500&lang=BI",
+  "timeline": [
+    {
+      "date": "05/02/1993",
+      "project_id": "512",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/2002",
+      "project_id": "2260202",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "2260203",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/03/2011",
+      "project_id": "1712796",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/Pub 91 tahun 20111.pdf"
+    },
+    {
+      "date": "06/12/2011",
+      "project_id": "16690",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 500  - Direct Sales and Anti-Pyramid Scheme Act 1993.pdf"
+    },
+    {
+      "date": "07/01/2013",
+      "project_id": "16038",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 500 - Direct Sales and Anti-Pyramid Scheme Act 1993 (Cetakan Semula 2013).pdf"
+    },
+    {
+      "date": "19/07/2024",
+      "project_id": "2209319",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2209319/PUA 188_2024.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 500  - Direct Sales and Anti-Pyramid Scheme Act 1993.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/Pub 91 tahun 20111.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 3
+}

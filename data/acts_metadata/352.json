@@ -1,0 +1,76 @@
+{
+  "act_number": "352",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:04:58.009934+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=352&lang=BI",
+  "timeline": [
+    {
+      "date": "29/04/1966",
+      "project_id": "364",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/364_BI/NO. 42 OF 1966 BI.pdf"
+    },
+    {
+      "date": "24/01/1976",
+      "project_id": "1727735",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727735_BI/Act A327 (1).pdf"
+    },
+    {
+      "date": "01/11/1976",
+      "project_id": "1728145",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A363.pdf"
+    },
+    {
+      "date": "02/07/1984",
+      "project_id": "3348670",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3348670_BI/03. ACT A592 BI.pdf"
+    },
+    {
+      "date": "01/11/1988",
+      "project_id": "2263448",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263448_BI/ACT 352 REVISED.pdf"
+    },
+    {
+      "date": "06/11/2001",
+      "project_id": "2259624",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259624_BI/Act 352 reprint 2001.pdf"
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "15465",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 352.pdf"
+    },
+    {
+      "date": "16/02/2007",
+      "project_id": "1728144",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/A1280BM.pdf"
+    },
+    {
+      "date": "10/08/2013",
+      "project_id": "16531",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 352 (11.3.2014).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 352 (11.3.2014).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/A1280BM.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

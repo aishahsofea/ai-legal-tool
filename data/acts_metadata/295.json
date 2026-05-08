@@ -1,0 +1,36 @@
+{
+  "act_number": "295",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:22:21.928215+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=295&lang=BI",
+  "timeline": [
+    {
+      "date": "30/12/1983",
+      "project_id": "307",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/307_BI/ACT 295.pdf"
+    },
+    {
+      "date": "02/09/2001",
+      "project_id": "2259521",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259521_BI/ACT 295 REPRINT 2001.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15311",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 295.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16170",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 295 - Military Manoeuvres Act 1983.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 295 - Military Manoeuvres Act 1983.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

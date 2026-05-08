@@ -1,0 +1,18 @@
+{
+  "act_number": "785",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:44:18.560486+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=785&lang=BI",
+  "timeline": [
+    {
+      "date": "17/01/2017",
+      "project_id": "797",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/797_BI/ACT 785.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

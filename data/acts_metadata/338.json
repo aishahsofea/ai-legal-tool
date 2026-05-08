@@ -1,0 +1,24 @@
+{
+  "act_number": "338",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:08:00.861919+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=338&lang=BI",
+  "timeline": [
+    {
+      "date": "19/02/1988",
+      "project_id": "350",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 338 (Repealed).pdf"
+    },
+    {
+      "date": "17/10/1988",
+      "project_id": "1727289",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727289_BI/Act 338 (Repealed).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,49 @@
+{
+  "act_number": "873",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:29:32.846941+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=873&lang=BI",
+  "timeline": [
+    {
+      "date": "01/01/2026",
+      "project_id": "3272203",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3272203_BI/Act 873 - CONSUMER CREDIT ACT 2025.pdf"
+    },
+    {
+      "date": "01/03/2026",
+      "project_id": "3389760",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3389760/PUA 110 (2026).pdf"
+    },
+    {
+      "date": "02/03/2026",
+      "project_id": "3389767",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3389767/PUB 74 (2026).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

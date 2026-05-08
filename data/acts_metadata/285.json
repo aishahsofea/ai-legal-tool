@@ -1,0 +1,30 @@
+{
+  "act_number": "285",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:24:06.532798+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=285&lang=BI",
+  "timeline": [
+    {
+      "date": "13/05/1983",
+      "project_id": "297",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/ACT 285 Asal.pdf"
+    },
+    {
+      "date": "29/09/1996",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "21/06/1997",
+      "project_id": "1727266",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 285 Repealed by Act 567.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

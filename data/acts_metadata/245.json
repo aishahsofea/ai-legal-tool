@@ -1,0 +1,36 @@
+{
+  "act_number": "245",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:31:08.711062+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=245&lang=BI",
+  "timeline": [
+    {
+      "date": "20/02/1981",
+      "project_id": "257",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/257_BI/ACT 245.pdf"
+    },
+    {
+      "date": "02/08/2001",
+      "project_id": "2258350",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258350_BI/ACT 245 REPRINT 2001 (1).pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "16132",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 245.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16768",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 245 - State Grants (Maintenance of Local Authorities) Ac.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 245 - State Grants (Maintenance of Local Authorities) Ac.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

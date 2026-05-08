@@ -1,0 +1,48 @@
+{
+  "act_number": "597",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:17:26.807843+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=597&lang=BI",
+  "timeline": [
+    {
+      "date": "10/09/1999",
+      "project_id": "609",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/609_BI/HUMAN RIGHTS COMMISSION OF MALAYSIA 1999_compressed (1).pdf"
+    },
+    {
+      "date": "02/12/2001",
+      "project_id": "2257361",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257361_BI/ACT 597 HUMAN RIGHTS REPRINT 2001.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15581",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 597.pdf"
+    },
+    {
+      "date": "21/02/2009",
+      "project_id": "1740972",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/A1353BIy2009.pdf"
+    },
+    {
+      "date": "06/12/2011",
+      "project_id": "16333",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 597 - Human Rights Commission of Malaysia Act 1999.pdf"
+    },
+    {
+      "date": "03/07/2024",
+      "project_id": "2177741",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2177741_BI/Act A1714.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 597 - Human Rights Commission of Malaysia Act 1999.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2177741_BI/Act A1714.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

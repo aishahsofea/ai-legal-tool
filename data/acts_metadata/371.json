@@ -1,0 +1,493 @@
+{
+  "act_number": "371",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:01:03.174470+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=371&lang=BI",
+  "timeline": [
+    {
+      "date": "28/12/1951",
+      "project_id": "383",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/383_BI/Act 371 - asal.pdf"
+    },
+    {
+      "date": "22/07/1954",
+      "project_id": "1728066",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728066_BI/ORD. 21 OF 1954.pdf"
+    },
+    {
+      "date": "07/07/1955",
+      "project_id": "1728067",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728067_BI/ORD. 41 OF 1955.pdf"
+    },
+    {
+      "date": "17/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "08/04/1972",
+      "project_id": "1728068",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728068_BI/ACT A114.pdf"
+    },
+    {
+      "date": "04/06/1975",
+      "project_id": "1728069",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728069_BI/ACT A301.pdf"
+    },
+    {
+      "date": "10/08/1989",
+      "project_id": "2260323",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2260323_BI/ACT 371 - REVISED 1989.pdf"
+    },
+    {
+      "date": "07/09/1997",
+      "project_id": "1728070",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728070_BI/ACT A1005.pdf"
+    },
+    {
+      "date": "09/12/2001",
+      "project_id": "2259657",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259657_BI/ACT 371 - REPRINT 2001.pdf"
+    },
+    {
+      "date": "04/01/2004",
+      "project_id": "1728071",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728071_BI/ACT_A1207.pdf"
+    },
+    {
+      "date": "12/01/2006",
+      "project_id": "15516",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 371.pdf"
+    },
+    {
+      "date": "27/03/2007",
+      "project_id": "1728341",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728341/P.U. (A) 109-2007.pdf"
+    },
+    {
+      "date": "28/03/2007",
+      "project_id": "1728342",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728342/P.U. (A) 110-2007.pdf"
+    },
+    {
+      "date": "24/07/2008",
+      "project_id": "1728344",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728344/P.U. (A) 244-2008.pdf"
+    },
+    {
+      "date": "25/07/2008",
+      "project_id": "1728343",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728343/P.U. (A) 243-2008.pdf"
+    },
+    {
+      "date": "12/12/2009",
+      "project_id": "3136671",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3136671/P.U. (A) 421-2009.pdf"
+    },
+    {
+      "date": "20/12/2009",
+      "project_id": "3136701",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3136701/P.U. (A) 425-2009.pdf"
+    },
+    {
+      "date": "28/02/2011",
+      "project_id": "1728345",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728345/P.U. (A) 41-2011.pdf"
+    },
+    {
+      "date": "15/05/2011",
+      "project_id": "1091",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1091/P.U._A_147-2011.pdf"
+    },
+    {
+      "date": "09/08/2011",
+      "project_id": "1332",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1332/P.U._A_245-2011.pdf"
+    },
+    {
+      "date": "11/08/2011",
+      "project_id": "1336",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1336/P.U. (A) 248-2011.pdf"
+    },
+    {
+      "date": "10/08/2012",
+      "project_id": "2249",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2249/P.U._A_216-2012.pdf"
+    },
+    {
+      "date": "05/09/2012",
+      "project_id": "2333",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2333/P.U._A_255-2012.pdf"
+    },
+    {
+      "date": "08/12/2017",
+      "project_id": "7182",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/7182/P.U._A_346-2017.pdf"
+    },
+    {
+      "date": "26/03/2018",
+      "project_id": "16358",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 371 - Registration of Pharmacists Act 1951 (7_3_2018).pdf"
+    },
+    {
+      "date": "27/08/2018",
+      "project_id": "1696427",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1696427/P.U._A_182-2018.pdf"
+    },
+    {
+      "date": "04/12/2018",
+      "project_id": "1699129",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1699129/P.U. (A) 288_2018.pdf"
+    },
+    {
+      "date": "27/12/2018",
+      "project_id": "1698999",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1698999/P.U. (A) 309-2018.pdf"
+    },
+    {
+      "date": "03/10/2019",
+      "project_id": "1696263",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1696263/P.U. (A) 235-2019.pdf"
+    },
+    {
+      "date": "20/12/2019",
+      "project_id": "1696129",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1696129/P.U._A_320-2019.pdf"
+    },
+    {
+      "date": "19/03/2020",
+      "project_id": "1698458",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1698458/P.U._A_61-2020.pdf"
+    },
+    {
+      "date": "10/04/2020",
+      "project_id": "1699288",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1699288/P.U._A_85-2020.pdf"
+    },
+    {
+      "date": "23/05/2020",
+      "project_id": "1698280",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1698280/P.U. (A) 119_2020.pdf"
+    },
+    {
+      "date": "04/06/2020",
+      "project_id": "1674705",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1674705_BI/Cetakan Semula Act 371 (Bersih).pdf"
+    },
+    {
+      "date": "25/09/2020",
+      "project_id": "1698629",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1698629/P.U._A_236-2020.pdf"
+    },
+    {
+      "date": "30/09/2021",
+      "project_id": "1708377",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1708377/PUA345_2021.pdf"
+    },
+    {
+      "date": "01/10/2021",
+      "project_id": "1708707",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1708707_BI/ACT 371.pdf"
+    },
+    {
+      "date": "04/02/2022",
+      "project_id": "1718973",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1718973/PUA 486.pdf"
+    },
+    {
+      "date": "05/02/2022",
+      "project_id": "1718973",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1718973/PUA 486.pdf"
+    },
+    {
+      "date": "25/10/2023",
+      "project_id": "1857220",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1857220/PUA 275.pdf"
+    },
+    {
+      "date": "07/03/2024",
+      "project_id": "1994817",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1994817/PUA15.pdf"
+    },
+    {
+      "date": "09/03/2024",
+      "project_id": "2107258",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2107258_BI/ACT 371 AS AT 27012024.pdf"
+    },
+    {
+      "date": "25/02/2025",
+      "project_id": "2609360",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2609360/PUA13_2025.pdf"
+    },
+    {
+      "date": "28/05/2025",
+      "project_id": "2807754",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2807754/PUA 116.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2107258_BI/ACT 371 AS AT 27012024.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1698629/P.U._A_236-2020.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 24
+}

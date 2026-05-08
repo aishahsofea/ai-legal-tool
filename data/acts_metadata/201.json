@@ -1,0 +1,115 @@
+{
+  "act_number": "201",
+  "act_type": "updated",
+  "scraped_at": "2026-05-05T12:46:35.928659+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=201&lang=BI",
+  "timeline": [
+    {
+      "date": "07/03/1948",
+      "project_id": "213",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 201 Original.pdf"
+    },
+    {
+      "date": "10/08/1950",
+      "project_id": "1727868",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727868_BI/Ord. 39 1950.pdf"
+    },
+    {
+      "date": "02/01/1953",
+      "project_id": "1727869",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Ord. 64 1952.pdf"
+    },
+    {
+      "date": "02/12/1957",
+      "project_id": "1727870",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Ord. 59 1957.pdf"
+    },
+    {
+      "date": "01/04/1961",
+      "project_id": "1727871",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 12 1961.pdf"
+    },
+    {
+      "date": "07/08/1965",
+      "project_id": "1727872",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727872_BI/05. Act 44 1965.pdf"
+    },
+    {
+      "date": "13/04/1967",
+      "project_id": "1727873",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727873_BI/ACT 17 1967.pdf"
+    },
+    {
+      "date": "09/03/1972",
+      "project_id": "77",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/77_BI/ACT 65 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "07/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "05/02/1978",
+      "project_id": "1727579",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 201 Revised.pdf"
+    },
+    {
+      "date": "04/11/1991",
+      "project_id": "3136097",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3136097/PUA 376 1991 (1).pdf"
+    },
+    {
+      "date": "05/11/1991",
+      "project_id": "3137035",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3137035/PUA 377 1991.pdf"
+    },
+    {
+      "date": "13/05/2001",
+      "project_id": "1727346",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 201 Reprint 2001.pdf"
+    },
+    {
+      "date": "15/01/2006",
+      "project_id": "15937",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 201.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 201.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3137035/PUA 377 1991.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

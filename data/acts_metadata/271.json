@@ -1,0 +1,24 @@
+{
+  "act_number": "271",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:26:24.681343+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=271&lang=BI",
+  "timeline": [
+    {
+      "date": "14/05/1982",
+      "project_id": "283",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 271 - Teks Bhs Inggeris.pdf"
+    },
+    {
+      "date": "10/01/1998",
+      "project_id": "1727260",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Muka surat depan Act 271 (Repealed by Act 575).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

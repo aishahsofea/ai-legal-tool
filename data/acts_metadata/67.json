@@ -1,0 +1,124 @@
+{
+  "act_number": "67",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:05:27.459801+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=67&lang=BI",
+  "timeline": [
+    {
+      "date": "01/04/1956",
+      "project_id": "1734859",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/warta Akta 67 Revised 1972.pdf"
+    },
+    {
+      "date": "02/04/1956",
+      "project_id": "79",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/79_BI/Act 67.pdf"
+    },
+    {
+      "date": "18/08/1957",
+      "project_id": "1734861",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/ORDINANCE 36 1957.BI.pdf"
+    },
+    {
+      "date": "17/11/1958",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "19/04/1966",
+      "project_id": "1734860",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/ACT 30 OF 1966 Civil Law (Amendment) Act 1966.pdf"
+    },
+    {
+      "date": "07/04/1972",
+      "project_id": "3137053",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3137053/PUA424 1971.pdf"
+    },
+    {
+      "date": "08/04/1972",
+      "project_id": "3137100",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3137100/PUA16 1975.pdf"
+    },
+    {
+      "date": "07/06/1975",
+      "project_id": "1727713",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta A 308 BM.pdf"
+    },
+    {
+      "date": "10/10/1984",
+      "project_id": "1734858",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/ACT A 602 BI.pdf"
+    },
+    {
+      "date": "11/01/1993",
+      "project_id": "2257209",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "12/01/1999",
+      "project_id": "1727437",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/ACT 67 BI REPRINT 1999.pdf"
+    },
+    {
+      "date": "13/01/2006",
+      "project_id": "1734862",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/AKTA 67 REPRINT 2006.pdf"
+    },
+    {
+      "date": "22/08/2019",
+      "project_id": "1695993",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20190531_A1591_BI_A1591 BI.pdf"
+    },
+    {
+      "date": "15/10/2019",
+      "project_id": "1727516",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 67 - (muktamad).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 67 - (muktamad).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20190531_A1591_BI_A1591 BI.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 3
+}

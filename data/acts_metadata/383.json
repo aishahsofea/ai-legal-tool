@@ -1,0 +1,54 @@
+{
+  "act_number": "383",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:56:07.801756+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=383&lang=BI",
+  "timeline": [
+    {
+      "date": "15/01/1961",
+      "project_id": "395",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/395_BI/No. 2 of 1961.pdf"
+    },
+    {
+      "date": "31/03/1962",
+      "project_id": "3435895",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3435895_BI/L.N. 98-1962.pdf"
+    },
+    {
+      "date": "15/12/1963",
+      "project_id": "3436040",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3436040_BI/L.N. 329-1963.pdf"
+    },
+    {
+      "date": "25/09/1989",
+      "project_id": "2259974",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259974_BI/Act 383 Revised.pdf"
+    },
+    {
+      "date": "05/01/2002",
+      "project_id": "2259689",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259689_BI/Act 383 Reprint 2001.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15529",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 383.pdf"
+    },
+    {
+      "date": "08/04/2013",
+      "project_id": "1727480",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 383.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3436040_BI/L.N. 329-1963.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

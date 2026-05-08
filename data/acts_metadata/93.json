@@ -1,0 +1,24 @@
+{
+  "act_number": "93",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:00:12.830768+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=93&lang=BI",
+  "timeline": [
+    {
+      "date": "18/12/1964",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "17/03/2006",
+      "project_id": "1700551",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 93 - Repealed by Act 646.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

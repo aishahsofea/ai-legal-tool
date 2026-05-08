@@ -1,0 +1,36 @@
+{
+  "act_number": "654",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:03:59.782605+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=654&lang=BI",
+  "timeline": [
+    {
+      "date": "21/07/2006",
+      "project_id": "666",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/666_BI/ACT  654 ORI.pdf"
+    },
+    {
+      "date": "03/08/2006",
+      "project_id": "15774",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 654.pdf"
+    },
+    {
+      "date": "01/01/2024",
+      "project_id": "1946986",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1946986_BI/A1699 BI.pdf"
+    },
+    {
+      "date": "05/02/2024",
+      "project_id": "2367737",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2367737_BI/Act 654 (Online 2025).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2367737_BI/Act 654 (Online 2025).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1946986_BI/A1699 BI.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,18 @@
+{
+  "act_number": "781",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:44:39.977546+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=781&lang=BI",
+  "timeline": [
+    {
+      "date": "16/09/2016",
+      "project_id": "15733",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 781 - Revised 2016.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

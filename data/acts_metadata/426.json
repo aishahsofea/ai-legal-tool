@@ -1,0 +1,48 @@
+{
+  "act_number": "426",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:49:12.714737+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=426&lang=BI",
+  "timeline": [
+    {
+      "date": "30/08/1957",
+      "project_id": "438",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/438_BI/ORD NO 41 OF 1957.pdf"
+    },
+    {
+      "date": "16/06/1963",
+      "project_id": "3430410",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3430410_BI/ACT 22 OF 1963.pdf"
+    },
+    {
+      "date": "03/04/1990",
+      "project_id": "2259839",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259839_BI/ACT 426 REVISED 1990.pdf"
+    },
+    {
+      "date": "05/01/2001",
+      "project_id": "2259905",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259905_BI/ACT 426 REPRINT 2001.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "15909",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 426.pdf"
+    },
+    {
+      "date": "07/01/2013",
+      "project_id": "16623",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 426 - Government Trustee Securities Act 1957.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 426 - Government Trustee Securities Act 1957.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3430410_BI/ACT 22 OF 1963.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

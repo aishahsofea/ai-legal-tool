@@ -1,0 +1,88 @@
+{
+  "act_number": "246",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:31:01.945838+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=246&lang=BI",
+  "timeline": [
+    {
+      "date": "20/02/1981",
+      "project_id": "258",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/258_BI/Act 246-Warta.pdf"
+    },
+    {
+      "date": "25/07/1981",
+      "project_id": "3165243",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3165243/001. P.U.(A) 213 tahun 1981.pdf"
+    },
+    {
+      "date": "03/08/2001",
+      "project_id": "2258352",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258352_BI/ACT 246 REPRINT 2001.pdf"
+    },
+    {
+      "date": "08/08/2005",
+      "project_id": "3165296",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3165296_BI/002. Act A1246_unlocked.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "1727459",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 246-Reprint 1 January 2006.pdf"
+    },
+    {
+      "date": "07/02/2018",
+      "project_id": "985",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/aktaBI_20171130_ActA1554BI.pdf"
+    },
+    {
+      "date": "08/10/2018",
+      "project_id": "3165320",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3165320_BI/Act 246 (REPRINT 2018).pdf"
+    },
+    {
+      "date": "21/10/2021",
+      "project_id": "1712199",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1712199/PUA 396.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3165320_BI/Act 246 (REPRINT 2018).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/aktaBI_20171130_ActA1554BI.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 3
+}

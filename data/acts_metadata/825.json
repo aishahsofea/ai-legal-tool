@@ -1,0 +1,18 @@
+{
+  "act_number": "825",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:38:38.931847+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=825&lang=BI",
+  "timeline": [
+    {
+      "date": "31/01/2020",
+      "project_id": "757236",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/757236_BI/Act 825 BI.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

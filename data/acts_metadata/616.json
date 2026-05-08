@@ -1,0 +1,42 @@
+{
+  "act_number": "616",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:10:25.360368+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=616&lang=BI",
+  "timeline": [
+    {
+      "date": "28/12/2001",
+      "project_id": "628",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/2004",
+      "project_id": "2257325",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15621",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 616.pdf"
+    },
+    {
+      "date": "05/07/2009",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/12/2011",
+      "project_id": "16341",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 616 - Panglima Gagah Berani (Remembrance Allowance) Act .pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 616 - Panglima Gagah Berani (Remembrance Allowance) Act .pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

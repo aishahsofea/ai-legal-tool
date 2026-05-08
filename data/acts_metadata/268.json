@@ -1,0 +1,84 @@
+{
+  "act_number": "268",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:26:57.037485+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=268&lang=BI",
+  "timeline": [
+    {
+      "date": "23/08/1951",
+      "project_id": "1728122",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728122_BI/ORD 26 1951.pdf"
+    },
+    {
+      "date": "02/09/1958",
+      "project_id": "280",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/280_BI/Bills of Sale Ordinance F.M. Ord. 30 of 1950 (1) (1).pdf"
+    },
+    {
+      "date": "15/12/1958",
+      "project_id": "1728123",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/L.N. 374-1958.pdf"
+    },
+    {
+      "date": "25/03/1959",
+      "project_id": "1728124",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Ord. 8-1959.pdf"
+    },
+    {
+      "date": "04/02/1964",
+      "project_id": "103",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/103_BI/ACT 91 (No. 7 of 1964).pdf"
+    },
+    {
+      "date": "15/04/1970",
+      "project_id": "25",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/25_BI/ACT 13 REVISED 1969.pdf"
+    },
+    {
+      "date": "19/10/1972",
+      "project_id": "104",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/104_BI/NO. 43 OF 1948 (ACT 92).pdf"
+    },
+    {
+      "date": "06/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "15/01/1981",
+      "project_id": "1728121",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 92.pdf"
+    },
+    {
+      "date": "25/04/1982",
+      "project_id": "2263481",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263481_BI/ACT 268 REVISED 1982.pdf"
+    },
+    {
+      "date": "11/08/2001",
+      "project_id": "2258386",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258386_BI/ACT 268 REPRINT 2001.pdf"
+    },
+    {
+      "date": "13/01/2006",
+      "project_id": "15706",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 268.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 268.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 92.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,24 @@
+{
+  "act_number": "454",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:42:48.201798+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=454&lang=BI",
+  "timeline": [
+    {
+      "date": "12/04/1991",
+      "project_id": "466",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "15/02/2007",
+      "project_id": "",
+      "log_type": "REPEALED",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

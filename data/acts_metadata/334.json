@@ -1,0 +1,292 @@
+{
+  "act_number": "334",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:08:55.148350+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=334&lang=BI",
+  "timeline": [
+    {
+      "date": "25/09/1987",
+      "project_id": "346",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/346_BI/ACT 334 (ORIGINAL).pdf"
+    },
+    {
+      "date": "10/09/1988",
+      "project_id": "1727990",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727990_BI/01. A708 BI.pdf"
+    },
+    {
+      "date": "06/03/1994",
+      "project_id": "1727982",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727982_BI/ACT A878.pdf"
+    },
+    {
+      "date": "05/07/1998",
+      "project_id": "1727991",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727991_BI/03. A1024 BI.pdf"
+    },
+    {
+      "date": "05/11/2001",
+      "project_id": "15376",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15376_BI/334 2001.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "3346974",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3346974_BI/Reprint 2006 BI.pdf"
+    },
+    {
+      "date": "27/06/2010",
+      "project_id": "1727992",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727992_BI/05. A1376 BI_unlocked.pdf"
+    },
+    {
+      "date": "26/11/2010",
+      "project_id": "3326695",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3326695/04. P.U. (B) 509-2010_unlocked.pdf"
+    },
+    {
+      "date": "10/12/2011",
+      "project_id": "16233",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 334 - Commercial Vehicles Licensing Board Act 1987.pdf"
+    },
+    {
+      "date": "10/12/2017",
+      "project_id": "984",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/984_BI/06. A1553 BI_unlocked.pdf"
+    },
+    {
+      "date": "25/09/2021",
+      "project_id": "1709893",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1709893/PUB466.pdf"
+    },
+    {
+      "date": "21/06/2022",
+      "project_id": "1733421",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1733421/PUA205.pdf"
+    },
+    {
+      "date": "25/08/2022",
+      "project_id": "1740151",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1740151/PUB367_2022.pdf"
+    },
+    {
+      "date": "30/03/2023",
+      "project_id": "1798208",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1798208/P.U. (B) 101_2023 (Pelantikan dan Pembatalan Pelantikan Pegawai LPKP).pdf"
+    },
+    {
+      "date": "01/07/2023",
+      "project_id": "1826836",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1826836_BI/Act A1686 BI.pdf"
+    },
+    {
+      "date": "31/10/2023",
+      "project_id": "1871781",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1871781_BI/Act 334 Final.pdf"
+    },
+    {
+      "date": "07/12/2023",
+      "project_id": "1896540",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1896540/PUA 358.pdf"
+    },
+    {
+      "date": "05/04/2024",
+      "project_id": "2063431",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2063431/P.U. (B) 86_2024.pdf"
+    },
+    {
+      "date": "28/07/2025",
+      "project_id": "2951598",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2951598_BI/COMMERCIAL VEHICLES LICENSING BOARD (AMENDMENT) ACT 2025.pdf"
+    },
+    {
+      "date": "19/08/2025",
+      "project_id": "2997373",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2997373/PUB 287_2025.pdf"
+    },
+    {
+      "date": "04/05/2026",
+      "project_id": "3458815",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3458815/PUB 135_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1871781_BI/Act 334 Final.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2951598_BI/COMMERCIAL VEHICLES LICENSING BOARD (AMENDMENT) ACT 2025.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 17
+}

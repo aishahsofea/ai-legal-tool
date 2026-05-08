@@ -1,0 +1,66 @@
+{
+  "act_number": "120",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:53:57.575487+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=120&lang=BI",
+  "timeline": [
+    {
+      "date": "31/12/1949",
+      "project_id": "132",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/132_BI/AKTA 120 WARTA ASAL.pdf"
+    },
+    {
+      "date": "22/08/1953",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "25/09/1958",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "20/09/1963",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "21/09/1963",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/09/1973",
+      "project_id": "3452772",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3452772_BI/AKTA 120 (REVISED) BI.pdf"
+    },
+    {
+      "date": "08/01/1995",
+      "project_id": "2257041",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257041_BI/AKTA 120 (CETAKAN 1-1995) BI.pdf"
+    },
+    {
+      "date": "09/01/2000",
+      "project_id": "2258182",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258182_BI/AKTA 120 (CETAKAN 2- 2000)BI.pdf"
+    },
+    {
+      "date": "10/01/2006",
+      "project_id": "2717482",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2717482_BI/Act 120.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2717482_BI/Act 120.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

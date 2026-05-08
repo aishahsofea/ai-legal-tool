@@ -1,0 +1,60 @@
+{
+  "act_number": "95",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:59:46.537313+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=95&lang=BI",
+  "timeline": [
+    {
+      "date": "01/12/1966",
+      "project_id": "107",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/107_BI/NO. 58 OF 1966 (ACT 95).pdf"
+    },
+    {
+      "date": "09/11/1969",
+      "project_id": "1728207",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728207/P.U. (A) 467-1969.pdf"
+    },
+    {
+      "date": "15/10/1972",
+      "project_id": "1727562",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727562_BI/ACT 95 - REVISED 1972.pdf"
+    },
+    {
+      "date": "01/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "28/06/1994",
+      "project_id": "1727638",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727638_BI/ACT A885.pdf"
+    },
+    {
+      "date": "07/08/1994",
+      "project_id": "1727309",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727309_BI/ACT 95 - REPRINT 1994.pdf"
+    },
+    {
+      "date": "07/10/1999",
+      "project_id": "2257083",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257083_BI/ACT 95 - REPRINT 1999.pdf"
+    },
+    {
+      "date": "09/01/2006",
+      "project_id": "15446",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15446_BI/ACT 95 - REPRINT 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15446_BI/ACT 95 - REPRINT 2006.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727638_BI/ACT A885.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

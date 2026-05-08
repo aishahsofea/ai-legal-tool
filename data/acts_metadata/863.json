@@ -1,0 +1,18 @@
+{
+  "act_number": "863",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:30:33.624559+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=863&lang=BI",
+  "timeline": [
+    {
+      "date": "01/01/2025",
+      "project_id": "2592590",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2592590_BI/Act 863.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

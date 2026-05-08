@@ -1,0 +1,30 @@
+{
+  "act_number": "544",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:26:00.175403+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=544&lang=BI",
+  "timeline": [
+    {
+      "date": "02/02/1996",
+      "project_id": "556",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/556_BI/ACT 544.pdf"
+    },
+    {
+      "date": "02/04/2002",
+      "project_id": "2260212",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2260212_BI/ACT 544 - REPPRINT 2002.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15371",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 544.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 544.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

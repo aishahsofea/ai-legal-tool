@@ -1,0 +1,136 @@
+{
+  "act_number": "117",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:54:36.661720+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=117&lang=BI",
+  "timeline": [
+    {
+      "date": "07/07/1972",
+      "project_id": "3496394",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3496394_BI/AKTA A130 (BI).pdf"
+    },
+    {
+      "date": "03/06/1973",
+      "project_id": "2271034",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2271034_BI/AKTA 117- SEMAKAN.pdf"
+    },
+    {
+      "date": "05/08/1973",
+      "project_id": "129",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "18/03/1974",
+      "project_id": "3496461",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3496461_BI/A249(BI).pdf"
+    },
+    {
+      "date": "25/09/1979",
+      "project_id": "3496474",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3496474_BI/A466(BI).pdf"
+    },
+    {
+      "date": "24/02/1988",
+      "project_id": "3496971",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3496971_BI/A686 (BI).pdf"
+    },
+    {
+      "date": "23/07/1992",
+      "project_id": "3497040",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3497040_BI/A826 (BI).pdf"
+    },
+    {
+      "date": "02/07/1994",
+      "project_id": "1006135",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1006135_BI/ACT A885.pdf"
+    },
+    {
+      "date": "10/01/1995",
+      "project_id": "2257039",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257039_BI/AKTA 117- CETAKAN 1995 (BI).pdf"
+    },
+    {
+      "date": "10/03/2000",
+      "project_id": "2258176",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258176_BI/AKTA 117 - CETAKAN 2000 (BI).pdf"
+    },
+    {
+      "date": "12/12/2002",
+      "project_id": "1712780",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1159.pdf"
+    },
+    {
+      "date": "13/01/2006",
+      "project_id": "15489",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 117.pdf"
+    },
+    {
+      "date": "14/04/2007",
+      "project_id": "1712781",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1287 (BI).pdf"
+    },
+    {
+      "date": "14/12/2015",
+      "project_id": "911",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20150224_A1480_BI_A1480 BI.pdf"
+    },
+    {
+      "date": "16/03/2016",
+      "project_id": "16440",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 117 - (02 03 2016).pdf"
+    },
+    {
+      "date": "16/10/2022",
+      "project_id": "1744746",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1744746/PUA306.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 117 - (02 03 2016).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20150224_A1480_BI_A1480 BI.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 3
+}

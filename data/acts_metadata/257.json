@@ -1,0 +1,121 @@
+{
+  "act_number": "257",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:29:22.008967+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=257&lang=BI",
+  "timeline": [
+    {
+      "date": "25/06/1953",
+      "project_id": "269",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/269_BI/ORD 41 1952.pdf"
+    },
+    {
+      "date": "26/06/1953",
+      "project_id": "3266767",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3266767_BI/ORD 35 1953.pdf"
+    },
+    {
+      "date": "07/07/1956",
+      "project_id": "3266798",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3266798_BI/ORD 18 1956.pdf"
+    },
+    {
+      "date": "03/03/1958",
+      "project_id": "1727852",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727852_BI/LN 75 1958.pdf"
+    },
+    {
+      "date": "04/02/1964",
+      "project_id": "103",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/103_BI/ACT 91 (No. 7 of 1964).pdf"
+    },
+    {
+      "date": "06/09/1972",
+      "project_id": "3222124",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3222124/PUA 266 1972.pdf"
+    },
+    {
+      "date": "05/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "01/01/1982",
+      "project_id": "2263489",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263489_BI/ACT 257 REVISED 1981.pdf"
+    },
+    {
+      "date": "23/10/1982",
+      "project_id": "3180571",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3180571/P.U.(A) 306.pdf"
+    },
+    {
+      "date": "31/05/1987",
+      "project_id": "1700335",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700335_BI/ACT A671.pdf"
+    },
+    {
+      "date": "04/08/1997",
+      "project_id": "1728006",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BI/ACT A996.pdf"
+    },
+    {
+      "date": "27/02/2001",
+      "project_id": "3180549",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3180549_BI/A1098y2001_unlocked.pdf"
+    },
+    {
+      "date": "13/08/2001",
+      "project_id": "2258365",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258365_BI/ACT 257 REPRINT 2001.pdf"
+    },
+    {
+      "date": "15/01/2006",
+      "project_id": "15276",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 257.pdf"
+    },
+    {
+      "date": "16/01/2013",
+      "project_id": "16146",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 257 - Adoption Act 1952.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 257 - Adoption Act 1952.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3180549_BI/A1098y2001_unlocked.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

@@ -1,0 +1,88 @@
+{
+  "act_number": "204",
+  "act_type": "updated",
+  "scraped_at": "2026-05-05T12:39:29.938604+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=204&lang=BI",
+  "timeline": [
+    {
+      "date": "02/08/1959",
+      "project_id": "3157455",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3157455_BI/Ord 30 1959 (1).pdf"
+    },
+    {
+      "date": "03/07/1965",
+      "project_id": "3157487",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3157487_BI/LN 260 1965 (1).pdf"
+    },
+    {
+      "date": "02/11/1969",
+      "project_id": "3137094",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3137094/PUA 431 1969.pdf"
+    },
+    {
+      "date": "02/05/1971",
+      "project_id": "3137123",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3137123_BI/Act A41.pdf"
+    },
+    {
+      "date": "18/04/1978",
+      "project_id": "216",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Original Act 204.pdf"
+    },
+    {
+      "date": "05/05/1978",
+      "project_id": "2263508",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263508_BI/Act 204 revised 1978.pdf"
+    },
+    {
+      "date": "26/03/1998",
+      "project_id": "1742041",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1742041_BI/Act A1012.pdf"
+    },
+    {
+      "date": "09/01/2001",
+      "project_id": "2258304",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258304_BI/Act 204 reprint 2001.pdf"
+    },
+    {
+      "date": "10/01/2006",
+      "project_id": "15943",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 204.pdf"
+    },
+    {
+      "date": "09/09/2007",
+      "project_id": "1739508",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1314.pdf"
+    },
+    {
+      "date": "12/12/2011",
+      "project_id": "16633",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 204 - Bills of Exchange Act 1949.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 204 - Bills of Exchange Act 1949.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1314.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

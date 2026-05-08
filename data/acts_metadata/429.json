@@ -1,0 +1,84 @@
+{
+  "act_number": "429",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:48:40.958008+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=429&lang=BI",
+  "timeline": [
+    {
+      "date": "15/08/1957",
+      "project_id": "441",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/441_BI/ORD NO 29 OF 1957.pdf"
+    },
+    {
+      "date": "28/12/1957",
+      "project_id": "3430494",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3430494_BI/L.N (NS) 117 1957.pdf"
+    },
+    {
+      "date": "03/11/1958",
+      "project_id": "3430510",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3430510_BI/ORD 39 OF 1958.pdf"
+    },
+    {
+      "date": "04/02/1960",
+      "project_id": "3430526",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3430526_BI/ACT 4 OF 1959.pdf"
+    },
+    {
+      "date": "19/01/1961",
+      "project_id": "3430542",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3430542_BI/ACT 1 OF 1961.pdf"
+    },
+    {
+      "date": "04/08/1964",
+      "project_id": "3430555",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3430555_BI/ACT 29 OF 1964.pdf"
+    },
+    {
+      "date": "30/09/1965",
+      "project_id": "3430487",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3430487_BI/L.N. 349 1965.pdf"
+    },
+    {
+      "date": "03/02/1966",
+      "project_id": "3430562",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3430562_BI/ACT 5 OF 1966.pdf"
+    },
+    {
+      "date": "09/04/1990",
+      "project_id": "2259835",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259835_BI/ACT 429 REVISED 1990.pdf"
+    },
+    {
+      "date": "11/01/2001",
+      "project_id": "2259916",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259916_BI/ACT 429 REPRINT 2001.pdf"
+    },
+    {
+      "date": "12/01/2006",
+      "project_id": "15949",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 429.pdf"
+    },
+    {
+      "date": "13/01/2013",
+      "project_id": "16637",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 429 - Counterfeit Coin Act 1957.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 429 - Counterfeit Coin Act 1957.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3430562_BI/ACT 5 OF 1966.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

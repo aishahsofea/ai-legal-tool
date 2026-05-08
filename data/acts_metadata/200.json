@@ -1,0 +1,84 @@
+{
+  "act_number": "200",
+  "act_type": "updated",
+  "scraped_at": "2026-05-05T13:19:56.340328+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=200&lang=BI",
+  "timeline": [
+    {
+      "date": "20/05/1947",
+      "project_id": "212",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 200 Original.pdf"
+    },
+    {
+      "date": "20/09/1947",
+      "project_id": "1727864",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Ord. 35 1947.pdf"
+    },
+    {
+      "date": "23/12/1956",
+      "project_id": "1727865",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Ord. 48 1956.pdf"
+    },
+    {
+      "date": "17/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "05/05/1971",
+      "project_id": "1727866",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A46.pdf"
+    },
+    {
+      "date": "05/04/1973",
+      "project_id": "1727867",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A192.pdf"
+    },
+    {
+      "date": "05/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "03/02/1978",
+      "project_id": "1727578",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 200 Revised.pdf"
+    },
+    {
+      "date": "24/02/1978",
+      "project_id": "1728235",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/PU (A) 209 1980 English.pdf"
+    },
+    {
+      "date": "10/05/2001",
+      "project_id": "1727345",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 200 Reprint 2001.pdf"
+    },
+    {
+      "date": "05/11/2002",
+      "project_id": "1728236",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/PU (A) 426 2002 English.pdf"
+    },
+    {
+      "date": "13/01/2006",
+      "project_id": "15935",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 200.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 200.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/PU (A) 426 2002 English.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,90 @@
+{
+  "act_number": "370",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:01:15.377354+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=370&lang=BI",
+  "timeline": [
+    {
+      "date": "19/09/1965",
+      "project_id": "382",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/382_BI/74 1965 UNCLAIMED MONEYS_compressed (1).pdf"
+    },
+    {
+      "date": "24/08/1974",
+      "project_id": "158",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/158_BI/ACT 146.pdf"
+    },
+    {
+      "date": "01/06/1975",
+      "project_id": "1728062",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728062_BI/02. A303 UNCLAIMED MONEYS 1975 AMEND_repaired.pdf"
+    },
+    {
+      "date": "26/01/1976",
+      "project_id": "1728063",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728063_BI/03. A325 UNCLAIMED MONEYS 1976 AMEND_repaired.pdf"
+    },
+    {
+      "date": "14/02/1989",
+      "project_id": "1728064",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728064_BI/04. A722 UNCLAIMED MONEYS 1989 AMEND_repaired.pdf"
+    },
+    {
+      "date": "09/08/1989",
+      "project_id": "2260322",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2260322_BI/Akta 370 -Revised 1989.pdf"
+    },
+    {
+      "date": "07/12/2001",
+      "project_id": "2259652",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259652_BI/ACT 370 UNCLAIMED MONEYS 1965 REPRINT 2001.pdf"
+    },
+    {
+      "date": "09/01/2003",
+      "project_id": "1728065",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1161.pdf"
+    },
+    {
+      "date": "10/01/2006",
+      "project_id": "15515",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 370.pdf"
+    },
+    {
+      "date": "11/12/2012",
+      "project_id": "16357",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 370 - Unclaimed Moneys Act 1965.pdf"
+    },
+    {
+      "date": "12/08/2020",
+      "project_id": "1680406",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1680406_BI/Act 370 - Draf Bersih.pdf"
+    },
+    {
+      "date": "05/06/2024",
+      "project_id": "2138123",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2138123_BI/Act A1708.pdf"
+    },
+    {
+      "date": "14/08/2024",
+      "project_id": "2289889",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2289889_BI/Act 370 (Online 2025).docx.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2289889_BI/Act 370 (Online 2025).docx.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2138123_BI/Act A1708.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

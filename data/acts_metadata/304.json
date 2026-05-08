@@ -1,0 +1,76 @@
+{
+  "act_number": "304",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:20:05.364714+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=304&lang=BI",
+  "timeline": [
+    {
+      "date": "29/06/1984",
+      "project_id": "316",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/316_BI/304 BI.pdf"
+    },
+    {
+      "date": "02/09/2001",
+      "project_id": "2259532",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259532_BI/Act 304 Reprint 2001.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "16051",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 304.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16700",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 304 - Atomic Energy Licensing Act 1984.pdf"
+    },
+    {
+      "date": "06/12/2021",
+      "project_id": "1714617",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1714617/PUA 435.pdf"
+    },
+    {
+      "date": "04/12/2025",
+      "project_id": "3212548",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3212548_BI/A1779 - ATOMIC ENERGY LICENSING (AMENDMENT) ACT 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 304 - Atomic Energy Licensing Act 1984.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3212548_BI/A1779 - ATOMIC ENERGY LICENSING (AMENDMENT) ACT 2025.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 3
+}

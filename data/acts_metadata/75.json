@@ -1,0 +1,72 @@
+{
+  "act_number": "75",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:04:13.526725+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=75&lang=BI",
+  "timeline": [
+    {
+      "date": "31/03/1972",
+      "project_id": "87",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/87_BI/ACT 75 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "30/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "18/02/1979",
+      "project_id": "1727727",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727727_BI/ACT A447.pdf"
+    },
+    {
+      "date": "01/06/1981",
+      "project_id": "1734883",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1734883_BI/ACT A520.pdf"
+    },
+    {
+      "date": "25/02/1992",
+      "project_id": "490",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BI/ACT 478.pdf"
+    },
+    {
+      "date": "07/11/1993",
+      "project_id": "2257382",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257382_BI/ACT 75 - REPRINT 1994.pdf"
+    },
+    {
+      "date": "03/10/1996",
+      "project_id": "1727729",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727729_BI/ACT A971.pdf"
+    },
+    {
+      "date": "09/01/2006",
+      "project_id": "15355",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 75.pdf"
+    },
+    {
+      "date": "12/10/2017",
+      "project_id": "973",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/973_BI/ACT A1542.pdf"
+    },
+    {
+      "date": "11/10/2018",
+      "project_id": "1727442",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 75 (Reprint 2018).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 75 (Reprint 2018).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/973_BI/ACT A1542.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

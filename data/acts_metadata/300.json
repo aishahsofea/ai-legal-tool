@@ -1,0 +1,54 @@
+{
+  "act_number": "300",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:21:25.349984+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=300&lang=BI",
+  "timeline": [
+    {
+      "date": "01/05/1958",
+      "project_id": "3268207",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3268207_BI/ORD 1 1958.pdf"
+    },
+    {
+      "date": "01/03/1975",
+      "project_id": "1727938",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727938_BI/ACT A281.pdf"
+    },
+    {
+      "date": "13/10/1983",
+      "project_id": "1727598",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727598_BI/ACT 300 REVISED 1983.pdf"
+    },
+    {
+      "date": "02/07/1984",
+      "project_id": "312",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 300 - original.pdf"
+    },
+    {
+      "date": "04/09/1997",
+      "project_id": "1727939",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727939_BI/ACT A1004.pdf"
+    },
+    {
+      "date": "06/09/2001",
+      "project_id": "15701",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 300 - cetakan semula 2001.pdf"
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "15319",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 300.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 300.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727939_BI/ACT A1004.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

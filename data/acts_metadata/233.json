@@ -1,0 +1,97 @@
+{
+  "act_number": "233",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T14:52:37.513275+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=233&lang=BI",
+  "timeline": [
+    {
+      "date": "23/05/1950",
+      "project_id": "245",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/245_BI/ORD NO 18 1950.pdf"
+    },
+    {
+      "date": "15/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "26/12/1965",
+      "project_id": "1856733",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1856733_BI/002 - L.N. 477-1965.pdf"
+    },
+    {
+      "date": "05/01/1966",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/08/1966",
+      "project_id": "1856734",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1856734_BI/PU 297 1966.pdf"
+    },
+    {
+      "date": "07/09/1970",
+      "project_id": "1728227",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728227/02. P.U. (B) 324-1970.pdf"
+    },
+    {
+      "date": "08/01/1980",
+      "project_id": "1742066",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 233 revised.pdf"
+    },
+    {
+      "date": "08/06/2001",
+      "project_id": "2258323",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258323_BI/ACT 233 REPRINT 2001.pdf"
+    },
+    {
+      "date": "10/01/2006",
+      "project_id": "16110",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 233.pdf"
+    },
+    {
+      "date": "03/01/2010",
+      "project_id": "3150880",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3150880/pua026(147)y2009_unlocked.pdf"
+    },
+    {
+      "date": "12/12/2012",
+      "project_id": "16756",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 233 - Land and Mining Plans and Documents (Photographic Copies) Act 1950.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 233 - Land and Mining Plans and Documents (Photographic Copies) Act 1950.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3150880/pua026(147)y2009_unlocked.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

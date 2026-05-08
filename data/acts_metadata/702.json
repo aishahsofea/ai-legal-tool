@@ -1,0 +1,18 @@
+{
+  "act_number": "702",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:56:49.635882+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=702&lang=BI",
+  "timeline": [
+    {
+      "date": "15/01/2010",
+      "project_id": "714",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/714_BI/ACT 702.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

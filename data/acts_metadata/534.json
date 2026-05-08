@@ -1,0 +1,36 @@
+{
+  "act_number": "534",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:28:32.384276+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=534&lang=BI",
+  "timeline": [
+    {
+      "date": "17/02/1995",
+      "project_id": "546",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/546_BI/ACT 534 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "02/04/2002",
+      "project_id": "2260241",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2260241_BI/ACT 534 - REPPRINT 2002.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15305",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 534.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16172",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 534 - Malayan Railway Provident Fund (Dissolution) Act 1995.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 534 - Malayan Railway Provident Fund (Dissolution) Act 1995.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

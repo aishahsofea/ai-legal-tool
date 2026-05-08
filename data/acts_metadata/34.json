@@ -1,0 +1,109 @@
+{
+  "act_number": "34",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:16:48.359376+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=34&lang=BI",
+  "timeline": [
+    {
+      "date": "02/12/1949",
+      "project_id": "46",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/46_BI/NO. 55 OF 1949 (ACT 34).pdf"
+    },
+    {
+      "date": "15/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "03/01/1971",
+      "project_id": "3185559",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3185559/P.U. (A) 460-1970.pdf"
+    },
+    {
+      "date": "28/06/1971",
+      "project_id": "1727555",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727555_BI/ACT 34 - REVISED 1971.pdf"
+    },
+    {
+      "date": "29/07/1980",
+      "project_id": "3185570",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3185570/P.U. (A) 208-1980.pdf"
+    },
+    {
+      "date": "07/03/1993",
+      "project_id": "2256622",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2256622_BI/ACT 34 - REPRINT 1993.pdf"
+    },
+    {
+      "date": "07/09/1999",
+      "project_id": "1712931",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 34 Reprint 99 BI.pdf"
+    },
+    {
+      "date": "30/01/2004",
+      "project_id": "3185605",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3185605/P.U. (A) 33-2004.pdf"
+    },
+    {
+      "date": "28/02/2004",
+      "project_id": "3185621",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3185621/P.U. (A) 78-2004.pdf"
+    },
+    {
+      "date": "11/01/2006",
+      "project_id": "16120",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 34.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 34.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3185621/P.U. (A) 78-2004.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 4
+}

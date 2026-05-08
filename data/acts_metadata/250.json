@@ -1,0 +1,109 @@
+{
+  "act_number": "250",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:30:28.870159+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=250&lang=BI",
+  "timeline": [
+    {
+      "date": "30/04/1953",
+      "project_id": "262",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/262_BI/ORD 24 1953.pdf"
+    },
+    {
+      "date": "15/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "30/07/1961",
+      "project_id": "3246232",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3246232_BI/ACT 21 1961.pdf"
+    },
+    {
+      "date": "22/05/1967",
+      "project_id": "1728013",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728013_BI/ACT 23 1967.pdf"
+    },
+    {
+      "date": "03/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "13/04/1981",
+      "project_id": "1712867",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 250 - Revised 1981.pdf"
+    },
+    {
+      "date": "13/09/1984",
+      "project_id": "3209112",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3209112_BI/ACT A601.pdf"
+    },
+    {
+      "date": "08/08/2001",
+      "project_id": "2258355",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258355_BI/ACT 250 REPRINT 2001.pdf"
+    },
+    {
+      "date": "10/01/2006",
+      "project_id": "15268",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 250.pdf"
+    },
+    {
+      "date": "11/01/2013",
+      "project_id": "16138",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 250 - Federation Light  Dues Act 1953.pdf"
+    },
+    {
+      "date": "26/01/2014",
+      "project_id": "3646",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20140113_P.U. (A) 14.pdf"
+    },
+    {
+      "date": "19/11/2024",
+      "project_id": "2476510",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2476510/PUA 339_2024.pdf"
+    },
+    {
+      "date": "02/04/2025",
+      "project_id": "2767288",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2767288/PUA 84 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 250 - Federation Light  Dues Act 1953.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20140113_P.U. (A) 14.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

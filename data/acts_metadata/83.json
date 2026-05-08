@@ -1,0 +1,85 @@
+{
+  "act_number": "83",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:02:52.785549+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=83&lang=BI",
+  "timeline": [
+    {
+      "date": "28/07/1966",
+      "project_id": "95",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/95_BI/NO. 57 OF 1966 (ACT 83).pdf"
+    },
+    {
+      "date": "09/11/1969",
+      "project_id": "1728207",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728207/P.U. (A) 467-1969.pdf"
+    },
+    {
+      "date": "16/07/1972",
+      "project_id": "1727558",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727558_BI/ACT 83 - REVISED 1972.pdf"
+    },
+    {
+      "date": "01/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "06/05/1994",
+      "project_id": "2256737",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2256737_BI/ACT 83 - REPRINT 1994.pdf"
+    },
+    {
+      "date": "06/10/1999",
+      "project_id": "15419",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15419_BI/ACT 83 - REPRINT 1999.pdf"
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "1727303",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727303_BI/ACT 83 - REPRINT 2006.pdf"
+    },
+    {
+      "date": "08/05/2009",
+      "project_id": "1727739",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727739_BI/ACT A1351.pdf"
+    },
+    {
+      "date": "10/12/2011",
+      "project_id": "16273",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 83 - Continental Shelf Act 1966 Revised 1972.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 83 - Continental Shelf Act 1966 Revised 1972.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727739_BI/ACT A1351.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

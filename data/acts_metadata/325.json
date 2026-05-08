@@ -1,0 +1,36 @@
+{
+  "act_number": "325",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:14:23.269496+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=325&lang=BI",
+  "timeline": [
+    {
+      "date": "10/01/1985",
+      "project_id": "337",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/337_BI/Original_Act 325.pdf"
+    },
+    {
+      "date": "02/09/2001",
+      "project_id": "2259563",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259563_BI/325 Reprint 2001.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15326",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 325.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16181",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 325 - Kedah and Penang (Alteration of Boundary) Act 1985.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 325 - Kedah and Penang (Alteration of Boundary) Act 1985.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

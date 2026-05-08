@@ -1,0 +1,42 @@
+{
+  "act_number": "594",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:17:45.631589+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=594&lang=BI",
+  "timeline": [
+    {
+      "date": "09/07/1999",
+      "project_id": "606",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/2001",
+      "project_id": "2257367",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15574",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 594.pdf"
+    },
+    {
+      "date": "04/02/2011",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/12/2011",
+      "project_id": "16331",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 594 - Tourism Vehicles Licensing Act 1999.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 594 - Tourism Vehicles Licensing Act 1999.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

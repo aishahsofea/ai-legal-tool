@@ -1,0 +1,24 @@
+{
+  "act_number": "24",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:19:32.635287+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=24&lang=BI",
+  "timeline": [
+    {
+      "date": "30/04/1971",
+      "project_id": "36",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/36_BI/03. 24 FREE TRADE ZONES 1971.pdf"
+    },
+    {
+      "date": "07/09/1991",
+      "project_id": "1712877",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 24-repealed.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

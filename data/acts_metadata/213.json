@@ -1,0 +1,76 @@
+{
+  "act_number": "213",
+  "act_type": "updated",
+  "scraped_at": "2026-05-05T01:19:01.704797+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=213&lang=BI",
+  "timeline": [
+    {
+      "date": "02/08/1959",
+      "project_id": "225",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/No. 25 of 1959.pdf"
+    },
+    {
+      "date": "30/07/1966",
+      "project_id": "1727888",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act No 53 1966.pdf "
+    },
+    {
+      "date": "04/08/1971",
+      "project_id": "1727890",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A79.pdf"
+    },
+    {
+      "date": "21/09/1971",
+      "project_id": "1727889",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A47.pdf"
+    },
+    {
+      "date": "31/10/1978",
+      "project_id": "1727582",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 213 (Revised).pdf"
+    },
+    {
+      "date": "17/01/1996",
+      "project_id": "1727891",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A930.pdf"
+    },
+    {
+      "date": "07/05/2001",
+      "project_id": "1727351",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 213 (Reprint 2001).pdf"
+    },
+    {
+      "date": "14/03/2003",
+      "project_id": "3140649",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3140649/pua026y2003_unlocked.pdf"
+    },
+    {
+      "date": "10/01/2006",
+      "project_id": "16024",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 213.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 213.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3140649/pua026y2003_unlocked.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

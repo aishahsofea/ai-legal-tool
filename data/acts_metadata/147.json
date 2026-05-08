@@ -1,0 +1,151 @@
+{
+  "act_number": "147",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:17:13.897044+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=147&lang=BI",
+  "timeline": [
+    {
+      "date": "30/08/1974",
+      "project_id": "159",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/07/1975",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "01/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "06/05/1978",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/05/1980",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/01/1997",
+      "project_id": "2258213",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "08/01/2001",
+      "project_id": "2258215",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/01/2006",
+      "project_id": "15810",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 147.pdf"
+    },
+    {
+      "date": "01/01/2012",
+      "project_id": "1744",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20111222_P.U. (A) 416 - Perintah Doktor Veterinar (Pindaan Jadual Kedua) 2011.pdf"
+    },
+    {
+      "date": "15/06/2013",
+      "project_id": "3167",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20130604_P.U. (A) 172 - PERINTAH DOKTOR VETERINAR (PINDAAN JADUAL KEDUA) 2013.pdf"
+    },
+    {
+      "date": "02/06/2014",
+      "project_id": "3978",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20140521_P.U. (A)135-PERINTAH DOKTOR VETERINAR (PINDAAN JADUAL KEDUA).pdf"
+    },
+    {
+      "date": "13/06/2014",
+      "project_id": "16523",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 147 (13.6.2014).pdf"
+    },
+    {
+      "date": "15/03/2018",
+      "project_id": "7544",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20180301_P.U.(A)66.pdf"
+    },
+    {
+      "date": "15/04/2018",
+      "project_id": "1712827",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Reprint Online 2018.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Reprint Online 2018.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20180301_P.U.(A)66.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 6
+}

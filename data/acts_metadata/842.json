@@ -1,0 +1,18 @@
+{
+  "act_number": "842",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:32:37.434529+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=842&lang=BI",
+  "timeline": [
+    {
+      "date": "23/02/2023",
+      "project_id": "1785307",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1785307_BI/Act 842 Penang Free School Act 1920.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

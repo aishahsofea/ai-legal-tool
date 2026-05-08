@@ -1,0 +1,24 @@
+{
+  "act_number": "219",
+  "act_type": "updated",
+  "scraped_at": "2026-05-05T01:14:54.236986+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=219&lang=BI",
+  "timeline": [
+    {
+      "date": "23/02/1979",
+      "project_id": "231",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 219 Original.pdf"
+    },
+    {
+      "date": "25/02/1979",
+      "project_id": "1712857",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712857_BI/Act 219.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,48 @@
+{
+  "act_number": "27",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:18:58.639978+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=27&lang=BI",
+  "timeline": [
+    {
+      "date": "30/04/1971",
+      "project_id": "39",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/39_BI/ACT 27 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "30/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "04/03/1993",
+      "project_id": "1712881",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 27-Reprint 1993.pdf"
+    },
+    {
+      "date": "04/09/1999",
+      "project_id": "1727294",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 27-Reprint 1999.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "16018",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 27.pdf"
+    },
+    {
+      "date": "22/01/2026",
+      "project_id": "3301706",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3301706_BI/A1782 BI -  PRIVATE AGENCIES (AMENDMENT) ACT 2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 27.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3301706_BI/A1782 BI -  PRIVATE AGENCIES (AMENDMENT) ACT 2026.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

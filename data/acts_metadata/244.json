@@ -1,0 +1,145 @@
+{
+  "act_number": "244",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:31:19.341136+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=244&lang=BI",
+  "timeline": [
+    {
+      "date": "20/02/1981",
+      "project_id": "256",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/256_BI/244 PERBADANAN KEMAJUAN FILEM NASIONAL MALAYSIA 1981 bi_repaired.pdf"
+    },
+    {
+      "date": "30/06/1984",
+      "project_id": "3158876",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3158876_BI/A589 PERBADANAN KEMAJUAN FILEM NASIONAL MALAYSIA 1984 AMEND_repaired.pdf"
+    },
+    {
+      "date": "03/08/2001",
+      "project_id": "2258348",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258348_BI/244 PERBADANAN KEMAJUAN FILEM NASIONAL MALAYSIA 1981 REPRINT 2001.pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "16131",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 244.pdf"
+    },
+    {
+      "date": "06/04/2013",
+      "project_id": "882",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20130207_A1451_BI_WJW000134 Act A1451 BI.pdf"
+    },
+    {
+      "date": "07/08/2013",
+      "project_id": "16766",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 244 - Perbadanan Kemajuan Filem Nasional Malaysia Act 1981.pdf"
+    },
+    {
+      "date": "13/12/2021",
+      "project_id": "1715671",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1715671/PUB629.pdf"
+    },
+    {
+      "date": "22/12/2023",
+      "project_id": "1927309",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1927309/PUB 555 (2023).pdf"
+    },
+    {
+      "date": "13/02/2026",
+      "project_id": "3335370",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3335370/PUB 46 (2026).pdf"
+    },
+    {
+      "date": "05/03/2026",
+      "project_id": "3366500",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3366500_BI/Act A1787- Perbadanan Kemajuan Filem Nasional Malaysia (Amendment) Act 2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 244 - Perbadanan Kemajuan Filem Nasional Malaysia Act 1981.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3366500_BI/Act A1787- Perbadanan Kemajuan Filem Nasional Malaysia (Amendment) Act 2026.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 8
+}

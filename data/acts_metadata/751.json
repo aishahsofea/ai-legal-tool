@@ -1,0 +1,30 @@
+{
+  "act_number": "751",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:48:45.714941+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=751&lang=BI",
+  "timeline": [
+    {
+      "date": "23/06/2012",
+      "project_id": "763",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20120622_751_BI_Act 751 BI.pdf"
+    },
+    {
+      "date": "03/08/2020",
+      "project_id": "1677661",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1677661_BI/ACT 751 (Muktamad).pdf"
+    },
+    {
+      "date": "08/03/2026",
+      "project_id": "3387066",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3387066_BI/Act A1789 - RUKUN TETANGGA (AMENDMENT) ACT 2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1677661_BI/ACT 751 (Muktamad).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3387066_BI/Act A1789 - RUKUN TETANGGA (AMENDMENT) ACT 2026.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

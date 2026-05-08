@@ -1,0 +1,48 @@
+{
+  "act_number": "222",
+  "act_type": "updated",
+  "scraped_at": "2026-05-05T00:54:43.682245+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=222&lang=BI",
+  "timeline": [
+    {
+      "date": "24/08/1979",
+      "project_id": "234",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/234_BI/Salinan Gazette Act 222.pdf"
+    },
+    {
+      "date": "03/09/1980",
+      "project_id": "1727895",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A562.pdf"
+    },
+    {
+      "date": "24/02/1992",
+      "project_id": "490",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BI/ACT 478.pdf"
+    },
+    {
+      "date": "04/06/2001",
+      "project_id": "1727355",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 222 Reprint 2001.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "16086",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 222.pdf"
+    },
+    {
+      "date": "07/12/2015",
+      "project_id": "16436",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 222-diluluskan TP 7_12_2015.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 222-diluluskan TP 7_12_2015.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BI/ACT 478.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

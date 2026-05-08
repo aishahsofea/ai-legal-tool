@@ -1,0 +1,46 @@
+{
+  "act_number": "792",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:43:20.437449+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=792&lang=BI",
+  "timeline": [
+    {
+      "date": "08/07/2017",
+      "project_id": "804",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/aktaBI_20170707_WJW008739BI.pdf"
+    },
+    {
+      "date": "23/06/2023",
+      "project_id": "1827709",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1827709_BI/A1687 BI.pdf"
+    },
+    {
+      "date": "14/07/2023",
+      "project_id": "1841831",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1841831_BI/ACT 792 (MUKTAMAD) AS AT 11 JULY 2023.pdf"
+    },
+    {
+      "date": "05/11/2024",
+      "project_id": "2459417",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2459417_BI/Act A1734.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1841831_BI/ACT 792 (MUKTAMAD) AS AT 11 JULY 2023.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2459417_BI/Act A1734.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

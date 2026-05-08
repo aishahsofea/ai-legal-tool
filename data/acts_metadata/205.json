@@ -1,0 +1,48 @@
+{
+  "act_number": "205",
+  "act_type": "updated",
+  "scraped_at": "2026-05-05T12:39:18.509552+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=205&lang=BI",
+  "timeline": [
+    {
+      "date": "07/05/1950",
+      "project_id": "3150451",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3150451_BI/ORD 16 1950.pdf"
+    },
+    {
+      "date": "27/02/1965",
+      "project_id": "1727877",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/L.N 66 of 65.pdf"
+    },
+    {
+      "date": "04/06/1978",
+      "project_id": "2263507",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263507_BI/ACT 205 REVISED 1978.pdf"
+    },
+    {
+      "date": "09/11/1978",
+      "project_id": "217",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/05/2001",
+      "project_id": "3147746",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3147746_BI/ACT 205 REPRINT 2001.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15944",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 205.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 205.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/L.N 66 of 65.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

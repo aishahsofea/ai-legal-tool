@@ -1,0 +1,54 @@
+{
+  "act_number": "181",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T00:45:41.453184+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=181&lang=BI",
+  "timeline": [
+    {
+      "date": "02/01/1975",
+      "project_id": "193",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 181 original.pdf"
+    },
+    {
+      "date": "03/01/1980",
+      "project_id": "1727848",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A475.pdf"
+    },
+    {
+      "date": "04/01/1983",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/01/2002",
+      "project_id": "15886",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 181 - 2002.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "15885",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 181.pdf"
+    },
+    {
+      "date": "04/01/2008",
+      "project_id": "1727849",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1326.pdf"
+    },
+    {
+      "date": "08/12/2011",
+      "project_id": "16611",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 181 (BI) - Revenue Growth Grants Act 1977.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 181 (BI) - Revenue Growth Grants Act 1977.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1326.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

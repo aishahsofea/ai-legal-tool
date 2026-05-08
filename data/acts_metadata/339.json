@@ -1,0 +1,48 @@
+{
+  "act_number": "339",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:07:55.496340+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=339&lang=BI",
+  "timeline": [
+    {
+      "date": "19/02/1988",
+      "project_id": "351",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/351_BI/ACT 339.pdf"
+    },
+    {
+      "date": "02/11/2001",
+      "project_id": "2259582",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259582_BI/339 2001.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15382",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 339.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16238",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 339 - National Trust Fund Act 1988.pdf"
+    },
+    {
+      "date": "26/04/2021",
+      "project_id": "1728141",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/P.U.(A) 186_2021.pdf"
+    },
+    {
+      "date": "24/11/2021",
+      "project_id": "1714921",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1714921_BI/Act A1637 BI.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 339 - National Trust Fund Act 1988.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1714921_BI/Act A1637 BI.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

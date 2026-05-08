@@ -1,0 +1,103 @@
+{
+  "act_number": "665",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:01:58.474177+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=665&lang=BI",
+  "timeline": [
+    {
+      "date": "20/07/2007",
+      "project_id": "677",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/677_BI/Act665(bi).pdf"
+    },
+    {
+      "date": "03/11/2012",
+      "project_id": "15799",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 665.pdf"
+    },
+    {
+      "date": "10/01/2015",
+      "project_id": "901",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/901_BI/Act A1470.pdf"
+    },
+    {
+      "date": "05/05/2016",
+      "project_id": "16448",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Malaysia Co-operative Societies Commission Act 2007 [Act 665].pdf"
+    },
+    {
+      "date": "16/08/2023",
+      "project_id": "1845390",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1845390_BI/A1694 BI.pdf"
+    },
+    {
+      "date": "07/10/2023",
+      "project_id": "1864998",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1864998_BI/ACT 665 AS AT 1 OCTOBER 2023(REPRINT ONLINE VERSION).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1864998_BI/ACT 665 AS AT 1 OCTOBER 2023(REPRINT ONLINE VERSION).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1845390_BI/A1694 BI.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 6
+}

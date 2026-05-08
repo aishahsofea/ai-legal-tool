@@ -1,0 +1,18 @@
+{
+  "act_number": "310",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:17:40.401898+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=310&lang=BI",
+  "timeline": [
+    {
+      "date": "06/01/1989",
+      "project_id": "1727284",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727284_BI/ACT 310 REPEALED BY ACT 364.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

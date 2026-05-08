@@ -1,0 +1,58 @@
+{
+  "act_number": "870",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:29:52.747824+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=870&lang=BI",
+  "timeline": [
+    {
+      "date": "02/08/2025",
+      "project_id": "2995040",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2995040_BI/Act 870 CARBON CAPTURE, UTILIZATION AND STORAGE ACT 2025.pdf"
+    },
+    {
+      "date": "02/10/2025",
+      "project_id": "3100047",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3100047/PUB355_2025.pdf"
+    },
+    {
+      "date": "03/10/2025",
+      "project_id": "3100038",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3100038/PUA 346 (2025).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 3
+}

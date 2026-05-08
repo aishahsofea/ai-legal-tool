@@ -1,0 +1,48 @@
+{
+  "act_number": "194",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T00:43:43.506849+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=194&lang=BM",
+  "timeline": [
+    {
+      "date": "29/08/1975",
+      "project_id": "3009247",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3009247_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "01/08/1977",
+      "project_id": "2260287",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2260287_BM/194 REVISED 1977.pdf"
+    },
+    {
+      "date": "27/03/1983",
+      "project_id": "15929",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 194.pdf"
+    },
+    {
+      "date": "04/05/2001",
+      "project_id": "2259422",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259422_BM/194 CS 2001.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "15929",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 194.pdf"
+    },
+    {
+      "date": "07/11/2024",
+      "project_id": "2459410",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2459410_BM/Akta A1733.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 194.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2459410_BM/Akta A1733.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

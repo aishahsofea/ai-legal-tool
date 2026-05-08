@@ -1,0 +1,85 @@
+{
+  "act_number": "453",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:42:55.402864+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=453&lang=BI",
+  "timeline": [
+    {
+      "date": "12/04/1991",
+      "project_id": "",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/03/1996",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "22/03/1998",
+      "project_id": "3442430",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3442430_BI/ACT A1016.pdf"
+    },
+    {
+      "date": "18/10/1998",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "20/06/2000",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/01/2001",
+      "project_id": "2259989",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/01/2004",
+      "project_id": "3447772",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3447772_BI/A1216y2003_unlocked.pdf"
+    },
+    {
+      "date": "09/01/2006",
+      "project_id": "15976",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 453.pdf"
+    },
+    {
+      "date": "10/03/2013",
+      "project_id": "16659",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 453 - Securities Industry (Central Depositories) Act 1991.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 453 - Securities Industry (Central Depositories) Act 1991.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3447772_BI/A1216y2003_unlocked.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

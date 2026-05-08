@@ -1,0 +1,18 @@
+{
+  "act_number": "851",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:31:50.234169+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=851&lang=BI",
+  "timeline": [
+    {
+      "date": "30/12/2023",
+      "project_id": "1946988",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1946988_BI/WJW231341 BI.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,48 @@
+{
+  "act_number": "307",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:18:16.171870+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=307&lang=BI",
+  "timeline": [
+    {
+      "date": "07/09/1984",
+      "project_id": "319",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/319_BI/307 BI.pdf"
+    },
+    {
+      "date": "23/05/1987",
+      "project_id": "1700335",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700335_BI/ACT A671.pdf"
+    },
+    {
+      "date": "03/09/2001",
+      "project_id": "2259536",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259536_BI/Act 307 Reprint 2001 BI.pdf"
+    },
+    {
+      "date": "05/09/2005",
+      "project_id": "1727948",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727948_BI/A1253 2005 BI_unlocked.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "16070",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 307.pdf"
+    },
+    {
+      "date": "07/12/2012",
+      "project_id": "16716",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 307 - Aviation Offences Act 1984.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 307 - Aviation Offences Act 1984.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727948_BI/A1253 2005 BI_unlocked.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,24 @@
+{
+  "act_number": "600",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:17:02.696743+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=600&lang=BI",
+  "timeline": [
+    {
+      "date": "16/06/2000",
+      "project_id": "612",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/612_BI/ACT 600.pdf"
+    },
+    {
+      "date": "03/01/2006",
+      "project_id": "1727501",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 600-Reprint 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 600-Reprint 2006.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

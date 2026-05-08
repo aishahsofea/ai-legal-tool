@@ -1,0 +1,28 @@
+{
+  "act_number": "826",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:38:34.161660+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=826&lang=BI",
+  "timeline": [
+    {
+      "date": "11/02/2020",
+      "project_id": "758002",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/758002_BI/Act 826 BI.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

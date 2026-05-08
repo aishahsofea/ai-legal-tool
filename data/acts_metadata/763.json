@@ -1,0 +1,28 @@
+{
+  "act_number": "763",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:46:48.347375+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=763&lang=BI",
+  "timeline": [
+    {
+      "date": "26/07/2014",
+      "project_id": "775",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20140725_763_BI_WJW002846 BI.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

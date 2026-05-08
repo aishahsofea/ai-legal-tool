@@ -1,0 +1,36 @@
+{
+  "act_number": "41",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:15:51.330277+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=41&lang=BI",
+  "timeline": [
+    {
+      "date": "03/09/1971",
+      "project_id": "53",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/53_BI/ACT 41 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/03/1993",
+      "project_id": "2256615",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2256615_BI/ACT 41 - REPRINT 1993.pdf"
+    },
+    {
+      "date": "03/09/1999",
+      "project_id": "1727299",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727299_BI/ACT 41 - REPRINT 1999.pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "15310",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 41.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 41.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

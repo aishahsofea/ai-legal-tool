@@ -1,0 +1,66 @@
+{
+  "act_number": "449",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:44:10.113442+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=449&lang=BI",
+  "timeline": [
+    {
+      "date": "21/06/1979",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "02/09/1990",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "28/10/1990",
+      "project_id": "461",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "30/10/1990",
+      "project_id": "2259814",
+      "log_type": "REVISED",
+      "pdf_url": ""
+    },
+    {
+      "date": "26/02/1992",
+      "project_id": "490",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BI/ACT 478.pdf"
+    },
+    {
+      "date": "26/03/1998",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "08/01/2001",
+      "project_id": "2259928",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/01/2006",
+      "project_id": "2259929",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "24/09/2016",
+      "project_id": "",
+      "log_type": "SUPERSEDED",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BI/ACT 478.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,42 @@
+{
+  "act_number": "284",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:24:14.003379+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=284&lang=BI",
+  "timeline": [
+    {
+      "date": "13/05/1983",
+      "project_id": "296",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/296_BI/ACT 284 (1).pdf"
+    },
+    {
+      "date": "02/08/2001",
+      "project_id": "2258410",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258410_BI/ACT 284 REPRINT 2001.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15286",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 284.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16155",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 284 - Raja-Raja and the Yang di-Pertua-Yang di-Pertua Ne.pdf"
+    },
+    {
+      "date": "06/10/2021",
+      "project_id": "1687453",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1687453_BI/Muktamad_ Act 284_1Oct2021.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 284 - Raja-Raja and the Yang di-Pertua-Yang di-Pertua Ne.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

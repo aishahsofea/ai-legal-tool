@@ -1,0 +1,36 @@
+{
+  "act_number": "293",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:22:39.643239+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=293&lang=BI",
+  "timeline": [
+    {
+      "date": "29/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "31/12/1983",
+      "project_id": "305",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/305_BI/ACT 293.pdf"
+    },
+    {
+      "date": "03/09/2001",
+      "project_id": "2258627",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258627_BI/Act 293 REPRINT 2001.pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "15308",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 293 REPRINT 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 293 REPRINT 2006.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,36 @@
+{
+  "act_number": "466",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:41:19.637053+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=466&lang=BI",
+  "timeline": [
+    {
+      "date": "13/09/1991",
+      "project_id": "478",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/2001",
+      "project_id": "2260170",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15991",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 466.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16666",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 466 - Postal Services (Successor Company) Act 1991.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 466 - Postal Services (Successor Company) Act 1991.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

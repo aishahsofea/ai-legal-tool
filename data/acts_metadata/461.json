@@ -1,0 +1,133 @@
+{
+  "act_number": "461",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:41:58.735324+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=461&lang=BI",
+  "timeline": [
+    {
+      "date": "01/01/1971",
+      "project_id": "1728227",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728227/02. P.U. (B) 324-1970.pdf"
+    },
+    {
+      "date": "20/07/1991",
+      "project_id": "2259792",
+      "log_type": "REVISED",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2001",
+      "project_id": "2260009",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "15984",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 461.pdf"
+    },
+    {
+      "date": "19/09/2012",
+      "project_id": "2393",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2393/P.U. (A) 293_2012.pdf"
+    },
+    {
+      "date": "20/09/2012",
+      "project_id": "2394",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2394/P.U. (A) 292_2012.pdf"
+    },
+    {
+      "date": "21/09/2012",
+      "project_id": "2392",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2392/P.U. (A) 291_2012.pdf"
+    },
+    {
+      "date": "23/04/2021",
+      "project_id": "1697237",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1697237/pua_20210415_PUA173.pdf"
+    },
+    {
+      "date": "14/09/2022",
+      "project_id": "1741974",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1741974_BI/Act A1660.pdf"
+    },
+    {
+      "date": "10/10/2022",
+      "project_id": "1744400",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1744400_BI/Act 461 - Final Draft (30.9.2022).pdf"
+    },
+    {
+      "date": "08/11/2025",
+      "project_id": "3144199",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3144199_BI/Act A1768 - OFFENDERS COMPULSORY ATTENDANCE (AMENDMENT) ACT 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1744400_BI/Act 461 - Final Draft (30.9.2022).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3144199_BI/Act A1768 - OFFENDERS COMPULSORY ATTENDANCE (AMENDMENT) ACT 2025.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 6
+}

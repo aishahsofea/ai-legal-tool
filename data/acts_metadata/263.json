@@ -1,0 +1,54 @@
+{
+  "act_number": "263",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:28:06.435106+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=263&lang=BI",
+  "timeline": [
+    {
+      "date": "22/01/1982",
+      "project_id": "275",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Ord. 36-1950 - Married Women and Children(Maintenance) Ord 1950.pdf"
+    },
+    {
+      "date": "03/03/1982",
+      "project_id": "176",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/176_BI/ACT 164.pdf"
+    },
+    {
+      "date": "15/11/1982",
+      "project_id": "2263483",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263483_BI/ACT 263 REVISED 1981.pdf"
+    },
+    {
+      "date": "27/07/1992",
+      "project_id": "1728237",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728237/PUA 271 1992.pdf"
+    },
+    {
+      "date": "28/07/1992",
+      "project_id": "1728238",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728238/PUA 274 1992.pdf"
+    },
+    {
+      "date": "06/08/2001",
+      "project_id": "2258380",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258380_BI/ACT 263 REPRINT 2001.pdf"
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "15622",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 263.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 263.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728238/PUA 274 1992.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

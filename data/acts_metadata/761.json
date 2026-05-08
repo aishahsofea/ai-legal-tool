@@ -1,0 +1,18 @@
+{
+  "act_number": "761",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:47:01.672018+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=761&lang=BI",
+  "timeline": [
+    {
+      "date": "24/01/2014",
+      "project_id": "773",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/773_BI/ACT 761.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

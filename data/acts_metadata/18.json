@@ -1,0 +1,30 @@
+{
+  "act_number": "18",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:24:08.003817+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=18&lang=BI",
+  "timeline": [
+    {
+      "date": "02/01/1950",
+      "project_id": "30",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/1970",
+      "project_id": "2260307",
+      "log_type": "REVISED",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/1976",
+      "project_id": "1700570",
+      "log_type": "REPEALED",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

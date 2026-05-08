@@ -1,0 +1,100 @@
+{
+  "act_number": "221",
+  "act_type": "updated",
+  "scraped_at": "2026-05-05T00:54:55.811632+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=221&lang=BI",
+  "timeline": [
+    {
+      "date": "24/03/1952",
+      "project_id": "233",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/233_BI/ACT 221.pdf"
+    },
+    {
+      "date": "15/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "03/01/1971",
+      "project_id": "1728227",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728227/02. P.U. (B) 324-1970.pdf"
+    },
+    {
+      "date": "02/04/1973",
+      "project_id": "1727894",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727894_BI/ACT A188 2.pdf"
+    },
+    {
+      "date": "03/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "21/06/1979",
+      "project_id": "1727584",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727584_BI/ACT 221 REVISED 1979.pdf"
+    },
+    {
+      "date": "10/03/1983",
+      "project_id": "",
+      "log_type": "TRANSLATE",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/01/2001",
+      "project_id": "1712855",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712855_BI/ACT 221 REPRINT 2001 1.pdf"
+    },
+    {
+      "date": "10/01/2006",
+      "project_id": "16085",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 221.pdf"
+    },
+    {
+      "date": "25/06/2016",
+      "project_id": "16731",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/16731_BI/Cetakan Semula Act 221-KPI 2016  - diluluskan oleh TPPUU 241016 (Bersih).pdf"
+    },
+    {
+      "date": "12/09/2016",
+      "project_id": "944",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20160808_A1513_BI_Act A1513.pdf"
+    },
+    {
+      "date": "13/10/2024",
+      "project_id": "2385474",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2385474_BI/Act 221 FINAL 22102024.pdf"
+    },
+    {
+      "date": "14/10/2024",
+      "project_id": "2286624",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2286624_BI/Act 221 (Reprint).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2385474_BI/Act 221 FINAL 22102024.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20160808_A1513_BI_Act A1513.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

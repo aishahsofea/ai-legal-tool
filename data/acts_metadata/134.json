@@ -1,0 +1,78 @@
+{
+  "act_number": "134",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:51:19.691240+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=134&lang=BI",
+  "timeline": [
+    {
+      "date": "26/02/1954",
+      "project_id": "146",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/09/1956",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "16/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "10/04/1967",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/01/1971",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/07/1974",
+      "project_id": "2271018",
+      "log_type": "REVISED",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "01/04/1977",
+      "project_id": "1708071",
+      "log_type": "TRANSLATE",
+      "pdf_url": ""
+    },
+    {
+      "date": "10/01/1995",
+      "project_id": "2256977",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "11/01/2000",
+      "project_id": "2258191",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "12/01/2006",
+      "project_id": "15685",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 134.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 134.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

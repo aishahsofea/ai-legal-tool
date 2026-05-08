@@ -1,0 +1,48 @@
+{
+  "act_number": "198",
+  "act_type": "updated",
+  "scraped_at": "2026-05-05T13:47:10.908171+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=198&lang=BI",
+  "timeline": [
+    {
+      "date": "20/08/1948",
+      "project_id": "210",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 198 Original.pdf"
+    },
+    {
+      "date": "28/02/1965",
+      "project_id": "1727862",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727862_BI/L.N. 67-1965.pdf"
+    },
+    {
+      "date": "17/06/1974",
+      "project_id": "1727863",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A252.pdf"
+    },
+    {
+      "date": "30/01/1978",
+      "project_id": "1727577",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 198 Revised.pdf"
+    },
+    {
+      "date": "05/05/2001",
+      "project_id": "1727344",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 198 Reprint 2001.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15933",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 198.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 198.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A252.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

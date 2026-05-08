@@ -1,0 +1,30 @@
+{
+  "act_number": "89",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:01:56.467554+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=89&lang=BI",
+  "timeline": [
+    {
+      "date": "13/01/1963",
+      "project_id": "101",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 89- Repealed.pdf"
+    },
+    {
+      "date": "03/01/1967",
+      "project_id": "2255862",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/1997",
+      "project_id": "1727254",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 89- Repealed.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

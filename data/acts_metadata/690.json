@@ -1,0 +1,67 @@
+{
+  "act_number": "690",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:58:31.294482+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=690&lang=BI",
+  "timeline": [
+    {
+      "date": "02/12/2008",
+      "project_id": "2259718",
+      "log_type": "REVISED",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/12/2008",
+      "project_id": "702",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/09/2013",
+      "project_id": "16503",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 690 - 6 11 2013.pdf"
+    },
+    {
+      "date": "05/10/2018",
+      "project_id": "1700501",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 690 (REPRINT 2018).pdf"
+    },
+    {
+      "date": "28/07/2024",
+      "project_id": "2230545",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2230545/PUB 281.pdf"
+    },
+    {
+      "date": "29/07/2024",
+      "project_id": "2230553",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2230553/PUB 282.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 690 (REPRINT 2018).pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

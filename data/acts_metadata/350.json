@@ -1,0 +1,100 @@
+{
+  "act_number": "350",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:05:18.079469+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=350&lang=BI",
+  "timeline": [
+    {
+      "date": "23/12/1947",
+      "project_id": "244",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 232- Original.pdf"
+    },
+    {
+      "date": "03/06/1957",
+      "project_id": "277",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/277_BI/ORD. 38-1955.pdf"
+    },
+    {
+      "date": "04/10/1966",
+      "project_id": "1728111",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728111_BI/ACT 40-1966.pdf"
+    },
+    {
+      "date": "04/01/1972",
+      "project_id": "1728227",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728227/02. P.U. (B) 324-1970.pdf"
+    },
+    {
+      "date": "02/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "02/11/1988",
+      "project_id": "2263453",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263453_BI/Act 350  REVISED.pdf"
+    },
+    {
+      "date": "31/07/1997",
+      "project_id": "1728006",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BI/ACT A996.pdf"
+    },
+    {
+      "date": "08/11/2001",
+      "project_id": "2259618",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259618_BI/350 2001.pdf"
+    },
+    {
+      "date": "10/01/2006",
+      "project_id": "15402",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 350.pdf"
+    },
+    {
+      "date": "09/01/2011",
+      "project_id": "1728143",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728143_BI/05. A1386 BI.pdf"
+    },
+    {
+      "date": "12/12/2011",
+      "project_id": "16262",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 350 - Children and Young Persons (Employment) Act 1966.pdf"
+    },
+    {
+      "date": "22/01/2019",
+      "project_id": "1727543",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 350-Reprint 2019.pdf"
+    },
+    {
+      "date": "31/01/2019",
+      "project_id": "1695988",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/A1586 BI (1).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 350-Reprint 2019.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/A1586 BI (1).pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

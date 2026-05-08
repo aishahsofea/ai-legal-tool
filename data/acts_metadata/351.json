@@ -1,0 +1,48 @@
+{
+  "act_number": "351",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:05:05.878689+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=351&lang=BI",
+  "timeline": [
+    {
+      "date": "24/03/1961",
+      "project_id": "363",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/363_BI/Warta Asal Act 351 Ord 13-1961 BI.pdf"
+    },
+    {
+      "date": "31/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "30/10/1988",
+      "project_id": "2263451",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263451_BI/Akta 351 DISEMAK.pdf"
+    },
+    {
+      "date": "06/09/1999",
+      "project_id": "3347527",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3347527_BI/Act A1066 BI.pdf"
+    },
+    {
+      "date": "05/11/2001",
+      "project_id": "2259621",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259621_BI/Act 351 reprint 2001.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15462",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 351.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 351.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3347527_BI/Act A1066 BI.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

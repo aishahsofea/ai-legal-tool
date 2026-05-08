@@ -1,0 +1,18 @@
+{
+  "act_number": "878",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:29:05.324117+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=878&lang=BI",
+  "timeline": [
+    {
+      "date": "14/02/2026",
+      "project_id": "3356869",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3356869_BI/Act 878-LEGAL AID AND PUBLIC DEFENCE ACT 2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

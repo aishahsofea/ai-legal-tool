@@ -1,0 +1,42 @@
+{
+  "act_number": "379",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:56:46.145212+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=379&lang=BI",
+  "timeline": [
+    {
+      "date": "17/07/1962",
+      "project_id": "391",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/391_BI/Act 25 of 1962.pdf"
+    },
+    {
+      "date": "23/09/1989",
+      "project_id": "2259984",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259984_BI/Act 379 Revised.pdf"
+    },
+    {
+      "date": "04/01/2001",
+      "project_id": "2259683",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259683_BI/Act 379 Reprint 2001.pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "15525",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 379.pdf"
+    },
+    {
+      "date": "06/12/2011",
+      "project_id": "16307",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 379 - Degrees and Diplomas Act 1962 (Revised 1989).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 379 - Degrees and Diplomas Act 1962 (Revised 1989).pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

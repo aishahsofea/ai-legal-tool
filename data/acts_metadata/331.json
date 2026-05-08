@@ -1,0 +1,58 @@
+{
+  "act_number": "331",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:13:25.049883+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=331&lang=BI",
+  "timeline": [
+    {
+      "date": "01/01/1987",
+      "project_id": "343",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/343_BI/Act 331 BI.pdf"
+    },
+    {
+      "date": "02/09/2001",
+      "project_id": "2259571",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259571_BI/Act 331 REPRINT 2001.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15365",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 331.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16220",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 331 - Deposit of Library Material Act 1986.pdf"
+    },
+    {
+      "date": "10/10/2021",
+      "project_id": "1711304",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1711304/PUA 378.pdf"
+    },
+    {
+      "date": "07/11/2021",
+      "project_id": "1712043",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712043_BI/Muktamad_Act 331_1 Nov 2021.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712043_BI/Muktamad_Act 331_1 Nov 2021.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

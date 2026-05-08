@@ -1,0 +1,54 @@
+{
+  "act_number": "347",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:05:50.732061+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=347&lang=BI",
+  "timeline": [
+    {
+      "date": "24/05/1952",
+      "project_id": "359",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/359_BI/ACT 347 WARTA ASAL.pdf"
+    },
+    {
+      "date": "10/06/1955",
+      "project_id": "3395097",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3395097_BI/FM ORD. 24-1955.pdf"
+    },
+    {
+      "date": "30/08/1959",
+      "project_id": "1727998",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727998_BI/LN 297-1959.pdf"
+    },
+    {
+      "date": "02/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "04/10/1988",
+      "project_id": "2263457",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263457_BI/ACT 347 REVISED.pdf"
+    },
+    {
+      "date": "06/11/2001",
+      "project_id": "2259606",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259606_BI/ACT 347 REPRINT 2001.pdf"
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "15399",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 347.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 347.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

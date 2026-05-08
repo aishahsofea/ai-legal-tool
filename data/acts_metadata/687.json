@@ -1,0 +1,30 @@
+{
+  "act_number": "687",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:58:51.599276+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=687&lang=BI",
+  "timeline": [
+    {
+      "date": "15/02/2008",
+      "project_id": "699",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Gazette Act 687.pdf"
+    },
+    {
+      "date": "03/01/2014",
+      "project_id": "16207",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 687 - 7 1 2014.pdf"
+    },
+    {
+      "date": "04/10/2018",
+      "project_id": "1700495",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 687 (REPRINT 2018).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 687 (REPRINT 2018).pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

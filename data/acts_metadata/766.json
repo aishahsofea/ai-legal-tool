@@ -1,0 +1,52 @@
+{
+  "act_number": "766",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:46:33.692683+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=766&lang=BI",
+  "timeline": [
+    {
+      "date": "07/03/2015",
+      "project_id": "778",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20150306_766_AKTA PENGHASILAN BERSIH PERJANJIAN KEWANGAN 2015 (BI).pdf"
+    },
+    {
+      "date": "13/12/2023",
+      "project_id": "1923632",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1923632/PUA374_2023.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 3
+}

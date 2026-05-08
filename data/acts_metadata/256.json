@@ -1,0 +1,70 @@
+{
+  "act_number": "256",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:29:31.520433+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=256&lang=BI",
+  "timeline": [
+    {
+      "date": "01/04/1958",
+      "project_id": "268",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/268_BI/ORD NO 71 1957.pdf"
+    },
+    {
+      "date": "31/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "21/12/1980",
+      "project_id": "3209289",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3209289/PUA 358 1980.pdf"
+    },
+    {
+      "date": "20/02/1984",
+      "project_id": "2263492",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263492_BI/ACT 256 REVISED 1981.pdf"
+    },
+    {
+      "date": "21/02/1995",
+      "project_id": "3209299",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3209299_BI/ACT A913.pdf"
+    },
+    {
+      "date": "06/08/2001",
+      "project_id": "2258364",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258364_BI/ACT 256 REPRINT 2001.pdf"
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "15275",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 256.pdf"
+    },
+    {
+      "date": "09/06/2014",
+      "project_id": "16549",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 256.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 256.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3209299_BI/ACT A913.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

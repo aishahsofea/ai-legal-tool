@@ -1,0 +1,55 @@
+{
+  "act_number": "699",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:57:16.162810+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=699&lang=BI",
+  "timeline": [
+    {
+      "date": "04/09/2009",
+      "project_id": "711",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Gazette Copy - Act 699.pdf"
+    },
+    {
+      "date": "18/08/2012",
+      "project_id": "2343",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pub_20120816_P.U. (B) 271-penetapan kuat kuasa DNA 2009.pdf"
+    },
+    {
+      "date": "04/08/2015",
+      "project_id": "16495",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 699 9_7_2015.pdf"
+    },
+    {
+      "date": "05/09/2019",
+      "project_id": "1700512",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 699  (Reprint 2019).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 699  (Reprint 2019).pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

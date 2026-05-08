@@ -1,0 +1,163 @@
+{
+  "act_number": "109",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:55:53.291203+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=109&lang=BI",
+  "timeline": [
+    {
+      "date": "22/06/1973",
+      "project_id": "121",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/121_BI/AKTA 109- WARTA ASAL_repaired.pdf"
+    },
+    {
+      "date": "16/03/1974",
+      "project_id": "1712776",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712776_BI/AKTA 109- A247 (BI).pdf"
+    },
+    {
+      "date": "01/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "23/02/1983",
+      "project_id": "1712777",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712777_BI/A552(BI).pdf"
+    },
+    {
+      "date": "14/02/1989",
+      "project_id": "1712778",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712778_BI/AKTA A721 (BI).pdf"
+    },
+    {
+      "date": "07/01/1994",
+      "project_id": "2256721",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "29/01/1994",
+      "project_id": "514",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/514_BI/ACT 502.pdf"
+    },
+    {
+      "date": "09/01/2000",
+      "project_id": "2258172",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "31/08/2002",
+      "project_id": "3490823",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3490823/PU(A) 343-2002.pdf"
+    },
+    {
+      "date": "11/01/2006",
+      "project_id": "15480",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 109.pdf"
+    },
+    {
+      "date": "30/07/2007",
+      "project_id": "1712779",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712779_BI/07. Act A1295.pdf"
+    },
+    {
+      "date": "13/04/2012",
+      "project_id": "16297",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 109 - Farmers' Organization Act 1973.pdf"
+    },
+    {
+      "date": "26/03/2025",
+      "project_id": "2761252",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2761252/PUA 81_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 109 - Farmers' Organization Act 1973.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712779_BI/07. Act A1295.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 8
+}

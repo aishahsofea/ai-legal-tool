@@ -1,0 +1,48 @@
+{
+  "act_number": "442",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:45:44.164273+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=442&lang=BI",
+  "timeline": [
+    {
+      "date": "31/08/1990",
+      "project_id": "454",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "17/02/1996",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2001",
+      "project_id": "2259963",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/02/2003",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "2259964",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "17/02/2010",
+      "project_id": "1727274",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 442 Repealed.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

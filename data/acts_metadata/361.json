@@ -1,0 +1,36 @@
+{
+  "act_number": "361",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:03:16.576815+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=361&lang=BI",
+  "timeline": [
+    {
+      "date": "22/03/1959",
+      "project_id": "373",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/01.Act 361- original.pdf"
+    },
+    {
+      "date": "03/01/1971",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "25/11/1988",
+      "project_id": "2263437",
+      "log_type": "REVISED",
+      "pdf_url": ""
+    },
+    {
+      "date": "02/05/1994",
+      "project_id": "",
+      "log_type": "REPEALED",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

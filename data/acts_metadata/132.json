@@ -1,0 +1,36 @@
+{
+  "act_number": "132",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:51:41.551608+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=132&lang=BI",
+  "timeline": [
+    {
+      "date": "14/06/1974",
+      "project_id": "144",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/144_BI/AKTA 132 (ORI) BI.pdf"
+    },
+    {
+      "date": "03/01/1995",
+      "project_id": "2256979",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2256979_BI/AKTA 132 CETAKAN SEMULA 1 - 1995 (BI).pdf"
+    },
+    {
+      "date": "03/05/2000",
+      "project_id": "2258190",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258190_BI/AKTA 132 CETAKAN 2-2000 (BI).pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "15672",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 132.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 132.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

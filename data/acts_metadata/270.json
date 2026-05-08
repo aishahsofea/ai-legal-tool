@@ -1,0 +1,82 @@
+{
+  "act_number": "270",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:26:35.721651+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=270&lang=BI",
+  "timeline": [
+    {
+      "date": "14/05/1982",
+      "project_id": "282",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/282_BI/ACT 270 (1).pdf"
+    },
+    {
+      "date": "29/07/1995",
+      "project_id": "1728244",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728244/PUA 267 1995.pdf"
+    },
+    {
+      "date": "03/08/2001",
+      "project_id": "2258388",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258388_BI/ACT 270 REPRINT 2001.pdf"
+    },
+    {
+      "date": "05/07/2002",
+      "project_id": "1728245",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728245/02. P.U.(A) 266 2002_unlocked.pdf"
+    },
+    {
+      "date": "05/08/2003",
+      "project_id": "1728246",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728246/03. P.U. (A) 282 2003_unlocked.pdf"
+    },
+    {
+      "date": "20/08/2003",
+      "project_id": "1728247",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728247/05. P.U. (A) 306 2003_unlocked.pdf"
+    },
+    {
+      "date": "21/08/2003",
+      "project_id": "1727899",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727899_BI/A1200y2003 (1)_unlocked.pdf"
+    },
+    {
+      "date": "09/01/2006",
+      "project_id": "15714",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 270.pdf"
+    },
+    {
+      "date": "20/01/2011",
+      "project_id": "1617",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20111024_DRAF PERINTAH ISTANA NEGARA (ELAUN-ELAUN DIRAJA)(PINDAAN JADUAL PERTAMA) 2011E-FORMAT.pdf"
+    },
+    {
+      "date": "11/09/2012",
+      "project_id": "16474",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 270 - Istana Negara (Royal Allowances) Act 1982.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 270 - Istana Negara (Royal Allowances) Act 1982.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20111024_DRAF PERINTAH ISTANA NEGARA (ELAUN-ELAUN DIRAJA)(PINDAAN JADUAL PERTAMA) 2011E-FORMAT.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

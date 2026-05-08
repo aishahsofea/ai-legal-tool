@@ -1,0 +1,70 @@
+{
+  "act_number": "74",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:04:22.889240+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=74&lang=BI",
+  "timeline": [
+    {
+      "date": "31/03/1972",
+      "project_id": "86",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/86_BI/ACT 74 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "16/03/1974",
+      "project_id": "1727726",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727726_BI/ACT A230.pdf"
+    },
+    {
+      "date": "31/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "05/11/1993",
+      "project_id": "15353",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 74 (Reprint 1993).pdf"
+    },
+    {
+      "date": "05/09/1999",
+      "project_id": "15354",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15354_BI/ACT 74 - REPRINT 1999.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "1727441",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 74 (Reprint 2006).pdf"
+    },
+    {
+      "date": "12/12/2018",
+      "project_id": "1698597",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1698597/P.U. (A) 312-2018.pdf"
+    },
+    {
+      "date": "09/01/2019",
+      "project_id": "1727517",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 74 (Reprint 2019)(Online Version).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 74 (Reprint 2019)(Online Version).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1698597/P.U. (A) 312-2018.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

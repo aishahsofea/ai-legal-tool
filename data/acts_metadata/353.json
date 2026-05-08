@@ -1,0 +1,54 @@
+{
+  "act_number": "353",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:04:48.384480+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=353&lang=BI",
+  "timeline": [
+    {
+      "date": "08/01/1969",
+      "project_id": "365",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/AKTA IBU 353 BI.pdf"
+    },
+    {
+      "date": "12/03/1972",
+      "project_id": "1728265",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/PU(A) 67 Tahun 1972.pdf"
+    },
+    {
+      "date": "07/04/1972",
+      "project_id": "1728015",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A117.pdf"
+    },
+    {
+      "date": "07/11/1988",
+      "project_id": "15466",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 353.pdf"
+    },
+    {
+      "date": "06/01/2001",
+      "project_id": "2259626",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "2259628",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "22/11/2017",
+      "project_id": "",
+      "log_type": "SUPERSEDED",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A117.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

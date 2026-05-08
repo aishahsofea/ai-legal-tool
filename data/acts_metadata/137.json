@@ -1,0 +1,72 @@
+{
+  "act_number": "137",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:50:50.153342+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=137&lang=BI",
+  "timeline": [
+    {
+      "date": "02/07/1950",
+      "project_id": "149",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/149_BI/CamScanner 11-04-2025 13.56.pdf"
+    },
+    {
+      "date": "15/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "17/03/1974",
+      "project_id": "3151788",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3151788_BI/A238 SPECIFIC RELIEF 1974 AMEND.pdf"
+    },
+    {
+      "date": "17/06/1974",
+      "project_id": "2271009",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2271009_BI/137 SPECIFIC RELIEF 1950.pdf"
+    },
+    {
+      "date": "03/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "22/08/1984",
+      "project_id": "1708072",
+      "log_type": "TRANSLATE",
+      "pdf_url": ""
+    },
+    {
+      "date": "27/02/1992",
+      "project_id": "3151070",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3151070_BI/A811 SPECIFIC RELIEF 1992 AMEND.pdf"
+    },
+    {
+      "date": "09/07/1997",
+      "project_id": "2258192",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258192_BI/137 SPECIFIC RELIEF 2006.pdf"
+    },
+    {
+      "date": "10/06/2000",
+      "project_id": "2258169",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258169_BI/137 SPECIFIC RELIEF 1950 REPRINT 2000.pdf"
+    },
+    {
+      "date": "11/01/2006",
+      "project_id": "15702",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 137.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 137.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3151070_BI/A811 SPECIFIC RELIEF 1992 AMEND.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

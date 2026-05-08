@@ -1,0 +1,54 @@
+{
+  "act_number": "374",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:00:18.540692+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=374&lang=BI",
+  "timeline": [
+    {
+      "date": "23/03/1957",
+      "project_id": "386",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/386_BI/Ord. 19 of 1958.pdf"
+    },
+    {
+      "date": "03/01/1965",
+      "project_id": "3427247",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3427247_BI/Act 33 of 1965.pdf"
+    },
+    {
+      "date": "01/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "11/09/1989",
+      "project_id": "2260327",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2260327_BI/Act 374 Revised.pdf"
+    },
+    {
+      "date": "05/12/2001",
+      "project_id": "2259661",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259661_BI/Act 374 Reprint 2001.pdf"
+    },
+    {
+      "date": "06/05/2004",
+      "project_id": "2259662",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259662_BI/Act 374 Reprint 2004.pdf"
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "15519",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 374.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 374.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

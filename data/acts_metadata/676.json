@@ -1,0 +1,48 @@
+{
+  "act_number": "676",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:00:19.259995+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=676&lang=BI",
+  "timeline": [
+    {
+      "date": "31/08/2007",
+      "project_id": "688",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Ogos 2007  Original Act 676.pdf"
+    },
+    {
+      "date": "03/05/2013",
+      "project_id": "16565",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 676 - Evidence Of Child Witness Act 2007.pdf"
+    },
+    {
+      "date": "04/11/2017",
+      "project_id": "15853",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 676.pdf"
+    },
+    {
+      "date": "25/06/2023",
+      "project_id": "1827716",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1827716_BI/A1688 BI.pdf"
+    },
+    {
+      "date": "16/07/2023",
+      "project_id": "1839121",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1839121_BI/Act 676 - Final (11.7.2023).pdf"
+    },
+    {
+      "date": "07/11/2024",
+      "project_id": "2459399",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2459399_BI/Act A1731.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1839121_BI/Act 676 - Final (11.7.2023).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2459399_BI/Act A1731.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

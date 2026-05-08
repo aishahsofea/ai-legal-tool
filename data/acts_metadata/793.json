@@ -1,0 +1,18 @@
+{
+  "act_number": "793",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:43:13.040989+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=793&lang=BI",
+  "timeline": [
+    {
+      "date": "03/10/2017",
+      "project_id": "15740",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 793.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

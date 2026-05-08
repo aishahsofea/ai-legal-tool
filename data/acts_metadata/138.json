@@ -1,0 +1,145 @@
+{
+  "act_number": "138",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:50:39.607242+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=138&lang=BI",
+  "timeline": [
+    {
+      "date": "27/09/1967",
+      "project_id": "150",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/150_BI/NO. 66 OF 1967.pdf"
+    },
+    {
+      "date": "28/09/1967",
+      "project_id": "3182409",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3182409_BI/NO. 6 OF 1967.pdf"
+    },
+    {
+      "date": "09/07/1972",
+      "project_id": "3158562",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3158562_BI/01. A132 REGISTRATION OF ENGINEERS 1972 AMEND_repaired_compressed.pdf"
+    },
+    {
+      "date": "02/04/1973",
+      "project_id": "3158482",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3158482_BI/02. A173 REGISTRATION OF ENGINEERS 1973 AMEND_repaired.pdf"
+    },
+    {
+      "date": "26/02/1974",
+      "project_id": "3158437",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3158437_BI/03. A218 REGISTRATION OF ENGINEERS 1974 AMEND_repaired.pdf"
+    },
+    {
+      "date": "26/07/1974",
+      "project_id": "2271008",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2271008_BI/138 REGISTRATION OF ENGINEERS 1967.pdf"
+    },
+    {
+      "date": "22/01/1987",
+      "project_id": "3153073",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3153073_BI/04. A662 REGISTRATION OF ENGINEERS 1987 AMEND_repaired.pdf"
+    },
+    {
+      "date": "09/07/1997",
+      "project_id": "2258193",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258193_BI/138 REGISTRATION OF ENGINEERS 1967 REPRINT 1997.pdf"
+    },
+    {
+      "date": "10/06/2000",
+      "project_id": "3152175",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3152175_BI/138 REGISTRATION OF ENGINEERS 1967 AMEND 2000.pdf"
+    },
+    {
+      "date": "11/08/2002",
+      "project_id": "3152972",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3152972_BI/05. A1158 REGISTRATION OF ENGINEERS 2002 AMEND_unlocked.pdf"
+    },
+    {
+      "date": "12/01/2006",
+      "project_id": "15704",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 138.pdf"
+    },
+    {
+      "date": "27/02/2007",
+      "project_id": "3152951",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3152951_BI/06. A1288 REGISTRATION OF ENGINEERS 2002 AMEND_unlocked.pdf"
+    },
+    {
+      "date": "13/08/2015",
+      "project_id": "910",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20150224_A1479_BI_A1479 BI.pdf"
+    },
+    {
+      "date": "15/11/2015",
+      "project_id": "16483",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 138 (TP LULUS).pdf"
+    },
+    {
+      "date": "17/12/2021",
+      "project_id": "1716542",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1716542/PUA 438.pdf"
+    },
+    {
+      "date": "20/11/2025",
+      "project_id": "3172700",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3172700/PUA 403 (2025).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 138 (TP LULUS).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20150224_A1479_BI_A1479 BI.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 4
+}

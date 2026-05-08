@@ -1,0 +1,18 @@
+{
+  "act_number": "744",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:49:23.524689+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=744&lang=BI",
+  "timeline": [
+    {
+      "date": "18/05/2012",
+      "project_id": "756",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20120517_744_BI_Act 744 BI.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

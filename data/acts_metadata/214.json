@@ -1,0 +1,48 @@
+{
+  "act_number": "214",
+  "act_type": "updated",
+  "scraped_at": "2026-05-05T01:18:51.647748+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=214&lang=BI",
+  "timeline": [
+    {
+      "date": "02/12/1949",
+      "project_id": "226",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/No 54 of 1949.pdf"
+    },
+    {
+      "date": "27/10/1956",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "22/12/1957",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "17/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "29/05/1979",
+      "project_id": "1727258",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act  214 (Revised).pdf"
+    },
+    {
+      "date": "07/09/1999",
+      "project_id": "1712921",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 214.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

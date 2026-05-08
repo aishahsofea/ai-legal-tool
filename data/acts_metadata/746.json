@@ -1,0 +1,73 @@
+{
+  "act_number": "746",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:49:13.877959+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=746&lang=BI",
+  "timeline": [
+    {
+      "date": "23/06/2012",
+      "project_id": "758",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20120622_746_BI_Act 746 BI.pdf"
+    },
+    {
+      "date": "03/11/2024",
+      "project_id": "2459435",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2459435_BI/Act A1738.pdf"
+    },
+    {
+      "date": "16/10/2025",
+      "project_id": "3121757",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3121757/PUA 364_2025.pdf"
+    },
+    {
+      "date": "17/10/2025",
+      "project_id": "3121757",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3121757/PUA 364_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2459435_BI/Act A1738.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 4
+}

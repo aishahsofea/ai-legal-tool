@@ -1,0 +1,18 @@
+{
+  "act_number": "857",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:31:06.389440+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=857&lang=BI",
+  "timeline": [
+    {
+      "date": "15/10/2024",
+      "project_id": "2422047",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2422047_BI/Jewellers (Licensing) Act 1917 Act 857.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,88 @@
+{
+  "act_number": "408",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:51:40.108078+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=408&lang=BI",
+  "timeline": [
+    {
+      "date": "01/03/1966",
+      "project_id": "420",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/420_BI/ACT 19 OF 1966.pdf"
+    },
+    {
+      "date": "31/05/1975",
+      "project_id": "3360549",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3360549_BI/ACT A305.pdf"
+    },
+    {
+      "date": "01/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "18/12/1989",
+      "project_id": "2259899",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259899_BI/ACT 408 REVISED 1989.pdf"
+    },
+    {
+      "date": "16/04/1991",
+      "project_id": "3360811",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3360811_BI/ACT A801.pdf"
+    },
+    {
+      "date": "22/02/1995",
+      "project_id": "3374662",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3374662_BI/ACT A915.pdf"
+    },
+    {
+      "date": "30/11/1995",
+      "project_id": "3374734",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3374734/PUA 411 1995.pdf"
+    },
+    {
+      "date": "09/01/2001",
+      "project_id": "2259864",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259864_BI/ACT 408 REPRINT 2001.pdf"
+    },
+    {
+      "date": "10/01/2006",
+      "project_id": "15887",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 408.pdf"
+    },
+    {
+      "date": "02/03/2008",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "12/04/2012",
+      "project_id": "16607",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 408 - Malaysia Productivity Corporation (Incorporation) Act 1966.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 408 - Malaysia Productivity Corporation (Incorporation) Act 1966.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3374734/PUA 411 1995.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

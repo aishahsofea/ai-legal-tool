@@ -1,0 +1,271 @@
+{
+  "act_number": "127",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:52:26.001507+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=127&lang=BI",
+  "timeline": [
+    {
+      "date": "15/03/1974",
+      "project_id": "139",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/139_BI/127 ENVIRONMENTAL QUALITY 1974.pdf"
+    },
+    {
+      "date": "03/06/1981",
+      "project_id": "3139422",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3139422_BI/02. P.U.(A) 357 [] 1980.pdf"
+    },
+    {
+      "date": "12/01/1986",
+      "project_id": "2804499",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2804499_BI/A636 ENVIRONMENTAL QUALITY 1985 AMEND 1.pdf"
+    },
+    {
+      "date": "27/06/1994",
+      "project_id": "1006135",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1006135_BI/ACT A885.pdf"
+    },
+    {
+      "date": "06/01/1995",
+      "project_id": "2257044",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257044_BI/Act 127- Reprint 1995.pdf"
+    },
+    {
+      "date": "07/08/1996",
+      "project_id": "3140434",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3140434_BI/A953 BI.pdf"
+    },
+    {
+      "date": "08/07/1998",
+      "project_id": "2904060",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2904060_BI/06. A1030 ENVIRONMENTAL QUALITY 1998 AMEND_repaired.pdf"
+    },
+    {
+      "date": "09/01/2000",
+      "project_id": "2258186",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258186_BI/ACT 127 - REPRINT 2000.pdf"
+    },
+    {
+      "date": "07/07/2001",
+      "project_id": "3140665",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3140665_BI/07. A1102 ENVIRONMENTAL QUALITY 2001 AMEND_unlocked.pdf"
+    },
+    {
+      "date": "11/01/2006",
+      "project_id": "15500",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 127.pdf"
+    },
+    {
+      "date": "10/09/2007",
+      "project_id": "2968117",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2968117_BI/A1315 ENVIRONMENTAL QUALITY 2007 AMEND.pdf"
+    },
+    {
+      "date": "14/01/2013",
+      "project_id": "872",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/872_BI/09. Act A1441.pdf"
+    },
+    {
+      "date": "26/10/2021",
+      "project_id": "1712118",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1712118/PUA395.pdf"
+    },
+    {
+      "date": "27/10/2021",
+      "project_id": "1712118",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1712118/PUA395.pdf"
+    },
+    {
+      "date": "21/06/2024",
+      "project_id": "2147523",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2147523_BI/Act A1712.pdf"
+    },
+    {
+      "date": "23/07/2024",
+      "project_id": "2194944",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2194944_BI/Act 127 (Online 2025).pdf"
+    },
+    {
+      "date": "01/02/2025",
+      "project_id": "2629985",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2629985/PUB 14.pdf"
+    },
+    {
+      "date": "25/07/2025",
+      "project_id": "2955644",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2955644/PUA 207 (2025).pdf"
+    },
+    {
+      "date": "19/05/2026",
+      "project_id": "3483313",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3483313_BI/Act A1793 - ENVIRONMENTAL QUALITY (AMENDMENT) ACT 2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2194944_BI/Act 127 (Online 2025).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3483313_BI/Act A1793 - ENVIRONMENTAL QUALITY (AMENDMENT) ACT 2026.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 16
+}

@@ -1,0 +1,46 @@
+{
+  "act_number": "440",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:46:04.375129+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=440&lang=BI",
+  "timeline": [
+    {
+      "date": "31/08/1990",
+      "project_id": "452",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/452_BI/ACT 440 (1).pdf"
+    },
+    {
+      "date": "03/01/2001",
+      "project_id": "2259958",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259958_BI/ACT 440 REPRINT 2001.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15959",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 440.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16648",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 440 - Malaysia-Thailand Joint Authority Act 1990.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 440 - Malaysia-Thailand Joint Authority Act 1990.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

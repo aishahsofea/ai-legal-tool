@@ -1,0 +1,66 @@
+{
+  "act_number": "495",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:37:10.787144+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=495&lang=BI",
+  "timeline": [
+    {
+      "date": "14/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "03/05/1959",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "30/03/1961",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "29/08/1989",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "20/04/1992",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/09/1992",
+      "project_id": "2259760",
+      "log_type": "REVISED",
+      "pdf_url": ""
+    },
+    {
+      "date": "15/10/1992",
+      "project_id": "507",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/01/2002",
+      "project_id": "2260196",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "10/01/2006",
+      "project_id": "16034",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 495.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 495.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

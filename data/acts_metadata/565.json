@@ -1,0 +1,24 @@
+{
+  "act_number": "565",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:22:58.901816+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=565&lang=BI",
+  "timeline": [
+    {
+      "date": "12/02/2010",
+      "project_id": "577",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "13/02/2010",
+      "project_id": "1700549",
+      "log_type": "REPEALED",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

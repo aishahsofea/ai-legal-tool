@@ -1,0 +1,36 @@
+{
+  "act_number": "470",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:40:33.741160+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=470&lang=BI",
+  "timeline": [
+    {
+      "date": "13/09/1991",
+      "project_id": "482",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/2001",
+      "project_id": "2260173",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15994",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 470.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16670",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 470 - Social and Welfare Services Lotteries Board (Disso.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 470 - Social and Welfare Services Lotteries Board (Disso.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,18 @@
+{
+  "act_number": "199",
+  "act_type": "updated",
+  "scraped_at": "2026-05-05T13:47:02.141309+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=199&lang=BI",
+  "timeline": [
+    {
+      "date": "16/05/1986",
+      "project_id": "1727283",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727283_BI/Act 199 Repealed.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

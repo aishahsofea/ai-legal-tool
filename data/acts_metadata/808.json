@@ -1,0 +1,18 @@
+{
+  "act_number": "808",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:40:20.450699+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=808&lang=BI",
+  "timeline": [
+    {
+      "date": "02/11/2018",
+      "project_id": "1695971",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20181101_808_BI_National Anthem Act 1968 Act 808.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

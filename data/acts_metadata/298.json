@@ -1,0 +1,54 @@
+{
+  "act_number": "298",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:21:45.389183+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=298&lang=BI",
+  "timeline": [
+    {
+      "date": "01/02/1960",
+      "project_id": "310",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/310_BI/ORD 33 1959.pdf"
+    },
+    {
+      "date": "18/09/1963",
+      "project_id": "1727934",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727934_BI/L.N. 232-1963.pdf"
+    },
+    {
+      "date": "04/01/1973",
+      "project_id": "2255949",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "01/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "03/01/1984",
+      "project_id": "2263469",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263469_BI/ACT 298 REVISED 1983.pdf"
+    },
+    {
+      "date": "06/09/2001",
+      "project_id": "2255950",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2255950_BI/ACT 298 REPRINT 2001.pdf"
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "15317",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 298.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 298.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

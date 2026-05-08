@@ -1,0 +1,30 @@
+{
+  "act_number": "529",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:29:19.099080+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=529&lang=BI",
+  "timeline": [
+    {
+      "date": "19/08/1948",
+      "project_id": "541",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/541_BI/NO. 22 OF 1948 (ACT 529).pdf"
+    },
+    {
+      "date": "10/12/1994",
+      "project_id": "2259748",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259748_BI/ACT 529 - REVISED 1994.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15287",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 529.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 529.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

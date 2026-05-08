@@ -1,0 +1,109 @@
+{
+  "act_number": "258",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:29:08.418506+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=258&lang=BI",
+  "timeline": [
+    {
+      "date": "30/12/1952",
+      "project_id": "270",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/270_BI/ORD NO 73 1952.pdf"
+    },
+    {
+      "date": "02/04/1958",
+      "project_id": "3266844",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3266844_BI/ORD 58 1956.pdf"
+    },
+    {
+      "date": "16/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "02/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "29/12/1981",
+      "project_id": "2263487",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263487_BI/Akta 258- Warta Asal.pdf"
+    },
+    {
+      "date": "06/08/2001",
+      "project_id": "2258366",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258366_BI/ACT 258 REPRINT 2001.pdf"
+    },
+    {
+      "date": "21/02/2005",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/01/2006",
+      "project_id": "15280",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 258.pdf"
+    },
+    {
+      "date": "10/03/2013",
+      "project_id": "16148",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 258 - Trustees (Incorporation) Act 1952.pdf"
+    },
+    {
+      "date": "27/02/2025",
+      "project_id": "2694480",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2694480_BI/Act A1746 BI - TRUSTEES (INCORPORATION) (AMENDMENT) ACT 2025.pdf"
+    },
+    {
+      "date": "28/02/2025",
+      "project_id": "2694480",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2694480_BI/Act A1746 BI - TRUSTEES (INCORPORATION) (AMENDMENT) ACT 2025.pdf"
+    },
+    {
+      "date": "03/03/2025",
+      "project_id": "2706789",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2706789/PUA68_2025.pdf"
+    },
+    {
+      "date": "04/03/2025",
+      "project_id": "2706906",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2706906/PUA 67_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 258 - Trustees (Incorporation) Act 1952.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2694480_BI/Act A1746 BI - TRUSTEES (INCORPORATION) (AMENDMENT) ACT 2025.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

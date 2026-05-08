@@ -1,0 +1,54 @@
+{
+  "act_number": "259",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:28:56.392400+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=259&lang=BI",
+  "timeline": [
+    {
+      "date": "30/04/1953",
+      "project_id": "271",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/271_BI/ORD 16 1953.pdf"
+    },
+    {
+      "date": "15/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "01/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "28/12/1981",
+      "project_id": "2263485",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263485_BI/ACT 259 REVISED 1981.pdf"
+    },
+    {
+      "date": "05/08/2001",
+      "project_id": "2258369",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258369_BI/ACT 259 REPRINT 2001.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15281",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 259.pdf"
+    },
+    {
+      "date": "08/09/2012",
+      "project_id": "16290",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 259 - Indecent Advertisements Act 1953.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 259 - Indecent Advertisements Act 1953.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

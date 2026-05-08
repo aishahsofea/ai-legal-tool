@@ -1,0 +1,24 @@
+{
+  "act_number": "84",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:02:42.639059+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=84&lang=BI",
+  "timeline": [
+    {
+      "date": "01/10/1972",
+      "project_id": "96",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/96_BI/ACT 84.pdf"
+    },
+    {
+      "date": "03/01/1998",
+      "project_id": "1727253",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 84 Repealed.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

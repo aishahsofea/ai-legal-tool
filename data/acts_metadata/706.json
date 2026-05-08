@@ -1,0 +1,61 @@
+{
+  "act_number": "706",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:56:08.277521+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=706&lang=BI",
+  "timeline": [
+    {
+      "date": "12/02/2010",
+      "project_id": "718",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 706 ori.pdf"
+    },
+    {
+      "date": "03/08/2015",
+      "project_id": "16385",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 706 4_8_2015.pdf"
+    },
+    {
+      "date": "31/10/2022",
+      "project_id": "1747486",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1747486/PUA347.pdf"
+    },
+    {
+      "date": "05/07/2023",
+      "project_id": "1726085",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1726085_BI/WJW220914 Act 706.pdf"
+    },
+    {
+      "date": "27/04/2025",
+      "project_id": "2813196",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2813196_BI/A1758 BI - LABUAN FOUNDATIONS (AMENDMENT) ACT 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 706 4_8_2015.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2813196_BI/A1758 BI - LABUAN FOUNDATIONS (AMENDMENT) ACT 2025.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

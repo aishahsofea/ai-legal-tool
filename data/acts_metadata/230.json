@@ -1,0 +1,24 @@
+{
+  "act_number": "230",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T21:32:36.409617+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=230&lang=BM",
+  "timeline": [
+    {
+      "date": "13/06/1980",
+      "project_id": "242",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 230 - Asal.pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16752",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 230 - Akta Kumpulan Wang Bekalan Air Negeri (Tatacara Kewangan dan Perakaunan) 1980.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 230 - Akta Kumpulan Wang Bekalan Air Negeri (Tatacara Kewangan dan Perakaunan) 1980.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

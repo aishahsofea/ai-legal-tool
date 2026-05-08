@@ -1,0 +1,138 @@
+{
+  "act_number": "188",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T00:44:47.096899+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=188&lang=BI",
+  "timeline": [
+    {
+      "date": "25/06/1946",
+      "project_id": "200",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/No. 9 of 1946 (Original).pdf"
+    },
+    {
+      "date": "08/03/1948",
+      "project_id": "1728079",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728079_BI/008 - F.M. ORD. NO. 1 OF 1948.pdf"
+    },
+    {
+      "date": "10/03/1949",
+      "project_id": "1728080",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "25/04/1955",
+      "project_id": "1728081",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/L.N. 212 of 1955.pdf"
+    },
+    {
+      "date": "07/04/1956",
+      "project_id": "1727797",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727797_BI/L.N. 113-1956.pdf"
+    },
+    {
+      "date": "25/12/1957",
+      "project_id": "1728082",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Ord. 64 of 1957.pdf"
+    },
+    {
+      "date": "08/01/1958",
+      "project_id": "1728083",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/No. 23 of 1961.pdf"
+    },
+    {
+      "date": "21/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "10/01/1964",
+      "project_id": "1728084",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/No. 12 of 1964.pdf"
+    },
+    {
+      "date": "10/07/1965",
+      "project_id": "1728085",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/No. 40 of 1965.pdf"
+    },
+    {
+      "date": "12/12/1966",
+      "project_id": "1728086",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/No. 73 of 1966.pdf"
+    },
+    {
+      "date": "29/09/1971",
+      "project_id": "1728087",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A76.pdf"
+    },
+    {
+      "date": "28/08/1975",
+      "project_id": "1728088",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A312.pdf"
+    },
+    {
+      "date": "12/08/1977",
+      "project_id": "1727569",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 188 Revised 1977.pdf"
+    },
+    {
+      "date": "17/09/1977",
+      "project_id": "1728089",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A406.pdf"
+    },
+    {
+      "date": "01/02/1987",
+      "project_id": "1728090",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A668.pdf"
+    },
+    {
+      "date": "07/03/1988",
+      "project_id": "1728091",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A696.pdf"
+    },
+    {
+      "date": "19/01/1990",
+      "project_id": "1728092",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A747.pdf"
+    },
+    {
+      "date": "19/05/2001",
+      "project_id": "1727336",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 188 Reprint 2001.pdf"
+    },
+    {
+      "date": "21/01/2006",
+      "project_id": "15919",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 188.pdf"
+    },
+    {
+      "date": "22/11/2012",
+      "project_id": "16627",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 188 - Treasury Bills (Local) Act 1946.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 188 - Treasury Bills (Local) Act 1946.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A747.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,18 @@
+{
+  "act_number": "764",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:46:43.626657+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=764&lang=BI",
+  "timeline": [
+    {
+      "date": "31/12/2014",
+      "project_id": "776",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/776_BI/ACT 764.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

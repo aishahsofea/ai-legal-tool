@@ -1,0 +1,42 @@
+{
+  "act_number": "NO. 26 OF 1963",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:28:47.674554+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=NO. 26 OF 1963&lang=BI",
+  "timeline": [
+    {
+      "date": "02/09/1963",
+      "project_id": "1856719",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Malaysia Act No. 26 of 1963 (Original Gazetted).pdf"
+    },
+    {
+      "date": "03/07/1965",
+      "project_id": "1006144",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Constitution and Malaysia Act (Amedment) Act 1965 [No. 31 of 1965].pdf"
+    },
+    {
+      "date": "02/09/1965",
+      "project_id": "1856724",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Malaysia Act (Amendment) Act 1965 [No. 54 of 1965].pdf"
+    },
+    {
+      "date": "03/11/2023",
+      "project_id": "1819441",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1819441_BI/Malaysia Act 1963_FINAL_ONLINE_as at 30.10.23 241023.pdf"
+    },
+    {
+      "date": "04/11/2023",
+      "project_id": "1828012",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1828012_BI/WJW231114 Act 261963 (Cetak Naskhah).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1819441_BI/Malaysia Act 1963_FINAL_ONLINE_as at 30.10.23 241023.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Malaysia Act (Amendment) Act 1965 [No. 54 of 1965].pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

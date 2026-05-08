@@ -1,0 +1,36 @@
+{
+  "act_number": "662",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:02:16.189106+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=662&lang=BI",
+  "timeline": [
+    {
+      "date": "14/02/2007",
+      "project_id": "674",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 662- Warta.pdf"
+    },
+    {
+      "date": "03/11/2012",
+      "project_id": "1700589",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 662 - Retirement Fund Act 2007 (Reprint) Nov 2012.pdf"
+    },
+    {
+      "date": "24/10/2015",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/12/2015",
+      "project_id": "16505",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 662 - 12.11.2015.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 662 - 12.11.2015.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

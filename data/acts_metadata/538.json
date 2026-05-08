@@ -1,0 +1,36 @@
+{
+  "act_number": "538",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:27:22.416321+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=538&lang=BI",
+  "timeline": [
+    {
+      "date": "03/11/1995",
+      "project_id": "550",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/550_BI/ACT 538 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "02/04/2002",
+      "project_id": "3394509",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3394509_BI/ACT 538 - REPPRINT 2002.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15338",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 538.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16194",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 538 - Town Planners Act 1995.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 538 - Town Planners Act 1995.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

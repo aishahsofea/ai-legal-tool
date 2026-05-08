@@ -1,0 +1,24 @@
+{
+  "act_number": "717",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:54:20.385124+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=717&lang=BI",
+  "timeline": [
+    {
+      "date": "31/12/2010",
+      "project_id": "729",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act717 ori.pdf"
+    },
+    {
+      "date": "03/12/2016",
+      "project_id": "16393",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 717 (bi)- first draft (2).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 717 (bi)- first draft (2).pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,24 @@
+{
+  "act_number": "812",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:40:00.403622+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=812&lang=BI",
+  "timeline": [
+    {
+      "date": "28/12/2018",
+      "project_id": "1695979",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1695979_BI/ACT 812.pdf"
+    },
+    {
+      "date": "03/06/2023",
+      "project_id": "1822716",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1822716_BI/Act 812 - Final (1.6.2023).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1822716_BI/Act 812 - Final (1.6.2023).pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

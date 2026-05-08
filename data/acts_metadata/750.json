@@ -1,0 +1,18 @@
+{
+  "act_number": "750",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:48:50.708385+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=750&lang=BI",
+  "timeline": [
+    {
+      "date": "23/06/2012",
+      "project_id": "762",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20120622_750_BI_Act 750 BI.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

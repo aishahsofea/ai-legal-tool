@@ -1,0 +1,67 @@
+{
+  "act_number": "585",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:20:17.923051+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=585&lang=BI",
+  "timeline": [
+    {
+      "date": "28/08/1998",
+      "project_id": "597",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/02/2001",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2002",
+      "project_id": "2258288",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/09/2005",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "1700384",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 585.pdf"
+    },
+    {
+      "date": "26/02/2025",
+      "project_id": "2687066",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2687066_BI/A1747-BI- SYARIAH COURT CIVIL PROCEDURE (FEDERAL TERRITORIES) (AMENDMENT) ACT 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 585.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2687066_BI/A1747-BI- SYARIAH COURT CIVIL PROCEDURE (FEDERAL TERRITORIES) (AMENDMENT) ACT 2025.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

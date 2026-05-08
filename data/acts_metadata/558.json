@@ -1,0 +1,58 @@
+{
+  "act_number": "558",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:24:00.379647+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=558&lang=BI",
+  "timeline": [
+    {
+      "date": "07/03/1997",
+      "project_id": "570",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/2002",
+      "project_id": "2260244",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2005",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "15423",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 558.pdf"
+    },
+    {
+      "date": "06/01/2012",
+      "project_id": "858",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20120622_A1427_BI_Act A1427 BI-financial reporting (amendment).pdf"
+    },
+    {
+      "date": "07/09/2012",
+      "project_id": "16274",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 558 - Financial Reporting Act 1997.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 558 - Financial Reporting Act 1997.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20120622_A1427_BI_Act A1427 BI-financial reporting (amendment).pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

@@ -1,0 +1,24 @@
+{
+  "act_number": "182",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T00:45:32.486428+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=182&lang=BI",
+  "timeline": [
+    {
+      "date": "02/10/1993",
+      "project_id": "194",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 182 original.pdf"
+    },
+    {
+      "date": "03/10/1993",
+      "project_id": "1712854",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 182.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

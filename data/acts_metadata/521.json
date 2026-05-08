@@ -1,0 +1,64 @@
+{
+  "act_number": "521",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:30:22.514047+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=521&lang=BI",
+  "timeline": [
+    {
+      "date": "08/07/1994",
+      "project_id": "533",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/533_BI/ACT 521 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/01/2006",
+      "project_id": "15586",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 521.pdf"
+    },
+    {
+      "date": "12/02/2012",
+      "project_id": "845",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/845_BI/ACT A1414.pdf"
+    },
+    {
+      "date": "05/03/2012",
+      "project_id": "16593",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 521 - Domestic Violence Act 1994.pdf"
+    },
+    {
+      "date": "26/09/2017",
+      "project_id": "969",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/969_BI/ACT A1538.pdf"
+    },
+    {
+      "date": "07/06/2018",
+      "project_id": "1712768",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 521 - June 2018 Reprint Online.pdf"
+    },
+    {
+      "date": "08/07/2023",
+      "project_id": "1704253",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1704253_BI/Act 521 - Reprint 2023.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 521 - June 2018 Reprint Online.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/969_BI/ACT A1538.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

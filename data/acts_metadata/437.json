@@ -1,0 +1,72 @@
+{
+  "act_number": "437",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:47:34.557670+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=437&lang=BI",
+  "timeline": [
+    {
+      "date": "30/03/1990",
+      "project_id": "449",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/449_BI/ACT NO 35 OF 1968 - ASAL.pdf"
+    },
+    {
+      "date": "02/04/1990",
+      "project_id": "2259816",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259816_BI/ACT 437 REVISED 1990.pdf"
+    },
+    {
+      "date": "03/01/2002",
+      "project_id": "2259952",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259952_BI/ACT 437 REPRINT 2001.pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "15955",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 437.pdf"
+    },
+    {
+      "date": "23/08/2011",
+      "project_id": "829",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/829_BI/ACT A1398.pdf"
+    },
+    {
+      "date": "07/12/2011",
+      "project_id": "16645",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 437 Reprint Online Version 2011.pdf"
+    },
+    {
+      "date": "08/10/2012",
+      "project_id": "15713",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/JW002045 (Act 437).pdf"
+    },
+    {
+      "date": "28/03/2019",
+      "project_id": "1695991",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1695991_BI/ACT A1589.pdf"
+    },
+    {
+      "date": "10/06/2019",
+      "project_id": "1727549",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 437 Reprint Online Version 2019.pdf"
+    },
+    {
+      "date": "11/10/2025",
+      "project_id": "3089539",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3089539_BI/Act 437 (Online 2025).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3089539_BI/Act 437 (Online 2025).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1695991_BI/ACT A1589.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

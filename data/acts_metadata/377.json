@@ -1,0 +1,90 @@
+{
+  "act_number": "377",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:58:24.268934+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=377&lang=BI",
+  "timeline": [
+    {
+      "date": "07/03/1948",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "21/07/1948",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/07/1953",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "19/05/1958",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "01/01/1959",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "26/08/1959",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "08/01/1966",
+      "project_id": "815",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/815_BI/Act 56-1965.pdf"
+    },
+    {
+      "date": "22/04/1970",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "28/09/1980",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "17/09/1989",
+      "project_id": "2259993",
+      "log_type": "REVISED",
+      "pdf_url": ""
+    },
+    {
+      "date": "12/01/2001",
+      "project_id": "2259672",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "13/01/2006",
+      "project_id": "2259674",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "13/01/2012",
+      "project_id": "1709483",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 377_REPEAL.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/815_BI/Act 56-1965.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

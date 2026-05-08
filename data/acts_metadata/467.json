@@ -1,0 +1,36 @@
+{
+  "act_number": "467",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:41:12.963398+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=467&lang=BI",
+  "timeline": [
+    {
+      "date": "13/09/1991",
+      "project_id": "479",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/2001",
+      "project_id": "2260171",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15992",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 467.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16668",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 467 - Airport and Aviation Services (Operating Company).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 467 - Airport and Aviation Services (Operating Company).pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

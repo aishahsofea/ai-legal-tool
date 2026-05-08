@@ -1,0 +1,48 @@
+{
+  "act_number": "22",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:19:46.204948+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=22&lang=BI",
+  "timeline": [
+    {
+      "date": "30/04/1971",
+      "project_id": "34",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/34_BI/ACT 22 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "30/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "10/08/1980",
+      "project_id": "249",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/249_BI/ACT 237.pdf"
+    },
+    {
+      "date": "05/08/1992",
+      "project_id": "1712878",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712878_BI/ACT 22 - REPRINT 1992.pdf"
+    },
+    {
+      "date": "05/09/1999",
+      "project_id": "1727291",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727291_BI/ACT 22 - REPRINT 1999.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15973",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15973_BI/ACT 22 - REPRINT 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15973_BI/ACT 22 - REPRINT 2006.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/249_BI/ACT 237.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

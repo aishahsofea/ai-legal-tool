@@ -1,0 +1,88 @@
+{
+  "act_number": "226",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T23:51:17.152414+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=226&lang=BI",
+  "timeline": [
+    {
+      "date": "29/02/1980",
+      "project_id": "238",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 226- Original.pdf"
+    },
+    {
+      "date": "18/12/1983",
+      "project_id": "1742051",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A571.pdf"
+    },
+    {
+      "date": "27/05/1984",
+      "project_id": "3178860",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3178860/PUA 187 1984.pdf"
+    },
+    {
+      "date": "05/01/2001",
+      "project_id": "16736",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 226- Reprint 2001.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "16090",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 226.pdf"
+    },
+    {
+      "date": "07/12/2012",
+      "project_id": "2255362",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": ""
+    },
+    {
+      "date": "08/01/2013",
+      "project_id": "16735",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 226 - National Parks Act 1980.pdf"
+    },
+    {
+      "date": "22/01/2022",
+      "project_id": "1720883",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1720883/PUA11_2022.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 226 - National Parks Act 1980.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3178860/PUA 187 1984.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 3
+}

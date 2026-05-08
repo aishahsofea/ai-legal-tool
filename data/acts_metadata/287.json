@@ -1,0 +1,90 @@
+{
+  "act_number": "287",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:23:53.771467+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=287&lang=BI",
+  "timeline": [
+    {
+      "date": "18/12/1948",
+      "project_id": "299",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 287 Asal Ord. 33 y1948.pdf"
+    },
+    {
+      "date": "20/12/1948",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "08/11/1953",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/07/1955",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "01/01/1956",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "19/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "08/04/1966",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "23/04/1966",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/04/1969",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "08/09/1975",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/03/1976",
+      "project_id": "1727914",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 287 - Act A334.pdf"
+    },
+    {
+      "date": "09/08/1983",
+      "project_id": "2263476",
+      "log_type": "REVISED",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/02/1993",
+      "project_id": "1727267",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 287 Repealed by Act 502.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 287 - Act A334.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

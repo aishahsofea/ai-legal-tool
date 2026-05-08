@@ -1,0 +1,42 @@
+{
+  "act_number": "410",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:51:22.753218+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=410&lang=BI",
+  "timeline": [
+    {
+      "date": "16/09/1968",
+      "project_id": "422",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/422_BI/ACT 32 OF 1968.pdf"
+    },
+    {
+      "date": "16/12/1989",
+      "project_id": "2259872",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259872_BI/ACT 410 REVISED 1989.pdf"
+    },
+    {
+      "date": "04/01/2001",
+      "project_id": "2259871",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259871_BI/2602_001 (1).pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "15889",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 410.pdf"
+    },
+    {
+      "date": "06/12/2011",
+      "project_id": "16608",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 410 - Loans (Asian Development Bank) Act 1968.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 410 - Loans (Asian Development Bank) Act 1968.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

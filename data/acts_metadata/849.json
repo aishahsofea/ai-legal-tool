@@ -1,0 +1,18 @@
+{
+  "act_number": "849",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:32:00.366933+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=849&lang=BI",
+  "timeline": [
+    {
+      "date": "17/10/2023",
+      "project_id": "1869311",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1869311_BI/Act 849 The Titular Superior of The Brothers Of Saint Gabriel (Incorporation) Act 1957 (BI).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

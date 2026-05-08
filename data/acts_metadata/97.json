@@ -1,0 +1,102 @@
+{
+  "act_number": "97",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:59:08.535614+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=97&lang=BI",
+  "timeline": [
+    {
+      "date": "01/02/1960",
+      "project_id": "109",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/109_BI/NO. 35 OF 1959 (ACT 97).pdf"
+    },
+    {
+      "date": "17/03/1964",
+      "project_id": "1727780",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727780_BI/029 - ACT 7-1964.pdf"
+    },
+    {
+      "date": "26/12/1965",
+      "project_id": "1856733",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1856733_BI/002 - L.N. 477-1965.pdf"
+    },
+    {
+      "date": "16/01/1967",
+      "project_id": "3377656",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3377656_BI/003 - P.U. 18-1967.pdf"
+    },
+    {
+      "date": "27/06/1972",
+      "project_id": "1700300",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700300_BI/004 - ACT A128.pdf"
+    },
+    {
+      "date": "01/11/1972",
+      "project_id": "3321957",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3321957_BI/ACT 97 - REVISED 1972.pdf"
+    },
+    {
+      "date": "21/03/1974",
+      "project_id": "3322086",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3322086_BI/005 - ACT A246.pdf"
+    },
+    {
+      "date": "05/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "18/06/1977",
+      "project_id": "3322101",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3322101_BI/007 - ACT A400.pdf"
+    },
+    {
+      "date": "15/02/1981",
+      "project_id": "3322109",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3322109_BI/008 - ACT A508.pdf"
+    },
+    {
+      "date": "26/12/1983",
+      "project_id": "3322116",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3322116_BI/009 - ACT A569.pdf"
+    },
+    {
+      "date": "13/08/1994",
+      "project_id": "15449",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15449_BI/ACT 97 - REPRINT 1994.pdf"
+    },
+    {
+      "date": "01/03/1995",
+      "project_id": "3322125",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3322125_BI/010 - ACT A912.pdf"
+    },
+    {
+      "date": "14/03/2000",
+      "project_id": "2257392",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257392_BI/ACT 97 - REPRINT 2000.pdf"
+    },
+    {
+      "date": "16/01/2006",
+      "project_id": "1727310",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727310_BI/ACT 97 - REPRINT 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727310_BI/ACT 97 - REPRINT 2006.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3322125_BI/010 - ACT A912.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

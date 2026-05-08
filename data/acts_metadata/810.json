@@ -1,0 +1,18 @@
+{
+  "act_number": "810",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:40:09.574721+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=810&lang=BI",
+  "timeline": [
+    {
+      "date": "13/11/2018",
+      "project_id": "1695973",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20181112_810_BI_Warta - Subang Golf Course Corporation Act 1968 [Act 810].pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

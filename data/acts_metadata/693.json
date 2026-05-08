@@ -1,0 +1,36 @@
+{
+  "act_number": "693",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:58:09.896085+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=693&lang=BI",
+  "timeline": [
+    {
+      "date": "09/01/2009",
+      "project_id": "705",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/705_BI/ACT 693.pdf"
+    },
+    {
+      "date": "29/01/2011",
+      "project_id": "731",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/731_BI/ACT 719.pdf"
+    },
+    {
+      "date": "04/12/2012",
+      "project_id": "742",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/ACT 742.pdf"
+    },
+    {
+      "date": "05/02/2018",
+      "project_id": "16373",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/ACT 693 (TP 20 02 18).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/ACT 693 (TP 20 02 18).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/ACT 742.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

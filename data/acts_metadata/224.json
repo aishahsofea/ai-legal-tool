@@ -1,0 +1,24 @@
+{
+  "act_number": "224",
+  "act_type": "updated",
+  "scraped_at": "2026-05-05T00:54:29.505630+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=224&lang=BM",
+  "timeline": [
+    {
+      "date": "02/01/1980",
+      "project_id": "236",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 224- Asal.pdf"
+    },
+    {
+      "date": "22/02/1992",
+      "project_id": "1712858",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 224.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

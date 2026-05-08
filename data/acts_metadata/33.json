@@ -1,0 +1,58 @@
+{
+  "act_number": "33",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:16:56.418026+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=33&lang=BI",
+  "timeline": [
+    {
+      "date": "12/03/1971",
+      "project_id": "3184776",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3184776/P.U. (A) 95-1971.pdf"
+    },
+    {
+      "date": "26/06/1971",
+      "project_id": "45",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/45_BI/NO. 52 OF 1949 (ACT 33).pdf"
+    },
+    {
+      "date": "27/06/1971",
+      "project_id": "1727554",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727554_BI/ACT 33 - REVISED 1971.pdf"
+    },
+    {
+      "date": "05/03/1993",
+      "project_id": "2256613",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2256613_BI/ACT 33 - REPRINT 1993.pdf"
+    },
+    {
+      "date": "05/09/1999",
+      "project_id": "15368",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 33 Reprint 99 BI.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "16071",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 33.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 33.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3184776/P.U. (A) 95-1971.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

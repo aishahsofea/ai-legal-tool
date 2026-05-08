@@ -1,0 +1,127 @@
+{
+  "act_number": "487",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:38:29.793639+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=487&lang=BI",
+  "timeline": [
+    {
+      "date": "08/07/1972",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "01/04/1973",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "18/03/1974",
+      "project_id": "1712803",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A248_1974.pdf"
+    },
+    {
+      "date": "10/02/1981",
+      "project_id": "254",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/254_BI/ACT 242.pdf"
+    },
+    {
+      "date": "12/09/1984",
+      "project_id": "1712804",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A598_1984.pdf"
+    },
+    {
+      "date": "31/08/1989",
+      "project_id": "1712805",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/ACT A742 Aug 1989.pdf"
+    },
+    {
+      "date": "07/03/1992",
+      "project_id": "2259774",
+      "log_type": "REVISED",
+      "pdf_url": ""
+    },
+    {
+      "date": "20/03/1992",
+      "project_id": "499",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "27/03/1992",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "02/12/2001",
+      "project_id": "1712806",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/PU A 349 Nov 2001.pdf"
+    },
+    {
+      "date": "12/01/2002",
+      "project_id": "2260189",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "13/08/2002",
+      "project_id": "1712807",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/ACT A1157 Aug 2002.pdf"
+    },
+    {
+      "date": "14/01/2006",
+      "project_id": "15707",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 487.pdf"
+    },
+    {
+      "date": "10/03/2015",
+      "project_id": "912",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20150224_A1481_BI_A1481 BI.pdf"
+    },
+    {
+      "date": "14/02/2016",
+      "project_id": "5435",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pub_20160129_P.U. (B) 50_Penetapan Tarikh Permulaan Kuat Kuasa Akta Juruukur Bahan Pindaan 2015.pdf"
+    },
+    {
+      "date": "17/05/2016",
+      "project_id": "16686",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Final Copy Act 487 (10 5 2016).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Final Copy Act 487 (10 5 2016).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pub_20160129_P.U. (B) 50_Penetapan Tarikh Permulaan Kuat Kuasa Akta Juruukur Bahan Pindaan 2015.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

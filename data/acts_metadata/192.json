@@ -1,0 +1,24 @@
+{
+  "act_number": "192",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T00:43:59.647924+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=192&lang=BI",
+  "timeline": [
+    {
+      "date": "10/11/1977",
+      "project_id": "204",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 192 (Original).pdf"
+    },
+    {
+      "date": "14/02/1978",
+      "project_id": "1727282",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727282_BI/Act 192 (Repealed).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

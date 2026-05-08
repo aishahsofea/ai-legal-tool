@@ -1,0 +1,18 @@
+{
+  "act_number": "798",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:42:46.911836+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=798&lang=BI",
+  "timeline": [
+    {
+      "date": "02/11/2017",
+      "project_id": "15750",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 798-Local Authorities.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

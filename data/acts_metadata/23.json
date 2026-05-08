@@ -1,0 +1,24 @@
+{
+  "act_number": "23",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:19:38.210999+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=23&lang=BI",
+  "timeline": [
+    {
+      "date": "30/04/1971",
+      "project_id": "35",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 23-original.pdf"
+    },
+    {
+      "date": "03/07/1980",
+      "project_id": "1712876",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712876_BI/Act 23-repealed.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

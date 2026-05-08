@@ -1,0 +1,42 @@
+{
+  "act_number": "682",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:59:38.395939+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=682&lang=BI",
+  "timeline": [
+    {
+      "date": "02/01/1957",
+      "project_id": "694",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "02/12/2007",
+      "project_id": "1700609",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Nov 2007  Revised Act 682.pdf"
+    },
+    {
+      "date": "04/05/2013",
+      "project_id": "16564",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 682 - University Of Malaya Act 1961.pdf"
+    },
+    {
+      "date": "05/08/2017",
+      "project_id": "1700479",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Ogos 2017  Reprint Act 682.pdf"
+    },
+    {
+      "date": "06/11/2017",
+      "project_id": "15358",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 682 BI.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 682 - University Of Malaya Act 1961.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

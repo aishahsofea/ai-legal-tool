@@ -1,0 +1,54 @@
+{
+  "act_number": "561",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:23:24.824672+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=561&lang=BI",
+  "timeline": [
+    {
+      "date": "01/07/1997",
+      "project_id": "573",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/2001",
+      "project_id": "2260208",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/02/2001",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/01/2002",
+      "project_id": "1700421",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/09/2005",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "1700422",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 561 Reprint 2006.pdf"
+    },
+    {
+      "date": "08/12/2012",
+      "project_id": "16280",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 561 - Syariah Court Evidence (Federal Territories) Act 1997.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 561 - Syariah Court Evidence (Federal Territories) Act 1997.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

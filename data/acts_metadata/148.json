@@ -1,0 +1,48 @@
+{
+  "act_number": "148",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:17:02.556789+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=148&lang=BI",
+  "timeline": [
+    {
+      "date": "30/08/1974",
+      "project_id": "160",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/1997",
+      "project_id": "2258216",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2001",
+      "project_id": "2258217",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "1712829",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 148 (Reprint 2006).pdf"
+    },
+    {
+      "date": "13/10/2007",
+      "project_id": "1712830",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1310.pdf"
+    },
+    {
+      "date": "07/06/2015",
+      "project_id": "16431",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/ACT 148 BI - CARRIAGE BY AIR ACT 1974.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/ACT 148 BI - CARRIAGE BY AIR ACT 1974.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1310.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

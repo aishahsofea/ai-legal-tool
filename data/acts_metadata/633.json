@@ -1,0 +1,64 @@
+{
+  "act_number": "633",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:08:19.474019+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=633&lang=BI",
+  "timeline": [
+    {
+      "date": "02/07/2004",
+      "project_id": "645",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 633 ORIGINAL.pdf"
+    },
+    {
+      "date": "03/01/2006",
+      "project_id": "15654",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 633.pdf"
+    },
+    {
+      "date": "04/01/2018",
+      "project_id": "992",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20180110_A1561_BI_Act A1561.pdf"
+    },
+    {
+      "date": "05/04/2018",
+      "project_id": "1700521",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 633 - reprint online version 2018.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 633 - reprint online version 2018.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20180110_A1561_BI_Act A1561.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 3
+}

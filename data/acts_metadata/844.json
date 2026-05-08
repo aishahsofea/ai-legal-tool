@@ -1,0 +1,18 @@
+{
+  "act_number": "844",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:32:26.511817+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=844&lang=BI",
+  "timeline": [
+    {
+      "date": "09/05/2023",
+      "project_id": "1813992",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1813992_BI/Act 844 Muktamad.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

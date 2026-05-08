@@ -1,0 +1,18 @@
+{
+  "act_number": "859",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:30:56.204432+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=859&lang=BI",
+  "timeline": [
+    {
+      "date": "18/10/2024",
+      "project_id": "2430798",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2430798_BI/Act 859.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

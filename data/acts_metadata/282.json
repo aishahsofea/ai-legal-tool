@@ -1,0 +1,48 @@
+{
+  "act_number": "282",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:24:32.171575+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=282&lang=BI",
+  "timeline": [
+    {
+      "date": "11/03/1983",
+      "project_id": "294",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/294_BI/ACT 282 Asal (1).pdf"
+    },
+    {
+      "date": "23/02/1992",
+      "project_id": "490",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BI/ACT 478.pdf"
+    },
+    {
+      "date": "29/09/1996",
+      "project_id": "1727909",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727909_BI/ACT A970.pdf"
+    },
+    {
+      "date": "04/08/2001",
+      "project_id": "2258405",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258405_BI/ACT 282 REPRINT 2001.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "15284",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 282.pdf"
+    },
+    {
+      "date": "07/02/2013",
+      "project_id": "16151",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 282 - Lembaga Kemajuan Wilayah Pulau Pinang Act 1983.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 282 - Lembaga Kemajuan Wilayah Pulau Pinang Act 1983.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727909_BI/ACT A970.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

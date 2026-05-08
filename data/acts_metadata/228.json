@@ -1,0 +1,24 @@
+{
+  "act_number": "228",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T23:50:50.552575+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=228&lang=BM",
+  "timeline": [
+    {
+      "date": "13/06/1980",
+      "project_id": "240",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 228- Asal.pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16750",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 228 - Akta Penghitungan Semula Pencen 1980.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 228 - Akta Penghitungan Semula Pencen 1980.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

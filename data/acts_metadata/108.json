@@ -1,0 +1,36 @@
+{
+  "act_number": "108",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:56:00.200500+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=108&lang=BI",
+  "timeline": [
+    {
+      "date": "22/06/1973",
+      "project_id": "120",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/10/1994",
+      "project_id": "3473241",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3473241_BI/AKTA 108- CETAKAN 1994 (BI).pdf"
+    },
+    {
+      "date": "03/03/2000",
+      "project_id": "2256723",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2256723_BI/AKTA 108 - CETAKAN 2000 (BI).pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "3473245",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3473245_BI/AKTA 108- CETAKAN 2006 (BI).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3473245_BI/AKTA 108- CETAKAN 2006 (BI).pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

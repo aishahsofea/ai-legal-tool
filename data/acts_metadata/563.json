@@ -1,0 +1,36 @@
+{
+  "act_number": "563",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:23:11.511423+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=563&lang=BI",
+  "timeline": [
+    {
+      "date": "01/07/1997",
+      "project_id": "575",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/2002",
+      "project_id": "2258289",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15429",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 563.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16282",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 563 - Computer Crimes Act 1997.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 563 - Computer Crimes Act 1997.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

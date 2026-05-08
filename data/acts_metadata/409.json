@@ -1,0 +1,48 @@
+{
+  "act_number": "409",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:51:29.913356+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=409&lang=BI",
+  "timeline": [
+    {
+      "date": "24/08/1974",
+      "project_id": "155",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/12/1989",
+      "project_id": "421",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "17/12/1989",
+      "project_id": "2259875",
+      "log_type": "REVISED",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/01/2001",
+      "project_id": "2259866",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "2259868",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "23/11/2016",
+      "project_id": "",
+      "log_type": "SUPERSEDED",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

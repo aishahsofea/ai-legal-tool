@@ -1,0 +1,48 @@
+{
+  "act_number": "492",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:37:35.281331+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=492&lang=BI",
+  "timeline": [
+    {
+      "date": "14/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "17/03/1974",
+      "project_id": "143",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/07/1992",
+      "project_id": "2259769",
+      "log_type": "REVISED",
+      "pdf_url": ""
+    },
+    {
+      "date": "27/07/1992",
+      "project_id": "504",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/01/2002",
+      "project_id": "2260193",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "16028",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 492.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 492.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

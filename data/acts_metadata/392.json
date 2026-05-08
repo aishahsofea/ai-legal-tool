@@ -1,0 +1,36 @@
+{
+  "act_number": "392",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:54:40.571455+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=392&lang=BI",
+  "timeline": [
+    {
+      "date": "16/03/1966",
+      "project_id": "404",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/404_BI/14 of 1966.pdf"
+    },
+    {
+      "date": "21/10/1989",
+      "project_id": "2259953",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259953_BI/Act 392 Revised.pdf"
+    },
+    {
+      "date": "03/01/2002",
+      "project_id": "2259703",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259703_BI/Act 392 Reprint 2001.pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "15780",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 392.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 392.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

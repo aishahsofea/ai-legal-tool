@@ -1,0 +1,88 @@
+{
+  "act_number": "136",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:51:01.313356+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=136&lang=BI",
+  "timeline": [
+    {
+      "date": "24/05/1950",
+      "project_id": "148",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/148_BI/ORDINANCE 14 1950_repaired.pdf"
+    },
+    {
+      "date": "08/04/1967",
+      "project_id": "3157419",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3157419_BI/ACT 18 1967 CONTRACTS.pdf"
+    },
+    {
+      "date": "17/03/1974",
+      "project_id": "3149444",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3149444_BI/A240 PARTNERSHIP 1974 AMEND_repaired.pdf"
+    },
+    {
+      "date": "18/03/1974",
+      "project_id": "3149517",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3149517_BI/A239 CONTRACTS 1974 AMEND_repaired.pdf"
+    },
+    {
+      "date": "18/06/1974",
+      "project_id": "3247502",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3247502_BI/136 CONTRACTS 1950.pdf"
+    },
+    {
+      "date": "04/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "01/09/1976",
+      "project_id": "3149268",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3149268_BI/A329 CONTRACTS 1976 AMEND_repaired (1).pdf"
+    },
+    {
+      "date": "26/12/1980",
+      "project_id": "1712494",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1712494/008 - P.U. (A) 357-1980.pdf"
+    },
+    {
+      "date": "10/07/1997",
+      "project_id": "2257239",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257239_BI/136 CONTARCTS 1950 REPRINT 1997.pdf"
+    },
+    {
+      "date": "11/06/2000",
+      "project_id": "2257241",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257241_BI/136 CONTRACTS 1950 REPRINT 2000.pdf"
+    },
+    {
+      "date": "12/01/2006",
+      "project_id": "15697",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 136.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 136.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1712494/008 - P.U. (A) 357-1980.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

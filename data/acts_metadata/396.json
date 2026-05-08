@@ -1,0 +1,42 @@
+{
+  "act_number": "396",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:53:58.017160+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=396&lang=BI",
+  "timeline": [
+    {
+      "date": "02/10/1964",
+      "project_id": "408",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/408_BI/27 of 1964.pdf"
+    },
+    {
+      "date": "18/11/1989",
+      "project_id": "2259947",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259947_BI/Act 396 Revised.pdf"
+    },
+    {
+      "date": "03/01/2002",
+      "project_id": "2259707",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259707_BI/Act 396 Reprint 2001.pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "15787",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 396.pdf"
+    },
+    {
+      "date": "06/12/2011",
+      "project_id": "16590",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 396 - Assignment of Export Duty (Mineral Ores) Act 1964.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 396 - Assignment of Export Duty (Mineral Ores) Act 1964.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,54 @@
+{
+  "act_number": "387",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:55:35.270927+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=387&lang=BI",
+  "timeline": [
+    {
+      "date": "06/05/1960",
+      "project_id": "399",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/399_BI/No. 1 of 1960.pdf"
+    },
+    {
+      "date": "26/12/1965",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "28/03/1985",
+      "project_id": "3098677",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3098677_BI/ACT A587.pdf"
+    },
+    {
+      "date": "23/10/1989",
+      "project_id": "2259967",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259967_BI/Act 387 Revised.pdf"
+    },
+    {
+      "date": "05/01/2002",
+      "project_id": "2259695",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259695_BI/Act 387 Reprint 2001.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15533",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 387.pdf"
+    },
+    {
+      "date": "08/10/2013",
+      "project_id": "1727481",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 387.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3098677_BI/ACT A587.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

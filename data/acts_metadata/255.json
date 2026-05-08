@@ -1,0 +1,79 @@
+{
+  "act_number": "255",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:29:41.060524+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=255&lang=BI",
+  "timeline": [
+    {
+      "date": "01/09/1951",
+      "project_id": "267",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/267_BI/ORD NO 28 1951.pdf"
+    },
+    {
+      "date": "31/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "21/12/1980",
+      "project_id": "3209178",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3209178/PUA 359 1980.pdf"
+    },
+    {
+      "date": "30/11/1981",
+      "project_id": "2263494",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263494_BI/ACT 255 REVISED 1981.pdf"
+    },
+    {
+      "date": "13/08/1985",
+      "project_id": "3209207",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3209207/PUA 355 1985.pdf"
+    },
+    {
+      "date": "27/05/1987",
+      "project_id": "1700335",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700335_BI/ACT A671.pdf"
+    },
+    {
+      "date": "07/08/2001",
+      "project_id": "2258361",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258361_BI/ACT 255 REPRINT 2001.pdf"
+    },
+    {
+      "date": "09/01/2006",
+      "project_id": "15274",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 255.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 255.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700335_BI/ACT A671.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

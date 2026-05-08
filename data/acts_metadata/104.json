@@ -1,0 +1,90 @@
+{
+  "act_number": "104",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:56:54.196918+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=104&lang=BI",
+  "timeline": [
+    {
+      "date": "13/04/1973",
+      "project_id": "116",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 104.pdf"
+    },
+    {
+      "date": "16/06/1974",
+      "project_id": "1700539",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A255.pdf"
+    },
+    {
+      "date": "01/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "20/02/1979",
+      "project_id": "1739492",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1739492_BI/003. Act A445 (1).pdf"
+    },
+    {
+      "date": "02/06/1981",
+      "project_id": "1734883",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1734883_BI/ACT A520.pdf"
+    },
+    {
+      "date": "26/02/1992",
+      "project_id": "490",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BI/ACT 478.pdf"
+    },
+    {
+      "date": "08/10/1994",
+      "project_id": "2256724",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2256724_BI/AKTA 104  CETAKAN 1 -1994 (BI).pdf"
+    },
+    {
+      "date": "05/10/1996",
+      "project_id": "1728076",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A967.pdf"
+    },
+    {
+      "date": "10/01/2000",
+      "project_id": "1727728",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727728_BI/act 210-repealed.pdf"
+    },
+    {
+      "date": "10/03/2000",
+      "project_id": "3466723",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3466723_BI/2. Act 104 (reprint 2000).pdf"
+    },
+    {
+      "date": "12/01/2006",
+      "project_id": "15463",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 104 (reprint 2006).pdf"
+    },
+    {
+      "date": "15/10/2017",
+      "project_id": "971",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20171003_A1540_BI_A1540 BI.pdf"
+    },
+    {
+      "date": "14/01/2018",
+      "project_id": "1727315",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 104 (reprint 2006).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20171003_A1540_BI_A1540 BI.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

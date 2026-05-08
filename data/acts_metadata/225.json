@@ -1,0 +1,91 @@
+{
+  "act_number": "225",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T23:51:27.632134+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=225&lang=BI",
+  "timeline": [
+    {
+      "date": "01/02/1980",
+      "project_id": "237",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 225- Original.pdf"
+    },
+    {
+      "date": "03/06/1985",
+      "project_id": "1742047",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A617.pdf"
+    },
+    {
+      "date": "23/03/1998",
+      "project_id": "1742048",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1019.pdf"
+    },
+    {
+      "date": "10/01/1999",
+      "project_id": "3145255",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3145255/P.U.(A) 270.pdf"
+    },
+    {
+      "date": "06/01/2001",
+      "project_id": "1712859",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 225- Reprint 2001.pdf"
+    },
+    {
+      "date": "30/05/2002",
+      "project_id": "1742049",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1150.pdf"
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "16087",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 225.pdf"
+    },
+    {
+      "date": "08/10/2010",
+      "project_id": "1742050",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1267.pdf"
+    },
+    {
+      "date": "10/01/2013",
+      "project_id": "16362",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 225 - Malaysian Examinations Council Act 1980.pdf"
+    },
+    {
+      "date": "11/04/2014",
+      "project_id": "16088",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 225 - Malaysian Examinations Council Act 1980 (Cetakan Semula 2014).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 225 - Malaysian Examinations Council Act 1980.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1267.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

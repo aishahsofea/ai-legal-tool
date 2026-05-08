@@ -1,0 +1,24 @@
+{
+  "act_number": "669",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:01:29.256002+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=669&lang=BI",
+  "timeline": [
+    {
+      "date": "27/07/2007",
+      "project_id": "681",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Julai 2007  Original Act 669.pdf"
+    },
+    {
+      "date": "03/11/2014",
+      "project_id": "15842",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 669.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 669.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

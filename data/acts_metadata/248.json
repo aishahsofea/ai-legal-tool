@@ -1,0 +1,48 @@
+{
+  "act_number": "248",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:30:46.176750+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=248&lang=BI",
+  "timeline": [
+    {
+      "date": "29/05/1952",
+      "project_id": "260",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/260_BI/ORD NO 16 1952.pdf"
+    },
+    {
+      "date": "31/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "23/08/1980",
+      "project_id": "1742111",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 248 Revised.pdf"
+    },
+    {
+      "date": "04/08/2001",
+      "project_id": "2258353",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258353_BI/ACT 248 REPRINT 2001.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "16135",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 248.pdf"
+    },
+    {
+      "date": "07/12/2012",
+      "project_id": "16136",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 248 - Innkeepers Act 1952.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 248 - Innkeepers Act 1952.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

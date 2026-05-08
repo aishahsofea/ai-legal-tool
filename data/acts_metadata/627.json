@@ -1,0 +1,46 @@
+{
+  "act_number": "627",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:09:02.080467+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=627&lang=BI",
+  "timeline": [
+    {
+      "date": "08/08/2003",
+      "project_id": "639",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/2004",
+      "project_id": "2257306",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "1712492",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/ACT 627 (REPRINT 2006).pdf"
+    },
+    {
+      "date": "26/03/2013",
+      "project_id": "1700552",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Repealed by Act 758.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/ACT 627 (REPRINT 2006).pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

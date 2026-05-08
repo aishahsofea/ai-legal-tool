@@ -1,0 +1,18 @@
+{
+  "act_number": "855",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:31:17.433899+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=855&lang=BI",
+  "timeline": [
+    {
+      "date": "30/07/2024",
+      "project_id": "2241197",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2241197_BI/Act 855- Preservation of Public Security (Sarawak) Act 1962 (BI).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

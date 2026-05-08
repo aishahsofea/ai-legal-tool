@@ -1,0 +1,30 @@
+{
+  "act_number": "54",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:08:03.223829+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=54&lang=BI",
+  "timeline": [
+    {
+      "date": "29/09/1967",
+      "project_id": "66",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 54 (REPEAL).pdf"
+    },
+    {
+      "date": "03/11/1971",
+      "project_id": "2260311",
+      "log_type": "REVISED",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/02/1993",
+      "project_id": "1727277",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 54 (REPEAL).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

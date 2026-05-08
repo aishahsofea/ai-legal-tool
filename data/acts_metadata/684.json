@@ -1,0 +1,52 @@
+{
+  "act_number": "684",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:59:25.136901+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=684&lang=BI",
+  "timeline": [
+    {
+      "date": "02/01/2008",
+      "project_id": "696",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 684-warta.pdf"
+    },
+    {
+      "date": "03/04/2008",
+      "project_id": "1709486",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/P.U.(B) 158-2008.pdf"
+    },
+    {
+      "date": "04/02/2013",
+      "project_id": "1709470",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 684 - Feb 2013.pdf"
+    },
+    {
+      "date": "05/03/2013",
+      "project_id": "16201",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 684 - Bank Pertanian Malaysia Berhad Act 2008.pdf"
+    },
+    {
+      "date": "06/10/2018",
+      "project_id": "1700489",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 684 (REPRINT 2018).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 684 (REPRINT 2018).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/P.U.(B) 158-2008.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

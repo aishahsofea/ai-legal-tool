@@ -1,0 +1,94 @@
+{
+  "act_number": "365",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:02:48.831613+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=365&lang=BI",
+  "timeline": [
+    {
+      "date": "22/09/1961",
+      "project_id": "377",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/377_BI/NO. 40 0F 1961.pdf"
+    },
+    {
+      "date": "05/07/1967",
+      "project_id": "1728034",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728034_BI/No. 33-1967.pdf"
+    },
+    {
+      "date": "03/01/1971",
+      "project_id": "3382526",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3382526/P.U. (B) 324-1970.pdf"
+    },
+    {
+      "date": "05/12/1974",
+      "project_id": "158",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/158_BI/ACT 146.pdf"
+    },
+    {
+      "date": "03/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "01/03/1989",
+      "project_id": "1728272",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728272/P.U. (A) 56-1989.pdf"
+    },
+    {
+      "date": "13/04/1989",
+      "project_id": "2263430",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263430_BI/Warta Act 365 revised.pdf"
+    },
+    {
+      "date": "25/02/1995",
+      "project_id": "1728035",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728035_BI/05. Act A910.pdf"
+    },
+    {
+      "date": "10/01/2001",
+      "project_id": "2259643",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259643_BI/Act 362 Reprint 2001.pdf"
+    },
+    {
+      "date": "11/01/2006",
+      "project_id": "15509",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 365.pdf"
+    },
+    {
+      "date": "27/06/2023",
+      "project_id": "1826840",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1826840_BI/Akta 846 BI.pdf"
+    },
+    {
+      "date": "16/07/2023",
+      "project_id": "1840723",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1840723_BI/Act 365 Final.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1840723_BI/Act 365 Final.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1826840_BI/Akta 846 BI.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

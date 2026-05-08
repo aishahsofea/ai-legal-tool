@@ -1,0 +1,60 @@
+{
+  "act_number": "28",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:18:50.751707+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=28&lang=BI",
+  "timeline": [
+    {
+      "date": "30/04/1971",
+      "project_id": "40",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/40_BI/ACT 28 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "30/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "04/03/1993",
+      "project_id": "1712882",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 28-Reprint 1993.pdf"
+    },
+    {
+      "date": "04/09/1999",
+      "project_id": "1727295",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 28-Reprint 1999.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "2257170",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257170_BI/ACT 28 - REPRINT 2006.pdf"
+    },
+    {
+      "date": "27/07/2011",
+      "project_id": "828",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/828_BI/ACT A1397.pdf"
+    },
+    {
+      "date": "08/12/2011",
+      "project_id": "16741",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 28 - Kootu Funds Prohibition Act 1971.pdf"
+    },
+    {
+      "date": "09/06/2014",
+      "project_id": "16027",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/16027_BI/ACT 28 - REPRINT 2014.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 28 - Kootu Funds Prohibition Act 1971.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/828_BI/ACT A1397.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

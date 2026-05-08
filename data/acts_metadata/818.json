@@ -1,0 +1,18 @@
+{
+  "act_number": "818",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:39:12.924412+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=818&lang=BI",
+  "timeline": [
+    {
+      "date": "28/12/2019",
+      "project_id": "1696006",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20191227_818_BI_818 ACT.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

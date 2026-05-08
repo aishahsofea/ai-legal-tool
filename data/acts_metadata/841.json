@@ -1,0 +1,18 @@
+{
+  "act_number": "841",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:32:43.151449+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=841&lang=BI",
+  "timeline": [
+    {
+      "date": "08/11/2022",
+      "project_id": "1746994",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1746994_BI/Act 841.BI.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

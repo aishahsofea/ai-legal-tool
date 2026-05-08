@@ -1,0 +1,61 @@
+{
+  "act_number": "707",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:56:01.006976+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=707&lang=BI",
+  "timeline": [
+    {
+      "date": "12/02/2010",
+      "project_id": "719",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 707 ori.pdf"
+    },
+    {
+      "date": "03/10/2015",
+      "project_id": "16387",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 707 23_10_2015.pdf"
+    },
+    {
+      "date": "17/12/2022",
+      "project_id": "1753078",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1753078/PUA 376 (2022).pdf"
+    },
+    {
+      "date": "05/07/2023",
+      "project_id": "1726088",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1726088_BI/Act 707- Reprint 2023.pdf"
+    },
+    {
+      "date": "27/04/2025",
+      "project_id": "2813222",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2813222_BI/A1759 BI- LABUAN LIMITED PARTNERSHIPS AND LIMITED LIABILITY PARTNERSHIPS (AMENDMENT) ACT 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 707 23_10_2015.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2813222_BI/A1759 BI- LABUAN LIMITED PARTNERSHIPS AND LIMITED LIABILITY PARTNERSHIPS (AMENDMENT) ACT 2025.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

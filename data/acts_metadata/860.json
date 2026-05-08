@@ -1,0 +1,49 @@
+{
+  "act_number": "860",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:30:51.329562+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=860&lang=BI",
+  "timeline": [
+    {
+      "date": "18/10/2024",
+      "project_id": "2430998",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2430998_BI/Act 860.pdf"
+    },
+    {
+      "date": "20/12/2024",
+      "project_id": "2574436",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2574436/PUB 509.pdf"
+    },
+    {
+      "date": "03/01/2026",
+      "project_id": "3274083",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3274083/PUA472_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

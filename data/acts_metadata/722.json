@@ -1,0 +1,24 @@
+{
+  "act_number": "722",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:53:42.074994+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=722&lang=BI",
+  "timeline": [
+    {
+      "date": "28/01/2011",
+      "project_id": "734",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act722 ori.pdf"
+    },
+    {
+      "date": "03/05/2015",
+      "project_id": "16400",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 722 (13042015).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 722 (13042015).pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

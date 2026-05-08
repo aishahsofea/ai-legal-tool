@@ -1,0 +1,60 @@
+{
+  "act_number": "110",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:55:40.968982+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=110&lang=BI",
+  "timeline": [
+    {
+      "date": "22/06/1973",
+      "project_id": "122",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/122_BI/AKTA 110- WARTA ASAL (BI).pdf"
+    },
+    {
+      "date": "03/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "25/02/1990",
+      "project_id": "3490996",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3490996_BI/A760 (BI).pdf"
+    },
+    {
+      "date": "24/02/1992",
+      "project_id": "490",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BI/ACT 478.pdf"
+    },
+    {
+      "date": "06/10/1994",
+      "project_id": "3490979",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3490979_BI/AKTA 110- CETAKAN 1994 (BI).pdf"
+    },
+    {
+      "date": "14/07/1999",
+      "project_id": "3491006",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3491006_BI/A1050 (BI).pdf"
+    },
+    {
+      "date": "07/03/2000",
+      "project_id": "3490983",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3490983_BI/AKTA 110 - CETAKAN 2000 (BI).pdf"
+    },
+    {
+      "date": "09/01/2006",
+      "project_id": "3490987",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3490987_BI/03. CETAKAN 2006 (BI).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3490987_BI/03. CETAKAN 2006 (BI).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3491006_BI/A1050 (BI).pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

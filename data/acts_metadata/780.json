@@ -1,0 +1,24 @@
+{
+  "act_number": "780",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:44:45.361955+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=780&lang=BI",
+  "timeline": [
+    {
+      "date": "02/09/2016",
+      "project_id": "15719",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 780.pdf"
+    },
+    {
+      "date": "16/05/2025",
+      "project_id": "2843895",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2843895_BI/Act A1762- BERNAMA (AMENDMENT) ACT 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2843895_BI/Act A1762- BERNAMA (AMENDMENT) ACT 2025.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

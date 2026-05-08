@@ -1,0 +1,28 @@
+{
+  "act_number": "822",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:38:53.513763+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=822&lang=BI",
+  "timeline": [
+    {
+      "date": "01/01/2020",
+      "project_id": "1696011",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20191231_822_BI_Act 822.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

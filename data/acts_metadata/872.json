@@ -1,0 +1,109 @@
+{
+  "act_number": "872",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:29:41.293470+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=872&lang=BI",
+  "timeline": [
+    {
+      "date": "01/01/2026",
+      "project_id": "3272166",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3272166_BI/Act 872 - GIG WORKERS ACT 2025.pdf"
+    },
+    {
+      "date": "01/04/2026",
+      "project_id": "3434493",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3434493/PUB122_2026.pdf"
+    },
+    {
+      "date": "02/04/2026",
+      "project_id": "3434451",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3434451/PUA143_2026.pdf"
+    },
+    {
+      "date": "03/04/2026",
+      "project_id": "3434389",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3434389/PUA144_2026.pdf"
+    },
+    {
+      "date": "04/04/2026",
+      "project_id": "3434400",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3434400/PUA145_2026.pdf"
+    },
+    {
+      "date": "05/04/2026",
+      "project_id": "3434365",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3434365/PUA146_2026.pdf"
+    },
+    {
+      "date": "07/04/2026",
+      "project_id": "3435789",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3435789/PUB 124_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 6
+}

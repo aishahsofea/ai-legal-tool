@@ -1,0 +1,24 @@
+{
+  "act_number": "131",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:51:46.386588+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=131&lang=BI",
+  "timeline": [
+    {
+      "date": "16/08/1957",
+      "project_id": "1815376",
+      "log_type": "REPEALED",
+      "pdf_url": ""
+    },
+    {
+      "date": "25/07/1992",
+      "project_id": "",
+      "log_type": "SUPERSEDED",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,60 @@
+{
+  "act_number": "302",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:20:24.750534+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=302&lang=BI",
+  "timeline": [
+    {
+      "date": "29/06/1984",
+      "project_id": "314",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/314_BI/302 BI.pdf"
+    },
+    {
+      "date": "17/01/1987",
+      "project_id": "1727941",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727941_BI/01. A663 BI.pdf"
+    },
+    {
+      "date": "15/09/1991",
+      "project_id": "1727942",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727942_BI/02. A807 BI.pdf"
+    },
+    {
+      "date": "08/02/1993",
+      "project_id": "1712861",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712861_BI/03. A843 BI.pdf"
+    },
+    {
+      "date": "05/09/2001",
+      "project_id": "2259530",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259530_BI/Act 302 BI Reprint 2001.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15320",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 302.pdf"
+    },
+    {
+      "date": "08/08/2013",
+      "project_id": "16177",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 302 - Petroleum (Safety Measures) Act 1984.pdf"
+    },
+    {
+      "date": "10/02/2022",
+      "project_id": "1722716",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1722716_BI/Act 302 Draf Muktamad (02022022).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1722716_BI/Act 302 Draf Muktamad (02022022).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712861_BI/03. A843 BI.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

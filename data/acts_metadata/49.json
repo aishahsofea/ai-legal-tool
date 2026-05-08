@@ -1,0 +1,187 @@
+{
+  "act_number": "49",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:14:18.834903+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=49&lang=BI",
+  "timeline": [
+    {
+      "date": "01/10/1971",
+      "project_id": "61",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/61_BI/ACT 49 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "23/06/1973",
+      "project_id": "1727677",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727677_BI/ACT A201.pdf"
+    },
+    {
+      "date": "19/08/1974",
+      "project_id": "1727662",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727662_BI/ACT A261.pdf"
+    },
+    {
+      "date": "21/03/1977",
+      "project_id": "1727678",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727678_BI/ACT A376.pdf"
+    },
+    {
+      "date": "27/02/1990",
+      "project_id": "1727679",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727679_BI/ACT A764.pdf"
+    },
+    {
+      "date": "07/03/1993",
+      "project_id": "1712989",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712989_BI/ACT 49 - REPRINT 1993.pdf"
+    },
+    {
+      "date": "15/07/1999",
+      "project_id": "1727680",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727680_BI/ACT A1051.pdf"
+    },
+    {
+      "date": "08/09/1999",
+      "project_id": "1727302",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727302_BI/ACT 49 - REPRINT 1999.pdf"
+    },
+    {
+      "date": "10/01/2006",
+      "project_id": "1712990",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 49 Reprint 2006.pdf"
+    },
+    {
+      "date": "19/02/2012",
+      "project_id": "847",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/847_BI/ACT A1416.pdf"
+    },
+    {
+      "date": "12/10/2012",
+      "project_id": "16236",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 49 - Lembaga Kemajuan Ikan Malaysia Act 1971.pdf"
+    },
+    {
+      "date": "13/02/2013",
+      "project_id": "15374",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 49 - Lembaga Kemajuan Ikan Malaysia 1971 (Cetakan Semula 2013).pdf"
+    },
+    {
+      "date": "11/05/2026",
+      "project_id": "3485500",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3485500/PUA 178 (2026).pdf"
+    },
+    {
+      "date": "14/05/2026",
+      "project_id": "3491185",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3491185/P.U. (A) 182_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 49 - Lembaga Kemajuan Ikan Malaysia Act 1971.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/847_BI/ACT A1416.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 10
+}

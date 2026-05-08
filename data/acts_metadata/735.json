@@ -1,0 +1,24 @@
+{
+  "act_number": "735",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:50:22.358847+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=735&lang=BI",
+  "timeline": [
+    {
+      "date": "31/12/2011",
+      "project_id": "747",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20111230_735_BI_JW1640 (Act 735 BI).pdf"
+    },
+    {
+      "date": "03/05/2015",
+      "project_id": "16231",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 735 - Banishment (Repeal) Act 2011.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 735 - Banishment (Repeal) Act 2011.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

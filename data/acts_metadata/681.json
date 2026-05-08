@@ -1,0 +1,42 @@
+{
+  "act_number": "681",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:59:45.050909+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=681&lang=BI",
+  "timeline": [
+    {
+      "date": "02/01/1957",
+      "project_id": "693",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "08/12/2007",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/12/2007",
+      "project_id": "1700608",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Dec 2007  Revised Act 681.pdf"
+    },
+    {
+      "date": "05/01/2015",
+      "project_id": "1709460",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Jan 2015  Reprint  Online Act 681.pdf"
+    },
+    {
+      "date": "06/11/2017",
+      "project_id": "15357",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 681 BI.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Jan 2015  Reprint  Online Act 681.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

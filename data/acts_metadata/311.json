@@ -1,0 +1,42 @@
+{
+  "act_number": "311",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:17:34.671028+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=311&lang=BI",
+  "timeline": [
+    {
+      "date": "01/01/1985",
+      "project_id": "323",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/323_BI/311 BI.pdf"
+    },
+    {
+      "date": "02/09/2001",
+      "project_id": "2259540",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259540_BI/act 311 Reprint BI 2001.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "16089",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 311.pdf"
+    },
+    {
+      "date": "04/01/2007",
+      "project_id": "1727950",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727950_BI/A1277 BI_unlocked.pdf"
+    },
+    {
+      "date": "06/01/2013",
+      "project_id": "16733",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 311 - Exclusive Economic Zone Act 1984.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 311 - Exclusive Economic Zone Act 1984.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727950_BI/A1277 BI_unlocked.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

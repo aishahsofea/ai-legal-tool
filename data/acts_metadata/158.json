@@ -1,0 +1,82 @@
+{
+  "act_number": "158",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T00:57:41.350062+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=158&lang=BI",
+  "timeline": [
+    {
+      "date": "23/05/1975",
+      "project_id": "170",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 158 original.pdf"
+    },
+    {
+      "date": "31/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "03/10/1977",
+      "project_id": "1727825",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A415.pdf"
+    },
+    {
+      "date": "05/01/1988",
+      "project_id": "1728077",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1032.pdf"
+    },
+    {
+      "date": "06/01/1998",
+      "project_id": "2258233",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/04/2001",
+      "project_id": "1727319",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 158 reprint 2001.pdf"
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "15825",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 158.pdf"
+    },
+    {
+      "date": "09/11/2015",
+      "project_id": "924",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20150824_A 1493_BI_A1493 BI.pdf"
+    },
+    {
+      "date": "09/12/2015",
+      "project_id": "16513",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 158 - KU 6.11.2015.pdf"
+    },
+    {
+      "date": "15/06/2024",
+      "project_id": "2151065",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2151065/PUA149_2024.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 158 - KU 6.11.2015.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20150824_A 1493_BI_A1493 BI.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

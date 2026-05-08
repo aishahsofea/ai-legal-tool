@@ -1,0 +1,18 @@
+{
+  "act_number": "168",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T00:49:57.629565+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=168&lang=BI",
+  "timeline": [
+    {
+      "date": "02/03/1976",
+      "project_id": "1712831",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712831_BI/Act 168 - Repeal by Act 645.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

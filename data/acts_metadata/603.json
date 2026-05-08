@@ -1,0 +1,24 @@
+{
+  "act_number": "603",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:16:44.604320+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=603&lang=BI",
+  "timeline": [
+    {
+      "date": "16/06/2000",
+      "project_id": "615",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/2006",
+      "project_id": "1727504",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 603-reprint 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 603-reprint 2006.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

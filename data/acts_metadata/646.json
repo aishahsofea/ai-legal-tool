@@ -1,0 +1,60 @@
+{
+  "act_number": "646",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:05:01.477737+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=646&lang=BI",
+  "timeline": [
+    {
+      "date": "01/01/2006",
+      "project_id": "658",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/gazette act 646.pdf"
+    },
+    {
+      "date": "03/07/2011",
+      "project_id": "826",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/826_BI/Act A1395.pdf"
+    },
+    {
+      "date": "04/12/2011",
+      "project_id": "16347",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/001a - Act 646 - Arbitration Act 2005- dec 2011.pdf"
+    },
+    {
+      "date": "04/03/2018",
+      "project_id": "994",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1563-2018.pdf"
+    },
+    {
+      "date": "06/03/2018",
+      "project_id": "16348",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/002a - Act 646 - (TP 20.3.2018)- 1 march 3018.pdf"
+    },
+    {
+      "date": "14/05/2018",
+      "project_id": "1079",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1569- 2018 (2).pdf"
+    },
+    {
+      "date": "08/11/2018",
+      "project_id": "1700445",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 646 (REPRINT 2018).pdf"
+    },
+    {
+      "date": "09/11/2024",
+      "project_id": "2459432",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2459432_BI/Act A1737.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/002a - Act 646 - (TP 20.3.2018)- 1 march 3018.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2459432_BI/Act A1737.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

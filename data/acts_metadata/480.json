@@ -1,0 +1,24 @@
+{
+  "act_number": "480",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:39:24.824327+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=480&lang=BI",
+  "timeline": [
+    {
+      "date": "21/02/1992",
+      "project_id": "492",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 480.pdf"
+    },
+    {
+      "date": "03/03/2001",
+      "project_id": "",
+      "log_type": "REPEALED",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

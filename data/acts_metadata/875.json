@@ -1,0 +1,18 @@
+{
+  "act_number": "875",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:29:20.739914+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=875&lang=BI",
+  "timeline": [
+    {
+      "date": "01/01/2026",
+      "project_id": "3276538",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3276538_BI/Act 875 - MEASURES FOR THE COLLECTION, ADMINISTRATION AND ENFORCEMENT OF TAX ACT 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,42 @@
+{
+  "act_number": "130",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:51:54.152315+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=130&lang=BI",
+  "timeline": [
+    {
+      "date": "15/03/1974",
+      "project_id": "142",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/142_BI/AKTA 130 (ORI) BI.pdf"
+    },
+    {
+      "date": "12/01/1976",
+      "project_id": "1712784",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712784_BI/ACT A324.pdf"
+    },
+    {
+      "date": "04/01/1995",
+      "project_id": "2257047",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257047_BI/AKTA 130 CETAKAN 1 -1995 (BI).pdf"
+    },
+    {
+      "date": "04/05/2000",
+      "project_id": "2258189",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258189_BI/AKTA 130 CETAKAN 2-2000 (BI).pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "15505",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 130.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 130.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712784_BI/ACT A324.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

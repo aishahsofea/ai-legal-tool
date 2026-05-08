@@ -1,0 +1,48 @@
+{
+  "act_number": "404",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:52:14.167559+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=404&lang=BI",
+  "timeline": [
+    {
+      "date": "06/04/1967",
+      "project_id": "1727873",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727873_BI/ACT 17 1967.pdf"
+    },
+    {
+      "date": "09/12/1989",
+      "project_id": "",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "17/12/1989",
+      "project_id": "2259915",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259915_BI/ACT 404 REVISED 1989.pdf"
+    },
+    {
+      "date": "16/09/1991",
+      "project_id": "3348586",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3348586_BI/ACT A808.pdf"
+    },
+    {
+      "date": "06/01/2001",
+      "project_id": "2259863",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259863_BI/ACT 404 REPRINT 2001.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15876",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 404.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 404.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3348586_BI/ACT A808.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

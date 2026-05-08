@@ -1,0 +1,54 @@
+{
+  "act_number": "135",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T01:51:10.438298+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=135&lang=BI",
+  "timeline": [
+    {
+      "date": "29/04/1961",
+      "project_id": "147",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/147_BI/Ori 135 no1.1961.pdf"
+    },
+    {
+      "date": "18/09/1963",
+      "project_id": "3186836",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3186836_BI/Sab. G.N.S. 129.1963.pdf"
+    },
+    {
+      "date": "27/12/1964",
+      "project_id": "3186838",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3186838_BI/L.N. 458.1964.pdf"
+    },
+    {
+      "date": "05/07/1974",
+      "project_id": "3149444",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3149444_BI/A240 PARTNERSHIP 1974 AMEND_repaired.pdf"
+    },
+    {
+      "date": "06/07/1974",
+      "project_id": "2271014",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2271014_BI/Revised ACT 135.pdf"
+    },
+    {
+      "date": "07/06/2000",
+      "project_id": "3181811",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3181811_BI/Reprint 2000 Act135.pdf"
+    },
+    {
+      "date": "08/06/2006",
+      "project_id": "3184772",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3181811_BI/Reprint 2000 Act135.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3149444_BI/A240 PARTNERSHIP 1974 AMEND_repaired.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

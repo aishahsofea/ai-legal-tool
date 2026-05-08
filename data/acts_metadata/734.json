@@ -1,0 +1,24 @@
+{
+  "act_number": "734",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:50:28.010449+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=734&lang=BI",
+  "timeline": [
+    {
+      "date": "31/12/2011",
+      "project_id": "746",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/746_BI/08. Act 734_unlocked.pdf"
+    },
+    {
+      "date": "03/02/2016",
+      "project_id": "16438",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 734 -PPPUU Lulus 29_2_2016.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 734 -PPPUU Lulus 29_2_2016.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

@@ -1,0 +1,24 @@
+{
+  "act_number": "324",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:14:28.662482+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=324&lang=BI",
+  "timeline": [
+    {
+      "date": "10/01/1986",
+      "project_id": "336",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 324_warta.pdf"
+    },
+    {
+      "date": "03/01/1997",
+      "project_id": "1727288",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act A987.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

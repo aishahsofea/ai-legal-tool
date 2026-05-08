@@ -1,0 +1,43 @@
+{
+  "act_number": "577",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:21:07.471791+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=577&lang=BI",
+  "timeline": [
+    {
+      "date": "16/09/2011",
+      "project_id": "589",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "1700544",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/577 BI.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 2
+}

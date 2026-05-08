@@ -1,0 +1,48 @@
+{
+  "act_number": "346",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:05:58.752959+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=346&lang=BI",
+  "timeline": [
+    {
+      "date": "05/01/1960",
+      "project_id": "358",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/358_BI/ACT 346.pdf"
+    },
+    {
+      "date": "20/05/1967",
+      "project_id": "1728013",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728013_BI/ACT 23 1967.pdf"
+    },
+    {
+      "date": "01/03/1976",
+      "project_id": "1728014",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728014_BI/02. A331 BI.pdf"
+    },
+    {
+      "date": "03/10/1988",
+      "project_id": "2263458",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263458_BI/ACT WILLS Revised.pdf"
+    },
+    {
+      "date": "05/11/2001",
+      "project_id": "2259605",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259605_BI/Act 346 Reprint 2001.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15398",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 346.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 346.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728014_BI/02. A331 BI.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

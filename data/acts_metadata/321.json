@@ -1,0 +1,48 @@
+{
+  "act_number": "321",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:14:49.408742+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=321&lang=BI",
+  "timeline": [
+    {
+      "date": "30/04/1975",
+      "project_id": "1727740",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727740_BI/ACT A292.pdf"
+    },
+    {
+      "date": "26/05/1976",
+      "project_id": "1727741",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727741_BI/ACT A349.pdf"
+    },
+    {
+      "date": "15/09/1985",
+      "project_id": "333",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/333_BI/Original_Act 321.pdf"
+    },
+    {
+      "date": "04/09/2001",
+      "project_id": "2259560",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259560_BI/321 Reprint 2001.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "16105",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 321.pdf"
+    },
+    {
+      "date": "07/12/2012",
+      "project_id": "16747",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 321 - Rubber Statutory Bodies Act 1985.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 321 - Rubber Statutory Bodies Act 1985.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727741_BI/ACT A349.pdf",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

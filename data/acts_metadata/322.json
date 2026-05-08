@@ -1,0 +1,36 @@
+{
+  "act_number": "322",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:14:41.560871+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=322&lang=BI",
+  "timeline": [
+    {
+      "date": "13/09/1985",
+      "project_id": "334",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/334_BI/Original_Act 322.pdf"
+    },
+    {
+      "date": "02/09/2001",
+      "project_id": "2259561",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259561_BI/322 Reprint 2001.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15323",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 322.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16179",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 322 - Telecommunication Services (Successor Company) Act.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 322 - Telecommunication Services (Successor Company) Act.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

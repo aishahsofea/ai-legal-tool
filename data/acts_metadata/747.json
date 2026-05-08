@@ -1,0 +1,64 @@
+{
+  "act_number": "747",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:49:07.246084+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=747&lang=BI",
+  "timeline": [
+    {
+      "date": "23/06/2012",
+      "project_id": "759",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20120622_747_BI_Act 747 BI.pdf"
+    },
+    {
+      "date": "17/06/2015",
+      "project_id": "918",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20150604_A1487_BI_Act A1487.pdf"
+    },
+    {
+      "date": "04/08/2015",
+      "project_id": "16429",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 747 -TPPUU).pdf"
+    },
+    {
+      "date": "05/11/2024",
+      "project_id": "2459430",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2459430_BI/Act A1736.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 747 -TPPUU).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2459430_BI/Act A1736.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 3
+}

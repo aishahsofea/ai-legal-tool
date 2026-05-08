@@ -1,0 +1,18 @@
+{
+  "act_number": "874",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:29:25.974175+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=874&lang=BI",
+  "timeline": [
+    {
+      "date": "01/01/2026",
+      "project_id": "3276537",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3276537_BI/Act 874 - FINANCE ACT 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

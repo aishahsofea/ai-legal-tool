@@ -1,0 +1,18 @@
+{
+  "act_number": "877",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:29:10.126344+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=877&lang=BI",
+  "timeline": [
+    {
+      "date": "31/01/2026",
+      "project_id": "3340871",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3340871_BI/Act 877.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

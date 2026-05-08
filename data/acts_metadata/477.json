@@ -1,0 +1,36 @@
+{
+  "act_number": "477",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:39:45.579876+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=477&lang=BI",
+  "timeline": [
+    {
+      "date": "21/02/1992",
+      "project_id": "489",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/2001",
+      "project_id": "2260179",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "16001",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 477.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16675",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 477 - Import Duties (Validation) Act 1992.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 477 - Import Duties (Validation) Act 1992.pdf",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

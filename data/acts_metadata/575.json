@@ -1,0 +1,24 @@
+{
+  "act_number": "575",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:21:24.500721+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=575&lang=BI",
+  "timeline": [
+    {
+      "date": "26/09/1997",
+      "project_id": "587",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/2009",
+      "project_id": "1709473",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/575 BM (Dimansuhkan).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}

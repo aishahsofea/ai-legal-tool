@@ -1,0 +1,310 @@
+{
+  "act_number": "265",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T10:27:50.773789+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=265&lang=BI",
+  "timeline": [
+    {
+      "date": "12/12/1956",
+      "project_id": "3223640",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3223640_BI/ORD. 43-1956.pdf"
+    },
+    {
+      "date": "15/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "30/01/1966",
+      "project_id": "1728110",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728110_BI/Act 9-1966.pdf"
+    },
+    {
+      "date": "04/10/1966",
+      "project_id": "1728111",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728111_BI/ACT 40-1966.pdf"
+    },
+    {
+      "date": "26/08/1967",
+      "project_id": "1728112",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728112_BI/Act 37 1967.pdf"
+    },
+    {
+      "date": "07/01/1971",
+      "project_id": "1728227",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728227/02. P.U. (B) 324-1970.pdf"
+    },
+    {
+      "date": "17/01/1971",
+      "project_id": "1728113",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728113_BI/07. A91 EMPLOYMENT 1971 AMEND.pdf"
+    },
+    {
+      "date": "08/10/1971",
+      "project_id": "1728113",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728113_BI/07. A91 EMPLOYMENT 1971 AMEND.pdf"
+    },
+    {
+      "date": "10/01/1975",
+      "project_id": "2255961",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2255961_BI/265 REPRINT 1975 BI.pdf"
+    },
+    {
+      "date": "07/11/1976",
+      "project_id": "1728114",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728114_BI/A360 EMPLOYMENT 1976 AMEND 1.pdf"
+    },
+    {
+      "date": "25/08/1980",
+      "project_id": "1728115",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728115_BI/09. A497 EMPLOYMENT 1980 AMEND.pdf"
+    },
+    {
+      "date": "09/02/1982",
+      "project_id": "277",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/277_BI/ORD. 38-1955.pdf"
+    },
+    {
+      "date": "03/03/1982",
+      "project_id": "3199852",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3199852_BI/265 EMPLOYMENT 1955 (REVISED).pdf"
+    },
+    {
+      "date": "14/01/1985",
+      "project_id": "1728116",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728116_BI/10. A610 BI.pdf"
+    },
+    {
+      "date": "24/02/1989",
+      "project_id": "1728117",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728117_BI/11. A716 EMPLOYMENT 1989 AMEND_repaired.pdf"
+    },
+    {
+      "date": "17/10/1995",
+      "project_id": "1728354",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728354/12. PU (A) 326 y1955.pdf"
+    },
+    {
+      "date": "25/01/1998",
+      "project_id": "1728118",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728118_BI/13. A1026 Employment (Amendment) Act 1998.pdf"
+    },
+    {
+      "date": "18/09/2000",
+      "project_id": "1728119",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728119_BI/14. A1085 Employment (Amendment) Act 2000.pdf"
+    },
+    {
+      "date": "20/11/2000",
+      "project_id": "1728355",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728355/15. P.U. (A) 400 [] 2000_unlocked.pdf"
+    },
+    {
+      "date": "20/08/2001",
+      "project_id": "2255964",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2255964_BI/265 EMPLOYMENT 1955 REPRINT 2001 1.pdf"
+    },
+    {
+      "date": "01/08/2002",
+      "project_id": "1728356",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728356/P.U.(A) 279 2002_unlocked.pdf"
+    },
+    {
+      "date": "05/10/2002",
+      "project_id": "1728357",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728357/17. P.U.(A) 380 2002_unlocked (1).pdf"
+    },
+    {
+      "date": "24/01/2006",
+      "project_id": "2255966",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2255966_BI/265 EMPLOYMENT 1955 REPRINT 2006_unlocked.pdf"
+    },
+    {
+      "date": "04/03/2012",
+      "project_id": "850",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/850_BI/18. A1419 EMPLOYMENT 2012 AMEND_unlocked.pdf"
+    },
+    {
+      "date": "24/04/2012",
+      "project_id": "1988",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1988/19. P.U.(A) 88 2012_unlocked.pdf"
+    },
+    {
+      "date": "26/05/2012",
+      "project_id": "16372",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 265 - Employment Act 1955.pdf"
+    },
+    {
+      "date": "06/06/2022",
+      "project_id": "1731234",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1731234_BI/A1651 BI.pdf"
+    },
+    {
+      "date": "12/09/2022",
+      "project_id": "1740274",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1740274/PUA 262.pdf"
+    },
+    {
+      "date": "28/09/2022",
+      "project_id": "1741704",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1741704/P.U. (A) 273_2022 PERINTAH KERJA (PINDAAN JADUAL PERTAMA) (PINDAAN) 2022.pdf"
+    },
+    {
+      "date": "29/09/2022",
+      "project_id": "1741704",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1741704/P.U. (A) 273_2022 PERINTAH KERJA (PINDAAN JADUAL PERTAMA) (PINDAAN) 2022.pdf"
+    },
+    {
+      "date": "01/02/2023",
+      "project_id": "1741197",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1741197_BI/Act 265_FINAL_as at 1 Jan 2023 (30.3.23).pdf"
+    },
+    {
+      "date": "02/09/2023",
+      "project_id": "1744567",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1744567_BI/Reprint Act 265 (Final).pdf"
+    },
+    {
+      "date": "01/10/2023",
+      "project_id": "1851892",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1851892/P.U. (A) 257_2023.pdf"
+    },
+    {
+      "date": "02/10/2023",
+      "project_id": "1851892",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1851892/P.U. (A) 257_2023.pdf"
+    },
+    {
+      "date": "04/09/2024",
+      "project_id": "2243640",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2243640/PUA 201.pdf"
+    },
+    {
+      "date": "04/06/2025",
+      "project_id": "2837031",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2837031/PUA 137 (2025).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1741197_BI/Act 265_FINAL_as at 1 Jan 2023 (30.3.23).pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1731234_BI/A1651 BI.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 9
+}

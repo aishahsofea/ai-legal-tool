@@ -1,0 +1,58 @@
+{
+  "act_number": "423",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T09:49:43.223793+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=423&lang=BI",
+  "timeline": [
+    {
+      "date": "23/02/1990",
+      "project_id": "435",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/435_BI/ACT 423 (1).pdf"
+    },
+    {
+      "date": "23/02/1992",
+      "project_id": "490",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BI/ACT 478.pdf"
+    },
+    {
+      "date": "07/03/1994",
+      "project_id": "3386808",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3386808_BI/ACT A882.pdf"
+    },
+    {
+      "date": "05/01/2001",
+      "project_id": "2259898",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259898_BI/ACT 423 REPRINT 2001.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "15903",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 423.pdf"
+    },
+    {
+      "date": "07/01/2013",
+      "project_id": "16619",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 423 - Lembaga Pembangunan Langkawi Act 1990.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 423 - Lembaga Pembangunan Langkawi Act 1990.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3386808_BI/ACT A882.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 1
+}

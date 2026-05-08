@@ -1,0 +1,130 @@
+{
+  "act_number": "743",
+  "act_type": "updated",
+  "scraped_at": "2026-05-04T08:49:33.702515+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=743&lang=BI",
+  "timeline": [
+    {
+      "date": "10/02/2012",
+      "project_id": "755",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20120209_743_BI_JW001761 Act 743-BI.pdf"
+    },
+    {
+      "date": "02/02/2017",
+      "project_id": "908",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20150105_A1477_BI_Act A1477.pdf"
+    },
+    {
+      "date": "04/03/2017",
+      "project_id": "16582",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 743 - kelulusan TP-2 5 2018.pdf"
+    },
+    {
+      "date": "19/07/2022",
+      "project_id": "1736657",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1736657/PUA 232.pdf"
+    },
+    {
+      "date": "06/08/2022",
+      "project_id": "1738976",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1738976_BI/010822_Act 743_final.pdf"
+    },
+    {
+      "date": "20/10/2022",
+      "project_id": "1746192",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1746192/PUB490..pdf"
+    },
+    {
+      "date": "24/10/2024",
+      "project_id": "2430741",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2430741_BI/Act A1728.pdf"
+    },
+    {
+      "date": "23/04/2025",
+      "project_id": "2814221",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2814221/PUA 121_2025.pdf"
+    },
+    {
+      "date": "24/04/2025",
+      "project_id": "2814221",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2814221/PUA 121_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1738976_BI/010822_Act 743_final.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2430741_BI/Act A1728.pdf",
+  "subsidiary_legislation": [
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    },
+    {
+      "publication_date": "",
+      "pu_number": "",
+      "title_en": "",
+      "title_bm": "",
+      "status": "",
+      "related_legislation": "",
+      "pdf_url": ""
+    }
+  ],
+  "subsidiary_total": 7
+}

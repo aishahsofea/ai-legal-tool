@@ -1,0 +1,18 @@
+{
+  "act_number": "6",
+  "act_type": "updated",
+  "scraped_at": "2026-05-07T02:26:13.520949+00:00",
+  "detail_url": "https://lom.agc.gov.my/act-detail.php?act=6&lang=BI",
+  "timeline": [
+    {
+      "date": "02/01/1957",
+      "project_id": "1700558",
+      "log_type": "REPEALED",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0
+}
