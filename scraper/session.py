@@ -33,6 +33,32 @@ _IGNORED_PARAMS = [
 ]
 
 
+def _retry_adapter() -> HTTPAdapter:
+    retry = Retry(
+        total=3,
+        backoff_factor=2.0,
+        status_forcelist=[429, 500, 502, 503, 504],
+        allowed_methods=["GET", "POST"],
+        raise_on_status=False,
+        read=False,
+    )
+    return HTTPAdapter(max_retries=retry)
+
+
+def build_download_session() -> requests.Session:
+    """Plain (uncached) session for binary downloads — avoids storing PDFs in SQLite."""
+    session = requests.Session()
+    adapter = _retry_adapter()
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+    session.headers.update({
+        "User-Agent": "Mozilla/5.0 (compatible; research-scraper/1.0)",
+        "Accept": "application/pdf, */*",
+        "Referer": "https://lom.agc.gov.my/",
+    })
+    return session
+
+
 def build_session() -> requests_cache.CachedSession:
     session = requests_cache.CachedSession(
         cache_name=CACHE_NAME,
@@ -44,18 +70,7 @@ def build_session() -> requests_cache.CachedSession:
         ignored_parameters=_IGNORED_PARAMS,
     )
 
-    retry = Retry(
-        total=3,
-        backoff_factor=2.0,               # waits: 2s, 4s, 8s
-        status_forcelist=[429, 500, 502, 503, 504],
-        allowed_methods=["GET", "POST"],
-        raise_on_status=False,
-        # Don't retry on read timeouts — _safe_get/_safe_post handle that with
-        # intentional delays. Without this, urllib3 retries 3x internally AND
-        # _safe_get retries again on top, burning hours on a single slow act.
-        read=False,
-    )
-    adapter = HTTPAdapter(max_retries=retry)
+    adapter = _retry_adapter()
     session.mount("https://", adapter)
     session.mount("http://", adapter)
 

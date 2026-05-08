@@ -4,7 +4,9 @@ CLI entrypoint for the AGC scraper.
 Usage:
     python run.py --step 1                          # listing pages only
     python run.py --step 2                          # detail pages only (needs step 1 first)
-    python run.py --step all                        # both steps
+    python run.py --step 3                          # download PDFs (needs step 2 first)
+    python run.py --step 4                          # extract section chunks (needs step 3 first)
+    python run.py --step all                        # all steps in order
 
     python run.py --step 1 --types updated revised  # only fetch updated + revised lists
     python run.py --step 2 --detail-types updated   # only scrape updated acts in detail
@@ -40,7 +42,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--step",
-        choices=["1", "2", "all"],
+        choices=["1", "2", "3", "4", "all"],
         default="all",
         help="Which step to run (default: all)",
     )
@@ -98,6 +100,10 @@ def main() -> None:
             print(f"  Step 1: would fetch types: {args.types}")
         if args.step in ("2", "all"):
             print(f"  Step 2: would scrape detail-types: {args.detail_types}")
+        if args.step in ("3", "all"):
+            print("  Step 3: would download PDFs to data/pdfs/en/")
+        if args.step in ("4", "all"):
+            print("  Step 4: would extract section chunks to data/chunks/en/")
         return
 
     if args.step in ("1", "all"):
@@ -107,6 +113,14 @@ def main() -> None:
     if args.step in ("2", "all"):
         from scraper.step2_detail import run_step2
         run_step2(detail_types=args.detail_types)
+
+    if args.step in ("3", "all"):
+        from scraper.step3_pdfs import run_step3
+        run_step3()
+
+    if args.step in ("4", "all"):
+        from scraper.step4_extract import run_step4
+        run_step4()
 
 
 if __name__ == "__main__":

@@ -19,9 +19,13 @@ RETRY_DELAYS   = [5, 15, 30, 60]  # successive retry waits in seconds
 FETCH_PAGE_SIZE = 100  # DataTables records per page
 
 # Output paths
-DATA_DIR      = "data"
-INDEX_FILE    = "data/acts_index.json"
-METADATA_DIR  = "data/acts_metadata"
-CACHE_DIR     = "data/cache"
-CACHE_NAME    = "data/cache/lom_cache"
-LOG_FILE      = "scraper.log"
+DATA_DIR         = "data"
+INDEX_FILE       = "data/acts_index.json"
+METADATA_DIR     = "data/acts_metadata"
+CACHE_DIR        = "data/cache"
+CACHE_NAME       = "data/cache/lom_cache"
+PDF_EN_DIR       = "data/pdfs/en"
+DOWNLOAD_REPORT  = "data/pdfs/download_report.json"
+CHUNKS_EN_DIR    = "data/chunks/en"
+EXTRACT_REPORT   = "data/chunks/extract_report.json"
+LOG_FILE         = "scraper.log"
