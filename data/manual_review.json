@@ -1,0 +1,458 @@
+{
+  "summary": {
+    "download_failures": 44,
+    "scanned_pdfs": 29,
+    "zero_chunk_extracts": 16,
+    "total": 89
+  },
+  "download_failures": [
+    {
+      "act_number": "75",
+      "title": "LEMBAGA KEMAJUAN JOHOR TENGGARA ACT 1972",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 75 (Reprint 2018).pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "78",
+      "title": "NATIONAL REGISTRATION ACT 1959",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 78 (Reprint 2006).pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "80",
+      "title": "NATIONAL LIBRARY ACT 1972",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 80 (Reprint 2006).pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "81",
+      "title": "PAWNBROKERS ACT 1972",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 81 (Reprint 2006).pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "150",
+      "title": "PASSPORTS ACT 1966",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 150 Reprint 2006.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "278",
+      "title": "LEMBAGA LETRIK SABAH ACT 1983",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/PU(A) 158y2010.pdf",
+      "source": "amendment"
+    },
+    {
+      "act_number": "287",
+      "title": "CO-OPERATIVE SOCIETIES ACT 1948",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 287 - Act A334.pdf",
+      "source": "amendment"
+    },
+    {
+      "act_number": "353",
+      "title": "EMPLOYMENT (RESTRICTION) ACT 1968",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A117.pdf",
+      "source": "amendment"
+    },
+    {
+      "act_number": "499",
+      "title": "FUTURES INDUSTRY ACT 1993",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A987.pdf",
+      "source": "amendment"
+    },
+    {
+      "act_number": "557",
+      "title": "FINANCE ACT 1997",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 557.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "562",
+      "title": "DIGITAL SIGNATURE ACT 1997",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 562 Reprint 2006.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "564",
+      "title": "TELEMEDICINE ACT 1997",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 564 Reprint 2006.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "569",
+      "title": "LEMBAGA KEMAJUAN PAHANG TENGGARA (DISSOLUTION) ACT 1997",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 569 Reprint 2006.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "571",
+      "title": "BANK SIMPANAN NASIONAL BERHAD ACT 1997",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 571 Jan 2006.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "578",
+      "title": "FINANCE ACT 1998",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 578.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "581",
+      "title": "WATER SUPPLY (FEDERAL TERRITORY OF KUALA LUMPUR) ACT 1998",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 581.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "582",
+      "title": "MALAYSIAN PALM OIL BOARD ACT 1998",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 582.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "583",
+      "title": "FEES (NATIONAL PLANETARIUM) (VALIDATION) ACT 1998",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 583.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "584",
+      "title": "TEACHERS' SUPERANNUATION FUND (SABAH) (DISSOLUTION) ACT 1998",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 584.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "585",
+      "title": "SYARIAH COURT CIVIL PROCEDURE (FEDERAL TERRITORIES) ACT 1998",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 585.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "588",
+      "title": "COMMUNICATIONS AND MULTIMEDIA ACT 1998",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 588 2006.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "589",
+      "title": "MALAYSIAN COMMUNICATIONS AND MULTIMEDIA COMMISSION ACT 1998",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 589 (2006).pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "591",
+      "title": "FINANCE (NO. 2) ACT 1998",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 591 (2006).pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "596",
+      "title": "SOUTH INDIAN LABOUR FUND (DISSOLUTION) ACT 1999",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 596.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "603",
+      "title": "ANTI-PERSONNEL MINES CONVENTION IMPLEMENTATION ACT 2000",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 603-reprint 2006.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "628",
+      "title": "*NATIONAL SERVICE TRAINING ACT 2003",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 628 - National Service Training Act 2003.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "633",
+      "title": "*MALAYSIAN MARITIME ENFORCEMENT AGENCY ACT 2004",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 633 - reprint online version 2018.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "645",
+      "title": "NATIONAL HERITAGE ACT 2005",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 645- REPRINT 2005.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "663",
+      "title": "BUILDING AND COMMON PROPERTY (MAINTENANCE AND MANAGEMENT) ACT 2007",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 663 (Reprint) Nov 2012.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "683",
+      "title": "*FINANCE ACT 2007",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 683 (REPRINT 2018).pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "684",
+      "title": "*BANK PERTANIAN MALAYSIA BERHAD ACT 2008",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 684 (REPRINT 2018).pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "685",
+      "title": "*PERSONS WITH DISABILITIES ACT 2008",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 685 (REPRINT 2018).pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "687",
+      "title": "*NORTHERN CORRIDOR IMPLEMENTATION AUTHORITY ACT 2008",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 687 (REPRINT 2018).pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "689",
+      "title": "*GEOLOGISTS ACT 2008",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 689 (REPRINT 2018).pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "690",
+      "title": "SALVATION ARMY (INCORPORATED) ACT 1956",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 690 (REPRINT 2018).pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "692",
+      "title": "*NATIONAL KENAF AND TOBACCO BOARD ACT 2009",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 692 (REPRINT 2018).pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "697",
+      "title": "*FEE (NATIONAL AGRICULTURE TRAINING COUNCIL) (VALIDATION) ACT 2009",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 697 (Reprint 2019).pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "698",
+      "title": "*FEED ACT 2009",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 698 (Reprint 2019).pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "699",
+      "title": "*DEOXYRIBONUCLEIC ACID (DNA) IDENTIFICATION ACT 2009",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 699  (Reprint 2019).pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "736",
+      "title": "*PEACEFUL ASSEMBLY ACT 2012",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 736 - ONLINE VERSION_1 DEC 2019.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "737",
+      "title": "*MEDICAL DEVICE ACT 2012",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 737 _ONLINE VERSION_1 MAC 2017.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "738",
+      "title": "*MEDICAL DEVICE AUTHORITY ACT 2012",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 738_ONLINE VERSION_ 1 July 2020.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "739",
+      "title": "*PERUMAHAN RAKYAT 1MALAYSIA ACT 2012",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 739_ONLINE VERSION_1 JAN 2020.pdf",
+      "source": "reprint"
+    },
+    {
+      "act_number": "741",
+      "title": "*POSTAL SERVICES ACT 2012",
+      "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 741_REPRINT_1 MAY 2020.pdf",
+      "source": "reprint"
+    }
+  ],
+  "scanned_pdfs": [
+    {
+      "act_number": "35",
+      "title": "FILMS (CENSORSHIP) ACT 1952 "
+    },
+    {
+      "act_number": "43",
+      "title": "PRIVATE HOSPITALS ACT 1971"
+    },
+    {
+      "act_number": "79",
+      "title": "BANISHMENT ACT 1959"
+    },
+    {
+      "act_number": "82",
+      "title": "INTERNAL SECURITY ACT 1960"
+    },
+    {
+      "act_number": "87",
+      "title": "TRADE DESCRIPTIONS ACT 1972"
+    },
+    {
+      "act_number": "90",
+      "title": "JUVENILE COURTS ACT 1947"
+    },
+    {
+      "act_number": "115",
+      "title": "NOTARIES PUBLIC ACT 1959"
+    },
+    {
+      "act_number": "119",
+      "title": "COMMISSIONS OF ENQUIRY ACT 1950"
+    },
+    {
+      "act_number": "135",
+      "title": "PARTNERSHIP ACT 1961"
+    },
+    {
+      "act_number": "210",
+      "title": "FISHERIES ACT 1963"
+    },
+    {
+      "act_number": "211",
+      "title": "POST OFFICE ACT 1947"
+    },
+    {
+      "act_number": "214",
+      "title": "UNITED KINGDOM DESIGNS (PROTECTION) ACT 1949"
+    },
+    {
+      "act_number": "218",
+      "title": "PALM OIL RESEARCH AND DEVELOPMENT ACT 1979"
+    },
+    {
+      "act_number": "232",
+      "title": "CHILDREN AND YOUNG PERSONS ACT 1947"
+    },
+    {
+      "act_number": "247",
+      "title": "PUBLIC TRUSTEE ACT 1950"
+    },
+    {
+      "act_number": "252",
+      "title": "SOCIAL AND WELFARE SERVICES LOTTERIES BOARD ACT 1950-62"
+    },
+    {
+      "act_number": "276",
+      "title": "ISLAMIC BANKING ACT 1983"
+    },
+    {
+      "act_number": "296",
+      "title": "PUBLIC ORDER (PRESERVATION) ACT 1958"
+    },
+    {
+      "act_number": "363",
+      "title": "CONTROL OF RENT ACT 1966"
+    },
+    {
+      "act_number": "377",
+      "title": "RESTRICTED RESIDENCE ACT 1933"
+    },
+    {
+      "act_number": "401",
+      "title": "MALAYSIAN RUBBER RESEARCH AND DEVELOPMENT FUND ACT 1958"
+    },
+    {
+      "act_number": "407",
+      "title": "RUBBER RESEARCH INSTITUTE OF MALAYSIA ACT 1966"
+    },
+    {
+      "act_number": "419",
+      "title": "PORT WORKERS (REGULATION OF EMPLOYMENT) ACT 1965"
+    },
+    {
+      "act_number": "434",
+      "title": "CINEMATOGRAPH FILEM-HIRE DUTY ACT 1965"
+    },
+    {
+      "act_number": "449",
+      "title": "BERNAMA ACT 1967"
+    },
+    {
+      "act_number": "465",
+      "title": "POSTAL SERVICES ACT 1991"
+    },
+    {
+      "act_number": "511",
+      "title": "NATIONAL ARCHIVES ACT 1966"
+    },
+    {
+      "act_number": "519",
+      "title": "CENTRAL BANK OF MALAYSIA ACT 1958"
+    },
+    {
+      "act_number": "627",
+      "title": "PAYMENT SYSTEMS ACT 2003"
+    }
+  ],
+  "zero_chunk_extracts": [
+    {
+      "act_number": "12",
+      "title": "INTERNATIONAL MONETARY FUND (RATIFICATION OF AMENDMENTS TO THE ARTICLES OF AGREEMENT) ACT 1969"
+    },
+    {
+      "act_number": "22",
+      "title": "TUNKU ABDUL RAHMAN PUTRA AL-HAJ PENSION ACT 1971"
+    },
+    {
+      "act_number": "33",
+      "title": "BANKERS' BOOKS (EVIDENCE) ACT 1949"
+    },
+    {
+      "act_number": "39",
+      "title": "INHERITANCE (FAMILY PROVISION) ACT 1971"
+    },
+    {
+      "act_number": "41",
+      "title": "LOAN (INTERNATIONAL TIN BUFFER STOCK) ACT 1971"
+    },
+    {
+      "act_number": "59",
+      "title": "CITY OF KUALA LUMPUR ACT 1971"
+    },
+    {
+      "act_number": "66",
+      "title": "LOAN GUARANTEE ACT 1972"
+    },
+    {
+      "act_number": "114",
+      "title": "JUDICIAL PROCEEDINGS (REGULATION OF REPORTS) ACT 1962"
+    },
+    {
+      "act_number": "125",
+      "title": "COMPANIES ACT 1965"
+    },
+    {
+      "act_number": "184",
+      "title": "INTERNATIONAL MONETARY FUND (RATIFICATION OF SECOND AMENDMENT TO THE ARTICLES OF AGREEMENT) ACT 1977"
+    },
+    {
+      "act_number": "198",
+      "title": "PUBLIC AUTHORITIES PROTECTION ACT 1948"
+    },
+    {
+      "act_number": "205",
+      "title": "PRESUMPTION OF SURVIVORSHIP ACT 1950"
+    },
+    {
+      "act_number": "373",
+      "title": "YANG DI-PERTUAN AGONG (EXERCISE OF FUNCTIONS) ACT 1957"
+    },
+    {
+      "act_number": "391",
+      "title": "FEDERAL HOUSING ACT 1965"
+    },
+    {
+      "act_number": "437",
+      "title": "CO-OPERATIVE COLLEGE (INCORPORATION) ACT 1968"
+    },
+    {
+      "act_number": "459",
+      "title": "LOANS (CENTRAL BANK OF MALAYSIA) ACT 1960"
+    }
+  ]
+}

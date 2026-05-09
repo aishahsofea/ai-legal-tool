@@ -4,8 +4,6 @@ data/cache/
 # PDF downloads (large binaries, regenerable from metadata)
 data/pdfs/
 
-# Extracted text chunks (regenerable from PDFs)
-data/chunks/
 
 # Logs
 scraper.log
