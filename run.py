@@ -6,6 +6,7 @@ Usage:
     python run.py --step 2                          # detail pages only (needs step 1 first)
     python run.py --step 3                          # download PDFs (needs step 2 first)
     python run.py --step 4                          # extract section chunks (needs step 3 first)
+    python run.py --step 5                          # embed + ingest into pgvector (needs step 4 + .env)
     python run.py --step all                        # all steps in order
 
     python run.py --step 1 --types updated revised  # only fetch updated + revised lists
@@ -42,7 +43,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--step",
-        choices=["1", "2", "3", "4", "all"],
+        choices=["1", "2", "3", "4", "5", "all"],
         default="all",
         help="Which step to run (default: all)",
     )
@@ -104,6 +105,8 @@ def main() -> None:
             print("  Step 3: would download PDFs to data/pdfs/en/")
         if args.step in ("4", "all"):
             print("  Step 4: would extract section chunks to data/chunks/en/")
+        if args.step in ("5", "all"):
+            print("  Step 5: would embed chunks and ingest into pgvector")
         return
 
     if args.step in ("1", "all"):
@@ -121,6 +124,10 @@ def main() -> None:
     if args.step in ("4", "all"):
         from scraper.step4_extract import run_step4
         run_step4()
+
+    if args.step in ("5", "all"):
+        from ingestion.step5_ingest import run_step5
+        run_step5()
 
 
 if __name__ == "__main__":
