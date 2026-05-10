@@ -36,6 +36,9 @@ _Avoid_: cases, judgments (until v2 is scoped)
 **Legal Research Query**:
 A practitioner's question directed at the agent. May be statute lookup ("what does Section X of Act Y say?"), topical ("which Acts govern data privacy in Malaysia?"), or comparative. Does NOT include requests for legal advice about a specific situation.
 
+**Conversation History**:
+The prior turns in the same thread, passed as a list of user/assistant messages. Used to interpret follow-up questions like "what about criminal cases?". For v1, only the most recent turns are kept.
+
 **Legal Advice** _(out of scope)_:
 A recommendation about what a specific person should do in a specific legal situation. The agent must never produce this; it hands off to a human lawyer instead.
 

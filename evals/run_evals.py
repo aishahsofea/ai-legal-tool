@@ -15,6 +15,7 @@ from agent.graph import ESCALATION_RESPONSE, graph
 from agent.nodes.retriever import retriever_node
 from agent.nodes.router import router_node
 from agent.nodes.synthesiser import synthesiser_node
+from agent.query_lifecycle import run_query
 from evals.judge import JudgeContext, judge_case
 
 load_dotenv()
@@ -24,9 +25,10 @@ DEFAULT_DATASET_PATH = ROOT / "dataset.json"
 DEFAULT_RESULTS_PATH = ROOT / "results.json"
 
 
-def _initial_state(query: str) -> dict[str, Any]:
+def _initial_state(query: str, history: list[dict[str, Any]] | None = None) -> dict[str, Any]:
     return {
         "query": query,
+        "history": history or [],
         "query_type": "",
         "retrieved_chunks": [],
         "draft_response": "",
@@ -37,8 +39,16 @@ def _initial_state(query: str) -> dict[str, Any]:
     }
 
 
-def _run_full_agent(query: str) -> dict[str, Any]:
-    return graph.invoke(_initial_state(query))
+def _run_full_agent(query: str, history: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+    result = run_query(query, history)
+    return {
+        "query_type": result["query_type"],
+        "final_response": result["response"],
+        "citations": result["citations"],
+        "violations": result["violations"],
+        "retry_count": 0,
+        "retrieved_chunks": [],
+    }
 
 
 def _run_raw_agent(query: str) -> dict[str, Any]:
@@ -122,7 +132,8 @@ def run_suite(mode: str, dataset_path: Path, limit: int | None = None) -> dict[s
         print(f"[{idx}/{len(cases)}] {case['id']} ...", flush=True)
         started = time.perf_counter()
 
-        agent_state = runner(query)
+        history = case.get("history", [])
+        agent_state = runner(query, history) if mode == "full" else runner(query)
         agent_output = _compact_state(agent_state)
 
         verdict = judge_case(

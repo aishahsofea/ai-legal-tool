@@ -1,5 +1,10 @@
 import { useState, useCallback } from "react";
 
+export interface Message {
+  role: "user" | "assistant";
+  content: string;
+}
+
 export interface Citation {
   act_number: string;
   act_title: string;
@@ -27,14 +32,14 @@ export function useQuery() {
     error: null,
   });
 
-  const submit = useCallback(async (query: string) => {
+  const submit = useCallback(async (query: string, history: Message[] = []) => {
     setState({ status: "Connecting...", response: "", citations: [], isLoading: true, error: null });
 
     try {
       const res = await fetch(`${API_URL}/query`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({ query, history }),
       });
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);

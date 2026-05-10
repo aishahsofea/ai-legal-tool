@@ -43,13 +43,20 @@ Rules you MUST follow on every response:
 
 def synthesiser_node(state: AgentState) -> dict:
     chunks = state["retrieved_chunks"]
+    history = state.get("history", [])
 
     context = "\n\n".join(
         f"[Section {c['section_number']}, {c['act_title']} (Act {c['act_number']})]\n{c['content']}"
         for c in chunks
     )
+    history_text = "\n\n".join(
+        f"{turn['role'].title()}: {turn['content']}" for turn in history
+    )
 
-    user_message = f"""Query: {state['query']}
+    user_message = f"""Conversation history:
+{history_text or '(none)'}
+
+Query: {state['query']}
 
 Retrieved statute sections:
 {context}

@@ -45,12 +45,15 @@ Reply with the most appropriate type and a brief one-sentence reasoning."""
 
 def router_node(state: AgentState) -> dict:
     query = state["query"]
+    history = state.get("history", [])
+    history_text = "\n".join(f"{turn['role']}: {turn['content']}" for turn in history)
+    combined_text = f"{history_text}\n{query}" if history_text else query
 
-    if _ESCALATION_PATTERNS.search(query):
+    if _ESCALATION_PATTERNS.search(combined_text):
         return {"query_type": "escalate"}
 
     result: _RouterOutput = _structured_llm.invoke([
         {"role": "system", "content": _SYSTEM},
-        {"role": "user", "content": query},
+        {"role": "user", "content": f"Conversation history:\n{history_text or '(none)'}\n\nCurrent query:\n{query}"},
     ])
     return {"query_type": result.query_type}

@@ -21,12 +21,12 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 load_dotenv()
 
-from agent.graph import graph
-from agent.state import AgentState
+from agent.query_lifecycle import run_query_stream
+from agent.state import Message
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +42,7 @@ app.add_middleware(
 
 class QueryRequest(BaseModel):
     query: str
-    history: list[dict] = []   # reserved for multi-turn (v2)
+    history: list[Message] = Field(default_factory=list)
 
 
 def _sse(payload: dict) -> str:
@@ -59,58 +59,13 @@ _STATUS_MESSAGES = {
 }
 
 
-async def _stream_query(query: str) -> AsyncGenerator[str, None]:
-    initial_state: AgentState = {
-        "query":            query,
-        "query_type":       "",
-        "retrieved_chunks": [],
-        "draft_response":   "",
-        "citations":        [],
-        "violations":       [],
-        "final_response":   "",
-        "retry_count":      0,
-    }
-
-    accumulated: dict = {}
-
+async def _stream_query(query: str, history: list[Message]) -> AsyncGenerator[str, None]:
     try:
-        async for chunk in graph.astream(initial_state):
-            node_name = next(iter(chunk))
-            state_update: dict = chunk[node_name]
-            accumulated.update(state_update)
-
-            # Send a status event for every node except the final output nodes
-            if node_name == "retriever":
-                msg = "Searching Malaysian Acts..."
-            elif node_name in _STATUS_MESSAGES:
-                msg = _STATUS_MESSAGES[node_name]
-            else:
-                msg = f"Processing ({node_name})..."
-
-            yield _sse({"type": "status", "message": msg})
-
-            # If this node set final_response and violations are empty, we're done
-            if state_update.get("final_response") and not accumulated.get("violations"):
-                break
-
-        final   = accumulated.get("final_response", "")
-        citations = accumulated.get("citations", [])
-        violations = accumulated.get("violations", [])
-
-        if not final:
-            yield _sse({"type": "error", "message": "No response generated."})
-        else:
-            yield _sse({
-                "type":       "response",
-                "content":    final,
-                "citations":  citations,
-                "violations": violations,
-            })
-
+        async for event in run_query_stream(query, history):
+            yield _sse(event)
     except Exception as exc:
         logger.exception("Agent error for query: %s", query)
         yield _sse({"type": "error", "message": f"An error occurred: {str(exc)}"})
-
     yield _sse({"type": "done"})
 
 
@@ -122,7 +77,7 @@ def health():
 @app.post("/query")
 async def query_endpoint(req: QueryRequest):
     return StreamingResponse(
-        _stream_query(req.query),
+        _stream_query(req.query, req.history),
         media_type="text/event-stream",
         headers={
             "Cache-Control":               "no-cache",

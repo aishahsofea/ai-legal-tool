@@ -152,6 +152,7 @@ export default function Home() {
 
     const threadId = makeId();
     const title = deriveThreadTitle(query);
+    const history = messages.map(({ role, content }) => ({ role, content }));
     setInput("");
     setReasoningOpen(true);
     setActiveSourceIndex(0);
@@ -168,7 +169,7 @@ export default function Home() {
       ...prev.map((thread) => ({ ...thread, active: false })),
     ]);
     setMessages(nextMessages);
-    await submit(query);
+    await submit(query, history);
   };
 
   return (
