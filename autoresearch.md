@@ -35,4 +35,7 @@ Improve the frontend research workspace so the layout remains sensible across wi
 - Kept experiment `5f6858c`: capped the pre-answer source map at six visible chips and moved overflow citations into a collapsible `+N more sources` detail block.
 - Kept experiment `b36da85`: threaded `message.id` into source-map/detail anchors so multi-answer threads no longer share the same `source-map` target.
 - Kept experiment `b553aac`: made scoped detail anchors keep an explicit `source-ref-*` prefix for readable, stable in-page links.
-- Next focus: audit responsive behavior of the disabled action bar (`Save as memo`, `Highlight passage`, `Cite all`) and message chrome on small widths; sources/layout debt is currently cleared.
+- Kept experiment `df25e54`: compacted message/header actions and composer controls on narrow screens, improving small-width chrome while keeping lint/build green.
+- User feedback identified awkward empty right space after removing sources rail.
+- Kept experiment `8740c02`: removed remaining content/input max-width caps and switched message/composer containers to full-width utilities so the workspace uses the freed width.
+- Next focus: visually review very wide prose readability; if full-width legal text is too long, use an internal two-column answer/source layout instead of recreating an empty rail.
