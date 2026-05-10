@@ -84,9 +84,6 @@ def run_step5() -> None:
         key=lambda f: int(f.stem) if f.stem.isdigit() else 0,
     )
 
-    to_process = [f for f in chunk_files if json.loads(f.read_text())[0]["act_number"] not in done
-                  if json.loads(f.read_text())]
-    # Rebuild skipping empty files
     to_process = []
     for f in chunk_files:
         chunks = json.loads(f.read_text(encoding="utf-8"))
