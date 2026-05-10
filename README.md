@@ -216,6 +216,12 @@ ai-legal-tool/
 │       └── subsid_parser.py
 ├── ingestion/
 │   └── step5_ingest.py             # Step 5: embed + ingest into pgvector
+├── evals/
+│   ├── dataset.json                # hand-validated benchmark set
+│   ├── judge.py                    # Claude-based judge
+│   ├── run_evals.py                # eval runner + report writer
+│   ├── seed_test_corpus.py         # tiny eval-only pgvector seed
+│   └── validate_dataset.py         # human review checklist
 ├── data/
 │   ├── acts_index.json
 │   ├── acts_metadata/
@@ -262,6 +268,47 @@ data: {"type": "done"}
 ```
 
 Citation objects include `act_number`, `act_title`, `section_number`, `pdf_url` (with `#page=N` anchor), and `page_number`.
+
+---
+
+## Eval Harness
+
+The repo includes an evaluation harness for regression testing and CI.
+
+### Dataset
+
+`evals/dataset.json` contains hand-validated test cases across the main Acts in the corpus:
+
+- Evidence Act 1950 (Act 56)
+- Penal Code (Act 574)
+- Personal Data Protection Act 2010 (Act 709)
+- Companies Act 2016 (Act 777)
+- Employment Act 1955 (Act 265)
+
+It also includes escalation cases that should be blocked rather than answered.
+
+### Run locally
+
+Requires `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, and a reachable `DATABASE_URL`.
+
+```bash
+python -m evals.validate_dataset --format markdown --output evals/review-checklist.md
+python -m evals.run_evals --mode full --limit 5
+python -m evals.run_evals --mode full
+python -m evals.run_evals --mode baseline
+```
+
+Helpful modes:
+
+- `full` — real agent graph with supervisor
+- `baseline` — retriever + synthesiser only, used to show before/after impact
+- `raw` — bypass LangGraph retries, useful for debugging
+
+### Outputs
+
+- `evals/results.json` (or custom path via `--output`) stores the scored run
+- GitHub Actions runs the evals workflow on pushes to `main` and comments the pass rates on PRs
+- CI fails if either citation accuracy or policy compliance drops below 80%
 
 ---
 

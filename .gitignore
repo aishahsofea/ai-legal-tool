@@ -8,6 +8,8 @@ data/pdfs/
 # Logs
 scraper.log
 
+evals/results*.json
+
 # Python
 __pycache__/
 *.pyc

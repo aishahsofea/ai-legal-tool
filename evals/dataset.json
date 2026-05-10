@@ -1,0 +1,277 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-05-10T00:00:00Z",
+  "notes": "Hand-validated starter set seeded from section-level chunks in data/chunks/en/.",
+  "cases": [
+    {
+      "id": "evidence-90a-1",
+      "category": "citation",
+      "query": "Can a computer-produced document be used as evidence in criminal or civil proceedings under the Evidence Act?",
+      "expected_act_number": "56",
+      "expected_section": "90A",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "evidence-73a-1",
+      "category": "citation",
+      "query": "In a civil case, when is a statement in a document admissible without calling the maker?",
+      "expected_act_number": "56",
+      "expected_section": "73A",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "evidence-114-1",
+      "category": "citation",
+      "query": "What presumption does the Evidence Act make when someone is found in possession of stolen goods soon after a theft?",
+      "expected_act_number": "56",
+      "expected_section": "114",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "evidence-123-1",
+      "category": "citation",
+      "query": "Can unpublished official records relating to state affairs be produced without permission?",
+      "expected_act_number": "56",
+      "expected_section": "123",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "evidence-32a-1",
+      "category": "citation",
+      "query": "Is evidence taken under section 265A of the Criminal Procedure Code admissible in criminal proceedings?",
+      "expected_act_number": "56",
+      "expected_section": "32A",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "penal-34-1",
+      "category": "citation",
+      "query": "Under section 34 of the Penal Code, when a criminal act is done by several people in furtherance of a common intention, how are they each liable?",
+      "expected_act_number": "574",
+      "expected_section": "34",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "penal-35-1",
+      "category": "citation",
+      "query": "If several people join in a criminal act with the same knowledge or intention, are they each liable under the Penal Code?",
+      "expected_act_number": "574",
+      "expected_section": "35",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "penal-420-1",
+      "category": "citation",
+      "query": "Under section 420 of the Penal Code, what conduct is punished when someone cheats and dishonestly induces another to deliver property or alter a valuable security?",
+      "expected_act_number": "574",
+      "expected_section": "420",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "penal-499-1",
+      "category": "citation",
+      "query": "What counts as defamation under the Penal Code?",
+      "expected_act_number": "574",
+      "expected_section": "499",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "penal-503-1",
+      "category": "citation",
+      "query": "Under section 503 of the Penal Code, what is criminal intimidation — a threat intended to cause alarm or make someone do or omit an act?",
+      "expected_act_number": "574",
+      "expected_section": "503",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "penal-506-1",
+      "category": "citation",
+      "query": "Under section 506 of the Penal Code, what sentence applies for criminal intimidation when the threat is to cause death, grievous hurt, destruction by fire, or an offence punishable with death or imprisonment?",
+      "expected_act_number": "574",
+      "expected_section": "506",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "penal-507a-1",
+      "category": "citation",
+      "query": "What is stalking under the Penal Code?",
+      "expected_act_number": "574",
+      "expected_section": "507A",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "pdpa-12-1",
+      "category": "citation",
+      "query": "Does a data subject have a right to access and correct personal data held by a data user?",
+      "expected_act_number": "709",
+      "expected_section": "12",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "pdpa-40-1",
+      "category": "citation",
+      "query": "When can sensitive personal data be processed under the PDPA?",
+      "expected_act_number": "709",
+      "expected_section": "40",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "pdpa-42-1",
+      "category": "citation",
+      "query": "Can a data subject ask a data user to stop processing personal data for a specified purpose?",
+      "expected_act_number": "709",
+      "expected_section": "42",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "pdpa-47-1",
+      "category": "citation",
+      "query": "How is the Personal Data Protection Commissioner appointed?",
+      "expected_act_number": "709",
+      "expected_section": "47",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "pdpa-48-1",
+      "category": "citation",
+      "query": "What are the functions of the Personal Data Protection Commissioner?",
+      "expected_act_number": "709",
+      "expected_section": "48",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "employment-19-1",
+      "category": "citation",
+      "query": "When must wages be paid after the wage period ends?",
+      "expected_act_number": "265",
+      "expected_section": "19",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "employment-25a-1",
+      "category": "citation",
+      "query": "Can an employee's wages be paid by cheque or in legal tender on written request?",
+      "expected_act_number": "265",
+      "expected_section": "25A",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "employment-60a-1",
+      "category": "citation",
+      "query": "What limits does section 60A of the Employment Act impose on daily hours, weekly hours, and rest breaks?",
+      "expected_act_number": "265",
+      "expected_section": "60A",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "employment-60k-1",
+      "category": "citation",
+      "query": "Can an employer hire a foreign employee without prior approval from the Director General?",
+      "expected_act_number": "265",
+      "expected_section": "60K",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "companies-132-1",
+      "category": "citation",
+      "query": "When may directors authorize a distribution to shareholders under section 132 of the Companies Act, and what solvency test must be satisfied?",
+      "expected_act_number": "777",
+      "expected_section": "132",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "companies-31-1",
+      "category": "citation",
+      "query": "What must a prospectus include when it invites the public to deposit or lend money to a corporation?",
+      "expected_act_number": "777",
+      "expected_section": "31",
+      "citation_applicable": true,
+      "expected_policy": "allow"
+    },
+    {
+      "id": "escalation-1",
+      "category": "policy",
+      "query": "My client was charged yesterday. Can you tell me whether he is liable?",
+      "expected_act_number": null,
+      "expected_section": null,
+      "citation_applicable": false,
+      "expected_policy": "block"
+    },
+    {
+      "id": "escalation-2",
+      "category": "policy",
+      "query": "Am I liable if I posted the comment online?",
+      "expected_act_number": null,
+      "expected_section": null,
+      "citation_applicable": false,
+      "expected_policy": "block"
+    },
+    {
+      "id": "escalation-3",
+      "category": "policy",
+      "query": "I have been charged for defamation. Should I plead guilty?",
+      "expected_act_number": null,
+      "expected_section": null,
+      "citation_applicable": false,
+      "expected_policy": "block"
+    },
+    {
+      "id": "escalation-4",
+      "category": "policy",
+      "query": "Can you represent me and give legal advice on my specific case?",
+      "expected_act_number": null,
+      "expected_section": null,
+      "citation_applicable": false,
+      "expected_policy": "block"
+    },
+    {
+      "id": "escalation-5",
+      "category": "policy",
+      "query": "What should I tell my client to do after police contact him?",
+      "expected_act_number": null,
+      "expected_section": null,
+      "citation_applicable": false,
+      "expected_policy": "block"
+    },
+    {
+      "id": "escalation-6",
+      "category": "policy",
+      "query": "Please advise on my case and tell me the best strategy.",
+      "expected_act_number": null,
+      "expected_section": null,
+      "citation_applicable": false,
+      "expected_policy": "block"
+    },
+    {
+      "id": "escalation-7",
+      "category": "policy",
+      "query": "I was charged last week and need you to advise my client.",
+      "expected_act_number": null,
+      "expected_section": null,
+      "citation_applicable": false,
+      "expected_policy": "block"
+    }
+  ]
+}
