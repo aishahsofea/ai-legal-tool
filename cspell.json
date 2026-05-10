@@ -1,0 +1,41 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "Locus",
+    "LOCUS",
+    "LocusB",
+    "CITES",
+    "REASONED",
+    "RESEARCH",
+    "WORKSPACE",
+    "FOLLOW",
+    "FOLLOWUP",
+    "FOLLOWUPS",
+    "Malaysia",
+    "Malaysian",
+    "Employment",
+    "Contracts",
+    "Companies",
+    "PDPA",
+    "SST",
+    "gig",
+    "restday",
+    "overtime",
+    "subsection",
+    "citations",
+    "SourceChip",
+    "thread",
+    "browserless",
+    "JetBrains",
+    "ReactMarkdown",
+    "Tailwind",
+    "markdown"
+  ],
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/.next/**",
+    "frontend/package-lock.json"
+  ]
+}
