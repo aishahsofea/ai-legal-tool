@@ -47,9 +47,11 @@ def router_node(state: AgentState) -> dict:
     query = state["query"]
     history = state.get("history", [])
     history_text = "\n".join(f"{turn['role']}: {turn['content']}" for turn in history)
-    combined_text = f"{history_text}\n{query}" if history_text else query
 
-    if _ESCALATION_PATTERNS.search(combined_text):
+    # Escalation triggers are intentionally checked only against the current user
+    # query. Assistant history contains the required legal-advice disclaimer, and
+    # checking the combined transcript would make every follow-up escalate.
+    if _ESCALATION_PATTERNS.search(query):
         return {"query_type": "escalate"}
 
     result: _RouterOutput = _structured_llm.invoke([

@@ -45,6 +45,25 @@ function summarizeSources(citations: Citation[]) {
   return `${citedCount} citation${citedCount === 1 ? "" : "s"} · ${sourceCount} source${sourceCount === 1 ? "" : "s"}`;
 }
 
+function citationKey(citation: Citation) {
+  return `${citation.act_number}:${citation.section_number}`;
+}
+
+function mergeCitations(existing: Citation[], incoming: Citation[]) {
+  const seen = new Set(existing.map(citationKey));
+  const merged = [...existing];
+
+  for (const citation of incoming) {
+    const key = citationKey(citation);
+    if (!seen.has(key)) {
+      seen.add(key);
+      merged.push(citation);
+    }
+  }
+
+  return merged;
+}
+
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -63,16 +82,17 @@ export default function Home() {
     if (lastStatusRef.current === status) return;
     lastStatusRef.current = status;
     setStatusHistory((prev) => [...prev, status]);
-    if (activeThreadId) {
+    const pendingThreadId = pendingThreadIdRef.current;
+    if (pendingThreadId) {
       setThreads((prev) =>
         prev.map((thread) =>
-          thread.id === activeThreadId
+          thread.id === pendingThreadId
             ? { ...thread, statusHistory: [...thread.statusHistory, status] }
             : thread,
         ),
       );
     }
-  }, [status, activeThreadId]);
+  }, [status]);
 
   useEffect(() => {
     const pendingThreadId = pendingThreadIdRef.current;
@@ -90,17 +110,18 @@ export default function Home() {
     });
 
     setThreads((prev) =>
-      prev.map((thread) =>
-        thread.id === pendingThreadId
-          ? {
-              ...thread,
-              messages: updatedMessages ?? thread.messages,
-              citations,
-              meta: summarizeSources(citations),
-              active: true,
-            }
-          : { ...thread, active: false },
-      ),
+      prev.map((thread) => {
+        if (thread.id !== pendingThreadId) return { ...thread, active: false };
+
+        const mergedCitations = mergeCitations(thread.citations, citations);
+        return {
+          ...thread,
+          messages: updatedMessages ?? thread.messages,
+          citations: mergedCitations,
+          meta: summarizeSources(mergedCitations),
+          active: true,
+        };
+      }),
     );
     pendingThreadIdRef.current = null;
   }, [response, citations]);
@@ -150,9 +171,16 @@ export default function Home() {
     const query = input.trim();
     if (!query || isLoading) return;
 
-    const threadId = makeId();
+    const threadId = activeThreadId ?? makeId();
+    const isNewThread = !activeThreadId;
     const title = deriveThreadTitle(query);
     const history = messages.map(({ role, content }) => ({ role, content }));
+    const nextMessages: Message[] = [
+      ...messages,
+      { id: makeId(), role: "user", content: query, createdAt: nowLabel() },
+      { id: makeId(), role: "assistant", content: "", createdAt: nowLabel() },
+    ];
+
     setInput("");
     setReasoningOpen(true);
     setActiveSourceIndex(0);
@@ -160,14 +188,20 @@ export default function Home() {
     lastStatusRef.current = null;
     setActiveThreadId(threadId);
     pendingThreadIdRef.current = threadId;
-    const nextMessages: Message[] = [
-      { id: makeId(), role: "user", content: query, createdAt: nowLabel() },
-      { id: makeId(), role: "assistant", content: "", createdAt: nowLabel() },
-    ];
-    setThreads((prev) => [
-      { id: threadId, title, meta: "Loading…", active: true, messages: nextMessages, citations: [], statusHistory: [] },
-      ...prev.map((thread) => ({ ...thread, active: false })),
-    ]);
+    setThreads((prev) => {
+      if (isNewThread) {
+        return [
+          { id: threadId, title, meta: "Loading…", active: true, messages: nextMessages, citations: [], statusHistory: [] },
+          ...prev.map((thread) => ({ ...thread, active: false })),
+        ];
+      }
+
+      return prev.map((thread) =>
+        thread.id === threadId
+          ? { ...thread, meta: "Loading…", active: true, messages: nextMessages, statusHistory: [] }
+          : { ...thread, active: false },
+      );
+    });
     setMessages(nextMessages);
     await submit(query, history);
   };

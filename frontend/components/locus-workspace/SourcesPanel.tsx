@@ -111,7 +111,7 @@ export function SourcesPanel({
         {sources.length > 0 ? (
           sources.map((citation, index) => (
             <SourceChip
-              key={`${citation.act_number}-${citation.section_number}-${index}`}
+              key={`${citation.act_number}-${citation.section_number}`}
               citation={citation}
               active={index === activeSourceIndex}
               onClick={() => onSelectSource(index)}
