@@ -81,8 +81,7 @@ async def _stream_query(query: str) -> AsyncGenerator[str, None]:
 
             # Send a status event for every node except the final output nodes
             if node_name == "retriever":
-                n = len(state_update.get("retrieved_chunks", []))
-                msg = f"Found {n} relevant sections. Drafting response..."
+                msg = "Searching Malaysian Acts..."
             elif node_name in _STATUS_MESSAGES:
                 msg = _STATUS_MESSAGES[node_name]
             else:
