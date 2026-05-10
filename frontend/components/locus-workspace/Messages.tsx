@@ -1,6 +1,5 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { CitationCard } from "@/components/CitationCard";
 import { Mono, OutlineButton } from "@/components/chamber";
 import { StatusIndicator } from "@/components/StatusIndicator";
 import { markdownComponents } from "./markdown";
@@ -18,7 +17,7 @@ function InlineSourceSummary({ citations }: { citations: NonNullable<Message["ci
   if (citations.length === 0) return null;
 
   return (
-    <nav className="chamber-max-content rounded-sm border border-(--rule-soft) bg-(--bronze-tint) px-2 py-2" aria-label="Sources cited before this answer">
+    <nav id="source-map" className="chamber-max-content rounded-sm border border-(--rule-soft) bg-(--bronze-tint) px-2 py-2" aria-label="Sources cited before this answer">
       <div className="mb-2 flex items-center gap-2">
         <Mono className="text-(--bronze)">SOURCE MAP</Mono>
         <span className="font-serif text-xs italic text-(--ink-3)">cited in this answer</span>
@@ -52,13 +51,15 @@ function InlineSources({ citations }: { citations: NonNullable<Message["citation
               <span className="font-serif font-light">{formatSourceTitle(citation.act_title)}</span>
               {citation.page_number && <span className="font-mono text-[10px] uppercase tracking-widest text-(--ink-3)">p. {citation.page_number}</span>}
             </div>
-            <div className="mt-2 flex flex-wrap gap-2">
-              <CitationCard citation={citation} />
+            <div className="mt-2 flex flex-wrap gap-3">
               {citation.pdf_url && (
-                <a className="chamber-link font-mono text-[10px] uppercase tracking-widest" href={citation.pdf_url} target="_blank" rel="noopener noreferrer">
+                <a aria-label={`Open source ${index + 1}: ${formatSourceTitle(citation.act_title)}`} className="chamber-link font-mono text-[10px] uppercase tracking-widest" href={citation.pdf_url} target="_blank" rel="noopener noreferrer">
                   Open full act ↗
                 </a>
               )}
+              <a className="chamber-link font-mono text-[10px] uppercase tracking-widest" href="#source-map">
+                Back to source map ↑
+              </a>
             </div>
           </li>
         ))}
