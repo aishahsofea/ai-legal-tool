@@ -73,12 +73,7 @@
   }
 }
 
-@media (min-width: 768px) {
-  .chamber-grid-app { grid-template-columns: 56px minmax(0, 1fr); }
-  .chamber-grid-app-collapsed { grid-template-columns: 56px minmax(0, 1fr); }
-}
-
-@media (min-width: 1280px) {
+@media (min-width: 1024px) {
   .chamber-grid-app { grid-template-columns: 220px minmax(0, 1fr); }
 }
 

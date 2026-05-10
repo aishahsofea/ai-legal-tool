@@ -18,11 +18,11 @@ export function ThreadSidebar({
   switchingDisabled?: boolean;
 }) {
   return (
-    <aside className="flex w-full flex-col overflow-hidden border-r border-(--rule) bg-(--bg) md:w-14 xl:w-full" aria-label="Threads">
+    <aside className="flex flex-col border-r border-(--rule) bg-(--bg)">
       <div className="border-b border-(--rule) px-2 pb-2 pt-4">
-        <div className="flex justify-center xl:justify-start"><Mark /></div>
-        <PrimaryButton onClick={onNewThread} leading="＋" title="New thread" aria-label="New thread" className="mt-2 flex w-full items-center justify-center gap-2">
-          <span className="hidden xl:inline">New thread</span>
+        <Mark />
+        <PrimaryButton onClick={onNewThread} leading="＋" className="mt-2 flex w-full items-center justify-center gap-2">
+          New thread
         </PrimaryButton>
       </div>
 
@@ -39,20 +39,17 @@ export function ThreadSidebar({
             />
           ))
         ) : (
-          <div className="px-2 py-2 text-center font-mono text-[10px] uppercase tracking-widest text-(--ink-3)" title="No threads yet">
-            <span className="xl:hidden">—</span>
-            <span className="hidden xl:block">No threads yet</span>
-          </div>
+          <div className="px-2 py-2 font-mono text-[10px] uppercase tracking-widest text-(--ink-3)">No threads yet</div>
         )}
       </div>
 
-      <div className="mt-auto flex items-center justify-center gap-2 border-t border-(--rule) px-2 py-2 xl:justify-start" title={`${userName} · ${userFirm}`}>
-        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-(--bronze) text-xs font-semibold text-(--bg)">
+      <div className="mt-auto flex items-center gap-2 border-t border-(--rule) px-2 py-2">
+        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-(--bronze) text-xs font-semibold text-(--bg)">
           {userName.slice(0, 2).toUpperCase()}
         </div>
-        <div className="hidden xl:block min-w-0">
-          <div className="truncate text-xs text-(--ink)">{userName}</div>
-          <div className="mt-2 truncate font-mono text-[10px] uppercase tracking-widest text-(--ink-3)">{userFirm}</div>
+        <div>
+          <div className="text-xs text-(--ink)">{userName}</div>
+          <div className="mt-2 font-mono text-[10px] uppercase tracking-widest text-(--ink-3)">{userFirm}</div>
         </div>
       </div>
     </aside>

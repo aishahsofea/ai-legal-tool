@@ -99,18 +99,16 @@ export function ThreadRow({
       type="button"
       disabled={disabled}
       onClick={onClick}
-      title={title}
-      aria-label={title}
-      className={`flex w-full cursor-pointer items-stretch justify-center gap-2 rounded-sm px-2 py-2 text-left transition-colors duration-150 hover:bg-(--bg-2) active:opacity-80 disabled:cursor-not-allowed disabled:opacity-50 xl:justify-start ${
+      className={`flex w-full cursor-pointer items-stretch gap-2 rounded-sm px-2 py-2 text-left transition-colors duration-150 hover:bg-(--bg-2) active:opacity-80 disabled:cursor-not-allowed disabled:opacity-50 ${
         active ? "bg-(--bg-2)" : "bg-transparent"
       }`}
     >
       <span
         className={`w-[2px] shrink-0 rounded-full ${active ? "bg-(--bronze)" : "bg-transparent"}`}
       />
-      <div className="hidden min-w-0 xl:block">
-        <div className="truncate text-xs leading-snug text-(--ink)">{title}</div>
-        <div className="mt-2 truncate font-mono text-[10px] uppercase tracking-widest text-(--ink-3)">
+      <div>
+        <div className="text-xs leading-snug text-(--ink)">{title}</div>
+        <div className="mt-2 font-mono text-[10px] uppercase tracking-widest text-(--ink-3)">
           {meta}
         </div>
       </div>
