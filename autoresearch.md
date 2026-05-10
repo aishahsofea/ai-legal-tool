@@ -33,4 +33,4 @@ Improve the frontend research workspace so the layout remains sensible across wi
 - Kept experiment `14f840b`: added a compact pre-answer source map with `[1]` style links to detailed source rows below the answer.
 - Kept experiment `d578cbe`: removed duplicated `CitationCard` content from message source rows and added accessible open-source labels plus back-to-map links.
 - Kept experiment `5f6858c`: capped the pre-answer source map at six visible chips and moved overflow citations into a collapsible `+N more sources` detail block.
-- Next focus: source-map anchors are static (`source-map`, `source-ref-*`) and can collide across multiple assistant answers in the same thread.
+- Kept experiment `b36da85`: threaded `message.id` into source-map/detail anchors so multi-answer threads no longer share the same `source-map` target. Remaining benchmark debt: make the `source-ref-*` prefix explicit while preserving message scoping.

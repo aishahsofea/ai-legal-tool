@@ -18,7 +18,7 @@ function sourceMapId(messageId: string) {
 }
 
 function sourceRefId(messageId: string, citation: NonNullable<Message["citations"]>[number], index: number) {
-  return scopedId("source-ref", messageId, citation.act_number, citation.section_number, index);
+  return `source-ref-${scopedId(messageId, citation.act_number, citation.section_number, index)}`;
 }
 
 const SOURCE_MAP_VISIBLE_LIMIT = 6;
@@ -29,7 +29,7 @@ function SourceMapLink({ citation, index, messageId }: { citation: CitationList[
   const refId = sourceRefId(messageId, citation, index);
 
   return (
-    <a key={refId} href={`#${refId}`} className="inline-flex items-center gap-2 rounded-sm border border-(--rule) bg-(--bg-2) px-2 py-1 text-xs text-(--ink-2) transition-colors duration-150 hover:border-(--bronze) hover:text-(--bronze)">
+    <a key={refId} href={`#source-ref-${scopedId(messageId, citation.act_number, citation.section_number, index)}`} className="inline-flex items-center gap-2 rounded-sm border border-(--rule) bg-(--bg-2) px-2 py-1 text-xs text-(--ink-2) transition-colors duration-150 hover:border-(--bronze) hover:text-(--bronze)">
       <span className="font-mono text-[10px] uppercase tracking-widest text-(--bronze)">[{index + 1}]</span>
       <span className="font-serif">§ {citation.section_number}</span>
     </a>
