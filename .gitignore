@@ -24,3 +24,5 @@ venv/
 
 # IDE
 .DS_Store
+
+evals/review-checklist.md
