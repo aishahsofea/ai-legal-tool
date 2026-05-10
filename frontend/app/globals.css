@@ -63,6 +63,14 @@
   .chamber-max-input { max-width: none; }
   .chamber-full-content { max-width: none; }
   .chamber-full-input { max-width: none; }
+  .chamber-reading-flow {
+    text-wrap: pretty;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+  }
+  .chamber-reading-flow > * {
+    break-inside: avoid;
+  }
 }
 
 @media (min-width: 768px) {

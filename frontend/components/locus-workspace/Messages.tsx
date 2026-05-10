@@ -163,7 +163,7 @@ export function AssistantMessage({
 
       {message.citations && message.citations.length > 0 && <InlineSourceSummary citations={message.citations} messageId={message.id} />}
 
-      <div className="chamber-max-content space-y-2 text-sm leading-6 text-(--ink)">
+      <div className="chamber-max-content chamber-reading-flow space-y-2 text-sm leading-6 text-(--ink) xl:columns-2 xl:gap-10">
         {message.content ? (
           <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>{message.content}</ReactMarkdown>
         ) : isLoading && isTail ? (
