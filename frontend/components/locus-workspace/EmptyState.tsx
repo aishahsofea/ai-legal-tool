@@ -7,20 +7,16 @@ const SUGGESTED_QUERIES = [
   "How does the Contracts Act treat frustration?",
 ];
 
-function nowLabel(date = new Date()) {
-  return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-}
-
 export function EmptyState({ onQuery }: { onQuery: (query: string) => void }) {
   return (
-    <div className="space-y-8">
-      <div className="border border-(--rule) bg-(--bg-2) p-6">
-        <div className="flex items-center gap-3 text-(--ink-3)">
-          <span className="font-mono text-xs uppercase tracking-widest">LOCUS · {nowLabel()}</span>
-          <span className="h-1.5 w-1.5 rounded-full bg-(--bronze)" />
-          <span className="font-mono text-xs uppercase tracking-widest">RESEARCH WORKSPACE</span>
+    <div className="space-y-4">
+      <div className="border border-(--rule) bg-(--bg-2) p-4">
+        <div className="flex items-center gap-2 text-(--ink-3)">
+          <span className="font-mono text-[10px] uppercase tracking-widest">LOCUS</span>
+          <span className="h-2 w-2 rounded-full bg-(--bronze)" />
+          <span className="font-mono text-[10px] uppercase tracking-widest">RESEARCH WORKSPACE</span>
         </div>
-        <p className="mt-4 font-serif text-xl font-light leading-snug tracking-tight text-(--ink)">
+        <p className="mt-2 font-serif text-base font-light leading-snug tracking-tight text-(--ink)">
           Ask about statutory text, amendments, and Acts. Locus surfaces governing provisions and keeps the thread anchored to source material.
         </p>
       </div>

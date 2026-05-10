@@ -89,7 +89,7 @@ export default function Home() {
 
   const activeThread = threads.find((thread) => thread.active) ?? null;
   const sources = citations;
-  const activeSource = sources[activeSourceIndex] ?? sources[0] ?? null;
+  const activeSource = sources[activeSourceIndex] ?? null;
   const assistantMessage = [...messages].reverse().find((message) => message.role === "assistant");
   const citedCountLabel = summarizeSources(citations);
 
@@ -130,8 +130,8 @@ export default function Home() {
         <main className="flex min-w-0 flex-col bg-(--bg)">
           <ConversationHeader title={activeThread?.title || "New thread"} />
 
-          <div className="flex-1 overflow-y-auto px-4 py-9 lg:px-16">
-            <div className="mx-auto flex w-full chamber-max-content flex-col gap-9">
+          <div className="flex-1 overflow-y-auto px-4 py-6 lg:px-20">
+            <div className="mx-auto flex w-full chamber-max-content flex-col gap-6">
               {messages.length === 0 && <EmptyState onQuery={setInput} />}
 
               {messages.map((msg, i) => {
@@ -139,7 +139,7 @@ export default function Home() {
                 const isTail = i === messages.length - 1;
 
                 return (
-                  <div key={msg.id} className="space-y-4">
+                  <div key={msg.id} className="space-y-2">
                     {isAssistant ? (
                       <AssistantMessage
                         message={msg}
@@ -155,7 +155,7 @@ export default function Home() {
                       <UserMessage message={msg} />
                     )}
 
-                    {error && isTail && <div className="text-sm text-(--ink-2)">{error}</div>}
+                    {error && isTail && <div className="text-xs text-(--ink-2)">{error}</div>}
                   </div>
                 );
               })}

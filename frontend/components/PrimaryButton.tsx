@@ -9,9 +9,9 @@ export function PrimaryButton({
   return (
     <button
       {...props}
-      className={`rounded-sm bg-(--bronze) px-3 py-3 text-xs font-semibold uppercase tracking-wide text-background transition-colors duration-150 hover:bg-foreground ${className}`}
+      className={`inline-flex cursor-pointer items-center justify-center rounded-sm bg-(--bronze) px-2 py-2 text-[10px] font-semibold uppercase tracking-wide text-background transition-colors duration-150 hover:bg-foreground active:opacity-80 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-(--bronze) ${className}`}
     >
-      {leading ? <span className="text-sm font-light">{leading}</span> : null}
+      {leading ? <span className="text-xs font-light">{leading}</span> : null}
       {children}
     </button>
   );

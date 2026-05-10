@@ -56,15 +56,15 @@
     border-color: var(--bronze);
     box-shadow: 0 0 0 1px var(--bronze), 0 24px 60px -24px rgba(194, 168, 120, 0.18);
   }
-  .chamber-grid-reason { grid-template-columns: 32px 1fr; }
+  .chamber-grid-reason { grid-template-columns: 24px 1fr; }
   .chamber-grid-composer { grid-template-columns: auto minmax(0, 1fr) auto auto; }
-  .chamber-max-content { max-width: 72ch; }
-  .chamber-max-content-narrow { max-width: 70ch; }
-  .chamber-max-input { max-width: 820px; }
+  .chamber-max-content { max-width: 66ch; }
+  .chamber-max-content-narrow { max-width: 64ch; }
+  .chamber-max-input { max-width: 760px; }
 }
 
 @media (min-width: 1024px) {
-  .chamber-grid-app { grid-template-columns: 252px minmax(0, 1fr) 340px; }
+  .chamber-grid-app { grid-template-columns: 220px minmax(0, 1fr) 300px; }
 }
 
 * {
@@ -97,6 +97,16 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]) {
+  cursor: pointer;
+}
+
+button:disabled,
+[aria-disabled="true"] {
+  cursor: not-allowed;
 }
 
 a {
