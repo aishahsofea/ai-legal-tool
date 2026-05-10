@@ -1,17 +1,7 @@
-import { useState, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { streamQuery, type Citation, type Message } from "@/lib/queryTransport";
 
-export interface Message {
-  role: "user" | "assistant";
-  content: string;
-}
-
-export interface Citation {
-  act_number: string;
-  act_title: string;
-  section_number: string;
-  pdf_url: string;
-  page_number: number | null;
-}
+export { type Citation, type Message } from "@/lib/queryTransport";
 
 export interface QueryState {
   status: string;
@@ -21,8 +11,6 @@ export interface QueryState {
   error: string | null;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
-
 export function useQuery() {
   const [state, setState] = useState<QueryState>({
     status: "",
@@ -31,65 +19,51 @@ export function useQuery() {
     isLoading: false,
     error: null,
   });
+  const abortRef = useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    return () => abortRef.current?.abort();
+  }, []);
 
   const submit = useCallback(async (query: string, history: Message[] = []) => {
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
     setState({ status: "Connecting...", response: "", citations: [], isLoading: true, error: null });
 
     try {
-      const res = await fetch(`${API_URL}/query`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query, history }),
-      });
-
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      if (!res.body) throw new Error("No response body");
-
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split("\n");
-        buffer = lines.pop() ?? "";
-
-        for (const line of lines) {
-          if (!line.startsWith("data: ")) continue;
-          const raw = line.slice(6).trim();
-          if (!raw) continue;
-
-          let event: Record<string, unknown>;
-          try { event = JSON.parse(raw); } catch { continue; }
-
-          if (event.type === "status") {
-            setState(s => ({ ...s, status: event.message as string }));
-          } else if (event.type === "response") {
-            setState(s => ({
-              ...s,
-              response:  event.content as string,
-              citations: event.citations as Citation[],
-              status:    "",
-            }));
-          } else if (event.type === "error") {
-            setState(s => ({ ...s, error: event.message as string, status: "", isLoading: false }));
-            return;
-          } else if (event.type === "done") {
-            setState(s => ({ ...s, isLoading: false, status: "" }));
-            return;
-          }
+      for await (const event of streamQuery(query, history, controller.signal)) {
+        if (event.type === "status") {
+          setState((s) => ({ ...s, status: event.message }));
+        } else if (event.type === "response") {
+          setState((s) => ({
+            ...s,
+            response: event.content,
+            citations: event.citations,
+            status: "",
+          }));
+        } else if (event.type === "error") {
+          setState((s) => ({ ...s, error: event.message, status: "", isLoading: false }));
+          return;
+        } else if (event.type === "done") {
+          setState((s) => ({ ...s, isLoading: false, status: "" }));
+          return;
         }
       }
+      setState((s) => ({ ...s, isLoading: false, status: "" }));
     } catch (err) {
-      setState(s => ({
+      if (controller.signal.aborted) return;
+      setState((s) => ({
         ...s,
         error: err instanceof Error ? err.message : "Unknown error",
         isLoading: false,
         status: "",
       }));
+    } finally {
+      if (abortRef.current === controller) {
+        abortRef.current = null;
+      }
     }
   }, []);
 
