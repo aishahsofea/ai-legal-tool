@@ -173,10 +173,10 @@ export function AssistantMessage({
 
       {message.citations && message.citations.length > 0 && <InlineSources citations={message.citations} messageId={message.id} />}
 
-      <div className="flex flex-wrap gap-2 border-t border-(--rule-soft) pt-4">
-        <OutlineButton disabled title="Coming soon">Save as memo</OutlineButton>
-        <OutlineButton disabled title="Coming soon">Highlight passage</OutlineButton>
-        <OutlineButton disabled title="Coming soon">Cite all</OutlineButton>
+      <div className="flex flex-wrap gap-2 border-t border-(--rule-soft) pt-4" role="group" aria-label="Message actions">
+        <OutlineButton disabled title="Coming soon" aria-label="Save as memo"><span className="hidden sm:inline">Save as memo</span><span className="sm:hidden">Save</span></OutlineButton>
+        <OutlineButton disabled title="Coming soon" aria-label="Highlight passage"><span className="hidden sm:inline">Highlight passage</span><span className="sm:hidden">Mark</span></OutlineButton>
+        <OutlineButton disabled title="Coming soon" aria-label="Cite all"><span className="hidden sm:inline">Cite all</span><span className="sm:hidden">Cite</span></OutlineButton>
       </div>
     </div>
   );
