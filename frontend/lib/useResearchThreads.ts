@@ -84,7 +84,7 @@ export function useResearchThreads() {
     setReasoningOpen(true);
     setActiveSourceIndex(0);
     setActiveThreadId(null);
-    setPendingThreadId(null);
+    // Keep pendingThreadId so the in-flight answer still lands in its original thread.
     lastStatusRef.current = null;
     setThreads((prev) => syncActiveFlags(prev, null));
   }, [syncActiveFlags]);
