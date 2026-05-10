@@ -33,21 +33,21 @@ The system is built on a LangGraph agent graph with four nodes (router, retrieve
 
 **Policy and safety**
 
-8. As a law practitioner, I want the agent to decline requests for advice on my specific legal situation, so that I am not misled into treating the tool as a substitute for a qualified lawyer.
-9. As a law practitioner, I want the agent to escalate my query to a human lawyer when the query involves a specific client situation, so that I get appropriate professional help.
-10. As a law practitioner, I want every response to include a disclaimer that it is not legal advice, so that I understand the tool's limitations.
-11. As a law practitioner, I want the agent to only make claims that are supported by a specific statute citation, so that I can trust the factual accuracy of responses.
+1. As a law practitioner, I want the agent to decline requests for advice on my specific legal situation, so that I am not misled into treating the tool as a substitute for a qualified lawyer.
+2. As a law practitioner, I want the agent to escalate my query to a human lawyer when the query involves a specific client situation, so that I get appropriate professional help.
+3. As a law practitioner, I want every response to include a disclaimer that it is not legal advice, so that I understand the tool's limitations.
+4. As a law practitioner, I want the agent to only make claims that are supported by a specific statute citation, so that I can trust the factual accuracy of responses.
 
 **Multi-turn conversation**
 
-12. As a law practitioner, I want to ask follow-up questions in the same session without repeating context, so that I can refine my research iteratively.
-13. As a law practitioner, I want the agent to remember which Acts and sections we discussed earlier in the conversation, so that follow-up questions are coherent.
+1. As a law practitioner, I want to ask follow-up questions in the same session without repeating context, so that I can refine my research iteratively.
+2. As a law practitioner, I want the agent to remember which Acts and sections we discussed earlier in the conversation, so that follow-up questions are coherent.
 
 **Frontend**
 
-14. As a law practitioner, I want to see responses stream in progressively, so that I do not wait for a 10-second blank screen before seeing any output.
-15. As a law practitioner, I want citations rendered as tappable links within the response, so that I can jump directly to the source.
-16. As a law practitioner, I want a persistent disclaimer banner visible at all times, so that I am never in doubt about the tool's scope.
+1. As a law practitioner, I want to see responses stream in progressively, so that I do not wait for a 10-second blank screen before seeing any output.
+2. As a law practitioner, I want citations rendered as tappable links within the response, so that I can jump directly to the source.
+3. As a law practitioner, I want a persistent disclaimer banner visible at all times, so that I am never in doubt about the tool's scope.
 
 ---
 
@@ -56,6 +56,7 @@ The system is built on a LangGraph agent graph with four nodes (router, retrieve
 ### Modules
 
 **1. PDF Downloader** (`scraper/step3_pdfs.py`)
+
 - Iterates over `data/acts_metadata/*.json`
 - Selection priority: `latest_reprint_pdf` → `latest_amendment_pdf` → skip
 - URL-encodes all paths before fetching (99% of AGC URLs contain literal spaces)
@@ -64,6 +65,7 @@ The system is built on a LangGraph agent graph with four nodes (router, retrieve
 - Timeout: 120s per file; reuses existing session and retry logic
 
 **2. Text Extractor + Chunker** (`ingestion/extractor.py`)
+
 - Uses pymupdf to extract text from each PDF
 - Detects scanned PDFs by average character count per page (< ~100 chars/page → flag `is_scanned`, skip)
 - Identifies section boundaries by regex on Malaysian Act numbering conventions (e.g. `^(\d+[A-Z]?)\.\s`)
@@ -72,12 +74,14 @@ The system is built on a LangGraph agent graph with four nodes (router, retrieve
 - Writes `data/chunks/en/{act_number}.json`
 
 **3. Embedder + Ingestor** (`ingestion/ingestor.py`)
+
 - Embeds each chunk with OpenAI `text-embedding-3-small` (1536 dimensions)
 - Inserts into pgvector (Supabase) with all metadata columns
 - Schema: `id`, `act_number`, `act_title`, `section_number`, `language`, `content`, `page_number`, `embedding vector(1536)`
 - Resumable: skips chunks already present by `(act_number, section_number, language)` unique key
 
 **4. LangGraph Agent** (`agent/graph.py`)
+
 - Four nodes:
   - **router** — classifies query as `statute_lookup` / `topical_search` / `provision_extraction` / `escalate`; triggers immediate `escalate` response for queries containing "my client", "I have been charged", "am I liable"
   - **retriever** — calls the appropriate retrieval tool; searches both `en` chunks (all queries); no pre-filtering by language (practitioners code-switch)
@@ -91,11 +95,13 @@ The system is built on a LangGraph agent graph with four nodes (router, retrieve
   4. Queries with "my client", "I have been charged", "am I liable" → human hand-off before retrieval
 
 **5. FastAPI Backend** (`api/main.py`)
+
 - Single `/stream` endpoint accepting `{ query, history }` POST
 - Streams LangGraph output as Server-Sent Events (SSE)
 - Deployed on Railway
 
 **6. Eval Harness** (`evals/`)
+
 - Dataset: `evals/dataset.json` — ~50–80 manually validated test cases
   - Generated semi-automatically: pymupdf extracts section text → Claude generates 1–2 natural language questions per section → human accepts/rejects
   - Covers: statute lookup, topical search, provision extraction, policy violation cases (queries that should be blocked)
@@ -106,6 +112,15 @@ The system is built on a LangGraph agent graph with four nodes (router, retrieve
 - Headline metrics: citation accuracy + policy compliance rate (before/after for write-up)
 
 **7. Next.js Frontend** (`frontend/`)
+scoring each response on:
+
+- **Citation accuracy** — did the agent cite the correct section?
+- **Policy compliance** — did the supervisor correctly allow/block the response?
+- GitHub Actions CI: runs eval suite on every push to `main`; posts pass rate to PR; failing score blocks merge
+- Headline metrics: citation accuracy + policy compliance rate (before/after for write-up)
+
+**7. Next.js Frontend** (`frontend/`)
+
 - Single-page chat UI
 - `useChat` hook (Vercel AI SDK) consuming SSE from FastAPI `/stream`
 - Citations rendered as `<a href="{pdf_url}#page={n}">Section X, Act Y</a>` links
