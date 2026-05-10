@@ -27,20 +27,27 @@ add(!/InlineSourceSummary/.test(text.messages), 18, 'no_compact_source_summary_b
 add(!/source-ref-/.test(text.messages), 12, 'sources_do_not_have_stable_reference_anchors');
 add(!/aria-label="Sources cited before this answer"/.test(text.messages), 8, 'pre_answer_sources_not_accessible');
 add(!/href={`#source-ref-/.test(text.messages), 8, 'summary_markers_do_not_link_to_source_details');
-// Stricter visual-noise heuristics for the inline source rows.
 add(/<CitationCard citation=/.test(text.messages), 14, 'source_detail_rows_duplicate_citation_card_content');
 add(/Open full act ↗[\s\S]*Open full act ↗/.test(text.messages), 8, 'source_actions_repeated_in_multiple_nested_elements');
 add(!/aria-label={`Open source/.test(text.messages), 6, 'source_open_link_lacks_specific_accessible_label');
 add(!/Back to source map/.test(text.messages), 6, 'source_detail_rows_do_not_link_back_to_summary');
+// Long-answer source map manageability: the map should not render every citation as a full chip before the prose.
+add(!/SOURCE_MAP_VISIBLE_LIMIT/.test(text.messages), 14, 'source_map_has_no_visible_limit_constant');
+add(!/visibleSources/.test(text.messages) || !/remainingSources/.test(text.messages), 18, 'source_map_does_not_split_visible_and_overflow_sources');
+add(!/<details/.test(text.messages), 12, 'overflow_sources_not_collapsible');
+add(!/remainingSources\.length/.test(text.messages), 8, 'overflow_count_not_shown');
+add(/citations\.map\(\(citation, index\)[\s\S]*SOURCE MAP/.test(text.messages), 8, 'source_map_may_render_all_citations_before_answer');
 const sourcePanelRefs = (all.match(/SourcesPanel/g) || []).length;
 const inlineCitationRefs = (text.messages.match(/citation/g) || []).length;
 const sourceAnchorRefs = (text.messages.match(/source-ref-/g) || []).length;
 const citationCardInMessages = (text.messages.match(/CitationCard/g) || []).length;
+const collapsibleRefs = (text.messages.match(/<details/g) || []).length;
 console.log(`METRIC layout_debt=${debt}`);
 console.log(`METRIC source_panel_refs=${sourcePanelRefs}`);
 console.log(`METRIC inline_citation_refs=${inlineCitationRefs}`);
 console.log(`METRIC source_anchor_refs=${sourceAnchorRefs}`);
 console.log(`METRIC citation_card_in_messages=${citationCardInMessages}`);
+console.log(`METRIC collapsible_source_refs=${collapsibleRefs}`);
 console.log(`ASI notes=${notes.join(',')}`);
 NODE
 
