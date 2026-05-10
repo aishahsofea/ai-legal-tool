@@ -39,7 +39,10 @@ export function ThreadSidebar({
             />
           ))
         ) : (
-          <div className="px-2 py-2 font-mono text-[10px] uppercase tracking-widest text-(--ink-3)">No threads yet</div>
+          <div className="px-2 py-2 text-center font-mono text-[10px] uppercase tracking-widest text-(--ink-3)" title="No threads yet">
+            <span className="xl:hidden">—</span>
+            <span className="hidden xl:block">No threads yet</span>
+          </div>
         )}
       </div>
 
@@ -47,7 +50,7 @@ export function ThreadSidebar({
         <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-(--bronze) text-xs font-semibold text-(--bg)">
           {userName.slice(0, 2).toUpperCase()}
         </div>
-        <div className="hidden min-w-0 xl:block">
+        <div className="hidden xl:block min-w-0">
           <div className="truncate text-xs text-(--ink)">{userName}</div>
           <div className="mt-2 truncate font-mono text-[10px] uppercase tracking-widest text-(--ink-3)">{userFirm}</div>
         </div>

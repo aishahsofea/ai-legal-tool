@@ -38,4 +38,6 @@ Improve the frontend research workspace so the layout remains sensible across wi
 - Kept experiment `df25e54`: compacted message/header actions and composer controls on narrow screens, improving small-width chrome while keeping lint/build green.
 - User feedback identified awkward empty right space after removing sources rail.
 - Kept experiment `8740c02`: removed remaining content/input max-width caps and switched message/composer containers to full-width utilities so the workspace uses the freed width.
-- Next focus: visually review very wide prose readability; if full-width legal text is too long, use an internal two-column answer/source layout instead of recreating an empty rail.
+- Next focus was wide prose readability, but user feedback superseded it: thread sidebar should collapse at a breakpoint.
+- Kept experiment `c37ec9e`: thread sidebar becomes a 56px icon rail from `md` widths and expands back to 220px at `xl`; labels/user details/thread titles are hidden until wide screens with tooltips/aria labels preserved.
+- Next focus: refine collapsed rail affordance (active-thread indicators or drawer trigger) and then revisit very-wide prose readability if needed.
