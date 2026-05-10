@@ -6,6 +6,42 @@ import { StatusIndicator } from "@/components/StatusIndicator";
 import { markdownComponents } from "./markdown";
 import type { Message } from "./types";
 
+function formatSourceTitle(title: string) {
+  return title.replace(/\*/g, "").trim();
+}
+
+function InlineSources({ citations }: { citations: NonNullable<Message["citations"]> }) {
+  if (citations.length === 0) return null;
+
+  return (
+    <section className="chamber-max-content border-t border-(--rule-soft) pt-3" aria-label="Sources used in this answer">
+      <div className="mb-2 flex items-center gap-2 text-(--ink-3)">
+        <Mono className="text-(--bronze)">SOURCES USED</Mono>
+        <span className="h-px flex-1 bg-(--rule-soft)" />
+      </div>
+      <ol className="space-y-2">
+        {citations.map((citation, index) => (
+          <li key={`${citation.act_number}-${citation.section_number}-${index}`} className="rounded-sm border border-(--rule) bg-(--bg-2) p-2">
+            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm text-(--ink)">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-(--bronze)">[{index + 1}] § {citation.section_number}</span>
+              <span className="font-serif font-light">{formatSourceTitle(citation.act_title)}</span>
+              {citation.page_number && <span className="font-mono text-[10px] uppercase tracking-widest text-(--ink-3)">p. {citation.page_number}</span>}
+            </div>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <CitationCard citation={citation} />
+              {citation.pdf_url && (
+                <a className="chamber-link font-mono text-[10px] uppercase tracking-widest" href={citation.pdf_url} target="_blank" rel="noopener noreferrer">
+                  Open full act ↗
+                </a>
+              )}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
 function ReasoningTrace({ steps, open, toggle }: { steps: string[]; open: boolean; toggle: () => void }) {
   return (
     <div className="chamber-max-content rounded-sm border border-(--rule) bg-(--bg-2)">
@@ -69,11 +105,7 @@ export function AssistantMessage({
         ) : null}
       </div>
 
-      {message.citations && message.citations.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          {message.citations.map((citation) => <CitationCard key={`${citation.act_number}-${citation.section_number}`} citation={citation} />)}
-        </div>
-      )}
+      {message.citations && message.citations.length > 0 && <InlineSources citations={message.citations} />}
 
       <div className="flex flex-wrap gap-2 border-t border-(--rule-soft) pt-4">
         <OutlineButton disabled title="Coming soon">Save as memo</OutlineButton>

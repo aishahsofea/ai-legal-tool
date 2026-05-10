@@ -1,5 +1,4 @@
 "use client";
-/* eslint-disable react-hooks/set-state-in-effect */
 
 import { FormEvent } from "react";
 import {
@@ -7,7 +6,6 @@ import {
   ConversationHeader,
   EmptyState,
   AssistantMessage,
-  SourcesPanel,
   ThreadSidebar,
   UserMessage,
 } from "@/components/conversation";
@@ -19,11 +17,7 @@ export default function Home() {
     activeThread,
     messages,
     statusHistory,
-    sources,
-    activeSource,
-    activeSourceIndex,
     citedCountLabel,
-    assistantMessage,
     input,
     reasoningOpen,
     isLoading,
@@ -31,7 +25,6 @@ export default function Home() {
     status,
     setInput,
     setReasoningOpen,
-    setActiveSourceIndex,
     newThread,
     selectThread,
     submitQuery,
@@ -57,7 +50,7 @@ export default function Home() {
         <main className="flex min-w-0 flex-col bg-(--bg)">
           <ConversationHeader title={activeThread?.title || "New thread"} />
 
-          <div className="flex-1 overflow-y-auto px-4 py-6 lg:px-20">
+          <div className="flex-1 overflow-y-auto px-4 py-6 md:px-8 xl:px-12">
             <div className="mx-auto flex w-full chamber-max-content flex-col gap-6">
               {messages.length === 0 && <EmptyState onQuery={setInput} />}
 
@@ -92,14 +85,6 @@ export default function Home() {
           <Composer input={input} onInput={setInput} onSubmit={handleSubmit} isLoading={isLoading} />
         </main>
 
-        <SourcesPanel
-          label={citedCountLabel}
-          activeSource={activeSource}
-          assistantMessage={assistantMessage ?? undefined}
-          onSelectSource={setActiveSourceIndex}
-          sources={sources}
-          activeSourceIndex={activeSourceIndex}
-        />
       </div>
     </div>
   );
