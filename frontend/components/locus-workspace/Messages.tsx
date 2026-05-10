@@ -10,6 +10,31 @@ function formatSourceTitle(title: string) {
   return title.replace(/\*/g, "").trim();
 }
 
+function sourceRefId(citation: NonNullable<Message["citations"]>[number], index: number) {
+  return `source-ref-${citation.act_number}-${citation.section_number}-${index}`.replace(/[^a-zA-Z0-9_-]/g, "-");
+}
+
+function InlineSourceSummary({ citations }: { citations: NonNullable<Message["citations"]> }) {
+  if (citations.length === 0) return null;
+
+  return (
+    <nav className="chamber-max-content rounded-sm border border-(--rule-soft) bg-(--bronze-tint) px-2 py-2" aria-label="Sources cited before this answer">
+      <div className="mb-2 flex items-center gap-2">
+        <Mono className="text-(--bronze)">SOURCE MAP</Mono>
+        <span className="font-serif text-xs italic text-(--ink-3)">cited in this answer</span>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {citations.map((citation, index) => (
+          <a key={sourceRefId(citation, index)} href={`#source-ref-${citation.act_number}-${citation.section_number}-${index}`.replace(/[^#a-zA-Z0-9_-]/g, "-")} className="inline-flex items-center gap-2 rounded-sm border border-(--rule) bg-(--bg-2) px-2 py-1 text-xs text-(--ink-2) transition-colors duration-150 hover:border-(--bronze) hover:text-(--bronze)">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-(--bronze)">[{index + 1}]</span>
+            <span className="font-serif">§ {citation.section_number}</span>
+          </a>
+        ))}
+      </div>
+    </nav>
+  );
+}
+
 function InlineSources({ citations }: { citations: NonNullable<Message["citations"]> }) {
   if (citations.length === 0) return null;
 
@@ -21,7 +46,7 @@ function InlineSources({ citations }: { citations: NonNullable<Message["citation
       </div>
       <ol className="space-y-2">
         {citations.map((citation, index) => (
-          <li key={`${citation.act_number}-${citation.section_number}-${index}`} className="rounded-sm border border-(--rule) bg-(--bg-2) p-2">
+          <li id={sourceRefId(citation, index)} key={sourceRefId(citation, index)} className="scroll-mt-4 rounded-sm border border-(--rule) bg-(--bg-2) p-2">
             <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm text-(--ink)">
               <span className="font-mono text-[10px] uppercase tracking-widest text-(--bronze)">[{index + 1}] § {citation.section_number}</span>
               <span className="font-serif font-light">{formatSourceTitle(citation.act_title)}</span>
@@ -96,6 +121,8 @@ export function AssistantMessage({
       {(statusHistory.length > 0 || isLoading) && (
         <ReasoningTrace steps={statusHistory.length > 0 ? statusHistory : [status || "Connecting…"]} open={reasoningOpen} toggle={onToggleReasoning} />
       )}
+
+      {message.citations && message.citations.length > 0 && <InlineSourceSummary citations={message.citations} />}
 
       <div className="chamber-max-content space-y-2 text-sm leading-6 text-(--ink)">
         {message.content ? (
