@@ -13,8 +13,24 @@ function sourceRefId(citation: NonNullable<Message["citations"]>[number], index:
   return `source-ref-${citation.act_number}-${citation.section_number}-${index}`.replace(/[^a-zA-Z0-9_-]/g, "-");
 }
 
-function InlineSourceSummary({ citations }: { citations: NonNullable<Message["citations"]> }) {
+const SOURCE_MAP_VISIBLE_LIMIT = 6;
+
+type CitationList = NonNullable<Message["citations"]>;
+
+function SourceMapLink({ citation, index }: { citation: CitationList[number]; index: number }) {
+  return (
+    <a key={sourceRefId(citation, index)} href={`#source-ref-${citation.act_number}-${citation.section_number}-${index}`.replace(/[^#a-zA-Z0-9_-]/g, "-")} className="inline-flex items-center gap-2 rounded-sm border border-(--rule) bg-(--bg-2) px-2 py-1 text-xs text-(--ink-2) transition-colors duration-150 hover:border-(--bronze) hover:text-(--bronze)">
+      <span className="font-mono text-[10px] uppercase tracking-widest text-(--bronze)">[{index + 1}]</span>
+      <span className="font-serif">§ {citation.section_number}</span>
+    </a>
+  );
+}
+
+function InlineSourceSummary({ citations }: { citations: CitationList }) {
   if (citations.length === 0) return null;
+
+  const visibleSources = citations.slice(0, SOURCE_MAP_VISIBLE_LIMIT);
+  const remainingSources = citations.slice(SOURCE_MAP_VISIBLE_LIMIT);
 
   return (
     <nav id="source-map" className="chamber-max-content rounded-sm border border-(--rule-soft) bg-(--bronze-tint) px-2 py-2" aria-label="Sources cited before this answer">
@@ -23,13 +39,21 @@ function InlineSourceSummary({ citations }: { citations: NonNullable<Message["ci
         <span className="font-serif text-xs italic text-(--ink-3)">cited in this answer</span>
       </div>
       <div className="flex flex-wrap gap-2">
-        {citations.map((citation, index) => (
-          <a key={sourceRefId(citation, index)} href={`#source-ref-${citation.act_number}-${citation.section_number}-${index}`.replace(/[^#a-zA-Z0-9_-]/g, "-")} className="inline-flex items-center gap-2 rounded-sm border border-(--rule) bg-(--bg-2) px-2 py-1 text-xs text-(--ink-2) transition-colors duration-150 hover:border-(--bronze) hover:text-(--bronze)">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-(--bronze)">[{index + 1}]</span>
-            <span className="font-serif">§ {citation.section_number}</span>
-          </a>
-        ))}
+        {visibleSources.map((citation, index) => <SourceMapLink key={sourceRefId(citation, index)} citation={citation} index={index} />)}
       </div>
+      {remainingSources.length > 0 && (
+        <details className="mt-2 rounded-sm border border-(--rule-soft) bg-(--bg-2) px-2 py-1">
+          <summary className="cursor-pointer font-mono text-[10px] uppercase tracking-widest text-(--ink-3) transition-colors duration-150 hover:text-(--bronze)">
+            + {remainingSources.length} more source{remainingSources.length === 1 ? "" : "s"}
+          </summary>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {remainingSources.map((citation, index) => {
+              const sourceIndex = index + SOURCE_MAP_VISIBLE_LIMIT;
+              return <SourceMapLink key={sourceRefId(citation, sourceIndex)} citation={citation} index={sourceIndex} />;
+            })}
+          </div>
+        </details>
+      )}
     </nav>
   );
 }
