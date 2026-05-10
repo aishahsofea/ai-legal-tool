@@ -32,4 +32,5 @@ Improve the frontend research workspace so the layout remains sensible across wi
 - Kept experiment `dfbb9ee`: removed the right sources rail, simplified the desktop grid to nav + content, rendered citations inside each assistant message as a `Sources Used` section, and got lint/build passing.
 - Kept experiment `14f840b`: added a compact pre-answer source map with `[1]` style links to detailed source rows below the answer.
 - Kept experiment `d578cbe`: removed duplicated `CitationCard` content from message source rows and added accessible open-source labels plus back-to-map links.
-- Next focus: keep the pre-answer source map manageable when an answer has many citations; long citation lists should not push the answer prose too far down.
+- Kept experiment `5f6858c`: capped the pre-answer source map at six visible chips and moved overflow citations into a collapsible `+N more sources` detail block.
+- Next focus: source-map anchors are static (`source-map`, `source-ref-*`) and can collide across multiple assistant answers in the same thread.

@@ -31,23 +31,29 @@ add(/<CitationCard citation=/.test(text.messages), 14, 'source_detail_rows_dupli
 add(/Open full act ↗[\s\S]*Open full act ↗/.test(text.messages), 8, 'source_actions_repeated_in_multiple_nested_elements');
 add(!/aria-label={`Open source/.test(text.messages), 6, 'source_open_link_lacks_specific_accessible_label');
 add(!/Back to source map/.test(text.messages), 6, 'source_detail_rows_do_not_link_back_to_summary');
-// Long-answer source map manageability: the map should not render every citation as a full chip before the prose.
 add(!/SOURCE_MAP_VISIBLE_LIMIT/.test(text.messages), 14, 'source_map_has_no_visible_limit_constant');
 add(!/visibleSources/.test(text.messages) || !/remainingSources/.test(text.messages), 18, 'source_map_does_not_split_visible_and_overflow_sources');
 add(!/<details/.test(text.messages), 12, 'overflow_sources_not_collapsible');
 add(!/remainingSources\.length/.test(text.messages), 8, 'overflow_count_not_shown');
-add(/citations\.map\(\(citation, index\)[\s\S]*SOURCE MAP/.test(text.messages), 8, 'source_map_may_render_all_citations_before_answer');
+// Multi-answer thread correctness: anchors must be scoped per assistant message, not static document ids.
+add(/id="source-map"/.test(text.messages), 22, 'static_source_map_id_collides_across_answers');
+add(/href="#source-map"/.test(text.messages), 18, 'static_back_to_source_map_link_collides_across_answers');
+add(!/messageId/.test(text.messages), 18, 'source_components_do_not_accept_message_id_scope');
+add(!/sourceMapId/.test(text.messages), 12, 'source_map_id_not_derived_from_message_scope');
+add(!/sourceRefId\([^)]*messageId/.test(text.messages), 16, 'source_ref_ids_not_scoped_by_message');
 const sourcePanelRefs = (all.match(/SourcesPanel/g) || []).length;
 const inlineCitationRefs = (text.messages.match(/citation/g) || []).length;
 const sourceAnchorRefs = (text.messages.match(/source-ref-/g) || []).length;
 const citationCardInMessages = (text.messages.match(/CitationCard/g) || []).length;
 const collapsibleRefs = (text.messages.match(/<details/g) || []).length;
+const staticSourceMapRefs = (text.messages.match(/source-map/g) || []).length;
 console.log(`METRIC layout_debt=${debt}`);
 console.log(`METRIC source_panel_refs=${sourcePanelRefs}`);
 console.log(`METRIC inline_citation_refs=${inlineCitationRefs}`);
 console.log(`METRIC source_anchor_refs=${sourceAnchorRefs}`);
 console.log(`METRIC citation_card_in_messages=${citationCardInMessages}`);
 console.log(`METRIC collapsible_source_refs=${collapsibleRefs}`);
+console.log(`METRIC static_source_map_refs=${staticSourceMapRefs}`);
 console.log(`ASI notes=${notes.join(',')}`);
 NODE
 
