@@ -55,6 +55,7 @@ export default function Home() {
   const [statusHistory, setStatusHistory] = useState<string[]>([]);
   const bottomRef = useRef<HTMLDivElement>(null);
   const lastStatusRef = useRef<string | null>(null);
+  const pendingThreadIdRef = useRef<string | null>(null);
   const { submit, status, response, citations, isLoading, error } = useQuery();
 
   useEffect(() => {
@@ -74,7 +75,9 @@ export default function Home() {
   }, [status, activeThreadId]);
 
   useEffect(() => {
-    if (!response) return;
+    const pendingThreadId = pendingThreadIdRef.current;
+    if (!response || !pendingThreadId) return;
+
     let updatedMessages: Message[] | null = null;
     setMessages((prev) => {
       const last = prev[prev.length - 1];
@@ -86,22 +89,21 @@ export default function Home() {
       return prev;
     });
 
-    if (activeThreadId) {
-      setThreads((prev) =>
-        prev.map((thread) =>
-          thread.id === activeThreadId
-            ? {
-                ...thread,
-                messages: updatedMessages ?? thread.messages,
-                citations,
-                meta: summarizeSources(citations),
-                active: true,
-              }
-            : { ...thread, active: false },
-        ),
-      );
-    }
-  }, [response, citations, activeThreadId]);
+    setThreads((prev) =>
+      prev.map((thread) =>
+        thread.id === pendingThreadId
+          ? {
+              ...thread,
+              messages: updatedMessages ?? thread.messages,
+              citations,
+              meta: summarizeSources(citations),
+              active: true,
+            }
+          : { ...thread, active: false },
+      ),
+    );
+    pendingThreadIdRef.current = null;
+  }, [response, citations]);
 
   useEffect(() => {
     if (citations.length) setActiveSourceIndex(0);
@@ -124,6 +126,7 @@ export default function Home() {
     setActiveSourceIndex(0);
     setStatusHistory([]);
     lastStatusRef.current = null;
+    pendingThreadIdRef.current = null;
     setActiveThreadId(null);
     setThreads((prev) => prev.map((thread) => ({ ...thread, active: false })));
   };
@@ -155,6 +158,7 @@ export default function Home() {
     setStatusHistory([]);
     lastStatusRef.current = null;
     setActiveThreadId(threadId);
+    pendingThreadIdRef.current = threadId;
     const nextMessages: Message[] = [
       { id: makeId(), role: "user", content: query, createdAt: nowLabel() },
       { id: makeId(), role: "assistant", content: "", createdAt: nowLabel() },
