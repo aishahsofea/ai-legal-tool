@@ -50,12 +50,14 @@ export function Mark() {
 export function OutlineButton({
   className = "",
   children,
+  style,
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
       {...props}
-      className={`inline-flex cursor-pointer items-center justify-center rounded-sm border border-(--rule) px-2 py-2 text-xs text-(--ink-2) transition-colors duration-150 hover:border-(--bronze) hover:text-(--bronze) active:opacity-80 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-(--rule) disabled:hover:text-(--ink-2) ${className}`}
+      style={{ fontSize: 10, lineHeight: "10px", ...style }}
+      className={`inline-flex cursor-pointer items-center justify-center rounded-sm border border-(--rule) px-2 py-1 text-(--ink-2) transition-colors duration-150 hover:border-(--bronze) hover:text-(--bronze) active:opacity-80 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-(--rule) disabled:hover:text-(--ink-2) ${className}`}
     >
       {children}
     </button>
