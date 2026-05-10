@@ -147,9 +147,20 @@ CREATE TABLE chunks (
 ```json
 {
   "scraped_at": "2026-04-14T...",
-  "totals": { "updated": 880, "revised": 47, "repealed": 142, "amendment": 1791, "translated": 23 },
+  "totals": {
+    "updated": 880,
+    "revised": 47,
+    "repealed": 142,
+    "amendment": 1791,
+    "translated": 23
+  },
   "acts": [
-    { "act_number": "56", "act_type": "updated", "title_bm": "AKTA KETERANGAN 1950", "title_en": "EVIDENCE ACT 1950" }
+    {
+      "act_number": "56",
+      "act_type": "updated",
+      "title_bm": "AKTA KETERANGAN 1950",
+      "title_en": "EVIDENCE ACT 1950"
+    }
   ]
 }
 ```
@@ -216,6 +227,41 @@ ai-legal-tool/
     ├── build-log.md
     └── adr/                        # Architecture Decision Records
 ```
+
+---
+
+## Running the API
+
+Start the FastAPI backend (requires steps 1–5 complete and `.env` configured):
+
+```bash
+uvicorn api.main:app --port 8000 --reload
+```
+
+- API runs at `http://localhost:8000`
+- Auto-reloads on file changes (`--reload` flag)
+- Health check: `GET http://localhost:8000/health`
+
+### Query endpoint
+
+```bash
+curl -N -X POST http://localhost:8000/query \
+  -H "Content-Type: application/json" \
+  -d '{"query": "What does Section 17 of the Evidence Act say about admissions?"}'
+```
+
+Streams Server-Sent Events:
+
+```
+data: {"type": "status",   "message": "Classifying query..."}
+data: {"type": "status",   "message": "Found 8 relevant sections. Drafting response..."}
+data: {"type": "status",   "message": "Drafting response..."}
+data: {"type": "status",   "message": "Checking policy compliance..."}
+data: {"type": "response", "content": "...", "citations": [...], "violations": []}
+data: {"type": "done"}
+```
+
+Citation objects include `act_number`, `act_title`, `section_number`, `pdf_url` (with `#page=N` anchor), and `page_number`.
 
 ---
 
