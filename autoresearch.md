@@ -28,4 +28,6 @@ Improve the frontend research workspace so the layout remains sensible across wi
 - Prefer simple, reviewable UX changes over benchmark-specific hacks.
 
 ## What's Been Tried
-- Session initialized. Baseline expected to show debt from three-column desktop grid and `SourcesPanel` right sidebar.
+- Baseline showed layout debt from the three-column desktop grid, right-hand `SourcesPanel`, and sources separated from assistant answers. Existing lint also failed in `useResearchThreads`.
+- Kept experiment `dfbb9ee`: removed the right sources rail, simplified the desktop grid to nav + content, rendered citations inside each assistant message as a `Sources Used` section, and got lint/build passing.
+- Next focus: make sources feel even more report-like by adding compact source markers before/within the answer flow, not only a source appendix after the markdown.

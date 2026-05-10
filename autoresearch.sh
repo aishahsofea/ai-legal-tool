@@ -23,11 +23,19 @@ add(!/(Sources used|Sources|References|Citations)/i.test(text.messages), 12, 'no
 add(!/(pdf_url|Open full act|Copy citation)/.test(text.messages), 12, 'inline_sources_lack_source_actions');
 add(/activeSourceIndex|setActiveSourceIndex|activeSource/.test(text.page), 8, 'page_tracks_sidebar_source_selection_state');
 add(!/chamber-grid-app \{ grid-template-columns: 220px minmax\(0, 1fr\); \}/.test(text.css), 6, 'desktop_grid_not_simplified_to_nav_and_content');
+// Stricter report-like source integration: sources should be introduced before the markdown body
+// and have stable anchors so bracket-style references can point to details below.
+add(!/InlineSourceSummary/.test(text.messages), 18, 'no_compact_source_summary_before_answer');
+add(!/source-ref-/.test(text.messages), 12, 'sources_do_not_have_stable_reference_anchors');
+add(!/aria-label="Sources cited before this answer"/.test(text.messages), 8, 'pre_answer_sources_not_accessible');
+add(!/href={`#source-ref-/.test(text.messages), 8, 'summary_markers_do_not_link_to_source_details');
 const sourcePanelRefs = (all.match(/SourcesPanel/g) || []).length;
 const inlineCitationRefs = (text.messages.match(/citation/g) || []).length;
+const sourceAnchorRefs = (text.messages.match(/source-ref-/g) || []).length;
 console.log(`METRIC layout_debt=${debt}`);
 console.log(`METRIC source_panel_refs=${sourcePanelRefs}`);
 console.log(`METRIC inline_citation_refs=${inlineCitationRefs}`);
+console.log(`METRIC source_anchor_refs=${sourceAnchorRefs}`);
 console.log(`ASI notes=${notes.join(',')}`);
 NODE
 
