@@ -30,4 +30,5 @@ Improve the frontend research workspace so the layout remains sensible across wi
 ## What's Been Tried
 - Baseline showed layout debt from the three-column desktop grid, right-hand `SourcesPanel`, and sources separated from assistant answers. Existing lint also failed in `useResearchThreads`.
 - Kept experiment `dfbb9ee`: removed the right sources rail, simplified the desktop grid to nav + content, rendered citations inside each assistant message as a `Sources Used` section, and got lint/build passing.
-- Next focus: make sources feel even more report-like by adding compact source markers before/within the answer flow, not only a source appendix after the markdown.
+- Kept experiment `14f840b`: added a compact pre-answer source map with `[1]` style links to detailed source rows below the answer.
+- Next focus: reduce duplication/noise in source detail rows; the source map plus `CitationCard` plus separate open-link may overstate each source.
