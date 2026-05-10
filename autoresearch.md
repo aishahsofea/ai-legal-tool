@@ -40,4 +40,5 @@ Improve the frontend research workspace so the layout remains sensible across wi
 - Kept experiment `8740c02`: removed remaining content/input max-width caps and switched message/composer containers to full-width utilities so the workspace uses the freed width.
 - Next focus was wide prose readability, but user feedback superseded it: thread sidebar should collapse at a breakpoint.
 - Kept experiment `c37ec9e`: thread sidebar becomes a 56px icon rail from `md` widths and expands back to 220px at `xl`; labels/user details/thread titles are hidden until wide screens with tooltips/aria labels preserved.
-- Next focus: refine collapsed rail affordance (active-thread indicators or drawer trigger) and then revisit very-wide prose readability if needed.
+- Kept experiment `6cf4745`: polished collapsed rail empty/user states so no text leaks in the compact rail; empty state shows a dash until `xl`, user details remain tooltip/avatar-only until expanded.
+- Next focus: revisit very-wide prose readability while preserving full workspace use.
