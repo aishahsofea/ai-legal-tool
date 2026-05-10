@@ -9,37 +9,49 @@ function formatSourceTitle(title: string) {
   return title.replace(/\*/g, "").trim();
 }
 
-function sourceRefId(citation: NonNullable<Message["citations"]>[number], index: number) {
-  return `source-ref-${citation.act_number}-${citation.section_number}-${index}`.replace(/[^a-zA-Z0-9_-]/g, "-");
+function scopedId(...parts: Array<string | number>) {
+  return parts.join("-").replace(/[^a-zA-Z0-9_-]/g, "-");
+}
+
+function sourceMapId(messageId: string) {
+  return scopedId("source-map", messageId);
+}
+
+function sourceRefId(messageId: string, citation: NonNullable<Message["citations"]>[number], index: number) {
+  return scopedId("source-ref", messageId, citation.act_number, citation.section_number, index);
 }
 
 const SOURCE_MAP_VISIBLE_LIMIT = 6;
 
 type CitationList = NonNullable<Message["citations"]>;
 
-function SourceMapLink({ citation, index }: { citation: CitationList[number]; index: number }) {
+function SourceMapLink({ citation, index, messageId }: { citation: CitationList[number]; index: number; messageId: string }) {
+  const refId = sourceRefId(messageId, citation, index);
+
   return (
-    <a key={sourceRefId(citation, index)} href={`#source-ref-${citation.act_number}-${citation.section_number}-${index}`.replace(/[^#a-zA-Z0-9_-]/g, "-")} className="inline-flex items-center gap-2 rounded-sm border border-(--rule) bg-(--bg-2) px-2 py-1 text-xs text-(--ink-2) transition-colors duration-150 hover:border-(--bronze) hover:text-(--bronze)">
+    <a key={refId} href={`#${refId}`} className="inline-flex items-center gap-2 rounded-sm border border-(--rule) bg-(--bg-2) px-2 py-1 text-xs text-(--ink-2) transition-colors duration-150 hover:border-(--bronze) hover:text-(--bronze)">
       <span className="font-mono text-[10px] uppercase tracking-widest text-(--bronze)">[{index + 1}]</span>
       <span className="font-serif">§ {citation.section_number}</span>
     </a>
   );
 }
 
-function InlineSourceSummary({ citations }: { citations: CitationList }) {
+function InlineSourceSummary({ citations, messageId }: { citations: CitationList; messageId: string }) {
   if (citations.length === 0) return null;
 
   const visibleSources = citations.slice(0, SOURCE_MAP_VISIBLE_LIMIT);
   const remainingSources = citations.slice(SOURCE_MAP_VISIBLE_LIMIT);
 
+  const mapId = sourceMapId(messageId);
+
   return (
-    <nav id="source-map" className="chamber-max-content rounded-sm border border-(--rule-soft) bg-(--bronze-tint) px-2 py-2" aria-label="Sources cited before this answer">
+    <nav id={mapId} className="chamber-max-content rounded-sm border border-(--rule-soft) bg-(--bronze-tint) px-2 py-2" aria-label="Sources cited before this answer">
       <div className="mb-2 flex items-center gap-2">
         <Mono className="text-(--bronze)">SOURCE MAP</Mono>
         <span className="font-serif text-xs italic text-(--ink-3)">cited in this answer</span>
       </div>
       <div className="flex flex-wrap gap-2">
-        {visibleSources.map((citation, index) => <SourceMapLink key={sourceRefId(citation, index)} citation={citation} index={index} />)}
+        {visibleSources.map((citation, index) => <SourceMapLink key={sourceRefId(messageId, citation, index)} citation={citation} index={index} messageId={messageId} />)}
       </div>
       {remainingSources.length > 0 && (
         <details className="mt-2 rounded-sm border border-(--rule-soft) bg-(--bg-2) px-2 py-1">
@@ -49,7 +61,7 @@ function InlineSourceSummary({ citations }: { citations: CitationList }) {
           <div className="mt-2 flex flex-wrap gap-2">
             {remainingSources.map((citation, index) => {
               const sourceIndex = index + SOURCE_MAP_VISIBLE_LIMIT;
-              return <SourceMapLink key={sourceRefId(citation, sourceIndex)} citation={citation} index={sourceIndex} />;
+              return <SourceMapLink key={sourceRefId(messageId, citation, sourceIndex)} citation={citation} index={sourceIndex} messageId={messageId} />;
             })}
           </div>
         </details>
@@ -58,8 +70,10 @@ function InlineSourceSummary({ citations }: { citations: CitationList }) {
   );
 }
 
-function InlineSources({ citations }: { citations: NonNullable<Message["citations"]> }) {
+function InlineSources({ citations, messageId }: { citations: NonNullable<Message["citations"]>; messageId: string }) {
   if (citations.length === 0) return null;
+
+  const mapId = sourceMapId(messageId);
 
   return (
     <section className="chamber-max-content border-t border-(--rule-soft) pt-3" aria-label="Sources used in this answer">
@@ -69,7 +83,7 @@ function InlineSources({ citations }: { citations: NonNullable<Message["citation
       </div>
       <ol className="space-y-2">
         {citations.map((citation, index) => (
-          <li id={sourceRefId(citation, index)} key={sourceRefId(citation, index)} className="scroll-mt-4 rounded-sm border border-(--rule) bg-(--bg-2) p-2">
+          <li id={sourceRefId(messageId, citation, index)} key={sourceRefId(messageId, citation, index)} className="scroll-mt-4 rounded-sm border border-(--rule) bg-(--bg-2) p-2">
             <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm text-(--ink)">
               <span className="font-mono text-[10px] uppercase tracking-widest text-(--bronze)">[{index + 1}] § {citation.section_number}</span>
               <span className="font-serif font-light">{formatSourceTitle(citation.act_title)}</span>
@@ -81,7 +95,7 @@ function InlineSources({ citations }: { citations: NonNullable<Message["citation
                   Open full act ↗
                 </a>
               )}
-              <a className="chamber-link font-mono text-[10px] uppercase tracking-widest" href="#source-map">
+              <a className="chamber-link font-mono text-[10px] uppercase tracking-widest" href={`#${mapId}`}>
                 Back to source map ↑
               </a>
             </div>
@@ -147,7 +161,7 @@ export function AssistantMessage({
         <ReasoningTrace steps={statusHistory.length > 0 ? statusHistory : [status || "Connecting…"]} open={reasoningOpen} toggle={onToggleReasoning} />
       )}
 
-      {message.citations && message.citations.length > 0 && <InlineSourceSummary citations={message.citations} />}
+      {message.citations && message.citations.length > 0 && <InlineSourceSummary citations={message.citations} messageId={message.id} />}
 
       <div className="chamber-max-content space-y-2 text-sm leading-6 text-(--ink)">
         {message.content ? (
@@ -157,7 +171,7 @@ export function AssistantMessage({
         ) : null}
       </div>
 
-      {message.citations && message.citations.length > 0 && <InlineSources citations={message.citations} />}
+      {message.citations && message.citations.length > 0 && <InlineSources citations={message.citations} messageId={message.id} />}
 
       <div className="flex flex-wrap gap-2 border-t border-(--rule-soft) pt-4">
         <OutlineButton disabled title="Coming soon">Save as memo</OutlineButton>
