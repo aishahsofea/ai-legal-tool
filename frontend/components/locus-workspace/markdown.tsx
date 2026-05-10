@@ -15,4 +15,10 @@ export const markdownComponents: Components = {
   code: ({ children }) => <code className="rounded-sm border border-(--rule) bg-(--bg-2) px-2 py-2 font-mono text-xs text-(--ink)">{children}</code>,
   pre: ({ children }) => <pre className="my-2 overflow-x-auto rounded-sm border border-(--rule) bg-(--bg-2) p-2 font-mono text-xs leading-relaxed text-(--ink-2)">{children}</pre>,
   hr: () => <hr className="my-4 border-(--rule-soft)" />,
+  table: ({ children }) => <div className="my-2 overflow-x-auto"><table className="w-full border-collapse text-sm">{children}</table></div>,
+  thead: ({ children }) => <thead className="border-b border-(--rule)">{children}</thead>,
+  tbody: ({ children }) => <tbody className="divide-y divide-(--rule-soft)">{children}</tbody>,
+  tr: ({ children }) => <tr className="text-left">{children}</tr>,
+  th: ({ children }) => <th className="px-3 py-2 font-semibold text-(--ink)">{children}</th>,
+  td: ({ children }) => <td className="px-3 py-2 text-(--ink-2)">{children}</td>,
 };

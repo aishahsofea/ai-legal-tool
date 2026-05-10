@@ -5,13 +5,17 @@ import type { ThreadSummary } from "./types";
 export function ThreadSidebar({
   threads,
   onNewThread,
+  onSelectThread,
   userName,
   userFirm,
+  switchingDisabled = false,
 }: {
   threads: ThreadSummary[];
   onNewThread: () => void;
+  onSelectThread: (threadId: string) => void;
   userName: string;
   userFirm: string;
+  switchingDisabled?: boolean;
 }) {
   return (
     <aside className="flex flex-col border-r border-(--rule) bg-(--bg)">
@@ -24,7 +28,16 @@ export function ThreadSidebar({
 
       <div className="flex flex-1 flex-col gap-2 px-2 py-2">
         {threads.length > 0 ? (
-          threads.map((thread) => <ThreadRow key={thread.id} title={thread.title} meta={thread.meta} active={thread.active} />)
+          threads.map((thread) => (
+            <ThreadRow
+              key={thread.id}
+              title={thread.title}
+              meta={thread.meta}
+              active={thread.active}
+              disabled={switchingDisabled && !thread.active}
+              onClick={() => onSelectThread(thread.id)}
+            />
+          ))
         ) : (
           <div className="px-2 py-2 font-mono text-[10px] uppercase tracking-widest text-(--ink-3)">No threads yet</div>
         )}

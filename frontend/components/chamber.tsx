@@ -83,15 +83,21 @@ export function ThreadRow({
   title,
   meta,
   active = false,
+  disabled = false,
+  onClick,
 }: {
   title: string;
   meta: string;
   active?: boolean;
+  disabled?: boolean;
+  onClick?: () => void;
 }) {
   return (
     <button
       type="button"
-      className={`flex w-full cursor-pointer items-stretch gap-2 rounded-sm px-2 py-2 text-left transition-colors duration-150 hover:bg-(--bg-2) active:opacity-80 ${
+      disabled={disabled}
+      onClick={onClick}
+      className={`flex w-full cursor-pointer items-stretch gap-2 rounded-sm px-2 py-2 text-left transition-colors duration-150 hover:bg-(--bg-2) active:opacity-80 disabled:cursor-not-allowed disabled:opacity-50 ${
         active ? "bg-(--bg-2)" : "bg-transparent"
       }`}
     >

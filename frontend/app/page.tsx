@@ -15,6 +15,12 @@ import {
 } from "@/components/conversation";
 import { Citation, useQuery } from "@/lib/useQuery";
 
+type ResearchThread = ThreadSummary & {
+  messages: Message[];
+  citations: Citation[];
+  statusHistory: string[];
+};
+
 function nowLabel(date = new Date()) {
   return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
@@ -44,7 +50,7 @@ export default function Home() {
   const [input, setInput] = useState("");
   const [reasoningOpen, setReasoningOpen] = useState(true);
   const [activeSourceIndex, setActiveSourceIndex] = useState(0);
-  const [threads, setThreads] = useState<ThreadSummary[]>([]);
+  const [threads, setThreads] = useState<ResearchThread[]>([]);
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null);
   const [statusHistory, setStatusHistory] = useState<string[]>([]);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -56,15 +62,27 @@ export default function Home() {
     if (lastStatusRef.current === status) return;
     lastStatusRef.current = status;
     setStatusHistory((prev) => [...prev, status]);
-  }, [status]);
+    if (activeThreadId) {
+      setThreads((prev) =>
+        prev.map((thread) =>
+          thread.id === activeThreadId
+            ? { ...thread, statusHistory: [...thread.statusHistory, status] }
+            : thread,
+        ),
+      );
+    }
+  }, [status, activeThreadId]);
 
   useEffect(() => {
     if (!response) return;
+    let updatedMessages: Message[] | null = null;
     setMessages((prev) => {
       const last = prev[prev.length - 1];
       if (last?.role === "assistant" && last.content === "") {
-        return [...prev.slice(0, -1), { ...last, content: response, citations }];
+        updatedMessages = [...prev.slice(0, -1), { ...last, content: response, citations }];
+        return updatedMessages;
       }
+      updatedMessages = prev;
       return prev;
     });
 
@@ -72,7 +90,13 @@ export default function Home() {
       setThreads((prev) =>
         prev.map((thread) =>
           thread.id === activeThreadId
-            ? { ...thread, meta: summarizeSources(citations), active: true }
+            ? {
+                ...thread,
+                messages: updatedMessages ?? thread.messages,
+                citations,
+                meta: summarizeSources(citations),
+                active: true,
+              }
             : { ...thread, active: false },
         ),
       );
@@ -88,10 +112,10 @@ export default function Home() {
   }, [messages, status, isLoading]);
 
   const activeThread = threads.find((thread) => thread.active) ?? null;
-  const sources = citations;
+  const sources = activeThread?.citations ?? citations;
   const activeSource = sources[activeSourceIndex] ?? null;
   const assistantMessage = [...messages].reverse().find((message) => message.role === "assistant");
-  const citedCountLabel = summarizeSources(citations);
+  const citedCountLabel = summarizeSources(sources);
 
   const handleNewThread = () => {
     setMessages([]);
@@ -102,6 +126,20 @@ export default function Home() {
     lastStatusRef.current = null;
     setActiveThreadId(null);
     setThreads((prev) => prev.map((thread) => ({ ...thread, active: false })));
+  };
+
+  const handleSelectThread = (threadId: string) => {
+    if (isLoading) return;
+    const selectedThread = threads.find((thread) => thread.id === threadId);
+    if (!selectedThread) return;
+
+    setActiveThreadId(threadId);
+    setMessages(selectedThread.messages);
+    setStatusHistory(selectedThread.statusHistory);
+    setActiveSourceIndex(0);
+    setReasoningOpen(true);
+    lastStatusRef.current = null;
+    setThreads((prev) => prev.map((thread) => ({ ...thread, active: thread.id === threadId })));
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -117,15 +155,29 @@ export default function Home() {
     setStatusHistory([]);
     lastStatusRef.current = null;
     setActiveThreadId(threadId);
-    setThreads((prev) => [{ id: threadId, title, meta: "Loading…", active: true }, ...prev.map((thread) => ({ ...thread, active: false }))]);
-    setMessages((prev) => [...prev, { id: makeId(), role: "user", content: query, createdAt: nowLabel() }, { id: makeId(), role: "assistant", content: "", createdAt: nowLabel() }]);
+    const nextMessages: Message[] = [
+      { id: makeId(), role: "user", content: query, createdAt: nowLabel() },
+      { id: makeId(), role: "assistant", content: "", createdAt: nowLabel() },
+    ];
+    setThreads((prev) => [
+      { id: threadId, title, meta: "Loading…", active: true, messages: nextMessages, citations: [], statusHistory: [] },
+      ...prev.map((thread) => ({ ...thread, active: false })),
+    ]);
+    setMessages(nextMessages);
     await submit(query);
   };
 
   return (
     <div className="min-h-screen bg-(--bg) text-(--ink)">
       <div className="grid min-h-screen grid-cols-1 chamber-grid-app">
-        <ThreadSidebar threads={threads} onNewThread={handleNewThread} userName="Siti Rahimah" userFirm="Tan & Partners · KL" />
+        <ThreadSidebar
+          threads={threads}
+          onNewThread={handleNewThread}
+          onSelectThread={handleSelectThread}
+          switchingDisabled={isLoading}
+          userName="Siti Rahimah"
+          userFirm="Tan & Partners · KL"
+        />
 
         <main className="flex min-w-0 flex-col bg-(--bg)">
           <ConversationHeader title={activeThread?.title || "New thread"} />

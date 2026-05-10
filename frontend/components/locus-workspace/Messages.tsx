@@ -1,4 +1,5 @@
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { CitationCard } from "@/components/CitationCard";
 import { Mono, OutlineButton } from "@/components/chamber";
 import { StatusIndicator } from "@/components/StatusIndicator";
@@ -62,7 +63,7 @@ export function AssistantMessage({
 
       <div className="chamber-max-content space-y-2 text-sm leading-6 text-(--ink)">
         {message.content ? (
-          <ReactMarkdown components={markdownComponents}>{message.content}</ReactMarkdown>
+          <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>{message.content}</ReactMarkdown>
         ) : isLoading && isTail ? (
           <StatusIndicator message={status || "Reading sources…"} />
         ) : null}
