@@ -58,9 +58,11 @@
   }
   .chamber-grid-reason { grid-template-columns: 24px 1fr; }
   .chamber-grid-composer { grid-template-columns: auto minmax(0, 1fr) auto auto; }
-  .chamber-max-content { max-width: 72ch; }
-  .chamber-max-content-narrow { max-width: 64ch; }
-  .chamber-max-input { max-width: 760px; }
+  .chamber-max-content { max-width: none; }
+  .chamber-max-content-narrow { max-width: none; }
+  .chamber-max-input { max-width: none; }
+  .chamber-full-content { max-width: none; }
+  .chamber-full-input { max-width: none; }
 }
 
 @media (min-width: 1024px) {

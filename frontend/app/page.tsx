@@ -51,7 +51,7 @@ export default function Home() {
           <ConversationHeader title={activeThread?.title || "New thread"} />
 
           <div className="flex-1 overflow-y-auto px-4 py-6 md:px-8 xl:px-12">
-            <div className="mx-auto flex w-full chamber-max-content flex-col gap-6">
+            <div className="flex w-full chamber-full-content flex-col gap-6">
               {messages.length === 0 && <EmptyState onQuery={setInput} />}
 
               {messages.map((msg, i) => {

@@ -15,7 +15,7 @@ export function Composer({
 }) {
   return (
     <div className="border-t border-(--rule) px-4 pb-4 pt-2 md:px-8 xl:px-12">
-      <form onSubmit={onSubmit} className="mx-auto grid chamber-max-input chamber-grid-composer max-sm:grid-cols-[auto_minmax(0,1fr)_auto] overflow-hidden rounded-sm border border-(--rule) bg-(--bg-2) chamber-focus-within">
+      <form onSubmit={onSubmit} className="grid w-full chamber-full-input chamber-grid-composer max-sm:grid-cols-[auto_minmax(0,1fr)_auto] overflow-hidden rounded-sm border border-(--rule) bg-(--bg-2) chamber-focus-within">
         <span className="flex items-center border-r border-(--rule) px-4 text-(--bronze)">
           <Mono>ASK ›</Mono>
         </span>
@@ -34,7 +34,7 @@ export function Composer({
         </PrimaryButton>
       </form>
 
-      <div className="mx-auto mt-2 flex chamber-max-input justify-between gap-2 px-2 font-mono text-[10px] uppercase tracking-widest text-(--ink-3)">
+      <div className="mt-2 flex w-full chamber-full-input justify-between gap-2 px-2 font-mono text-[10px] uppercase tracking-widest text-(--ink-3)">
         <span>DROP A BRIEF OR CONTRACT TO ADD IT TO THE THREAD</span>
         <span>⇧⏎ NEWLINE</span>
       </div>
