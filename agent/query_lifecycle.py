@@ -11,6 +11,10 @@ from agent.state import AgentState, Message, QueryEvent, QueryResult
 
 MAX_HISTORY_TURNS = 6
 MAX_RETRIES = 1
+FINAL_FAILURE_RESPONSE = (
+    "I'm sorry, but I couldn't produce a compliant legal research answer for this query. "
+    "Please rephrase the research question or consult a qualified Malaysian lawyer."
+)
 
 _STATUS_MESSAGES = {
     "router": "Classifying query...",
@@ -46,6 +50,13 @@ def _response_text(state: dict) -> str:
     return state.get("final_response") or state.get("draft_response") or ""
 
 
+def _fail_closed_if_violations(state: AgentState) -> AgentState:
+    """Replace any known non-compliant final draft with a safe fallback."""
+    if state.get("violations"):
+        state["final_response"] = FINAL_FAILURE_RESPONSE
+    return state
+
+
 def _run_once(state: AgentState) -> AgentState:
     state.update(router_node(state))
     if state.get("query_type") == "escalate":
@@ -69,6 +80,8 @@ def run_query(query: str, history: list[Message] | None = None) -> QueryResult:
         state["violations"] = []
         state.update(synthesiser_node(state))
         state.update(supervisor_node(state))
+
+    state = _fail_closed_if_violations(state)
 
     return {
         "query_type": state.get("query_type", ""),
@@ -109,6 +122,8 @@ async def run_query_stream(query: str, history: list[Message] | None = None) -> 
         yield {"type": "status", "message": _STATUS_MESSAGES["synthesiser"]}
         state.update(supervisor_node(state))
         yield {"type": "status", "message": _STATUS_MESSAGES["supervisor"]}
+
+    state = _fail_closed_if_violations(state)
 
     final = _response_text(state)
     if not final:
