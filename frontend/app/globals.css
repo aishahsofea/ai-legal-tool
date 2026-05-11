@@ -71,6 +71,14 @@
   .chamber-reading-flow > * {
     break-inside: avoid;
   }
+
+  .landing-grid-nav { grid-template-columns: 1fr auto 1fr; }
+  .landing-grid-prompt { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .landing-grid-trust { grid-template-columns: repeat(4, 1fr); }
+  .landing-grid-cap { grid-template-columns: 1fr 1fr; }
+  .landing-grid-faq-q { grid-template-columns: 80px 1fr 24px; }
+  .landing-grid-section { grid-template-columns: 100px 1fr; }
+  .landing-grid-cap-card { grid-template-columns: 60px 1fr; }
 }
 
 @media (min-width: 768px) {
