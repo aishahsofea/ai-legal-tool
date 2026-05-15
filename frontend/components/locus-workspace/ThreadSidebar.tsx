@@ -18,7 +18,7 @@ export function ThreadSidebar({
   switchingDisabled?: boolean;
 }) {
   return (
-    <aside className="flex flex-col border-r border-(--rule) bg-(--bg)">
+    <aside className="flex min-w-0 flex-col border-r border-(--rule) bg-(--bg)">
       <div className="border-b border-(--rule) px-2 pb-2 pt-4">
         <Mark />
         <PrimaryButton onClick={onNewThread} leading="＋" className="mt-2 flex w-full items-center justify-center gap-2">

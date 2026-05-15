@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect -- stream events arrive through hook state and are committed into thread history here. */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useQuery, type Citation, type Message as QueryMessage } from "@/lib/useQuery";
 import type { Message as ThreadMessage, ThreadSummary } from "@/components/conversation";

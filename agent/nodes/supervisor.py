@@ -38,7 +38,7 @@ ESCALATION_RESPONSE = (
 
 def supervisor_node(state: AgentState) -> dict:
     draft = state.get("draft_response", "")
-    violations = []
+    violations = list(state.get("violations", []))
 
     # Rule 1 — no specific-advice phrases
     if _ADVICE_RE.search(draft):
