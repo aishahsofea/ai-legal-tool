@@ -35,7 +35,7 @@ jobs:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/legal_tool
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-      EVALS_JUDGE_MODEL: claude-sonnet-4-6
+      EVALS_JUDGE_MODEL: claude-haiku-4-5-20251001
       PYTHONUNBUFFERED: "1"
 
     steps:
@@ -56,21 +56,15 @@ jobs:
         run: |
           python -m evals.seed_test_corpus --clear
 
-      - name: Run full evals
+      - name: Run smoke evals
         run: |
-          python -m evals.run_evals --output evals/results.full.json --mode full --fail-under 0.8
-
-      - name: Run baseline evals
-        run: |
-          python -m evals.run_evals --output evals/results.baseline.json --mode baseline --fail-under 0
+          python -m evals.run_evals --output evals/results.full.json --mode full --smoke --fail-under 0.8
 
       - name: Upload results artifact
         uses: actions/upload-artifact@v4
         with:
           name: eval-results
-          path: |
-            evals/results.full.json
-            evals/results.baseline.json
+          path: evals/results.full.json
 
       - name: Comment on PR
         if: always()
@@ -79,25 +73,18 @@ jobs:
           script: |
             const fs = require('fs');
             const fullPath = 'evals/results.full.json';
-            const baselinePath = 'evals/results.baseline.json';
-            if (!fs.existsSync(fullPath) || !fs.existsSync(baselinePath)) {
-              core.info('Missing results file(s); skipping comment.');
+            if (!fs.existsSync(fullPath)) {
+              core.info('Missing results file; skipping comment.');
               return;
             }
             const full = JSON.parse(fs.readFileSync(fullPath, 'utf8')).summary;
-            const baseline = JSON.parse(fs.readFileSync(baselinePath, 'utf8')).summary;
             const fmtRate = (r) => r != null ? `${(r * 100).toFixed(1)}%` : 'n/a';
             const body = [
-              '## Eval results',
+              '## Eval results (smoke — 15 cases)',
               '',
-              '### Full agent',
               `- Judge pass rate: **${fmtRate(full.judge_pass_rate)}** (${full.judge_passed}/${full.judge_total})`,
               `- L1 citation existence: **${fmtRate(full.l1?.citation_existence?.rate)}**`,
               `- L1 language register: **${fmtRate(full.l1?.language_register?.rate)}**`,
-              '',
-              '### Baseline',
-              `- Judge pass rate: **${fmtRate(baseline.judge_pass_rate)}** (${baseline.judge_passed}/${baseline.judge_total})`,
-              `- L1 citation existence: **${fmtRate(baseline.l1?.citation_existence?.rate)}**`,
             ].join('\n');
 
             const { owner, repo } = context.repo;

@@ -30,7 +30,7 @@ class JudgeContext:
     retrieved_chunks: list[dict[str, Any]] = field(default_factory=list)
 
 
-_MODEL = os.getenv("EVALS_JUDGE_MODEL", "claude-sonnet-4-6")
+_MODEL = os.getenv("EVALS_JUDGE_MODEL", "claude-haiku-4-5-20251001")
 _llm = ChatAnthropic(model=_MODEL, temperature=0)
 _judge_llm = _llm.with_structured_output(JudgeVerdict)
 

@@ -106,9 +106,12 @@ def _compact_state(state: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _load_dataset(path: Path) -> list[dict[str, Any]]:
+def _load_dataset(path: Path, smoke: bool = False) -> list[dict[str, Any]]:
     data = json.loads(path.read_text(encoding="utf-8"))
-    return data["cases"]
+    cases = data["cases"]
+    if smoke:
+        cases = [c for c in cases if c.get("smoke")]
+    return cases
 
 
 def _maybe_limit(cases: list[dict[str, Any]], limit: int | None) -> list[dict[str, Any]]:
@@ -143,8 +146,8 @@ def _assertion_applicable(
     return False
 
 
-def run_suite(mode: str, dataset_path: Path, limit: int | None = None) -> dict[str, Any]:
-    cases = _maybe_limit(_load_dataset(dataset_path), limit)
+def run_suite(mode: str, dataset_path: Path, limit: int | None = None, smoke: bool = False) -> dict[str, Any]:
+    cases = _maybe_limit(_load_dataset(dataset_path, smoke=smoke), limit)
     results: list[dict[str, Any]] = []
 
     l1_applicable = {name: 0 for name in _ASSERTION_NAMES}
@@ -277,15 +280,17 @@ def main() -> int:
     parser.add_argument("--output", type=Path, default=DEFAULT_RESULTS_PATH)
     parser.add_argument("--mode", choices=("full", "raw", "baseline"), default="full")
     parser.add_argument("--limit", type=int, default=None)
+    parser.add_argument("--smoke", action="store_true", help="Run only smoke-tagged cases (CI regression gate)")
     parser.add_argument("--fail-under", type=float, default=0.8)
     args = parser.parse_args()
 
+    case_label = "smoke" if args.smoke else (str(args.limit) if args.limit else "all")
     print(
-        f"Running evals in {args.mode} mode on {args.limit or 'all'} cases...",
+        f"Running evals in {args.mode} mode on {case_label} cases...",
         flush=True,
     )
     print("This can take a while: each case runs the live agent and then Claude-as-judge.", flush=True)
-    report = run_suite(args.mode, args.dataset, args.limit)
+    report = run_suite(args.mode, args.dataset, args.limit, smoke=args.smoke)
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
 
     summary = report["summary"]

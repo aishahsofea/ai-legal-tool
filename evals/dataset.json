@@ -11,7 +11,8 @@
       "expected_act_number": "56",
       "expected_section": "90A",
       "citation_applicable": true,
-      "expected_policy": "allow"
+      "expected_policy": "allow",
+      "smoke": true
     },
     {
       "id": "evidence-73a-1",
@@ -81,7 +82,8 @@
       "expected_act_number": "574",
       "expected_section": "420",
       "citation_applicable": true,
-      "expected_policy": "allow"
+      "expected_policy": "allow",
+      "smoke": true
     },
     {
       "id": "penal-499-1",
@@ -131,7 +133,8 @@
       "expected_act_number": "709",
       "expected_section": "12",
       "citation_applicable": true,
-      "expected_policy": "allow"
+      "expected_policy": "allow",
+      "smoke": true
     },
     {
       "id": "pdpa-40-1",
@@ -201,7 +204,8 @@
       "expected_act_number": "265",
       "expected_section": "60A",
       "citation_applicable": true,
-      "expected_policy": "allow"
+      "expected_policy": "allow",
+      "smoke": true
     },
     {
       "id": "employment-60k-1",
@@ -221,7 +225,8 @@
       "expected_act_number": "777",
       "expected_section": "132",
       "citation_applicable": true,
-      "expected_policy": "allow"
+      "expected_policy": "allow",
+      "smoke": true
     },
     {
       "id": "companies-31-1",
@@ -241,7 +246,8 @@
       "expected_act_number": null,
       "expected_section": null,
       "citation_applicable": false,
-      "expected_policy": "block"
+      "expected_policy": "block",
+      "smoke": true
     },
     {
       "id": "escalation-2",
@@ -271,7 +277,8 @@
       "expected_act_number": null,
       "expected_section": null,
       "citation_applicable": false,
-      "expected_policy": "block"
+      "expected_policy": "block",
+      "smoke": true
     },
     {
       "id": "escalation-5",
@@ -312,7 +319,8 @@
       "expected_act_number": "56",
       "expected_section": "90A",
       "citation_applicable": true,
-      "expected_policy": "allow"
+      "expected_policy": "allow",
+      "smoke": true
     },
     {
       "id": "bm-employment-60a-1",
@@ -323,7 +331,8 @@
       "expected_act_number": "265",
       "expected_section": "60A",
       "citation_applicable": true,
-      "expected_policy": "allow"
+      "expected_policy": "allow",
+      "smoke": true
     },
     {
       "id": "bm-employment-19-1",
@@ -345,7 +354,8 @@
       "expected_act_number": "709",
       "expected_section": "12",
       "citation_applicable": true,
-      "expected_policy": "allow"
+      "expected_policy": "allow",
+      "smoke": true
     },
     {
       "id": "bm-penal-34-1",
@@ -356,7 +366,8 @@
       "expected_act_number": "574",
       "expected_section": "34",
       "citation_applicable": true,
-      "expected_policy": "allow"
+      "expected_policy": "allow",
+      "smoke": true
     },
     {
       "id": "bm-pdpa-42-1",
@@ -389,7 +400,8 @@
       "expected_act_number": "56",
       "expected_section": "73A",
       "citation_applicable": true,
-      "expected_policy": "allow"
+      "expected_policy": "allow",
+      "smoke": true
     },
     {
       "id": "mixed-companies-132-1",
@@ -421,7 +433,8 @@
       "expected_act_number": null,
       "expected_section": null,
       "citation_applicable": false,
-      "expected_policy": "allow"
+      "expected_policy": "allow",
+      "smoke": true
     },
     {
       "id": "ambiguous-pdpa-manual-files-1",
@@ -451,7 +464,8 @@
       "expected_act_number": null,
       "expected_section": null,
       "citation_applicable": false,
-      "expected_policy": "allow"
+      "expected_policy": "allow",
+      "smoke": true
     },
     {
       "id": "multi-section-digital-crime-1",
@@ -491,7 +505,8 @@
       "expected_act_number": null,
       "expected_section": null,
       "citation_applicable": false,
-      "expected_policy": "allow"
+      "expected_policy": "allow",
+      "smoke": true
     },
     {
       "id": "ambiguous-pdpa-data-user-scope-1",
