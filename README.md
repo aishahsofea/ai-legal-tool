@@ -42,40 +42,11 @@ User query (EN / BM / mixed)
 
 The knowledge base is built by running five sequential steps that go from scraping the [AGC portal](https://lom.agc.gov.my) to a searchable pgvector index. Run once before starting the agent.
 
-### Prerequisites
+See [CONTRIBUTING.md](CONTRIBUTING.md) for full local setup instructions (env vars, database schema, frontend, evals).
 
 ```bash
-pip3 install -r requirements.txt
+python run.py --step all   # resumable; re-running skips completed work
 ```
-
-Create a `.env` file:
-
-```env
-DATABASE_URL=postgresql://user@/dbname?host=/path/to/pg/socket
-OPENAI_API_KEY=sk-...
-ANTHROPIC_API_KEY=...          # for the agent (step 6+)
-LANGCHAIN_TRACING_V2=true
-LANGCHAIN_API_KEY=...          # LangSmith tracing
-LANGCHAIN_PROJECT=ai-legal-tool
-```
-
-### Run the full pipeline
-
-```bash
-python run.py --step all
-```
-
-Or run each step individually:
-
-```bash
-python run.py --step 1   # scrape Act listing pages
-python run.py --step 2   # scrape Act detail pages (metadata + PDF URLs)
-python run.py --step 3   # download PDFs
-python run.py --step 4   # extract section-level chunks
-python run.py --step 5   # embed chunks and ingest into pgvector
-```
-
-All steps are resumable — re-running skips already-completed work.
 
 ---
 
@@ -238,15 +209,11 @@ ai-legal-tool/
 
 ## Running the API
 
-Start the FastAPI backend (requires steps 1–5 complete and `.env` configured):
-
 ```bash
 uvicorn api.main:app --port 8000 --reload
 ```
 
-- API runs at `http://localhost:8000`
-- Auto-reloads on file changes (`--reload` flag)
-- Health check: `GET http://localhost:8000/health`
+Health check: `GET http://localhost:8000/health`
 
 ### Query endpoint
 
@@ -273,57 +240,6 @@ Citation objects include `act_number`, `act_title`, `section_number`, `pdf_url` 
 
 ## Eval Harness
 
-The repo includes an evaluation harness for regression testing and CI.
+`evals/dataset.json` contains hand-validated test cases for the Evidence Act 1950, Penal Code, PDPA 2010, Companies Act 2016, Employment Act 1955, and escalation cases that should be blocked.
 
-### Dataset
-
-`evals/dataset.json` contains hand-validated test cases across the main Acts in the corpus:
-
-- Evidence Act 1950 (Act 56)
-- Penal Code (Act 574)
-- Personal Data Protection Act 2010 (Act 709)
-- Companies Act 2016 (Act 777)
-- Employment Act 1955 (Act 265)
-
-It also includes escalation cases that should be blocked rather than answered.
-
-### Run locally
-
-Requires `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, and a reachable `DATABASE_URL`.
-
-```bash
-python -m evals.validate_dataset --format markdown --output evals/review-checklist.md
-python -m evals.run_evals --mode full --limit 5
-python -m evals.run_evals --mode full
-python -m evals.run_evals --mode baseline
-```
-
-Helpful modes:
-
-- `full` — real agent graph with supervisor
-- `baseline` — retriever + synthesiser only, used to show before/after impact
-- `raw` — bypass LangGraph retries, useful for debugging
-
-### Outputs
-
-- `evals/results.json` (or custom path via `--output`) stores the scored run
-- GitHub Actions runs the evals workflow on pushes to `main` and comments the pass rates on PRs
-- CI fails if either citation accuracy or policy compliance drops below 80%
-
----
-
-## Logs
-
-All pipeline activity is logged to stdout and `scraper.log`:
-
-```bash
-tail -f scraper.log
-```
-
-## Utility commands
-
-```bash
-python run.py --list-stubs          # list acts that failed step 2
-python run.py --act 807             # manually re-scrape one act (5 min timeout)
-python run.py --step 1 --dry-run    # print what would run without making requests
-```
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to run evals locally. CI runs the full suite on pushes to `main` and fails if citation accuracy or policy compliance drops below 80%.
