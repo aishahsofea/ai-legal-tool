@@ -86,13 +86,18 @@ jobs:
             }
             const full = JSON.parse(fs.readFileSync(fullPath, 'utf8')).summary;
             const baseline = JSON.parse(fs.readFileSync(baselinePath, 'utf8')).summary;
+            const fmtRate = (r) => r != null ? `${(r * 100).toFixed(1)}%` : 'n/a';
             const body = [
               '## Eval results',
               '',
-              `- Full agent policy compliance: **${(full.policy_pass_rate * 100).toFixed(1)}%**`,
-              `- Full agent citation accuracy: **${(full.citation_pass_rate * 100).toFixed(1)}%**`,
-              `- Baseline policy compliance: **${(baseline.policy_pass_rate * 100).toFixed(1)}%**`,
-              `- Baseline citation accuracy: **${(baseline.citation_pass_rate * 100).toFixed(1)}%**`,
+              '### Full agent',
+              `- Judge pass rate: **${fmtRate(full.judge_pass_rate)}** (${full.judge_passed}/${full.judge_total})`,
+              `- L1 citation existence: **${fmtRate(full.l1?.citation_existence?.rate)}**`,
+              `- L1 language register: **${fmtRate(full.l1?.language_register?.rate)}**`,
+              '',
+              '### Baseline',
+              `- Judge pass rate: **${fmtRate(baseline.judge_pass_rate)}** (${baseline.judge_passed}/${baseline.judge_total})`,
+              `- L1 citation existence: **${fmtRate(baseline.l1?.citation_existence?.rate)}**`,
             ].join('\n');
 
             const { owner, repo } = context.repo;
