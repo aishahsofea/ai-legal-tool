@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from collections.abc import AsyncIterator
 
+from agent.nodes.citation_validator import citation_validator_node
 from agent.nodes.retriever import retriever_node
 from agent.nodes.router import router_node
 from agent.nodes.supervisor import ESCALATION_RESPONSE, supervisor_node
@@ -67,6 +68,7 @@ def _run_once(state: AgentState) -> AgentState:
 
     state.update(retriever_node(state))
     state.update(synthesiser_node(state))
+    state.update(citation_validator_node(state))
     state.update(supervisor_node(state))
     return state
 
@@ -79,6 +81,7 @@ def run_query(query: str, history: list[Message] | None = None) -> QueryResult:
         state["retry_count"] = state.get("retry_count", 0) + 1
         state["violations"] = []
         state.update(synthesiser_node(state))
+        state.update(citation_validator_node(state))
         state.update(supervisor_node(state))
 
     state = _fail_closed_if_violations(state)
@@ -111,6 +114,8 @@ async def run_query_stream(query: str, history: list[Message] | None = None) -> 
     state.update(synthesiser_node(state))
     yield {"type": "status", "message": _STATUS_MESSAGES["synthesiser"]}
 
+    state.update(citation_validator_node(state))
+
     state.update(supervisor_node(state))
     yield {"type": "status", "message": _STATUS_MESSAGES["supervisor"]}
 
@@ -120,6 +125,7 @@ async def run_query_stream(query: str, history: list[Message] | None = None) -> 
         yield {"type": "status", "message": _STATUS_MESSAGES["increment_retry"]}
         state.update(synthesiser_node(state))
         yield {"type": "status", "message": _STATUS_MESSAGES["synthesiser"]}
+        state.update(citation_validator_node(state))
         state.update(supervisor_node(state))
         yield {"type": "status", "message": _STATUS_MESSAGES["supervisor"]}
 

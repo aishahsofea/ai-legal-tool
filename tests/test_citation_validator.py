@@ -1,0 +1,90 @@
+import unittest
+
+from agent.nodes.citation_validator import citation_validator_node
+from agent.nodes.supervisor import supervisor_node
+
+
+RETRIEVED_90A = {
+    "act_number": "56",
+    "act_title": "EVIDENCE ACT 1950",
+    "section_number": "90A",
+    "content": "90A. Computer-produced documents are admissible...",
+    "page_number": 1,
+    "language": "en",
+}
+
+
+class CitationValidatorTests(unittest.TestCase):
+    def test_valid_structured_and_prose_citation_passes(self):
+        state = {
+            "retrieved_chunks": [RETRIEVED_90A],
+            "citations": [{
+                "act_number": "56",
+                "act_title": "EVIDENCE ACT 1950",
+                "section_number": "90A",
+                "pdf_url": "",
+                "page_number": 1,
+            }],
+            "draft_response": "Section 90A of the Evidence Act 1950 allows computer-produced documents.",
+            "violations": [],
+        }
+
+        result = citation_validator_node(state)
+
+        self.assertEqual(result["violations"], [])
+
+    def test_structured_citation_must_be_in_retrieved_chunks(self):
+        state = {
+            "retrieved_chunks": [RETRIEVED_90A],
+            "citations": [{
+                "act_number": "56",
+                "act_title": "EVIDENCE ACT 1950",
+                "section_number": "114A",
+                "pdf_url": "",
+                "page_number": 1,
+            }],
+            "draft_response": "Section 114A of the Evidence Act 1950 says something.",
+            "violations": [],
+        }
+
+        result = citation_validator_node(state)
+
+        self.assertIn(
+            "Citation Section 114A of Act 56 was not in retrieved sources.",
+            result["violations"],
+        )
+
+    def test_prose_citation_must_be_mirrored_in_structured_citations(self):
+        state = {
+            "retrieved_chunks": [RETRIEVED_90A],
+            "citations": [],
+            "draft_response": "Section 90A of the Evidence Act 1950 allows computer-produced documents.",
+            "violations": [],
+        }
+
+        result = citation_validator_node(state)
+
+        self.assertIn(
+            "Prose citation Section 90A of Act 56 is missing from structured citations.",
+            result["violations"],
+        )
+
+    def test_supervisor_preserves_existing_citation_violations(self):
+        state = {
+            "draft_response": (
+                "Section 90A of the Evidence Act 1950 applies.\n\n"
+                "This information is for legal research only and does not constitute legal advice."
+            ),
+            "violations": ["Citation Section 114A of Act 56 was not in retrieved sources."],
+        }
+
+        result = supervisor_node(state)
+
+        self.assertIn(
+            "Citation Section 114A of Act 56 was not in retrieved sources.",
+            result["violations"],
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()
