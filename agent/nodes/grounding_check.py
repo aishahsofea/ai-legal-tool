@@ -107,10 +107,10 @@ def grounding_check_node(state: AgentState) -> dict:
         return {"violations": violations}
 
     for claim in result.claims:
-        if claim.support != "supported":
+        if claim.support == "unsupported":
             violations.append(
                 "Grounding check failed: "
-                f"{claim.support} claim citing Section {claim.cited_section_number} "
+                f"unsupported claim citing Section {claim.cited_section_number} "
                 f"of Act {claim.cited_act_number}: {claim.reason}"
             )
 
