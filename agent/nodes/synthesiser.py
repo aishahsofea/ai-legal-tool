@@ -5,6 +5,7 @@ Responds in the dominant language of the query (EN or BM).
 Cited text always uses the English statute text regardless of query language.
 """
 import json
+import os
 from typing import Optional
 
 from dotenv import load_dotenv
@@ -15,7 +16,7 @@ from agent.state import AgentState
 
 load_dotenv()
 
-_llm = ChatAnthropic(model="claude-sonnet-4-6", temperature=0)
+_llm = ChatAnthropic(model=os.getenv("SYNTHESISER_MODEL", "claude-sonnet-4-6"), temperature=0)
 
 
 class _CitationRef(BaseModel):
@@ -50,7 +51,8 @@ Rules you MUST follow on every response:
 3. Do NOT use phrases like "you should", "you must", "in your case", or "I recommend".
 4. Only state what the statute says — do not advise on what a person should do.
 5. If the retrieved sections do not contain enough information to answer, say so clearly rather than speculating.
-6. Omit the disclaimer from your answer field — it will be appended separately."""
+6. Omit the disclaimer from your answer field — it will be appended separately.
+7. In citation_refs, include an entry for EVERY section you mention in your answer. If you mention section 90A(1) and 90A(2), add one entry with section_number "90A". Never leave citation_refs empty if your answer cites any section."""
 
 _LANGUAGE_INSTRUCTIONS = {
     "en": "English",
@@ -95,7 +97,7 @@ Retrieved statute sections:
 Answer the query using only the sections provided above. Cite each section you rely on."""
 
     result: _SynthesiserOutput = _structured_llm.invoke([
-        {"role": "system", "content": system_prompt},
+        {"role": "system", "content": [{"type": "text", "text": system_prompt, "cache_control": {"type": "ephemeral"}}]},
         {"role": "user", "content": user_message},
     ])
 

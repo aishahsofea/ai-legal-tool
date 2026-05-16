@@ -4,6 +4,7 @@ Router node — classifies the query and detects escalation triggers.
 Escalation is checked with keyword matching before any LLM call.
 Classification uses Claude structured output for the three non-escalation types.
 """
+import os
 import re
 from typing import Literal
 
@@ -21,7 +22,7 @@ _ESCALATION_PATTERNS = re.compile(
     re.IGNORECASE,
 )
 
-_llm = ChatAnthropic(model="claude-sonnet-4-6", temperature=0)
+_llm = ChatAnthropic(model=os.getenv("ROUTER_MODEL", "claude-sonnet-4-6"), temperature=0)
 
 
 class _RouterOutput(BaseModel):
@@ -62,7 +63,7 @@ def router_node(state: AgentState) -> dict:
         return {"query_type": "escalate", "response_language": "en"}
 
     result: _RouterOutput = _structured_llm.invoke([
-        {"role": "system", "content": _SYSTEM},
+        {"role": "system", "content": [{"type": "text", "text": _SYSTEM, "cache_control": {"type": "ephemeral"}}]},
         {"role": "user", "content": f"Conversation history:\n{history_text or '(none)'}\n\nCurrent query:\n{query}"},
     ])
     return {"query_type": result.query_type, "response_language": result.response_language}

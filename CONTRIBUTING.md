@@ -106,6 +106,30 @@ python -m evals.run_evals --mode baseline
 
 Results are written to `evals/results.json`. CI runs the full suite on pushes to `main` and fails if citation accuracy or policy compliance drops below 80%.
 
+### Model overrides
+
+The router and synthesiser each have an env var that controls which Claude model they use:
+
+| Env var | Node | Default |
+|---|---|---|
+| `ROUTER_MODEL` | router | `claude-sonnet-4-6` |
+| `SYNTHESISER_MODEL` | synthesiser | `claude-sonnet-4-6` |
+
+Override them to `claude-haiku-4-5-20251001` (~12× cheaper) to get fast pipeline-correctness signal without burning Sonnet budget:
+
+```bash
+# both nodes on Haiku — cheapest local smoke run
+ROUTER_MODEL=claude-haiku-4-5-20251001 SYNTHESISER_MODEL=claude-haiku-4-5-20251001 \
+  python3 -m evals.run_evals --smoke
+
+# router cheap, synthesiser on Sonnet — useful when tuning synthesiser prompts
+ROUTER_MODEL=claude-haiku-4-5-20251001 python3 -m evals.run_evals --smoke
+```
+
+Shell exports take priority over `.env` values, so you can temporarily override your local default in a single command. Set them in `.env` for a persistent local default.
+
+**When to trust Haiku eval results:** L1 assertions (regex, DB lookups, string matching) are LLM-free and fully reliable regardless of model. L2 judge signal is lower-fidelity when both nodes use Haiku — useful for detecting gross failures, but do not treat a passing Haiku eval as equivalent to a passing Sonnet eval when tuning prompts. CI always uses Sonnet (no env vars set).
+
 ---
 
 ## Utility commands
