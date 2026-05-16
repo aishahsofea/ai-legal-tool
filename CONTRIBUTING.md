@@ -115,7 +115,7 @@ The router and synthesiser each have an env var that controls which Claude model
 | `ROUTER_MODEL` | router | `claude-sonnet-4-6` |
 | `SYNTHESISER_MODEL` | synthesiser | `claude-sonnet-4-6` |
 
-Override them to `claude-haiku-4-5-20251001` (~12× cheaper) to get fast pipeline-correctness signal without burning Sonnet budget:
+Override them to `claude-haiku-4-5-20251001` (~3× cheaper) to get fast pipeline-correctness signal without burning Sonnet budget:
 
 ```bash
 # both nodes on Haiku — cheapest local smoke run
