@@ -33,6 +33,7 @@ class AgentState(TypedDict):
     query: str
     history: list[Message]
     query_type: str          # "statute_lookup" | "topical" | "provision_extraction" | "escalate"
+    response_language: str   # "en" | "bm" | "mixed"
     retrieved_chunks: list[dict]
     draft_response: str
     citations: list[Citation]

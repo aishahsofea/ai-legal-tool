@@ -14,6 +14,11 @@ class RetrieverExactLookupTests(unittest.TestCase):
         self.assertEqual(retriever._extract_section_number("s. 60K Employment Act"), "60K")
         self.assertEqual(retriever._extract_section_number("sec 114A Evidence Act"), "114A")
 
+    def test_extracts_bm_section_numbers(self):
+        self.assertEqual(retriever._extract_section_number("seksyen 34 Kanun Keseksaan"), "34")
+        self.assertEqual(retriever._extract_section_number("seksyen 60A Akta Pekerjaan"), "60A")
+        self.assertEqual(retriever._extract_section_number("Seksyen 90A Akta Keterangan"), "90A")
+
     def test_extracts_act_hints(self):
         self.assertEqual(retriever._extract_act_hint("Section 90A of Act 56"), ("56", None))
         self.assertEqual(
@@ -27,6 +32,28 @@ class RetrieverExactLookupTests(unittest.TestCase):
         self.assertEqual(
             retriever._extract_act_hint("Section 34 of the Penal Code"),
             ("574", "PENAL CODE"),
+        )
+
+    def test_extracts_bm_act_hints(self):
+        self.assertEqual(
+            retriever._extract_act_hint("seksyen 34 Kanun Keseksaan"),
+            ("574", "PENAL CODE"),
+        )
+        self.assertEqual(
+            retriever._extract_act_hint("seksyen 60A Akta Pekerjaan 1955"),
+            ("265", "EMPLOYMENT ACT 1955"),
+        )
+        self.assertEqual(
+            retriever._extract_act_hint("seksyen 90A Akta Keterangan"),
+            ("56", "EVIDENCE ACT 1950"),
+        )
+        self.assertEqual(
+            retriever._extract_act_hint("Akta Perlindungan Data Peribadi seksyen 5"),
+            ("709", "PERSONAL DATA PROTECTION ACT 2010"),
+        )
+        self.assertEqual(
+            retriever._extract_act_hint("seksyen 10 Akta Syarikat"),
+            ("777", "COMPANIES ACT 2016"),
         )
 
     def test_statute_lookup_uses_exact_lookup_without_embedding_when_it_hits(self):

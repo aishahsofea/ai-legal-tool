@@ -30,20 +30,47 @@ class _SynthesiserOutput(BaseModel):
 
 _structured_llm = _llm.with_structured_output(_SynthesiserOutput)
 
-_SYSTEM = """You are a Malaysian legal research assistant. Your role is to answer research questions about Malaysian legislation by citing the relevant statute sections.
+_DISCLAIMER_EN = (
+    "\n\n---\n"
+    "*This information is for legal research only and does not constitute legal advice. "
+    "Please consult a qualified Malaysian lawyer for advice on your specific situation.*"
+)
+_DISCLAIMER_BM = (
+    "\n\n---\n"
+    "*Maklumat ini adalah untuk tujuan penyelidikan undang-undang sahaja dan tidak merupakan "
+    "nasihat undang-undang. Sila rujuk peguam Malaysia yang berkelayakan untuk nasihat berhubung "
+    "situasi khusus anda.*"
+)
+
+_SYSTEM_TEMPLATE = """You are a Malaysian legal research assistant. Your role is to answer research questions about Malaysian legislation by citing the relevant statute sections.
 
 Rules you MUST follow on every response:
-1. Every legal claim must cite "Section X of [Act Title]" explicitly.
-2. End every response with this exact disclaimer: "This information is for legal research only and does not constitute legal advice. Please consult a qualified Malaysian lawyer for advice on your specific situation."
+1. LANGUAGE: You MUST respond in {language_instruction}. This rule overrides everything else.
+2. Every legal claim must cite the relevant section explicitly.
 3. Do NOT use phrases like "you should", "you must", "in your case", or "I recommend".
 4. Only state what the statute says — do not advise on what a person should do.
-5. Respond in the same language as the user's query (English or Bahasa Malaysia). If mixed, default to English.
-6. If the retrieved sections do not contain enough information to answer, say so clearly rather than speculating."""
+5. If the retrieved sections do not contain enough information to answer, say so clearly rather than speculating.
+6. Omit the disclaimer from your answer field — it will be appended separately."""
+
+_LANGUAGE_INSTRUCTIONS = {
+    "en": "English",
+    "bm": (
+        "Bahasa Malaysia throughout. Quote English statute text inline when citing a section "
+        "(e.g. \"Di bawah seksyen 60A Akta Pekerjaan 1955, *'No employee shall be required...'*\") "
+        "— the quoted statute text may remain in English as it is the authoritative court version"
+    ),
+    "mixed": (
+        "a bilingual format: write the explanation and framing in Bahasa Malaysia, "
+        "and embed English statute quotations inline when citing sections. "
+        "The statute quotations may remain in English as they are the authoritative court version"
+    ),
+}
 
 
 def synthesiser_node(state: AgentState) -> dict:
     chunks = state["retrieved_chunks"]
     history = state.get("history", [])
+    response_language = state.get("response_language", "en")
 
     context = "\n\n".join(
         f"[Section {c['section_number']}, {c['act_title']} (Act {c['act_number']})]\n{c['content']}"
@@ -51,6 +78,10 @@ def synthesiser_node(state: AgentState) -> dict:
     )
     history_text = "\n\n".join(
         f"{turn['role'].title()}: {turn['content']}" for turn in history
+    )
+
+    system_prompt = _SYSTEM_TEMPLATE.format(
+        language_instruction=_LANGUAGE_INSTRUCTIONS.get(response_language, _LANGUAGE_INSTRUCTIONS["en"])
     )
 
     user_message = f"""Conversation history:
@@ -64,7 +95,7 @@ Retrieved statute sections:
 Answer the query using only the sections provided above. Cite each section you rely on."""
 
     result: _SynthesiserOutput = _structured_llm.invoke([
-        {"role": "system", "content": _SYSTEM},
+        {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_message},
     ])
 
@@ -86,11 +117,7 @@ Answer the query using only the sections provided above. Cite each section you r
                 "page_number":    chunk.get("page_number"),
             })
 
-    disclaimer = (
-        "\n\n---\n"
-        "*This information is for legal research only and does not constitute legal advice. "
-        "Please consult a qualified Malaysian lawyer for advice on your specific situation.*"
-    )
+    disclaimer = _DISCLAIMER_BM if response_language in ("bm", "mixed") else _DISCLAIMER_EN
     answer_with_disclaimer = result.answer.rstrip() + disclaimer
 
     return {

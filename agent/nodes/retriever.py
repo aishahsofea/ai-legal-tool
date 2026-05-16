@@ -23,17 +23,23 @@ TOP_K        = 8
 EXACT_TOP_K  = 3
 METADATA_DIR = Path("data/acts_metadata")
 
-_SECTION_RE = re.compile(r"\b(?:section|sec\.?|s\.?)\s*(\d+[A-Z]{0,2})\b", re.IGNORECASE)
+_SECTION_RE = re.compile(r"\b(?:seksyen|sek\.?|section|sec\.?|s\.?)\s*(\d+[A-Z]{0,2})\b", re.IGNORECASE)
 _ACT_NUMBER_RE = re.compile(r"\bact\s+(\d+[A-Z]?)\b", re.IGNORECASE)
 _ACT_ALIASES: dict[str, tuple[str, str]] = {
     "evidence act": ("56", "EVIDENCE ACT 1950"),
+    "akta keterangan": ("56", "EVIDENCE ACT 1950"),
     "penal code": ("574", "PENAL CODE"),
+    "kanun keseksaan": ("574", "PENAL CODE"),
     "criminal procedure code": ("593", "CRIMINAL PROCEDURE CODE"),
     "cpc": ("593", "CRIMINAL PROCEDURE CODE"),
     "employment act": ("265", "EMPLOYMENT ACT 1955"),
+    "akta pekerjaan": ("265", "EMPLOYMENT ACT 1955"),
     "companies act": ("777", "COMPANIES ACT 2016"),
+    "akta syarikat": ("777", "COMPANIES ACT 2016"),
     "pdpa": ("709", "PERSONAL DATA PROTECTION ACT 2010"),
+    "akta pdpa": ("709", "PERSONAL DATA PROTECTION ACT 2010"),
     "personal data protection act": ("709", "PERSONAL DATA PROTECTION ACT 2010"),
+    "akta perlindungan data peribadi": ("709", "PERSONAL DATA PROTECTION ACT 2010"),
 }
 
 _openai  = OpenAI()
