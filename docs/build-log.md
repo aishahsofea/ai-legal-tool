@@ -33,6 +33,18 @@ Rejected options:
 
 Key learning: Haiku cannot reliably populate structured output fields (`citation_refs: []` every time despite correct prose) — unsuitable for synthesiser. Safe for router (simple classifier). Built `evals/debug_case.py` as a repeatable single-case node tracer; faster and cheaper than running full evals to diagnose violations.
 
+**2026-05-17** — Validated GPT-4.1 as production router + synthesiser (issue #4). Long path to get there:
+
+1. **GPT-4.1-mini failed outright** — 0% BM language register, 20% `expected_section`, 50% judge. Not a model capability issue alone: the BM smoke cases were premature (v1 pilot corpus is English-only; BM retrieval degrades by design until BM corpus is ingested). Removed smoke tag from the 5 BM/mixed cases.
+
+2. **Supervisor citation regex was broken for all non-Claude models** — pattern `section\s+\d+[A-Z]{0,2}\s+of\s+.{3,60}(?:act|code)` requires Act name immediately after the section number. Non-Claude models write `Section 90A(1) states that...` (subsection first, Act name earlier in the sentence). Every non-Claude response failed Rule 2, triggered retries, then hit FINAL_FAILURE_RESPONSE. GPT-4.1 went from 30% → 80% judge pass rate after extending the regex to also accept `section\s+\d+[A-Z]{0,2}\s*\([^)]+\)`. Key learning: the supervisor was silently calibrated to Claude's citation style — any future model trial would have hit the same wall.
+
+3. **GPT-4.1-mini still failed after the regex fix** — 40% `expected_section`, 57% judge. Not a pipeline bug; the model genuinely cannot reliably identify the correct statute section on citation-heavy queries.
+
+4. **GPT-4.1 passes at exactly 80%** — all L1 assertions 100%, judge 8/10. ~1.5× cheaper than Sonnet (not the 8× target), but the eval friction was about running freely, and at this price point it's acceptable. Provider-agnostic `agent/llm_factory.py` introduced: routes `claude-*` to ChatAnthropic, `gemini-*` to ChatGoogleGenerativeAI, else ChatOpenAI. Makes future model trials a one-line env var change.
+
+Also tried: Gemini 2.5 Flash (would be ~15× cheaper) — hit free-tier 5 RPM cap on case 3. Needs billing enabled to run the eval. Deferred.
+
 **2026-05-17** — Further eval cost investigation. Four things surfaced:
 
 1. **Prompt caching still not firing** — both system prompts are ~266 tokens, well below Anthropic's 1024-token minimum. The `cache_control` blocks in router.py and synthesiser.py are silently no-ops.
