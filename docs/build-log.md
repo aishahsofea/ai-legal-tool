@@ -33,3 +33,13 @@ Rejected options:
 
 Key learning: Haiku cannot reliably populate structured output fields (`citation_refs: []` every time despite correct prose) — unsuitable for synthesiser. Safe for router (simple classifier). Built `evals/debug_case.py` as a repeatable single-case node tracer; faster and cheaper than running full evals to diagnose violations.
 
+**2026-05-17** — Further eval cost investigation. Four things surfaced:
+
+1. **Prompt caching still not firing** — both system prompts are ~266 tokens, well below Anthropic's 1024-token minimum. The `cache_control` blocks in router.py and synthesiser.py are silently no-ops.
+
+2. **Batch API doesn't solve the real problem** — the Batch API (50% off) brings the run from $0.045 → ~$0.022. Not enough. Also, the sequential pipeline (router → retriever → synthesiser) means three separate batch submissions with sync retriever work in between — structurally more complex than the sync runner.
+
+3. **Cost vs fidelity are in direct tension** — every cheaper-model option (Haiku, per-case routing) introduces false positive/negative risk because the eval tests a different model than production. Previous session already confirmed Haiku is unsuitable for synthesiser (drops `citation_refs`). The only real lever is making the production model cheaper.
+
+4. **Decision: validate GPT-4.1-mini as production swap** — ~8× cheaper than Sonnet (~$0.006/run). Because eval and production would use the same model, fidelity is preserved. Published PRD (issue #4). Acceptance bar: judge pass rate ≥ 80%, `citation_existence` 100%, all 4 BM/mixed smoke cases pass. No Sonnet baseline run needed — thresholds are absolute, not relative.
+
