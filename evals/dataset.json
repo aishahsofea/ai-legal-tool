@@ -319,8 +319,7 @@
       "expected_act_number": "56",
       "expected_section": "90A",
       "citation_applicable": true,
-      "expected_policy": "allow",
-      "smoke": true
+      "expected_policy": "allow"
     },
     {
       "id": "bm-employment-60a-1",
@@ -331,8 +330,7 @@
       "expected_act_number": "265",
       "expected_section": "60A",
       "citation_applicable": true,
-      "expected_policy": "allow",
-      "smoke": true
+      "expected_policy": "allow"
     },
     {
       "id": "bm-employment-19-1",
@@ -354,8 +352,7 @@
       "expected_act_number": "709",
       "expected_section": "12",
       "citation_applicable": true,
-      "expected_policy": "allow",
-      "smoke": true
+      "expected_policy": "allow"
     },
     {
       "id": "bm-penal-34-1",
@@ -366,8 +363,7 @@
       "expected_act_number": "574",
       "expected_section": "34",
       "citation_applicable": true,
-      "expected_policy": "allow",
-      "smoke": true
+      "expected_policy": "allow"
     },
     {
       "id": "bm-pdpa-42-1",
@@ -400,8 +396,7 @@
       "expected_act_number": "56",
       "expected_section": "73A",
       "citation_applicable": true,
-      "expected_policy": "allow",
-      "smoke": true
+      "expected_policy": "allow"
     },
     {
       "id": "mixed-companies-132-1",

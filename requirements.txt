@@ -10,3 +10,5 @@ fastapi>=0.115
 uvicorn>=0.30
 langgraph>=1.0
 langchain-anthropic>=1.4
+langchain-openai>=1.0
+langchain-google-genai>=4.0

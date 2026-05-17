@@ -18,7 +18,8 @@ _ADVICE_RE = re.compile(
 )
 
 _CITATION_RE = re.compile(
-    r'section\s+\d+[A-Z]{0,2}\s+of\s+.{3,60}(?:act|code)',
+    r'section\s+\d+[A-Z]{0,2}(?:\([^)]*\))?\s+of\s+.{3,60}(?:act|code)'
+    r'|section\s+\d+[A-Z]{0,2}\s*\([^)]+\)',
     re.IGNORECASE,
 )
 

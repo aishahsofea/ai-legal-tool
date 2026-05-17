@@ -9,14 +9,15 @@ import os
 from typing import Optional
 
 from dotenv import load_dotenv
-from langchain_anthropic import ChatAnthropic
 from pydantic import BaseModel
 
+from agent.llm_factory import make_llm, system_content
 from agent.state import AgentState
 
 load_dotenv()
 
-_llm = ChatAnthropic(model=os.getenv("SYNTHESISER_MODEL", "claude-sonnet-4-6"), temperature=0)
+_MODEL = os.getenv("SYNTHESISER_MODEL", "gpt-4.1")
+_llm = make_llm(_MODEL)
 
 
 class _CitationRef(BaseModel):
@@ -97,7 +98,7 @@ Retrieved statute sections:
 Answer the query using only the sections provided above. Cite each section you rely on."""
 
     result: _SynthesiserOutput = _structured_llm.invoke([
-        {"role": "system", "content": [{"type": "text", "text": system_prompt, "cache_control": {"type": "ephemeral"}}]},
+        {"role": "system", "content": system_content(system_prompt, _MODEL)},
         {"role": "user", "content": user_message},
     ])
 
