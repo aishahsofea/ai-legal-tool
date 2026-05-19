@@ -41,7 +41,7 @@ Key learning: Haiku cannot reliably populate structured output fields (`citation
 
 3. **GPT-4.1-mini still failed after the regex fix** — 40% `expected_section`, 57% judge. Not a pipeline bug; the model genuinely cannot reliably identify the correct statute section on citation-heavy queries.
 
-4. **GPT-4.1 passes at exactly 80%** — all L1 assertions 100%, judge 8/10. ~1.5× cheaper than Sonnet (not the 8× target), but the eval friction was about running freely, and at this price point it's acceptable. Provider-agnostic `agent/llm_factory.py` introduced: routes `claude-*` to ChatAnthropic, `gemini-*` to ChatGoogleGenerativeAI, else ChatOpenAI. Makes future model trials a one-line env var change.
+4. **GPT-4.1 passes at exactly 80%** — all L1 assertions 100%, judge 8/10. cheaper than Sonnet (not the 8× target), but the eval friction was about running freely, and at this price point it's acceptable. Provider-agnostic `agent/llm_factory.py` introduced: routes `claude-*` to ChatAnthropic, `gemini-*` to ChatGoogleGenerativeAI, else ChatOpenAI. Makes future model trials a one-line env var change.
 
 Also tried: Gemini 2.5 Flash (would be ~15× cheaper) — hit free-tier 5 RPM cap on case 3. Needs billing enabled to run the eval. Deferred.
 
