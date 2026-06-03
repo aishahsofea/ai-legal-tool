@@ -121,6 +121,10 @@ def _exact_statute_lookup(conn, query: str) -> list[dict]:
 def _vector_search(conn, query: str) -> list[dict]:
     query_vec = _embed(query)
     with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+        # Increase ivfflat probes from default 1 → 10 for better recall.
+        # Default probes=1 misses correct clusters; 10 is a good recall/speed trade-off
+        # for a pilot corpus of ~24k chunks.
+        cur.execute("SET ivfflat.probes = 10;")
         cur.execute(
             """
             SELECT act_number, act_title, section_number, content, page_number, language,
