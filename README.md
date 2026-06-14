@@ -9,32 +9,59 @@ Built on a LangGraph agent graph backed by a pgvector corpus of section-level ch
 ## Architecture
 
 ```text
-User query (EN / BM / mixed)
-        │
-        ▼
-  ┌─────────────┐
-  │   router    │  classifies: statute_lookup / topical_search /
-  │             │  provision_extraction / escalate
-  └──────┬──────┘
-         │
-         ▼
-  ┌─────────────┐
-  │  retriever  │  pgvector similarity search over section-level chunks
-  └──────┬──────┘
-         │
-         ▼
-  ┌─────────────┐
-  │ synthesiser │  drafts answer + citations (act, section, page deep-link)
-  └──────┬──────┘
-         │
-         ▼
-  ┌─────────────┐
-  │ supervisor  │  enforces policy before output; blocks or rewrites;
-  │             │  routes to human hand-off if unresolvable
-  └─────────────┘
+User query + thread_id (EN / BM / mixed)
+       │
+       ▼
+┌────────────────────┐
+│  start_turn        │  loads this thread's history from the
+│                    │  checkpointer; resets per-turn scratch state
+└──────┬─────────────┘
+       │
+       ▼
+┌────────────────────┐
+│  router            │  classifies: statute_lookup / topical_search /
+│                    │  provision_extraction / escalate
+└──────┬─────────────┘
+       │
+       ▼
+┌────────────────────┐
+│  retriever         │  pgvector similarity search over section-level
+│                    │  chunks (EN + BM)
+└──────┬─────────────┘
+       │
+       ▼
+┌────────────────────┐
+│  synthesiser       │  drafts answer + citations (act, section,
+│                    │  page deep-link)
+└──────┬─────────────┘
+       │
+       ▼
+┌────────────────────┐
+│  citation_validator│  checks citation_refs against retrieved chunks
+└──────┬─────────────┘
+       │
+       ▼
+┌────────────────────┐
+│  grounding_check   │  flags claims unsupported by retrieved chunk text
+└──────┬─────────────┘
+       │
+       ▼
+┌────────────────────┐
+│  supervisor        │  enforces policy before output
+└──────┬─────────────┘
+       │
+       ▼
+┌────────────────────┐
+│  record_turn       │  appends this turn to checkpointed history
+└──────┬─────────────┘
+       │
+       ▼
+      END
 ```
 
-**Stack:** LangGraph · FastAPI (Railway) · Next.js (Vercel) · Postgres + pgvector (Supabase) · OpenAI `text-embedding-3-small` · Anthropic Claude
+Two short-circuits aren't pictured above: a query the `router` classifies as `escalate` skips straight to `record_turn` with a fixed human hand-off message (the `escalate` node); and a `supervisor` violation with a retry remaining (`MAX_RETRIES`) loops back to `synthesiser` via `increment_retry` before re-running citation/grounding checks.
+
+**Stack:** LangGraph (Postgres/Memory checkpointer) · FastAPI (Railway) · Next.js (Vercel) · Postgres + pgvector (Supabase) · OpenAI `text-embedding-3-small` · GPT-4.1 by default — provider-agnostic via `agent/llm_factory.py` (Claude/Gemini also supported; Claude used for the eval judge)
 
 ---
 
@@ -173,7 +200,24 @@ CREATE TABLE chunks (
 ai-legal-tool/
 ├── run.py                          # CLI entrypoint (steps 1–5)
 ├── requirements.txt
+├── railway.toml                    # Railway deploy config (FastAPI backend)
+├── vercel.json                     # Vercel deploy config (Next.js frontend)
 ├── .env                            # DATABASE_URL, OPENAI_API_KEY, etc.
+├── agent/
+│   ├── graph.py                    # graph: nodes, edges, retry loop, checkpointer wiring
+│   ├── state.py                    # AgentState, Message, Citation, QueryEvent/Result types
+│   ├── query_lifecycle.py          # run_query / run_query_stream (thread_id-based)
+│   ├── query_policy.py             # MAX_HISTORY_TURNS, MAX_RETRIES, history trimming
+│   ├── llm_factory.py              # provider-agnostic LLM factory (Claude/Gemini/OpenAI)
+│   └── nodes/
+│       ├── router.py
+│       ├── retriever.py
+│       ├── synthesiser.py
+│       ├── citation_validator.py
+│       ├── grounding_check.py
+│       └── supervisor.py
+├── api/
+│   └── main.py                     # FastAPI SSE endpoint: POST /query { query, thread_id }
 ├── scraper/
 │   ├── config.py                   # paths, delays, URLs
 │   ├── session.py                  # requests-cache + retry setup
@@ -189,19 +233,27 @@ ai-legal-tool/
 │   └── step5_ingest.py             # Step 5: embed + ingest into pgvector
 ├── evals/
 │   ├── dataset.json                # hand-validated benchmark set
-│   ├── judge.py                    # Claude-based judge
+│   ├── assertions.py               # L1 deterministic assertions
+│   ├── judge.py                    # Claude-based L2 judge
 │   ├── run_evals.py                # eval runner + report writer
+│   ├── debug_case.py               # single-case node-by-node tracer
+│   ├── review_verdicts.py          # judge verdict review helper
 │   ├── seed_test_corpus.py         # tiny eval-only pgvector seed
 │   └── validate_dataset.py         # human review checklist
+├── tests/                          # unit tests (graph retry, checkpointer memory, ...)
+├── frontend/                       # Next.js app router chat UI (Vercel AI SDK)
 ├── data/
 │   ├── acts_index.json
 │   ├── acts_metadata/
 │   ├── pdfs/en/
 │   ├── chunks/en/
 │   └── cache/                      # HTTP cache (SQLite, 7-day TTL)
+├── .github/workflows/evals.yml     # eval smoke run (manual trigger, posts PR comment)
 └── docs/
     ├── PRD.md
     ├── build-log.md
+    ├── agent-hardening-backlog.md
+    ├── checkpointer-implementation-plan.md
     └── adr/                        # Architecture Decision Records
 ```
 
@@ -220,21 +272,32 @@ Health check: `GET http://localhost:8000/health`
 ```bash
 curl -N -X POST http://localhost:8000/query \
   -H "Content-Type: application/json" \
-  -d '{"query": "What does Section 17 of the Evidence Act say about admissions?"}'
+  -d '{"query": "What does Section 17 of the Evidence Act say about admissions?", "thread_id": "demo-1"}'
 ```
 
 Streams Server-Sent Events:
 
-```
+```text
 data: {"type": "status",   "message": "Classifying query..."}
-data: {"type": "status",   "message": "Found 8 relevant sections. Drafting response..."}
+data: {"type": "status",   "message": "Searching Malaysian Acts..."}
 data: {"type": "status",   "message": "Drafting response..."}
 data: {"type": "status",   "message": "Checking policy compliance..."}
 data: {"type": "response", "content": "...", "citations": [...], "violations": []}
 data: {"type": "done"}
 ```
 
+If the supervisor finds a violation and a retry remains, a `"Refining response..."` status is emitted and `synthesiser → citation_validator → grounding_check → supervisor` re-runs once (bounded by `MAX_RETRIES`). If the router classifies the query as `escalate`, an `"Escalating to human lawyer..."` status is emitted and the response is a fixed hand-off message.
+
 Citation objects include `act_number`, `act_title`, `section_number`, `pdf_url` (with `#page=N` anchor), and `page_number`.
+
+### Conversation memory
+
+Every request carries a `thread_id`; the client never resends prior turns. History is kept server-side in a LangGraph checkpointer, keyed by `thread_id`:
+
+- `DATABASE_URL` set (default) → `PostgresSaver` / `AsyncPostgresSaver`, persisted in the same Postgres instance as pgvector
+- `CHECKPOINTER=memory` or no `DATABASE_URL` → in-process `MemorySaver` (local dev/tests)
+
+History accumulates across turns and is trimmed to the most recent `MAX_HISTORY_TURNS` (6) when read by the router and synthesiser.
 
 ---
 
@@ -242,4 +305,4 @@ Citation objects include `act_number`, `act_title`, `section_number`, `pdf_url` 
 
 `evals/dataset.json` contains hand-validated test cases for the Evidence Act 1950, Penal Code, PDPA 2010, Companies Act 2016, Employment Act 1955, and escalation cases that should be blocked.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for how to run evals locally. CI runs the full suite on pushes to `main` and fails if citation accuracy or policy compliance drops below 80%.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to run evals locally. A GitHub Actions workflow (`.github/workflows/evals.yml`, manually triggered) runs a 15-case smoke eval against the GPT-4.1 defaults and posts the judge pass rate and key L1 metrics as a PR comment; it fails if the judge pass rate drops below 80%.
