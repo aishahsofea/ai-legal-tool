@@ -5,6 +5,7 @@ import argparse
 import json
 import os
 import time
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -50,7 +51,10 @@ def _initial_state(query: str, history: list[dict[str, Any]] | None = None) -> d
 
 
 def _run_full_agent(query: str, history: list[dict[str, Any]] | None = None) -> dict[str, Any]:
-    result = run_query(query, history)
+    # Conversation memory is now server-side, keyed by thread_id. Each eval case is
+    # an independent single-turn query, so use a fresh thread_id (dataset cases carry
+    # no prior history; multi-turn eval seeding would replay turns on one thread_id).
+    result = run_query(query, uuid.uuid4().hex)
     return {
         "query_type": result["query_type"],
         "final_response": result["response"],

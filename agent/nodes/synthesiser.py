@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel
 
 from agent.llm_factory import make_llm, system_content
+from agent.query_policy import trim_history
 from agent.state import AgentState
 
 load_dotenv()
@@ -72,7 +73,7 @@ _LANGUAGE_INSTRUCTIONS = {
 
 def synthesiser_node(state: AgentState) -> dict:
     chunks = state["retrieved_chunks"]
-    history = state.get("history", [])
+    history = trim_history(state.get("history", []))
     response_language = state.get("response_language", "en")
 
     context = "\n\n".join(
