@@ -19,11 +19,11 @@ export type QueryEvent =
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
-async function fetchQueryResponse(query: string, history: Message[], signal?: AbortSignal) {
+async function fetchQueryResponse(query: string, threadId: string, signal?: AbortSignal) {
   return fetch(`${API_URL}/query`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query, history }),
+    body: JSON.stringify({ query, thread_id: threadId }),
     signal,
   });
 }
@@ -111,10 +111,10 @@ async function* parseSseStream(body: ReadableStream<Uint8Array>, signal?: AbortS
 
 export async function* streamQuery(
   query: string,
-  history: Message[] = [],
+  threadId: string,
   signal?: AbortSignal,
 ): AsyncGenerator<QueryEvent> {
-  const res = await fetchQueryResponse(query, history, signal);
+  const res = await fetchQueryResponse(query, threadId, signal);
 
   if (!res.ok) {
     throw new Error(`HTTP ${res.status}`);
