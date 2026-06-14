@@ -16,7 +16,7 @@ class QueryLifecycleFailClosedTests(unittest.TestCase):
 
         with patch("agent.query_lifecycle.graph") as graph:
             graph.invoke.return_value = final_state
-            result = run_query("What does the law say?")
+            result = run_query("What does the law say?", "t1")
 
         self.assertEqual(result["response"], FINAL_FAILURE_RESPONSE)
         self.assertEqual(result["violations"], ["Contains specific advice phrases."])
@@ -32,7 +32,7 @@ class QueryLifecycleFailClosedTests(unittest.TestCase):
 
         with patch("agent.query_lifecycle.graph") as graph:
             graph.invoke.return_value = final_state
-            result = run_query("What does the law say?")
+            result = run_query("What does the law say?", "t1")
 
         self.assertEqual(result["response"], "Section 1 of Example Act applies.")
         self.assertEqual(result["violations"], [])
