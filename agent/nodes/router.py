@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel
 
 from agent.llm_factory import make_llm, system_content
+from agent.query_policy import trim_history
 from agent.state import AgentState
 
 load_dotenv()
@@ -54,7 +55,7 @@ Reply with the most appropriate type, the response language, and a brief one-sen
 
 def router_node(state: AgentState) -> dict:
     query = state["query"]
-    history = state.get("history", [])
+    history = trim_history(state.get("history", []))
     history_text = "\n".join(f"{turn['role']}: {turn['content']}" for turn in history)
 
     # Escalation triggers are intentionally checked only against the current user

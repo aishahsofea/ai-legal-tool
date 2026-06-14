@@ -4,8 +4,8 @@ from __future__ import annotations
 from collections.abc import AsyncIterator
 
 from agent.graph import graph
-from agent.query_policy import FINAL_FAILURE_RESPONSE, MAX_HISTORY_TURNS
-from agent.state import AgentState, Message, QueryEvent, QueryResult
+from agent.query_policy import FINAL_FAILURE_RESPONSE
+from agent.state import AgentState, QueryEvent, QueryResult
 
 _STATUS_MESSAGES = {
     "router": "Classifying query...",
@@ -17,24 +17,25 @@ _STATUS_MESSAGES = {
 }
 
 
-def trim_history(history: list[Message] | None, limit: int = MAX_HISTORY_TURNS) -> list[Message]:
-    if not history:
-        return []
-    return history[-limit:]
+def _turn_input(query: str) -> dict:
+    # The start_turn node fills in the rest of the per-turn fields; the
+    # checkpointer supplies accumulated history keyed by thread_id.
+    return {"query": query}
 
 
-def _initial_state(query: str, history: list[Message] | None = None) -> AgentState:
-    return {
-        "query": query,
-        "history": trim_history(history),
-        "query_type": "",
-        "retrieved_chunks": [],
-        "draft_response": "",
-        "citations": [],
-        "violations": [],
-        "final_response": "",
-        "retry_count": 0,
-    }
+def _config(thread_id: str) -> dict:
+    return {"configurable": {"thread_id": thread_id}}
+
+
+def set_graph(g) -> None:
+    """Swap the graph used by run_query/run_query_stream.
+
+    Used during FastAPI startup to install a graph backed by AsyncPostgresSaver,
+    which must be built inside the server's running event loop (see
+    agent.graph.lifespan_graph).
+    """
+    global graph
+    graph = g
 
 
 def _response_text(state: dict) -> str:
@@ -48,8 +49,8 @@ def _fail_closed_if_violations(state: AgentState) -> AgentState:
     return state
 
 
-def run_query(query: str, history: list[Message] | None = None) -> QueryResult:
-    state = graph.invoke(_initial_state(query, history))
+def run_query(query: str, thread_id: str) -> QueryResult:
+    state = graph.invoke(_turn_input(query), _config(thread_id))
     state = _fail_closed_if_violations(state)
 
     return {
@@ -60,9 +61,10 @@ def run_query(query: str, history: list[Message] | None = None) -> QueryResult:
     }
 
 
-async def run_query_stream(query: str, history: list[Message] | None = None) -> AsyncIterator[QueryEvent]:
-    state = _initial_state(query, history)
-    async for update in graph.astream(state, stream_mode="updates"):
+async def run_query_stream(query: str, thread_id: str) -> AsyncIterator[QueryEvent]:
+    config = _config(thread_id)
+    state: dict = {}
+    async for update in graph.astream(_turn_input(query), config, stream_mode="updates"):
         node_name = next(iter(update.keys()), "")
         if node_name in _STATUS_MESSAGES:
             yield {"type": "status", "message": _STATUS_MESSAGES[node_name]}

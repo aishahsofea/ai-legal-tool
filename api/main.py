@@ -2,7 +2,7 @@
 FastAPI backend for the Malaysian Legal Research AI Assistant.
 
 Single endpoint: POST /query
-- Accepts { query, history } JSON
+- Accepts { query, thread_id } JSON (conversation memory lives server-side, keyed by thread_id)
 - Streams Server-Sent Events (SSE) with progressive status updates and the final response
 - Designed to be consumed by the Next.js frontend via Vercel AI SDK / EventSource
 
@@ -15,22 +15,31 @@ SSE event types:
 """
 import json
 import logging
+from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 load_dotenv()
 
-from agent.query_lifecycle import run_query_stream
-from agent.state import Message
+from agent.graph import lifespan_graph
+from agent.query_lifecycle import run_query_stream, set_graph
 
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="Malaysian Legal Research API")
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    async with lifespan_graph() as g:
+        set_graph(g)
+        yield
+
+
+app = FastAPI(title="Malaysian Legal Research API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -42,7 +51,7 @@ app.add_middleware(
 
 class QueryRequest(BaseModel):
     query: str
-    history: list[Message] = Field(default_factory=list)
+    thread_id: str
 
 
 def _sse(payload: dict) -> str:
@@ -59,9 +68,9 @@ _STATUS_MESSAGES = {
 }
 
 
-async def _stream_query(query: str, history: list[Message]) -> AsyncGenerator[str, None]:
+async def _stream_query(query: str, thread_id: str) -> AsyncGenerator[str, None]:
     try:
-        async for event in run_query_stream(query, history):
+        async for event in run_query_stream(query, thread_id):
             yield _sse(event)
     except Exception as exc:
         logger.exception("Agent error for query: %s", query)
@@ -77,7 +86,7 @@ def health():
 @app.post("/query")
 async def query_endpoint(req: QueryRequest):
     return StreamingResponse(
-        _stream_query(req.query, req.history),
+        _stream_query(req.query, req.thread_id),
         media_type="text/event-stream",
         headers={
             "Cache-Control":               "no-cache",
