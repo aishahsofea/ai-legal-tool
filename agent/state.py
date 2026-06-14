@@ -1,4 +1,5 @@
-from typing import Literal, TypedDict
+from operator import add
+from typing import Annotated, Literal, TypedDict
 
 
 class Message(TypedDict):
@@ -31,7 +32,7 @@ class QueryEvent(TypedDict, total=False):
 
 class AgentState(TypedDict):
     query: str
-    history: list[Message]
+    history: Annotated[list[Message], add]   # accumulate across turns
     query_type: str          # "statute_lookup" | "topical" | "provision_extraction" | "escalate"
     response_language: str   # "en" | "bm" | "mixed"
     retrieved_chunks: list[dict]
