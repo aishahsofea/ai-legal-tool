@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { streamQuery, type Citation, type Message } from "@/lib/queryTransport";
+import { streamQuery, type Citation } from "@/lib/queryTransport";
 
 export { type Citation, type Message } from "@/lib/queryTransport";
 
@@ -25,7 +25,7 @@ export function useQuery() {
     return () => abortRef.current?.abort();
   }, []);
 
-  const submit = useCallback(async (query: string, history: Message[] = []) => {
+  const submit = useCallback(async (query: string, threadId: string) => {
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
@@ -33,7 +33,7 @@ export function useQuery() {
     setState({ status: "Connecting...", response: "", citations: [], isLoading: true, error: null });
 
     try {
-      for await (const event of streamQuery(query, history, controller.signal)) {
+      for await (const event of streamQuery(query, threadId, controller.signal)) {
         if (event.type === "status") {
           setState((s) => ({ ...s, status: event.message }));
         } else if (event.type === "response") {

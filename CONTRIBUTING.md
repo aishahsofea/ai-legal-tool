@@ -104,31 +104,31 @@ python -m evals.run_evals --mode full
 python -m evals.run_evals --mode baseline
 ```
 
-Results are written to `evals/results.json`. CI runs the full suite on pushes to `main` and fails if citation accuracy or policy compliance drops below 80%.
+Results are written to `evals/results.json` by default. A GitHub Actions workflow (`.github/workflows/evals.yml`, manually triggered via `workflow_dispatch`) runs a 15-case smoke eval against the production model defaults and posts the judge pass rate and key L1 metrics as a PR comment; it fails if the judge pass rate drops below 80%.
 
 ### Model overrides
 
-The router and synthesiser each have an env var that controls which Claude model they use:
+The router and synthesiser each have an env var that controls which model they use. Both are resolved through the provider-agnostic factory in `agent/llm_factory.py`: a `claude-*` name routes to Anthropic, `gemini-*` to Google, and anything else (including the `gpt-*` default) to OpenAI.
 
 | Env var | Node | Default |
 |---|---|---|
-| `ROUTER_MODEL` | router | `claude-sonnet-4-6` |
-| `SYNTHESISER_MODEL` | synthesiser | `claude-sonnet-4-6` |
+| `ROUTER_MODEL` | router | `gpt-4.1` |
+| `SYNTHESISER_MODEL` | synthesiser | `gpt-4.1` |
 
-Override them to `claude-haiku-4-5-20251001` (~3× cheaper) to get fast pipeline-correctness signal without burning Sonnet budget:
+Override to `claude-haiku-4-5-20251001` (~3× cheaper than GPT-4.1) for fast pipeline-correctness signal without the GPT-4.1 default:
 
 ```bash
 # both nodes on Haiku — cheapest local smoke run
 ROUTER_MODEL=claude-haiku-4-5-20251001 SYNTHESISER_MODEL=claude-haiku-4-5-20251001 \
   python3 -m evals.run_evals --smoke
 
-# router cheap, synthesiser on Sonnet — useful when tuning synthesiser prompts
+# router cheap, synthesiser on the production default — useful when tuning synthesiser prompts
 ROUTER_MODEL=claude-haiku-4-5-20251001 python3 -m evals.run_evals --smoke
 ```
 
 Shell exports take priority over `.env` values, so you can temporarily override your local default in a single command. Set them in `.env` for a persistent local default.
 
-**When to trust Haiku eval results:** L1 assertions (regex, DB lookups, string matching) are LLM-free and fully reliable regardless of model. L2 judge signal is lower-fidelity when both nodes use Haiku — useful for detecting gross failures, but do not treat a passing Haiku eval as equivalent to a passing Sonnet eval when tuning prompts. CI always uses Sonnet (no env vars set).
+**When to trust Haiku eval results:** L1 assertions (regex, DB lookups, string matching) are LLM-free and fully reliable regardless of model. L2 judge signal is lower-fidelity when both nodes use Haiku — useful for detecting gross failures, but do not treat a passing Haiku eval as equivalent to a passing GPT-4.1 eval when tuning prompts. CI uses the `gpt-4.1` defaults (no `ROUTER_MODEL`/`SYNTHESISER_MODEL` set); `EVALS_JUDGE_MODEL` is set to `claude-haiku-4-5-20251001` for the L2 judge.
 
 ---
 

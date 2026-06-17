@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/set-state-in-effect -- stream events arrive through hook state and are committed into thread history here. */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useQuery, type Citation, type Message as QueryMessage } from "@/lib/useQuery";
+import { useQuery, type Citation } from "@/lib/useQuery";
 import type { Message as ThreadMessage, ThreadSummary } from "@/components/conversation";
 
 type ResearchThread = ThreadSummary & {
@@ -110,7 +110,6 @@ export function useResearchThreads() {
 
       const targetThreadId = activeThreadId ?? makeId();
       const selectedThread = threads.find((thread) => thread.id === targetThreadId) ?? null;
-      const history: QueryMessage[] = (selectedThread?.messages ?? []).map(({ role, content }) => ({ role, content }));
       const title = selectedThread?.title ?? deriveThreadTitle(trimmed);
       const userMessage: ThreadMessage = { id: makeId(), role: "user", content: trimmed, createdAt: nowLabel() };
       const assistantPlaceholder: ThreadMessage = { id: makeId(), role: "assistant", content: "", createdAt: nowLabel() };
@@ -152,7 +151,9 @@ export function useResearchThreads() {
         );
       });
 
-      await submit(trimmed, history);
+      // The server owns conversation memory now; send only the thread id so it can
+      // load and accumulate history server-side (frontend keeps its own copy for rendering).
+      await submit(trimmed, targetThreadId);
     },
     [activeThreadId, isLoading, submit, syncActiveFlags, threads],
   );
