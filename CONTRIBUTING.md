@@ -108,11 +108,12 @@ Results are written to `evals/results.json` by default. A GitHub Actions workflo
 
 ### Model overrides
 
-The router and synthesiser each have an env var that controls which model they use. Both are resolved through the provider-agnostic factory in `agent/llm_factory.py`: a `claude-*` name routes to Anthropic, `gemini-*` to Google, and anything else (including the `gpt-*` default) to OpenAI.
+The router, contextualize, and synthesiser nodes each have an env var that controls which model they use. All are resolved through the provider-agnostic factory in `agent/llm_factory.py`: a `claude-*` name routes to Anthropic, `gemini-*` to Google, and anything else (including the `gpt-*` default) to OpenAI. The contextualize node — which rewrites elliptical follow-ups into a standalone query for retrieval — defaults to a cheaper mini-class model, since query rewriting is a lighter task than classification or synthesis.
 
 | Env var | Node | Default |
 |---|---|---|
 | `ROUTER_MODEL` | router | `gpt-4.1` |
+| `CONTEXTUALIZER_MODEL` | contextualize | `gpt-4.1-mini` |
 | `SYNTHESISER_MODEL` | synthesiser | `gpt-4.1` |
 
 Override to `claude-haiku-4-5-20251001` (~3× cheaper than GPT-4.1) for fast pipeline-correctness signal without the GPT-4.1 default:

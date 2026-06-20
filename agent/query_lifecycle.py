@@ -9,6 +9,7 @@ from agent.state import AgentState, QueryEvent, QueryResult
 
 _STATUS_MESSAGES = {
     "router": "Classifying query...",
+    "contextualize": "Resolving follow-up...",
     "retriever": "Searching Malaysian Acts...",
     "synthesiser": "Drafting response...",
     "supervisor": "Checking policy compliance...",
@@ -66,9 +67,16 @@ async def run_query_stream(query: str, thread_id: str) -> AsyncIterator[QueryEve
     state: dict = {}
     async for update in graph.astream(_turn_input(query), config, stream_mode="updates"):
         node_name = next(iter(update.keys()), "")
-        if node_name in _STATUS_MESSAGES:
+        node_output = next(iter(update.values()), {})
+        if node_name == "contextualize":
+            # Only announce a rewrite when one actually happened — non-empty and
+            # different from the raw query. Never surface the rewritten text.
+            standalone = node_output.get("standalone_query", "")
+            if standalone and standalone != query:
+                yield {"type": "status", "message": _STATUS_MESSAGES["contextualize"]}
+        elif node_name in _STATUS_MESSAGES:
             yield {"type": "status", "message": _STATUS_MESSAGES[node_name]}
-        state.update(next(iter(update.values()), {}))
+        state.update(node_output)
 
     state = _fail_closed_if_violations(state)
 

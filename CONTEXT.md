@@ -39,6 +39,10 @@ A practitioner's question directed at the agent. May be statute lookup ("what do
 **Conversation History**:
 The prior turns in the same thread, passed as a list of user/assistant messages. Used to interpret follow-up questions like "what about criminal cases?". For v1, only the most recent turns are kept.
 
+**Standalone Query**:
+The history-resolved, self-contained version of a follow-up **Legal Research Query**. A short or elliptical follow-up ("what about criminal cases?", "and in Bahasa?") is rewritten into a query that carries forward the act, topic, or section from **Conversation History** so it can be retrieved on its own. Used only for retrieval; it is never shown to the practitioner and never recorded in **Conversation History** (which always stores what the practitioner actually typed).
+_Avoid_: expanded query, resolved query
+
 **Legal Advice** _(out of scope)_:
 A recommendation about what a specific person should do in a specific legal situation. The agent must never produce this; it hands off to a human lawyer instead.
 

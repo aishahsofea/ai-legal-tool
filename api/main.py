@@ -60,6 +60,7 @@ def _sse(payload: dict) -> str:
 
 _STATUS_MESSAGES = {
     "router":          "Classifying query...",
+    "contextualize":   "Resolving follow-up...",
     "retriever":       "Searching {n} sections across Malaysian Acts...",
     "synthesiser":     "Drafting response...",
     "supervisor":      "Checking policy compliance...",

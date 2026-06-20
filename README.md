@@ -22,6 +22,12 @@ User query + thread_id (EN / BM / mixed)
 │  router            │  classifies: statute_lookup / topical_search /
 │                    │  provision_extraction / escalate
 └──────┬─────────────┘
+       │ (escalate short-circuits here)
+       ▼
+┌────────────────────┐
+│  contextualize     │  rewrites an elliptical follow-up into a
+│                    │  self-contained standalone query for retrieval
+└──────┬─────────────┘
        │
        ▼
 ┌────────────────────┐
@@ -211,6 +217,7 @@ ai-legal-tool/
 │   ├── llm_factory.py              # provider-agnostic LLM factory (Claude/Gemini/OpenAI)
 │   └── nodes/
 │       ├── router.py
+│       ├── contextualize.py
 │       ├── retriever.py
 │       ├── synthesiser.py
 │       ├── citation_validator.py
@@ -286,7 +293,7 @@ data: {"type": "response", "content": "...", "citations": [...], "violations": [
 data: {"type": "done"}
 ```
 
-If the supervisor finds a violation and a retry remains, a `"Refining response..."` status is emitted and `synthesiser → citation_validator → grounding_check → supervisor` re-runs once (bounded by `MAX_RETRIES`). If the router classifies the query as `escalate`, an `"Escalating to human lawyer..."` status is emitted and the response is a fixed hand-off message.
+On a follow-up turn where the contextualize node rewrites the query into a standalone form, a `"Resolving follow-up..."` status is emitted before retrieval (the rewritten text itself is never surfaced). If the supervisor finds a violation and a retry remains, a `"Refining response..."` status is emitted and `synthesiser → citation_validator → grounding_check → supervisor` re-runs once (bounded by `MAX_RETRIES`). If the router classifies the query as `escalate`, an `"Escalating to human lawyer..."` status is emitted and the response is a fixed hand-off message.
 
 Citation objects include `act_number`, `act_title`, `section_number`, `pdf_url` (with `#page=N` anchor), and `page_number`.
 
@@ -297,7 +304,7 @@ Every request carries a `thread_id`; the client never resends prior turns. Histo
 - `DATABASE_URL` set (default) → `PostgresSaver` / `AsyncPostgresSaver`, persisted in the same Postgres instance as pgvector
 - `CHECKPOINTER=memory` or no `DATABASE_URL` → in-process `MemorySaver` (local dev/tests)
 
-History accumulates across turns and is trimmed to the most recent `MAX_HISTORY_TURNS` (6) when read by the router and synthesiser.
+History accumulates across turns and is trimmed to the most recent `MAX_HISTORY_TURNS` (6) when read by the router, contextualize, and synthesiser nodes. Assistant turns are stored **disclaimer-free** — the legal-advice disclaimer is stripped at record-time so later nodes don't re-read repeated boilerplate (the disclaimer still reaches the user in the response).
 
 ---
 

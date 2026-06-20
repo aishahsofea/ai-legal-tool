@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel
 
 from agent.llm_factory import make_llm, system_content
-from agent.query_policy import trim_history
+from agent.query_policy import _DISCLAIMER_BM, _DISCLAIMER_EN, trim_history
 from agent.state import AgentState
 
 load_dotenv()
@@ -32,18 +32,6 @@ class _SynthesiserOutput(BaseModel):
 
 
 _structured_llm = _llm.with_structured_output(_SynthesiserOutput)
-
-_DISCLAIMER_EN = (
-    "\n\n---\n"
-    "*This information is for legal research only and does not constitute legal advice. "
-    "Please consult a qualified Malaysian lawyer for advice on your specific situation.*"
-)
-_DISCLAIMER_BM = (
-    "\n\n---\n"
-    "*Maklumat ini adalah untuk tujuan penyelidikan undang-undang sahaja dan tidak merupakan "
-    "nasihat undang-undang. Sila rujuk peguam Malaysia yang berkelayakan untuk nasihat berhubung "
-    "situasi khusus anda.*"
-)
 
 _SYSTEM_TEMPLATE = """You are a Malaysian legal research assistant. Your role is to answer research questions about Malaysian legislation by citing the relevant statute sections.
 

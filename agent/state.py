@@ -32,6 +32,7 @@ class QueryEvent(TypedDict, total=False):
 
 class AgentState(TypedDict):
     query: str
+    standalone_query: str    # history-resolved query for retrieval; "" = use raw query
     history: Annotated[list[Message], add]   # accumulate across turns
     query_type: str          # "statute_lookup" | "topical" | "provision_extraction" | "escalate"
     response_language: str   # "en" | "bm" | "mixed"
