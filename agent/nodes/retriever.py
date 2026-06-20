@@ -139,13 +139,16 @@ def _vector_search(conn, query: str) -> list[dict]:
 
 
 def retriever_node(state: AgentState) -> dict:
+    # Search on the history-resolved Standalone Query when the contextualize node
+    # produced one; otherwise fall back to the raw query (first turn / fail-open).
+    query = state.get("standalone_query") or state["query"]
     conn = psycopg2.connect(_db_url)
     try:
         rows = []
         if state.get("query_type") == "statute_lookup":
-            rows = _exact_statute_lookup(conn, state["query"])
+            rows = _exact_statute_lookup(conn, query)
         if not rows:
-            rows = _vector_search(conn, state["query"])
+            rows = _vector_search(conn, query)
     finally:
         conn.close()
 
