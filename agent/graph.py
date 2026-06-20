@@ -18,7 +18,7 @@ from agent.nodes.router import router_node
 from agent.nodes.retriever import retriever_node
 from agent.nodes.supervisor import ESCALATION_RESPONSE, supervisor_node
 from agent.nodes.synthesiser import synthesiser_node
-from agent.query_policy import MAX_RETRIES
+from agent.query_policy import MAX_RETRIES, strip_disclaimer
 from agent.state import AgentState
 
 
@@ -63,9 +63,11 @@ def _start_turn(state: AgentState) -> dict:
 def _record_turn(state: AgentState) -> dict:
     # Append at the END so that DURING the turn, state["history"] holds prior turns only
     # (prevents the current query appearing twice in prompts).
+    # Strip the appended disclaimer so stored history is free of repeated boilerplate;
+    # the disclaimer still reaches the user via final_response (untouched here).
     return {"history": [
         {"role": "user", "content": state["query"]},
-        {"role": "assistant", "content": state.get("final_response", "")},
+        {"role": "assistant", "content": strip_disclaimer(state.get("final_response", ""))},
     ]}
 
 
