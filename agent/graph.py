@@ -19,7 +19,7 @@ from agent.nodes.router import router_node
 from agent.nodes.retriever import retriever_node
 from agent.nodes.supervisor import ESCALATION_RESPONSE, supervisor_node
 from agent.nodes.synthesiser import synthesiser_node
-from agent.query_policy import MAX_RETRIES, strip_disclaimer
+from agent.query_policy import MAX_RETRIES, delivered_response, strip_disclaimer
 from agent.state import AgentState
 
 
@@ -65,12 +65,19 @@ def _start_turn(state: AgentState) -> dict:
 def _record_turn(state: AgentState) -> dict:
     # Append at the END so that DURING the turn, state["history"] holds prior turns only
     # (prevents the current query appearing twice in prompts).
+    # Compute the delivered response once (safe fallback when violations remain) and use it
+    # for BOTH the returned final_response and the stored assistant turn, so the checkpointed
+    # history and what the user receives agree by construction — memory can never diverge.
     # Strip the appended disclaimer so stored history is free of repeated boilerplate;
     # the disclaimer still reaches the user via final_response (untouched here).
-    return {"history": [
-        {"role": "user", "content": state["query"]},
-        {"role": "assistant", "content": strip_disclaimer(state.get("final_response", ""))},
-    ]}
+    delivered = delivered_response(state)
+    return {
+        "final_response": delivered,
+        "history": [
+            {"role": "user", "content": state["query"]},
+            {"role": "assistant", "content": strip_disclaimer(delivered)},
+        ],
+    }
 
 
 # Holds long-lived resources (e.g. the PostgresSaver connection pool) open for the

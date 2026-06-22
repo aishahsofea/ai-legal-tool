@@ -37,6 +37,18 @@ def strip_disclaimer(text: str) -> str:
     return text
 
 
+def delivered_response(state) -> str:
+    """The response the user actually receives: the safe fallback when violations
+    remain, otherwise the final draft. Single source of truth shared by the graph
+    (history recording) and the query lifecycle (user-facing return).
+
+    Does NOT strip the disclaimer — that stays a history-only concern.
+    """
+    if state.get("violations"):
+        return FINAL_FAILURE_RESPONSE
+    return state.get("final_response") or state.get("draft_response") or ""
+
+
 def trim_history(history: list[Message] | None, limit: int = MAX_HISTORY_TURNS) -> list[Message]:
     """Keep only the most recent turns before sending history to an LLM.
 
