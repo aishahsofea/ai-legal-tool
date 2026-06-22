@@ -1,7 +1,8 @@
 import unittest
 from unittest.mock import patch
 
-from agent.query_lifecycle import FINAL_FAILURE_RESPONSE, run_query
+from agent.query_lifecycle import run_query
+from agent.query_policy import FINAL_FAILURE_RESPONSE
 
 
 class QueryLifecycleFailClosedTests(unittest.TestCase):

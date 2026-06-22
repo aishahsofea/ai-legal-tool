@@ -4,7 +4,7 @@ from __future__ import annotations
 from collections.abc import AsyncIterator
 
 from agent.graph import graph
-from agent.query_policy import FINAL_FAILURE_RESPONSE
+from agent.query_policy import delivered_response
 from agent.state import AgentState, QueryEvent, QueryResult
 
 _STATUS_MESSAGES = {
@@ -44,9 +44,13 @@ def _response_text(state: dict) -> str:
 
 
 def _fail_closed_if_violations(state: AgentState) -> AgentState:
-    """Replace any known non-compliant final draft with a safe fallback."""
-    if state.get("violations"):
-        state["final_response"] = FINAL_FAILURE_RESPONSE
+    """Replace any known non-compliant final draft with a safe fallback.
+
+    Defensive net: the graph's record_turn already sets final_response to the
+    delivered value, but this also covers the escalate path and any direct callers.
+    Expressed via the shared helper so the two code paths can no longer drift.
+    """
+    state["final_response"] = delivered_response(state)
     return state
 
 

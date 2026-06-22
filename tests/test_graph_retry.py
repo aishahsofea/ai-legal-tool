@@ -4,7 +4,7 @@ from unittest.mock import patch
 from langgraph.checkpoint.memory import MemorySaver
 
 from agent.graph import build_graph
-from agent.query_policy import MAX_RETRIES
+from agent.query_policy import FINAL_FAILURE_RESPONSE, MAX_RETRIES
 
 _CONFIG = {"configurable": {"thread_id": "t1"}}
 
@@ -66,6 +66,13 @@ class GraphRetryTests(unittest.TestCase):
         self.assertEqual(calls["synthesiser"], MAX_RETRIES + 1)
         self.assertEqual(result["retry_count"], MAX_RETRIES)
         self.assertEqual(result["violations"], ["advice"])
+        # Fail-closed at the model boundary: the rejected draft must never reach
+        # final_response OR the stored history. Both carry the safe fallback so
+        # memory and the user can never diverge.
+        self.assertEqual(result["final_response"], FINAL_FAILURE_RESPONSE)
+        assistant_turns = [m for m in result["history"] if m["role"] == "assistant"]
+        self.assertEqual(assistant_turns[-1]["content"], FINAL_FAILURE_RESPONSE)
+        self.assertNotIn("You should", assistant_turns[-1]["content"])
 
 
 def _initial_state():
