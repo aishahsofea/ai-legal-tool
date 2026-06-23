@@ -1,7 +1,7 @@
 """Shared query lifecycle policy constants."""
 from agent.state import Message
 
-MAX_HISTORY_TURNS = 6
+MAX_HISTORY_TURNS = 3
 MAX_RETRIES = 1
 FINAL_FAILURE_RESPONSE = (
     "I'm sorry, but I couldn't produce a compliant legal research answer for this query. "
@@ -49,12 +49,22 @@ def delivered_response(state) -> str:
     return state.get("final_response") or state.get("draft_response") or ""
 
 
-def trim_history(history: list[Message] | None, limit: int = MAX_HISTORY_TURNS) -> list[Message]:
+def trim_history(history: list[Message] | None, max_turns: int = MAX_HISTORY_TURNS) -> list[Message]:
     """Keep only the most recent turns before sending history to an LLM.
 
     The checkpoint stores all turns forever, so nodes must trim at read-time to
-    bound token cost. Applied inside router_node and synthesiser_node.
+    bound token cost. Applied inside the router, contextualize, and synthesiser nodes.
+
+    Slices in whole *turns* (user+assistant pairs), not raw messages: the limit is
+    honest about its unit, and a turn-aligned slice can never begin on a dangling
+    assistant reply with no preceding question.
     """
     if not history:
         return []
-    return history[-limit:]
+    trimmed = history[-(max_turns * 2):]
+    # Self-protecting boundary: if the slice begins on an assistant reply (only
+    # possible from a malformed, non-paired history), drop it so the LLM never
+    # receives a dangling reply with no preceding question.
+    if trimmed[0]["role"] != "user":
+        trimmed = trimmed[1:]
+    return trimmed

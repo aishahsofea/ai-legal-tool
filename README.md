@@ -304,7 +304,7 @@ Every request carries a `thread_id`; the client never resends prior turns. Histo
 - `DATABASE_URL` set (default) → `PostgresSaver` / `AsyncPostgresSaver`, persisted in the same Postgres instance as pgvector
 - `CHECKPOINTER=memory` or no `DATABASE_URL` → in-process `MemorySaver` (local dev/tests)
 
-History accumulates across turns and is trimmed to the most recent `MAX_HISTORY_TURNS` (6) when read by the router, contextualize, and synthesiser nodes. Assistant turns are stored **disclaimer-free** — the legal-advice disclaimer is stripped at record-time so later nodes don't re-read repeated boilerplate (the disclaimer still reaches the user in the response).
+History accumulates across turns and is trimmed to the most recent `MAX_HISTORY_TURNS` (3 turns = 6 messages) when read by the router, contextualize, and synthesiser nodes. Trimming slices in whole turns (user+assistant pairs), so the limit is honest about its unit and a slice never begins on a dangling assistant reply. Assistant turns are stored **disclaimer-free** — the legal-advice disclaimer is stripped at record-time so later nodes don't re-read repeated boilerplate (the disclaimer still reaches the user in the response).
 
 ---
 
