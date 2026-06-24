@@ -1,7 +1,18 @@
 """Shared query lifecycle policy constants."""
+import os
+
+import tiktoken
+
 from agent.state import Message
 
-MAX_HISTORY_TURNS = 3
+# History token budget. History is re-sent on every turn, so a bigger budget
+# costs more tokens (and latency) per turn, and past a point hurts answer quality
+# as stale turns distract the model. The budget caps both.
+#
+# 4000 holds ~4+ statute-heavy legal turns. Tuned via evals/history_budget.py,
+# which showed 2000 was too tight: it evicted a referent 4 turns back and made
+# contextualize misresolve the follow-up.
+MAX_HISTORY_TOKENS = int(os.getenv("MAX_HISTORY_TOKENS", "4000"))
 MAX_RETRIES = 1
 FINAL_FAILURE_RESPONSE = (
     "I'm sorry, but I couldn't produce a compliant legal research answer for this query. "
@@ -49,22 +60,49 @@ def delivered_response(state) -> str:
     return state.get("final_response") or state.get("draft_response") or ""
 
 
-def trim_history(history: list[Message] | None, max_turns: int = MAX_HISTORY_TURNS) -> list[Message]:
-    """Keep only the most recent turns before sending history to an LLM.
+# A single local tokenizer used as a size *proxy* across all providers (OpenAI,
+# Anthropic, Gemini). Trimming tolerates approximation; we choose determinism and
+# zero network over per-provider exactness. Lazily initialised so importing this
+# module (done widely) doesn't load the BPE table unless trimming actually runs.
+_ENCODER = None
+
+
+def _encoder():
+    global _ENCODER
+    if _ENCODER is None:
+        _ENCODER = tiktoken.get_encoding("o200k_base")
+    return _ENCODER
+
+
+def count_tokens(text: str) -> int:
+    """Approximate token size of a string, via the shared proxy tokenizer."""
+    return len(_encoder().encode(text))
+
+
+def trim_history(history: list[Message] | None, max_tokens: int = MAX_HISTORY_TOKENS) -> list[Message]:
+    """Keep the most recent turns that fit a token budget before sending to an LLM.
 
     The checkpoint stores all turns forever, so nodes must trim at read-time to
-    bound token cost. Applied inside the router, contextualize, and synthesiser nodes.
+    bound prompt cost. Applied inside the router, contextualize, and synthesiser nodes.
 
-    Slices in whole *turns* (user+assistant pairs), not raw messages: the limit is
-    honest about its unit, and a turn-aligned slice can never begin on a dangling
-    assistant reply with no preceding question.
+    Trims by token budget, dropping whole *turns* (user+assistant pairs) oldest-first.
+    Slicing in whole turns means a slice can never begin on a dangling assistant reply.
+    The budget is a soft target with a hard floor: the most recent turn always
+    survives, even if it alone exceeds the budget (a follow-up needs its referent).
     """
     if not history:
         return []
-    trimmed = history[-(max_turns * 2):]
-    # Self-protecting boundary: if the slice begins on an assistant reply (only
-    # possible from a malformed, non-paired history), drop it so the LLM never
-    # receives a dangling reply with no preceding question.
-    if trimmed[0]["role"] != "user":
-        trimmed = trimmed[1:]
-    return trimmed
+    # Group into turns, defensively skipping a leading orphan assistant so a
+    # malformed history can't produce a turn that starts on a reply.
+    start = 0 if history[0]["role"] == "user" else 1
+    turns = [history[i:i + 2] for i in range(start, len(history), 2)]
+
+    kept: list[list[Message]] = []
+    total = 0
+    for turn in reversed(turns):
+        turn_tokens = sum(count_tokens(m["content"]) for m in turn)
+        if kept and total + turn_tokens > max_tokens:
+            break
+        kept.insert(0, turn)
+        total += turn_tokens
+    return [message for turn in kept for message in turn]

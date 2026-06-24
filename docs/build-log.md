@@ -6,6 +6,16 @@ Short notes on challenges and learnings while building this app.
 
 <!-- Format: **YYYY-MM-DD** — what we hit or learned -->
 
+**2026-06-24** — Moved history trimming from turn-count to a **token budget** (`MAX_HISTORY_TOKENS`, ADR 0008). What changed:
+
+- **Token budget, not turn count.** Drop whole turns oldest-first until the rest fits. Soft budget with a hard floor — the newest turn always survives.
+- **One local `tiktoken` proxy** across all three providers. Trimming tolerates approximation, so determinism + zero network beat per-provider exactness.
+- **Built `evals/history_budget.py`** (contextualize-only, ~$0.0005/run) to tune the budget against real behavior instead of guessing a number.
+
+The eval earned its keep. At a 2000-token budget, a referent 4 statute-heavy turns back was evicted — and contextualize didn't just lose it, it silently **rebound "it" to the most recent topic** (defamation) and emitted a confidently-wrong standalone query. Raising the default to 4000 closed it.
+
+Key learning: the observed-failure discipline cuts both ways. The same eval that justified token budgeting also showed the summary buffer (Stage 3) is *not* warranted yet — a one-line budget bump fixed the failure. Raise the budget before reaching for summarization.
+
 **2026-06-23** — Fixed the `MAX_HISTORY_TURNS` misnomer (flagged 2026-06-13). The constant counted *messages*, not turns: `=6` with `history[-6:]` kept 3 turns, so "6 turns" was really 3, and an even message-slice silently relied on the append-only paired-history invariant to avoid starting on a dangling assistant. Reworked `trim_history` to slice in whole turns (`max_turns`, default 3 — preserves the real prior behavior) and to drop a leading orphan assistant defensively, so boundary safety no longer depends on how the list was built. Pure correctness fix, no token logic yet; token-budget trimming is the next step (it's why the misnomer mattered — turn/message counting is a poor proxy for the thing we actually bound, which is tokens).
 
 **2026-06-20** — Shipped history-aware retrieval, closing the 2026-06-13 gap (retriever embedded the bare follow-up). A `contextualize` node now rewrites elliptical follow-ups into a self-contained **Standalone Query** for retrieval; the raw query is preserved in history and is what escalation/synthesis see. Prerequisite: strip the appended disclaimer at record-time so nodes read clean history. Key call (ADR 0007): escalation stays on the raw query — never re-checked on the Standalone Query, since it stitches prior context back in and would mass-false-escalate.
