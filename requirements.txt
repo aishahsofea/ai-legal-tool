@@ -13,3 +13,4 @@ langgraph-checkpoint-postgres>=2.0
 langchain-anthropic>=1.4
 langchain-openai>=1.0
 langchain-google-genai>=4.0
+tiktoken>=0.13

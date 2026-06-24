@@ -213,7 +213,7 @@ ai-legal-tool/
 │   ├── graph.py                    # graph: nodes, edges, retry loop, checkpointer wiring
 │   ├── state.py                    # AgentState, Message, Citation, QueryEvent/Result types
 │   ├── query_lifecycle.py          # run_query / run_query_stream (thread_id-based)
-│   ├── query_policy.py             # MAX_HISTORY_TURNS, MAX_RETRIES, history trimming
+│   ├── query_policy.py             # MAX_HISTORY_TOKENS, MAX_RETRIES, token-budget history trimming
 │   ├── llm_factory.py              # provider-agnostic LLM factory (Claude/Gemini/OpenAI)
 │   └── nodes/
 │       ├── router.py
@@ -304,7 +304,7 @@ Every request carries a `thread_id`; the client never resends prior turns. Histo
 - `DATABASE_URL` set (default) → `PostgresSaver` / `AsyncPostgresSaver`, persisted in the same Postgres instance as pgvector
 - `CHECKPOINTER=memory` or no `DATABASE_URL` → in-process `MemorySaver` (local dev/tests)
 
-History accumulates across turns and is trimmed to the most recent `MAX_HISTORY_TURNS` (3 turns = 6 messages) when read by the router, contextualize, and synthesiser nodes. Trimming slices in whole turns (user+assistant pairs), so the limit is honest about its unit and a slice never begins on a dangling assistant reply. Assistant turns are stored **disclaimer-free** — the legal-advice disclaimer is stripped at record-time so later nodes don't re-read repeated boilerplate (the disclaimer still reaches the user in the response).
+History accumulates across turns and is trimmed to a token budget (`MAX_HISTORY_TOKENS`, default 4000, env-overridable) when read by the router, contextualize, and synthesiser nodes. Trimming drops whole turns (user+assistant pairs) oldest-first until the remainder fits — so a slice never begins on a dangling assistant reply — with a hard floor that keeps the most recent turn even if it alone exceeds the budget. Token size is a proxy via a single local `tiktoken` encoder shared across providers; the budget bounds prompt cost/distraction, not the context window. See ADR 0008 and `evals/history_budget.py` for tuning. Assistant turns are stored **disclaimer-free** — the legal-advice disclaimer is stripped at record-time so later nodes don't re-read repeated boilerplate (the disclaimer still reaches the user in the response).
 
 ---
 

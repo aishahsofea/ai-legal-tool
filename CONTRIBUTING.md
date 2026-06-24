@@ -106,6 +106,17 @@ python -m evals.run_evals --mode baseline
 
 Results are written to `evals/results.json` by default. A GitHub Actions workflow (`.github/workflows/evals.yml`, manually triggered via `workflow_dispatch`) runs a 15-case smoke eval against the production model defaults and posts the judge pass rate and key L1 metrics as a PR comment; it fails if the judge pass rate drops below 80%.
 
+### Tuning the history token budget
+
+`MAX_HISTORY_TOKENS` (ADR 0008) is a tuning knob, not a unit-test concern, so it has its own manual eval — run it whenever you change the budget:
+
+```bash
+python -m evals.history_budget          # trim sweep + one live contextualize call (~$0.0005)
+python -m evals.history_budget --dry    # deterministic trim sweep only, no API call
+```
+
+It checks whether `contextualize` can still resolve an elliptical follow-up after trimming, across a sweep of budgets. This is deliberately an eval, not a test in `tests/` — a real-LLM resolution check is non-deterministic and doesn't belong in the CI gate.
+
 ### Model overrides
 
 The router, contextualize, and synthesiser nodes each have an env var that controls which model they use. All are resolved through the provider-agnostic factory in `agent/llm_factory.py`: a `claude-*` name routes to Anthropic, `gemini-*` to Google, and anything else (including the `gpt-*` default) to OpenAI. The contextualize node — which rewrites elliptical follow-ups into a standalone query for retrieval — defaults to a cheaper mini-class model, since query rewriting is a lighter task than classification or synthesis.
