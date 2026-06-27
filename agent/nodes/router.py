@@ -28,7 +28,7 @@ _llm = make_llm(_MODEL)
 
 
 class _RouterOutput(BaseModel):
-    query_type: Literal["statute_lookup", "topical", "provision_extraction"]
+    query_type: Literal["statute_lookup", "topical", "provision_extraction", "conversational"]
     response_language: Literal["en", "bm", "mixed"]
     reasoning: str
 
@@ -44,6 +44,14 @@ Set query_type to one of:
   (e.g. "which laws cover data privacy for employers in Malaysia?")
 - provision_extraction: the user wants all provisions of a specific kind within one Act
   (e.g. "list all penalty provisions in the PDPA")
+- conversational: the message carries no legal-research substance — greetings,
+  self-introductions or names, thanks, small talk, or meta questions about the
+  assistant itself (e.g. "hi", "my name is Shameel", "thanks!", "what can you do?",
+  "how does this work?")
+
+IMPORTANT tie-break: only use conversational when the message is UNAMBIGUOUSLY
+social or meta. When in doubt — if the message has any legal substance at all —
+classify it as one of the three legal types, not conversational.
 
 Set response_language based on the dominant language of the current query:
 - "en": query is primarily in English

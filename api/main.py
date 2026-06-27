@@ -66,6 +66,7 @@ _STATUS_MESSAGES = {
     "supervisor":      "Checking policy compliance...",
     "increment_retry": "Refining response...",
     "escalate":        "Escalating to human lawyer...",
+    "conversational":  "Responding...",
 }
 
 

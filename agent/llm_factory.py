@@ -11,12 +11,12 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_openai import ChatOpenAI
 
 
-def make_llm(model_name: str):
+def make_llm(model_name: str, temperature: float = 0):
     if model_name.startswith("claude-"):
-        return ChatAnthropic(model=model_name, temperature=0)
+        return ChatAnthropic(model=model_name, temperature=temperature)
     if model_name.startswith("gemini-"):
-        return ChatGoogleGenerativeAI(model=model_name, temperature=0)
-    return ChatOpenAI(model=model_name, temperature=0)
+        return ChatGoogleGenerativeAI(model=model_name, temperature=temperature)
+    return ChatOpenAI(model=model_name, temperature=temperature)
 
 
 def system_content(text: str, model_name: str):

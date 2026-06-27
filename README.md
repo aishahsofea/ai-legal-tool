@@ -20,9 +20,9 @@ User query + thread_id (EN / BM / mixed)
        ▼
 ┌────────────────────┐
 │  router            │  classifies: statute_lookup / topical_search /
-│                    │  provision_extraction / escalate
+│                    │  provision_extraction / conversational / escalate
 └──────┬─────────────┘
-       │ (escalate short-circuits here)
+       │ (escalate + conversational short-circuit here)
        ▼
 ┌────────────────────┐
 │  contextualize     │  rewrites an elliptical follow-up into a
@@ -65,7 +65,7 @@ User query + thread_id (EN / BM / mixed)
       END
 ```
 
-Two short-circuits aren't pictured above: a query the `router` classifies as `escalate` skips straight to `record_turn` with a fixed human hand-off message (the `escalate` node); and a `supervisor` violation with a retry remaining (`MAX_RETRIES`) loops back to `synthesiser` via `increment_retry` before re-running citation/grounding checks.
+Three short-circuits aren't pictured above: a query the `router` classifies as `escalate` skips straight to `record_turn` with a fixed human hand-off message (the `escalate` node); an unambiguously non-legal message (greeting, name, thanks, "what can you do?") the `router` classifies as `conversational` skips straight to `record_turn` with a short, warm reply (the `conversational` node — no retrieval, no supervisor, no citation or disclaimer); and a `supervisor` violation with a retry remaining (`MAX_RETRIES`) loops back to `synthesiser` via `increment_retry` before re-running citation/grounding checks. The router leans legal on ties — `conversational` is reserved for messages with no legal substance.
 
 **Stack:** LangGraph (Postgres/Memory checkpointer) · FastAPI (Railway) · Next.js (Vercel) · Postgres + pgvector (Supabase) · OpenAI `text-embedding-3-small` · GPT-4.1 by default — provider-agnostic via `agent/llm_factory.py` (Claude/Gemini also supported; Claude used for the eval judge)
 
@@ -217,6 +217,7 @@ ai-legal-tool/
 │   ├── llm_factory.py              # provider-agnostic LLM factory (Claude/Gemini/OpenAI)
 │   └── nodes/
 │       ├── router.py
+│       ├── conversational.py
 │       ├── contextualize.py
 │       ├── retriever.py
 │       ├── synthesiser.py
@@ -293,7 +294,7 @@ data: {"type": "response", "content": "...", "citations": [...], "violations": [
 data: {"type": "done"}
 ```
 
-On a follow-up turn where the contextualize node rewrites the query into a standalone form, a `"Resolving follow-up..."` status is emitted before retrieval (the rewritten text itself is never surfaced). If the supervisor finds a violation and a retry remains, a `"Refining response..."` status is emitted and `synthesiser → citation_validator → grounding_check → supervisor` re-runs once (bounded by `MAX_RETRIES`). If the router classifies the query as `escalate`, an `"Escalating to human lawyer..."` status is emitted and the response is a fixed hand-off message.
+On a follow-up turn where the contextualize node rewrites the query into a standalone form, a `"Resolving follow-up..."` status is emitted before retrieval (the rewritten text itself is never surfaced). If the supervisor finds a violation and a retry remains, a `"Refining response..."` status is emitted and `synthesiser → citation_validator → grounding_check → supervisor` re-runs once (bounded by `MAX_RETRIES`). If the router classifies the query as `escalate`, an `"Escalating to human lawyer..."` status is emitted and the response is a fixed hand-off message. If the router classifies an unambiguously non-legal message as `conversational`, a `"Responding..."` status is emitted and the response is a short, warm reply with empty `citations` and no disclaimer.
 
 Citation objects include `act_number`, `act_title`, `section_number`, `pdf_url` (with `#page=N` anchor), and `page_number`.
 
