@@ -31,9 +31,10 @@ _ESCALATION_RE = re.compile(
 )
 
 ESCALATION_RESPONSE = (
-    "This query involves a specific legal situation. "
-    "I'm not able to provide advice on individual cases. "
-    "Please consult a qualified Malaysian lawyer for assistance."
+    "This sounds like it's about a specific situation rather than general research, "
+    "so I'll hold off — advising on individual cases really needs a qualified Malaysian "
+    "lawyer who can look at the full picture. If it helps, I'm happy to pull up the "
+    "relevant legislation on the underlying legal question."
 )
 
 

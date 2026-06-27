@@ -119,12 +119,13 @@ It checks whether `contextualize` can still resolve an elliptical follow-up afte
 
 ### Model overrides
 
-The router, contextualize, and synthesiser nodes each have an env var that controls which model they use. All are resolved through the provider-agnostic factory in `agent/llm_factory.py`: a `claude-*` name routes to Anthropic, `gemini-*` to Google, and anything else (including the `gpt-*` default) to OpenAI. The contextualize node — which rewrites elliptical follow-ups into a standalone query for retrieval — defaults to a cheaper mini-class model, since query rewriting is a lighter task than classification or synthesis.
+The router, contextualize, conversational, and synthesiser nodes each have an env var that controls which model they use. All are resolved through the provider-agnostic factory in `agent/llm_factory.py`: a `claude-*` name routes to Anthropic, `gemini-*` to Google, and anything else (including the `gpt-*` default) to OpenAI. The contextualize and conversational nodes default to a cheaper mini-class model, since rewriting a query and replying to small talk are lighter tasks than classification or synthesis. The conversational node is the one node that runs hot (`temperature=0.7`) so repeated greetings vary in wording; every other node runs at the factory default `temperature=0` for reproducible output.
 
 | Env var | Node | Default |
 |---|---|---|
 | `ROUTER_MODEL` | router | `gpt-4.1` |
 | `CONTEXTUALIZER_MODEL` | contextualize | `gpt-4.1-mini` |
+| `CONVERSATIONAL_MODEL` | conversational | `gpt-4.1-mini` |
 | `SYNTHESISER_MODEL` | synthesiser | `gpt-4.1` |
 
 Override to `claude-haiku-4-5-20251001` (~3× cheaper than GPT-4.1) for fast pipeline-correctness signal without the GPT-4.1 default:

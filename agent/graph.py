@@ -14,6 +14,7 @@ from langgraph.graph import END, StateGraph
 
 from agent.nodes.citation_validator import citation_validator_node
 from agent.nodes.contextualize import contextualize_node
+from agent.nodes.conversational import conversational_node
 from agent.nodes.grounding_check import grounding_check_node
 from agent.nodes.router import router_node
 from agent.nodes.retriever import retriever_node
@@ -26,6 +27,8 @@ from agent.state import AgentState
 def _route_from_router(state: AgentState) -> str:
     if state["query_type"] == "escalate":
         return END
+    if state["query_type"] == "conversational":
+        return "conversational"
     return "contextualize"
 
 
@@ -103,6 +106,7 @@ def build_graph(checkpointer=None) -> StateGraph:
     g.add_node("start_turn", _start_turn)
     g.add_node("router", router_node)
     g.add_node("escalate", _escalate_node)
+    g.add_node("conversational", conversational_node)
     g.add_node("contextualize", contextualize_node)
     g.add_node("retriever", retriever_node)
     g.add_node("synthesiser", synthesiser_node)
@@ -117,9 +121,11 @@ def build_graph(checkpointer=None) -> StateGraph:
 
     g.add_conditional_edges("router", _route_from_router, {
         END: "escalate",
+        "conversational": "conversational",
         "contextualize": "contextualize",
     })
     g.add_edge("escalate", "record_turn")
+    g.add_edge("conversational", "record_turn")
     g.add_edge("contextualize", "retriever")
     g.add_edge("retriever", "synthesiser")
     g.add_edge("synthesiser", "citation_validator")

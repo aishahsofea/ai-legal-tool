@@ -15,8 +15,18 @@ from agent.state import Message
 MAX_HISTORY_TOKENS = int(os.getenv("MAX_HISTORY_TOKENS", "4000"))
 MAX_RETRIES = 1
 FINAL_FAILURE_RESPONSE = (
-    "I'm sorry, but I couldn't produce a compliant legal research answer for this query. "
-    "Please rephrase the research question or consult a qualified Malaysian lawyer."
+    "I wasn't able to put together a properly cited answer for that one. "
+    "Could you try rephrasing the research question? If it concerns a specific "
+    "situation, a qualified Malaysian lawyer is the right person to help."
+)
+
+# Static warm reply used when the conversational node's LLM call fails. Kept here
+# beside the other canned responses so all user-facing fallback text lives in one
+# place. Plain greeting only — no statute text, no disclaimer.
+CONVERSATIONAL_FALLBACK_RESPONSE = (
+    "Hi! I'm a research assistant for Malaysian legislation — ask me about an Act, "
+    "a section, or a legal topic and I'll look it up and cite the sources. "
+    "What would you like to explore?"
 )
 
 # Disclaimer suffixes appended by the synthesiser. Kept here as the single source

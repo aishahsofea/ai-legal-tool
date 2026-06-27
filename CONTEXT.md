@@ -34,7 +34,10 @@ Court judgments (decisions). Not in scope for v1. Planned for v2 via CommonLII (
 _Avoid_: cases, judgments (until v2 is scoped)
 
 **Legal Research Query**:
-A practitioner's question directed at the agent. May be statute lookup ("what does Section X of Act Y say?"), topical ("which Acts govern data privacy in Malaysia?"), or comparative. Does NOT include requests for legal advice about a specific situation.
+A practitioner's question directed at the agent with legal-research substance. May be statute lookup ("what does Section X of Act Y say?"), topical ("which Acts govern data privacy in Malaysia?"), or comparative. Does NOT include requests for legal advice about a specific situation. Not every input is a **Legal Research Query** — a **Conversational Turn** carries no legal substance and is handled separately.
+
+**Conversational Turn**:
+A message with no legal-research substance — a greeting, self-introduction or name, thanks, small talk, or a meta question about the assistant ("what can you do?", "how does this work?"). The router classifies these as `conversational` only when they are *unambiguously* social or meta; anything with legal substance stays on the legal path. A **Conversational Turn** is answered directly with a short, warm reply that bypasses retrieval and the **Supervisor Rules** — it carries no citations and no disclaimer. It still mirrors the query language and reads **Conversation History** (so the agent can recall a name given earlier).
 
 **Conversation History**:
 The prior turns in the same thread, passed as a list of user/assistant messages. Used to interpret follow-up questions like "what about criminal cases?". For v1, the most recent turns are kept within a token budget (trimmed in whole user+assistant turns, never split mid-turn; the most recent turn is always kept). The stored assistant turn is the *delivered* response — including the safe fallback when a turn is fail-closed — so history always mirrors what the practitioner actually received, never a rejected draft.
@@ -60,7 +63,7 @@ A recommendation about what a specific person should do in a specific legal situ
 
 ## Supervisor Rules
 
-The agent enforces these constraints on every response before output:
+These constraints apply to **legal-answer turns** only — a **Conversational Turn** bypasses retrieval and the supervisor entirely. The agent enforces them on every legal response before output:
 
 1. **No advice on specific facts** — response must not contain "you should", "you must", "in your case", "I recommend"
 2. **Citation required** — every legal claim must cite "Section X of Act Y"
