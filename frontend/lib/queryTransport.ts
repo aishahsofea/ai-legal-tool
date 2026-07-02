@@ -1,3 +1,5 @@
+import { getUserId } from "@/lib/userIdentity";
+
 export interface Message {
   role: "user" | "assistant";
   content: string;
@@ -23,7 +25,7 @@ async function fetchQueryResponse(query: string, threadId: string, signal?: Abor
   return fetch(`${API_URL}/query`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query, thread_id: threadId }),
+    body: JSON.stringify({ query, thread_id: threadId, user_id: getUserId() }),
     signal,
   });
 }

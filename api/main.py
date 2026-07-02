@@ -2,7 +2,8 @@
 FastAPI backend for the Malaysian Legal Research AI Assistant.
 
 Single endpoint: POST /query
-- Accepts { query, thread_id } JSON (conversation memory lives server-side, keyed by thread_id)
+- Accepts { query, thread_id, user_id? } JSON. Conversation memory lives server-side keyed
+  by thread_id; user_id (optional) scopes cross-thread Semantic Memory per practitioner (ADR 0010).
 - Streams Server-Sent Events (SSE) with progressive status updates and the final response
 - Designed to be consumed by the Next.js frontend via Vercel AI SDK / EventSource
 
@@ -52,6 +53,10 @@ app.add_middleware(
 class QueryRequest(BaseModel):
     query: str
     thread_id: str
+    # Weak, per-browser practitioner identity used to scope Semantic Memory across
+    # threads (ADR 0010). Optional so older clients keep working; absent means the
+    # memory path simply has no practitioner to attach durable facts to.
+    user_id: str | None = None
 
 
 def _sse(payload: dict) -> str:
@@ -70,9 +75,9 @@ _STATUS_MESSAGES = {
 }
 
 
-async def _stream_query(query: str, thread_id: str) -> AsyncGenerator[str, None]:
+async def _stream_query(query: str, thread_id: str, user_id: str | None) -> AsyncGenerator[str, None]:
     try:
-        async for event in run_query_stream(query, thread_id):
+        async for event in run_query_stream(query, thread_id, user_id):
             yield _sse(event)
     except Exception as exc:
         logger.exception("Agent error for query: %s", query)
@@ -88,7 +93,7 @@ def health():
 @app.post("/query")
 async def query_endpoint(req: QueryRequest):
     return StreamingResponse(
-        _stream_query(req.query, req.thread_id),
+        _stream_query(req.query, req.thread_id, req.user_id),
         media_type="text/event-stream",
         headers={
             "Cache-Control":               "no-cache",

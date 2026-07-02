@@ -25,8 +25,11 @@ def _turn_input(query: str) -> dict:
     return {"query": query}
 
 
-def _config(thread_id: str) -> dict:
-    return {"configurable": {"thread_id": thread_id}}
+def _config(thread_id: str, user_id: str | None = None) -> dict:
+    # user_id scopes cross-thread Semantic Memory (ADR 0010). It rides in
+    # `configurable` so any node can read it via its RunnableConfig without
+    # threading it through AgentState. Nodes must treat it as optional.
+    return {"configurable": {"thread_id": thread_id, "user_id": user_id}}
 
 
 def set_graph(g) -> None:
@@ -55,8 +58,8 @@ def _fail_closed_if_violations(state: AgentState) -> AgentState:
     return state
 
 
-def run_query(query: str, thread_id: str) -> QueryResult:
-    state = graph.invoke(_turn_input(query), _config(thread_id))
+def run_query(query: str, thread_id: str, user_id: str | None = None) -> QueryResult:
+    state = graph.invoke(_turn_input(query), _config(thread_id, user_id))
     state = _fail_closed_if_violations(state)
 
     return {
@@ -67,8 +70,8 @@ def run_query(query: str, thread_id: str) -> QueryResult:
     }
 
 
-async def run_query_stream(query: str, thread_id: str) -> AsyncIterator[QueryEvent]:
-    config = _config(thread_id)
+async def run_query_stream(query: str, thread_id: str, user_id: str | None = None) -> AsyncIterator[QueryEvent]:
+    config = _config(thread_id, user_id)
     state: dict = {}
     async for update in graph.astream(_turn_input(query), config, stream_mode="updates"):
         node_name = next(iter(update.keys()), "")
