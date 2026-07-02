@@ -37,6 +37,13 @@ User query + thread_id (EN / BM / mixed)
        │
        ▼
 ┌────────────────────┐
+│  recall            │  pulls the practitioner's saved preferences into
+│                    │  the answer as framing hints (off by default —
+│                    │  SEMANTIC_MEMORY_RECALL)
+└──────┬─────────────┘
+       │
+       ▼
+┌────────────────────┐
 │  synthesiser       │  drafts answer + citations (act, section,
 │                    │  page deep-link)
 └──────┬─────────────┘
@@ -210,7 +217,7 @@ ai-legal-tool/
 ├── vercel.json                     # Vercel deploy config (Next.js frontend)
 ├── .env                            # DATABASE_URL, OPENAI_API_KEY, etc.
 ├── agent/
-│   ├── graph.py                    # graph: nodes, edges, retry loop, checkpointer wiring
+│   ├── graph.py                    # graph: nodes, edges, retry loop, checkpointer + store wiring
 │   ├── state.py                    # AgentState, Message, Citation, QueryEvent/Result types
 │   ├── query_lifecycle.py          # run_query / run_query_stream (thread_id-based)
 │   ├── query_policy.py             # MAX_HISTORY_TOKENS, MAX_RETRIES, token-budget history trimming
@@ -220,6 +227,7 @@ ai-legal-tool/
 │       ├── conversational.py
 │       ├── contextualize.py
 │       ├── retriever.py
+│       ├── recall.py
 │       ├── synthesiser.py
 │       ├── citation_validator.py
 │       ├── grounding_check.py
@@ -306,6 +314,14 @@ Every request carries a `thread_id`; the client never resends prior turns. Histo
 - `CHECKPOINTER=memory` or no `DATABASE_URL` → in-process `MemorySaver` (local dev/tests)
 
 History accumulates across turns and is trimmed to a token budget (`MAX_HISTORY_TOKENS`, default 4000, env-overridable) when read by the router, contextualize, and synthesiser nodes. Trimming drops whole turns (user+assistant pairs) oldest-first until the remainder fits — so a slice never begins on a dangling assistant reply — with a hard floor that keeps the most recent turn even if it alone exceeds the budget. Token size is a proxy via a single local `tiktoken` encoder shared across providers; the budget bounds prompt cost/distraction, not the context window. See ADR 0008 and `evals/history_budget.py` for tuning. Assistant turns are stored **disclaimer-free** — the legal-advice disclaimer is stripped at record-time so later nodes don't re-read repeated boilerplate (the disclaimer still reaches the user in the response).
+
+### Semantic memory (cross-thread, dark by default)
+
+**Semantic Memory** remembers the practitioner across all of them — their durable preferences and the topics they keep returning to, scoped by `user_id`. It lives in a cross-thread store that runs on the same backends as the checkpointer: Postgres when `DATABASE_URL` is set, in-memory otherwise. See ADR 0010 and `CONTEXT.md` for the model.
+
+The `recall` node reads those facts and passes them to the synthesiser as hints about how to frame an answer. They are soft context, not legal substance: never cited, never treated as fact, and never written back into the conversation history. The retrieved statutes and the query always win when they conflict.
+
+The whole feature ships behind `SEMANTIC_MEMORY_RECALL` (off by default) and is built to never break a turn. With the flag off, no `user_id`, an empty store, or any error, the answer is identical to one produced without recall.
 
 ---
 

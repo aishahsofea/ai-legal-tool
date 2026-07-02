@@ -27,6 +27,11 @@ LANGCHAIN_API_KEY=...
 LANGCHAIN_PROJECT=ai-legal-tool
 ```
 
+Optional flags (both default off / to Postgres):
+
+- `CHECKPOINTER=memory` — force the in-process `MemorySaver` + `InMemoryStore` instead of Postgres (handy for local runs without a database; the test suite sets this automatically).
+- `SEMANTIC_MEMORY_RECALL=on` — enable the `recall` node so the synthesiser reads cross-thread **Semantic Memory** (ADR 0010). Off by default and fail-open; the store is empty until the Phase 3 write path lands, so this is a no-op until then.
+
 Create `frontend/.env.local`:
 
 ```env
