@@ -4,7 +4,8 @@ from __future__ import annotations
 from collections.abc import AsyncIterator
 
 from agent.graph import graph
-from agent.query_policy import delivered_response
+from agent.memory.extractor import schedule_extraction
+from agent.query_policy import delivered_response, strip_disclaimer
 from agent.state import AgentState, QueryEvent, QueryResult
 
 _STATUS_MESSAGES = {
@@ -99,3 +100,9 @@ async def run_query_stream(query: str, thread_id: str, user_id: str | None = Non
         "citations": state.get("citations", []),
         "violations": state.get("violations", []),
     }
+
+    # Semantic Memory write path (ADR 0010): extract in the background after the response
+    # is delivered. Legal path only, mirroring where recall runs; disclaimer stripped so
+    # the extractor sees the answer, not boilerplate. Gating + fail-open live in the callee.
+    if state.get("query_type") not in ("", "conversational", "escalate"):
+        schedule_extraction(graph.store, user_id, query, strip_disclaimer(final))

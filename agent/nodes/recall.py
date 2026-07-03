@@ -6,8 +6,8 @@ This is the *read* half of Semantic Memory (ADR 0010). It searches the
 cross-thread store namespaced by (user_id, "semantic") for facts relevant to the
 query being answered and hands them to the synthesiser as **soft context** —
 known practitioner preferences and recurring topics, never authority and never
-citeable. Phase 3 writes to the store; until then it is empty and recall is a
-clean no-op.
+citeable. The write path (agent/memory/extractor.py) populates the store in the
+background after a turn; recall is a clean no-op while the store is still empty.
 
 Contract (fail-open, dark by default — model on contextualize_node):
   - Gated behind SEMANTIC_MEMORY_RECALL: off (default) → no-op, behaviour is
@@ -66,14 +66,34 @@ def _plan(state: AgentState, config, store: BaseStore | None) -> tuple[str, str]
     return user_id, query
 
 
-def _fact_text(item: SearchItem) -> str:
-    """Render one stored fact as a single readable line.
+def _render_fields(content: dict) -> str:
+    """Flatten a structured memory into one "field: value; ..." line. Schema-agnostic
+    so it survives new fields on the write-path schema (agent/memory/schemas.py)."""
+    parts = []
+    for key, val in content.items():
+        if val in (None, "", [], {}):
+            continue
+        if isinstance(val, list):
+            val = ", ".join(str(v) for v in val if str(v).strip())
+            if not val:
+                continue
+        parts.append(f"{key.replace('_', ' ')}: {val}")
+    return "; ".join(parts)
 
-    Tolerant of the value shape: Phase 3 fixes the schema, but recall must not
-    assume it. Common text-bearing keys are used verbatim; anything else falls
-    back to a compact JSON dump so a fact is never silently dropped.
+
+def _fact_text(item: SearchItem) -> str:
+    """Render one stored fact as a single readable line, tolerant of the value shape.
+
+    The write path (LangMem) stores {"kind": ..., "content": {<fields>}}, so a dict
+    `content` is flattened; text-bearing keys are used verbatim; anything else falls
+    back to a JSON dump so a fact is never silently dropped.
     """
     value = item.value or {}
+    content = value.get("content")
+    if isinstance(content, dict):
+        rendered = _render_fields(content)
+        if rendered:
+            return rendered
     for key in ("text", "fact", "content", "preference", "topic", "summary"):
         val = value.get(key)
         if isinstance(val, str) and val.strip():

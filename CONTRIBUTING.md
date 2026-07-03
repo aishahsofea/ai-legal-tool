@@ -30,7 +30,8 @@ LANGCHAIN_PROJECT=ai-legal-tool
 Optional flags (both default off / to Postgres):
 
 - `CHECKPOINTER=memory` — force the in-process `MemorySaver` + `InMemoryStore` instead of Postgres (handy for local runs without a database; the test suite sets this automatically).
-- `SEMANTIC_MEMORY_RECALL=on` — enable the `recall` node so the synthesiser reads cross-thread **Semantic Memory** (ADR 0010). Off by default and fail-open; the store is empty until the Phase 3 write path lands, so this is a no-op until then.
+- `SEMANTIC_MEMORY_RECALL=on` — enable the `recall` node so the synthesiser **reads** cross-thread **Semantic Memory** (ADR 0010). Off by default, fail-open.
+- `SEMANTIC_MEMORY_EXTRACT=on` — enable the background **write** path (`agent/memory/extractor.py`) that extracts durable practitioner facts after a legal turn and upserts them into the store. Off by default, fail-open, and runs off the hot path (after the response is delivered). Turn both flags on to see recall surface facts written on earlier turns.
 
 Create `frontend/.env.local`:
 
@@ -124,7 +125,7 @@ It checks whether `contextualize` can still resolve an elliptical follow-up afte
 
 ### Model overrides
 
-The router, contextualize, conversational, and synthesiser nodes each have an env var that controls which model they use. All are resolved through the provider-agnostic factory in `agent/llm_factory.py`: a `claude-*` name routes to Anthropic, `gemini-*` to Google, and anything else (including the `gpt-*` default) to OpenAI. The contextualize and conversational nodes default to a cheaper mini-class model, since rewriting a query and replying to small talk are lighter tasks than classification or synthesis. The conversational node is the one node that runs hot (`temperature=0.7`) so repeated greetings vary in wording; every other node runs at the factory default `temperature=0` for reproducible output.
+The router, contextualize, conversational, and synthesiser nodes — plus the background Semantic Memory extractor — each have an env var that controls which model they use. All are resolved through the provider-agnostic factory in `agent/llm_factory.py`: a `claude-*` name routes to Anthropic, `gemini-*` to Google, and anything else (including the `gpt-*` default) to OpenAI. The contextualize and conversational nodes and the memory extractor default to a cheaper mini-class model, since rewriting a query, replying to small talk, and extracting durable facts are lighter tasks than classification or synthesis. The conversational node is the one node that runs hot (`temperature=0.7`) so repeated greetings vary in wording; every other node runs at the factory default `temperature=0` for reproducible output.
 
 | Env var | Node | Default |
 |---|---|---|
@@ -132,6 +133,7 @@ The router, contextualize, conversational, and synthesiser nodes each have an en
 | `CONTEXTUALIZER_MODEL` | contextualize | `gpt-4.1-mini` |
 | `CONVERSATIONAL_MODEL` | conversational | `gpt-4.1-mini` |
 | `SYNTHESISER_MODEL` | synthesiser | `gpt-4.1` |
+| `MEMORY_EXTRACT_MODEL` | Semantic Memory extractor (background write path) | `gpt-4.1-mini` |
 
 Override to `claude-haiku-4-5-20251001` (~3× cheaper than GPT-4.1) for fast pipeline-correctness signal without the GPT-4.1 default:
 

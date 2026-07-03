@@ -127,8 +127,8 @@ def _make_store():
     """Cross-thread BaseStore for Semantic Memory, mirroring _make_checkpointer.
 
     Falls back to InMemoryStore when DATABASE_URL is unset or CHECKPOINTER=memory,
-    exactly like the MemorySaver fallback. The store is empty until Phase 3 writes to
-    it, so recall over it is a no-op regardless of backend.
+    exactly like the MemorySaver fallback. Written by agent/memory/extractor.py,
+    read by the recall node.
     """
     db_url = os.getenv("DATABASE_URL")
     if not db_url or os.getenv("CHECKPOINTER", "").lower() == "memory":

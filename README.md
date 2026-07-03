@@ -222,12 +222,15 @@ ai-legal-tool/
 │   ├── query_lifecycle.py          # run_query / run_query_stream (thread_id-based)
 │   ├── query_policy.py             # MAX_HISTORY_TOKENS, MAX_RETRIES, token-budget history trimming
 │   ├── llm_factory.py              # provider-agnostic LLM factory (Claude/Gemini/OpenAI)
+│   ├── memory/                     # Semantic Memory write path (ADR 0010)
+│   │   ├── schemas.py              # PractitionerProfile, RecurringTopic (extraction schemas)
+│   │   └── extractor.py            # background extract → upsert via LangMem/Trustcall
 │   └── nodes/
 │       ├── router.py
 │       ├── conversational.py
 │       ├── contextualize.py
 │       ├── retriever.py
-│       ├── recall.py
+│       ├── recall.py               # Semantic Memory read path (reads what extractor writes)
 │       ├── synthesiser.py
 │       ├── citation_validator.py
 │       ├── grounding_check.py
@@ -321,7 +324,9 @@ History accumulates across turns and is trimmed to a token budget (`MAX_HISTORY_
 
 The `recall` node reads those facts and passes them to the synthesiser as hints about how to frame an answer. They are soft context, not legal substance: never cited, never treated as fact, and never written back into the conversation history. The retrieved statutes and the query always win when they conflict.
 
-The whole feature ships behind `SEMANTIC_MEMORY_RECALL` (off by default) and is built to never break a turn. With the flag off, no `user_id`, an empty store, or any error, the answer is identical to one produced without recall.
+Facts get *into* the store on the **write path** (`agent/memory/extractor.py`): after a legal turn is delivered, a background job extracts durable practitioner facts — preferences (`PractitionerProfile`) and recurring research topics (`RecurringTopic`) — via LangMem (Trustcall underneath, dedup/merge-aware) and upserts them into the same `(user_id, "semantic")` namespace. It runs **off the hot path** — fired only after the response event, so it can never delay or alter the turn — and stores **only** preferences and topics: confidential client or matter facts are excluded by construction (schema field descriptions + the extraction prompt). Pruning old/low-value memories is a later phase; nothing is deleted today.
+
+Each half has its own flag, both **off by default** and fail-open: `SEMANTIC_MEMORY_RECALL` (read) and `SEMANTIC_MEMORY_EXTRACT` (write). With a flag off, no `user_id` (or the `anonymous` sentinel), an empty store, or any error, the turn is identical to one produced without the feature.
 
 ---
 
