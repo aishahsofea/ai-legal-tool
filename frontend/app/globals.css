@@ -44,6 +44,16 @@
     text-decoration-color: rgba(194, 168, 120, 0.35);
     text-underline-offset: 2px;
   }
+  .chamber-cite {
+    text-decoration-style: dotted;
+    text-decoration-color: rgba(194, 168, 120, 0.6);
+    cursor: pointer;
+    scroll-margin-top: 1rem;
+  }
+  .chamber-cite:hover {
+    text-decoration-color: var(--bronze);
+    background: var(--bronze-tint);
+  }
   .chamber-hover-soft:hover { background: rgba(236, 231, 220, 0.02); }
   .chamber-hover-bg-2:hover { background: var(--bg-2); }
   .chamber-hover-bg-bronze:hover { background: var(--bronze); }

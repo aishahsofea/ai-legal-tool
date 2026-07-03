@@ -3,23 +3,9 @@ import remarkGfm from "remark-gfm";
 import { Mono, OutlineButton } from "@/components/chamber";
 import { StatusIndicator } from "@/components/StatusIndicator";
 import { markdownComponents } from "./markdown";
+import { formatSourceTitle, scopedId, sourceMapId, sourceRefId } from "./citationRefs";
+import { rehypeCitationLinks } from "./rehypeCitationLinks";
 import type { Message } from "./types";
-
-function formatSourceTitle(title: string) {
-  return title.replace(/\*/g, "").trim();
-}
-
-function scopedId(...parts: Array<string | number>) {
-  return parts.join("-").replace(/[^a-zA-Z0-9_-]/g, "-");
-}
-
-function sourceMapId(messageId: string) {
-  return scopedId("source-map", messageId);
-}
-
-function sourceRefId(messageId: string, citation: NonNullable<Message["citations"]>[number], index: number) {
-  return `source-ref-${scopedId(messageId, citation.act_number, citation.section_number, index)}`;
-}
 
 const SOURCE_MAP_VISIBLE_LIMIT = 6;
 
@@ -157,15 +143,21 @@ export function AssistantMessage({
         </span>
       </div>
 
-      {(statusHistory.length > 0 || isLoading) && (
-        <ReasoningTrace steps={statusHistory.length > 0 ? statusHistory : [status || "Connecting…"]} open={reasoningOpen} toggle={onToggleReasoning} />
+      {!(isLoading && isTail) && statusHistory.length > 0 && (
+        <ReasoningTrace steps={statusHistory} open={reasoningOpen} toggle={onToggleReasoning} />
       )}
 
       {message.citations && message.citations.length > 0 && <InlineSourceSummary citations={message.citations} messageId={message.id} />}
 
       <div className="chamber-max-content chamber-reading-flow space-y-2 text-sm leading-6 text-(--ink) xl:columns-2 xl:gap-10">
         {message.content ? (
-          <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>{message.content}</ReactMarkdown>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[[rehypeCitationLinks, { citations: message.citations ?? [] }]]}
+            components={markdownComponents}
+          >
+            {message.content}
+          </ReactMarkdown>
         ) : isLoading && isTail ? (
           <StatusIndicator message={status || "Reading sources…"} />
         ) : null}

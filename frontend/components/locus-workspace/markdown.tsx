@@ -11,7 +11,9 @@ export const markdownComponents: Components = {
   ol: ({ children }) => <ol className="my-2 list-decimal space-y-2 pl-4">{children}</ol>,
   ul: ({ children }) => <ul className="my-2 list-disc space-y-2 pl-4">{children}</ul>,
   li: ({ children }) => <li className="pl-2">{children}</li>,
-  a: ({ children, href }) => <a className="chamber-link" href={href}>{children}</a>,
+  a: ({ children, href, className, title }) => (
+    <a className={className ? `chamber-link ${className}` : "chamber-link"} href={href} title={title}>{children}</a>
+  ),
   code: ({ children }) => <code className="rounded-sm border border-(--rule) bg-(--bg-2) px-2 py-2 font-mono text-xs text-(--ink)">{children}</code>,
   pre: ({ children }) => <pre className="my-2 overflow-x-auto rounded-sm border border-(--rule) bg-(--bg-2) p-2 font-mono text-xs leading-relaxed text-(--ink-2)">{children}</pre>,
   hr: () => <hr className="my-4 border-(--rule-soft)" />,
