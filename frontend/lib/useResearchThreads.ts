@@ -57,7 +57,7 @@ export function useResearchThreads() {
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null);
   const [pendingThreadId, setPendingThreadId] = useState<string | null>(null);
   const [input, setInput] = useState("");
-  const [reasoningOpen, setReasoningOpen] = useState(true);
+  const [reasoningOpen, setReasoningOpen] = useState(false);
   const [activeSourceIndex, setActiveSourceIndex] = useState(0);
   const lastStatusRef = useRef<string | null>(null);
   const { submit, status, response, citations, isLoading, error } = useQuery();
@@ -82,7 +82,7 @@ export function useResearchThreads() {
 
   const newThread = useCallback(() => {
     setInput("");
-    setReasoningOpen(true);
+    setReasoningOpen(false);
     setActiveSourceIndex(0);
     setActiveThreadId(null);
     // Keep pendingThreadId so the in-flight answer still lands in its original thread.
@@ -97,7 +97,7 @@ export function useResearchThreads() {
 
       setActiveThreadId(threadId);
       setActiveSourceIndex(0);
-      setReasoningOpen(true);
+      setReasoningOpen(false);
       setThreads((prev) => syncActiveFlags(prev, threadId));
     },
     [syncActiveFlags, threads],
@@ -116,7 +116,7 @@ export function useResearchThreads() {
       const nextMessages = [...(selectedThread?.messages ?? []), userMessage, assistantPlaceholder];
 
       setInput("");
-      setReasoningOpen(true);
+      setReasoningOpen(false);
       setActiveSourceIndex(0);
       lastStatusRef.current = null;
       setActiveThreadId(targetThreadId);
@@ -203,6 +203,7 @@ export function useResearchThreads() {
 
     if (pendingThreadId === activeThreadId) {
       setActiveSourceIndex(0);
+      setReasoningOpen(false);
     }
     setPendingThreadId(null);
   }, [activeThreadId, citations, pendingThreadId, response]);

@@ -44,7 +44,8 @@ Rules you MUST follow on every response:
 4. Only state what the statute says — do not advise on what a person should do.
 5. If the retrieved sections do not contain enough information to answer, say so clearly rather than speculating.
 6. Omit the disclaimer from your answer field — it will be appended separately.
-7. In citation_refs, include an entry for EVERY section you mention in your answer. If you mention section 90A(1) and 90A(2), add one entry with section_number "90A". Never leave citation_refs empty if your answer cites any section."""
+7. In citation_refs, include an entry for EVERY section you mention in your answer. If you mention section 90A(1) and 90A(2), add one entry with section_number "90A". Never leave citation_refs empty if your answer cites any section.
+8. Any "Known practitioner preferences" are soft context about how this practitioner likes answers framed (language, format, focus). They are NOT legal authority: never cite them, never treat them as facts about the law, and let the retrieved sections and the query override them whenever they conflict."""
 
 _LANGUAGE_INSTRUCTIONS = {
     "en": "English",
@@ -65,6 +66,7 @@ def synthesiser_node(state: AgentState) -> dict:
     chunks = state["retrieved_chunks"]
     history = trim_history(state.get("history", []))
     response_language = state.get("response_language", "en")
+    recalled_memory = state.get("recalled_memory", "")
 
     context = "\n\n".join(
         f"[Section {c['section_number']}, {c['act_title']} (Act {c['act_number']})]\n{c['content']}"
@@ -78,9 +80,15 @@ def synthesiser_node(state: AgentState) -> dict:
         language_instruction=_LANGUAGE_INSTRUCTIONS.get(response_language, _LANGUAGE_INSTRUCTIONS["en"])
     )
 
+    preferences_block = (
+        f"\nKnown practitioner preferences (framing only, not legal authority):\n{recalled_memory}\n"
+        if recalled_memory
+        else ""
+    )
+
     user_message = f"""Conversation history:
 {history_text or '(none)'}
-
+{preferences_block}
 Query: {state['query']}
 
 Retrieved statute sections:

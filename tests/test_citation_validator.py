@@ -15,7 +15,7 @@ RETRIEVED_90A = {
 
 
 class CitationValidatorTests(unittest.TestCase):
-    def test_valid_structured_and_prose_citation_passes(self):
+    def test_valid_structured_citation_passes(self):
         state = {
             "retrieved_chunks": [RETRIEVED_90A],
             "citations": [{
@@ -54,20 +54,38 @@ class CitationValidatorTests(unittest.TestCase):
             result["violations"],
         )
 
-    def test_prose_citation_must_be_mirrored_in_structured_citations(self):
+    def test_empty_citations_fails_presence_check(self):
         state = {
             "retrieved_chunks": [RETRIEVED_90A],
             "citations": [],
-            "draft_response": "Section 90A of the Evidence Act 1950 allows computer-produced documents.",
+            "draft_response": "There is no relevant provision in the retrieved sections.",
             "violations": [],
         }
 
         result = citation_validator_node(state)
 
         self.assertIn(
-            "Prose citation Section 90A of Act 56 is missing from structured citations.",
+            "No citation found. A legal answer must cite at least one retrieved section.",
             result["violations"],
         )
+
+    def test_non_adjacent_prose_citation_still_passes_when_structured_present(self):
+        state = {
+            "retrieved_chunks": [RETRIEVED_90A],
+            "citations": [{
+                "act_number": "56",
+                "act_title": "EVIDENCE ACT 1950",
+                "section_number": "90A",
+                "pdf_url": "",
+                "page_number": 1,
+            }],
+            "draft_response": "The Evidence Act 1950 sets this out under section 90A (90A).",
+            "violations": [],
+        }
+
+        result = citation_validator_node(state)
+
+        self.assertEqual(result["violations"], [])
 
     def test_supervisor_preserves_existing_citation_violations(self):
         state = {

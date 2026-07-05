@@ -37,6 +37,13 @@ User query + thread_id (EN / BM / mixed)
        │
        ▼
 ┌────────────────────┐
+│  recall            │  pulls the practitioner's saved preferences into
+│                    │  the answer as framing hints (off by default —
+│                    │  SEMANTIC_MEMORY_RECALL)
+└──────┬─────────────┘
+       │
+       ▼
+┌────────────────────┐
 │  synthesiser       │  drafts answer + citations (act, section,
 │                    │  page deep-link)
 └──────┬─────────────┘
@@ -210,16 +217,20 @@ ai-legal-tool/
 ├── vercel.json                     # Vercel deploy config (Next.js frontend)
 ├── .env                            # DATABASE_URL, OPENAI_API_KEY, etc.
 ├── agent/
-│   ├── graph.py                    # graph: nodes, edges, retry loop, checkpointer wiring
+│   ├── graph.py                    # graph: nodes, edges, retry loop, checkpointer + store wiring
 │   ├── state.py                    # AgentState, Message, Citation, QueryEvent/Result types
 │   ├── query_lifecycle.py          # run_query / run_query_stream (thread_id-based)
 │   ├── query_policy.py             # MAX_HISTORY_TOKENS, MAX_RETRIES, token-budget history trimming
 │   ├── llm_factory.py              # provider-agnostic LLM factory (Claude/Gemini/OpenAI)
+│   ├── memory/                     # Semantic Memory write path (ADR 0010)
+│   │   ├── schemas.py              # PractitionerProfile, RecurringTopic (extraction schemas)
+│   │   └── extractor.py            # background extract → upsert via LangMem/Trustcall
 │   └── nodes/
 │       ├── router.py
 │       ├── conversational.py
 │       ├── contextualize.py
 │       ├── retriever.py
+│       ├── recall.py               # Semantic Memory read path (reads what extractor writes)
 │       ├── synthesiser.py
 │       ├── citation_validator.py
 │       ├── grounding_check.py
@@ -306,6 +317,18 @@ Every request carries a `thread_id`; the client never resends prior turns. Histo
 - `CHECKPOINTER=memory` or no `DATABASE_URL` → in-process `MemorySaver` (local dev/tests)
 
 History accumulates across turns and is trimmed to a token budget (`MAX_HISTORY_TOKENS`, default 4000, env-overridable) when read by the router, contextualize, and synthesiser nodes. Trimming drops whole turns (user+assistant pairs) oldest-first until the remainder fits — so a slice never begins on a dangling assistant reply — with a hard floor that keeps the most recent turn even if it alone exceeds the budget. Token size is a proxy via a single local `tiktoken` encoder shared across providers; the budget bounds prompt cost/distraction, not the context window. See ADR 0008 and `evals/history_budget.py` for tuning. Assistant turns are stored **disclaimer-free** — the legal-advice disclaimer is stripped at record-time so later nodes don't re-read repeated boilerplate (the disclaimer still reaches the user in the response).
+
+### Semantic memory (cross-thread, dark by default)
+
+**Semantic Memory** remembers the practitioner across all of them — their durable preferences and the topics they keep returning to, scoped by `user_id`. It lives in a cross-thread store that runs on the same backends as the checkpointer: Postgres when `DATABASE_URL` is set, in-memory otherwise. See ADR 0010 and `CONTEXT.md` for the model.
+
+The `recall` node reads those facts and passes them to the synthesiser as hints about how to frame an answer. They are soft context, not legal substance: never cited, never treated as fact, and never written back into the conversation history. The retrieved statutes and the query always win when they conflict.
+
+Facts get *into* the store on the **write path** (`agent/memory/extractor.py`): after a legal turn is delivered, a background job extracts durable practitioner facts — preferences (`PractitionerProfile`) and recurring research topics (`RecurringTopic`) — via LangMem (Trustcall underneath, dedup/merge-aware) and upserts them into the same `(user_id, "semantic")` namespace. It runs **off the hot path** — fired only after the response event, so it can never delay or alter the turn — and stores **only** preferences and topics: confidential client or matter facts are excluded by construction (schema field descriptions + the extraction prompt).
+
+The write path only inserts, so the topic collection grows and can accumulate near-duplicates and multiple profiles. The **maintenance path** (`agent/memory/pruner.py`) keeps the namespace bounded and high-quality: it collapses duplicate profiles into one, consolidates near-duplicate topics (clustered via the store's own vector search), and evicts low-value topics beyond a generous cap by an **importance + recency** score — retrieval frequency (recorded by `recall` in a side `(user_id, "semantic_meta")` namespace) weighted against each item's write time. It is **not** TTL: a stale-but-frequently-recalled fact outlives recent chatter. Like extraction it runs off the hot path (fired after the response, size-debounced), is fail-open, and is deliberately conservative — it never deletes the sole profile and never empties a namespace. Tune the cap, similarity threshold, and weights with `evals/semantic_memory.py`.
+
+Each path has its own flag, all **off by default** and fail-open: `SEMANTIC_MEMORY_RECALL` (read), `SEMANTIC_MEMORY_EXTRACT` (write), and `SEMANTIC_MEMORY_PRUNE` (maintenance). With a flag off, no `user_id` (or the `anonymous` sentinel), an empty store, or any error, the turn is identical to one produced without the feature.
 
 ---
 

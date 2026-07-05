@@ -46,6 +46,21 @@ The prior turns in the same thread, passed as a list of user/assistant messages.
 The history-resolved, self-contained version of a follow-up **Legal Research Query**. A short or elliptical follow-up ("what about criminal cases?", "and in Bahasa?") is rewritten into a query that carries forward the act, topic, or section from **Conversation History** so it can be retrieved on its own. Used only for retrieval; it is never shown to the practitioner and never recorded in **Conversation History** (which always stores what the practitioner actually typed).
 _Avoid_: expanded query, resolved query
 
+**Practitioner**:
+The human using the assistant across research threads. Identified by a **User Id** — a UUID generated and persisted in the practitioner's browser and sent with every query. This is weak, per-browser identity (there is no authentication in v1); it is the scope key that lets **Semantic Memory** outlive a single thread.
+_Avoid_: account, session (a session is one thread; a **Practitioner** spans many)
+
+**Semantic Memory**:
+Durable facts about a **Practitioner** that persist across research threads — response-language preference, citation/format style, practice-area focus, frequently-referenced **Acts**, and recurring research topics. Stored in a cross-thread store namespaced by **User Id**, extracted in the background after a turn, and read back to personalise later turns. Distinct from **Conversation History**, which is one thread's transcript. Confidential client or matter facts are **never** stored here.
+_Avoid_: long-term memory (ambiguous — name the tier), profile (that is one part of it)
+
+**Recurring Topic**:
+A research subject a **Practitioner** returns to across threads (e.g. "data-breach penalties", "unfair dismissal"). Held as a growing collection in **Semantic Memory** and used to bias retrieval. Contrast a one-off **Legal Research Query**, which is not on its own a **Recurring Topic**.
+
+**Working Memory**:
+The slice of context actually placed in a prompt for the current turn — the token-budget-trimmed **Conversation History** plus any recalled **Semantic Memory** facts. Derived at read time, never stored.
+_Avoid_: context window (that is the model limit, not this projection)
+
 **Legal Advice** _(out of scope)_:
 A recommendation about what a specific person should do in a specific legal situation. The agent must never produce this; it hands off to a human lawyer instead.
 
@@ -55,6 +70,10 @@ A recommendation about what a specific person should do in a specific legal situ
 - An **Act** may have zero or more **Subsidiary Legislation** items
 - The most recent **Reprint** Timeline Entry is the canonical text used for ingestion
 - A **Legal Research Query** is answered using **Acts** (v1) and eventually **Case Law** (v2)
+- A **Practitioner** owns one or more research threads, each with its own **Conversation History**
+- A **Practitioner** has one **Semantic Memory** (scoped by **User Id**) spanning all their threads
+- **Semantic Memory** holds zero or more **Recurring Topics**
+- **Working Memory** for a turn is built from that turn's **Conversation History** plus recalled **Semantic Memory**
 
 ## Example dialogue
 
@@ -66,7 +85,7 @@ A recommendation about what a specific person should do in a specific legal situ
 These constraints apply to **legal-answer turns** only — a **Conversational Turn** bypasses retrieval and the supervisor entirely. The agent enforces them on every legal response before output:
 
 1. **No advice on specific facts** — response must not contain "you should", "you must", "in your case", "I recommend"
-2. **Citation required** — every legal claim must cite "Section X of Act Y"
+2. **Citation required** — a legal answer must cite at least one authoritative source ("Section X of Act Y"). This is an answer-level presence check. Whether each individual legal claim is actually *supported* by its cited section is a separate grounding concern, not part of this deterministic rule.
 3. **Hedging required** — response must include a disclaimer that it is not a substitute for professional legal advice
 4. **Escalation trigger** — if the query contains "my client", "I have been charged", "am I liable", route to human hand-off before retrieval starts
 

@@ -40,5 +40,6 @@ class AgentState(TypedDict):
     draft_response: str
     citations: list[Citation]
     violations: list[str]    # supervisor findings; empty = pass
+    recalled_memory: str     # Semantic Memory recalled for the synthesiser
     final_response: str
     retry_count: int
