@@ -22,6 +22,9 @@ venv/
 .env
 .env.*
 
+# MCP config (contains API keys)
+.mcp.json
+
 # IDE
 .DS_Store
 

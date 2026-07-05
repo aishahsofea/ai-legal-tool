@@ -5,6 +5,7 @@ from collections.abc import AsyncIterator
 
 from agent.graph import graph
 from agent.memory.extractor import schedule_extraction
+from agent.memory.pruner import schedule_pruning
 from agent.query_policy import delivered_response, strip_disclaimer
 from agent.state import AgentState, QueryEvent, QueryResult
 
@@ -76,7 +77,9 @@ async def run_query_stream(query: str, thread_id: str, user_id: str | None = Non
     state: dict = {}
     async for update in graph.astream(_turn_input(query), config, stream_mode="updates"):
         node_name = next(iter(update.keys()), "")
-        node_output = next(iter(update.values()), {})
+        # A node that makes no state change (e.g. recall no-oping on an empty store)
+        # surfaces in the updates stream as {node: None}, so coerce None → {}.
+        node_output = next(iter(update.values()), None) or {}
         if node_name == "contextualize":
             # Only announce a rewrite when one actually happened — non-empty and
             # different from the raw query. Never surface the rewritten text.
@@ -106,3 +109,6 @@ async def run_query_stream(query: str, thread_id: str, user_id: str | None = Non
     # the extractor sees the answer, not boilerplate. Gating + fail-open live in the callee.
     if state.get("query_type") not in ("", "conversational", "escalate"):
         schedule_extraction(graph.store, user_id, query, strip_disclaimer(final))
+        # Consolidate + cap the store off the hot path (ADR 0010, Phase 4). Independent
+        # of extraction (eventual consistency); size-debounced and fail-open in the callee.
+        schedule_pruning(graph.store, user_id)

@@ -83,6 +83,14 @@ class ExtractGatingTests(unittest.TestCase):
         self.assertIn("matter", lowered)
         self.assertIn("privilege", lowered)
 
+    def test_instructions_capture_response_format_preferences(self):
+        # Guard that the prompt still steers toward capturing answer-format directives
+        # (brevity/bullets), which recall surfaces. Behavioural capture lives in an eval.
+        lowered = _EXTRACTION_INSTRUCTIONS.lower()
+        self.assertIn("format", lowered)
+        self.assertIn("brief", lowered)
+        self.assertIn("bullet", lowered)
+
 
 class WriteReadRoundTripTests(unittest.TestCase):
     """Write path and recall agree on namespace and value shape."""

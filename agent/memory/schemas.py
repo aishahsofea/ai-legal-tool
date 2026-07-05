@@ -19,7 +19,10 @@ class PractitionerProfile(BaseModel):
     )
     citation_style: Optional[str] = Field(
         default=None,
-        description="Stated preference about citation/formatting (e.g. 'prefers brief answers').",
+        description="How the practitioner wants answers presented, set when they direct "
+        "the response format or style — brevity vs detail, bulleted vs prose, leading "
+        "with section numbers, use of headings (e.g. 'prefers brief, bulleted answers'). "
+        "Covers citation style too, but is not limited to citations.",
     )
     practice_areas: list[str] = Field(
         default_factory=list,

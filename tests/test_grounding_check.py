@@ -97,7 +97,8 @@ class GroundingCheckTests(unittest.TestCase):
         self.assertEqual(result["violations"], ["Citation error."])
         grounding_llm.invoke.assert_not_called()
 
-    def test_llm_failure_becomes_violation(self):
+    def test_llm_failure_fails_open(self):
+        """A judge malfunction must not be mistaken for an ungrounded answer."""
         state = {
             "draft_response": "Section 90A of the Evidence Act 1950 applies.",
             "retrieved_chunks": [RETRIEVED_90A],
@@ -109,7 +110,18 @@ class GroundingCheckTests(unittest.TestCase):
             grounding_llm.invoke.side_effect = RuntimeError("judge unavailable")
             result = grounding_check_node(state)
 
-        self.assertEqual(result["violations"], ["Grounding check failed: judge unavailable"])
+        self.assertEqual(result["violations"], [])
+
+    def test_claims_coerced_from_json_string(self):
+        """Some models return the claims list as a JSON-encoded string; accept it."""
+        raw = (
+            '[{"claim": "x", "cited_act_number": "56", "cited_section_number": "90A", '
+            '"support": "supported", "reason": "ok"}]'
+        )
+        parsed = _GroundingOutput.model_validate({"claims": raw})
+
+        self.assertEqual(len(parsed.claims), 1)
+        self.assertEqual(parsed.claims[0].support, "supported")
 
 
 if __name__ == "__main__":

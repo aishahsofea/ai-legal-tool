@@ -26,17 +26,22 @@ PostgresStore, the async path (astream) drives an AsyncPostgresStore. Both are
 registered on the graph via a single RunnableCallable so store injection works
 in either execution mode.
 """
+import asyncio
 import json
 import logging
 import os
 
 from langgraph.store.base import BaseStore, SearchItem
 
+from agent.memory import stats
 from agent.state import AgentState
 
 logger = logging.getLogger(__name__)
 
 _RECALL_LIMIT = 5
+
+# Keep in-flight hit-recording tasks referenced so the loop can't GC them mid-flight.
+_pending: set[asyncio.Task] = set()
 
 
 def _enabled() -> bool:
@@ -108,6 +113,25 @@ def _to_update(items: list[SearchItem]) -> dict:
     return {"recalled_memory": "\n".join(f"- {line}" for line in lines)}
 
 
+def _record_hits_sync(store: BaseStore, user_id: str, items: list[SearchItem]) -> None:
+    """Retrieval-frequency signal (ADR 0010, Phase 4): the pruner scores importance on
+    how often an item is recalled. Guarded so it can never affect recalled_memory."""
+    try:
+        stats.record_hits(store, user_id, [item.key for item in items])
+    except Exception:
+        logger.warning("recall hit recording failed; recalled memory unaffected", exc_info=True)
+
+
+def _schedule_hits_async(store: BaseStore, user_id: str, items: list[SearchItem]) -> None:
+    """Fire-and-forget the async hit recording so the read path is never slowed."""
+    try:
+        task = asyncio.create_task(stats.arecord_hits(store, user_id, [item.key for item in items]))
+    except RuntimeError:  # no running loop
+        return
+    _pending.add(task)
+    task.add_done_callback(_pending.discard)
+
+
 def recall_node(state: AgentState, config, *, store: BaseStore | None = None) -> dict:
     plan = _plan(state, config, store)
     if plan is None:
@@ -115,6 +139,8 @@ def recall_node(state: AgentState, config, *, store: BaseStore | None = None) ->
     user_id, query = plan
     try:
         items = store.search((user_id, "semantic"), query=query, limit=_RECALL_LIMIT)
+        if items:
+            _record_hits_sync(store, user_id, items)
         return _to_update(items)
     except Exception:
         logger.warning("recall_node failed; continuing without Semantic Memory", exc_info=True)
@@ -128,6 +154,8 @@ async def arecall_node(state: AgentState, config, *, store: BaseStore | None = N
     user_id, query = plan
     try:
         items = await store.asearch((user_id, "semantic"), query=query, limit=_RECALL_LIMIT)
+        if items:
+            _schedule_hits_async(store, user_id, items)
         return _to_update(items)
     except Exception:
         logger.warning("recall_node failed; continuing without Semantic Memory", exc_info=True)

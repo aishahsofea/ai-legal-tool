@@ -85,7 +85,7 @@ A recommendation about what a specific person should do in a specific legal situ
 These constraints apply to **legal-answer turns** only — a **Conversational Turn** bypasses retrieval and the supervisor entirely. The agent enforces them on every legal response before output:
 
 1. **No advice on specific facts** — response must not contain "you should", "you must", "in your case", "I recommend"
-2. **Citation required** — every legal claim must cite "Section X of Act Y"
+2. **Citation required** — a legal answer must cite at least one authoritative source ("Section X of Act Y"). This is an answer-level presence check. Whether each individual legal claim is actually *supported* by its cited section is a separate grounding concern, not part of this deterministic rule.
 3. **Hedging required** — response must include a disclaimer that it is not a substitute for professional legal advice
 4. **Escalation trigger** — if the query contains "my client", "I have been charged", "am I liable", route to human hand-off before retrieval starts
 

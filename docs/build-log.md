@@ -6,6 +6,15 @@ Short notes on challenges and learnings while building this app.
 
 <!-- Format: **YYYY-MM-DD** — what we hit or learned -->
 
+**2026-07-03** — Closed out the Semantic Memory lifecycle (ADR 0010, Phase 4): pruning + an eval. The write path only inserts, so the topic collection grows unbounded and `enable_inserts=True` can mint several profiles; `recall` hard-caps at 5 by similarity, so valuable-but-less-similar facts silently fall out of the top slots. The new `agent/memory/pruner.py` collapses duplicate profiles, consolidates near-duplicate topics, and evicts low-value topics by **importance + recency** — gated dark (`SEMANTIC_MEMORY_PRUNE`), off the hot path, fail-open, size-debounced. What shaped the design:
+
+- **Importance = retrieval frequency, kept off the item.** `recall` records a hit per surfaced item in a side `(user_id, "semantic_meta")` namespace (written `index=False`) rather than on the item itself. Bumping the item would touch its `updated_at` and conflate "recalled" with "rewritten" — keeping stats separate lets recency stay the write-time and importance be the recall count.
+- **Clustering rides the store, not a new embedding call.** Consolidation finds near-duplicates via the store's own `asearch(query=topic)`, so the pruner has no direct OpenAI dependency and no graph-build-on-import.
+- **Not TTL.** Age is one weighted input against importance (`w_importance` > `w_recency`), so a stale-but-recalled fact outlives recent chatter — the exact failure mode ADR 0010 rejects.
+- **`enable_deletes` stays off on the extractor.** Deletion lives in the pruner as a deliberate, separate pass, not a side effect of every write.
+
+Key learning: the eval's deterministic `--dry` path needed reproducible vector scores. A bag-of-words stub index over `content.topic` only (structural tokens like `RecurringTopic` excluded from the embedded text) makes a reordered duplicate score 1.0 and an unrelated topic 0.0 — clustering is testable without an API call, and the same stub backs `tests/test_pruner.py`.
+
 **2026-06-24** — Moved history trimming from turn-count to a **token budget** (`MAX_HISTORY_TOKENS`, ADR 0008). What changed:
 
 - **Token budget, not turn count.** Drop whole turns oldest-first until the rest fits. Soft budget with a hard floor — the newest turn always survives.
@@ -70,4 +79,8 @@ Also tried: Gemini 2.5 Flash (would be ~15× cheaper) — hit free-tier 5 RPM ca
 3. **Cost vs fidelity are in direct tension** — every cheaper-model option (Haiku, per-case routing) introduces false positive/negative risk because the eval tests a different model than production. Previous session already confirmed Haiku is unsuitable for synthesiser (drops `citation_refs`). The only real lever is making the production model cheaper.
 
 4. **Decision: validate GPT-4.1-mini as production swap** — ~8× cheaper than Sonnet (~$0.006/run). Because eval and production would use the same model, fidelity is preserved. Published PRD (issue #4). Acceptance bar: judge pass rate ≥ 80%, `citation_existence` 100%, all 4 BM/mixed smoke cases pass. No Sonnet baseline run needed — thresholds are absolute, not relative.
+
+**2026-07-05** — Semantic Memory extraction wasn't capturing answer-format preferences, so the write→recall→synthesise loop had no cleanly UI-observable effect. The one visible axis (response language) is deliberately guardrailed out (router sets language from the current query; synthesiser rule #1 overrides), leaving answer format/brevity as the only demonstrable signal — but `citation_style` came back `None` even for near-verbatim examples of the schema's own hint ("keep answers brief and concise").
+
+Root cause was framing, not control flow: the field was named/described as **citation** style and the extractor instructions listed only "Citation / formatting style preferences", so gpt-4.1-mini didn't classify "give me bullets" / "be brief" as citation style, and the "when in doubt, do not store it" guard tipped it toward skipping. Fix (prompt/description only): widened the `citation_style` field description to cover response format/length/structure, made the extractor's formatting bullet explicit and exemplified, and added one line clarifying that a direct instruction about answer presentation IS a durable preference worth storing. Confidentiality block and the "when in doubt" guard left intact. Repro now populates `citation_style` across phrasings ("brief and concise", "use bullet points", "state the section number first") and recall surfaces it on a fresh thread. Kept the field name `citation_style` — recall renders it generically and a rename would ripple into stored data + tests.
 

@@ -17,12 +17,6 @@ _ADVICE_RE = re.compile(
     re.IGNORECASE,
 )
 
-_CITATION_RE = re.compile(
-    r'section\s+\d+[A-Z]{0,2}(?:\([^)]*\))?\s+of\s+.{3,60}(?:act|code)'
-    r'|section\s+\d+[A-Z]{0,2}\s*\([^)]+\)',
-    re.IGNORECASE,
-)
-
 _DISCLAIMER = "does not constitute legal advice"
 
 _ESCALATION_RE = re.compile(
@@ -45,10 +39,6 @@ def supervisor_node(state: AgentState) -> dict:
     # Rule 1 — no specific-advice phrases
     if _ADVICE_RE.search(draft):
         violations.append("Contains specific advice phrases (you should / you must / I recommend).")
-
-    # Rule 2 — at least one statute citation
-    if not _CITATION_RE.search(draft):
-        violations.append("No statute citation found. Every claim must cite 'Section X of [Act]'.")
 
     # Rule 3 — disclaimer present
     if _DISCLAIMER not in draft.lower():

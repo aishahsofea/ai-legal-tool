@@ -62,6 +62,18 @@ class FollowUpStatusTests(unittest.TestCase):
         statuses = [e["message"] for e in events if e["type"] == "status"]
         self.assertNotIn("Resolving follow-up...", statuses)
 
+    def test_noop_node_update_none_does_not_crash(self):
+        # A node that makes no state change (e.g. recall no-oping on an empty store)
+        # surfaces as {node: None} in the updates stream; the stream must tolerate it.
+        updates = [
+            {"recall": None},
+            {"supervisor": _FINAL["supervisor"]},
+        ]
+        events = _run("What does Section 5 of the PDPA say?", updates)
+        responses = [e for e in events if e["type"] == "response"]
+        self.assertEqual(len(responses), 1)
+        self.assertEqual(responses[0]["content"], "Section 5 of the PDPA applies.")
+
 
 if __name__ == "__main__":
     unittest.main()

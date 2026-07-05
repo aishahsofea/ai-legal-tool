@@ -26,10 +26,15 @@ _EXTRACTION_INSTRUCTIONS = """You maintain durable Semantic Memory about a legal
 
 Extract ONLY stable facts about how this practitioner likes to work and what they research:
 - Response-language preference (English, Bahasa Malaysia, or mixed).
-- Citation / formatting style preferences.
+- How the practitioner wants answers formatted or styled — brevity/length (brief vs
+  detailed), bulleted vs prose, leading with section numbers, headings, citation style.
 - Practice-area focus (e.g. employment, criminal, corporate).
 - Malaysian Acts they reference frequently.
 - Recurring research topics they return to.
+
+A direct instruction about how answers should be presented (e.g. "keep answers brief",
+"use bullet points", "state the section number first") IS a durable preference — store
+it even though the "when in doubt" guard below applies to everything else.
 
 NEVER store confidential client or matter facts: client names, party names, case
 specifics, dates, amounts, or anything tied to a particular dispute or transaction.

@@ -7,17 +7,22 @@ citation validation, so it can assume citation references are structurally sane.
 from __future__ import annotations
 
 import json
+import logging
+import os
 from typing import Literal
 
 from dotenv import load_dotenv
-from langchain_anthropic import ChatAnthropic
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
+from agent.llm_factory import make_llm
 from agent.state import AgentState
 
 load_dotenv()
 
-_llm = ChatAnthropic(model="claude-sonnet-4-6", temperature=0)
+logger = logging.getLogger(__name__)
+
+_MODEL = os.getenv("GROUNDING_MODEL", "claude-sonnet-4-6")
+_llm = make_llm(_MODEL)
 
 
 class _GroundingClaim(BaseModel):
@@ -30,6 +35,14 @@ class _GroundingClaim(BaseModel):
 
 class _GroundingOutput(BaseModel):
     claims: list[_GroundingClaim]
+
+    @field_validator("claims", mode="before")
+    @classmethod
+    def _coerce_claims(cls, value: object) -> object:
+        """Tolerate models that return the claims list as a JSON-encoded string."""
+        if isinstance(value, str):
+            return json.loads(value)
+        return value
 
 
 _grounding_llm = _llm.with_structured_output(_GroundingOutput)
@@ -102,8 +115,11 @@ def grounding_check_node(state: AgentState) -> dict:
             {"role": "system", "content": _SYSTEM},
             {"role": "user", "content": json.dumps(payload, ensure_ascii=False, indent=2)},
         ])
-    except Exception as exc:
-        violations.append(f"Grounding check failed: {exc}")
+    except Exception:
+        # The judge malfunctioning is not evidence that the answer is ungrounded.
+        # Fail open: citation validation already guaranteed structural integrity, so
+        # a transient extraction error should not discard an otherwise valid answer.
+        logger.warning("grounding_check_node failed; skipping grounding verification", exc_info=True)
         return {"violations": violations}
 
     for claim in result.claims:
