@@ -20,6 +20,7 @@ class QueryResult(TypedDict):
     response: str
     citations: list[Citation]
     violations: list[str]
+    tool_trace: list[str]    # retrieval tools the agent called (agentic retrieval)
 
 
 class QueryEvent(TypedDict, total=False):
@@ -45,5 +46,6 @@ class AgentState(TypedDict):
     evidence_violations: list[str]  # subset from citation/grounding checks; drives re-retrieval routing
     recalled_memory: str     # Semantic Memory recalled for the synthesiser
     retrieval_feedback: str  # feedback fed to the agentic retriever on a re-retrieval pass
+    tool_trace: list[str]    # retrieval tool names the agent called this turn
     final_response: str
     retry_count: int

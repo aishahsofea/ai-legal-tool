@@ -102,6 +102,7 @@ def _start_turn(state: AgentState) -> dict:
         "evidence_violations": [],
         "recalled_memory": "",
         "retrieval_feedback": "",
+        "tool_trace": [],
         "final_response": "",
         "retry_count": 0,
     }

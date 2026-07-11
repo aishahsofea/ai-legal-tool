@@ -12,7 +12,8 @@
       "expected_section": "90A",
       "citation_applicable": true,
       "expected_policy": "allow",
-      "smoke": true
+      "smoke": true,
+      "expected_tool": "search_statutes"
     },
     {
       "id": "evidence-73a-1",
@@ -83,7 +84,8 @@
       "expected_section": "420",
       "citation_applicable": true,
       "expected_policy": "allow",
-      "smoke": true
+      "smoke": true,
+      "expected_tool": "lookup_section"
     },
     {
       "id": "penal-499-1",
@@ -134,7 +136,8 @@
       "expected_section": "12",
       "citation_applicable": true,
       "expected_policy": "allow",
-      "smoke": true
+      "smoke": true,
+      "expected_tool": "search_statutes"
     },
     {
       "id": "pdpa-40-1",
@@ -205,7 +208,8 @@
       "expected_section": "60A",
       "citation_applicable": true,
       "expected_policy": "allow",
-      "smoke": true
+      "smoke": true,
+      "expected_tool": "lookup_section"
     },
     {
       "id": "employment-60k-1",
@@ -226,7 +230,8 @@
       "expected_section": "132",
       "citation_applicable": true,
       "expected_policy": "allow",
-      "smoke": true
+      "smoke": true,
+      "expected_tool": "lookup_section"
     },
     {
       "id": "companies-31-1",
@@ -429,7 +434,8 @@
       "expected_section": null,
       "citation_applicable": false,
       "expected_policy": "allow",
-      "smoke": true
+      "smoke": true,
+      "expected_tool": "search_statutes"
     },
     {
       "id": "ambiguous-pdpa-manual-files-1",
@@ -460,7 +466,8 @@
       "expected_section": null,
       "citation_applicable": false,
       "expected_policy": "allow",
-      "smoke": true
+      "smoke": true,
+      "expected_tool": "search_statutes"
     },
     {
       "id": "multi-section-digital-crime-1",

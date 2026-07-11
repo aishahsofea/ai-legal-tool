@@ -7,8 +7,28 @@ from evals.assertions import (
     check_citation_existence,
     check_expected_section,
     check_language_register,
+    check_tool_selection,
     check_uuid_leakage,
 )
+
+
+class CheckToolSelectionTests(unittest.TestCase):
+    def test_not_applicable_when_no_expected_tool(self):
+        self.assertIsNone(check_tool_selection([], None))
+        self.assertIsNone(check_tool_selection(["search_statutes"], None))
+
+    def test_passes_when_expected_tool_in_trace(self):
+        self.assertIsNone(check_tool_selection(["lookup_section"], "lookup_section"))
+        # extra tools alongside the expected one still pass (e.g. fallback search)
+        self.assertIsNone(check_tool_selection(["lookup_section", "search_statutes"], "lookup_section"))
+
+    def test_fails_when_expected_tool_absent(self):
+        msg = check_tool_selection(["search_statutes"], "lookup_section")
+        self.assertIsNotNone(msg)
+        self.assertIn("lookup_section", msg)
+
+    def test_fails_on_empty_trace(self):
+        self.assertIsNotNone(check_tool_selection([], "search_statutes"))
 
 
 def _make_db_conn(exists: bool) -> MagicMock:

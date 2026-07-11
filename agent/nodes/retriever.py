@@ -55,12 +55,15 @@ def agentic_retriever_node(state: AgentState, config=None) -> dict:
 
     query = state.get("standalone_query") or state["query"]
     feedback = state.get("retrieval_feedback", "")
+    rows: list[dict] = []
+    tools: list[str] = []
     try:
-        rows = run_retrieval_agent(query, feedback, config)
+        out = run_retrieval_agent(query, feedback, config)
+        rows, tools = out["chunks"], out["tools"]
     except Exception:
         logger.warning("agentic_retriever_node failed; falling back to deterministic retriever", exc_info=True)
         rows = []
 
     if not rows:
         return retriever_node(state)
-    return {"retrieved_chunks": rows}
+    return {"retrieved_chunks": rows, "tool_trace": tools}

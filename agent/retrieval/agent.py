@@ -90,15 +90,28 @@ def get_retrieval_agent():
     )
 
 
-def run_retrieval_agent(query: str, feedback: str = "", config=None) -> list[dict]:
-    """Run the ReAct loop for one query and return the accumulated chunks.
+def _tool_names(messages: list) -> list[str]:
+    """Names of tools the agent called, in order, from its message trace."""
+    names: list[str] = []
+    for m in messages or []:
+        for tc in getattr(m, "tool_calls", None) or []:
+            name = tc.get("name") if isinstance(tc, dict) else getattr(tc, "name", None)
+            if name:
+                names.append(name)
+    return names
 
-    `feedback` (used on a re-retrieval pass, Phase 4) is appended to the request
-    so the agent can adjust its search. `config` is the parent graph's
-    RunnableConfig — forwarding it lets the tools' custom stream writes reach the
-    parent's stream (so tool calls surface in the UI). We copy it and pin our own
-    recursion_limit so the sub-loop stays bounded regardless of the parent's.
-    Raises on failure — the wrapper node decides whether to fail open.
+
+def run_retrieval_agent(query: str, feedback: str = "", config=None) -> dict:
+    """Run the ReAct loop for one query.
+
+    Returns {"chunks": [...], "tools": [...]} — the accumulated chunks and the
+    tool names the agent called (order preserved; used by the tool_selection
+    eval). `feedback` (a re-retrieval pass, Phase 4) is appended to the request so
+    the agent can adjust its search. `config` is the parent graph's RunnableConfig
+    — forwarding it lets the tools' custom stream writes reach the parent's stream
+    (so tool calls surface in the UI). We copy it and pin our own recursion_limit
+    so the sub-loop stays bounded. Raises on failure — the wrapper decides whether
+    to fail open.
     """
     request = query if not feedback else f"{query}\n\nRe-retrieval note: {feedback}"
     invoke_config = {**(config or {}), "recursion_limit": RECURSION_LIMIT}
@@ -116,13 +129,16 @@ def run_retrieval_agent(query: str, feedback: str = "", config=None) -> list[dic
         parent_writer = None
 
     if parent_writer is None:
-        result = agent.invoke(agent_input, invoke_config)
-        return result.get("retrieved_chunks", [])
+        final_state = agent.invoke(agent_input, invoke_config)
+    else:
+        final_state = {}
+        for mode, chunk in agent.stream(agent_input, invoke_config, stream_mode=["custom", "values"]):
+            if mode == "custom":
+                parent_writer(chunk)
+            else:  # "values" — full state snapshots; keep the last
+                final_state = chunk
 
-    last_values: dict = {}
-    for mode, chunk in agent.stream(agent_input, invoke_config, stream_mode=["custom", "values"]):
-        if mode == "custom":
-            parent_writer(chunk)
-        else:  # "values" — full state snapshots; keep the last for retrieved_chunks
-            last_values = chunk
-    return last_values.get("retrieved_chunks", [])
+    return {
+        "chunks": final_state.get("retrieved_chunks", []),
+        "tools": _tool_names(final_state.get("messages", [])),
+    }

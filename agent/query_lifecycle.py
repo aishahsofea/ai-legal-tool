@@ -69,6 +69,7 @@ def run_query(query: str, thread_id: str, user_id: str | None = None) -> QueryRe
         "response": _response_text(state),
         "citations": state.get("citations", []),
         "violations": state.get("violations", []),
+        "tool_trace": state.get("tool_trace", []),
     }
 
 

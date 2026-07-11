@@ -27,18 +27,21 @@ class DedupeReducerTests(unittest.TestCase):
 
 
 class AgenticRetrieverNodeTests(unittest.TestCase):
-    def test_returns_agent_chunks_on_success(self):
+    def test_returns_agent_chunks_and_tool_trace_on_success(self):
         rows = [{"act_number": "709", "section_number": "5"}]
-        with patch("agent.retrieval.agent.run_retrieval_agent", return_value=rows) as run:
+        out = {"chunks": rows, "tools": ["search_statutes"]}
+        with patch("agent.retrieval.agent.run_retrieval_agent", return_value=out) as run:
             result = retriever.agentic_retriever_node({
                 "query": "data privacy for employers",
                 "query_type": "topical",
             })
         run.assert_called_once_with("data privacy for employers", "", None)
         self.assertEqual(result["retrieved_chunks"], rows)
+        self.assertEqual(result["tool_trace"], ["search_statutes"])
 
     def test_forwards_standalone_query_and_feedback(self):
-        with patch("agent.retrieval.agent.run_retrieval_agent", return_value=[{"a": 1}]) as run:
+        out = {"chunks": [{"a": 1}], "tools": ["lookup_section"]}
+        with patch("agent.retrieval.agent.run_retrieval_agent", return_value=out) as run:
             retriever.agentic_retriever_node({
                 "query": "what about it?",
                 "standalone_query": "penalty under the Employment Act",
@@ -58,7 +61,7 @@ class AgenticRetrieverNodeTests(unittest.TestCase):
 
     def test_fails_open_to_deterministic_on_empty(self):
         det_rows = [{"act_number": "56", "section_number": "90A"}]
-        with patch("agent.retrieval.agent.run_retrieval_agent", return_value=[]), \
+        with patch("agent.retrieval.agent.run_retrieval_agent", return_value={"chunks": [], "tools": []}), \
              patch.object(retriever, "semantic_search", return_value=det_rows):
             result = retriever.agentic_retriever_node({
                 "query": "q", "query_type": "topical",

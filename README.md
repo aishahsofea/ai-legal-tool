@@ -33,7 +33,9 @@ User query + thread_id (EN / BM / mixed)
        ▼
 ┌────────────────────┐
 │  retriever         │  pgvector similarity search over section-level
-│                    │  chunks (EN + BM)
+│                    │  chunks (EN + BM). With AGENTIC_RETRIEVAL on, a
+│                    │  ReAct agent picks search_statutes / lookup_section
+│                    │  tools and can re-search; fails open to this path.
 └──────┬─────────────┘
        │
        ▼
@@ -74,7 +76,11 @@ User query + thread_id (EN / BM / mixed)
       END
 ```
 
-Three short-circuits aren't pictured above: a query the `router` classifies as `escalate` skips straight to `record_turn` with a fixed human hand-off message (the `escalate` node); an unambiguously non-legal message (greeting, name, thanks, "what can you do?") the `router` classifies as `conversational` passes through `recall` (so saved preferences can personalise the reply) and then answers with a short, warm reply (the `conversational` node — no retrieval, no supervisor, no citation or disclaimer) before `record_turn`; and a `supervisor` violation with a retry remaining (`MAX_RETRIES`) loops back to `synthesiser` via `increment_retry` before re-running citation/grounding checks. The router leans legal on ties — `conversational` is reserved for messages with no legal substance.
+Three short-circuits aren't pictured above: a query the `router` classifies as `escalate` skips straight to `record_turn` with a fixed human hand-off message (the `escalate` node); an unambiguously non-legal message (greeting, name, thanks, "what can you do?") the `router` classifies as `conversational` passes through `recall` (so saved preferences can personalise the reply) and then answers with a short, warm reply (the `conversational` node — no retrieval, no supervisor, no citation or disclaimer) before `record_turn`; and a `supervisor` violation with a retry remaining (`MAX_RETRIES`) loops back before re-running citation/grounding checks. The router leans legal on ties — `conversational` is reserved for messages with no legal substance.
+
+**Retry routing by violation kind.** The single retry (`MAX_RETRIES=1`) is split by what went wrong. A *policy/phrasing* violation (advice phrase, missing disclaimer) loops back to `synthesiser` via `increment_retry` to re-draft against the same chunks. An *evidence* violation (a citation that isn't in the retrieved sources, or a grounding check flagging an unsupported claim) instead routes — only when `AGENTIC_RETRIEVAL` is on — to `retry_retrieve`, which re-runs the retrieval agent with feedback about the gap and then re-enters `retriever → recall → synthesiser`. `citation_validator` and `grounding_check` tag their evidence-shaped findings into a separate `evidence_violations` list that drives this choice. An evidence gap that survives the re-retrieval still fails closed to the safe fallback.
+
+**Agentic retrieval (`AGENTIC_RETRIEVAL`, off by default).** When on, the `retriever` node is a LangGraph `create_react_agent` that binds two tools — `search_statutes` (semantic search) and `lookup_section` (exact section lookup) — and decides which to call, with what arguments, and whether to re-search on weak hits. Its tools stream `tool_call` SSE events (surfaced in the frontend PROCESS panel) and write found chunks into the agent's state; the node fails open to the deterministic pgvector path on any error or empty result, so turning the flag on can never retrieve less than the proven path. See ADR 0013.
 
 **Stack:** LangGraph (Postgres/Memory checkpointer) · FastAPI (Railway) · Next.js (Vercel) · Postgres + pgvector (Supabase) · OpenAI `text-embedding-3-small` · GPT-4.1 by default — provider-agnostic via `agent/llm_factory.py` (Claude/Gemini also supported; Claude used for the eval judge)
 
@@ -227,11 +233,15 @@ ai-legal-tool/
 │   ├── memory/                     # Semantic Memory write path (ADR 0010)
 │   │   ├── schemas.py              # PractitionerProfile, RecurringTopic (extraction schemas)
 │   │   └── extractor.py            # background extract → upsert via LangMem/Trustcall
+│   ├── retrieval/                  # agentic retrieval (ADR 0013, AGENTIC_RETRIEVAL)
+│   │   ├── search.py               # pgvector semantic_search + exact_section_lookup
+│   │   ├── tools.py                # search_statutes / lookup_section @tools
+│   │   └── agent.py                # create_react_agent + RetrievalState
 │   └── nodes/
 │       ├── router.py
 │       ├── conversational.py
 │       ├── contextualize.py
-│       ├── retriever.py
+│       ├── retriever.py            # deterministic path + agentic wrapper (fail-open)
 │       ├── recall.py               # Semantic Memory read path (reads what extractor writes)
 │       ├── synthesiser.py
 │       ├── citation_validator.py
@@ -299,13 +309,16 @@ curl -N -X POST http://localhost:8000/query \
 Streams Server-Sent Events:
 
 ```text
-data: {"type": "status",   "message": "Classifying query..."}
-data: {"type": "status",   "message": "Searching Malaysian Acts..."}
-data: {"type": "status",   "message": "Drafting response..."}
-data: {"type": "status",   "message": "Checking policy compliance..."}
-data: {"type": "response", "content": "...", "citations": [...], "violations": []}
+data: {"type": "status",    "message": "Classifying query..."}
+data: {"type": "tool_call", "name": "search_statutes", "summary": "Searching statutes: “…”"}
+data: {"type": "status",    "message": "Searching Malaysian Acts..."}
+data: {"type": "status",    "message": "Drafting response..."}
+data: {"type": "status",    "message": "Checking policy compliance..."}
+data: {"type": "response",  "content": "...", "citations": [...], "violations": []}
 data: {"type": "done"}
 ```
+
+The `tool_call` event (`name`, `summary`) is emitted only on the agentic-retrieval path (`AGENTIC_RETRIEVAL` on), once per retrieval tool the agent calls; the frontend renders these as steps in the collapsible PROCESS panel.
 
 On a follow-up turn where the contextualize node rewrites the query into a standalone form, a `"Resolving follow-up..."` status is emitted before retrieval (the rewritten text itself is never surfaced). If the supervisor finds a violation and a retry remains, a `"Refining response..."` status is emitted and `synthesiser → citation_validator → grounding_check → supervisor` re-runs once (bounded by `MAX_RETRIES`). If the router classifies the query as `escalate`, an `"Escalating to human lawyer..."` status is emitted and the response is a fixed hand-off message. If the router classifies an unambiguously non-legal message as `conversational`, a `"Responding..."` status is emitted and the response is a short, warm reply with empty `citations` and no disclaimer.
 
