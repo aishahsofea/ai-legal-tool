@@ -1,5 +1,18 @@
 # Contributing
 
+## Workflow
+
+Do **not** commit directly to `main`. For every change — including small fixes and anything an AI agent makes on your behalf — create a new branch, push it, and open a pull request:
+
+```bash
+git switch -c <type>/<short-description>   # e.g. fix/citation-links-new-tab
+# ...make changes, commit...
+git push -u origin <branch>
+gh pr create
+```
+
+Use a `<type>/` prefix that matches the change: `feat/`, `fix/`, `chore/`, `docs/`, `refactor/`. `main` stays deployable and every change lands through a reviewable PR.
+
 ## Local Setup
 
 ### Prerequisites
