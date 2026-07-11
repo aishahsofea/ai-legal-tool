@@ -104,10 +104,14 @@ async def run_query_stream(query: str, thread_id: str, user_id: str | None = Non
         "violations": state.get("violations", []),
     }
 
-    # Semantic Memory write path (ADR 0010): extract in the background after the response
-    # is delivered. Legal path only, mirroring where recall runs; disclaimer stripped so
-    # the extractor sees the answer, not boilerplate. Gating + fail-open live in the callee.
-    if state.get("query_type") not in ("", "conversational", "escalate"):
+    # Semantic Memory write path (ADR 0010, extended by ADR 0012): extract in the
+    # background after the response is delivered. Runs on legal AND conversational turns
+    # — the latter is where a practitioner states their own background ("I'm a software
+    # engineer"), which is now a durable fact worth remembering. Excludes only the
+    # error/empty state and escalate (a fixed hand-off with nothing durable to extract).
+    # Disclaimer stripped so the extractor sees the answer, not boilerplate; gating +
+    # fail-open live in the callee.
+    if state.get("query_type") not in ("", "escalate"):
         schedule_extraction(graph.store, user_id, query, strip_disclaimer(final))
         # Consolidate + cap the store off the hot path (ADR 0010, Phase 4). Independent
         # of extraction (eventual consistency); size-debounced and fail-open in the callee.

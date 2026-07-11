@@ -84,7 +84,8 @@ class EvictionTests(unittest.TestCase):
 class ProfileDedupeTests(unittest.TestCase):
     def test_multiple_profiles_collapse_to_one_merged(self):
         store = _store()
-        _profile(store, "profile-a", {"response_language": "bm", "practice_areas": ["employment"]})
+        _profile(store, "profile-a", {"background": "software engineer exploring legal tech",
+                                      "response_language": "bm", "practice_areas": ["employment"]})
         _profile(store, "profile-b", {"citation_style": "prefers brief answers",
                                       "practice_areas": ["employment", "labour"]})
 
@@ -93,6 +94,9 @@ class ProfileDedupeTests(unittest.TestCase):
         profiles = _profiles(store)
         self.assertEqual(len(profiles), 1)
         content = profiles[0].value["content"]
+        # background must survive consolidation — otherwise the pruner silently erases the
+        # practitioner's identity the moment a second profile appears (ADR 0012).
+        self.assertEqual(content["background"], "software engineer exploring legal tech")
         self.assertEqual(content["response_language"], "bm")
         self.assertEqual(content["citation_style"], "prefers brief answers")
         self.assertEqual(set(content["practice_areas"]), {"employment", "labour"})

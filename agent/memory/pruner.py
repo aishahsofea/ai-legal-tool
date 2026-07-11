@@ -101,12 +101,12 @@ def _merge_profiles(profiles: list[SearchItem]) -> dict:
         key=lambda p: p.updated_at or datetime.min.replace(tzinfo=timezone.utc),
         reverse=True,
     )
-    merged: dict = {"response_language": None, "citation_style": None,
+    merged: dict = {"background": None, "response_language": None, "citation_style": None,
                     "practice_areas": [], "frequent_acts": []}
     seen = {"practice_areas": set(), "frequent_acts": set()}
     for p in ordered:
         content = (p.value or {}).get("content") or {}
-        for scalar in ("response_language", "citation_style"):
+        for scalar in ("background", "response_language", "citation_style"):
             if merged[scalar] is None and content.get(scalar):
                 merged[scalar] = content[scalar]
         for field in ("practice_areas", "frequent_acts"):

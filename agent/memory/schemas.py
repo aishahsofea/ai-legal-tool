@@ -13,6 +13,14 @@ from pydantic import BaseModel, Field
 class PractitionerProfile(BaseModel):
     """Durable, non-confidential preferences — never a record of a client or matter."""
 
+    background: Optional[str] = Field(
+        default=None,
+        description="The practitioner's own professional background, role, or goal when "
+        "they state it about themselves (e.g. 'software engineer exploring legal tech', "
+        "'in-house counsel', 'law student'). This is the USER's own identity — helpful "
+        "for framing replies — never a client's, counterparty's, or any third party's. "
+        "Exclude sensitive personal life (health, family, finances, religion).",
+    )
     response_language: Optional[Literal["en", "bm", "mixed"]] = Field(
         default=None,
         description="Preferred response language, set only when expressed or clearly signalled.",

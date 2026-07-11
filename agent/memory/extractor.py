@@ -24,7 +24,11 @@ _DEFAULT_MODEL = "gpt-4.1-mini"
 
 _EXTRACTION_INSTRUCTIONS = """You maintain durable Semantic Memory about a legal Practitioner across their research threads.
 
-Extract ONLY stable facts about how this practitioner likes to work and what they research:
+Extract ONLY stable facts about who this practitioner is, how they like to work, and
+what they research:
+- Their own professional background, role, or goal when they state it about themselves
+  (e.g. "I'm a software engineer exploring legal tech", "I'm in-house counsel", "I'm a
+  law student"). This is the USER's own identity and helps frame replies — store it.
 - Response-language preference (English, Bahasa Malaysia, or mixed).
 - How the practitioner wants answers formatted or styled — brevity/length (brief vs
   detailed), bulleted vs prose, leading with section numbers, headings, citation style.
@@ -32,15 +36,17 @@ Extract ONLY stable facts about how this practitioner likes to work and what the
 - Malaysian Acts they reference frequently.
 - Recurring research topics they return to.
 
-A direct instruction about how answers should be presented (e.g. "keep answers brief",
-"use bullet points", "state the section number first") IS a durable preference — store
-it even though the "when in doubt" guard below applies to everything else.
+A direct statement of who they are ("I'm a software engineer") or how answers should be
+presented ("keep answers brief", "use bullet points", "state the section number first")
+IS a durable fact — store it even though the "when in doubt" guard below applies to
+everything else. Self-introductions in small talk are a normal place these appear.
 
 NEVER store confidential client or matter facts: client names, party names, case
 specifics, dates, amounts, or anything tied to a particular dispute or transaction.
 These carry retention and privilege obligations and must not enter durable memory.
-When in doubt, do not store it. If the turn contains no durable preference or
-recurring topic, extract nothing.
+Likewise never store the practitioner's sensitive personal life (health, family,
+finances, religion) — professional background only. When in doubt, do not store it.
+If the turn contains no durable fact, preference, or recurring topic, extract nothing.
 
 Reconcile with existing memories: update a preference in place when it changes,
 and add a recurring topic only when it is genuinely new."""

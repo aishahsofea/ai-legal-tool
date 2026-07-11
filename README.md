@@ -22,7 +22,8 @@ User query + thread_id (EN / BM / mixed)
 │  router            │  classifies: statute_lookup / topical_search /
 │                    │  provision_extraction / conversational / escalate
 └──────┬─────────────┘
-       │ (escalate + conversational short-circuit here)
+       │ (escalate short-circuits here; conversational short-circuits
+       │  via recall, then the conversational node)
        ▼
 ┌────────────────────┐
 │  contextualize     │  rewrites an elliptical follow-up into a
@@ -38,7 +39,8 @@ User query + thread_id (EN / BM / mixed)
        ▼
 ┌────────────────────┐
 │  recall            │  pulls the practitioner's saved preferences into
-│                    │  the answer as framing hints (off by default —
+│                    │  the answer as framing hints — also runs before the
+│                    │  conversational node (off by default —
 │                    │  SEMANTIC_MEMORY_RECALL)
 └──────┬─────────────┘
        │
@@ -72,7 +74,7 @@ User query + thread_id (EN / BM / mixed)
       END
 ```
 
-Three short-circuits aren't pictured above: a query the `router` classifies as `escalate` skips straight to `record_turn` with a fixed human hand-off message (the `escalate` node); an unambiguously non-legal message (greeting, name, thanks, "what can you do?") the `router` classifies as `conversational` skips straight to `record_turn` with a short, warm reply (the `conversational` node — no retrieval, no supervisor, no citation or disclaimer); and a `supervisor` violation with a retry remaining (`MAX_RETRIES`) loops back to `synthesiser` via `increment_retry` before re-running citation/grounding checks. The router leans legal on ties — `conversational` is reserved for messages with no legal substance.
+Three short-circuits aren't pictured above: a query the `router` classifies as `escalate` skips straight to `record_turn` with a fixed human hand-off message (the `escalate` node); an unambiguously non-legal message (greeting, name, thanks, "what can you do?") the `router` classifies as `conversational` passes through `recall` (so saved preferences can personalise the reply) and then answers with a short, warm reply (the `conversational` node — no retrieval, no supervisor, no citation or disclaimer) before `record_turn`; and a `supervisor` violation with a retry remaining (`MAX_RETRIES`) loops back to `synthesiser` via `increment_retry` before re-running citation/grounding checks. The router leans legal on ties — `conversational` is reserved for messages with no legal substance.
 
 **Stack:** LangGraph (Postgres/Memory checkpointer) · FastAPI (Railway) · Next.js (Vercel) · Postgres + pgvector (Supabase) · OpenAI `text-embedding-3-small` · GPT-4.1 by default — provider-agnostic via `agent/llm_factory.py` (Claude/Gemini also supported; Claude used for the eval judge)
 
@@ -322,9 +324,9 @@ History accumulates across turns and is trimmed to a token budget (`MAX_HISTORY_
 
 **Semantic Memory** remembers the practitioner across all of them — their durable preferences and the topics they keep returning to, scoped by `user_id`. It lives in a cross-thread store that runs on the same backends as the checkpointer: Postgres when `DATABASE_URL` is set, in-memory otherwise. See ADR 0010 and `CONTEXT.md` for the model.
 
-The `recall` node reads those facts and passes them to the synthesiser as hints about how to frame an answer. They are soft context, not legal substance: never cited, never treated as fact, and never written back into the conversation history. The retrieved statutes and the query always win when they conflict.
+The `recall` node reads those facts and passes them to the answering node — the synthesiser on the legal path, or the conversational node on the small-talk short-circuit — as hints about how to frame a reply. The practitioner's own **profile** (background, language, format style) is fetched deterministically by kind and always surfaced when present, rather than made to win a vector search against the current query (ADR 0012); recurring **topics** are retrieved by similarity to the query. They are soft context, not legal substance: never cited, never treated as fact, and never written back into the conversation history. The retrieved statutes and the query always win when they conflict. Both legal and conversational turns feed the background **write** path (ADR 0012), because a practitioner's own background often surfaces in small talk ("I'm a software engineer exploring legal tech") and is a durable fact worth remembering — distinct from confidential client/matter facts, which are excluded by construction.
 
-Facts get *into* the store on the **write path** (`agent/memory/extractor.py`): after a legal turn is delivered, a background job extracts durable practitioner facts — preferences (`PractitionerProfile`) and recurring research topics (`RecurringTopic`) — via LangMem (Trustcall underneath, dedup/merge-aware) and upserts them into the same `(user_id, "semantic")` namespace. It runs **off the hot path** — fired only after the response event, so it can never delay or alter the turn — and stores **only** preferences and topics: confidential client or matter facts are excluded by construction (schema field descriptions + the extraction prompt).
+Facts get *into* the store on the **write path** (`agent/memory/extractor.py`): after a legal or conversational turn is delivered, a background job extracts durable practitioner facts — the practitioner's own profile (`PractitionerProfile`: background, preferences) and recurring research topics (`RecurringTopic`) — via LangMem (Trustcall underneath, dedup/merge-aware) and upserts them into the same `(user_id, "semantic")` namespace. It runs **off the hot path** — fired only after the response event, so it can never delay or alter the turn — and stores **only** the practitioner's own identity, preferences, and topics: confidential client or matter facts and sensitive personal life are excluded by construction (schema field descriptions + the extraction prompt).
 
 The write path only inserts, so the topic collection grows and can accumulate near-duplicates and multiple profiles. The **maintenance path** (`agent/memory/pruner.py`) keeps the namespace bounded and high-quality: it collapses duplicate profiles into one, consolidates near-duplicate topics (clustered via the store's own vector search), and evicts low-value topics beyond a generous cap by an **importance + recency** score — retrieval frequency (recorded by `recall` in a side `(user_id, "semantic_meta")` namespace) weighted against each item's write time. It is **not** TTL: a stale-but-frequently-recalled fact outlives recent chatter. Like extraction it runs off the hot path (fired after the response, size-debounced), is fail-open, and is deliberately conservative — it never deletes the sole profile and never empties a namespace. Tune the cap, similarity threshold, and weights with `evals/semantic_memory.py`.
 
