@@ -41,7 +41,8 @@ class AgentState(TypedDict):
     retrieved_chunks: list[dict]
     draft_response: str
     citations: list[Citation]
-    violations: list[str]    # supervisor findings; empty = pass
+    violations: list[str]    # all findings (evidence + policy); empty = pass
+    evidence_violations: list[str]  # subset from citation/grounding checks; drives re-retrieval routing
     recalled_memory: str     # Semantic Memory recalled for the synthesiser
     retrieval_feedback: str  # feedback fed to the agentic retriever on a re-retrieval pass
     final_response: str

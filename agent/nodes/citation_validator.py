@@ -48,16 +48,21 @@ def citation_validator_node(state: AgentState) -> dict:
     structured_keys.discard(("", ""))
 
     violations = list(state.get("violations", []))
+    # Evidence-shaped violations are tracked separately so the retry can route to
+    # re-retrieval (fetch better sources) rather than a blind re-draft (Phase 4).
+    evidence_violations = list(state.get("evidence_violations", []))
+
+    def _flag(msg: str) -> None:
+        violations.append(msg)
+        evidence_violations.append(msg)
 
     if not structured_keys:
-        violations.append("No citation found. A legal answer must cite at least one retrieved section.")
+        _flag("No citation found. A legal answer must cite at least one retrieved section.")
 
     for act_number, section_number in sorted(structured_keys):
         if not _metadata_exists(act_number):
-            violations.append(f"Citation references unknown Act {act_number}.")
+            _flag(f"Citation references unknown Act {act_number}.")
         if (act_number, section_number) not in retrieved_keys:
-            violations.append(
-                f"Citation Section {section_number} of Act {act_number} was not in retrieved sources."
-            )
+            _flag(f"Citation Section {section_number} of Act {act_number} was not in retrieved sources.")
 
-    return {"violations": violations}
+    return {"violations": violations, "evidence_violations": evidence_violations}

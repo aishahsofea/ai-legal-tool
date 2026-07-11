@@ -41,14 +41,49 @@ def _escalate_node(state: AgentState) -> dict:
 
 
 def _increment_retry_node(state: AgentState) -> dict:
+    # Re-draft path: clear findings and re-run the synthesiser against the same
+    # retrieved chunks (a policy/phrasing fix). Feedback is cleared so a stale
+    # re-retrieval note can't leak into a subsequent turn.
     return {
         "retry_count": state.get("retry_count", 0) + 1,
         "violations": [],
+        "evidence_violations": [],
+        "retrieval_feedback": "",
     }
+
+
+def _build_retrieval_feedback(evidence_violations: list[str]) -> str:
+    joined = " ".join(evidence_violations)
+    return (
+        "The previous answer had missing or unsupported citations: "
+        f"{joined} Search for statute sections that directly address these points."
+    )
+
+
+def _retry_retrieve_node(state: AgentState) -> dict:
+    # Re-retrieve path: an evidence gap (bad/missing citation, unsupported claim)
+    # is better fixed by fetching different sources than by re-drafting the same
+    # ones. Bump the retry, clear findings, and hand the retrieval agent feedback.
+    return {
+        "retry_count": state.get("retry_count", 0) + 1,
+        "violations": [],
+        "evidence_violations": [],
+        "retrieval_feedback": _build_retrieval_feedback(state.get("evidence_violations", [])),
+    }
+
+
+def _agentic_retrieval_enabled() -> bool:
+    return os.getenv("AGENTIC_RETRIEVAL", "").lower() in ("1", "true", "yes")
 
 
 def _route_from_supervisor(state: AgentState) -> str:
     if state.get("violations") and state.get("retry_count", 0) < MAX_RETRIES:
+        # Evidence gaps re-retrieve (only meaningful with the agentic retriever,
+        # which can act on feedback); policy/phrasing issues re-draft. With the
+        # deterministic retriever a re-retrieve just repeats the same search, so
+        # we keep the existing re-draft behaviour when the flag is off.
+        if state.get("evidence_violations") and _agentic_retrieval_enabled():
+            return "retry_retrieve"
         return "increment_retry"
     return END
 
@@ -64,6 +99,7 @@ def _start_turn(state: AgentState) -> dict:
         "draft_response": "",
         "citations": [],
         "violations": [],
+        "evidence_violations": [],
         "recalled_memory": "",
         "retrieval_feedback": "",
         "final_response": "",
@@ -173,6 +209,7 @@ def build_graph(checkpointer=None, store=None) -> StateGraph:
     g.add_node("grounding_check", grounding_check_node)
     g.add_node("supervisor", supervisor_node)
     g.add_node("increment_retry", _increment_retry_node)
+    g.add_node("retry_retrieve", _retry_retrieve_node)
     g.add_node("record_turn", _record_turn)
 
     g.set_entry_point("start_turn")
@@ -194,9 +231,12 @@ def build_graph(checkpointer=None, store=None) -> StateGraph:
     g.add_edge("grounding_check", "supervisor")
     g.add_conditional_edges("supervisor", _route_from_supervisor, {
         "increment_retry": "increment_retry",
+        "retry_retrieve": "retry_retrieve",
         END: "record_turn",
     })
     g.add_edge("increment_retry", "synthesiser")
+    # Re-retrieval re-enters the retrieve→recall→synthesise subpath with feedback.
+    g.add_edge("retry_retrieve", "retriever")
     g.add_edge("record_turn", END)
 
     return g.compile(checkpointer=checkpointer, store=store)

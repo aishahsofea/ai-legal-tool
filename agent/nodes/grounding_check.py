@@ -122,12 +122,17 @@ def grounding_check_node(state: AgentState) -> dict:
         logger.warning("grounding_check_node failed; skipping grounding verification", exc_info=True)
         return {"violations": violations}
 
+    # An unsupported claim is an evidence gap: the retry should re-retrieve better
+    # sources (Phase 4), so these are tracked in evidence_violations too.
+    evidence_violations = list(state.get("evidence_violations", []))
     for claim in result.claims:
         if claim.support == "unsupported":
-            violations.append(
+            msg = (
                 "Grounding check failed: "
                 f"unsupported claim citing Section {claim.cited_section_number} "
                 f"of Act {claim.cited_act_number}: {claim.reason}"
             )
+            violations.append(msg)
+            evidence_violations.append(msg)
 
-    return {"violations": violations}
+    return {"violations": violations, "evidence_violations": evidence_violations}
