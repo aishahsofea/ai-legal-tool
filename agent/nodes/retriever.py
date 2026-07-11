@@ -9,6 +9,8 @@ tools; this node is the proven, non-agentic path kept as a fail-open fallback.
 Searches English chunks (the cross-lingual embedding handles BM and mixed
 queries). Each chunk carries the AGC PDF URL (with page anchor) for deep links.
 """
+import logging
+
 from agent.retrieval.search import (
     exact_section_lookup,
     extract_act_hint,
@@ -16,6 +18,8 @@ from agent.retrieval.search import (
     semantic_search,
 )
 from agent.state import AgentState
+
+logger = logging.getLogger(__name__)
 
 
 def retriever_node(state: AgentState) -> dict:
@@ -32,4 +36,29 @@ def retriever_node(state: AgentState) -> dict:
     if not rows:
         rows = semantic_search(query)
 
+    return {"retrieved_chunks": rows}
+
+
+def agentic_retriever_node(state: AgentState) -> dict:
+    """Retrieval via the ReAct agent (agent/retrieval/agent.py), flag-gated by
+    AGENTIC_RETRIEVAL. The agent picks the tools and can re-search on weak hits.
+
+    Fails open to the deterministic retriever_node on any error or an empty
+    result, so turning the flag on can never retrieve *less* than the proven
+    path. `retrieval_feedback` (Phase 4) is forwarded on a re-retrieval pass.
+    """
+    # Imported lazily so the deterministic path (and offline test imports) never
+    # pay for compiling the agent.
+    from agent.retrieval.agent import run_retrieval_agent
+
+    query = state.get("standalone_query") or state["query"]
+    feedback = state.get("retrieval_feedback", "")
+    try:
+        rows = run_retrieval_agent(query, feedback)
+    except Exception:
+        logger.warning("agentic_retriever_node failed; falling back to deterministic retriever", exc_info=True)
+        rows = []
+
+    if not rows:
+        return retriever_node(state)
     return {"retrieved_chunks": rows}

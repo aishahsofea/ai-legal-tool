@@ -21,7 +21,7 @@ from agent.nodes.conversational import conversational_node
 from agent.nodes.grounding_check import grounding_check_node
 from agent.nodes.recall import arecall_node, recall_node
 from agent.nodes.router import router_node
-from agent.nodes.retriever import retriever_node
+from agent.nodes.retriever import agentic_retriever_node, retriever_node
 from agent.nodes.supervisor import ESCALATION_RESPONSE, supervisor_node
 from agent.nodes.synthesiser import synthesiser_node
 from agent.query_policy import MAX_RETRIES, delivered_response, strip_disclaimer
@@ -65,6 +65,7 @@ def _start_turn(state: AgentState) -> dict:
         "citations": [],
         "violations": [],
         "recalled_memory": "",
+        "retrieval_feedback": "",
         "final_response": "",
         "retry_count": 0,
     }
@@ -139,6 +140,16 @@ def _make_store():
     return store
 
 
+def _select_retriever_node():
+    """Pick the retrieval node by flag. AGENTIC_RETRIEVAL swaps the deterministic
+    retriever for the ReAct agent (agent/retrieval/agent.py); the "retriever" node
+    id and its edges are unchanged, and the agent wrapper fails open to the
+    deterministic path so the graph shape and safety net are preserved."""
+    if os.getenv("AGENTIC_RETRIEVAL", "").lower() in ("1", "true", "yes"):
+        return agentic_retriever_node
+    return retriever_node
+
+
 def build_graph(checkpointer=None, store=None) -> StateGraph:
     g = StateGraph(AgentState)
 
@@ -147,7 +158,7 @@ def build_graph(checkpointer=None, store=None) -> StateGraph:
     g.add_node("escalate", _escalate_node)
     g.add_node("conversational", conversational_node)
     g.add_node("contextualize", contextualize_node)
-    g.add_node("retriever", retriever_node)
+    g.add_node("retriever", _select_retriever_node())
     g.add_node("recall", RunnableCallable(recall_node, arecall_node, name="recall"))
     # A second recall instance for the conversational short-circuit. Same pure read
     # functions (flag-gated, fail-open), but its out-edge feeds the conversational node

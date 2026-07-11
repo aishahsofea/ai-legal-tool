@@ -41,5 +41,6 @@ class AgentState(TypedDict):
     citations: list[Citation]
     violations: list[str]    # supervisor findings; empty = pass
     recalled_memory: str     # Semantic Memory recalled for the synthesiser
+    retrieval_feedback: str  # feedback fed to the agentic retriever on a re-retrieval pass
     final_response: str
     retry_count: int
