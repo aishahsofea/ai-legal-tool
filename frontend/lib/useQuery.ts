@@ -36,6 +36,11 @@ export function useQuery() {
       for await (const event of streamQuery(query, threadId, controller.signal)) {
         if (event.type === "status") {
           setState((s) => ({ ...s, status: event.message }));
+        } else if (event.type === "tool_call") {
+          // Surface each retrieval tool call as a PROCESS step. Routing it through
+          // `status` lets it flow into statusHistory like any other step, so the
+          // panel shows the agent's search actions without a schema change.
+          setState((s) => ({ ...s, status: event.summary || event.name }));
         } else if (event.type === "response") {
           setState((s) => ({
             ...s,

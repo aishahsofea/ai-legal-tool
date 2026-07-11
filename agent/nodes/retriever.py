@@ -1,155 +1,69 @@
 """
-Retriever node — embeds the query and searches pgvector for the top-k chunks.
+Retriever node — the deterministic retrieval path.
 
-Searches both English chunks (cross-lingual embedding handles BM and mixed queries).
-Attaches the AGC PDF URL (with page anchor) to each chunk for citation deep links.
+Embeds the query and searches pgvector for the top-k chunks, trying an exact
+section lookup first for `statute_lookup` queries. The actual search lives in
+agent/retrieval/search.py so the same functions back the agentic retrieval
+tools; this node is the proven, non-agentic path kept as a fail-open fallback.
+
+Searches English chunks (the cross-lingual embedding handles BM and mixed
+queries). Each chunk carries the AGC PDF URL (with page anchor) for deep links.
 """
-import json
-import os
-import re
-from functools import lru_cache
-from pathlib import Path
+import logging
 
-import psycopg2
-import psycopg2.extras
-from dotenv import load_dotenv
-from openai import OpenAI
-
+from agent.retrieval.search import (
+    exact_section_lookup,
+    extract_act_hint,
+    extract_section_number,
+    semantic_search,
+)
 from agent.state import AgentState
 
-load_dotenv()
-
-TOP_K        = 8
-EXACT_TOP_K  = 3
-METADATA_DIR = Path("data/acts_metadata")
-
-_SECTION_RE = re.compile(r"\b(?:seksyen|sek\.?|section|sec\.?|s\.?)\s*(\d+[A-Z]{0,2})\b", re.IGNORECASE)
-_ACT_NUMBER_RE = re.compile(r"\bact\s+(\d+[A-Z]?)\b", re.IGNORECASE)
-_ACT_ALIASES: dict[str, tuple[str, str]] = {
-    "evidence act": ("56", "EVIDENCE ACT 1950"),
-    "akta keterangan": ("56", "EVIDENCE ACT 1950"),
-    "penal code": ("574", "PENAL CODE"),
-    "kanun keseksaan": ("574", "PENAL CODE"),
-    "criminal procedure code": ("593", "CRIMINAL PROCEDURE CODE"),
-    "cpc": ("593", "CRIMINAL PROCEDURE CODE"),
-    "employment act": ("265", "EMPLOYMENT ACT 1955"),
-    "akta pekerjaan": ("265", "EMPLOYMENT ACT 1955"),
-    "companies act": ("777", "COMPANIES ACT 2016"),
-    "akta syarikat": ("777", "COMPANIES ACT 2016"),
-    "pdpa": ("709", "PERSONAL DATA PROTECTION ACT 2010"),
-    "akta pdpa": ("709", "PERSONAL DATA PROTECTION ACT 2010"),
-    "personal data protection act": ("709", "PERSONAL DATA PROTECTION ACT 2010"),
-    "akta perlindungan data peribadi": ("709", "PERSONAL DATA PROTECTION ACT 2010"),
-}
-
-_openai  = OpenAI()
-_db_url  = os.environ["DATABASE_URL"]
-
-
-@lru_cache(maxsize=1)
-def _pdf_url_map() -> dict[str, str]:
-    """Build {act_number: latest_reprint_pdf} from metadata files. Cached on first call."""
-    result = {}
-    for f in METADATA_DIR.glob("*.json"):
-        try:
-            d = json.loads(f.read_text(encoding="utf-8"))
-            url = d.get("latest_reprint_pdf") or d.get("latest_amendment_pdf") or ""
-            result[d["act_number"]] = url
-        except Exception:
-            pass
-    return result
-
-
-def _embed(text: str) -> list[float]:
-    resp = _openai.embeddings.create(model="text-embedding-3-small", input=[text])
-    return resp.data[0].embedding
-
-
-def _extract_section_number(query: str) -> str | None:
-    match = _SECTION_RE.search(query)
-    return match.group(1).upper() if match else None
-
-
-def _extract_act_hint(query: str) -> tuple[str | None, str | None]:
-    lowered = query.lower()
-    for alias, act in _ACT_ALIASES.items():
-        if re.search(rf"\b{re.escape(alias)}\b", lowered):
-            return act
-
-    act_number = _ACT_NUMBER_RE.search(query)
-    if act_number:
-        return act_number.group(1).upper(), None
-    return None, None
-
-
-def _attach_pdf_urls(rows: list[dict]) -> list[dict]:
-    pdf_map = _pdf_url_map()
-    chunks = []
-    for row in rows:
-        d = dict(row)
-        base_url = pdf_map.get(d["act_number"], "")
-        d["pdf_url"] = f"{base_url}#page={d['page_number']}" if base_url and d.get("page_number") else base_url
-        chunks.append(d)
-    return chunks
-
-
-def _exact_statute_lookup(conn, query: str) -> list[dict]:
-    section_number = _extract_section_number(query)
-    act_number, act_title = _extract_act_hint(query)
-    if not section_number or not (act_number or act_title):
-        return []
-
-    title_pattern = f"%{act_title}%" if act_title else ""
-    with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
-        cur.execute(
-            """
-            SELECT act_number, act_title, section_number, content, page_number, language,
-                   1.0 AS similarity
-            FROM chunks
-            WHERE UPPER(section_number) = %s
-              AND (act_number = %s OR act_title ILIKE %s)
-            ORDER BY
-              CASE WHEN act_number = %s THEN 0 ELSE 1 END,
-              CASE WHEN language = 'en' THEN 0 ELSE 1 END
-            LIMIT %s
-            """,
-            (section_number, act_number or "", title_pattern, act_number or "", EXACT_TOP_K),
-        )
-        return [dict(row) for row in cur.fetchall()]
-
-
-def _vector_search(conn, query: str) -> list[dict]:
-    query_vec = _embed(query)
-    with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
-        # Increase ivfflat probes from default 1 → 10 for better recall.
-        # Default probes=1 misses correct clusters; 10 is a good recall/speed trade-off
-        # for a pilot corpus of ~24k chunks.
-        cur.execute("SET ivfflat.probes = 10;")
-        cur.execute(
-            """
-            SELECT act_number, act_title, section_number, content, page_number, language,
-                   1 - (embedding <=> %s::vector) AS similarity
-            FROM chunks
-            ORDER BY embedding <=> %s::vector
-            LIMIT %s
-            """,
-            (query_vec, query_vec, TOP_K),
-        )
-        return [dict(row) for row in cur.fetchall()]
+logger = logging.getLogger(__name__)
 
 
 def retriever_node(state: AgentState) -> dict:
     # Search on the history-resolved Standalone Query when the contextualize node
     # produced one; otherwise fall back to the raw query (first turn / fail-open).
     query = state.get("standalone_query") or state["query"]
-    conn = psycopg2.connect(_db_url)
-    try:
-        rows = []
-        if state.get("query_type") == "statute_lookup":
-            rows = _exact_statute_lookup(conn, query)
-        if not rows:
-            rows = _vector_search(conn, query)
-    finally:
-        conn.close()
 
-    return {"retrieved_chunks": _attach_pdf_urls(rows)}
+    rows: list[dict] = []
+    if state.get("query_type") == "statute_lookup":
+        section = extract_section_number(query)
+        act_number, act_title = extract_act_hint(query)
+        if section:
+            rows = exact_section_lookup(section, act_number, act_title)
+    if not rows:
+        rows = semantic_search(query)
+
+    return {"retrieved_chunks": rows}
+
+
+def agentic_retriever_node(state: AgentState, config=None) -> dict:
+    """Retrieval via the ReAct agent (agent/retrieval/agent.py), flag-gated by
+    AGENTIC_RETRIEVAL. The agent picks the tools and can re-search on weak hits.
+
+    Fails open to the deterministic retriever_node on any error or an empty
+    result, so turning the flag on can never retrieve *less* than the proven
+    path. `retrieval_feedback` (Phase 4) is forwarded on a re-retrieval pass.
+    `config` (injected by LangGraph) is forwarded so the tools' custom stream
+    writes reach the parent stream and surface as tool_call UI events.
+    """
+    # Imported lazily so the deterministic path (and offline test imports) never
+    # pay for compiling the agent.
+    from agent.retrieval.agent import run_retrieval_agent
+
+    query = state.get("standalone_query") or state["query"]
+    feedback = state.get("retrieval_feedback", "")
+    rows: list[dict] = []
+    tools: list[str] = []
+    try:
+        out = run_retrieval_agent(query, feedback, config)
+        rows, tools = out["chunks"], out["tools"]
+    except Exception:
+        logger.warning("agentic_retriever_node failed; falling back to deterministic retriever", exc_info=True)
+        rows = []
+
+    if not rows:
+        return retriever_node(state)
+    return {"retrieved_chunks": rows, "tool_trace": tools}

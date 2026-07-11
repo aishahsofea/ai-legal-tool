@@ -20,11 +20,14 @@ class QueryResult(TypedDict):
     response: str
     citations: list[Citation]
     violations: list[str]
+    tool_trace: list[str]    # retrieval tools the agent called (agentic retrieval)
 
 
 class QueryEvent(TypedDict, total=False):
-    type: Literal["status", "response", "error", "done"]
+    type: Literal["status", "tool_call", "response", "error", "done"]
     message: str
+    name: str        # tool_call: which retrieval tool fired
+    summary: str     # tool_call: human-readable description of the call
     content: str
     citations: list[Citation]
     violations: list[str]
@@ -39,7 +42,10 @@ class AgentState(TypedDict):
     retrieved_chunks: list[dict]
     draft_response: str
     citations: list[Citation]
-    violations: list[str]    # supervisor findings; empty = pass
+    violations: list[str]    # all findings (evidence + policy); empty = pass
+    evidence_violations: list[str]  # subset from citation/grounding checks; drives re-retrieval routing
     recalled_memory: str     # Semantic Memory recalled for the synthesiser
+    retrieval_feedback: str  # feedback fed to the agentic retriever on a re-retrieval pass
+    tool_trace: list[str]    # retrieval tool names the agent called this turn
     final_response: str
     retry_count: int

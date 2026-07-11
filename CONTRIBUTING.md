@@ -46,6 +46,7 @@ Optional flags (both default off / to Postgres):
 - `SEMANTIC_MEMORY_RECALL=on` — enable the `recall` node so the synthesiser **reads** cross-thread **Semantic Memory** (ADR 0010). Off by default, fail-open.
 - `SEMANTIC_MEMORY_EXTRACT=on` — enable the background **write** path (`agent/memory/extractor.py`) that extracts durable practitioner facts (including the practitioner's own background — ADR 0012) after a legal or conversational turn and upserts them into the store. Off by default, fail-open, and runs off the hot path (after the response is delivered). Turn both flags on to see recall surface facts written on earlier turns.
 - `SEMANTIC_MEMORY_PRUNE=on` — enable the background **maintenance** path (`agent/memory/pruner.py`) that consolidates duplicate profiles / near-duplicate topics and evicts low-value topics by importance+recency (not TTL). Off by default, fail-open, off the hot path, size-debounced, and conservative (never deletes the sole profile or empties a namespace).
+- `AGENTIC_RETRIEVAL=on` — swap the deterministic `retriever` node for a `create_react_agent` that binds the `search_statutes` / `lookup_section` tools and decides how to search (ADR 0013). Off by default, fail-open (any error or empty result falls back to the deterministic pgvector path). With it on, the retry loop also re-retrieves with feedback on an evidence-shaped violation instead of only re-drafting, and the retrieval tools stream `tool_call` SSE events into the PROCESS panel. The eval `tool_selection` assertion (dataset `expected_tool`) only activates when this flag is on. `RETRIEVAL_RECURSION_LIMIT` (default 6) bounds the ReAct loop.
 
 Create `frontend/.env.local`:
 
@@ -139,7 +140,7 @@ It checks whether `contextualize` can still resolve an elliptical follow-up afte
 
 ### Model overrides
 
-The router, contextualize, conversational, synthesiser, and grounding-check nodes — plus the background Semantic Memory extractor — each have an env var that controls which model they use. All are resolved through the provider-agnostic factory in `agent/llm_factory.py`: a `claude-*` name routes to Anthropic, `gemini-*` to Google, and anything else (including the `gpt-*` default) to OpenAI. The contextualize and conversational nodes and the memory extractor default to a cheaper mini-class model, since rewriting a query, replying to small talk, and extracting durable facts are lighter tasks than classification or synthesis. The grounding check is the one node that defaults to a Claude model, since it acts as an independent judge of whether the synthesiser's claims are supported by the cited sources. The conversational node is the one node that runs hot (`temperature=0.7`) so repeated greetings vary in wording; every other node runs at the factory default `temperature=0` for reproducible output.
+The router, contextualize, conversational, synthesiser, and grounding-check nodes — plus the agentic retriever and the background Semantic Memory extractor — each have an env var that controls which model they use. All are resolved through the provider-agnostic factory in `agent/llm_factory.py`: a `claude-*` name routes to Anthropic, `gemini-*` to Google, and anything else (including the `gpt-*` default) to OpenAI. The contextualize and conversational nodes and the memory extractor default to a cheaper mini-class model, since rewriting a query, replying to small talk, and extracting durable facts are lighter tasks than classification or synthesis. The grounding check is the one node that defaults to a Claude model, since it acts as an independent judge of whether the synthesiser's claims are supported by the cited sources. The conversational node is the one node that runs hot (`temperature=0.7`) so repeated greetings vary in wording; every other node runs at the factory default `temperature=0` for reproducible output.
 
 | Env var | Node | Default |
 |---|---|---|
@@ -148,6 +149,7 @@ The router, contextualize, conversational, synthesiser, and grounding-check node
 | `CONVERSATIONAL_MODEL` | conversational | `gpt-4.1-mini` |
 | `SYNTHESISER_MODEL` | synthesiser | `gpt-4.1` |
 | `GROUNDING_MODEL` | grounding check | `claude-sonnet-4-6` |
+| `RETRIEVAL_AGENT_MODEL` | agentic retriever ReAct agent (`AGENTIC_RETRIEVAL` on) | `gpt-4.1` |
 | `MEMORY_EXTRACT_MODEL` | Semantic Memory extractor (background write path) | `gpt-4.1-mini` |
 
 Override to `claude-haiku-4-5-20251001` (~3× cheaper than GPT-4.1) for fast pipeline-correctness signal without the GPT-4.1 default:

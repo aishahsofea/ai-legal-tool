@@ -13,8 +13,9 @@ def _drive(query, updates, user_id="user-1"):
     calls = []
 
     async def fake_astream(_input, _config, stream_mode=None):
+        # Production streams ["updates", "custom"] → (mode, chunk) tuples.
         for update in updates:
-            yield update
+            yield update if isinstance(update, tuple) else ("updates", update)
 
     async def collect():
         with patch("agent.query_lifecycle.graph") as graph, \

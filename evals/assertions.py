@@ -100,6 +100,25 @@ def check_ai_refusal(response: str, expected_policy: str) -> str | None:
     return None
 
 
+def check_tool_selection(
+    tool_trace: list[str],
+    expected_tool: str | None,
+) -> str | None:
+    """Return None if the agent called the expected retrieval tool, else a message.
+
+    Applies only when a case declares `expected_tool` (agentic retrieval). Passes
+    as long as the expected tool appears somewhere in the trace — the agent may
+    also call others (e.g. a fallback search after an exact-lookup miss)."""
+    if not expected_tool:
+        return None
+    if expected_tool in (tool_trace or []):
+        return None
+    return (
+        f"Expected the agent to call `{expected_tool}`, but the tool trace was "
+        f"{tool_trace or '[]'}."
+    )
+
+
 def run_assertions(
     *,
     citations: list[dict[str, Any]],
@@ -109,6 +128,8 @@ def run_assertions(
     expected_section: str | None,
     expected_policy: str,
     db_conn: Any,
+    tool_trace: list[str] | None = None,
+    expected_tool: str | None = None,
 ) -> dict[str, str]:
     """Run all L1 assertions. Returns {assertion_name: failure_message} for failures only."""
     failures: dict[str, str] = {}
@@ -116,6 +137,10 @@ def run_assertions(
     result = check_citation_existence(citations, db_conn)
     if result is not None:
         failures["citation_existence"] = result
+
+    result = check_tool_selection(tool_trace or [], expected_tool)
+    if result is not None:
+        failures["tool_selection"] = result
 
     result = check_expected_section(citations, expected_act_number, expected_section)
     if result is not None:

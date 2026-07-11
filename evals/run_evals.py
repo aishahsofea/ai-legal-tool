@@ -29,6 +29,7 @@ DEFAULT_RESULTS_PATH = ROOT / "results.json"
 
 _ASSERTION_NAMES = [
     "citation_existence",
+    "tool_selection",
     "expected_section",
     "language_register",
     "uuid_leakage",
@@ -62,6 +63,7 @@ def _run_full_agent(query: str, history: list[dict[str, Any]] | None = None) -> 
         "violations": result["violations"],
         "retry_count": 0,
         "retrieved_chunks": [],
+        "tool_trace": result.get("tool_trace", []),
     }
 
 
@@ -99,6 +101,7 @@ def _compact_state(state: dict[str, Any]) -> dict[str, Any]:
         "citations": state.get("citations", []),
         "violations": state.get("violations", []),
         "retry_count": state.get("retry_count", 0),
+        "tool_trace": state.get("tool_trace", []),
         "retrieved_chunks": [
             {
                 "act_number": c.get("act_number"),
@@ -136,9 +139,12 @@ def _assertion_applicable(
     expected_act_number: str | None,
     expected_section: str | None,
     expected_policy: str,
+    expected_tool: str | None = None,
 ) -> bool:
     if name == "citation_existence":
         return bool(citations)
+    if name == "tool_selection":
+        return bool(expected_tool)
     if name == "expected_section":
         return bool(expected_act_number and expected_section)
     if name == "language_register":
@@ -166,6 +172,11 @@ def run_suite(mode: str, dataset_path: Path, limit: int | None = None, smoke: bo
     }
     runner = runner_map[mode]
 
+    # tool_selection only applies to the agentic retriever (it's the only path that
+    # produces a tool trace). With the flag off, expected_tool is treated as absent
+    # so the assertion is skipped and the default eval is unaffected.
+    agentic_on = os.getenv("AGENTIC_RETRIEVAL", "").lower() in ("1", "true", "yes")
+
     db_conn = psycopg2.connect(os.environ["DATABASE_URL"])
     try:
         for idx, case in enumerate(cases, 1):
@@ -179,9 +190,11 @@ def run_suite(mode: str, dataset_path: Path, limit: int | None = None, smoke: bo
 
             citations = agent_output["citations"]
             response = agent_output["final_response"]
+            tool_trace = agent_output.get("tool_trace", [])
             expected_act_number = case.get("expected_act_number")
             expected_section = case.get("expected_section")
             expected_policy = case.get("expected_policy", "allow")
+            expected_tool = case.get("expected_tool") if agentic_on else None
 
             # Track applicability
             for name in _ASSERTION_NAMES:
@@ -192,6 +205,7 @@ def run_suite(mode: str, dataset_path: Path, limit: int | None = None, smoke: bo
                     expected_act_number=expected_act_number,
                     expected_section=expected_section,
                     expected_policy=expected_policy,
+                    expected_tool=expected_tool,
                 ):
                     l1_applicable[name] += 1
 
@@ -203,6 +217,8 @@ def run_suite(mode: str, dataset_path: Path, limit: int | None = None, smoke: bo
                 expected_section=expected_section,
                 expected_policy=expected_policy,
                 db_conn=db_conn,
+                tool_trace=tool_trace,
+                expected_tool=expected_tool,
             )
 
             # Count passed per assertion
@@ -214,6 +230,7 @@ def run_suite(mode: str, dataset_path: Path, limit: int | None = None, smoke: bo
                     expected_act_number=expected_act_number,
                     expected_section=expected_section,
                     expected_policy=expected_policy,
+                    expected_tool=expected_tool,
                 ) and name not in l1_failures:
                     l1_passed[name] += 1
 

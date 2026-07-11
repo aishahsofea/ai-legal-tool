@@ -15,6 +15,7 @@ export interface Citation {
 
 export type QueryEvent =
   | { type: "status"; message: string }
+  | { type: "tool_call"; name: string; summary: string }
   | { type: "response"; content: string; citations: Citation[]; violations: string[] }
   | { type: "error"; message: string }
   | { type: "done" };
@@ -42,6 +43,14 @@ function decodeQueryEvent(raw: string): QueryEvent | null {
 
   if (event.type === "status" && typeof event.message === "string") {
     return { type: "status", message: event.message };
+  }
+
+  if (event.type === "tool_call") {
+    return {
+      type: "tool_call",
+      name: typeof event.name === "string" ? event.name : "",
+      summary: typeof event.summary === "string" ? event.summary : "",
+    };
   }
 
   if (event.type === "response") {

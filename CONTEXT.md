@@ -46,6 +46,14 @@ The prior turns in the same thread, passed as a list of user/assistant messages.
 The history-resolved, self-contained version of a follow-up **Legal Research Query**. A short or elliptical follow-up ("what about criminal cases?", "and in Bahasa?") is rewritten into a query that carries forward the act, topic, or section from **Conversation History** so it can be retrieved on its own. Used only for retrieval; it is never shown to the practitioner and never recorded in **Conversation History** (which always stores what the practitioner actually typed).
 _Avoid_: expanded query, resolved query
 
+**Retrieval Agent**:
+The tool-calling form of the retrieval step (flag `AGENTIC_RETRIEVAL`, ADR 0013). Rather than a fixed "exact-lookup-else-vector-search" dispatch, an LLM binds two **Retrieval Tools** — `search_statutes` (semantic search) and `lookup_section` (exact section lookup) — and decides which to call, with what arguments, and whether to search again when results look weak. It gathers sources only; it never drafts the answer. It **fails open** to the deterministic retriever, so it can never return less than the proven path.
+_Avoid_: calling it "the retriever" without qualification (that name is the deterministic node); "search agent"
+
+**Re-retrieval**:
+The retry behaviour where an **Evidence Violation** (a citation absent from the retrieved sources, or a grounding check flagging an unsupported claim) sends the turn back to the **Retrieval Agent** with feedback about the gap, instead of re-drafting against the same sources. A policy/phrasing violation still re-drafts. Bounded by the same single-retry budget — one *smarter* retry, not more loops. Only engages when `AGENTIC_RETRIEVAL` is on.
+_Avoid_: "retry" unqualified (there are two kinds — re-draft vs re-retrieve)
+
 **Practitioner**:
 The human using the assistant across research threads. Identified by a **User Id** — a UUID generated and persisted in the practitioner's browser and sent with every query. This is weak, per-browser identity (there is no authentication in v1); it is the scope key that lets **Semantic Memory** outlive a single thread.
 _Avoid_: account, session (a session is one thread; a **Practitioner** spans many)
