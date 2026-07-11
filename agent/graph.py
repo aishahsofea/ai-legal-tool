@@ -149,6 +149,14 @@ def build_graph(checkpointer=None, store=None) -> StateGraph:
     g.add_node("contextualize", contextualize_node)
     g.add_node("retriever", retriever_node)
     g.add_node("recall", RunnableCallable(recall_node, arecall_node, name="recall"))
+    # A second recall instance for the conversational short-circuit. Same pure read
+    # functions (flag-gated, fail-open), but its out-edge feeds the conversational node
+    # instead of the synthesiser — so remembered preferences also inform small talk
+    # without touching the proven legal path's wiring (ADR 0010).
+    g.add_node(
+        "recall_conversational",
+        RunnableCallable(recall_node, arecall_node, name="recall_conversational"),
+    )
     g.add_node("synthesiser", synthesiser_node)
     g.add_node("citation_validator", citation_validator_node)
     g.add_node("grounding_check", grounding_check_node)
@@ -161,10 +169,11 @@ def build_graph(checkpointer=None, store=None) -> StateGraph:
 
     g.add_conditional_edges("router", _route_from_router, {
         END: "escalate",
-        "conversational": "conversational",
+        "conversational": "recall_conversational",
         "contextualize": "contextualize",
     })
     g.add_edge("escalate", "record_turn")
+    g.add_edge("recall_conversational", "conversational")
     g.add_edge("conversational", "record_turn")
     g.add_edge("contextualize", "retriever")
     g.add_edge("retriever", "recall")

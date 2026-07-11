@@ -83,6 +83,14 @@ class ExtractGatingTests(unittest.TestCase):
         self.assertIn("matter", lowered)
         self.assertIn("privilege", lowered)
 
+    def test_instructions_capture_practitioner_background(self):
+        # Guard that the prompt steers toward capturing the practitioner's own background
+        # (ADR 0012) while still excluding sensitive personal life. Behavioural capture
+        # lives in an eval.
+        lowered = _EXTRACTION_INSTRUCTIONS.lower()
+        self.assertIn("background", lowered)
+        self.assertIn("professional", lowered)
+
     def test_instructions_capture_response_format_preferences(self):
         # Guard that the prompt still steers toward capturing answer-format directives
         # (brevity/bullets), which recall surfaces. Behavioural capture lives in an eval.
@@ -117,6 +125,24 @@ class WriteReadRoundTripTests(unittest.TestCase):
 
         self.assertIn("response language: bm", recalled)
         self.assertIn("practice areas: employment", recalled)
+
+    def test_written_background_is_recalled_and_rendered(self):
+        # End-to-end shape for ADR 0012: a practitioner's own background, once stored,
+        # is surfaced by recall so a later "what's my profession?" turn can use it.
+        store = InMemoryStore()
+        store.put(("user-1", "semantic"), "profile", {
+            "kind": "PractitionerProfile",
+            "content": {"background": "software engineer exploring legal tech"},
+        })
+
+        with patch.dict(os.environ, {"SEMANTIC_MEMORY_RECALL": "on"}):
+            recalled = recall_node(
+                {"query": "what is my profession"},
+                {"configurable": {"user_id": "user-1"}},
+                store=store,
+            )["recalled_memory"]
+
+        self.assertIn("background: software engineer exploring legal tech", recalled)
 
     def test_recurring_topic_is_recalled(self):
         store = InMemoryStore()

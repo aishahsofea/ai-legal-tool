@@ -1,5 +1,6 @@
-"""run_query_stream fires the write path only on the legal path, and only after the
-response event — never on conversational / escalate turns."""
+"""run_query_stream fires the write path after the response event on legal AND
+conversational turns (the latter is where a practitioner states their own background —
+ADR 0012), but never on escalate / empty-state turns."""
 import asyncio
 import unittest
 from unittest.mock import patch
@@ -44,13 +45,21 @@ class ExtractLifecycleTests(unittest.TestCase):
         # Scheduled strictly after the response, which is the last emitted event.
         self.assertEqual(events[-1]["type"], "response")
 
-    def test_conversational_turn_does_not_extract(self):
+    def test_conversational_turn_schedules_extraction(self):
+        # A self-introduction is a conversational turn; its background is durable, so
+        # extraction now fires here too (ADR 0012). The extractor still decides whether
+        # any given turn holds a durable fact — that's an eval concern, not this wiring's.
         updates = [{"conversational": {
-            "final_response": "Hi! How can I help with Malaysian legal research?",
+            "final_response": "Nice to meet you! How can I help with Malaysian legal research?",
             "citations": [], "query_type": "conversational",
         }}]
-        _events, calls = _drive("hello there", updates)
-        self.assertEqual(calls, [])
+        events, calls = _drive("i am a software engineer interested in legal stuff", updates)
+
+        self.assertEqual(len(calls), 1)
+        store, user_id, sent_query, _sent_response = calls[0]
+        self.assertEqual((store, user_id), ("STORE", "user-1"))
+        self.assertEqual(sent_query, "i am a software engineer interested in legal stuff")
+        self.assertEqual(events[-1]["type"], "response")
 
     def test_escalate_turn_does_not_extract(self):
         updates = [{"escalate": {

@@ -1,12 +1,17 @@
 """
 Recall node — reads the Practitioner's Semantic Memory and projects it into
-Working Memory (the synthesiser prompt) for the current turn.
+Working Memory (the answering prompt) for the current turn.
 
-This is the *read* half of Semantic Memory (ADR 0010). It searches the
-cross-thread store namespaced by (user_id, "semantic") for facts relevant to the
-query being answered and hands them to the synthesiser as **soft context** —
-known practitioner preferences and recurring topics, never authority and never
-citeable. The write path (agent/memory/extractor.py) populates the store in the
+This is the *read* half of Semantic Memory (ADR 0010). From the cross-thread store
+namespaced by (user_id, "semantic") it gathers two things and hands them to the
+answering node as **soft context** — never authority, never citeable:
+  - the practitioner's **profile** (identity/background, language, format style),
+    fetched deterministically by kind so it is *always* present when stored rather
+    than made to win a vector search against the current query (ADR 0012); and
+  - **recurring topics** relevant to this query, retrieved by similarity.
+The profile is listed first, then the query-ranked topics, deduped by key. The graph runs it in two places off the same functions: before the
+synthesiser on the legal path, and before the conversational node on the
+small-talk short-circuit, so remembered preferences inform both kinds of turn. The write path (agent/memory/extractor.py) populates the store in the
 background after a turn; recall is a clean no-op while the store is still empty.
 
 Contract (fail-open, dark by default — model on contextualize_node):
@@ -18,7 +23,8 @@ Contract (fail-open, dark by default — model on contextualize_node):
   - Recalled text is a read-time projection: it is NOT appended to history
     (that reducer is an append-only legal audit artifact — ADR 0008) and it
     never feeds the router/escalation check (which stays on the raw query —
-    ADR 0007). It only reaches the synthesiser via state["recalled_memory"].
+    ADR 0007). It only reaches the answering node (synthesiser or
+    conversational) via state["recalled_memory"].
 
 Sync (`recall_node`) and async (`arecall_node`) variants share their logic and
 differ only in the store call — the sync path (invoke) drives an InMemoryStore /
@@ -39,6 +45,28 @@ from agent.state import AgentState
 logger = logging.getLogger(__name__)
 
 _RECALL_LIMIT = 5
+
+# The practitioner's own profile (identity, language, format style) is always relevant
+# framing, so it is fetched deterministically by kind rather than made to win a vector
+# similarity search against the current query — otherwise "what is my profession?" could
+# rank below a closer-embedding topic and the profile would silently drop out of the
+# top-_RECALL_LIMIT. Recurring topics stay query-ranked. Profiles are few (the pruner
+# consolidates to one), so the cap is defensive.
+_PROFILE_FILTER = {"kind": "PractitionerProfile"}
+_PROFILE_LIMIT = 5
+
+
+def _merge(profiles: list[SearchItem], relevant: list[SearchItem]) -> list[SearchItem]:
+    """Profile(s) first (primary framing), then query-ranked items, deduped by key so a
+    profile that also matched the similarity search is not listed twice."""
+    seen: set = set()
+    ordered: list[SearchItem] = []
+    for item in (*profiles, *relevant):
+        if item.key in seen:
+            continue
+        seen.add(item.key)
+        ordered.append(item)
+    return ordered
 
 # Keep in-flight hit-recording tasks referenced so the loop can't GC them mid-flight.
 _pending: set[asyncio.Task] = set()
@@ -138,10 +166,14 @@ def recall_node(state: AgentState, config, *, store: BaseStore | None = None) ->
         return {}
     user_id, query = plan
     try:
-        items = store.search((user_id, "semantic"), query=query, limit=_RECALL_LIMIT)
-        if items:
-            _record_hits_sync(store, user_id, items)
-        return _to_update(items)
+        ns = (user_id, "semantic")
+        profiles = store.search(ns, filter=_PROFILE_FILTER, limit=_PROFILE_LIMIT)
+        relevant = store.search(ns, query=query, limit=_RECALL_LIMIT)
+        # Hits feed the pruner's importance score, which is a *relevance* signal — only the
+        # query-ranked items earn one; the always-on profile must not skew it.
+        if relevant:
+            _record_hits_sync(store, user_id, relevant)
+        return _to_update(_merge(profiles, relevant))
     except Exception:
         logger.warning("recall_node failed; continuing without Semantic Memory", exc_info=True)
         return {}
@@ -153,10 +185,13 @@ async def arecall_node(state: AgentState, config, *, store: BaseStore | None = N
         return {}
     user_id, query = plan
     try:
-        items = await store.asearch((user_id, "semantic"), query=query, limit=_RECALL_LIMIT)
-        if items:
-            _schedule_hits_async(store, user_id, items)
-        return _to_update(items)
+        ns = (user_id, "semantic")
+        profiles = await store.asearch(ns, filter=_PROFILE_FILTER, limit=_PROFILE_LIMIT)
+        relevant = await store.asearch(ns, query=query, limit=_RECALL_LIMIT)
+        # Only the query-ranked items earn an importance hit; the always-on profile must not skew it.
+        if relevant:
+            _schedule_hits_async(store, user_id, relevant)
+        return _to_update(_merge(profiles, relevant))
     except Exception:
         logger.warning("recall_node failed; continuing without Semantic Memory", exc_info=True)
         return {}
