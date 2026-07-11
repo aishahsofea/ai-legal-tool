@@ -20,6 +20,7 @@ import logging
 import os
 from functools import lru_cache
 
+from langgraph.config import get_stream_writer
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import create_react_agent
 from langgraph.prebuilt.chat_agent_executor import AgentState as _ReactAgentState
@@ -89,16 +90,39 @@ def get_retrieval_agent():
     )
 
 
-def run_retrieval_agent(query: str, feedback: str = "") -> list[dict]:
+def run_retrieval_agent(query: str, feedback: str = "", config=None) -> list[dict]:
     """Run the ReAct loop for one query and return the accumulated chunks.
 
     `feedback` (used on a re-retrieval pass, Phase 4) is appended to the request
-    so the agent can adjust its search. Raises on failure — the wrapper node
-    decides whether to fail open.
+    so the agent can adjust its search. `config` is the parent graph's
+    RunnableConfig — forwarding it lets the tools' custom stream writes reach the
+    parent's stream (so tool calls surface in the UI). We copy it and pin our own
+    recursion_limit so the sub-loop stays bounded regardless of the parent's.
+    Raises on failure — the wrapper node decides whether to fail open.
     """
     request = query if not feedback else f"{query}\n\nRe-retrieval note: {feedback}"
-    result = get_retrieval_agent().invoke(
-        {"messages": [{"role": "user", "content": request}]},
-        {"recursion_limit": RECURSION_LIMIT},
-    )
-    return result.get("retrieved_chunks", [])
+    invoke_config = {**(config or {}), "recursion_limit": RECURSION_LIMIT}
+    agent = get_retrieval_agent()
+    agent_input = {"messages": [{"role": "user", "content": request}]}
+
+    # The tools emit tool_call events on THIS run's custom stream. A manually
+    # invoked sub-agent's stream doesn't bubble to the parent graph, so when a
+    # parent stream is active we stream the sub-agent and re-emit each custom
+    # event through the parent writer; otherwise a plain invoke is enough.
+    parent_writer = None
+    try:
+        parent_writer = get_stream_writer()
+    except Exception:
+        parent_writer = None
+
+    if parent_writer is None:
+        result = agent.invoke(agent_input, invoke_config)
+        return result.get("retrieved_chunks", [])
+
+    last_values: dict = {}
+    for mode, chunk in agent.stream(agent_input, invoke_config, stream_mode=["custom", "values"]):
+        if mode == "custom":
+            parent_writer(chunk)
+        else:  # "values" — full state snapshots; keep the last for retrieved_chunks
+            last_values = chunk
+    return last_values.get("retrieved_chunks", [])

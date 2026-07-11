@@ -39,13 +39,15 @@ def retriever_node(state: AgentState) -> dict:
     return {"retrieved_chunks": rows}
 
 
-def agentic_retriever_node(state: AgentState) -> dict:
+def agentic_retriever_node(state: AgentState, config=None) -> dict:
     """Retrieval via the ReAct agent (agent/retrieval/agent.py), flag-gated by
     AGENTIC_RETRIEVAL. The agent picks the tools and can re-search on weak hits.
 
     Fails open to the deterministic retriever_node on any error or an empty
     result, so turning the flag on can never retrieve *less* than the proven
     path. `retrieval_feedback` (Phase 4) is forwarded on a re-retrieval pass.
+    `config` (injected by LangGraph) is forwarded so the tools' custom stream
+    writes reach the parent stream and surface as tool_call UI events.
     """
     # Imported lazily so the deterministic path (and offline test imports) never
     # pay for compiling the agent.
@@ -54,7 +56,7 @@ def agentic_retriever_node(state: AgentState) -> dict:
     query = state.get("standalone_query") or state["query"]
     feedback = state.get("retrieval_feedback", "")
     try:
-        rows = run_retrieval_agent(query, feedback)
+        rows = run_retrieval_agent(query, feedback, config)
     except Exception:
         logger.warning("agentic_retriever_node failed; falling back to deterministic retriever", exc_info=True)
         rows = []

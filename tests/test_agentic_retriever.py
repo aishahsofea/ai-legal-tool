@@ -34,7 +34,7 @@ class AgenticRetrieverNodeTests(unittest.TestCase):
                 "query": "data privacy for employers",
                 "query_type": "topical",
             })
-        run.assert_called_once_with("data privacy for employers", "")
+        run.assert_called_once_with("data privacy for employers", "", None)
         self.assertEqual(result["retrieved_chunks"], rows)
 
     def test_forwards_standalone_query_and_feedback(self):
@@ -45,7 +45,7 @@ class AgenticRetrieverNodeTests(unittest.TestCase):
                 "retrieval_feedback": "previous search missed s.60",
                 "query_type": "topical",
             })
-        run.assert_called_once_with("penalty under the Employment Act", "previous search missed s.60")
+        run.assert_called_once_with("penalty under the Employment Act", "previous search missed s.60", None)
 
     def test_fails_open_to_deterministic_on_exception(self):
         det_rows = [{"act_number": "56", "section_number": "90A"}]

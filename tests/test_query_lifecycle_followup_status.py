@@ -8,9 +8,11 @@ from agent.query_lifecycle import run_query_stream
 
 
 async def _collect(query, updates):
+    # Production streams stream_mode=["updates", "custom"], so each item is a
+    # (mode, chunk) tuple. Plain dicts here are treated as "updates" chunks.
     async def fake_astream(_input, _config, stream_mode=None):
         for update in updates:
-            yield update
+            yield update if isinstance(update, tuple) else ("updates", update)
 
     with patch("agent.query_lifecycle.graph") as graph:
         graph.astream = fake_astream
@@ -61,6 +63,19 @@ class FollowUpStatusTests(unittest.TestCase):
         events = _run(q, updates)
         statuses = [e["message"] for e in events if e["type"] == "status"]
         self.assertNotIn("Resolving follow-up...", statuses)
+
+    def test_custom_tool_call_chunk_becomes_tool_call_event(self):
+        # The retrieval agent's tools emit custom chunks; run_query_stream turns
+        # each into a tool_call SSE event with name + summary.
+        updates = [
+            ("custom", {"tool_call": {"name": "search_statutes", "summary": "Searching statutes: “x”"}}),
+            {"supervisor": _FINAL["supervisor"]},
+        ]
+        events = _run("which laws cover data privacy?", updates)
+        tool_calls = [e for e in events if e["type"] == "tool_call"]
+        self.assertEqual(len(tool_calls), 1)
+        self.assertEqual(tool_calls[0]["name"], "search_statutes")
+        self.assertIn("Searching statutes", tool_calls[0]["summary"])
 
     def test_noop_node_update_none_does_not_crash(self):
         # A node that makes no state change (e.g. recall no-oping on an empty store)

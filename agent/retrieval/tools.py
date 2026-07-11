@@ -17,12 +17,22 @@ import logging
 from langchain_core.messages import ToolMessage
 from langchain_core.tools import tool
 from langchain_core.tools.base import InjectedToolCallId
+from langgraph.config import get_stream_writer
 from langgraph.types import Command
 from typing_extensions import Annotated
 
 from agent.retrieval.search import exact_section_lookup, semantic_search
 
 logger = logging.getLogger(__name__)
+
+
+def _emit(name: str, summary: str) -> None:
+    """Surface a tool call on the graph's custom stream so the UI can show it as a
+    PROCESS step. A no-op when no stream is active (e.g. .invoke() in tests)."""
+    try:
+        get_stream_writer()({"tool_call": {"name": name, "summary": summary}})
+    except Exception:
+        pass
 
 
 def _summarise(rows: list[dict]) -> str:
@@ -67,6 +77,7 @@ def search_statutes(
         act: Optional Act number to restrict the search (e.g. "56").
         language: Optional language filter, "en" or "bm".
     """
+    _emit("search_statutes", f"Searching statutes: “{query}”")
     try:
         rows = semantic_search(query, top_k=top_k, act_number=act, language=language)
     except Exception:
@@ -93,6 +104,7 @@ def lookup_section(
         section: Section number, e.g. "90A".
         act: Act number ("56") or a name/alias ("Evidence Act", "PDPA").
     """
+    _emit("lookup_section", f"Looking up section {section}" + (f" of {act}" if act else ""))
     from agent.retrieval.search import extract_act_hint
 
     act_number, act_title = (None, None)

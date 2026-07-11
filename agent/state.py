@@ -23,8 +23,10 @@ class QueryResult(TypedDict):
 
 
 class QueryEvent(TypedDict, total=False):
-    type: Literal["status", "response", "error", "done"]
+    type: Literal["status", "tool_call", "response", "error", "done"]
     message: str
+    name: str        # tool_call: which retrieval tool fired
+    summary: str     # tool_call: human-readable description of the call
     content: str
     citations: list[Citation]
     violations: list[str]

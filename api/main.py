@@ -8,10 +8,12 @@ Single endpoint: POST /query
 - Designed to be consumed by the Next.js frontend via Vercel AI SDK / EventSource
 
 SSE event types:
-  { "type": "status",   "message": "..." }          — progress update (router/retriever/synthesiser)
-  { "type": "response", "content": "...",
+  { "type": "status",    "message": "..." }          — progress update (router/retriever/synthesiser)
+  { "type": "tool_call", "name": "...",
+    "summary": "..." }                                — a retrieval tool fired (agentic retrieval)
+  { "type": "response",  "content": "...",
     "citations": [...], "violations": [...] }        — final answer
-  { "type": "error",    "message": "..." }           — unrecoverable error
+  { "type": "error",     "message": "..." }           — unrecoverable error
   { "type": "done" }                                 — stream complete
 """
 import json

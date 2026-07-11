@@ -75,7 +75,24 @@ def run_query(query: str, thread_id: str, user_id: str | None = None) -> QueryRe
 async def run_query_stream(query: str, thread_id: str, user_id: str | None = None) -> AsyncIterator[QueryEvent]:
     config = _config(thread_id, user_id)
     state: dict = {}
-    async for update in graph.astream(_turn_input(query), config, stream_mode="updates"):
+    # "updates" carries node outputs (for per-node status); "custom" carries the
+    # tool-call events the retrieval agent's tools write via get_stream_writer
+    # (agent/retrieval/tools.py). With multiple modes each item is (mode, chunk).
+    async for mode, chunk in graph.astream(
+        _turn_input(query), config, stream_mode=["updates", "custom"]
+    ):
+        if mode == "custom":
+            tool_call = chunk.get("tool_call") if isinstance(chunk, dict) else None
+            if tool_call:
+                yield {
+                    "type": "tool_call",
+                    "name": tool_call.get("name", ""),
+                    "summary": tool_call.get("summary", ""),
+                }
+            continue
+
+        # mode == "updates"
+        update = chunk
         node_name = next(iter(update.keys()), "")
         # A node that makes no state change (e.g. recall no-oping on an empty store)
         # surfaces in the updates stream as {node: None}, so coerce None → {}.
