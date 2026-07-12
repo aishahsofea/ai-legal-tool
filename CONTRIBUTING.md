@@ -96,6 +96,8 @@ python run.py --step 4   # extract section-level chunks (~5 min)
 python run.py --step 5   # embed + ingest into pgvector (~5 min, ~$0.15)
 ```
 
+See [docs/data-pipeline.md](docs/data-pipeline.md) for what each step does in detail and the JSON it produces.
+
 ### 5. Start the API
 
 ```bash
