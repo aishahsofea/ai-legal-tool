@@ -1,11 +1,15 @@
 """Query lifecycle for the Malaysian Legal Research Assistant."""
 from __future__ import annotations
 
+import os
 from collections.abc import AsyncIterator
+
+from langchain_core.tracers.run_collector import RunCollectorCallbackHandler
 
 from agent.graph import graph
 from agent.memory.extractor import schedule_extraction
 from agent.memory.pruner import schedule_pruning
+from agent.observability import emit_feedback, root_run_id
 from agent.query_policy import delivered_response, strip_disclaimer
 from agent.state import AgentState, QueryEvent, QueryResult
 
@@ -27,11 +31,44 @@ def _turn_input(query: str) -> dict:
     return {"query": query}
 
 
-def _config(thread_id: str, user_id: str | None = None) -> dict:
+def _flag(name: str) -> bool:
+    return os.getenv(name, "").lower() in ("1", "true", "yes", "on")
+
+
+def _config(
+    thread_id: str,
+    user_id: str | None = None,
+    collector: RunCollectorCallbackHandler | None = None,
+    source: str = "api",
+) -> dict:
     # user_id scopes cross-thread Semantic Memory (ADR 0010). It rides in
     # `configurable` so any node can read it via its RunnableConfig without
     # threading it through AgentState. Nodes must treat it as optional.
-    return {"configurable": {"thread_id": thread_id, "user_id": user_id}}
+    #
+    # metadata/tags/run_name are standard RunnableConfig keys that LangChain
+    # forwards to LangSmith automatically — they make traces filterable by
+    # practitioner and feature-flag state (no SDK call needed). `source`
+    # separates eval traffic from live API traffic in the dashboard.
+    memory_checkpointer = not os.getenv("DATABASE_URL") or os.getenv("CHECKPOINTER", "").lower() == "memory"
+    metadata = {
+        "thread_id": thread_id,
+        "user_id": user_id or "anonymous",
+        "source": source,
+        "agentic_retrieval": _flag("AGENTIC_RETRIEVAL"),
+        "semantic_recall": _flag("SEMANTIC_MEMORY_RECALL"),
+        "semantic_extract": _flag("SEMANTIC_MEMORY_EXTRACT"),
+        "checkpointer": "memory" if memory_checkpointer else "postgres",
+    }
+    flag_tags = [k for k in ("agentic_retrieval", "semantic_recall", "semantic_extract") if metadata[k]]
+    config: dict = {
+        "configurable": {"thread_id": thread_id, "user_id": user_id},
+        "metadata": metadata,
+        "tags": ["legal_query", f"source:{source}", *flag_tags],
+        "run_name": "legal_query",
+    }
+    if collector is not None:
+        config["callbacks"] = [collector]
+    return config
 
 
 def set_graph(g) -> None:
@@ -61,8 +98,12 @@ def _fail_closed_if_violations(state: AgentState) -> AgentState:
 
 
 def run_query(query: str, thread_id: str, user_id: str | None = None) -> QueryResult:
-    state = graph.invoke(_turn_input(query), _config(thread_id, user_id))
+    # Sync path is eval-only (evals/run_evals.py); tag it `source=eval` so eval
+    # runs stay separable from live traffic in the LangSmith dashboard.
+    collector = RunCollectorCallbackHandler()
+    state = graph.invoke(_turn_input(query), _config(thread_id, user_id, collector, source="eval"))
     state = _fail_closed_if_violations(state)
+    emit_feedback(root_run_id(collector), state)
 
     return {
         "query_type": state.get("query_type", ""),
@@ -74,7 +115,8 @@ def run_query(query: str, thread_id: str, user_id: str | None = None) -> QueryRe
 
 
 async def run_query_stream(query: str, thread_id: str, user_id: str | None = None) -> AsyncIterator[QueryEvent]:
-    config = _config(thread_id, user_id)
+    collector = RunCollectorCallbackHandler()
+    config = _config(thread_id, user_id, collector, source="api")
     state: dict = {}
     # "updates" carries node outputs (for per-node status); "custom" carries the
     # tool-call events the retrieval agent's tools write via get_stream_writer
@@ -109,6 +151,13 @@ async def run_query_stream(query: str, thread_id: str, user_id: str | None = Non
         state.update(node_output)
 
     state = _fail_closed_if_violations(state)
+
+    # Emit LangSmith feedback HERE — after the astream loop completes (so `state`
+    # is whole) and BEFORE the response yield. Code after a `yield` in an async
+    # generator is skipped if the consumer disconnects early, which would silently
+    # drop feedback; emitting pre-yield guarantees it runs on normal completion.
+    # Non-blocking (trace_id-batched) and fail-open, so it never delays tokens.
+    emit_feedback(root_run_id(collector), state)
 
     final = _response_text(state)
     if not final:

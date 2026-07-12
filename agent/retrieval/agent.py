@@ -114,7 +114,11 @@ def run_retrieval_agent(query: str, feedback: str = "", config=None) -> dict:
     to fail open.
     """
     request = query if not feedback else f"{query}\n\nRe-retrieval note: {feedback}"
-    invoke_config = {**(config or {}), "recursion_limit": RECURSION_LIMIT}
+    # Spread forwards the parent's metadata/tags/callbacks (so the sub-agent's
+    # nested runs stay filterable in LangSmith); we pin our own recursion_limit
+    # and run_name so this sub-loop reads as "retrieval_agent" rather than
+    # inheriting whatever run name the parent config carried.
+    invoke_config = {**(config or {}), "recursion_limit": RECURSION_LIMIT, "run_name": "retrieval_agent"}
     agent = get_retrieval_agent()
     agent_input = {"messages": [{"role": "user", "content": request}]}
 
