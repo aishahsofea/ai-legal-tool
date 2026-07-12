@@ -15,4 +15,5 @@ langchain-openai>=1.0
 langchain-google-genai>=4.0
 langgraph-store-postgres>=0.0.3
 langmem>=0.0.15
+langsmith>=0.1  # tracing + run feedback (agent/observability.py); also a transitive langchain dep
 tiktoken>=0.13

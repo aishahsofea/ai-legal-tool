@@ -103,6 +103,18 @@ Malaysian law practitioners code-switch heavily — mixing BM and English in a s
 
 **v1 pilot corpus is English-only.** BM and code-switched queries still work via cross-lingual embedding similarity, with somewhat degraded accuracy for BM-heavy queries. BM corpus is added before the public write-up, at which point retrieval accuracy improvement is measured as a before/after eval.
 
+## Observability
+
+When `LANGSMITH_TRACING` is on, every turn is traced to LangSmith. Beyond the free
+node-level trace, the query lifecycle (`agent/query_lifecycle.py`) labels each run —
+`run_name=legal_query`, a `source` (`api` vs `eval`), active feature flags, and
+`user_id`/`thread_id` metadata — and posts the turn's quality outcome as run
+**feedback** (`agent/observability.py`): `passed`, violation/citation counts,
+`retry_count`, `fallback_delivered`, `escalated`, and categorical `query_type`.
+These are the same signals the **Supervisor Rules** and evidence checks compute, so
+groundedness and pass-rate become chartable over time. Feedback is fail-open and off
+the hot path — it never changes or delays a **Legal Research Query** response.
+
 ## Flagged ambiguities
 
 - "legislation" was used loosely to mean both Acts and Subsidiary Legislation — resolved: use **Act** for statutes and **Subsidiary Legislation** for P.U. instruments.

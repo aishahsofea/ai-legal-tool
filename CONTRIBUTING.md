@@ -35,10 +35,19 @@ Create `.env` in the project root:
 DATABASE_URL=postgresql://user@/dbname?host=/path/to/pg/socket
 OPENAI_API_KEY=sk-...
 ANTHROPIC_API_KEY=...
-LANGCHAIN_TRACING_V2=true
-LANGCHAIN_API_KEY=...
-LANGCHAIN_PROJECT=ai-legal-tool
+LANGSMITH_TRACING=true
+LANGSMITH_API_KEY=lsv2_...
+LANGSMITH_PROJECT=ai-legal-tool
 ```
+
+With `LANGSMITH_TRACING=true`, every graph run is traced to LangSmith. The query
+lifecycle also tags each run (`run_name=legal_query`; `source:api`/`source:eval`;
+active feature flags) and attaches `user_id`/`thread_id` metadata, and posts the
+turn's quality signals as run **feedback** — `passed`, `num_violations`,
+`num_evidence_violations`, `retry_count`, `num_citations`, `fallback_delivered`,
+`escalated`, and a categorical `query_type` (`agent/observability.py`). Feedback
+is fail-open and off the hot path — it never alters or delays a response. Leave
+`LANGSMITH_TRACING` unset to disable tracing and feedback entirely.
 
 Optional flags (both default off / to Postgres):
 
