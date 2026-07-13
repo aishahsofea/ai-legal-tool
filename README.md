@@ -37,7 +37,7 @@ against, drafted, then checked for citations, grounding, and policy before it ev
 ```text
 query + thread_id (EN / BM / mixed)
   → start_turn           load thread history, reset per-turn scratch state
-  → router               classify (or short-circuit: escalate → hand-off, conversational → warm reply)
+  → router               classify (or short-circuit: escalate → hand-off, conversational → warm reply, clarify → ask the user)
   → contextualize        rewrite an elliptical follow-up into a standalone query
   → retriever            pgvector similarity search over section chunks (or an agentic ReAct agent)
   → recall               surface saved practitioner preferences as framing hints (optional)
@@ -55,13 +55,14 @@ Three paths skip the full pipeline:
 
 - **escalate** — a client-specific query ("am I liable…", "my client…") jumps straight to `record_turn` with a fixed human hand-off message.
 - **conversational** — an unambiguously non-legal message (greeting, name, thanks, "what can you do?") passes through `recall` then answers with a short, warm reply — no retrieval, no supervisor, no citations, no disclaimer.
+- **clarify** — an un-actionable legal query (a section with no Act) routes to a `clarify` node that pauses the graph with LangGraph's `interrupt()`, asks the user a question, and resumes on `POST /resume` (once per turn). See ADR 0015.
 - **retry** — a `supervisor` violation with a retry remaining (`MAX_RETRIES=1`) loops back before re-running the checks.
 
 The single retry is split by *what went wrong*. A **policy/phrasing** violation (advice phrase, missing disclaimer) loops back to `synthesiser` to re-draft against the same chunks. An **evidence** violation (a citation not in the sources, or an unsupported claim) instead routes — only when `AGENTIC_RETRIEVAL` is on — to `retry_retrieve`, which re-runs the retrieval agent with feedback about the gap. An evidence gap that survives re-retrieval fails closed to the safe fallback.
 
 </details>
 
-See [CONTEXT.md](CONTEXT.md) for the domain model and supervisor rules, and `docs/adr/` for the design decisions behind these (ADR 0008 history budget · 0010/0012 semantic memory · 0013 agentic retrieval).
+See [CONTEXT.md](CONTEXT.md) for the domain model and supervisor rules, and `docs/adr/` for the design decisions behind these (ADR 0008 history budget · 0010/0012 semantic memory · 0013 agentic retrieval · 0014 barge-in · 0015 clarify interrupt).
 
 ## API
 
@@ -90,6 +91,17 @@ data: {"type": "done"}
 - **`response`** carries `content`, `violations`, and `citations` — each with `act_number`, `act_title`, `section_number`, `pdf_url` (with `#page=N` anchor), and `page_number`.
 - **`tool_call`** (`name`, `summary`) is emitted only on the agentic-retrieval path, once per retrieval tool the agent calls; the frontend renders these in the collapsible PROCESS panel.
 - **`status`** messages track the phase and reflect short-circuits: `"Resolving follow-up..."`, `"Refining response..."` (a retry), `"Escalating to human lawyer..."`, or `"Responding..."` (conversational).
+- **`interrupt`** (`question`, `interrupt_id`) is emitted when the graph pauses to ask the user a clarifying question (see below). The stream ends on the `interrupt`; no `response` follows until you resume.
+
+**Clarification (graph asks you a question):** when a query is un-actionable as written — most often a section number with no Act ("what does section 5 say?") — the router routes to a `clarify` node that calls LangGraph's `interrupt()`. The turn suspends, the `/query` stream emits an `interrupt` event with the `question`, and the graph waits. Answer it with `POST /resume { thread_id, value }`, which streams the continuation of the same turn:
+
+```bash
+curl -N -X POST http://localhost:8000/resume \
+  -H "Content-Type: application/json" \
+  -d '{"thread_id": "demo-1", "value": "the Contracts Act 1950"}'
+```
+
+The answer is merged with the original query into one self-contained query, so retrieval sees the full intent, not just the answer. History records the single merged turn. This is *graph-initiated* pause — distinct from *user-initiated* barge-in below. See ADR 0015.
 
 **Barge-in (stop a running turn):** `POST /cancel { thread_id }` cancels the in-flight turn for a thread — the Stop button / Esc. Cancellation aborts the live model request and the `/query` SSE stream for that thread ends on its own. A cancelled turn writes nothing — no `response`, no history, no memory — so the next prompt starts clean. Returns `{"status": "cancelled"}` or `{"status": "no_active_run"}`; idempotent. There is one active run per `thread_id`, so a new `POST /query` on the same thread also supersedes any in-flight run — "change my mind, ask something else" needs no explicit cancel. See ADR 0014.
 
@@ -129,7 +141,7 @@ ai-legal-tool/
 │   ├── retrieval/      # agentic retrieval: search, tools, ReAct agent (ADR 0013)
 │   └── nodes/          # router, contextualize, retriever, recall, synthesiser,
 │                       #   citation_validator, grounding_check, supervisor, conversational
-├── api/main.py         # FastAPI SSE: POST /query { query, thread_id }, POST /cancel { thread_id }
+├── api/main.py         # FastAPI SSE: POST /query, POST /resume (clarify, ADR 0015), POST /cancel
 ├── scraper/            # pipeline steps 1–4 (index, detail, PDFs, extract) + parsers
 ├── ingestion/          # step 5: embed + ingest into pgvector
 ├── evals/              # dataset, L1 assertions, L2 Claude judge, runner, debug tools

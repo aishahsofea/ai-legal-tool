@@ -28,8 +28,9 @@ _llm = make_llm(_MODEL)
 
 
 class _RouterOutput(BaseModel):
-    query_type: Literal["statute_lookup", "topical", "provision_extraction", "conversational"]
+    query_type: Literal["statute_lookup", "topical", "provision_extraction", "conversational", "clarify"]
     response_language: Literal["en", "bm", "mixed"]
+    clarifying_question: str = ""
     reasoning: str
 
 
@@ -48,10 +49,20 @@ Set query_type to one of:
   self-introductions or names, thanks, small talk, or meta questions about the
   assistant itself (e.g. "hi", "my name is Shameel", "thanks!", "what can you do?",
   "how does this work?")
+- clarify: the message has legal-research intent but is missing a detail without
+  which retrieval cannot proceed — most often a section number with no Act named
+  (e.g. "what does section 5 say?"). Set clarifying_question to the single, specific
+  question that would unblock the research (e.g. "Which Act's section 5 do you mean?").
 
 IMPORTANT tie-break: only use conversational when the message is UNAMBIGUOUSLY
 social or meta. When in doubt — if the message has any legal substance at all —
 classify it as one of the three legal types, not conversational.
+
+IMPORTANT: only use clarify when the query is genuinely un-actionable as written and
+the conversation history does not already supply the missing detail. If the missing
+Act or topic is recoverable from earlier turns, do NOT clarify — classify it as a
+legal type and let retrieval proceed. Prefer researching over asking; clarify is the
+last resort, not a default. Leave clarifying_question empty for every other type.
 
 Set response_language based on the dominant language of the current query:
 - "en": query is primarily in English
@@ -80,7 +91,12 @@ def _build_messages(state: AgentState) -> list[dict]:
 
 
 def _result(result: _RouterOutput) -> dict:
-    return {"query_type": result.query_type, "response_language": result.response_language}
+    out = {"query_type": result.query_type, "response_language": result.response_language}
+    # Only carry the question on the clarify path; keep it empty everywhere else so a
+    # stray model-populated question can't leak into a non-clarify turn.
+    if result.query_type == "clarify":
+        out["clarifying_question"] = (result.clarifying_question or "").strip()
+    return out
 
 
 def router_node(state: AgentState) -> dict:

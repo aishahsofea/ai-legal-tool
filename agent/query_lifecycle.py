@@ -8,6 +8,7 @@ import os
 from collections.abc import AsyncIterator
 
 from langchain_core.tracers.run_collector import RunCollectorCallbackHandler
+from langgraph.types import Command
 
 from agent.graph import graph
 from agent.memory.extractor import schedule_extraction
@@ -107,6 +108,24 @@ def run_query(query: str, thread_id: str, user_id: str | None = None) -> QueryRe
     # runs stay separable from live traffic in the LangSmith dashboard.
     collector = RunCollectorCallbackHandler()
     state = graph.invoke(_turn_input(query), _config(thread_id, user_id, collector, source="eval"))
+
+    # The sync eval path cannot resume an interrupt (no human in the loop). If a query
+    # paused at the clarify node (ADR 0015), surface it as a clarify result rather than
+    # crashing on the missing final_response — evals should not send ambiguous queries,
+    # but this fails safe if one slips through.
+    if "__interrupt__" in state:
+        interrupts = state["__interrupt__"]
+        intr = interrupts[0] if isinstance(interrupts, (list, tuple)) else interrupts
+        payload = getattr(intr, "value", {}) or {}
+        question = payload.get("question", "") if isinstance(payload, dict) else str(payload)
+        return {
+            "query_type": "clarify",
+            "response": question,
+            "citations": [],
+            "violations": [],
+            "tool_trace": [],
+        }
+
     state = _fail_closed_if_violations(state)
     emit_feedback(root_run_id(collector), state)
 
@@ -119,15 +138,25 @@ def run_query(query: str, thread_id: str, user_id: str | None = None) -> QueryRe
     }
 
 
-async def _drive_query_stream(query: str, thread_id: str, user_id: str | None = None) -> AsyncIterator[QueryEvent]:
+async def _drive_query_stream(
+    query: str | None,
+    thread_id: str,
+    user_id: str | None = None,
+    *,
+    resume: str | None = None,
+) -> AsyncIterator[QueryEvent]:
     collector = RunCollectorCallbackHandler()
     config = _config(thread_id, user_id, collector, source="api")
     state: dict = {}
+    # A resume continues a turn paused at a clarify interrupt (ADR 0015): feed
+    # Command(resume=<answer>) instead of a fresh turn input. Same thread_id, so the
+    # checkpointer picks up exactly where the interrupt suspended.
+    graph_input = Command(resume=resume) if resume is not None else _turn_input(query)
     # "updates" carries node outputs (for per-node status); "custom" carries the
     # tool-call events the retrieval agent's tools write via get_stream_writer
     # (agent/retrieval/tools.py). With multiple modes each item is (mode, chunk).
     async for mode, chunk in graph.astream(
-        _turn_input(query), config, stream_mode=["updates", "custom"]
+        graph_input, config, stream_mode=["updates", "custom"]
     ):
         if mode == "custom":
             tool_call = chunk.get("tool_call") if isinstance(chunk, dict) else None
@@ -142,6 +171,21 @@ async def _drive_query_stream(query: str, thread_id: str, user_id: str | None = 
         # mode == "updates"
         update = chunk
         node_name = next(iter(update.keys()), "")
+        # A dynamic interrupt (clarify node) surfaces in the updates stream keyed under
+        # "__interrupt__". Emit the question and STOP: the turn is paused, not finished,
+        # so we must return BEFORE the post-loop feedback/memory side effects — a paused
+        # turn writes nothing, exactly like a barged-in one. The graph state is
+        # checkpointed; POST /resume continues it.
+        if node_name == "__interrupt__":
+            interrupts = update["__interrupt__"]
+            intr = interrupts[0] if isinstance(interrupts, (list, tuple)) else interrupts
+            payload = getattr(intr, "value", {}) or {}
+            yield {
+                "type": "interrupt",
+                "question": payload.get("question", "") if isinstance(payload, dict) else str(payload),
+                "interrupt_id": str(getattr(intr, "id", "") or ""),
+            }
+            return
         # A node that makes no state change (e.g. recall no-oping on an empty store)
         # surfaces in the updates stream as {node: None}, so coerce None → {}.
         node_output = next(iter(update.values()), None) or {}
@@ -220,7 +264,13 @@ def cancel_thread(thread_id: str) -> bool:
     return False
 
 
-async def run_query_stream(query: str, thread_id: str, user_id: str | None = None) -> AsyncIterator[QueryEvent]:
+async def run_query_stream(
+    query: str | None,
+    thread_id: str,
+    user_id: str | None = None,
+    *,
+    resume: str | None = None,
+) -> AsyncIterator[QueryEvent]:
     """Stream a turn, cancellable via cancel_thread() or client disconnect.
 
     The graph runs in an inner task whose events are bridged over a queue, so the
@@ -228,6 +278,10 @@ async def run_query_stream(query: str, thread_id: str, user_id: str | None = Non
     barged-in turn writes nothing — the response yield and the memory/feedback side
     effects all live after the astream loop, so cancellation skips them — leaving
     history clean for the next prompt.
+
+    Pass `resume` (with query=None) to continue a turn paused at a clarify interrupt
+    (ADR 0015): the graph resumes from the interrupt on the same thread_id. Resume runs
+    under the same single-active-run + cancellation machinery as a fresh turn.
     """
     # One active run per thread: unwind any prior run before starting this one.
     await _cancel_active(thread_id)
@@ -237,7 +291,7 @@ async def run_query_stream(query: str, thread_id: str, user_id: str | None = Non
 
     async def _producer() -> None:
         try:
-            async for event in _drive_query_stream(query, thread_id, user_id):
+            async for event in _drive_query_stream(query, thread_id, user_id, resume=resume):
                 await queue.put(event)
         finally:
             # put_nowait never blocks (unbounded queue), so the sentinel is delivered

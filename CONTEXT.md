@@ -103,6 +103,15 @@ Malaysian law practitioners code-switch heavily — mixing BM and English in a s
 
 **v1 pilot corpus is English-only.** BM and code-switched queries still work via cross-lingual embedding similarity, with somewhat degraded accuracy for BM-heavy queries. BM corpus is added before the public write-up, at which point retrieval accuracy improvement is measured as a before/after eval.
 
+## Interruption: two distinct mechanisms
+
+A turn can stop mid-flight for two unrelated reasons, and the system keeps them separate:
+
+- **Clarification** is *graph-initiated*. When a **Legal Research Query** is un-actionable as written — most often a section number with no Act named — the router routes to the `clarify` node, which calls LangGraph's `interrupt()`. The turn suspends on its checkpoint, an `interrupt` SSE event carries the question to the practitioner, and the graph resumes only on `POST /resume { thread_id, value }`. The answer is **merged** with the original query into one self-contained query (so retrieval sees the full intent, not the bare answer) and re-classified; a turn asks at most one clarifying question. See ADR 0015.
+- **Barge-in** is *user-initiated* cancellation — the practitioner presses Stop/Esc (`POST /cancel`, or a new prompt on the same thread). It aborts the in-flight run; nothing is written. See ADR 0014.
+
+Both rely on the same `thread_id` checkpoint continuation, but one *pauses for input* while the other *aborts the run* — they never share a code path. A **Conversational Turn** and an **escalate** hand-off are separate short-circuits again: neither pauses nor cancels, they just skip the pipeline.
+
 ## Observability
 
 When `LANGSMITH_TRACING` is on, every turn is traced to LangSmith. Beyond the free

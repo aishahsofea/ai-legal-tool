@@ -106,9 +106,14 @@ uvicorn api.main:app --port 8000 --reload
 
 Health check: `GET http://localhost:8000/health`
 
-Endpoints: `POST /query { query, thread_id, user_id? }` (streams SSE) and `POST /cancel { thread_id }` (barge-in — stops the in-flight turn for a thread; see ADR 0014).
+Endpoints:
+- `POST /query { query, thread_id, user_id? }` — run a turn (streams SSE)
+- `POST /resume { thread_id, value, user_id? }` — answer a clarify interrupt and stream the resumed turn (see ADR 0015)
+- `POST /cancel { thread_id }` — barge-in: stop the in-flight turn for a thread (see ADR 0014)
 
 > **Adding an LLM node?** Give it a **sync + async twin** — `x_node` (calls `.invoke`) and `ax_node` (`await .ainvoke`), sharing extracted prompt-building/post-processing — and register it as `RunnableCallable(x_node, ax_node, name=...)` in `graph.py` (see `synthesiser`/`recall`). The async twin lets a barge-in cancel the in-flight model request; the sync twin keeps the eval path (`run_query` → `graph.invoke`) working. Pure-Python nodes (e.g. `supervisor`) need no twin. A node's `except Exception` stays cancellation-safe as-is — `asyncio.CancelledError` is a `BaseException`, so a barge-in propagates through it instead of being swallowed.
+
+> **Adding a human-in-the-loop pause?** Call LangGraph's `interrupt(payload)` inside a **dedicated, side-effect-free node** (see `agent/nodes/clarify.py`). The node re-runs from the top on resume, so put nothing non-idempotent before the `interrupt()`. `_drive_query_stream` detects the `__interrupt__` update, emits an `interrupt` SSE event, and returns *before* the post-loop feedback/memory side effects — a paused turn writes nothing, exactly like a barged-in one. Resume feeds `Command(resume=value)` on the same `thread_id`. No async twin is needed: `interrupt()` is not an awaited model call, so a barge-in has nothing to tear down there.
 
 ### 6. Start the frontend
 
