@@ -13,8 +13,16 @@ SSE event types:
     "summary": "..." }                                — a retrieval tool fired (agentic retrieval)
   { "type": "response",  "content": "...",
     "citations": [...], "violations": [...] }        — final answer
+  { "type": "interrupt", "question": "...",
+    "interrupt_id": "..." }                           — graph paused for clarification;
+                                                        answer via POST /resume (ADR 0015)
   { "type": "error",     "message": "..." }           — unrecoverable error
   { "type": "done" }                                 — stream complete
+
+Endpoints:
+  POST /query   { query, thread_id, user_id? }        — run a turn (SSE stream)
+  POST /resume  { thread_id, value, user_id? }         — answer a clarify interrupt (SSE stream)
+  POST /cancel  { thread_id }                          — barge-in: stop the in-flight turn
 """
 import json
 import logging
@@ -65,6 +73,14 @@ class CancelRequest(BaseModel):
     thread_id: str
 
 
+class ResumeRequest(BaseModel):
+    thread_id: str
+    # The user's answer to a clarify interrupt. Fed to the graph as Command(resume=value)
+    # so the paused turn continues on the same thread_id (ADR 0015).
+    value: str
+    user_id: str | None = None
+
+
 def _sse(payload: dict) -> str:
     return f"data: {json.dumps(payload, ensure_ascii=False)}\n\n"
 
@@ -81,12 +97,18 @@ _STATUS_MESSAGES = {
 }
 
 
-async def _stream_query(query: str, thread_id: str, user_id: str | None) -> AsyncGenerator[str, None]:
+async def _stream_query(
+    query: str | None,
+    thread_id: str,
+    user_id: str | None,
+    *,
+    resume: str | None = None,
+) -> AsyncGenerator[str, None]:
     try:
-        async for event in run_query_stream(query, thread_id, user_id):
+        async for event in run_query_stream(query, thread_id, user_id, resume=resume):
             yield _sse(event)
     except Exception as exc:
-        logger.exception("Agent error for query: %s", query)
+        logger.exception("Agent error for query=%r resume=%r", query, resume)
         yield _sse({"type": "error", "message": f"An error occurred: {str(exc)}"})
     yield _sse({"type": "done"})
 
@@ -104,6 +126,25 @@ async def query_endpoint(req: QueryRequest):
         headers={
             "Cache-Control":               "no-cache",
             "X-Accel-Buffering":           "no",   # disable nginx buffering
+            "Access-Control-Allow-Origin": "*",
+        },
+    )
+
+
+@app.post("/resume")
+async def resume_endpoint(req: ResumeRequest):
+    """Resume a turn paused at a clarify interrupt (ADR 0015).
+
+    The graph suspended at the clarify node and emitted an `interrupt` SSE event on the
+    prior /query stream; this feeds the user's answer back as Command(resume=value) and
+    streams the continuation (the resolved turn's real response) on the same thread_id.
+    """
+    return StreamingResponse(
+        _stream_query(None, req.thread_id, req.user_id, resume=req.value),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control":               "no-cache",
+            "X-Accel-Buffering":           "no",
             "Access-Control-Allow-Origin": "*",
         },
     )

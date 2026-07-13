@@ -17,6 +17,7 @@ export type QueryEvent =
   | { type: "status"; message: string }
   | { type: "tool_call"; name: string; summary: string }
   | { type: "response"; content: string; citations: Citation[]; violations: string[] }
+  | { type: "interrupt"; question: string; interrupt_id: string }
   | { type: "error"; message: string }
   | { type: "done" };
 
@@ -27,6 +28,17 @@ async function fetchQueryResponse(query: string, threadId: string, signal?: Abor
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ query, thread_id: threadId, user_id: getUserId() }),
+    signal,
+  });
+}
+
+// Answer a clarify interrupt: the value is fed back to the paused graph as
+// Command(resume=value) on the same thread_id, which streams the resumed turn (ADR 0015).
+async function fetchResumeResponse(threadId: string, value: string, signal?: AbortSignal) {
+  return fetch(`${API_URL}/resume`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ thread_id: threadId, value, user_id: getUserId() }),
     signal,
   });
 }
@@ -59,6 +71,14 @@ function decodeQueryEvent(raw: string): QueryEvent | null {
       content: typeof event.content === "string" ? event.content : "",
       citations: Array.isArray(event.citations) ? (event.citations as Citation[]) : [],
       violations: Array.isArray(event.violations) ? (event.violations as string[]) : [],
+    };
+  }
+
+  if (event.type === "interrupt") {
+    return {
+      type: "interrupt",
+      question: typeof event.question === "string" ? event.question : "",
+      interrupt_id: typeof event.interrupt_id === "string" ? event.interrupt_id : "",
     };
   }
 
@@ -120,21 +140,32 @@ async function* parseSseStream(body: ReadableStream<Uint8Array>, signal?: AbortS
   }
 }
 
-export async function* streamQuery(
-  query: string,
-  threadId: string,
-  signal?: AbortSignal,
-): AsyncGenerator<QueryEvent> {
-  const res = await fetchQueryResponse(query, threadId, signal);
-
+async function* streamFromResponse(res: Response, signal?: AbortSignal): AsyncGenerator<QueryEvent> {
   if (!res.ok) {
     throw new Error(`HTTP ${res.status}`);
   }
   if (!res.body) {
     throw new Error("No response body");
   }
-
   yield* parseSseStream(res.body, signal);
+}
+
+export async function* streamQuery(
+  query: string,
+  threadId: string,
+  signal?: AbortSignal,
+): AsyncGenerator<QueryEvent> {
+  yield* streamFromResponse(await fetchQueryResponse(query, threadId, signal), signal);
+}
+
+// Resume a turn paused at a clarify interrupt (ADR 0015). Streams the continuation —
+// the resolved turn's real response — just like streamQuery.
+export async function* streamResume(
+  threadId: string,
+  value: string,
+  signal?: AbortSignal,
+): AsyncGenerator<QueryEvent> {
+  yield* streamFromResponse(await fetchResumeResponse(threadId, value, signal), signal);
 }
 
 // Barge-in: tell the server to stop the in-flight turn (server-authoritative, in

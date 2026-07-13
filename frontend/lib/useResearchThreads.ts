@@ -60,7 +60,7 @@ export function useResearchThreads() {
   const [reasoningOpen, setReasoningOpen] = useState(false);
   const [activeSourceIndex, setActiveSourceIndex] = useState(0);
   const lastStatusRef = useRef<string | null>(null);
-  const { submit, cancel, status, response, citations, isLoading, error } = useQuery();
+  const { submit, resume, cancel, status, response, citations, isLoading, error, pendingQuestion } = useQuery();
 
   const activeThread = useMemo(
     () => threads.find((thread) => thread.id === activeThreadId) ?? null,
@@ -153,9 +153,15 @@ export function useResearchThreads() {
 
       // The server owns conversation memory now; send only the thread id so it can
       // load and accumulate history server-side (frontend keeps its own copy for rendering).
-      await submit(trimmed, targetThreadId);
+      // While a clarify interrupt is pending, this message is the ANSWER: resume the
+      // paused turn on the same thread rather than starting a new one (ADR 0015).
+      if (pendingQuestion) {
+        await resume(trimmed, targetThreadId);
+      } else {
+        await submit(trimmed, targetThreadId);
+      }
     },
-    [activeThreadId, isLoading, submit, syncActiveFlags, threads],
+    [activeThreadId, isLoading, pendingQuestion, resume, submit, syncActiveFlags, threads],
   );
 
   // Barge-in: stop the in-flight turn on the active thread (Stop button / Esc)
@@ -248,6 +254,28 @@ export function useResearchThreads() {
     }
     setPendingThreadId(null);
   }, [activeThreadId, citations, pendingThreadId, response]);
+
+  // Clarify interrupt (ADR 0015): the graph paused to ask a question. Show it in the
+  // empty assistant placeholder so the practitioner can read and answer it. pendingThreadId
+  // stays set — the resumed turn's real answer lands as the next assistant message.
+  useEffect(() => {
+    if (!pendingQuestion || !pendingThreadId) return;
+
+    setThreads((prev) =>
+      prev.map((thread) => {
+        if (thread.id !== pendingThreadId) return thread;
+
+        const messages = [...thread.messages];
+        const last = messages[messages.length - 1];
+        if (last?.role === "assistant" && last.content === "") {
+          messages[messages.length - 1] = { ...last, content: pendingQuestion };
+        } else {
+          messages.push({ id: makeId(), role: "assistant", content: pendingQuestion, createdAt: nowLabel() });
+        }
+        return { ...thread, messages };
+      }),
+    );
+  }, [pendingQuestion, pendingThreadId]);
 
   useEffect(() => {
     if (!error) return;

@@ -16,6 +16,7 @@ from langgraph.graph import END, StateGraph
 from langgraph.store.memory import InMemoryStore
 
 from agent.nodes.citation_validator import citation_validator_node
+from agent.nodes.clarify import clarify_node
 from agent.nodes.contextualize import acontextualize_node, contextualize_node
 from agent.nodes.conversational import aconversational_node, conversational_node
 from agent.nodes.grounding_check import agrounding_check_node, grounding_check_node
@@ -33,6 +34,15 @@ def _route_from_router(state: AgentState) -> str:
         return END
     if state["query_type"] == "conversational":
         return "conversational"
+    # Clarify only when the router actually produced a question AND we have not already
+    # asked one this turn — an empty question or a second ambiguity falls through to the
+    # normal legal path rather than pausing on nothing or looping (ADR 0015).
+    if (
+        state["query_type"] == "clarify"
+        and state.get("clarifying_question")
+        and not state.get("clarified")
+    ):
+        return "clarify"
     return "contextualize"
 
 
@@ -105,6 +115,8 @@ def _start_turn(state: AgentState) -> dict:
         "tool_trace": [],
         "final_response": "",
         "retry_count": 0,
+        "clarifying_question": "",
+        "clarified": False,
     }
 
 
@@ -196,6 +208,10 @@ def build_graph(checkpointer=None, store=None) -> StateGraph:
     # (supervisor, citation_validator, start/record_turn, escalate) need no twin.
     g.add_node("start_turn", _start_turn)
     g.add_node("router", RunnableCallable(router_node, arouter_node, name="router"))
+    # Human-in-the-loop pause (ADR 0015). Pure until its interrupt() call, so it is safe
+    # under the re-execution rule; no async twin — interrupt() is not an awaited model
+    # call, so there is nothing for a barge-in to tear down.
+    g.add_node("clarify", clarify_node)
     g.add_node("escalate", _escalate_node)
     g.add_node("conversational", RunnableCallable(conversational_node, aconversational_node, name="conversational"))
     g.add_node("contextualize", RunnableCallable(contextualize_node, acontextualize_node, name="contextualize"))
@@ -224,7 +240,11 @@ def build_graph(checkpointer=None, store=None) -> StateGraph:
         END: "escalate",
         "conversational": "recall_conversational",
         "contextualize": "contextualize",
+        "clarify": "clarify",
     })
+    # After the user answers, re-classify the merged, now self-contained query. The
+    # `clarified` flag set by the node stops a second pause this turn (see _route_from_router).
+    g.add_edge("clarify", "router")
     g.add_edge("escalate", "record_turn")
     g.add_edge("recall_conversational", "conversational")
     g.add_edge("conversational", "record_turn")
