@@ -62,7 +62,7 @@ _LANGUAGE_INSTRUCTIONS = {
 }
 
 
-def synthesiser_node(state: AgentState) -> dict:
+def _build_messages(state: AgentState) -> list[dict]:
     chunks = state["retrieved_chunks"]
     history = trim_history(state.get("history", []))
     response_language = state.get("response_language", "en")
@@ -96,10 +96,15 @@ Retrieved statute sections:
 
 Answer the query using only the sections provided above. Cite each section you rely on."""
 
-    result: _SynthesiserOutput = _structured_llm.invoke([
+    return [
         {"role": "system", "content": system_content(system_prompt, _MODEL)},
         {"role": "user", "content": user_message},
-    ])
+    ]
+
+
+def _finalise(result: _SynthesiserOutput, state: AgentState) -> dict:
+    chunks = state["retrieved_chunks"]
+    response_language = state.get("response_language", "en")
 
     # Build a lookup from retrieved chunks so URLs come from the database, not Claude.
     chunk_lookup: dict[tuple, dict] = {
@@ -126,3 +131,13 @@ Answer the query using only the sections provided above. Cite each section you r
         "draft_response": answer_with_disclaimer,
         "citations":      citations,
     }
+
+
+def synthesiser_node(state: AgentState) -> dict:
+    result: _SynthesiserOutput = _structured_llm.invoke(_build_messages(state))
+    return _finalise(result, state)
+
+
+async def asynthesiser_node(state: AgentState) -> dict:
+    result: _SynthesiserOutput = await _structured_llm.ainvoke(_build_messages(state))
+    return _finalise(result, state)

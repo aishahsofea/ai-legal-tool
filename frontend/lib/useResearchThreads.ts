@@ -60,7 +60,7 @@ export function useResearchThreads() {
   const [reasoningOpen, setReasoningOpen] = useState(false);
   const [activeSourceIndex, setActiveSourceIndex] = useState(0);
   const lastStatusRef = useRef<string | null>(null);
-  const { submit, status, response, citations, isLoading, error } = useQuery();
+  const { submit, cancel, status, response, citations, isLoading, error } = useQuery();
 
   const activeThread = useMemo(
     () => threads.find((thread) => thread.id === activeThreadId) ?? null,
@@ -158,6 +158,47 @@ export function useResearchThreads() {
     [activeThreadId, isLoading, submit, syncActiveFlags, threads],
   );
 
+  // Barge-in: stop the in-flight turn on the active thread (Stop button / Esc)
+  // and hand the question back to the composer so it can be edited and resent.
+  // The cancelled turn wrote nothing server-side (ADR 0014), so pulling its
+  // [user, empty-assistant] pair out of the transcript keeps the two in sync and
+  // means a resend can't duplicate it.
+  const stopQuery = useCallback(() => {
+    if (!activeThreadId) return;
+    cancel(activeThreadId);
+
+    const thread = threads.find((t) => t.id === activeThreadId);
+    const msgs = thread?.messages ?? [];
+    const placeholder = msgs[msgs.length - 1];
+    const question = msgs[msgs.length - 2];
+    const isCancelledTurn =
+      placeholder?.role === "assistant" && placeholder.content === "" && question?.role === "user";
+
+    // Nothing recoverable (e.g. the answer already landed) — just leave state as is.
+    if (!isCancelledTurn) return;
+
+    setInput(question.content);
+    lastStatusRef.current = null;
+    setPendingThreadId(null);
+
+    const remaining = msgs.slice(0, -2);
+    if (remaining.length === 0) {
+      // Barge-in on the first turn of a fresh thread: drop the empty thread and
+      // return to the empty state with the question waiting in the composer.
+      setThreads((prev) => syncActiveFlags(prev.filter((t) => t.id !== activeThreadId), null));
+      setActiveThreadId(null);
+      return;
+    }
+
+    setThreads((prev) =>
+      prev.map((t) =>
+        t.id === activeThreadId
+          ? { ...t, messages: remaining, meta: summarizeSources(t.citations), statusHistory: [] }
+          : t,
+      ),
+    );
+  }, [activeThreadId, cancel, syncActiveFlags, threads]);
+
   useEffect(() => {
     if (!status || !pendingThreadId) return;
     if (lastStatusRef.current === status) return;
@@ -235,5 +276,6 @@ export function useResearchThreads() {
     newThread,
     selectThread,
     submitQuery,
+    stopQuery,
   };
 }

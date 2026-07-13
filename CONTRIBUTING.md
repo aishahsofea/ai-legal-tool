@@ -106,6 +106,10 @@ uvicorn api.main:app --port 8000 --reload
 
 Health check: `GET http://localhost:8000/health`
 
+Endpoints: `POST /query { query, thread_id, user_id? }` (streams SSE) and `POST /cancel { thread_id }` (barge-in — stops the in-flight turn for a thread; see ADR 0014).
+
+> **Adding an LLM node?** Give it a **sync + async twin** — `x_node` (calls `.invoke`) and `ax_node` (`await .ainvoke`), sharing extracted prompt-building/post-processing — and register it as `RunnableCallable(x_node, ax_node, name=...)` in `graph.py` (see `synthesiser`/`recall`). The async twin lets a barge-in cancel the in-flight model request; the sync twin keeps the eval path (`run_query` → `graph.invoke`) working. Pure-Python nodes (e.g. `supervisor`) need no twin. A node's `except Exception` stays cancellation-safe as-is — `asyncio.CancelledError` is a `BaseException`, so a barge-in propagates through it instead of being swallowed.
+
 ### 6. Start the frontend
 
 ```bash

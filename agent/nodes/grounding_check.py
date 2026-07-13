@@ -92,36 +92,15 @@ def _collect_cited_sources(state: AgentState) -> list[dict]:
     return sources
 
 
-def grounding_check_node(state: AgentState) -> dict:
-    violations = list(state.get("violations", []))
+def _messages(answer: str, sources: list[dict]) -> list[dict]:
+    payload = {"answer": answer, "cited_sources": sources}
+    return [
+        {"role": "system", "content": _SYSTEM},
+        {"role": "user", "content": json.dumps(payload, ensure_ascii=False, indent=2)},
+    ]
 
-    # If deterministic citation validation already failed, avoid an extra LLM call;
-    # the retry loop should first produce structurally valid citations.
-    if violations:
-        return {"violations": violations}
 
-    answer = state.get("draft_response", "")
-    sources = _collect_cited_sources(state)
-    if not answer or not sources:
-        return {"violations": violations}
-
-    payload = {
-        "answer": answer,
-        "cited_sources": sources,
-    }
-
-    try:
-        result: _GroundingOutput = _grounding_llm.invoke([
-            {"role": "system", "content": _SYSTEM},
-            {"role": "user", "content": json.dumps(payload, ensure_ascii=False, indent=2)},
-        ])
-    except Exception:
-        # The judge malfunctioning is not evidence that the answer is ungrounded.
-        # Fail open: citation validation already guaranteed structural integrity, so
-        # a transient extraction error should not discard an otherwise valid answer.
-        logger.warning("grounding_check_node failed; skipping grounding verification", exc_info=True)
-        return {"violations": violations}
-
+def _finalise(result: _GroundingOutput, state: AgentState, violations: list[str]) -> dict:
     # An unsupported claim is an evidence gap: the retry should re-retrieve better
     # sources (Phase 4), so these are tracked in evidence_violations too.
     evidence_violations = list(state.get("evidence_violations", []))
@@ -134,5 +113,45 @@ def grounding_check_node(state: AgentState) -> dict:
             )
             violations.append(msg)
             evidence_violations.append(msg)
-
     return {"violations": violations, "evidence_violations": evidence_violations}
+
+
+def grounding_check_node(state: AgentState) -> dict:
+    violations = list(state.get("violations", []))
+    # If deterministic citation validation already failed, avoid an extra LLM call;
+    # the retry loop should first produce structurally valid citations.
+    if violations:
+        return {"violations": violations}
+
+    answer = state.get("draft_response", "")
+    sources = _collect_cited_sources(state)
+    if not answer or not sources:
+        return {"violations": violations}
+
+    try:
+        result: _GroundingOutput = _grounding_llm.invoke(_messages(answer, sources))
+    except Exception:
+        # The judge malfunctioning is not evidence that the answer is ungrounded.
+        # Fail open: citation validation already guaranteed structural integrity, so
+        # a transient extraction error should not discard an otherwise valid answer.
+        logger.warning("grounding_check_node failed; skipping grounding verification", exc_info=True)
+        return {"violations": violations}
+    return _finalise(result, state, violations)
+
+
+async def agrounding_check_node(state: AgentState) -> dict:
+    violations = list(state.get("violations", []))
+    if violations:
+        return {"violations": violations}
+
+    answer = state.get("draft_response", "")
+    sources = _collect_cited_sources(state)
+    if not answer or not sources:
+        return {"violations": violations}
+
+    try:
+        result: _GroundingOutput = await _grounding_llm.ainvoke(_messages(answer, sources))
+    except Exception:
+        logger.warning("grounding_check_node failed; skipping grounding verification", exc_info=True)
+        return {"violations": violations}
+    return _finalise(result, state, violations)

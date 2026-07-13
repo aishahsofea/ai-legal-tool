@@ -6,11 +6,13 @@ export function Composer({
   input,
   onInput,
   onSubmit,
+  onStop,
   isLoading,
 }: {
   input: string;
   onInput: (value: string) => void;
   onSubmit: (e: FormEvent) => void;
+  onStop: () => void;
   isLoading: boolean;
 }) {
   return (
@@ -29,14 +31,20 @@ export function Composer({
         <button type="button" aria-label="Upload" title="Upload document" className="h-full w-8 cursor-pointer border-l border-(--rule) text-(--ink-3) transition-colors duration-150 hover:text-(--bronze) active:opacity-80 max-sm:hidden">
           ▤
         </button>
-        <PrimaryButton type="submit" disabled={isLoading || !input.trim()} className="h-full px-3 sm:px-4 disabled:cursor-not-allowed disabled:opacity-40">
-          <span className="hidden sm:inline">SEND →</span><span className="sm:hidden">↵</span>
-        </PrimaryButton>
+        {isLoading ? (
+          <PrimaryButton type="button" onClick={onStop} aria-label="Stop generating" title="Stop (Esc)" className="h-full px-3 sm:px-4">
+            <span className="hidden sm:inline">STOP ■</span><span className="sm:hidden">■</span>
+          </PrimaryButton>
+        ) : (
+          <PrimaryButton type="submit" disabled={!input.trim()} className="h-full px-3 sm:px-4 disabled:cursor-not-allowed disabled:opacity-40">
+            <span className="hidden sm:inline">SEND →</span><span className="sm:hidden">↵</span>
+          </PrimaryButton>
+        )}
       </form>
 
       <div className="mt-2 flex w-full chamber-full-input justify-between gap-2 px-2 font-mono text-[10px] uppercase tracking-widest text-(--ink-3)">
         <span>DROP A BRIEF OR CONTRACT TO ADD IT TO THE THREAD</span>
-        <span>⇧⏎ NEWLINE</span>
+        <span>{isLoading ? "ESC STOP · EDIT" : "⇧⏎ NEWLINE"}</span>
       </div>
     </div>
   );

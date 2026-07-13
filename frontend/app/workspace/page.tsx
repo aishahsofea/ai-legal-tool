@@ -39,12 +39,23 @@ function WorkspaceInner() {
     newThread,
     selectThread,
     submitQuery,
+    stopQuery,
   } = useResearchThreads();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     await submitQuery(input);
   };
+
+  // Esc barges in on a running turn, the same gesture as an agent CLI.
+  useEffect(() => {
+    if (!isLoading) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") stopQuery();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isLoading, stopQuery]);
 
   return (
     <div className="min-h-screen bg-(--bg) text-(--ink)">
@@ -96,7 +107,7 @@ function WorkspaceInner() {
             </div>
           </div>
 
-          <Composer input={input} onInput={setInput} onSubmit={handleSubmit} isLoading={isLoading} />
+          <Composer input={input} onInput={setInput} onSubmit={handleSubmit} onStop={stopQuery} isLoading={isLoading} />
         </main>
       </div>
     </div>

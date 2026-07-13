@@ -91,6 +91,8 @@ data: {"type": "done"}
 - **`tool_call`** (`name`, `summary`) is emitted only on the agentic-retrieval path, once per retrieval tool the agent calls; the frontend renders these in the collapsible PROCESS panel.
 - **`status`** messages track the phase and reflect short-circuits: `"Resolving follow-up..."`, `"Refining response..."` (a retry), `"Escalating to human lawyer..."`, or `"Responding..."` (conversational).
 
+**Barge-in (stop a running turn):** `POST /cancel { thread_id }` cancels the in-flight turn for a thread — the Stop button / Esc. Cancellation aborts the live model request and the `/query` SSE stream for that thread ends on its own. A cancelled turn writes nothing — no `response`, no history, no memory — so the next prompt starts clean. Returns `{"status": "cancelled"}` or `{"status": "no_active_run"}`; idempotent. There is one active run per `thread_id`, so a new `POST /query` on the same thread also supersedes any in-flight run — "change my mind, ask something else" needs no explicit cancel. See ADR 0014.
+
 ### Memory
 
 - **Conversation history** is kept server-side in a LangGraph checkpointer keyed by `thread_id` — the client never resends prior turns. `DATABASE_URL` set → `PostgresSaver`; otherwise an in-process `MemorySaver`. History is trimmed to a token budget (`MAX_HISTORY_TOKENS`, default 4000) in whole turns, oldest first (ADR 0008).
@@ -120,14 +122,14 @@ ai-legal-tool/
 ├── agent/              # LangGraph agent
 │   ├── graph.py        # nodes, edges, retry loop, checkpointer + store wiring
 │   ├── state.py        # AgentState, Message, Citation, QueryEvent/Result types
-│   ├── query_lifecycle.py   # run_query / run_query_stream (thread_id-based)
+│   ├── query_lifecycle.py   # run_query / run_query_stream + barge-in cancellation (ADR 0014)
 │   ├── query_policy.py      # history trimming, MAX_RETRIES
 │   ├── llm_factory.py       # provider-agnostic LLM factory (Claude/Gemini/OpenAI)
 │   ├── memory/         # Semantic Memory write + maintenance (ADR 0010/0012)
 │   ├── retrieval/      # agentic retrieval: search, tools, ReAct agent (ADR 0013)
 │   └── nodes/          # router, contextualize, retriever, recall, synthesiser,
 │                       #   citation_validator, grounding_check, supervisor, conversational
-├── api/main.py         # FastAPI SSE endpoint: POST /query { query, thread_id }
+├── api/main.py         # FastAPI SSE: POST /query { query, thread_id }, POST /cancel { thread_id }
 ├── scraper/            # pipeline steps 1–4 (index, detail, PDFs, extract) + parsers
 ├── ingestion/          # step 5: embed + ingest into pgvector
 ├── evals/              # dataset, L1 assertions, L2 Claude judge, runner, debug tools

@@ -16,14 +16,14 @@ from langgraph.graph import END, StateGraph
 from langgraph.store.memory import InMemoryStore
 
 from agent.nodes.citation_validator import citation_validator_node
-from agent.nodes.contextualize import contextualize_node
-from agent.nodes.conversational import conversational_node
-from agent.nodes.grounding_check import grounding_check_node
+from agent.nodes.contextualize import acontextualize_node, contextualize_node
+from agent.nodes.conversational import aconversational_node, conversational_node
+from agent.nodes.grounding_check import agrounding_check_node, grounding_check_node
 from agent.nodes.recall import arecall_node, recall_node
-from agent.nodes.router import router_node
+from agent.nodes.router import arouter_node, router_node
 from agent.nodes.retriever import agentic_retriever_node, retriever_node
 from agent.nodes.supervisor import ESCALATION_RESPONSE, supervisor_node
-from agent.nodes.synthesiser import synthesiser_node
+from agent.nodes.synthesiser import asynthesiser_node, synthesiser_node
 from agent.query_policy import MAX_RETRIES, delivered_response, strip_disclaimer
 from agent.state import AgentState
 
@@ -190,11 +190,15 @@ def _select_retriever_node():
 def build_graph(checkpointer=None, store=None) -> StateGraph:
     g = StateGraph(AgentState)
 
+    # LLM nodes are registered as sync+async twins (RunnableCallable): astream awaits
+    # the async twin so a barge-in (cancellation) tears down the in-flight model call,
+    # while graph.invoke (the eval path) uses the sync twin. Pure-Python nodes
+    # (supervisor, citation_validator, start/record_turn, escalate) need no twin.
     g.add_node("start_turn", _start_turn)
-    g.add_node("router", router_node)
+    g.add_node("router", RunnableCallable(router_node, arouter_node, name="router"))
     g.add_node("escalate", _escalate_node)
-    g.add_node("conversational", conversational_node)
-    g.add_node("contextualize", contextualize_node)
+    g.add_node("conversational", RunnableCallable(conversational_node, aconversational_node, name="conversational"))
+    g.add_node("contextualize", RunnableCallable(contextualize_node, acontextualize_node, name="contextualize"))
     g.add_node("retriever", _select_retriever_node())
     g.add_node("recall", RunnableCallable(recall_node, arecall_node, name="recall"))
     # A second recall instance for the conversational short-circuit. Same pure read
@@ -205,9 +209,9 @@ def build_graph(checkpointer=None, store=None) -> StateGraph:
         "recall_conversational",
         RunnableCallable(recall_node, arecall_node, name="recall_conversational"),
     )
-    g.add_node("synthesiser", synthesiser_node)
+    g.add_node("synthesiser", RunnableCallable(synthesiser_node, asynthesiser_node, name="synthesiser"))
     g.add_node("citation_validator", citation_validator_node)
-    g.add_node("grounding_check", grounding_check_node)
+    g.add_node("grounding_check", RunnableCallable(grounding_check_node, agrounding_check_node, name="grounding_check"))
     g.add_node("supervisor", supervisor_node)
     g.add_node("increment_retry", _increment_retry_node)
     g.add_node("retry_retrieve", _retry_retrieve_node)
