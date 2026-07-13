@@ -30,7 +30,7 @@ from pydantic import BaseModel
 load_dotenv()
 
 from agent.graph import lifespan_graph
-from agent.query_lifecycle import run_query_stream, set_graph
+from agent.query_lifecycle import cancel_thread, run_query_stream, set_graph
 
 logger = logging.getLogger(__name__)
 
@@ -59,6 +59,10 @@ class QueryRequest(BaseModel):
     # threads (ADR 0010). Optional so older clients keep working; absent means the
     # memory path simply has no practitioner to attach durable facts to.
     user_id: str | None = None
+
+
+class CancelRequest(BaseModel):
+    thread_id: str
 
 
 def _sse(payload: dict) -> str:
@@ -103,3 +107,14 @@ async def query_endpoint(req: QueryRequest):
             "Access-Control-Allow-Origin": "*",
         },
     )
+
+
+@app.post("/cancel")
+async def cancel_endpoint(req: CancelRequest):
+    """Barge-in: stop the in-flight turn for a thread (the Stop button / Esc).
+
+    Server-authoritative so Stop fires even if the client can't cleanly abort the SSE
+    connection. Idempotent; returns no_active_run when nothing is running. See ADR 0014.
+    """
+    cancelled = cancel_thread(req.thread_id)
+    return {"status": "cancelled" if cancelled else "no_active_run"}

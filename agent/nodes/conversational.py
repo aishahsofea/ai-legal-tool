@@ -66,7 +66,7 @@ Hard guardrails:
 Keep it short — a sentence or two."""
 
 
-def conversational_node(state: AgentState) -> dict:
+def _build_messages(state: AgentState) -> list[dict]:
     history = trim_history(state.get("history", []))
     history_text = "\n".join(f"{turn['role']}: {turn['content']}" for turn in history)
     response_language = state.get("response_language", "en")
@@ -83,18 +83,31 @@ def conversational_node(state: AgentState) -> dict:
         if recalled_memory
         else ""
     )
+    return [
+        {"role": "system", "content": system_content(system_prompt, _MODEL)},
+        {"role": "user", "content": f"Conversation history:\n{history_text or '(none)'}\n{preferences_block}\nCurrent message:\n{state['query']}"},
+    ]
 
+
+def _finalise(result) -> dict:
+    text = (result.content or "").strip() or CONVERSATIONAL_FALLBACK_RESPONSE
+    return {"final_response": text, "draft_response": text}
+
+
+def conversational_node(state: AgentState) -> dict:
     try:
-        result = _llm.invoke([
-            {"role": "system", "content": system_content(system_prompt, _MODEL)},
-            {"role": "user", "content": f"Conversation history:\n{history_text or '(none)'}\n{preferences_block}\nCurrent message:\n{state['query']}"},
-        ])
-        text = (result.content or "").strip()
-        if not text:
-            text = CONVERSATIONAL_FALLBACK_RESPONSE
+        result = _llm.invoke(_build_messages(state))
+        return _finalise(result)
     except Exception:
         # Fail closed: a warm static greeting, never a raw error.
         logger.warning("conversational_node failed; using static fallback", exc_info=True)
-        text = CONVERSATIONAL_FALLBACK_RESPONSE
+        return {"final_response": CONVERSATIONAL_FALLBACK_RESPONSE, "draft_response": CONVERSATIONAL_FALLBACK_RESPONSE}
 
-    return {"final_response": text, "draft_response": text}
+
+async def aconversational_node(state: AgentState) -> dict:
+    try:
+        result = await _llm.ainvoke(_build_messages(state))
+        return _finalise(result)
+    except Exception:
+        logger.warning("conversational_node failed; using static fallback", exc_info=True)
+        return {"final_response": CONVERSATIONAL_FALLBACK_RESPONSE, "draft_response": CONVERSATIONAL_FALLBACK_RESPONSE}

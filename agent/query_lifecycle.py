@@ -1,6 +1,9 @@
 """Query lifecycle for the Malaysian Legal Research Assistant."""
 from __future__ import annotations
 
+import asyncio
+import contextlib
+import logging
 import os
 from collections.abc import AsyncIterator
 
@@ -12,6 +15,8 @@ from agent.memory.pruner import schedule_pruning
 from agent.observability import emit_feedback, root_run_id
 from agent.query_policy import delivered_response, strip_disclaimer
 from agent.state import AgentState, QueryEvent, QueryResult
+
+logger = logging.getLogger(__name__)
 
 _STATUS_MESSAGES = {
     "router": "Classifying query...",
@@ -114,7 +119,7 @@ def run_query(query: str, thread_id: str, user_id: str | None = None) -> QueryRe
     }
 
 
-async def run_query_stream(query: str, thread_id: str, user_id: str | None = None) -> AsyncIterator[QueryEvent]:
+async def _drive_query_stream(query: str, thread_id: str, user_id: str | None = None) -> AsyncIterator[QueryEvent]:
     collector = RunCollectorCallbackHandler()
     config = _config(thread_id, user_id, collector, source="api")
     state: dict = {}
@@ -183,3 +188,79 @@ async def run_query_stream(query: str, thread_id: str, user_id: str | None = Non
         # Consolidate + cap the store off the hot path (ADR 0010, Phase 4). Independent
         # of extraction (eventual consistency); size-debounced and fail-open in the callee.
         schedule_pruning(graph.store, user_id)
+
+
+# ── Barge-in / cancellation ──────────────────────────────────────────────────
+# One in-flight streaming run per thread. Barge-in cancels this task: cancellation
+# propagates into the awaited async node (ainvoke), tearing down the live model
+# request instead of running it to completion — the same "stop now" behaviour as
+# pressing Esc. Enforcing a single active run also prevents two turns from racing
+# on the same thread's checkpoint when a user changes their mind mid-answer.
+_active_runs: dict[str, asyncio.Task] = {}
+
+
+async def _cancel_active(thread_id: str) -> None:
+    """Cancel any in-flight run for a thread and wait for it to unwind, so its
+    checkpoint writes settle before a new turn on the same thread begins."""
+    task = _active_runs.get(thread_id)
+    if task is not None and not task.done():
+        task.cancel()
+        with contextlib.suppress(asyncio.CancelledError):
+            await task
+
+
+def cancel_thread(thread_id: str) -> bool:
+    """Cancel the in-flight streaming run for a thread from a separate request
+    (POST /cancel). Returns True if a run was cancelled. A client that simply
+    disconnects reaches the same task via the finally in run_query_stream."""
+    task = _active_runs.get(thread_id)
+    if task is not None and not task.done():
+        task.cancel()
+        return True
+    return False
+
+
+async def run_query_stream(query: str, thread_id: str, user_id: str | None = None) -> AsyncIterator[QueryEvent]:
+    """Stream a turn, cancellable via cancel_thread() or client disconnect.
+
+    The graph runs in an inner task whose events are bridged over a queue, so the
+    task handle in _active_runs can be cancelled from a *different* request. A
+    barged-in turn writes nothing — the response yield and the memory/feedback side
+    effects all live after the astream loop, so cancellation skips them — leaving
+    history clean for the next prompt.
+    """
+    # One active run per thread: unwind any prior run before starting this one.
+    await _cancel_active(thread_id)
+
+    queue: asyncio.Queue = asyncio.Queue()
+    _SENTINEL = object()
+
+    async def _producer() -> None:
+        try:
+            async for event in _drive_query_stream(query, thread_id, user_id):
+                await queue.put(event)
+        finally:
+            # put_nowait never blocks (unbounded queue), so the sentinel is delivered
+            # even while the producer is being cancelled — the consumer can't hang.
+            queue.put_nowait(_SENTINEL)
+
+    task = asyncio.create_task(_producer())
+    _active_runs[thread_id] = task
+    try:
+        while True:
+            event = await queue.get()
+            if event is _SENTINEL:
+                break
+            yield event
+        # Re-raise a genuine producer error so the API surfaces it as an SSE error.
+        # Cancellation is swallowed: a barged-in turn ends quietly (the client is gone).
+        if not task.cancelled():
+            with contextlib.suppress(asyncio.CancelledError):
+                await task
+    finally:
+        if _active_runs.get(thread_id) is task:
+            del _active_runs[thread_id]
+        if not task.done():
+            task.cancel()
+            with contextlib.suppress(asyncio.CancelledError):
+                await task

@@ -52,24 +52,40 @@ Rules:
 - Return only the rewritten search query in standalone_query — no commentary."""
 
 
+def _build_messages(history: list, state: AgentState) -> list[dict]:
+    history_text = "\n".join(f"{turn['role']}: {turn['content']}" for turn in history)
+    return [
+        {"role": "system", "content": system_content(_SYSTEM, _MODEL)},
+        {"role": "user", "content": f"Conversation history:\n{history_text}\n\nFollow-up query:\n{state['query']}"},
+    ]
+
+
+def _result(result: _ContextualizeOutput) -> dict:
+    standalone = (result.standalone_query or "").strip()
+    return {"standalone_query": standalone or ""}
+
+
 def contextualize_node(state: AgentState) -> dict:
     history = trim_history(state.get("history", []))
     # Gate: first turn has no history to resolve against — skip the LLM call.
     if not history:
         return {"standalone_query": ""}
-
-    history_text = "\n".join(f"{turn['role']}: {turn['content']}" for turn in history)
-
     try:
-        result: _ContextualizeOutput = _structured_llm.invoke([
-            {"role": "system", "content": system_content(_SYSTEM, _MODEL)},
-            {"role": "user", "content": f"Conversation history:\n{history_text}\n\nFollow-up query:\n{state['query']}"},
-        ])
-        standalone = (result.standalone_query or "").strip()
-        if not standalone:
-            return {"standalone_query": ""}
-        return {"standalone_query": standalone}
+        result: _ContextualizeOutput = _structured_llm.invoke(_build_messages(history, state))
+        return _result(result)
     except Exception:
         # Fail open: the retriever falls back to the raw query.
+        logger.warning("contextualize_node failed; falling back to raw query", exc_info=True)
+        return {"standalone_query": ""}
+
+
+async def acontextualize_node(state: AgentState) -> dict:
+    history = trim_history(state.get("history", []))
+    if not history:
+        return {"standalone_query": ""}
+    try:
+        result: _ContextualizeOutput = await _structured_llm.ainvoke(_build_messages(history, state))
+        return _result(result)
+    except Exception:
         logger.warning("contextualize_node failed; falling back to raw query", exc_info=True)
         return {"standalone_query": ""}

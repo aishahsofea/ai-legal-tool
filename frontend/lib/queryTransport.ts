@@ -136,3 +136,19 @@ export async function* streamQuery(
 
   yield* parseSseStream(res.body, signal);
 }
+
+// Barge-in: tell the server to stop the in-flight turn (server-authoritative, in
+// case the client's fetch abort is slow to propagate). Fire-and-forget and
+// fail-quiet — a failed cancel must never surface over an already-"stopped" UI.
+export async function cancelQuery(threadId: string): Promise<void> {
+  try {
+    await fetch(`${API_URL}/cancel`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ thread_id: threadId }),
+      keepalive: true,
+    });
+  } catch {
+    /* stop is best-effort; the aborted fetch already halted the client */
+  }
+}

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { streamQuery, type Citation } from "@/lib/queryTransport";
+import { cancelQuery, streamQuery, type Citation } from "@/lib/queryTransport";
 
 export { type Citation, type Message } from "@/lib/queryTransport";
 
@@ -23,6 +23,15 @@ export function useQuery() {
 
   useEffect(() => {
     return () => abortRef.current?.abort();
+  }, []);
+
+  // Barge-in / Esc: abort the fetch AND tell the server to stop, then clear
+  // isLoading immediately so the UI feels instant. No-op when nothing is running.
+  const cancel = useCallback((threadId: string) => {
+    abortRef.current?.abort();
+    abortRef.current = null;
+    void cancelQuery(threadId);
+    setState((s) => ({ ...s, isLoading: false, status: "" }));
   }, []);
 
   const submit = useCallback(async (query: string, threadId: string) => {
@@ -72,5 +81,5 @@ export function useQuery() {
     }
   }, []);
 
-  return { ...state, submit };
+  return { ...state, submit, cancel };
 }

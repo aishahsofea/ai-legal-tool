@@ -61,19 +61,37 @@ Set response_language based on the dominant language of the current query:
 Reply with the most appropriate type, the response language, and a brief one-sentence reasoning."""
 
 
-def router_node(state: AgentState) -> dict:
-    query = state["query"]
-    history = trim_history(state.get("history", []))
-    history_text = "\n".join(f"{turn['role']}: {turn['content']}" for turn in history)
-
+def _escalation_shortcut(state: AgentState) -> dict | None:
     # Escalation triggers are intentionally checked only against the current user
     # query. Assistant history contains the required legal-advice disclaimer, and
     # checking the combined transcript would make every follow-up escalate.
-    if _ESCALATION_PATTERNS.search(query):
+    if _ESCALATION_PATTERNS.search(state["query"]):
         return {"query_type": "escalate", "response_language": "en"}
+    return None
 
-    result: _RouterOutput = _structured_llm.invoke([
+
+def _build_messages(state: AgentState) -> list[dict]:
+    history = trim_history(state.get("history", []))
+    history_text = "\n".join(f"{turn['role']}: {turn['content']}" for turn in history)
+    return [
         {"role": "system", "content": system_content(_SYSTEM, _MODEL)},
-        {"role": "user", "content": f"Conversation history:\n{history_text or '(none)'}\n\nCurrent query:\n{query}"},
-    ])
+        {"role": "user", "content": f"Conversation history:\n{history_text or '(none)'}\n\nCurrent query:\n{state['query']}"},
+    ]
+
+
+def _result(result: _RouterOutput) -> dict:
     return {"query_type": result.query_type, "response_language": result.response_language}
+
+
+def router_node(state: AgentState) -> dict:
+    if (short := _escalation_shortcut(state)) is not None:
+        return short
+    result: _RouterOutput = _structured_llm.invoke(_build_messages(state))
+    return _result(result)
+
+
+async def arouter_node(state: AgentState) -> dict:
+    if (short := _escalation_shortcut(state)) is not None:
+        return short
+    result: _RouterOutput = await _structured_llm.ainvoke(_build_messages(state))
+    return _result(result)
