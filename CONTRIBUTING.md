@@ -33,6 +33,7 @@ Create `.env` in the project root:
 
 ```env
 DATABASE_URL=postgresql://user@/dbname?host=/path/to/pg/socket
+EVALS_DATABASE_URL=postgresql://user@/ai_legal_tool_evals?host=/path/to/pg/socket
 OPENAI_API_KEY=sk-...
 ANTHROPIC_API_KEY=...
 LANGSMITH_TRACING=true
@@ -61,6 +62,7 @@ Create `frontend/.env.local`:
 
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_EVALS=1
 ```
 
 ### 3. Database schema
@@ -110,6 +112,10 @@ Endpoints:
 - `POST /query { query, thread_id, user_id? }` — run a turn (streams SSE)
 - `POST /resume { thread_id, value, user_id? }` — answer a clarify interrupt and stream the resumed turn (see ADR 0015)
 - `POST /cancel { thread_id }` — barge-in: stop the in-flight turn for a thread (see ADR 0014)
+- `GET /evals/coverage` — dataset coverage and best-effort dedicated-corpus status
+- `POST /evals/run { subset }` — isolated eval run streamed as SSE; one active run at a time
+- `POST /evals/cancel` — terminate the active eval subprocess
+- `GET /evals/results` — last persisted eval report
 
 > **Adding an LLM node?** Give it a **sync + async twin** — `x_node` (calls `.invoke`) and `ax_node` (`await .ainvoke`), sharing extracted prompt-building/post-processing — and register it as `RunnableCallable(x_node, ax_node, name=...)` in `graph.py` (see `synthesiser`/`recall`). The async twin lets a barge-in cancel the in-flight model request; the sync twin keeps the eval path (`run_query` → `graph.invoke`) working. Pure-Python nodes (e.g. `supervisor`) need no twin. A node's `except Exception` stays cancellation-safe as-is — `asyncio.CancelledError` is a `BaseException`, so a barge-in propagates through it instead of being swallowed.
 
@@ -123,29 +129,40 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000). With `NEXT_PUBLIC_EVALS=1`, the standalone developer dashboard is at [http://localhost:3000/evals](http://localhost:3000/evals); without that build-time flag the route returns 404.
 
 ---
 
 ## Running Evals
 
-Requires `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, and a reachable `DATABASE_URL`.
+Requires `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, and a dedicated eval database. Never point dashboard evals or the destructive seed command at the app's development corpus.
+
+Create (if needed) and seed the conventional `ai_legal_tool_evals` database with one command. This embeds the curated sections and clears only the database named in `EVALS_DATABASE_URL`:
+
+```bash
+EVALS_DATABASE_URL=postgresql://user@/ai_legal_tool_evals?host=/path/to/pg/socket \
+  python3 -m evals.setup_eval_db
+```
+
+Keep `EVALS_DATABASE_URL` in the API's `.env`. Dashboard subprocesses remap it to `DATABASE_URL` and force `CHECKPOINTER=memory`, so the eval database needs only the `chunks` table. Corpus staleness is checked before every dashboard run; if required sections are missing, rerun the setup command. Seeding is deliberately never available as an HTTP or dashboard action.
+
+For direct CLI runs, explicitly point `DATABASE_URL` at the same eval database:
 
 ```bash
 # generate human-review checklist
-python -m evals.validate_dataset --format markdown --output evals/review-checklist.md
+python3 -m evals.validate_dataset --format markdown --output evals/review-checklist.md
 
 # quick smoke test (5 cases)
-python -m evals.run_evals --mode full --limit 5
+DATABASE_URL="$EVALS_DATABASE_URL" python3 -m evals.run_evals --mode full --limit 5
 
 # full suite
-python -m evals.run_evals --mode full
+DATABASE_URL="$EVALS_DATABASE_URL" python3 -m evals.run_evals --mode full
 
 # retriever + synthesiser only (no supervisor), used for before/after comparison
-python -m evals.run_evals --mode baseline
+DATABASE_URL="$EVALS_DATABASE_URL" python3 -m evals.run_evals --mode baseline
 ```
 
-Results are written to `evals/results.json` by default. A GitHub Actions workflow (`.github/workflows/evals.yml`, manually triggered via `workflow_dispatch`) runs a 15-case smoke eval against the production model defaults and posts the judge pass rate and key L1 metrics as a PR comment; it fails if the judge pass rate drops below 80%.
+`run_evals` also supports `--smoke`, `--category`, `--scenario`, `--case-id`, and machine-readable `--jsonl` output. Human-readable output remains the default. Results are written to `evals/results.json` by default. A GitHub Actions workflow (`.github/workflows/evals.yml`, manually triggered via `workflow_dispatch`) runs the 10-case smoke set against the production model defaults and posts the judge pass rate and key L1 metrics as a PR comment; it fails if the judge pass rate drops below 80%.
 
 ### Tuning the history token budget
 

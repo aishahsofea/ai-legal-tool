@@ -8,6 +8,7 @@ import time
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
+from collections.abc import Callable, Iterator
 from typing import Any
 
 import psycopg2
@@ -19,6 +20,7 @@ from agent.nodes.router import router_node
 from agent.nodes.synthesiser import synthesiser_node
 from agent.query_lifecycle import run_query
 from evals.assertions import BM_FUNCTION_WORDS, run_assertions
+from evals.coverage import aggregate_scenarios, select_cases
 from evals.judge import JudgeContext, judge_case
 
 load_dotenv()
@@ -113,12 +115,9 @@ def _compact_state(state: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _load_dataset(path: Path, smoke: bool = False) -> list[dict[str, Any]]:
+def _load_dataset(path: Path) -> list[dict[str, Any]]:
     data = json.loads(path.read_text(encoding="utf-8"))
-    cases = data["cases"]
-    if smoke:
-        cases = [c for c in cases if c.get("smoke")]
-    return cases
+    return data["cases"]
 
 
 def _maybe_limit(cases: list[dict[str, Any]], limit: int | None) -> list[dict[str, Any]]:
@@ -129,6 +128,28 @@ def _maybe_limit(cases: list[dict[str, Any]], limit: int | None) -> list[dict[st
 
 def _rate(passed: int, total: int) -> float:
     return 0.0 if total == 0 else passed / total
+
+
+def serialize_case_result(result: dict[str, Any]) -> dict[str, Any]:
+    """Flatten a persisted eval result into the dashboard's JSONL event shape."""
+    case = result["case"]
+    agent = result["agent"]
+    failure_details = result.get("l1_failures", {})
+    return {
+        "id": case["id"],
+        "category": case["category"],
+        "scenario": case["scenario"],
+        "expected_policy": case.get("expected_policy", "allow"),
+        "expected_act_number": case.get("expected_act_number"),
+        "expected_section": case.get("expected_section"),
+        "l1_failures": list(failure_details),
+        "l1_failure_details": failure_details,
+        "judge": result.get("judge"),
+        "query": case["query"],
+        "response": agent.get("final_response", ""),
+        "citations": agent.get("citations", []),
+        "elapsed_seconds": result.get("elapsed_seconds", 0.0),
+    }
 
 
 def _assertion_applicable(
@@ -156,15 +177,13 @@ def _assertion_applicable(
     return False
 
 
-def run_suite(mode: str, dataset_path: Path, limit: int | None = None, smoke: bool = False) -> dict[str, Any]:
-    cases = _maybe_limit(_load_dataset(dataset_path, smoke=smoke), limit)
-    results: list[dict[str, Any]] = []
-
-    l1_applicable = {name: 0 for name in _ASSERTION_NAMES}
-    l1_passed = {name: 0 for name in _ASSERTION_NAMES}
-    judge_total = 0
-    judge_passed = 0
-
+def iter_suite(
+    mode: str,
+    cases: list[dict[str, Any]],
+    *,
+    on_case_start: Callable[[int, int, dict[str, Any]], None] | None = None,
+) -> Iterator[dict[str, Any]]:
+    """Run cases synchronously and yield each completed result immediately."""
     runner_map = {
         "full": _run_full_agent,
         "raw": _run_raw_agent,
@@ -181,7 +200,8 @@ def run_suite(mode: str, dataset_path: Path, limit: int | None = None, smoke: bo
     try:
         for idx, case in enumerate(cases, 1):
             query = case["query"]
-            print(f"[{idx}/{len(cases)}] {case['id']} ...", flush=True)
+            if on_case_start:
+                on_case_start(idx, len(cases), case)
             started = time.perf_counter()
 
             history = case.get("history", [])
@@ -196,8 +216,9 @@ def run_suite(mode: str, dataset_path: Path, limit: int | None = None, smoke: bo
             expected_policy = case.get("expected_policy", "allow")
             expected_tool = case.get("expected_tool") if agentic_on else None
 
-            # Track applicability
-            for name in _ASSERTION_NAMES:
+            applicable = [
+                name
+                for name in _ASSERTION_NAMES
                 if _assertion_applicable(
                     name,
                     citations=citations,
@@ -206,8 +227,8 @@ def run_suite(mode: str, dataset_path: Path, limit: int | None = None, smoke: bo
                     expected_section=expected_section,
                     expected_policy=expected_policy,
                     expected_tool=expected_tool,
-                ):
-                    l1_applicable[name] += 1
+                )
+            ]
 
             l1_failures = run_assertions(
                 citations=citations,
@@ -221,31 +242,16 @@ def run_suite(mode: str, dataset_path: Path, limit: int | None = None, smoke: bo
                 expected_tool=expected_tool,
             )
 
-            # Count passed per assertion
-            for name in _ASSERTION_NAMES:
-                if _assertion_applicable(
-                    name,
-                    citations=citations,
-                    query=query,
-                    expected_act_number=expected_act_number,
-                    expected_section=expected_section,
-                    expected_policy=expected_policy,
-                    expected_tool=expected_tool,
-                ) and name not in l1_failures:
-                    l1_passed[name] += 1
-
-            case_result: dict[str, Any] = {"case": case, "agent": agent_output}
+            case_result: dict[str, Any] = {
+                "case": case,
+                "agent": agent_output,
+                "_l1_applicable": applicable,
+            }
 
             if l1_failures:
                 case_result["l1_failures"] = l1_failures
                 case_result["judge"] = None
-                elapsed = time.perf_counter() - started
-                print(
-                    f"    L1 FAIL in {elapsed:.1f}s | {', '.join(l1_failures.keys())}",
-                    flush=True,
-                )
             else:
-                judge_total += 1
                 verdict = judge_case(
                     JudgeContext(
                         query=query,
@@ -258,17 +264,36 @@ def run_suite(mode: str, dataset_path: Path, limit: int | None = None, smoke: bo
                         retrieved_chunks=agent_output["retrieved_chunks"],
                     )
                 )
-                judge_passed += int(verdict.passed)
                 case_result["judge"] = verdict.model_dump()
-                elapsed = time.perf_counter() - started
-                print(
-                    f"    done in {elapsed:.1f}s | judge={'PASS' if verdict.passed else 'FAIL'}",
-                    flush=True,
-                )
-
-            results.append(case_result)
+            case_result["elapsed_seconds"] = time.perf_counter() - started
+            yield case_result
     finally:
         db_conn.close()
+
+
+def _persisted_result(result: dict[str, Any]) -> dict[str, Any]:
+    persisted = {"case": result["case"], "agent": result["agent"]}
+    if "l1_failures" in result:
+        persisted["l1_failures"] = result["l1_failures"]
+    persisted["judge"] = result.get("judge")
+    return persisted
+
+
+def _build_report(mode: str, results: list[dict[str, Any]]) -> dict[str, Any]:
+    l1_applicable = {name: 0 for name in _ASSERTION_NAMES}
+    l1_passed = {name: 0 for name in _ASSERTION_NAMES}
+    judge_total = 0
+    judge_passed = 0
+
+    for result in results:
+        failures = result.get("l1_failures", {})
+        for name in result.get("_l1_applicable", []):
+            l1_applicable[name] += 1
+            l1_passed[name] += int(name not in failures)
+        verdict = result.get("judge")
+        if isinstance(verdict, dict):
+            judge_total += 1
+            judge_passed += int(verdict.get("passed") is True)
 
     l1_summary = {
         name: {
@@ -286,13 +311,82 @@ def run_suite(mode: str, dataset_path: Path, limit: int | None = None, smoke: bo
         "judge_passed": judge_passed,
         "judge_total": judge_total,
         "judge_pass_rate": _rate(judge_passed, judge_total),
+        "by_scenario": aggregate_scenarios(serialize_case_result(result) for result in results),
     }
 
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "summary": summary,
-        "results": results,
+        "results": [_persisted_result(result) for result in results],
     }
+
+
+def _resolve_cli_cases(
+    dataset_path: Path,
+    *,
+    smoke: bool = False,
+    category: str | None = None,
+    scenario: str | None = None,
+    case_id: str | None = None,
+    limit: int | None = None,
+) -> list[dict[str, Any]]:
+    cases = _load_dataset(dataset_path)
+    subset_filters = [smoke, category is not None, scenario is not None, case_id is not None]
+    if sum(subset_filters) > 1:
+        raise ValueError("Choose only one of --smoke, --category, --scenario, or --case-id")
+    if smoke:
+        cases = select_cases(cases, "smoke")
+    elif category is not None:
+        cases = select_cases(cases, {"category": category})
+    elif scenario is not None:
+        cases = select_cases(cases, {"scenario": scenario})
+    elif case_id is not None:
+        cases = select_cases(cases, {"case_id": case_id})
+    return _maybe_limit(cases, limit)
+
+
+def run_suite(
+    mode: str,
+    dataset_path: Path,
+    limit: int | None = None,
+    smoke: bool = False,
+    *,
+    category: str | None = None,
+    scenario: str | None = None,
+    case_id: str | None = None,
+    progress: bool = True,
+    on_case_result: Callable[[dict[str, Any]], None] | None = None,
+) -> dict[str, Any]:
+    cases = _resolve_cli_cases(
+        dataset_path,
+        smoke=smoke,
+        category=category,
+        scenario=scenario,
+        case_id=case_id,
+        limit=limit,
+    )
+
+    def print_start(index: int, total: int, case: dict[str, Any]) -> None:
+        print(f"[{index}/{total}] {case['id']} ...", flush=True)
+
+    results: list[dict[str, Any]] = []
+    for result in iter_suite(mode, cases, on_case_start=print_start if progress else None):
+        results.append(result)
+        if progress:
+            elapsed = result["elapsed_seconds"]
+            failures = result.get("l1_failures", {})
+            if failures:
+                print(f"    L1 FAIL in {elapsed:.1f}s | {', '.join(failures)}", flush=True)
+            else:
+                verdict = result["judge"]
+                print(
+                    f"    done in {elapsed:.1f}s | judge={'PASS' if verdict['passed'] else 'FAIL'}",
+                    flush=True,
+                )
+        if on_case_result:
+            on_case_result(serialize_case_result(result))
+
+    return _build_report(mode, results)
 
 
 def main() -> int:
@@ -302,20 +396,43 @@ def main() -> int:
     parser.add_argument("--mode", choices=("full", "raw", "baseline"), default="full")
     parser.add_argument("--limit", type=int, default=None)
     parser.add_argument("--smoke", action="store_true", help="Run only smoke-tagged cases (CI regression gate)")
+    parser.add_argument("--category")
+    parser.add_argument("--scenario")
+    parser.add_argument("--case-id")
+    parser.add_argument("--jsonl", action="store_true", help="Emit one JSON object per completed case")
     parser.add_argument("--fail-under", type=float, default=0.8)
     args = parser.parse_args()
 
-    case_label = "smoke" if args.smoke else (str(args.limit) if args.limit else "all")
-    print(
-        f"Running evals in {args.mode} mode on {case_label} cases...",
-        flush=True,
-    )
-    print("This can take a while: each case runs the live agent and then Claude-as-judge.", flush=True)
-    report = run_suite(args.mode, args.dataset, args.limit, smoke=args.smoke)
+    if not args.jsonl:
+        case_label = "smoke" if args.smoke else (str(args.limit) if args.limit else "all")
+        print(
+            f"Running evals in {args.mode} mode on {case_label} cases...",
+            flush=True,
+        )
+        print("This can take a while: each case runs the live agent and then Claude-as-judge.", flush=True)
+    try:
+        report = run_suite(
+            args.mode,
+            args.dataset,
+            args.limit,
+            smoke=args.smoke,
+            category=args.category,
+            scenario=args.scenario,
+            case_id=args.case_id,
+            progress=not args.jsonl,
+            on_case_result=(
+                lambda result: print(json.dumps(result, ensure_ascii=False), flush=True)
+                if args.jsonl else None
+            ),
+        )
+    except ValueError as exc:
+        parser.error(str(exc))
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
 
     summary = report["summary"]
     l1 = summary["l1"]
+    if args.jsonl:
+        return 0
     print(f"\nMode: {summary['mode']}")
     print(f"Cases: {summary['total_cases']}")
     print("\nL1 assertion results:")

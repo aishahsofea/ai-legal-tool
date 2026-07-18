@@ -124,6 +124,27 @@ These are the same signals the **Supervisor Rules** and evidence checks compute,
 groundedness and pass-rate become chartable over time. Feedback is fail-open and off
 the hot path — it never changes or delays a **Legal Research Query** response.
 
+## Evaluation dashboard
+
+An **Eval Run** is a single, explicitly selected slice of the hand-validated eval dataset. It is
+not prompt-version history. The developer dashboard separates two views:
+
+- **Coverage** is static metadata derived from `evals/dataset.json`: case counts, smoke coverage,
+  policy balance, scenarios, and advisory gap flags. It remains available without a database.
+- **Effectiveness** is the result of a live **Eval Run**: deterministic L1 assertions followed by
+  the LLM judge only when L1 passes, with pass rates grouped by scenario for that run.
+
+Live runs execute one at a time in an isolated subprocess against `EVALS_DATABASE_URL`, never the
+application's `DATABASE_URL`. The API checks that every citation-applicable Act/section pair exists
+in the dedicated eval corpus before starting, streams each completed case as JSONL-backed SSE, and
+terminates the subprocess on explicit cancellation or browser disconnect. `CHECKPOINTER=memory` is
+forced because every eval case is a fresh single-turn thread; the eval database therefore stores
+only curated `chunks`.
+
+The API surface is `GET /evals/coverage`, `POST /evals/run`, `POST /evals/cancel`, and
+`GET /evals/results`. The standalone Next.js `/evals` route is exposed only when
+`NEXT_PUBLIC_EVALS=1` at build time.
+
 ## Flagged ambiguities
 
 - "legislation" was used loosely to mean both Acts and Subsidiary Legislation — resolved: use **Act** for statutes and **Subsidiary Legislation** for P.U. instruments.
