@@ -29,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${sourceSerif.variable} ${jetBrainsMono.variable} h-full antialiased`}>
-      <body className="min-h-full bg-[var(--bg)] text-[var(--ink)]">{children}</body>
+      <body className="min-h-full bg-[var(--canvas)] text-[var(--text)]">{children}</body>
     </html>
   );
 }

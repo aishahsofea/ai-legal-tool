@@ -10,18 +10,18 @@ const SUGGESTED_QUERIES = [
 export function EmptyState({ onQuery }: { onQuery: (query: string) => void }) {
   return (
     <div className="space-y-4">
-      <div className="border border-(--rule) bg-(--bg-2) p-4">
-        <div className="flex items-center gap-2 text-(--ink-3)">
-          <span className="font-mono text-[10px] uppercase tracking-widest">LOCUS</span>
-          <span className="h-2 w-2 rounded-full bg-(--bronze)" />
-          <span className="font-mono text-[10px] uppercase tracking-widest">RESEARCH WORKSPACE</span>
+      <div className="rounded-xl border border-(--line) bg-(--surface) p-4 shadow-[var(--shadow-soft)]">
+        <div className="flex items-center gap-2 text-(--text-subtle)">
+          <span className="font-mono text-[10px] uppercase tracking-[0.12em]">LOCUS</span>
+          <span className="h-2 w-2 rounded-full bg-(--accent)" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.12em]">RESEARCH WORKSPACE</span>
         </div>
-        <p className="mt-2 font-serif text-base font-light leading-snug tracking-tight text-(--ink)">
+        <p className="mt-3 max-w-[64ch] font-serif text-lg font-light leading-6 tracking-tight text-(--text)">
           Ask about statutory text, amendments, and Acts. Locus surfaces governing provisions and keeps the thread anchored to source material.
         </p>
       </div>
 
-      <div className="grid gap-2 sm:grid-cols-2">
+      <div className="grid gap-3 sm:grid-cols-2">
         {SUGGESTED_QUERIES.map((query) => (
           <PillButton key={query} onClick={() => onQuery(query)}>{query}</PillButton>
         ))}

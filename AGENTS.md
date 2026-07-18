@@ -1,5 +1,7 @@
 # AGENTS.md
 
+> Canonical project instructions live in [CLAUDE.md](CLAUDE.md). Read and follow that file before making changes in this repository.
+
 ## Keeping docs in sync
 
 When a change touches the agent graph (nodes/edges), the API contract (request/response shapes, endpoints, SSE events), env vars/config, or the top-level project structure, update the relevant living docs in the same change: `README.md`, `CONTRIBUTING.md`, `CONTEXT.md`.
