@@ -105,6 +105,17 @@ The answer is merged with the original query into one self-contained query, so r
 
 **Barge-in (stop a running turn):** `POST /cancel { thread_id }` cancels the in-flight turn for a thread — the Stop button / Esc. Cancellation aborts the live model request and the `/query` SSE stream for that thread ends on its own. A cancelled turn writes nothing — no `response`, no history, no memory — so the next prompt starts clean. Returns `{"status": "cancelled"}` or `{"status": "no_active_run"}`; idempotent. There is one active run per `thread_id`, so a new `POST /query` on the same thread also supersedes any in-flight run — "change my mind, ask something else" needs no explicit cancel. See ADR 0014.
 
+### Eval dashboard API
+
+The developer-only `/evals` page is enabled at build time with `NEXT_PUBLIC_EVALS=1`. It uses a dedicated corpus configured by `EVALS_DATABASE_URL`; eval runs never fall back to the app's `DATABASE_URL`.
+
+- `GET /evals/coverage` — static dataset counts and fixed coverage-gap flags, plus a best-effort eval-corpus staleness check.
+- `POST /evals/run { subset }` — stream one subset (`"smoke"`, `"all"`, category, scenario, or case ID) from an isolated subprocess. SSE events are `run_start`, `case_start`, `case_result`, `run_summary`, `error`, and `done`.
+- `POST /evals/cancel` — terminate the single active eval subprocess; returns `cancelled` or `no_active_run`.
+- `GET /evals/results` — return the last `evals/results.json` report, or 404 when no run is available.
+
+The server refuses stale corpora, prevents concurrent runs, and terminates a run when its browser stream disconnects so an abandoned page cannot continue spending tokens.
+
 ### Memory
 
 - **Conversation history** is kept server-side in a LangGraph checkpointer keyed by `thread_id` — the client never resends prior turns. `DATABASE_URL` set → `PostgresSaver`; otherwise an in-process `MemorySaver`. History is trimmed to a token budget (`MAX_HISTORY_TOKENS`, default 4000) in whole turns, oldest first (ADR 0008).
@@ -119,11 +130,13 @@ The answer is merged with the original query into one self-contained query, so r
 
 ### Eval harness
 
-`evals/dataset.json` holds hand-validated cases for the Evidence Act 1950, Penal Code, PDPA 2010,
+`evals/dataset.json` holds 50 hand-validated cases for the Evidence Act 1950, Penal Code, PDPA 2010,
 Companies Act 2016, Employment Act 1955, plus escalation cases that must be blocked. A GitHub Actions
-workflow (`.github/workflows/evals.yml`, manually triggered) runs a 15-case smoke eval against the
+workflow (`.github/workflows/evals.yml`, manually triggered) runs a 10-case smoke eval against the
 GPT-4.1 defaults and posts the judge pass rate and key L1 metrics as a PR comment — failing if the
-pass rate drops below 80%. See [CONTRIBUTING.md](CONTRIBUTING.md) for how to run evals locally.
+pass rate drops below 80%. The gated `/evals` dashboard adds static coverage analysis, interactive
+subset runs, per-case drill-down, and a per-scenario summary. See [CONTRIBUTING.md](CONTRIBUTING.md)
+for dedicated eval-database setup and local usage.
 
 <details>
 <summary><strong>Project structure</strong></summary>
@@ -141,10 +154,12 @@ ai-legal-tool/
 │   ├── retrieval/      # agentic retrieval: search, tools, ReAct agent (ADR 0013)
 │   └── nodes/          # router, contextualize, retriever, recall, synthesiser,
 │                       #   citation_validator, grounding_check, supervisor, conversational
-├── api/main.py         # FastAPI SSE: POST /query, POST /resume (clarify, ADR 0015), POST /cancel
+├── api/
+│   ├── main.py         # FastAPI app: query/resume/cancel + eval router
+│   └── evals.py        # eval coverage, isolated subprocess SSE, cancellation, saved results
 ├── scraper/            # pipeline steps 1–4 (index, detail, PDFs, extract) + parsers
 ├── ingestion/          # step 5: embed + ingest into pgvector
-├── evals/              # dataset, L1 assertions, L2 Claude judge, runner, debug tools
+├── evals/              # dataset, coverage logic, L1/L2 checks, runner, eval DB setup, debug tools
 ├── tests/              # unit tests (graph retry, checkpointer memory, ...)
 ├── frontend/           # Next.js app-router chat UI (Vercel AI SDK)
 ├── data/               # scraped index, metadata, PDFs, chunks, HTTP cache

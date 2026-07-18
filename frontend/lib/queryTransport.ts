@@ -93,7 +93,11 @@ function decodeQueryEvent(raw: string): QueryEvent | null {
   return null;
 }
 
-async function* parseSseStream(body: ReadableStream<Uint8Array>, signal?: AbortSignal): AsyncGenerator<QueryEvent> {
+export async function* parseSseStream<T>(
+  body: ReadableStream<Uint8Array>,
+  decodeEvent: (raw: string) => T | null,
+  signal?: AbortSignal,
+): AsyncGenerator<T> {
   const reader = body.getReader();
   const decoder = new TextDecoder();
   let buffer = "";
@@ -118,7 +122,7 @@ async function* parseSseStream(body: ReadableStream<Uint8Array>, signal?: AbortS
           .filter((line) => line.startsWith("data: "))
           .map((line) => line.slice(6).trim())
           .join("\n");
-        const event = decodeQueryEvent(data);
+        const event = decodeEvent(data);
         if (event) yield event;
       }
     }
@@ -132,7 +136,7 @@ async function* parseSseStream(body: ReadableStream<Uint8Array>, signal?: AbortS
         .filter((line) => line.startsWith("data: "))
         .map((line) => line.slice(6).trim())
         .join("\n");
-      const event = decodeQueryEvent(data);
+      const event = decodeEvent(data);
       if (event) yield event;
     }
   } finally {
@@ -147,7 +151,7 @@ async function* streamFromResponse(res: Response, signal?: AbortSignal): AsyncGe
   if (!res.body) {
     throw new Error("No response body");
   }
-  yield* parseSseStream(res.body, signal);
+  yield* parseSseStream(res.body, decodeQueryEvent, signal);
 }
 
 export async function* streamQuery(
