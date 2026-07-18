@@ -1,45 +1,43 @@
-# Autoresearch: UI layout responsiveness and inline sources
+# Autoresearch: Locus cream interface redesign
 
 ## Objective
-Improve the frontend research workspace so the layout remains sensible across widths and sources are integrated into the answer text rather than isolated in a right-hand panel. The target experience is closer to a research report: readable central text, inline source markers/cards near the relevant answer, and no awkward citations sidebar.
+Redesign the complete frontend as a quiet, premium legal-research product. Use a light cream and ivory visual system with near-black text and a restrained oxblood accent. Human chat messages must be unmistakable right-aligned bubbles. Layout sizing, spacing, typography, radii, and icon dimensions must use even pixel values. Keep the visual density compact and require WCAG AA contrast for every theme text pairing.
+
+## Loop
+This is a goal-based loop: make one coherent implementation pass, run `./autoresearch.sh`, inspect the measured debt and build checks, then repeat until the stop condition is met.
+
+## Stop condition
+- `visual_debt=0`
+- `odd_pixel_values=0`
+- `legacy_bronze_refs=0`
+- `human_bubble_debt=0`
+- `scale_debt=0`
+- `contrast_debt=0`
+- `lint_exit=0`
+- `build_exit=0`
 
 ## Metrics
-- **Primary**: layout_debt (unitless, lower is better) — static UX debt score for source placement, responsive grid, and inline citation affordances.
-- **Secondary**: lint_exit, build_exit, source_panel_refs, inline_citation_refs — correctness and implementation-shape monitors.
+- **Primary**: `visual_debt` (unitless, lower is better) — deterministic design-system and component-shape debt.
+- **Secondary**: `odd_pixel_values`, `legacy_bronze_refs`, `human_bubble_debt`, `scale_debt`, `contrast_debt`, `lint_exit`, and `build_exit`.
 
-## How to Run
-`./autoresearch.sh` — outputs `METRIC name=number` lines.
+## Even-number rule
+All explicit pixel values used for layout sizing, spacing, typography, radii, and icons must be even integers. Crisp `1px` borders, rules, focus rings, and SVG strokes are explicit optical exceptions. Percentages, unitless line heights, font weights, opacity, animation timings, and data values are outside the rule.
 
-## Files in Scope
-- `frontend/app/page.tsx` — workspace composition and top-level responsive layout.
-- `frontend/app/globals.css` — grid/layout utilities and readable width tokens.
-- `frontend/components/locus-workspace/*` — message rendering, markdown, source/citation UI, composer/sidebar/header.
-- `frontend/components/CitationCard.tsx`, `frontend/components/chamber.tsx` — reusable citation/source presentation primitives.
-- `frontend/lib/useResearchThreads.ts`, `frontend/lib/useQuery.ts`, `frontend/lib/queryTransport.ts` — citation data shaping if needed for inline rendering.
+## Accessibility rule
+Normal text/background token pairs must meet a contrast ratio of at least 4.5:1. Primary controls must keep at least a 40px visible height, while compact controls must remain at least 32px; both exceed WCAG 2.2's 24px minimum target size.
 
-## Off Limits
-- Do not change backend/legal answer behavior to game metrics.
-- Do not remove citations data or hide source information; sources must remain available in-context.
-- Do not add heavy dependencies unless clearly necessary.
+## Files in scope
+- `frontend/app/globals.css`, `frontend/app/layout.tsx`
+- `frontend/app/page.tsx`, `frontend/app/workspace/page.tsx`
+- `frontend/app/evals/EvalDashboard.tsx`
+- `frontend/components/**/*.tsx`
 
 ## Constraints
-- Keep the app building and linting.
-- Do not cheat by special-casing `autoresearch.sh`; improve real UI code.
-- Prefer simple, reviewable UX changes over benchmark-specific hacks.
+- Preserve all existing routes, chat/thread behavior, streaming, cancellation, citations, and eval behavior.
+- Do not change the backend, agent graph, API contract, env vars, or legal-answer behavior.
+- Do not hide citations or remove source access.
+- Do not add dependencies.
+- Do not special-case the evaluator; improve the actual interface.
 
-## What's Been Tried
-- Baseline showed layout debt from the three-column desktop grid, right-hand `SourcesPanel`, and sources separated from assistant answers. Existing lint also failed in `useResearchThreads`.
-- Kept experiment `dfbb9ee`: removed the right sources rail, simplified the desktop grid to nav + content, rendered citations inside each assistant message as a `Sources Used` section, and got lint/build passing.
-- Kept experiment `14f840b`: added a compact pre-answer source map with `[1]` style links to detailed source rows below the answer.
-- Kept experiment `d578cbe`: removed duplicated `CitationCard` content from message source rows and added accessible open-source labels plus back-to-map links.
-- Kept experiment `5f6858c`: capped the pre-answer source map at six visible chips and moved overflow citations into a collapsible `+N more sources` detail block.
-- Kept experiment `b36da85`: threaded `message.id` into source-map/detail anchors so multi-answer threads no longer share the same `source-map` target.
-- Kept experiment `b553aac`: made scoped detail anchors keep an explicit `source-ref-*` prefix for readable, stable in-page links.
-- Kept experiment `df25e54`: compacted message/header actions and composer controls on narrow screens, improving small-width chrome while keeping lint/build green.
-- User feedback identified awkward empty right space after removing sources rail.
-- Kept experiment `8740c02`: removed remaining content/input max-width caps and switched message/composer containers to full-width utilities so the workspace uses the freed width.
-- Next focus was wide prose readability, but user feedback superseded it: thread sidebar should collapse at a breakpoint.
-- Kept experiment `c37ec9e`: thread sidebar becomes a 56px icon rail from `md` widths and expands back to 220px at `xl`; labels/user details/thread titles are hidden until wide screens with tooltips/aria labels preserved.
-- Kept experiment `6cf4745`: polished collapsed rail empty/user states so no text leaks in the compact rail; empty state shows a dash until `xl`, user details remain tooltip/avatar-only until expanded.
-- Kept experiment `2314ebe`: added `chamber-reading-flow` and `xl:columns-2 xl:gap-10` to assistant markdown so very wide answers use the freed width with readable columns, pretty wrapping, hyphenation, and break-inside avoidance.
-- Next focus: verify wide markdown tables/code blocks behave inside columns; consider opt-outs for tables/pre blocks if they become cramped.
+## Verification
+`./autoresearch.sh` prints the metrics and runs the frontend linter and production build. `./autoresearch.checks.sh` enforces the full stop condition.

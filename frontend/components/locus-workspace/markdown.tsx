@@ -1,15 +1,15 @@
 import type { Components } from "react-markdown";
 
 export const markdownComponents: Components = {
-  p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
-  strong: ({ children }) => <strong className="font-semibold text-(--ink)">{children}</strong>,
-  em: ({ children }) => <em className="font-serif italic text-(--bronze)">{children}</em>,
-  h1: ({ children }) => <h1 className="mb-2 font-serif text-2xl font-light leading-tight tracking-tight text-(--ink)">{children}</h1>,
-  h2: ({ children }) => <h2 className="mb-2 mt-4 font-serif text-xl font-light leading-tight tracking-tight text-(--ink)">{children}</h2>,
-  h3: ({ children }) => <h3 className="mb-2 mt-4 font-serif text-base font-light leading-snug text-(--ink)">{children}</h3>,
-  blockquote: ({ children }) => <blockquote className="my-2 border-l border-(--bronze) pl-4 font-serif text-sm italic leading-relaxed text-(--ink-2)">{children}</blockquote>,
-  ol: ({ children }) => <ol className="my-2 list-decimal space-y-2 pl-4">{children}</ol>,
-  ul: ({ children }) => <ul className="my-2 list-disc space-y-2 pl-4">{children}</ul>,
+  p: ({ children }) => <p className="mb-3 last:mb-0">{children}</p>,
+  strong: ({ children }) => <strong className="font-semibold text-(--text)">{children}</strong>,
+  em: ({ children }) => <em className="font-serif italic text-(--accent)">{children}</em>,
+  h1: ({ children }) => <h1 className="mb-3 font-serif text-xl font-light leading-7 tracking-tight text-(--text)">{children}</h1>,
+  h2: ({ children }) => <h2 className="mb-3 mt-6 font-serif text-lg font-light leading-6 tracking-tight text-(--text)">{children}</h2>,
+  h3: ({ children }) => <h3 className="mb-3 mt-5 font-serif text-base font-light leading-6 text-(--text)">{children}</h3>,
+  blockquote: ({ children }) => <blockquote className="my-3 rounded-r-lg border-l border-(--accent) bg-(--accent-tint) px-3 py-2 font-serif text-sm italic leading-6 text-(--text-muted)">{children}</blockquote>,
+  ol: ({ children }) => <ol className="my-4 list-decimal space-y-2 pl-6">{children}</ol>,
+  ul: ({ children }) => <ul className="my-4 list-disc space-y-2 pl-6">{children}</ul>,
   li: ({ children }) => <li className="pl-2">{children}</li>,
   a: ({ children, href, className, title }) => {
     const isInPageAnchor = href?.startsWith("#");
@@ -24,13 +24,13 @@ export const markdownComponents: Components = {
       </a>
     );
   },
-  code: ({ children }) => <code className="rounded-sm border border-(--rule) bg-(--bg-2) px-2 py-2 font-mono text-xs text-(--ink)">{children}</code>,
-  pre: ({ children }) => <pre className="my-2 overflow-x-auto rounded-sm border border-(--rule) bg-(--bg-2) p-2 font-mono text-xs leading-relaxed text-(--ink-2)">{children}</pre>,
-  hr: () => <hr className="my-4 border-(--rule-soft)" />,
-  table: ({ children }) => <div className="my-2 overflow-x-auto"><table className="w-full border-collapse text-sm">{children}</table></div>,
-  thead: ({ children }) => <thead className="border-b border-(--rule)">{children}</thead>,
-  tbody: ({ children }) => <tbody className="divide-y divide-(--rule-soft)">{children}</tbody>,
+  code: ({ children }) => <code className="rounded-lg border border-(--line) bg-(--surface) px-2 py-1 font-mono text-xs text-(--text)">{children}</code>,
+  pre: ({ children }) => <pre className="my-3 overflow-x-auto rounded-lg border border-(--line) bg-(--surface) p-3 font-mono text-xs leading-5 text-(--text-muted)">{children}</pre>,
+  hr: () => <hr className="my-6 border-(--line-soft)" />,
+  table: ({ children }) => <div className="my-3 overflow-x-auto rounded-lg border border-(--line)"><table className="w-full border-collapse text-sm">{children}</table></div>,
+  thead: ({ children }) => <thead className="border-b border-(--line) bg-(--surface-soft)">{children}</thead>,
+  tbody: ({ children }) => <tbody className="divide-y divide-(--line-soft)">{children}</tbody>,
   tr: ({ children }) => <tr className="text-left">{children}</tr>,
-  th: ({ children }) => <th className="px-3 py-2 font-semibold text-(--ink)">{children}</th>,
-  td: ({ children }) => <td className="px-3 py-2 text-(--ink-2)">{children}</td>,
+  th: ({ children }) => <th className="px-3 py-2 font-semibold text-(--text)">{children}</th>,
+  td: ({ children }) => <td className="px-3 py-2 text-(--text-muted)">{children}</td>,
 };

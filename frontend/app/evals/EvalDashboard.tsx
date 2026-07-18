@@ -19,16 +19,22 @@ type PickerMode = "smoke" | "all" | "category" | "scenario" | "case_id";
 type ResultSource = "cached" | "live" | "empty";
 
 const palette = {
-  ink: "#191912",
-  muted: "#747267",
-  line: "#d9d7ca",
-  page: "#e9e8dc",
-  panel: "#f8f8f2",
-  accent: "#d96c49",
-  pass: "#a9bf8e",
-  partial: "#ddd1a1",
-  fail: "#da9179",
-  idle: "#e7e6dc",
+  ink: "#1e1d1a",
+  muted: "#645f57",
+  line: "#d8d0c2",
+  page: "#f6f1e7",
+  panel: "#fffdf8",
+  panelSoft: "#eee7dc",
+  accent: "#6e2f3a",
+  accentSoft: "#eee0e1",
+  pass: "#b8cdbd",
+  passSoft: "#dfe9e1",
+  partial: "#d7dde6",
+  fail: "#d9aaad",
+  failSoft: "#f1dddd",
+  idle: "#e5ddcf",
+  warning: "#9a5b47",
+  warningSoft: "#f2dfd2",
 };
 
 function casePassed(result: EvalCaseResult) {
@@ -67,10 +73,10 @@ function CaseDetails({ result }: { result: EvalCaseResult }) {
   const passed = kind === "Pass";
 
   return (
-    <details className="rounded-2xl border bg-white" style={{ borderColor: palette.line }}>
-      <summary className="grid cursor-pointer list-none grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-3 px-4 py-4 md:px-5">
+    <details className="rounded-xl border" style={{ borderColor: palette.line, background: palette.panel }}>
+      <summary className="grid cursor-pointer list-none grid-cols-[28px_minmax(0,1fr)_auto] items-center gap-2 px-4 py-3">
         <span
-          className="flex h-7 w-7 items-center justify-center rounded-full text-sm font-bold"
+          className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold"
           style={{ background: passed ? palette.pass : palette.fail, color: palette.ink }}
         >
           {passed ? "✓" : "×"}
@@ -81,14 +87,14 @@ function CaseDetails({ result }: { result: EvalCaseResult }) {
         </span>
         <span
           className="rounded-full px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.08em]"
-          style={{ background: passed ? "#e3ecd8" : "#f3d8cf", color: palette.ink }}
+          style={{ background: passed ? palette.passSoft : palette.failSoft, color: palette.ink }}
         >
           {kind}
         </span>
       </summary>
 
-      <div className="grid gap-6 border-t px-5 py-5 text-sm lg:grid-cols-2" style={{ borderColor: palette.line }}>
-        <div className="space-y-5">
+      <div className="grid gap-4 border-t px-4 py-4 text-sm lg:grid-cols-2" style={{ borderColor: palette.line }}>
+        <div className="space-y-4">
           <DetailBlock title="Query"><p>{result.query}</p></DetailBlock>
           <DetailBlock title="Expected">
             <p>Policy: {result.expected_policy}</p>
@@ -100,13 +106,13 @@ function CaseDetails({ result }: { result: EvalCaseResult }) {
               : "No citations returned"}</p>
           </DetailBlock>
         </div>
-        <div className="space-y-5">
+        <div className="space-y-4">
           <DetailBlock title="Agent response"><p className="whitespace-pre-wrap">{result.response || "No response"}</p></DetailBlock>
           <DetailBlock title="Deterministic checks">
             {result.l1_failures.length === 0
               ? <p>All applicable L1 checks passed.</p>
               : result.l1_failures.map((name) => (
-                  <p key={name} className="text-[#9d3f2e]"><code>{name}</code>: {result.l1_failure_details?.[name] ?? "Failed"}</p>
+                  <p key={name} style={{ color: palette.warning }}><code>{name}</code>: {result.l1_failure_details?.[name] ?? "Failed"}</p>
                 ))}
           </DetailBlock>
           <DetailBlock title="LLM judge">
@@ -124,7 +130,7 @@ function DetailBlock({ title, children }: { title: string; children: React.React
   return (
     <div>
       <h4 className="mb-2 font-mono text-[10px] font-bold uppercase tracking-[0.12em]" style={{ color: palette.muted }}>{title}</h4>
-      <div className="space-y-1 leading-6" style={{ color: "#4f4d45" }}>{children}</div>
+      <div className="space-y-1 leading-6" style={{ color: palette.muted }}>{children}</div>
     </div>
   );
 }
@@ -153,27 +159,27 @@ function ResultMatrix({
   }, [results, scenarios]);
 
   return (
-    <div className="overflow-x-auto rounded-[28px] border bg-[#f8f8f2] p-5 shadow-[0_12px_40px_rgba(50,45,30,0.06)] md:p-7" style={{ borderColor: "#dfddd1" }}>
-      <div className="min-w-[1040px]">
+    <div className="overflow-x-auto rounded-[20px] border p-4 shadow-[var(--shadow-raised)] md:p-5" style={{ borderColor: palette.line, background: palette.panel }}>
+      <div className="min-w-[960px]">
         <div
           className="grid gap-3"
-          style={{ gridTemplateColumns: `116px repeat(${scenarios.length}, minmax(138px, 1fr))` }}
+          style={{ gridTemplateColumns: `104px repeat(${scenarios.length}, minmax(128px, 1fr))` }}
         >
           <div />
           {scenarios.map((scenario, index) => (
-            <div key={scenario} className="pb-3 text-center">
+            <div key={scenario} className="pb-2 text-center">
               <div className="font-mono text-[10px] font-bold uppercase tracking-[0.12em]" style={{ color: palette.muted }}>
                 scenario {String(index + 1).padStart(2, "0")}
               </div>
-              <div className="mt-1 text-[17px] font-bold capitalize" style={{ color: palette.ink }}>{formatScenario(scenario)}</div>
+              <div className="mt-1 text-lg font-bold capitalize" style={{ color: palette.ink }}>{formatScenario(scenario)}</div>
               <div className="mt-1 text-xs" style={{ color: palette.muted }}>{coverage.by_scenario[scenario]} dataset cases</div>
             </div>
           ))}
 
           <div className="flex items-center">
             <span
-              className="rounded-full px-4 py-2 font-mono text-xs font-bold uppercase tracking-[0.08em] text-white"
-              style={{ background: source === "cached" ? "#7f7d71" : palette.accent }}
+              className="rounded-full px-4 py-2 font-mono text-xs font-bold uppercase tracking-[0.08em]"
+              style={{ background: source === "cached" ? palette.muted : palette.accent, color: palette.panel }}
             >
               {running ? "live" : source === "cached" ? "saved" : "latest"}
             </span>
@@ -188,7 +194,7 @@ function ResultMatrix({
                 key={scenario}
                 type="button"
                 onClick={() => onSelectScenario(scenario)}
-                className="min-h-[112px] rounded-2xl border-2 px-3 py-3 text-center transition-transform hover:-translate-y-0.5"
+                className="min-h-[96px] rounded-xl border-2 px-2 py-2 text-center transition-transform hover:-translate-y-0.5"
                 style={{
                   background: cellColor(passed, scenarioResults.length),
                   borderColor: active ? palette.ink : "transparent",
@@ -198,10 +204,10 @@ function ResultMatrix({
               >
                 {scenarioResults.length ? (
                   <>
-                    <div className="font-mono text-[32px] font-bold leading-none">
+                    <div className="font-mono text-[28px] font-bold leading-none">
                       {passed}<span className="text-base font-medium opacity-55">/{scenarioResults.length}</span>
                     </div>
-                    <div className="mt-3 flex min-h-5 flex-wrap justify-center gap-x-2 gap-y-1 font-mono text-base font-bold">
+                    <div className="mt-2 flex min-h-5 flex-wrap justify-center gap-x-2 gap-y-1 font-mono text-sm font-bold">
                       {scenarioResults.map((result) => (
                         <span key={result.id} title={`${result.id}: ${caseFailureKind(result)}`}>
                           {casePassed(result) ? "✓" : "×"}
@@ -210,7 +216,7 @@ function ResultMatrix({
                     </div>
                   </>
                 ) : (
-                  <div className="flex h-full min-h-[82px] items-center justify-center font-mono text-xs uppercase tracking-[0.08em]" style={{ color: palette.muted }}>
+                  <div className="flex h-full min-h-[68px] items-center justify-center font-mono text-xs uppercase tracking-[0.08em]" style={{ color: palette.muted }}>
                     not run
                   </div>
                 )}
@@ -326,45 +332,46 @@ export default function EvalDashboard() {
   }
 
   if (!coverage) {
-    return <main className="min-h-screen bg-[#e9e8dc] p-10 text-[#747267]">Loading evaluation suite…</main>;
+    return <main className="min-h-screen p-10" style={{ background: palette.page, color: palette.muted }}>Loading evaluation suite…</main>;
   }
 
   const corpusChecked = coverage.corpus_staleness.checked;
 
   return (
-    <main className="min-h-screen bg-[#e9e8dc] text-[#191912]">
-      <nav className="flex flex-wrap items-center justify-between gap-4 border-b px-5 py-4 md:px-10" style={{ borderColor: palette.line }}>
+    <main className="min-h-screen" style={{ background: palette.page, color: palette.ink }}>
+      <nav className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3 md:px-8" style={{ borderColor: palette.line }}>
         <div className="flex items-center gap-3 text-lg font-bold">
           <span className="h-3 w-3 rounded-full" style={{ background: palette.accent }} />
           Locus eval studio
         </div>
         <div className="flex items-center gap-2">
-          <span className="rounded-full bg-[#f8f8f2] px-4 py-2 font-mono text-xs font-bold">n {results.length || "—"}</span>
-          <span className="rounded-full bg-[#f8f8f2] px-4 py-2 font-mono text-xs font-bold uppercase">
-            <span className="mr-2 inline-block h-2 w-2 rounded-full" style={{ background: resultSource === "live" ? palette.accent : "#8b897e" }} />
+          <span className="rounded-full px-4 py-2 font-mono text-xs font-bold" style={{ background: palette.panel }}>n {results.length || "—"}</span>
+          <span className="rounded-full px-4 py-2 font-mono text-xs font-bold uppercase" style={{ background: palette.panel }}>
+            <span className="mr-2 inline-block h-2 w-2 rounded-full" style={{ background: resultSource === "live" ? palette.accent : palette.muted }} />
             {running ? "live" : resultSource === "cached" ? "cached" : "ready"}
           </span>
         </div>
       </nav>
 
-      <div className="mx-auto max-w-[1600px] space-y-8 px-5 py-8 md:px-10 md:py-10">
-        <header className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+      <div className="mx-auto max-w-[1440px] space-y-6 px-4 py-6 md:px-8 md:py-8">
+        <header className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
           <div>
             <div className="flex flex-wrap items-center gap-3">
-              <h1 className="text-4xl font-black tracking-[-0.04em] md:text-5xl">Evaluation suite</h1>
-              <span className="rounded-full px-4 py-2 font-mono text-sm font-bold text-white" style={{ background: palette.accent }}>latest</span>
+              <h1 className="text-3xl font-black tracking-[-0.04em] md:text-4xl">Evaluation suite</h1>
+              <span className="rounded-full px-4 py-2 font-mono text-sm font-bold" style={{ background: palette.accent, color: palette.panel }}>latest</span>
             </div>
             <p className="mt-3 text-base" style={{ color: palette.muted }}>
               {coverage.total_cases} benchmark cases · {Object.keys(coverage.by_scenario).length} scenarios
               {lastRunAt ? ` · results ${resultSource === "cached" ? "saved" : "completed"} ${new Date(lastRunAt).toLocaleString()}` : ""}
             </p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-2">
             <button
               type="button"
               onClick={cancelRun}
               disabled={!running}
-              className="rounded-2xl bg-[#d4d3c9] px-7 py-3.5 font-semibold disabled:opacity-45"
+              className="rounded-xl px-5 py-3 font-semibold disabled:opacity-45"
+              style={{ background: palette.idle }}
             >
               Cancel
             </button>
@@ -372,15 +379,15 @@ export default function EvalDashboard() {
               type="button"
               onClick={startRun}
               disabled={running || invalidPicker || missingSections.length > 0}
-              className="min-w-[170px] rounded-2xl px-7 py-3.5 font-semibold text-white disabled:opacity-45"
-              style={{ background: palette.accent }}
+              className="min-w-[160px] rounded-xl px-5 py-3 font-semibold disabled:opacity-45"
+              style={{ background: palette.accent, color: palette.panel }}
             >
               {running ? `Running ${progress || "…"}` : confirmArmed ? "Confirm run" : `Run ${estimatedCount || ""} cases`}
             </button>
           </div>
         </header>
 
-        <section className="rounded-2xl border bg-[#f4f3ea] p-4" style={{ borderColor: palette.line }} aria-label="Run configuration">
+        <section className="rounded-xl border p-3" style={{ borderColor: palette.line, background: palette.panelSoft }} aria-label="Run configuration">
           <div className="grid gap-3 md:grid-cols-[220px_minmax(220px,1fr)_auto] md:items-center">
             <label className="flex items-center gap-3">
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.1em]" style={{ color: palette.muted }}>Run</span>
@@ -388,8 +395,8 @@ export default function EvalDashboard() {
                 value={mode}
                 disabled={running}
                 onChange={(event) => { setMode(event.target.value as PickerMode); setValue(""); setConfirmArmed(false); }}
-                className="w-full rounded-xl border bg-white px-3 py-2.5 text-sm font-semibold"
-                style={{ borderColor: palette.line }}
+                className="w-full rounded-xl border px-3 py-2.5 text-sm font-semibold"
+                style={{ borderColor: palette.line, background: palette.panel }}
               >
                 <option value="smoke">Smoke subset</option>
                 <option value="all">All cases</option>
@@ -401,19 +408,19 @@ export default function EvalDashboard() {
 
             <div>
               {mode === "category" && (
-                <select value={value} onChange={(event) => setValue(event.target.value)} className="w-full rounded-xl border bg-white px-3 py-2.5 text-sm" style={{ borderColor: palette.line }}>
+                <select value={value} onChange={(event) => setValue(event.target.value)} className="w-full rounded-xl border px-3 py-2.5 text-sm" style={{ borderColor: palette.line, background: palette.panel }}>
                   <option value="">Choose category…</option>
                   {Object.keys(coverage.by_category).map((category) => <option key={category}>{category}</option>)}
                 </select>
               )}
               {mode === "scenario" && (
-                <select value={value} onChange={(event) => setValue(event.target.value)} className="w-full rounded-xl border bg-white px-3 py-2.5 text-sm" style={{ borderColor: palette.line }}>
+                <select value={value} onChange={(event) => setValue(event.target.value)} className="w-full rounded-xl border px-3 py-2.5 text-sm" style={{ borderColor: palette.line, background: palette.panel }}>
                   <option value="">Choose scenario…</option>
                   {Object.keys(coverage.by_scenario).map((scenario) => <option key={scenario}>{scenario}</option>)}
                 </select>
               )}
               {mode === "case_id" && (
-                <input value={value} onChange={(event) => setValue(event.target.value)} placeholder="evidence-90a-1" className="w-full rounded-xl border bg-white px-3 py-2.5 text-sm" style={{ borderColor: palette.line }} />
+                <input value={value} onChange={(event) => setValue(event.target.value)} placeholder="evidence-90a-1" className="w-full rounded-xl border px-3 py-2.5 text-sm" style={{ borderColor: palette.line, background: palette.panel }} />
               )}
               {(mode === "smoke" || mode === "all") && (
                 <p className="text-sm" style={{ color: palette.muted }}>
@@ -426,22 +433,22 @@ export default function EvalDashboard() {
         </section>
 
         {confirmArmed && (
-          <div className="rounded-2xl border border-[#bda85f] bg-[#eee4bb] px-5 py-4 text-sm">
+          <div className="rounded-xl border px-4 py-3 text-sm" style={{ borderColor: palette.warning, background: palette.warningSoft }}>
             {estimatedCount} cases run the live agent and LLM judge, take roughly 5–8 minutes, and incur token cost. Click <strong>Confirm run</strong> to continue.
           </div>
         )}
 
         {missingSections.length > 0 && (
-          <div className="rounded-2xl border border-[#b4513c] bg-[#f0d4cb] px-5 py-4 text-sm">
+          <div className="rounded-xl border px-4 py-3 text-sm" style={{ borderColor: palette.warning, background: palette.failSoft }}>
             <strong>Run blocked:</strong> the eval corpus is missing {missingSections.length} required sections. Reseed the dedicated eval database first.
           </div>
         )}
         {!corpusChecked && (
-          <div className="rounded-2xl border bg-[#f4f3ea] px-5 py-3 text-sm" style={{ borderColor: palette.line, color: palette.muted }}>
+          <div className="rounded-xl border px-4 py-3 text-sm" style={{ borderColor: palette.line, background: palette.panelSoft, color: palette.muted }}>
             Corpus status is not checked: {coverage.corpus_staleness.reason}. Coverage and saved results still work; a live run requires the eval database.
           </div>
         )}
-        {error && <div className="rounded-2xl border border-[#b4513c] bg-[#f0d4cb] px-5 py-4 text-sm" role="alert">{error}</div>}
+        {error && <div className="rounded-xl border px-4 py-3 text-sm" style={{ borderColor: palette.warning, background: palette.failSoft }} role="alert">{error}</div>}
 
         <section aria-labelledby="matrix-title">
           <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
@@ -472,7 +479,7 @@ export default function EvalDashboard() {
             ["02", "Run and watch", "Each completed case adds a ✓ or × to its scenario cell while the run is live."],
             ["03", "Inspect failures", "Select a colored cell, then expand a failed case to see whether L1 or the judge rejected it."],
           ].map(([number, title, copy]) => (
-            <div key={number} className="rounded-2xl border bg-[#f4f3ea] p-5" style={{ borderColor: palette.line }}>
+            <div key={number} className="rounded-xl border p-4" style={{ borderColor: palette.line, background: palette.panelSoft }}>
               <span className="font-mono text-xs font-bold" style={{ color: palette.accent }}>{number}</span>
               <h3 className="mt-3 font-bold">{title}</h3>
               <p className="mt-2 text-sm leading-6" style={{ color: palette.muted }}>{copy}</p>
@@ -489,22 +496,22 @@ export default function EvalDashboard() {
               </h2>
             </div>
             {selectedScenario && (
-              <button type="button" onClick={() => setSelectedScenario(null)} className="rounded-full bg-[#f8f8f2] px-4 py-2 text-xs font-semibold">Show all cases</button>
+              <button type="button" onClick={() => setSelectedScenario(null)} className="rounded-full px-4 py-2 text-xs font-semibold" style={{ background: palette.panel }}>Show all cases</button>
             )}
           </div>
           <div className="space-y-2">
             {displayedResults.map((result) => <CaseDetails key={result.id} result={result} />)}
             {displayedResults.length === 0 && (
-              <div className="rounded-2xl border border-dashed p-8 text-center text-sm" style={{ borderColor: "#c8c5b8", color: palette.muted }}>
+              <div className="rounded-xl border border-dashed p-6 text-center text-sm" style={{ borderColor: palette.line, color: palette.muted }}>
                 {results.length ? "No cases from this scenario were included in the run." : "Choose a subset and run it. Results will appear here as each case completes."}
               </div>
             )}
           </div>
         </section>
 
-        <details className="rounded-2xl border bg-[#f4f3ea]" style={{ borderColor: palette.line }}>
-          <summary className="cursor-pointer px-5 py-4 font-semibold">Dataset coverage and gaps</summary>
-          <div className="grid gap-5 border-t px-5 py-5 lg:grid-cols-[1fr_1.4fr]" style={{ borderColor: palette.line }}>
+        <details className="rounded-xl border" style={{ borderColor: palette.line, background: palette.panelSoft }}>
+          <summary className="cursor-pointer px-4 py-3 font-semibold">Dataset coverage and gaps</summary>
+          <div className="grid gap-4 border-t px-4 py-4 lg:grid-cols-[1fr_1.4fr]" style={{ borderColor: palette.line }}>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-2">
               {[
                 ["Total", coverage.total_cases],
@@ -512,7 +519,7 @@ export default function EvalDashboard() {
                 ["Allow", coverage.by_policy.allow ?? 0],
                 ["Block", coverage.by_policy.block ?? 0],
               ].map(([label, count]) => (
-                <div key={label} className="rounded-xl bg-white p-4">
+                <div key={label} className="rounded-xl p-4" style={{ background: palette.panel }}>
                   <div className="font-mono text-[10px] uppercase" style={{ color: palette.muted }}>{label}</div>
                   <div className="mt-1 text-2xl font-black">{count}</div>
                 </div>
@@ -520,7 +527,7 @@ export default function EvalDashboard() {
             </div>
             <div className="space-y-2">
               {coverage.gap_flags.map((flag, index) => (
-                <div key={`${flag.rule}-${flag.scenario ?? flag.category ?? index}`} className="rounded-xl bg-[#eee4bb] px-4 py-3 text-sm">{flagText(flag)}</div>
+                <div key={`${flag.rule}-${flag.scenario ?? flag.category ?? index}`} className="rounded-xl px-4 py-3 text-sm" style={{ background: palette.warningSoft }}>{flagText(flag)}</div>
               ))}
             </div>
           </div>

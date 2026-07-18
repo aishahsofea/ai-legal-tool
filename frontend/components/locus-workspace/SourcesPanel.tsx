@@ -39,12 +39,12 @@ export function SourcesPanel({
   };
 
   return (
-    <aside className="flex min-w-0 flex-col border-l border-(--rule) bg-background">
-      <div className="border-b border-(--rule) px-2 pb-2 pt-4">
-        <div className="font-mono text-[10px] uppercase tracking-widest text-(--ink-3)">
+    <aside className="flex min-w-0 flex-col border-l border-(--line) bg-(--surface-soft)">
+      <div className="border-b border-(--line) px-3 py-3">
+        <div className="font-mono text-[10px] uppercase tracking-[0.12em] text-(--text-subtle)">
           SOURCES IN THIS THREAD
         </div>
-        <div className="mt-2 font-serif text-base font-light tracking-tight text-foreground">
+        <div className="mt-2 font-serif text-base font-light tracking-tight text-(--text)">
           {label}
         </div>
         <OutlineButton
@@ -57,29 +57,29 @@ export function SourcesPanel({
       </div>
 
       {activeSource ? (
-        <div className="m-2 rounded-sm border border-(--bronze) bg-(--bg-2) p-2 chamber-shadow-popover">
+        <div className="chamber-shadow-popover m-3 rounded-lg border border-(--accent-line) bg-(--surface) p-3">
           <div className="mb-2 flex items-center justify-between gap-2">
-            <Mono className="text-(--bronze)">
+            <Mono className="text-(--accent)">
               § {activeSource.section_number}
             </Mono>
             <button
               type="button"
               onClick={() => onSelectSource(-1)}
               aria-label="Clear selected source"
-              className="cursor-pointer text-lg leading-none text-(--ink-3) transition-colors duration-150 hover:text-(--bronze) active:opacity-80"
+              className="cursor-pointer text-lg leading-none text-(--text-subtle) transition-colors duration-200 hover:text-(--accent) active:opacity-80"
             >
               ×
             </button>
           </div>
-          <div className="font-serif text-sm font-light tracking-tight text-foreground">
+          <div className="font-serif text-sm font-light tracking-tight text-(--text)">
             {activeSource.act_title.replace(/\*/g, "").trim()}
           </div>
-          <div className="mt-2 font-serif text-xs italic text-(--ink-3)">
+          <div className="mt-2 font-serif text-xs italic text-(--text-subtle)">
             {activeSource.page_number
               ? `Page ${activeSource.page_number}`
               : `Act ${activeSource.act_number}`}
           </div>
-          <div className="mt-2 border-t border-(--rule-soft) pt-2 font-serif text-xs leading-normal text-(--ink-2)">
+          <div className="mt-3 border-t border-(--line-soft) pt-3 font-serif text-xs leading-4 text-(--text-muted)">
             {assistantMessage?.content
               ? assistantMessage.content.slice(0, 140).replace(/\s+/g, " ")
               : "The selected source appears in the current answer."}
@@ -102,7 +102,7 @@ export function SourcesPanel({
           </div>
         </div>
       ) : (
-        <div className="m-2 rounded-sm border border-(--rule) bg-(--bg-2) p-2 text-xs text-(--ink-2)">
+        <div className="m-3 rounded-lg border border-(--line) bg-(--surface) p-3 text-xs text-(--text-muted)">
           No sources yet.
         </div>
       )}
@@ -118,7 +118,7 @@ export function SourcesPanel({
             />
           ))
         ) : (
-          <div className="px-2 py-2 font-mono text-[10px] uppercase tracking-widest text-(--ink-3)">
+          <div className="px-3 py-3 font-mono text-[10px] uppercase tracking-[0.12em] text-(--text-subtle)">
             Sources will appear here after a query.
           </div>
         )}
