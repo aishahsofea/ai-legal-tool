@@ -23,6 +23,8 @@ Endpoints:
   POST /query        { query, thread_id, user_id? } — run a turn (SSE stream)
   POST /resume       { thread_id, value, user_id? }  — answer a clarify interrupt (SSE stream)
   POST /cancel       { thread_id }                   — barge-in: stop the in-flight turn
+  GET  /receipts/{document_id}/pdf                  — immutable Receipt Document bytes
+  POST /receipts/{document_id}/locate               — locate one verified Evidence Span
   GET  /evals/coverage                              — static eval coverage + corpus status
   POST /evals/run    { subset }                     — run a subset (SSE stream)
   POST /evals/cancel                                — stop the active eval run
@@ -40,6 +42,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
 from api.evals import router as evals_router
+from api.receipts import router as receipts_router
 
 load_dotenv()
 
@@ -58,6 +61,7 @@ async def lifespan(_app: FastAPI):
 
 app = FastAPI(title="Malaysian Legal Research API", lifespan=lifespan)
 app.include_router(evals_router)
+app.include_router(receipts_router)
 
 app.add_middleware(
     CORSMiddleware,

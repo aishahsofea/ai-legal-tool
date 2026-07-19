@@ -1,10 +1,20 @@
 from operator import add
-from typing import Annotated, Literal, TypedDict
+from typing import Annotated, Literal, NotRequired, TypedDict
 
 
 class Message(TypedDict):
     role: Literal["user", "assistant"]
     content: str
+
+
+class EvidenceSpan(TypedDict):
+    claim: str
+    quote: str
+
+
+class CitationReceipt(TypedDict):
+    document_id: str
+    evidence: list[EvidenceSpan]
 
 
 class Citation(TypedDict):
@@ -13,6 +23,7 @@ class Citation(TypedDict):
     section_number: str
     pdf_url: str
     page_number: int | None
+    receipt: NotRequired[CitationReceipt]
 
 
 class QueryResult(TypedDict):

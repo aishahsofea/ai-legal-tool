@@ -97,6 +97,7 @@
   .chamber-reading-flow > * {
     break-inside: avoid;
   }
+  .workspace-main { transition: margin-right 180ms ease; }
 
   .landing-grid-nav { grid-template-columns: 1fr auto 1fr; }
   .landing-grid-prompt { grid-template-columns: auto minmax(0, 1fr) auto; }
@@ -109,6 +110,14 @@
 
 @media (min-width: 768px) {
   .chamber-grid-app { grid-template-columns: 256px minmax(0, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .receipt-open .workspace-main { margin-right: min(54vw, 800px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workspace-main { transition: none; }
 }
 
 * {

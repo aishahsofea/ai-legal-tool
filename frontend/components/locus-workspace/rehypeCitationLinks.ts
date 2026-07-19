@@ -1,6 +1,7 @@
 import { visit } from "unist-util-visit";
 import type { Element, ElementContent, Root, Text } from "hast";
 import type { Citation } from "@/lib/useQuery";
+import { receiptPdfUrl } from "@/lib/receiptTransport";
 import { formatSourceTitle } from "./citationRefs";
 
 // Never linkify inside these — links can't nest, and code should stay verbatim.
@@ -11,8 +12,8 @@ const SECTION_PATTERN = "(?:§\\s*|(?:sections?|secs?|ss?)\\.?\\s+)(\\d+[A-Za-z]
 
 type Lookups = {
   matcher: RegExp;
-  sectionToRef: Map<string, Citation>;
-  actToRef: Map<string, Citation>;
+  sectionToRef: Map<string, { citation: Citation; index: number }>;
+  actToRef: Map<string, { citation: Citation; index: number }>;
   hasActs: boolean;
 };
 
@@ -27,17 +28,17 @@ function sectionKey(section: string) {
 }
 
 function buildLookups(citations: Citation[]): Lookups {
-  const sectionToRef = new Map<string, Citation>();
-  const actToRef = new Map<string, Citation>();
+  const sectionToRef = new Map<string, { citation: Citation; index: number }>();
+  const actToRef = new Map<string, { citation: Citation; index: number }>();
 
-  citations.forEach((citation) => {
-    if (!citation.pdf_url) return;
+  citations.forEach((citation, index) => {
+    if (!citation.pdf_url && !citation.receipt) return;
 
     const secKey = sectionKey(citation.section_number ?? "");
-    if (secKey && !sectionToRef.has(secKey)) sectionToRef.set(secKey, citation);
+    if (secKey && !sectionToRef.has(secKey)) sectionToRef.set(secKey, { citation, index });
 
     const actKey = formatSourceTitle(citation.act_title ?? "").toLowerCase();
-    if (actKey && !actToRef.has(actKey)) actToRef.set(actKey, citation);
+    if (actKey && !actToRef.has(actKey)) actToRef.set(actKey, { citation, index });
   });
 
   // Longest act titles first so alternation is greedy about the fullest match.
@@ -57,8 +58,9 @@ function buildLookups(citations: Citation[]): Lookups {
   };
 }
 
-function citationAnchor(citation: Citation, value: string): Element {
-  const href = citation.page_number ? `${citation.pdf_url}#page=${citation.page_number}` : citation.pdf_url;
+function citationAnchor(citation: Citation, citationIndex: number, value: string): Element {
+  const fallbackUrl = citation.pdf_url || (citation.receipt ? receiptPdfUrl(citation.receipt.document_id) : "");
+  const href = citation.page_number ? `${fallbackUrl.split("#", 1)[0]}#page=${citation.page_number}` : fallbackUrl;
 
   return {
     type: "element",
@@ -69,6 +71,7 @@ function citationAnchor(citation: Citation, value: string): Element {
       title: `Open ${formatSourceTitle(citation.act_title ?? "")} ↗`,
       target: "_blank",
       rel: "noopener noreferrer",
+      dataCitationIndex: citationIndex,
     },
     children: [{ type: "text", value }],
   };
@@ -91,19 +94,19 @@ function linkifyValue(value: string, lookups: Lookups): ElementContent[] | null 
     const sectionNumber = match[1];
     const actTitle = match[2];
 
-    const citation = sectionNumber
+    const reference = sectionNumber
       ? sectionToRef.get(sectionKey(sectionNumber))
       : actTitle
         ? actToRef.get(actTitle.toLowerCase())
         : undefined;
 
     // Only linkify when we actually have a source to point at.
-    if (!citation) continue;
+    if (!reference) continue;
 
     if (match.index > lastIndex) {
       out.push({ type: "text", value: value.slice(lastIndex, match.index) });
     }
-    out.push(citationAnchor(citation, full));
+    out.push(citationAnchor(reference.citation, reference.index, full));
     lastIndex = match.index + full.length;
     matched = true;
   }
@@ -119,7 +122,9 @@ function linkifyValue(value: string, lookups: Lookups): ElementContent[] | null 
 
 /**
  * rehype plugin: turns in-prose mentions of a cited section ("Section 12(1)") or
- * act title ("Employment Act 1955") into anchors that open that source's PDF directly.
+ * act title ("Employment Act 1955") into source anchors. The shared React click path
+ * opens a Citation Receipt for unmodified pilot clicks; the real href remains the
+ * Official Source Link (or internal Receipt Document fallback).
  */
 export function rehypeCitationLinks(options: { citations: Citation[] }) {
   const { citations } = options;

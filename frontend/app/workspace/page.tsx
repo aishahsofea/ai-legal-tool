@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, Suspense, useEffect } from "react";
+import { FormEvent, Suspense, useCallback, useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import {
   Composer,
@@ -11,6 +12,18 @@ import {
   UserMessage,
 } from "@/components/conversation";
 import { useResearchThreads } from "@/lib/useResearchThreads";
+import type { Citation } from "@/lib/useQuery";
+
+const CitationReceiptViewer = dynamic(
+  () => import("@/components/locus-workspace/CitationReceiptViewer").then((module) => module.CitationReceiptViewer),
+  { ssr: false },
+);
+
+type ReceiptSelection = {
+  citation: Citation;
+  evidenceIndex: number;
+  opener: HTMLElement;
+};
 
 function QueryPrefill({ setInput }: { setInput: (v: string) => void }) {
   const searchParams = useSearchParams();
@@ -23,6 +36,7 @@ function QueryPrefill({ setInput }: { setInput: (v: string) => void }) {
 }
 
 function WorkspaceInner() {
+  const [receiptSelection, setReceiptSelection] = useState<ReceiptSelection | null>(null);
   const {
     threads,
     activeThread,
@@ -47,18 +61,28 @@ function WorkspaceInner() {
     await submitQuery(input);
   };
 
+  const openReceipt = useCallback((citation: Citation, evidenceIndex: number, opener: HTMLElement) => {
+    setReceiptSelection({ citation, evidenceIndex, opener });
+  }, []);
+
+  const closeReceipt = useCallback(() => {
+    const opener = receiptSelection?.opener;
+    setReceiptSelection(null);
+    window.requestAnimationFrame(() => opener?.focus());
+  }, [receiptSelection]);
+
   // Esc barges in on a running turn, the same gesture as an agent CLI.
   useEffect(() => {
-    if (!isLoading) return;
+    if (!isLoading || receiptSelection) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") stopQuery();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [isLoading, stopQuery]);
+  }, [isLoading, receiptSelection, stopQuery]);
 
   return (
-    <div className="h-dvh overflow-hidden bg-(--canvas) text-(--text)">
+    <div className={`h-dvh overflow-hidden bg-(--canvas) text-(--text) ${receiptSelection ? "receipt-open" : ""}`}>
       <Suspense>
         <QueryPrefill setInput={setInput} />
       </Suspense>
@@ -72,7 +96,7 @@ function WorkspaceInner() {
           userFirm="Tan & Partners · KL"
         />
 
-        <main className="flex min-h-0 min-w-0 flex-col bg-(--canvas)">
+        <main className="workspace-main flex min-h-0 min-w-0 flex-col bg-(--canvas)">
           <ConversationHeader title={activeThread?.title || "New thread"} />
 
           <div className="flex-1 overflow-y-auto px-4 py-6 md:px-6 lg:px-8">
@@ -95,6 +119,7 @@ function WorkspaceInner() {
                         reasoningOpen={reasoningOpen}
                         onToggleReasoning={() => setReasoningOpen((open) => !open)}
                         statusHistory={statusHistory}
+                        onOpenReceipt={openReceipt}
                       />
                     ) : (
                       <UserMessage message={msg} />
@@ -114,6 +139,14 @@ function WorkspaceInner() {
           <Composer input={input} onInput={setInput} onSubmit={handleSubmit} onStop={stopQuery} isLoading={isLoading} />
         </main>
       </div>
+      {receiptSelection && (
+        <CitationReceiptViewer
+          key={`${receiptSelection.citation.receipt?.document_id}:${receiptSelection.citation.section_number}:${receiptSelection.evidenceIndex}`}
+          citation={receiptSelection.citation}
+          initialEvidenceIndex={receiptSelection.evidenceIndex}
+          onClose={closeReceipt}
+        />
+      )}
     </div>
   );
 }

@@ -112,6 +112,8 @@ Endpoints:
 - `POST /query { query, thread_id, user_id? }` — run a turn (streams SSE)
 - `POST /resume { thread_id, value, user_id? }` — answer a clarify interrupt and stream the resumed turn (see ADR 0015)
 - `POST /cancel { thread_id }` — barge-in: stop the in-flight turn for a thread (see ADR 0014)
+- `GET /receipts/{document_id}/pdf` — serve one integrity-checked immutable Receipt Document (range requests supported)
+- `POST /receipts/{document_id}/locate { evidence_quote?, start_page }` — locate one Evidence Span with strict token matching
 - `GET /evals/coverage` — dataset coverage and best-effort dedicated-corpus status
 - `POST /evals/run { subset }` — isolated eval run streamed as SSE; one active run at a time
 - `POST /evals/cancel` — terminate the active eval subprocess
@@ -130,6 +132,36 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000). With `NEXT_PUBLIC_EVALS=1`, the standalone developer dashboard is at [http://localhost:3000/evals](http://localhost:3000/evals); without that build-time flag the route returns 404.
+
+The Citation Receipt viewer uses `react-pdf` with the matching `pdfjs-dist` worker bundled by Next.js from `pdfjs-dist/build/pdf.worker.min.mjs`; do not replace it with a runtime CDN. The viewer module is client-only and is dynamically imported with SSR disabled.
+
+### Citation Receipt assets and verification
+
+`data/pdfs/manifest.json` is the deployment inventory for the exact five English PDF snapshots used during extraction (Acts 56, 265, 574, 709, and 777). Those same canonical binaries remain under `data/pdfs/en/`; `.gitignore` selectively tracks only the five pilot files while keeping the rest of the 624-document corpus ignored. When replacing a snapshot, update its opaque `document_id`, SHA-256, byte size, page count, source Timeline Entry, and scrape timestamp together. Never substitute a fresh remote download without regenerating chunks and page numbers against those same bytes.
+
+Run all automated checks from the repository root and frontend respectively:
+
+```bash
+python3 -m pytest -q
+cd frontend
+npm run lint
+npm test
+npm run build
+```
+
+`npm test` uses Vitest in non-watch CI mode. Receipt interaction tests mock the canvas renderer and assert state/DOM behavior; geometry is verified against real pilot PDFs separately.
+
+Local endpoint smoke against the Act 56 snapshot:
+
+```bash
+curl -sS http://localhost:8000/receipts/act-56-reprint-2017-c11400ad/pdf -o /tmp/act-56-receipt.pdf
+shasum -a 256 /tmp/act-56-receipt.pdf
+curl -sS -X POST http://localhost:8000/receipts/act-56-reprint-2017-c11400ad/locate \
+  -H "Content-Type: application/json" \
+  -d '{"evidence_quote":"In any criminal or civil proceeding","start_page":72}'
+```
+
+The expected SHA-256 is `c11400ad1b0a9941919d7328c60fc1c2b49fb2788671bf9697c2923364c96d07`; the locate response should be `matched` on physical page 72. Run the five questions in `docs/pdf-receipt-view-design.md` for the manual local/deployed visual matrix before release.
 
 ---
 

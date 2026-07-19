@@ -16,6 +16,7 @@ from pydantic import BaseModel, Field, field_validator
 
 from agent.llm_factory import make_llm
 from agent.state import AgentState
+from citation_receipts.locator import contains_normalized_sequence, normalized_tokens
 
 load_dotenv()
 
@@ -31,6 +32,10 @@ class _GroundingClaim(BaseModel):
     cited_section_number: str = Field(description="Section number used to support the claim.")
     support: Literal["supported", "partial", "unsupported"]
     reason: str
+    quote: str = Field(
+        default="",
+        description="A short contiguous verbatim quote from the cited source supporting this claim.",
+    )
 
 
 class _GroundingOutput(BaseModel):
@@ -58,6 +63,10 @@ Labels:
 - supported: the cited section text directly supports the claim.
 - partial: the cited section text supports only part of the claim or the claim overstates the text.
 - unsupported: the cited section text does not support the claim.
+
+For every supported claim, copy one short, contiguous supporting quote from the cited
+source into quote. Do not paraphrase, splice passages, or add ellipses. For partial or
+unsupported claims, return an empty quote.
 
 Ignore non-legal text such as disclaimers, transitions, headings, and source labels.
 Return only the structured result."""
@@ -104,6 +113,30 @@ def _finalise(result: _GroundingOutput, state: AgentState, violations: list[str]
     # An unsupported claim is an evidence gap: the retry should re-retrieve better
     # sources (Phase 4), so these are tracked in evidence_violations too.
     evidence_violations = list(state.get("evidence_violations", []))
+    citations = []
+    for original in state.get("citations", []):
+        citation = dict(original)
+        receipt = original.get("receipt")
+        if isinstance(receipt, dict):
+            # Evidence belongs to this grounding pass only. Copy the nested value so
+            # retries cannot mutate or inherit a rejected draft's spans in place.
+            citation["receipt"] = {**receipt, "evidence": []}
+        citations.append(citation)
+    citation_lookup = {
+        (str(citation.get("act_number", "")), _normalise_section(citation.get("section_number"))): citation
+        for citation in citations
+    }
+    chunk_lookup = {
+        (str(chunk.get("act_number", "")), _normalise_section(chunk.get("section_number"))): chunk
+        for chunk in state.get("retrieved_chunks", [])
+    }
+    seen_evidence: set[tuple[tuple[str, ...], tuple[str, ...]]] = set()
+    try:
+        max_quote_chars = min(500, max(1, int(os.getenv("RECEIPT_EVIDENCE_MAX_CHARS", "500"))))
+    except ValueError:
+        logger.warning("Invalid RECEIPT_EVIDENCE_MAX_CHARS; using 500")
+        max_quote_chars = 500
+
     for claim in result.claims:
         if claim.support == "unsupported":
             msg = (
@@ -113,7 +146,36 @@ def _finalise(result: _GroundingOutput, state: AgentState, violations: list[str]
             )
             violations.append(msg)
             evidence_violations.append(msg)
-    return {"violations": violations, "evidence_violations": evidence_violations}
+        if claim.support != "supported":
+            continue
+
+        key = (str(claim.cited_act_number), _normalise_section(claim.cited_section_number))
+        citation = citation_lookup.get(key)
+        chunk = chunk_lookup.get(key)
+        receipt = citation.get("receipt") if citation else None
+        quote = claim.quote.strip()
+        if (
+            not citation
+            or not chunk
+            or not isinstance(receipt, dict)
+            or not quote
+            or len(quote) > max_quote_chars
+            or not contains_normalized_sequence(claim.claim, state.get("draft_response", ""))
+            or not contains_normalized_sequence(quote, chunk.get("content", ""))
+        ):
+            continue
+
+        fingerprint = (tuple(normalized_tokens(claim.claim)), tuple(normalized_tokens(quote)))
+        if fingerprint in seen_evidence:
+            continue
+        seen_evidence.add(fingerprint)
+        receipt.setdefault("evidence", []).append({"claim": claim.claim.strip(), "quote": quote})
+
+    return {
+        "violations": violations,
+        "evidence_violations": evidence_violations,
+        "citations": citations,
+    }
 
 
 def grounding_check_node(state: AgentState) -> dict:
