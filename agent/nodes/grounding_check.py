@@ -14,6 +14,7 @@ from typing import Literal
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field, field_validator
 
+from agent.citation_keys import canonicalize_citation_key
 from agent.llm_factory import make_llm
 from agent.state import AgentState
 from citation_receipts.locator import contains_normalized_sequence, normalized_tokens
@@ -71,21 +72,19 @@ unsupported claims, return an empty quote.
 Ignore non-legal text such as disclaimers, transitions, headings, and source labels.
 Return only the structured result."""
 
-
-def _normalise_section(section: object) -> str:
-    return str(section or "").upper()
-
-
 def _collect_cited_sources(state: AgentState) -> list[dict]:
     retrieved_lookup = {
-        (str(chunk.get("act_number", "")), _normalise_section(chunk.get("section_number"))): chunk
+        canonicalize_citation_key(chunk.get("act_number"), chunk.get("section_number")): chunk
         for chunk in state.get("retrieved_chunks", [])
     }
 
     sources = []
     seen = set()
     for citation in state.get("citations", []):
-        key = (str(citation.get("act_number", "")), _normalise_section(citation.get("section_number")))
+        key = canonicalize_citation_key(
+            citation.get("act_number"),
+            citation.get("section_number"),
+        )
         if key in seen:
             continue
         seen.add(key)
@@ -122,12 +121,21 @@ def _finalise(result: _GroundingOutput, state: AgentState, violations: list[str]
             # retries cannot mutate or inherit a rejected draft's spans in place.
             citation["receipt"] = {**receipt, "evidence": []}
         citations.append(citation)
+    # The judge may return display-form identifiers (for example, ``Act 56`` and
+    # ``Section 90A(1)``), while receipts retain the retrieved bare identifiers.
+    # Use the shared key at this final comparison boundary as well as source lookup.
     citation_lookup = {
-        (str(citation.get("act_number", "")), _normalise_section(citation.get("section_number"))): citation
+        canonicalize_citation_key(
+            citation.get("act_number"),
+            citation.get("section_number"),
+        ): citation
         for citation in citations
     }
     chunk_lookup = {
-        (str(chunk.get("act_number", "")), _normalise_section(chunk.get("section_number"))): chunk
+        canonicalize_citation_key(
+            chunk.get("act_number"),
+            chunk.get("section_number"),
+        ): chunk
         for chunk in state.get("retrieved_chunks", [])
     }
     seen_evidence: set[tuple[tuple[str, ...], tuple[str, ...]]] = set()
@@ -149,7 +157,10 @@ def _finalise(result: _GroundingOutput, state: AgentState, violations: list[str]
         if claim.support != "supported":
             continue
 
-        key = (str(claim.cited_act_number), _normalise_section(claim.cited_section_number))
+        key = canonicalize_citation_key(
+            claim.cited_act_number,
+            claim.cited_section_number,
+        )
         citation = citation_lookup.get(key)
         chunk = chunk_lookup.get(key)
         receipt = citation.get("receipt") if citation else None

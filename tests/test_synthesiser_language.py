@@ -90,6 +90,35 @@ class SynthesiserDisclaimerTests(unittest.TestCase):
 
         self.assertNotIn("receipt", result["citations"][0])
 
+    def test_model_formatted_citation_refs_resolve_to_retrieved_chunks(self):
+        variants = [
+            ("Act 574", "34"),
+            ("574", "Section 34(1)"),
+            (" Akta 574 ", " seksyen 34(2) "),
+        ]
+
+        for act_number, section_number in variants:
+            with self.subTest(act_number=act_number, section_number=section_number):
+                output = _SynthesiserOutput(
+                    answer="Section 34 applies.",
+                    citation_refs=[_CitationRef(
+                        act_number=act_number,
+                        section_number=section_number,
+                    )],
+                )
+                with patch.object(synthesiser, "_structured_llm") as mock_llm:
+                    mock_llm.invoke.return_value = output
+                    result = synthesiser.synthesiser_node({
+                        "query": "Section 34 Penal Code",
+                        "retrieved_chunks": [_CHUNK],
+                        "history": [],
+                        "response_language": "en",
+                    })
+
+                self.assertEqual(len(result["citations"]), 1)
+                self.assertEqual(result["citations"][0]["act_number"], "574")
+                self.assertEqual(result["citations"][0]["section_number"], "34")
+
 
 if __name__ == "__main__":
     unittest.main()

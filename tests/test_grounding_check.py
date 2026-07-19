@@ -46,6 +46,22 @@ class GroundingCheckTests(unittest.TestCase):
         self.assertEqual(sources[0]["section_number"], "90A")
         self.assertEqual(sources[0]["content"], RETRIEVED_90A["content"])
 
+    def test_collects_source_for_formatted_citation_identifiers(self):
+        state = {
+            "retrieved_chunks": [RETRIEVED_90A],
+            "citations": [{
+                **CITATION_90A,
+                "act_number": "Akta 56",
+                "section_number": "seksyen 90a(1)",
+            }],
+        }
+
+        sources = _collect_cited_sources(state)
+
+        self.assertEqual(len(sources), 1)
+        self.assertEqual(sources[0]["act_number"], "56")
+        self.assertEqual(sources[0]["section_number"], "90A")
+
     def test_supported_claims_pass(self):
         state = {
             "draft_response": "Section 90A of the Evidence Act 1950 allows computer-produced documents as evidence.",
@@ -145,6 +161,29 @@ class GroundingCheckTests(unittest.TestCase):
             claim="A document produced by a computer shall be admissible as evidence.",
             cited_act_number="56",
             cited_section_number="90A",
+            support="supported",
+            reason="Direct support.",
+            quote="A document produced by a computer shall be admissible as evidence",
+        )])
+
+        result = _finalise(verdict, state, [])
+
+        self.assertEqual(result["citations"][0]["receipt"]["evidence"], [{
+            "claim": "A document produced by a computer shall be admissible as evidence.",
+            "quote": "A document produced by a computer shall be admissible as evidence",
+        }])
+
+    def test_receipt_evidence_matches_formatted_judge_identifiers(self):
+        state = {
+            "draft_response": "A document produced by a computer shall be admissible as evidence.",
+            "retrieved_chunks": [RETRIEVED_90A],
+            "citations": [CITATION_90A_WITH_RECEIPT],
+            "violations": [],
+        }
+        verdict = _GroundingOutput(claims=[_GroundingClaim(
+            claim="A document produced by a computer shall be admissible as evidence.",
+            cited_act_number="Act 56",
+            cited_section_number="Section 90A(1)",
             support="supported",
             reason="Direct support.",
             quote="A document produced by a computer shall be admissible as evidence",
