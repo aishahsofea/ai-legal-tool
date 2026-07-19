@@ -12,6 +12,7 @@ from typing import Optional
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
+from agent.citation_keys import canonicalize_citation_key
 from agent.llm_factory import make_llm, system_content
 from agent.query_policy import _DISCLAIMER_BM, _DISCLAIMER_EN, trim_history
 from agent.state import AgentState
@@ -110,15 +111,22 @@ def _finalise(result: _SynthesiserOutput, state: AgentState) -> dict:
     chunks = state["retrieved_chunks"]
     response_language = state.get("response_language", "en")
 
-    # Build a lookup from retrieved chunks so URLs come from the database, not Claude.
-    chunk_lookup: dict[tuple, dict] = {
-        (c["act_number"], c["section_number"]): c
-        for c in chunks
-    }
+    # LLMs may echo display labels ("Act 559") while the database stores bare
+    # identifiers ("559"). Canonical keys prevent valid citations from being
+    # silently dropped; output metadata still comes from the retrieved chunk.
+    chunk_lookup: dict[tuple[str, str], dict] = {}
+    for chunk in chunks:
+        key = canonicalize_citation_key(
+            chunk.get("act_number"),
+            chunk.get("section_number"),
+        )
+        if all(key):
+            chunk_lookup[key] = chunk
 
     citations = []
     for ref in result.citation_refs:
-        chunk = chunk_lookup.get((ref.act_number, ref.section_number))
+        ref_key = canonicalize_citation_key(ref.act_number, ref.section_number)
+        chunk = chunk_lookup.get(ref_key)
         if chunk:
             citation = {
                 "act_number":     chunk["act_number"],

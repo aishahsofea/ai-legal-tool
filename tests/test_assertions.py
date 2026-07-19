@@ -49,6 +49,18 @@ class CheckCitationExistenceTests(unittest.TestCase):
         conn = _make_db_conn(exists=True)
         self.assertIsNone(check_citation_existence([{"act_number": "56", "section_number": "90A"}], conn))
 
+    def test_canonicalizes_citation_before_database_lookup(self):
+        conn = _make_db_conn(exists=True)
+
+        result = check_citation_existence(
+            [{"act_number": " Act 56 ", "section_number": "Section 90a(1)"}],
+            conn,
+        )
+
+        self.assertIsNone(result)
+        query_params = conn.cursor.return_value.execute.call_args.args[1]
+        self.assertEqual(query_params, ("56", "90A"))
+
     def test_fails_when_citation_not_in_db(self):
         conn = _make_db_conn(exists=False)
         result = check_citation_existence([{"act_number": "56", "section_number": "999Z"}], conn)
@@ -88,6 +100,10 @@ class CheckExpectedSectionTests(unittest.TestCase):
 
     def test_passes_case_insensitive(self):
         citations = [{"act_number": "56", "section_number": "90a"}]
+        self.assertIsNone(check_expected_section(citations, "56", "90A"))
+
+    def test_passes_for_formatted_citation_identifiers(self):
+        citations = [{"act_number": "Act 56", "section_number": "Section 90a(1)"}]
         self.assertIsNone(check_expected_section(citations, "56", "90A"))
 
     def test_fails_when_expected_section_absent_from_citations(self):

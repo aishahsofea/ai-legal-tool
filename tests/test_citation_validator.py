@@ -87,6 +87,24 @@ class CitationValidatorTests(unittest.TestCase):
 
         self.assertEqual(result["violations"], [])
 
+    def test_formatted_structured_citation_matches_retrieved_chunk(self):
+        state = {
+            "retrieved_chunks": [RETRIEVED_90A],
+            "citations": [{
+                "act_number": " Act 56 ",
+                "act_title": "EVIDENCE ACT 1950",
+                "section_number": "Section 90a(1)",
+                "pdf_url": "",
+                "page_number": 1,
+            }],
+            "draft_response": "Section 90A of the Evidence Act 1950 applies.",
+            "violations": [],
+        }
+
+        result = citation_validator_node(state)
+
+        self.assertEqual(result["violations"], [])
+
     def test_supervisor_preserves_existing_citation_violations(self):
         state = {
             "draft_response": (

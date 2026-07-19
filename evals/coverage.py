@@ -4,6 +4,8 @@ from __future__ import annotations
 from collections import Counter
 from typing import Any, Iterable
 
+from agent.citation_keys import canonicalize_citation_key
+
 THIN_COVERAGE_THRESHOLD = 5
 BOUNDARY_COVERAGE_THRESHOLD = 0.20
 
@@ -11,8 +13,7 @@ BOUNDARY_COVERAGE_THRESHOLD = 0.20
 def _normalized_pair(act_number: Any, section_number: Any) -> tuple[str, str] | None:
     if act_number is None or section_number is None:
         return None
-    act = str(act_number).strip()
-    section = str(section_number).strip().upper()
+    act, section = canonicalize_citation_key(act_number, section_number)
     return (act, section) if act and section else None
 
 

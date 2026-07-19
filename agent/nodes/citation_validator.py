@@ -8,24 +8,12 @@ is present.
 """
 from __future__ import annotations
 
-import re
 from pathlib import Path
-from typing import Any
 
+from agent.citation_keys import canonicalize_citation_key
 from agent.state import AgentState
 
 METADATA_DIR = Path("data/acts_metadata")
-
-
-def _normalise_section(section: Any) -> str:
-    """Return canonical section key, dropping subsection suffixes."""
-    match = re.match(r"\s*(\d+[A-Z]{0,2})", str(section or ""), re.IGNORECASE)
-    return match.group(1).upper() if match else ""
-
-
-def _key(act_number: Any, section_number: Any) -> tuple[str, str]:
-    return (str(act_number or "").upper(), _normalise_section(section_number))
-
 
 def _metadata_exists(act_number: str) -> bool:
     if not act_number or act_number == "FC":
@@ -38,11 +26,11 @@ def citation_validator_node(state: AgentState) -> dict:
     citations = state.get("citations", [])
 
     retrieved_keys = {
-        _key(chunk.get("act_number"), chunk.get("section_number"))
+        canonicalize_citation_key(chunk.get("act_number"), chunk.get("section_number"))
         for chunk in retrieved_chunks
     }
     structured_keys = {
-        _key(citation.get("act_number"), citation.get("section_number"))
+        canonicalize_citation_key(citation.get("act_number"), citation.get("section_number"))
         for citation in citations
     }
     structured_keys.discard(("", ""))

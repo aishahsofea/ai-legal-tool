@@ -14,6 +14,7 @@ from typing import Literal
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field, field_validator
 
+from agent.citation_keys import canonicalize_citation_key
 from agent.llm_factory import make_llm
 from agent.state import AgentState
 from citation_receipts.locator import contains_normalized_sequence, normalized_tokens
@@ -71,21 +72,19 @@ unsupported claims, return an empty quote.
 Ignore non-legal text such as disclaimers, transitions, headings, and source labels.
 Return only the structured result."""
 
-
-def _normalise_section(section: object) -> str:
-    return str(section or "").upper()
-
-
 def _collect_cited_sources(state: AgentState) -> list[dict]:
     retrieved_lookup = {
-        (str(chunk.get("act_number", "")), _normalise_section(chunk.get("section_number"))): chunk
+        canonicalize_citation_key(chunk.get("act_number"), chunk.get("section_number")): chunk
         for chunk in state.get("retrieved_chunks", [])
     }
 
     sources = []
     seen = set()
     for citation in state.get("citations", []):
-        key = (str(citation.get("act_number", "")), _normalise_section(citation.get("section_number")))
+        key = canonicalize_citation_key(
+            citation.get("act_number"),
+            citation.get("section_number"),
+        )
         if key in seen:
             continue
         seen.add(key)

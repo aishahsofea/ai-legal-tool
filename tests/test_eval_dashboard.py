@@ -103,8 +103,8 @@ def test_coverage_summary_flags_block_share_below_but_not_equal_to_twenty_percen
 
 def test_required_and_missing_sections_ignore_non_citation_cases_and_normalize_values():
     cases = [
-        _case("needed", act=56, section="90a"),
-        _case("duplicate", act="56", section="90A"),
+        _case("needed", act="Act 56", section="Section 90a(1)"),
+        _case("duplicate", act=" 56 ", section="90A"),
         _case("policy", act=None, section=None, citation_applicable=False),
     ]
 

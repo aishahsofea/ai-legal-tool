@@ -46,6 +46,22 @@ class GroundingCheckTests(unittest.TestCase):
         self.assertEqual(sources[0]["section_number"], "90A")
         self.assertEqual(sources[0]["content"], RETRIEVED_90A["content"])
 
+    def test_collects_source_for_formatted_citation_identifiers(self):
+        state = {
+            "retrieved_chunks": [RETRIEVED_90A],
+            "citations": [{
+                **CITATION_90A,
+                "act_number": "Akta 56",
+                "section_number": "seksyen 90a(1)",
+            }],
+        }
+
+        sources = _collect_cited_sources(state)
+
+        self.assertEqual(len(sources), 1)
+        self.assertEqual(sources[0]["act_number"], "56")
+        self.assertEqual(sources[0]["section_number"], "90A")
+
     def test_supported_claims_pass(self):
         state = {
             "draft_response": "Section 90A of the Evidence Act 1950 allows computer-produced documents as evidence.",

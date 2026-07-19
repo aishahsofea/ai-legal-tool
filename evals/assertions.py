@@ -4,6 +4,8 @@ from __future__ import annotations
 import re
 from typing import Any
 
+from agent.citation_keys import canonicalize_citation_key
+
 # BM function words: if the query contains any, the response must also contain at least one.
 BM_FUNCTION_WORDS: list[str] = [
     "apakah", "bagaimana", "bolehkah", "adakah", "apabila",
@@ -38,8 +40,10 @@ def check_citation_existence(
     missing = []
     with db_conn.cursor() as cur:
         for c in citations:
-            act_number = c.get("act_number", "")
-            section_number = c.get("section_number", "")
+            act_number, section_number = canonicalize_citation_key(
+                c.get("act_number"),
+                c.get("section_number"),
+            )
             if not act_number or not section_number:
                 continue
             cur.execute(
@@ -61,11 +65,13 @@ def check_expected_section(
     """Return None if expected act/section is present in citations, or a failure message."""
     if not expected_act_number or not expected_section:
         return None
+    expected_key = canonicalize_citation_key(expected_act_number, expected_section)
     for c in citations:
-        if (
-            str(c.get("act_number", "")) == str(expected_act_number)
-            and c.get("section_number", "").upper() == expected_section.upper()
-        ):
+        citation_key = canonicalize_citation_key(
+            c.get("act_number"),
+            c.get("section_number"),
+        )
+        if citation_key == expected_key:
             return None
     return (
         f"Expected Section {expected_section} of Act {expected_act_number} "
