@@ -2,14 +2,16 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Mono, OutlineButton } from "@/components/chamber";
 import { StatusIndicator } from "@/components/StatusIndicator";
-import { markdownComponents } from "./markdown";
+import { createMarkdownComponents } from "./markdown";
 import { formatSourceTitle, scopedId, sourceMapId, sourceRefId } from "./citationRefs";
 import { rehypeCitationLinks } from "./rehypeCitationLinks";
 import type { Message } from "./types";
+import type { Citation } from "@/lib/useQuery";
 
 const SOURCE_MAP_VISIBLE_LIMIT = 6;
 
 type CitationList = NonNullable<Message["citations"]>;
+type OpenReceipt = (citation: Citation, evidenceIndex: number, opener: HTMLElement) => void;
 
 function SourceMapLink({ citation, index, messageId }: { citation: CitationList[number]; index: number; messageId: string }) {
   const refId = sourceRefId(messageId, citation, index);
@@ -56,7 +58,7 @@ function InlineSourceSummary({ citations, messageId }: { citations: CitationList
   );
 }
 
-function InlineSources({ citations, messageId }: { citations: NonNullable<Message["citations"]>; messageId: string }) {
+function InlineSources({ citations, messageId, onOpenReceipt }: { citations: NonNullable<Message["citations"]>; messageId: string; onOpenReceipt: OpenReceipt }) {
   if (citations.length === 0) return null;
 
   const mapId = sourceMapId(messageId);
@@ -76,11 +78,20 @@ function InlineSources({ citations, messageId }: { citations: NonNullable<Messag
               {citation.page_number && <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-(--text-subtle)">p. {citation.page_number}</span>}
             </div>
             <div className="mt-2 flex flex-wrap gap-3">
-              {citation.pdf_url && (
+              {citation.receipt ? (
+                <button
+                  type="button"
+                  aria-label={`Open Citation Receipt ${index + 1}: ${formatSourceTitle(citation.act_title)}`}
+                  className="chamber-link font-mono text-[10px] uppercase tracking-[0.12em]"
+                  onClick={(event) => onOpenReceipt(citation, 0, event.currentTarget)}
+                >
+                  Open citation receipt
+                </button>
+              ) : citation.pdf_url ? (
                 <a aria-label={`Open source ${index + 1}: ${formatSourceTitle(citation.act_title)}`} className="chamber-link font-mono text-[10px] uppercase tracking-[0.12em]" href={citation.pdf_url} target="_blank" rel="noopener noreferrer">
                   Open full act ↗
                 </a>
-              )}
+              ) : null}
               <a className="chamber-link font-mono text-[10px] uppercase tracking-[0.12em]" href={`#${mapId}`}>
                 Back to source map ↑
               </a>
@@ -123,6 +134,7 @@ export function AssistantMessage({
   reasoningOpen,
   onToggleReasoning,
   statusHistory,
+  onOpenReceipt,
 }: {
   message: Message;
   citedCountLabel: string;
@@ -132,6 +144,7 @@ export function AssistantMessage({
   reasoningOpen: boolean;
   onToggleReasoning: () => void;
   statusHistory: string[];
+  onOpenReceipt: OpenReceipt;
 }) {
   return (
     <article className="space-y-3">
@@ -154,7 +167,7 @@ export function AssistantMessage({
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[[rehypeCitationLinks, { citations: message.citations ?? [] }]]}
-            components={markdownComponents}
+            components={createMarkdownComponents(message.citations ?? [], onOpenReceipt)}
           >
             {message.content}
           </ReactMarkdown>
@@ -163,7 +176,7 @@ export function AssistantMessage({
         ) : null}
       </div>
 
-      {message.citations && message.citations.length > 0 && <InlineSources citations={message.citations} messageId={message.id} />}
+      {message.citations && message.citations.length > 0 && <InlineSources citations={message.citations} messageId={message.id} onOpenReceipt={onOpenReceipt} />}
 
       <div className="flex flex-wrap gap-2 border-t border-(--line-soft) pt-4" role="group" aria-label="Message actions">
         <OutlineButton disabled title="Coming soon" aria-label="Save as memo"><span className="hidden sm:inline">Save as memo</span><span className="sm:hidden">Save</span></OutlineButton>

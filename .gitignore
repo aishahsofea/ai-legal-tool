@@ -1,8 +1,17 @@
 # HTTP cache
 data/cache/
 
-# PDF downloads (large binaries, regenerable from metadata)
-data/pdfs/
+# PDF downloads (large binaries, regenerable from metadata). Keep the extraction
+# corpus ignored except for the manifest and five exact files used by Citation Receipts.
+data/pdfs/*
+!data/pdfs/manifest.json
+!data/pdfs/en/
+data/pdfs/en/*
+!data/pdfs/en/56.pdf
+!data/pdfs/en/265.pdf
+!data/pdfs/en/574.pdf
+!data/pdfs/en/709.pdf
+!data/pdfs/en/777.pdf
 
 
 # Logs

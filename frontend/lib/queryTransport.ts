@@ -5,12 +5,23 @@ export interface Message {
   content: string;
 }
 
+export interface EvidenceSpan {
+  claim: string;
+  quote: string;
+}
+
+export interface CitationReceipt {
+  document_id: string;
+  evidence: EvidenceSpan[];
+}
+
 export interface Citation {
   act_number: string;
   act_title: string;
   section_number: string;
   pdf_url: string;
   page_number: number | null;
+  receipt?: CitationReceipt;
 }
 
 export type QueryEvent =
@@ -21,7 +32,7 @@ export type QueryEvent =
   | { type: "error"; message: string }
   | { type: "done" };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 async function fetchQueryResponse(query: string, threadId: string, signal?: AbortSignal) {
   return fetch(`${API_URL}/query`, {

@@ -1,7 +1,13 @@
 import unittest
 from unittest.mock import Mock, patch
 
-from agent.nodes.grounding_check import _GroundingClaim, _GroundingOutput, _collect_cited_sources, grounding_check_node
+from agent.nodes.grounding_check import (
+    _GroundingClaim,
+    _GroundingOutput,
+    _collect_cited_sources,
+    _finalise,
+    grounding_check_node,
+)
 
 
 RETRIEVED_90A = {
@@ -19,6 +25,11 @@ CITATION_90A = {
     "section_number": "90A",
     "pdf_url": "",
     "page_number": 1,
+}
+
+CITATION_90A_WITH_RECEIPT = {
+    **CITATION_90A,
+    "receipt": {"document_id": "act-56-reprint-2017-c11400ad", "evidence": []},
 }
 
 
@@ -122,6 +133,100 @@ class GroundingCheckTests(unittest.TestCase):
 
         self.assertEqual(len(parsed.claims), 1)
         self.assertEqual(parsed.claims[0].support, "supported")
+
+    def test_supported_exact_claim_and_real_quote_become_evidence(self):
+        state = {
+            "draft_response": "A document produced by a computer shall be admissible as evidence.",
+            "retrieved_chunks": [RETRIEVED_90A],
+            "citations": [CITATION_90A_WITH_RECEIPT],
+            "violations": [],
+        }
+        verdict = _GroundingOutput(claims=[_GroundingClaim(
+            claim="A document produced by a computer shall be admissible as evidence.",
+            cited_act_number="56",
+            cited_section_number="90A",
+            support="supported",
+            reason="Direct support.",
+            quote="A document produced by a computer shall be admissible as evidence",
+        )])
+
+        result = _finalise(verdict, state, [])
+
+        self.assertEqual(result["citations"][0]["receipt"]["evidence"], [{
+            "claim": "A document produced by a computer shall be admissible as evidence.",
+            "quote": "A document produced by a computer shall be admissible as evidence",
+        }])
+
+    def test_hallucinated_quote_and_non_answer_claim_are_discarded(self):
+        state = {
+            "draft_response": "A document produced by a computer shall be admissible as evidence.",
+            "retrieved_chunks": [RETRIEVED_90A],
+            "citations": [CITATION_90A_WITH_RECEIPT],
+            "violations": [],
+        }
+        verdict = _GroundingOutput(claims=[
+            _GroundingClaim(
+                claim="A document produced by a computer shall be admissible as evidence.",
+                cited_act_number="56", cited_section_number="90A", support="supported",
+                reason="Invented quote.", quote="This quote is absent from the statute",
+            ),
+            _GroundingClaim(
+                claim="A different legal claim.",
+                cited_act_number="56", cited_section_number="90A", support="supported",
+                reason="Claim absent.", quote="A document produced by a computer",
+            ),
+        ])
+
+        result = _finalise(verdict, state, [])
+
+        self.assertEqual(result["citations"][0]["receipt"]["evidence"], [])
+
+    def test_partial_claim_receives_no_evidence(self):
+        state = {
+            "draft_response": "A document produced by a computer shall be admissible as evidence.",
+            "retrieved_chunks": [RETRIEVED_90A],
+            "citations": [CITATION_90A_WITH_RECEIPT],
+            "violations": [],
+        }
+        verdict = _GroundingOutput(claims=[_GroundingClaim(
+            claim="A document produced by a computer shall be admissible as evidence.",
+            cited_act_number="56", cited_section_number="90A", support="partial",
+            reason="Partial.", quote="A document produced by a computer",
+        )])
+
+        result = _finalise(verdict, state, [])
+
+        self.assertEqual(result["citations"][0]["receipt"]["evidence"], [])
+
+    def test_grounding_replaces_stale_evidence_without_mutating_input_state(self):
+        stale_span = {"claim": "Rejected draft claim.", "quote": "Rejected draft quote."}
+        citation = {
+            **CITATION_90A,
+            "receipt": {
+                "document_id": "act-56-reprint-2017-c11400ad",
+                "evidence": [stale_span],
+            },
+        }
+        state = {
+            "draft_response": "A document produced by a computer shall be admissible as evidence.",
+            "retrieved_chunks": [RETRIEVED_90A],
+            "citations": [citation],
+            "violations": [],
+        }
+        verdict = _GroundingOutput(claims=[_GroundingClaim(
+            claim="A document produced by a computer shall be admissible as evidence.",
+            cited_act_number="56", cited_section_number="90A", support="supported",
+            reason="Direct support.",
+            quote="A document produced by a computer shall be admissible as evidence",
+        )])
+
+        result = _finalise(verdict, state, [])
+
+        self.assertEqual(citation["receipt"]["evidence"], [stale_span])
+        self.assertEqual(result["citations"][0]["receipt"]["evidence"], [{
+            "claim": "A document produced by a computer shall be admissible as evidence.",
+            "quote": "A document produced by a computer shall be admissible as evidence",
+        }])
 
 
 if __name__ == "__main__":

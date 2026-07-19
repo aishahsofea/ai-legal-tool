@@ -70,6 +70,25 @@ class SynthesiserDisclaimerTests(unittest.TestCase):
         self.assertEqual(len(result["citations"]), 1)
         self.assertEqual(result["citations"][0]["act_number"], "574")
         self.assertEqual(result["citations"][0]["section_number"], "34")
+        self.assertEqual(result["citations"][0]["receipt"]["document_id"], "act-574-reprint-2023-89c0f2f6")
+        self.assertEqual(result["citations"][0]["receipt"]["evidence"], [])
+
+    def test_non_pilot_citation_has_no_receipt(self):
+        chunk = {**_CHUNK, "act_number": "999", "act_title": "EXAMPLE ACT"}
+        output = _SynthesiserOutput(
+            answer="Section 34 applies.",
+            citation_refs=[_CitationRef(act_number="999", section_number="34")],
+        )
+        with patch.object(synthesiser, "_structured_llm") as mock_llm:
+            mock_llm.invoke.return_value = output
+            result = synthesiser.synthesiser_node({
+                "query": "Section 34 Example Act",
+                "retrieved_chunks": [chunk],
+                "history": [],
+                "response_language": "en",
+            })
+
+        self.assertNotIn("receipt", result["citations"][0])
 
 
 if __name__ == "__main__":

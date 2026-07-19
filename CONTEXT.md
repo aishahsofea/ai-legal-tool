@@ -26,6 +26,24 @@ _Avoid_: sub-act, regulations (alone)
 A consolidated version of an Act that incorporates all amendments up to a given date. The `latest_reprint_pdf` field in the metadata is the canonical current English text of the Act. A corresponding BM reprint is also fetched where available.
 _Avoid_: latest version, current version
 
+**Citation Receipt**:
+The in-app verification experience opened from a pilot citation. It keeps the delivered claim and its source visible together, renders one physical PDF page at a time, and draws a highlight only for a uniquely matched **Evidence Span**. On desktop it is a right-hand drawer; on narrower screens it is a full-screen sheet.
+_Avoid_: PDF link, source popup
+
+**Receipt Document**:
+An immutable, manifest-identified PDF snapshot whose bytes are exactly those used to extract the stored chunks and section-start `page_number`. Its SHA-256, byte size, and page count are checked before enrichment, location, or delivery. The five-Act pilot contains Acts 56, 265, 574, 709, and 777.
+_Avoid_: latest PDF, remote PDF, Official Source Link
+
+**Evidence Span**:
+A legal claim from the delivered draft plus one short, contiguous supporting quote. It exists only after application code independently confirms the supported label, cited Act/section, claim occurrence in the draft, and quote occurrence in the retrieved chunk. Partial, unsupported, hallucinated, overlong, and duplicate spans are excluded.
+_Avoid_: model highlight, source chunk
+
+**Locator Result**:
+The outcome of strict, on-demand PyMuPDF word-coordinate matching for an **Evidence Span** against its **Receipt Document**: `matched`, `not_found`, or `ambiguous`. Only a unique contiguous normalized-token match produces page-grouped rectangles. The citation `page_number` is merely the fallback **Section-start page**, not proof that evidence occurs there.
+
+**Official Source Link**:
+The citation's remote AGC `pdf_url`, offered separately as “Check latest on AGC”. It lets a practitioner inspect the government portal's current remote source, but it is not the **Receipt Document** and its bytes are never used to assert an exact highlight.
+
 **Timeline Entry**:
 A dated version event for an Act: ORIGINAL, REPRINT, REPRINT ONLINE, or AMENDMENTS. Stored in the `timeline` array of each act metadata file.
 
@@ -75,6 +93,10 @@ A recommendation about what a specific person should do in a specific legal situ
 ## Relationships
 
 - An **Act** has one or more **Timeline Entries**
+- A pilot **Act** has one immutable **Receipt Document** selected from a recorded **Timeline Entry**
+- A pilot citation may carry zero or more validated **Evidence Spans** and opens one shared **Citation Receipt**
+- A **Locator Result** maps one selected **Evidence Span** to physical rectangles in the **Receipt Document**; uncertainty maps to no rectangles
+- The **Official Source Link** remains separate from the **Receipt Document** because remote bytes and pagination can change
 - An **Act** may have zero or more **Subsidiary Legislation** items
 - The most recent **Reprint** Timeline Entry is the canonical text used for ingestion
 - A **Legal Research Query** is answered using **Acts** (v1) and eventually **Case Law** (v2)

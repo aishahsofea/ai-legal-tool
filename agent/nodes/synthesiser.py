@@ -5,6 +5,7 @@ Responds in the dominant language of the query (EN or BM).
 Cited text always uses the English statute text regardless of query language.
 """
 import json
+import logging
 import os
 from typing import Optional
 
@@ -14,8 +15,11 @@ from pydantic import BaseModel
 from agent.llm_factory import make_llm, system_content
 from agent.query_policy import _DISCLAIMER_BM, _DISCLAIMER_EN, trim_history
 from agent.state import AgentState
+from citation_receipts import ReceiptManifestError, get_receipt_registry
 
 load_dotenv()
+
+logger = logging.getLogger(__name__)
 
 _MODEL = os.getenv("SYNTHESISER_MODEL", "gpt-4.1")
 _llm = make_llm(_MODEL)
@@ -116,13 +120,24 @@ def _finalise(result: _SynthesiserOutput, state: AgentState) -> dict:
     for ref in result.citation_refs:
         chunk = chunk_lookup.get((ref.act_number, ref.section_number))
         if chunk:
-            citations.append({
+            citation = {
                 "act_number":     chunk["act_number"],
                 "act_title":      chunk["act_title"],
                 "section_number": chunk["section_number"],
                 "pdf_url":        chunk.get("pdf_url", ""),
                 "page_number":    chunk.get("page_number"),
-            })
+            }
+            try:
+                receipt_document = get_receipt_registry().validated_for_act(chunk["act_number"])
+            except ReceiptManifestError:
+                logger.warning("Receipt manifest unavailable; omitting citation receipt", exc_info=True)
+                receipt_document = None
+            if receipt_document is not None:
+                citation["receipt"] = {
+                    "document_id": receipt_document.document_id,
+                    "evidence": [],
+                }
+            citations.append(citation)
 
     disclaimer = _DISCLAIMER_BM if response_language in ("bm", "mixed") else _DISCLAIMER_EN
     answer_with_disclaimer = result.answer.rstrip() + disclaimer

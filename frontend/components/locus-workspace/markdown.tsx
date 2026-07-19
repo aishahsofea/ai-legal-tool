@@ -1,6 +1,11 @@
 import type { Components } from "react-markdown";
+import type { MouseEvent } from "react";
+import type { Citation } from "@/lib/useQuery";
 
-export const markdownComponents: Components = {
+type OpenReceipt = (citation: Citation, evidenceIndex: number, opener: HTMLElement) => void;
+
+export function createMarkdownComponents(citations: Citation[], onOpenReceipt: OpenReceipt): Components {
+  return {
   p: ({ children }) => <p className="mb-3 last:mb-0">{children}</p>,
   strong: ({ children }) => <strong className="font-semibold text-(--text)">{children}</strong>,
   em: ({ children }) => <em className="font-serif italic text-(--accent)">{children}</em>,
@@ -11,13 +16,34 @@ export const markdownComponents: Components = {
   ol: ({ children }) => <ol className="my-4 list-decimal space-y-2 pl-6">{children}</ol>,
   ul: ({ children }) => <ul className="my-4 list-disc space-y-2 pl-6">{children}</ul>,
   li: ({ children }) => <li className="pl-2">{children}</li>,
-  a: ({ children, href, className, title }) => {
+  a: ({ children, href, className, title, ...props }) => {
     const isInPageAnchor = href?.startsWith("#");
+    const citationIndexValue = props["data-citation-index" as keyof typeof props];
+    const citationIndex = typeof citationIndexValue === "number"
+      ? citationIndexValue
+      : typeof citationIndexValue === "string"
+        ? Number(citationIndexValue)
+        : Number.NaN;
+    const citation = Number.isInteger(citationIndex) ? citations[citationIndex] : undefined;
+    const onClick = (event: MouseEvent<HTMLAnchorElement>) => {
+      if (
+        citation?.receipt
+        && event.button === 0
+        && !event.metaKey
+        && !event.ctrlKey
+        && !event.shiftKey
+        && !event.altKey
+      ) {
+        event.preventDefault();
+        onOpenReceipt(citation, 0, event.currentTarget);
+      }
+    };
     return (
       <a
         className={className ? `chamber-link ${className}` : "chamber-link"}
         href={href}
         title={title}
+        onClick={onClick}
         {...(isInPageAnchor ? {} : { target: "_blank", rel: "noopener noreferrer" })}
       >
         {children}
@@ -33,4 +59,5 @@ export const markdownComponents: Components = {
   tr: ({ children }) => <tr className="text-left">{children}</tr>,
   th: ({ children }) => <th className="px-3 py-2 font-semibold text-(--text)">{children}</th>,
   td: ({ children }) => <td className="px-3 py-2 text-(--text-muted)">{children}</td>,
-};
+  };
+}

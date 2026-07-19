@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "documents": [
+    {
+      "document_id": "act-56-reprint-2017-c11400ad",
+      "act_number": "56",
+      "act_title": "EVIDENCE ACT 1950",
+      "language": "en",
+      "asset_path": "en/56.pdf",
+      "sha256": "c11400ad1b0a9941919d7328c60fc1c2b49fb2788671bf9697c2923364c96d07",
+      "byte_size": 771581,
+      "page_count": 120,
+      "source_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 56 - online version 2017.pdf",
+      "timeline_date": "2017-05-23",
+      "timeline_type": "REPRINT ONLINE",
+      "metadata_scraped_at": "2026-05-07T02:07:44.780900+00:00"
+    },
+    {
+      "document_id": "act-265-reprint-2023-6fec2f07",
+      "act_number": "265",
+      "act_title": "EMPLOYMENT ACT 1955",
+      "language": "en",
+      "asset_path": "en/265.pdf",
+      "sha256": "6fec2f07b49d8f381851906781259b1e09a2152db8dcf1599ab77a592eae100b",
+      "byte_size": 1309405,
+      "page_count": 127,
+      "source_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1741197_BI/Act 265_FINAL_as at 1 Jan 2023 (30.3.23).pdf",
+      "timeline_date": "2023-02-01",
+      "timeline_type": "REPRINT ONLINE",
+      "metadata_scraped_at": "2026-05-04T10:27:50.773789+00:00"
+    },
+    {
+      "document_id": "act-574-reprint-2023-89c0f2f6",
+      "act_number": "574",
+      "act_title": "PENAL CODE",
+      "language": "en",
+      "asset_path": "en/574.pdf",
+      "sha256": "89c0f2f6f13f20c0b085a0de404d3d056de92374c9f300704d42c50800a77fa0",
+      "byte_size": 1736926,
+      "page_count": 326,
+      "source_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1823715_BI/Act 574 Project 2 Final.pdf",
+      "timeline_date": "2023-07-20",
+      "timeline_type": "REPRINT ONLINE",
+      "metadata_scraped_at": "2026-05-04T09:22:02.392560+00:00"
+    },
+    {
+      "document_id": "act-709-reprint-2016-fff5cf24",
+      "act_number": "709",
+      "act_title": "PERSONAL DATA PROTECTION ACT 2010",
+      "language": "en",
+      "asset_path": "en/709.pdf",
+      "sha256": "fff5cf244ad9a5f464e4b7e8f8baa97e3f2cfbccdb1abd4d47f6c9416bbc6387",
+      "byte_size": 656188,
+      "page_count": 111,
+      "source_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 709 14 6 2016.pdf",
+      "timeline_date": "2016-06-17",
+      "timeline_type": "REPRINT ONLINE",
+      "metadata_scraped_at": "2026-05-04T08:55:41.336031+00:00"
+    },
+    {
+      "document_id": "act-777-reprint-2022-b32cc5eb",
+      "act_number": "777",
+      "act_title": "COMPANIES ACT 2016",
+      "language": "en",
+      "asset_path": "en/777.pdf",
+      "sha256": "b32cc5ebddf96726e51a3ffdaa38da430b8fa0bcb89c6c6aeb7fdd7698280814",
+      "byte_size": 3616000,
+      "page_count": 621,
+      "source_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1738979_BI/Act 777- Final Draft (1.8.2022).pdf",
+      "timeline_date": "2022-08-07",
+      "timeline_type": "REPRINT ONLINE",
+      "metadata_scraped_at": "2026-05-04T08:45:23.334879+00:00"
+    }
+  ]
+}

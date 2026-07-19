@@ -10,7 +10,7 @@ advice, and hands off to a human lawyer** when a query is about a specific clien
 
 ## Highlights
 
-- **Cited, statute-grounded answers.** Every response links act + section + PDF page. A citation validator and a grounding check reject claims the retrieved text doesn't actually support.
+- **Cited, statute-grounded answers.** Every response links act + section + PDF page. For Acts 56, 265, 574, 709, and 777, citations open an in-app **Citation Receipt** against the exact immutable PDF snapshot used for extraction; other Acts retain the Official Source Link to AGC.
 - **Bilingual.** English / Bahasa Malaysia / code-switched queries, retrieving across EN and BM chunks at once.
 - **Guardrails, not vibes.** A supervisor blocks legal-advice phrasing, requires a disclaimer, and escalates client-specific questions to a human before retrieval even starts.
 - **Agentic retrieval (optional).** A ReAct agent chooses between semantic search and exact-section lookup and re-searches on weak hits — failing open to a deterministic pgvector path, so it can never retrieve *less* than the proven path.
@@ -43,7 +43,7 @@ query + thread_id (EN / BM / mixed)
   → recall               surface saved practitioner preferences as framing hints (optional)
   → synthesiser          draft the answer with citations (act, section, page deep-link)
   → citation_validator   reject citations absent from the retrieved sources
-  → grounding_check      flag claims the retrieved text doesn't support
+  → grounding_check      flag unsupported claims; retain only deterministically verified Evidence Spans
   → supervisor           enforce policy — retries once on a violation
   → record_turn          append the turn to checkpointed history
 ```
@@ -88,7 +88,7 @@ data: {"type": "response",  "content": "...", "citations": [...], "violations": 
 data: {"type": "done"}
 ```
 
-- **`response`** carries `content`, `violations`, and `citations` — each with `act_number`, `act_title`, `section_number`, `pdf_url` (with `#page=N` anchor), and `page_number`.
+- **`response`** carries `content`, `violations`, and `citations` — each with `act_number`, `act_title`, `section_number`, `pdf_url` (the remote AGC action), and `page_number`. A pilot citation also has optional `receipt: { document_id, evidence: [{ claim, quote }] }`; non-pilot responses remain backward-compatible.
 - **`tool_call`** (`name`, `summary`) is emitted only on the agentic-retrieval path, once per retrieval tool the agent calls; the frontend renders these in the collapsible PROCESS panel.
 - **`status`** messages track the phase and reflect short-circuits: `"Resolving follow-up..."`, `"Refining response..."` (a retry), `"Escalating to human lawyer..."`, or `"Responding..."` (conversational).
 - **`interrupt`** (`question`, `interrupt_id`) is emitted when the graph pauses to ask the user a clarifying question (see below). The stream ends on the `interrupt`; no `response` follows until you resume.
@@ -104,6 +104,15 @@ curl -N -X POST http://localhost:8000/resume \
 The answer is merged with the original query into one self-contained query, so retrieval sees the full intent, not just the answer. History records the single merged turn. This is *graph-initiated* pause — distinct from *user-initiated* barge-in below. See ADR 0015.
 
 **Barge-in (stop a running turn):** `POST /cancel { thread_id }` cancels the in-flight turn for a thread — the Stop button / Esc. Cancellation aborts the live model request and the `/query` SSE stream for that thread ends on its own. A cancelled turn writes nothing — no `response`, no history, no memory — so the next prompt starts clean. Returns `{"status": "cancelled"}` or `{"status": "no_active_run"}`; idempotent. There is one active run per `thread_id`, so a new `POST /query` on the same thread also supersedes any in-flight run — "change my mind, ask something else" needs no explicit cancel. See ADR 0014.
+
+### Citation Receipt API
+
+The five-Act pilot reuses the canonical extraction snapshots under `data/pdfs/en/`. The corpus remains ignored except for `data/pdfs/manifest.json` and the five selectively tracked pilot files. Each file is resolved only through that manifest and revalidated against its SHA-256, byte size, and page count before use; an integrity failure disables the Receipt Document without suppressing the legal answer.
+
+- `GET /receipts/{document_id}/pdf` — exact `application/pdf` bytes with immutable caching, ETag, inline disposition, and range requests.
+- `POST /receipts/{document_id}/locate { evidence_quote?, start_page }` — strict normalized token location with 1-based pages. It returns `matched`, `not_found`, or `ambiguous`; only `matched` includes normalized rectangles.
+
+The responsive viewer renders one page at a time, keeps the answer visible beside a desktop drawer, becomes a full-screen sheet on narrower screens, and always labels the separate “Check latest on AGC” escape hatch. An empty, missing, ambiguous, or failed match never draws a highlight.
 
 ### Eval dashboard API
 
@@ -155,14 +164,16 @@ ai-legal-tool/
 │   └── nodes/          # router, contextualize, retriever, recall, synthesiser,
 │                       #   citation_validator, grounding_check, supervisor, conversational
 ├── api/
-│   ├── main.py         # FastAPI app: query/resume/cancel + eval router
+│   ├── main.py         # FastAPI app: query/resume/cancel + feature routers
+│   ├── receipts.py     # immutable PDF delivery + strict on-demand locator API
 │   └── evals.py        # eval coverage, isolated subprocess SSE, cancellation, saved results
+├── citation_receipts/  # manifest integrity registry + PyMuPDF word-coordinate locator
 ├── scraper/            # pipeline steps 1–4 (index, detail, PDFs, extract) + parsers
 ├── ingestion/          # step 5: embed + ingest into pgvector
 ├── evals/              # dataset, coverage logic, L1/L2 checks, runner, eval DB setup, debug tools
 ├── tests/              # unit tests (graph retry, checkpointer memory, ...)
 ├── frontend/           # Next.js app-router chat UI (Vercel AI SDK)
-├── data/               # scraped index, metadata, PDFs, chunks, HTTP cache
+├── data/               # scraped corpus; five canonical PDFs are selectively tracked for receipts
 ├── .github/workflows/  # evals.yml smoke run
 └── docs/               # PRD, build-log, ADRs, data-pipeline reference
 ```

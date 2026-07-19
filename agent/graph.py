@@ -129,13 +129,23 @@ def _record_turn(state: AgentState) -> dict:
     # Strip the appended disclaimer so stored history is free of repeated boilerplate;
     # the disclaimer still reaches the user via final_response (untouched here).
     delivered = delivered_response(state)
-    return {
+    result = {
         "final_response": delivered,
         "history": [
             {"role": "user", "content": state["query"]},
             {"role": "assistant", "content": strip_disclaimer(delivered)},
         ],
     }
+    if state.get("violations"):
+        citations = []
+        for citation in state.get("citations", []):
+            clean = dict(citation)
+            receipt = clean.get("receipt")
+            if isinstance(receipt, dict):
+                clean["receipt"] = {**receipt, "evidence": []}
+            citations.append(clean)
+        result["citations"] = citations
+    return result
 
 
 # Holds long-lived resources (the PostgresSaver / PostgresStore connection pools) open
