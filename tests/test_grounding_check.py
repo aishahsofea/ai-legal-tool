@@ -173,6 +173,29 @@ class GroundingCheckTests(unittest.TestCase):
             "quote": "A document produced by a computer shall be admissible as evidence",
         }])
 
+    def test_receipt_evidence_matches_formatted_judge_identifiers(self):
+        state = {
+            "draft_response": "A document produced by a computer shall be admissible as evidence.",
+            "retrieved_chunks": [RETRIEVED_90A],
+            "citations": [CITATION_90A_WITH_RECEIPT],
+            "violations": [],
+        }
+        verdict = _GroundingOutput(claims=[_GroundingClaim(
+            claim="A document produced by a computer shall be admissible as evidence.",
+            cited_act_number="Act 56",
+            cited_section_number="Section 90A(1)",
+            support="supported",
+            reason="Direct support.",
+            quote="A document produced by a computer shall be admissible as evidence",
+        )])
+
+        result = _finalise(verdict, state, [])
+
+        self.assertEqual(result["citations"][0]["receipt"]["evidence"], [{
+            "claim": "A document produced by a computer shall be admissible as evidence.",
+            "quote": "A document produced by a computer shall be admissible as evidence",
+        }])
+
     def test_hallucinated_quote_and_non_answer_claim_are_discarded(self):
         state = {
             "draft_response": "A document produced by a computer shall be admissible as evidence.",
