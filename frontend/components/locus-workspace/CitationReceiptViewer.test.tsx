@@ -162,6 +162,21 @@ describe("Citation Receipt integration", () => {
 });
 
 describe("CitationReceiptViewer", () => {
+  it("is non-modal and leaves the workspace reachable in desktop pane mode", async () => {
+    vi.stubGlobal("fetch", vi.fn(() => response(located("matched"))));
+    render(<>
+      <button type="button">Chat action</button>
+      <CitationReceiptViewer citation={PILOT} modal={false} onClose={() => {}} />
+    </>);
+
+    const dialog = await screen.findByRole("dialog");
+    expect(dialog).not.toHaveAttribute("aria-modal");
+    expect(screen.getAllByRole("button", { name: "Close Citation Receipt" })).toHaveLength(1);
+
+    await userEvent.click(screen.getByRole("button", { name: "Chat action" }));
+    expect(screen.getByRole("button", { name: "Chat action" })).toHaveFocus();
+  });
+
   it("selects the matched page and renders only returned overlay rectangles", async () => {
     vi.stubGlobal("fetch", vi.fn(() => response(located("matched", 7))));
     render(<CitationReceiptViewer citation={PILOT} onClose={() => {}} />);
