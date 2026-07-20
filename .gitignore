@@ -17,17 +17,7 @@ data/pdfs/en/*
 # `python -m corpus shadow-extract`. Keep the five repaired pilot artifacts for
 # local compatibility/smoke tests; full-corpus outputs are uploaded immutably.
 data/corpus/extractions/*
-!data/corpus/extractions/extraction-sha256-0fc1e2bdc09c92518b6dda6cc616ab6353d5eccc4ffc7c405984cc58062f7f1a.chunks.json
-!data/corpus/extractions/extraction-sha256-2946cce506e44907629763507dc13fdec88af3f984b45199d359f01b923a9bf9.chunks.json
-!data/corpus/extractions/extraction-sha256-4ad8efde3b09933e28a63411f7162a910655c520e7a6a6d637e0ccddb27a2382.chunks.json
-!data/corpus/extractions/extraction-sha256-75af67fb46cb2ded5a323ea39fbb9bfa7b6f8efabc8954668b7fcf67d69baa0c.chunks.json
-!data/corpus/extractions/extraction-sha256-b4c94c5a446bcc44df76324ff254d096dba1ccea6fbe190784d9014d8c0ef81b.chunks.json
 data/corpus/sidecars/*
-!data/corpus/sidecars/extraction-sha256-0fc1e2bdc09c92518b6dda6cc616ab6353d5eccc4ffc7c405984cc58062f7f1a.words.json.gz
-!data/corpus/sidecars/extraction-sha256-2946cce506e44907629763507dc13fdec88af3f984b45199d359f01b923a9bf9.words.json.gz
-!data/corpus/sidecars/extraction-sha256-4ad8efde3b09933e28a63411f7162a910655c520e7a6a6d637e0ccddb27a2382.words.json.gz
-!data/corpus/sidecars/extraction-sha256-75af67fb46cb2ded5a323ea39fbb9bfa7b6f8efabc8954668b7fcf67d69baa0c.words.json.gz
-!data/corpus/sidecars/extraction-sha256-b4c94c5a446bcc44df76324ff254d096dba1ccea6fbe190784d9014d8c0ef81b.words.json.gz
 
 
 # Logs

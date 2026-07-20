@@ -113,6 +113,12 @@ def _retrieval_mode() -> str:
 
 
 def _has_provenance_schema(cur) -> bool:
+    """Return whether the additive corpus migration is available on this database.
+
+    Dual-read must work both before and after the migration. Detecting the table
+    and nullable chunk column lets retrieval choose a compatible query without
+    guessing provenance for legacy rows or requiring a flag-day deployment.
+    """
     cur.execute(
         """
         SELECT (
@@ -126,7 +132,7 @@ def _has_provenance_schema(cur) -> bool:
         """
     )
     row = cur.fetchone()
-    return bool(row["available"] if isinstance(row, dict) else row[0])
+    return bool(row and row["available"])
 
 
 def _select_columns(provenance: bool) -> str:
