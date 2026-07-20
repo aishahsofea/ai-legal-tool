@@ -2,7 +2,7 @@
 Synthesiser node — drafts a response grounded in retrieved chunks with structured citations.
 
 Responds in the dominant language of the query (EN or BM).
-Cited text always uses the English statute text regardless of query language.
+Cited text retains the registered language of the retrieved statute source.
 """
 import json
 import logging
@@ -16,7 +16,8 @@ from agent.citation_keys import canonicalize_citation_key
 from agent.llm_factory import make_llm, system_content
 from agent.query_policy import _DISCLAIMER_BM, _DISCLAIMER_EN, trim_history
 from agent.state import AgentState
-from citation_receipts import ReceiptManifestError, get_receipt_registry
+from citation_receipts import ReceiptDocumentIntegrityError, ReceiptManifestError, get_receipt_registry
+from citation_receipts.service import validate_available, validate_coordinate_available
 
 load_dotenv()
 
@@ -55,14 +56,12 @@ Rules you MUST follow on every response:
 _LANGUAGE_INSTRUCTIONS = {
     "en": "English",
     "bm": (
-        "Bahasa Malaysia throughout. Quote English statute text inline when citing a section "
-        "(e.g. \"Di bawah seksyen 60A Akta Pekerjaan 1955, *'No employee shall be required...'*\") "
-        "— the quoted statute text may remain in English as it is the authoritative court version"
+        "Bahasa Malaysia throughout. Quote statute text in the exact language of the retrieved source; "
+        "do not translate or relabel a BM-only source as English"
     ),
     "mixed": (
         "a bilingual format: write the explanation and framing in Bahasa Malaysia, "
-        "and embed English statute quotations inline when citing sections. "
-        "The statute quotations may remain in English as they are the authoritative court version"
+        "and keep embedded statute quotations in the exact language of each retrieved source"
     ),
 }
 
@@ -74,7 +73,7 @@ def _build_messages(state: AgentState) -> list[dict]:
     recalled_memory = state.get("recalled_memory", "")
 
     context = "\n\n".join(
-        f"[Section {c['section_number']}, {c['act_title']} (Act {c['act_number']})]\n{c['content']}"
+        f"[Section {c['section_number']}, {c['act_title']} (Act {c['act_number']}), source language: {c.get('language', 'unknown')}]\n{c['content']}"
         for c in chunks
     )
     history_text = "\n\n".join(
@@ -121,7 +120,9 @@ def _finalise(result: _SynthesiserOutput, state: AgentState) -> dict:
             chunk.get("section_number"),
         )
         if all(key):
-            chunk_lookup[key] = chunk
+            # Retrieval is already ordered by relevance. Preserve the first exact
+            # provenance row instead of allowing another language/version to replace it.
+            chunk_lookup.setdefault(key, chunk)
 
     citations = []
     for ref in result.citation_refs:
@@ -135,14 +136,31 @@ def _finalise(result: _SynthesiserOutput, state: AgentState) -> dict:
                 "pdf_url":        chunk.get("pdf_url", ""),
                 "page_number":    chunk.get("page_number"),
             }
-            try:
-                receipt_document = get_receipt_registry().validated_for_act(chunk["act_number"])
-            except ReceiptManifestError:
-                logger.warning("Receipt manifest unavailable; omitting citation receipt", exc_info=True)
-                receipt_document = None
+            document_id = chunk.get("document_id")
+            extraction_id = chunk.get("extraction_id")
+            receipt_document = None
+            if document_id and extraction_id:
+                try:
+                    registry = get_receipt_registry()
+                    receipt_document = registry.get(document_id)
+                    if (
+                        receipt_document.act_number != str(chunk.get("act_number", ""))
+                        or receipt_document.language != str(chunk.get("language", ""))
+                    ):
+                        raise ReceiptDocumentIntegrityError("Chunk/document metadata mismatch")
+                    extraction = registry.validate_exact_extraction(receipt_document, extraction_id)
+                    validate_available(registry, receipt_document)
+                    validate_coordinate_available(registry, extraction)
+                except (ReceiptManifestError, ReceiptDocumentIntegrityError, KeyError):
+                    logger.warning(
+                        "Exact Receipt provenance unavailable; retaining official source only",
+                        extra={"document_id": document_id, "extraction_id": extraction_id},
+                    )
+                    receipt_document = None
             if receipt_document is not None:
                 citation["receipt"] = {
                     "document_id": receipt_document.document_id,
+                    "extraction_id": extraction_id,
                     "evidence": [],
                 }
             citations.append(citation)

@@ -5,6 +5,8 @@ import { Document, Page, pdfjs } from "react-pdf";
 import type { Citation } from "@/lib/useQuery";
 import {
   locateReceipt,
+  ReceiptApiError,
+  recordReceiptFailure,
   receiptPdfUrl,
   type LocatorResult,
 } from "@/lib/receiptTransport";
@@ -129,6 +131,11 @@ export function CitationReceiptViewer({
       })
       .catch((error: unknown) => {
         if (controller.signal.aborted || sequence !== requestSequence.current) return;
+        recordReceiptFailure("locator_request_failed", receipt.document_id, {
+          stage: "locate",
+          error,
+          httpStatus: error instanceof ReceiptApiError ? error.status : undefined,
+        });
         setLocatorState({
           key: requestKey,
           result: null,
@@ -171,6 +178,7 @@ export function CitationReceiptViewer({
               <p className="mt-1 text-xs text-(--text-muted)">
                 Act {citation.act_number} · Section {citation.section_number}
                 {locator ? ` · ${locator.document.timeline_type}, ${locator.document.timeline_date}` : ""}
+                {locator ? ` · ${locator.document.language === "bm" ? "Bahasa Malaysia" : "English"}` : ""}
               </p>
             </div>
             <button ref={closeRef} type="button" onClick={onClose} aria-label="Close Citation Receipt" className="min-h-8 shrink-0 whitespace-nowrap rounded-lg border border-(--line) bg-(--surface) px-3 py-1 text-xs leading-4 text-(--text-muted) hover:text-(--accent)">
@@ -238,7 +246,14 @@ export function CitationReceiptViewer({
                 setPdfErrorState({ key: receipt.document_id, error: "" });
                 setPageNumber((page) => Math.min(Math.max(1, page), numPages));
               }}
-              onLoadError={(error) => setPdfErrorState({ key: receipt.document_id, error: `Receipt PDF could not be rendered: ${error.message}` })}
+              onLoadError={(error) => {
+                setPdfErrorState({ key: receipt.document_id, error: `Receipt PDF could not be rendered: ${error.message}` });
+                recordReceiptFailure("pdf_document_load_failed", receipt.document_id, { stage: "document", error });
+              }}
+              onSourceError={(error) => {
+                setPdfErrorState({ key: receipt.document_id, error: `Receipt PDF source could not be loaded: ${error.message}` });
+                recordReceiptFailure("pdf_document_load_failed", receipt.document_id, { stage: "source", error });
+              }}
               loading={<p className="p-6 text-center text-sm text-(--text-muted)" role="status">Loading Receipt Document…</p>}
               error={<p className="p-6 text-center text-sm text-(--danger)" role="alert">Receipt Document is unavailable.</p>}
             >
@@ -248,6 +263,10 @@ export function CitationReceiptViewer({
                   width={pageWidth}
                   renderAnnotationLayer={false}
                   renderTextLayer={false}
+                  onRenderError={(error) => {
+                    setPdfErrorState({ key: receipt.document_id, error: `Receipt PDF page could not be rendered: ${error.message}` });
+                    recordReceiptFailure("pdf_page_render_failed", receipt.document_id, { stage: "page", error });
+                  }}
                   loading={<p className="p-6 text-sm text-(--text-muted)" role="status">Rendering page…</p>}
                 />
                 {matchedPage && !locatorError && !pdfError && (

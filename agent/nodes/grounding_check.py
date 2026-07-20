@@ -73,11 +73,6 @@ Ignore non-legal text such as disclaimers, transitions, headings, and source lab
 Return only the structured result."""
 
 def _collect_cited_sources(state: AgentState) -> list[dict]:
-    retrieved_lookup = {
-        canonicalize_citation_key(chunk.get("act_number"), chunk.get("section_number")): chunk
-        for chunk in state.get("retrieved_chunks", [])
-    }
-
     sources = []
     seen = set()
     for citation in state.get("citations", []):
@@ -85,10 +80,20 @@ def _collect_cited_sources(state: AgentState) -> list[dict]:
             citation.get("act_number"),
             citation.get("section_number"),
         )
-        if key in seen:
+        receipt = citation.get("receipt") if isinstance(citation.get("receipt"), dict) else {}
+        document_id = receipt.get("document_id") if receipt else None
+        source_key = (*key, document_id or "")
+        if source_key in seen:
             continue
-        seen.add(key)
-        chunk = retrieved_lookup.get(key)
+        seen.add(source_key)
+        candidates = [
+            chunk for chunk in state.get("retrieved_chunks", [])
+            if canonicalize_citation_key(
+                chunk.get("act_number"), chunk.get("section_number")
+            ) == key
+            and (not document_id or chunk.get("document_id") == document_id)
+        ]
+        chunk = candidates[0] if candidates else None
         if not chunk:
             continue
         sources.append({
@@ -96,6 +101,8 @@ def _collect_cited_sources(state: AgentState) -> list[dict]:
             "act_title": chunk.get("act_title", ""),
             "section_number": chunk.get("section_number", ""),
             "content": chunk.get("content", ""),
+            "document_id": chunk.get("document_id", ""),
+            "extraction_id": chunk.get("extraction_id", ""),
         })
     return sources
 
@@ -124,20 +131,14 @@ def _finalise(result: _GroundingOutput, state: AgentState, violations: list[str]
     # The judge may return display-form identifiers (for example, ``Act 56`` and
     # ``Section 90A(1)``), while receipts retain the retrieved bare identifiers.
     # Use the shared key at this final comparison boundary as well as source lookup.
-    citation_lookup = {
-        canonicalize_citation_key(
-            citation.get("act_number"),
-            citation.get("section_number"),
-        ): citation
-        for citation in citations
-    }
-    chunk_lookup = {
-        canonicalize_citation_key(
-            chunk.get("act_number"),
-            chunk.get("section_number"),
-        ): chunk
-        for chunk in state.get("retrieved_chunks", [])
-    }
+    citation_lookup: dict[tuple[str, str], list[dict]] = {}
+    chunk_lookup: dict[tuple[str, str], list[dict]] = {}
+    for citation in citations:
+        key = canonicalize_citation_key(citation.get("act_number"), citation.get("section_number"))
+        citation_lookup.setdefault(key, []).append(citation)
+    for chunk in state.get("retrieved_chunks", []):
+        key = canonicalize_citation_key(chunk.get("act_number"), chunk.get("section_number"))
+        chunk_lookup.setdefault(key, []).append(chunk)
     seen_evidence: set[tuple[tuple[str, ...], tuple[str, ...]]] = set()
     try:
         max_quote_chars = min(500, max(1, int(os.getenv("RECEIPT_EVIDENCE_MAX_CHARS", "500"))))
@@ -161,14 +162,26 @@ def _finalise(result: _GroundingOutput, state: AgentState, violations: list[str]
             claim.cited_act_number,
             claim.cited_section_number,
         )
-        citation = citation_lookup.get(key)
-        chunk = chunk_lookup.get(key)
+        citation_candidates = citation_lookup.get(key, [])
+        citation = citation_candidates[0] if citation_candidates else None
+        receipt_identity = (
+            citation.get("receipt", {}).get("document_id")
+            if citation and isinstance(citation.get("receipt"), dict)
+            else None
+        )
+        chunk_candidates = chunk_lookup.get(key, [])
+        chunk = next(
+            (item for item in chunk_candidates if receipt_identity and item.get("document_id") == receipt_identity),
+            chunk_candidates[0] if not receipt_identity and chunk_candidates else None,
+        )
         receipt = citation.get("receipt") if citation else None
         quote = claim.quote.strip()
         if (
             not citation
             or not chunk
             or not isinstance(receipt, dict)
+            or chunk.get("document_id") != receipt.get("document_id")
+            or chunk.get("extraction_id") != receipt.get("extraction_id")
             or not quote
             or len(quote) > max_quote_chars
             or not contains_normalized_sequence(claim.claim, state.get("draft_response", ""))

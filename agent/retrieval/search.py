@@ -50,12 +50,15 @@ _db_url = os.environ["DATABASE_URL"]
 
 @lru_cache(maxsize=1)
 def _pdf_url_map() -> dict[str, str]:
-    """Build {act_number: latest_reprint_pdf} from metadata files. Cached on first call."""
+    """Build official base-Act links from reprints only.
+
+    Amendment-only PDFs are never valid substitutes for a base Act.
+    """
     result = {}
     for f in METADATA_DIR.glob("*.json"):
         try:
             d = json.loads(f.read_text(encoding="utf-8"))
-            url = d.get("latest_reprint_pdf") or d.get("latest_amendment_pdf") or ""
+            url = d.get("latest_reprint_pdf") or ""
             result[d["act_number"]] = url
         except Exception:
             pass
@@ -91,15 +94,81 @@ def extract_act_hint(query: str) -> tuple[str | None, str | None]:
 
 
 def attach_pdf_urls(rows: list[dict]) -> list[dict]:
-    """Add a `pdf_url` (base + #page anchor) to each chunk from Act metadata."""
+    """Attach the exact registered source URL, or a legacy official reprint link."""
     pdf_map = _pdf_url_map()
     chunks = []
     for row in rows:
         d = dict(row)
-        base_url = pdf_map.get(d["act_number"], "")
-        d["pdf_url"] = f"{base_url}#page={d['page_number']}" if base_url and d.get("page_number") else base_url
+        base_url = d.pop("source_url", "") if d.get("document_id") else ""
+        base_url = base_url or pdf_map.get(d["act_number"], "")
+        page = d.get("page_start") or d.get("page_number")
+        d["pdf_url"] = f"{base_url}#page={page}" if base_url and page else base_url
         chunks.append(d)
     return chunks
+
+
+def _retrieval_mode() -> str:
+    mode = os.getenv("CORPUS_RETRIEVAL_MODE", "dual").strip().lower()
+    return mode if mode in {"legacy", "dual", "verified"} else "dual"
+
+
+def _has_provenance_schema(cur) -> bool:
+    """Return whether the additive corpus migration is available on this database.
+
+    Dual-read must work both before and after the migration. Detecting the table
+    and nullable chunk column lets retrieval choose a compatible query without
+    guessing provenance for legacy rows or requiring a flag-day deployment.
+    """
+    cur.execute(
+        """
+        SELECT (
+          to_regclass('public.active_corpus_documents') IS NOT NULL
+          AND EXISTS (
+            SELECT 1 FROM information_schema.columns
+            WHERE table_schema = 'public' AND table_name = 'chunks'
+              AND column_name = 'document_id'
+          )
+        ) AS available
+        """
+    )
+    row = cur.fetchone()
+    return bool(row and row["available"])
+
+
+def _select_columns(provenance: bool) -> str:
+    if not provenance:
+        return (
+            "act_number, act_title, section_number, content, page_number, language, "
+            "NULL::text AS document_id, NULL::text AS extraction_id, "
+            "NULL::text AS content_sha256, page_number AS page_start, "
+            "page_number AS page_end, NULL::text AS source_url"
+        )
+    return (
+        "c.act_number, c.act_title, c.section_number, c.content, c.page_number, c.language, "
+        "c.document_id, c.extraction_id, c.content_sha256, "
+        "COALESCE(c.page_start, c.page_number) AS page_start, "
+        "COALESCE(c.page_end, c.page_number) AS page_end, d.source_url"
+    )
+
+
+def _provenance_visibility(mode: str) -> str:
+    if mode == "verified":
+        return "c.document_id IS NOT NULL AND a.document_id IS NOT NULL"
+    if mode == "legacy":
+        return "c.document_id IS NULL"
+    # During dual-read, an activated exact extraction owns its Act/language.
+    # Legacy rows remain a fallback only where no verified mapping is active.
+    return """(
+        a.document_id IS NOT NULL
+        OR (
+          c.document_id IS NULL
+          AND NOT EXISTS (
+            SELECT 1 FROM active_corpus_documents current
+            WHERE current.act_number = c.act_number
+              AND current.language = c.language
+          )
+        )
+    )"""
 
 
 def semantic_search(
@@ -131,15 +200,32 @@ def semantic_search(
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             # Increase ivfflat probes from default 1 → 10 for better recall.
             # Default probes=1 misses correct clusters; 10 is a good recall/speed
-            # trade-off for a pilot corpus of ~24k chunks.
+            # trade-off for the current corpus size.
             cur.execute("SET ivfflat.probes = 10;")
+            mode = _retrieval_mode()
+            provenance = _has_provenance_schema(cur)
+            if mode == "verified" and not provenance:
+                return []
+            prefix = "c." if provenance else ""
+            joins = """
+                LEFT JOIN active_corpus_documents a
+                  ON a.act_number = c.act_number AND a.language = c.language
+                 AND a.document_id = c.document_id AND a.extraction_id = c.extraction_id
+                LEFT JOIN corpus_documents d ON d.document_id = c.document_id
+            """ if provenance else ""
+            provenance_filter = _provenance_visibility(mode) if provenance else ""
+            combined_filters = [f"c.{item}" for item in filters] if provenance else list(filters)
+            if provenance_filter:
+                combined_filters.append(provenance_filter)
+            where = f"WHERE {' AND '.join(combined_filters)}" if combined_filters else ""
             cur.execute(
                 f"""
-                SELECT act_number, act_title, section_number, content, page_number, language,
-                       1 - (embedding <=> %s::vector) AS similarity
-                FROM chunks
+                SELECT {_select_columns(provenance)},
+                       1 - ({prefix}embedding <=> %s::vector) AS similarity
+                FROM chunks {prefix.rstrip('.')}
+                {joins}
                 {where}
-                ORDER BY embedding <=> %s::vector
+                ORDER BY {prefix}embedding <=> %s::vector
                 LIMIT %s
                 """,
                 params,
@@ -169,16 +255,30 @@ def exact_section_lookup(
     conn = psycopg2.connect(_db_url)
     try:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            mode = _retrieval_mode()
+            provenance = _has_provenance_schema(cur)
+            if mode == "verified" and not provenance:
+                return []
+            joins = """
+                LEFT JOIN active_corpus_documents a
+                  ON a.act_number = c.act_number AND a.language = c.language
+                 AND a.document_id = c.document_id AND a.extraction_id = c.extraction_id
+                LEFT JOIN corpus_documents d ON d.document_id = c.document_id
+            """ if provenance else ""
+            provenance_filter = f"AND {_provenance_visibility(mode)}" if provenance else ""
+            prefix = "c." if provenance else ""
             cur.execute(
-                """
-                SELECT act_number, act_title, section_number, content, page_number, language,
+                f"""
+                SELECT {_select_columns(provenance)},
                        1.0 AS similarity
-                FROM chunks
-                WHERE UPPER(section_number) = %s
-                  AND (act_number = %s OR act_title ILIKE %s)
+                FROM chunks {prefix.rstrip('.')}
+                {joins}
+                WHERE UPPER({prefix}section_number) = %s
+                  AND ({prefix}act_number = %s OR {prefix}act_title ILIKE %s)
+                  {provenance_filter}
                 ORDER BY
-                  CASE WHEN act_number = %s THEN 0 ELSE 1 END,
-                  CASE WHEN language = 'en' THEN 0 ELSE 1 END
+                  CASE WHEN {prefix}act_number = %s THEN 0 ELSE 1 END,
+                  CASE WHEN {prefix}language = 'en' THEN 0 ELSE 1 END
                 LIMIT %s
                 """,
                 (section_number, act_number or "", title_pattern, act_number or "", EXACT_TOP_K),

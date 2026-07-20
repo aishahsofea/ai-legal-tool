@@ -1,18 +1,17 @@
 """
-Step 4 — Extract section-level chunks from downloaded PDFs.
+Step 4 — Extract identity-bound chunks and word-coordinate sidecars.
 
-For each PDF in data/pdfs/en/:
+For each registered immutable reprint in the corpus manifest:
   1. Detect scanned PDFs (avg < 100 chars/page) → flag and skip
   2. Extract text page-by-page with pymupdf
   3. Split into section-level chunks using Malaysian Act numbering conventions
-  4. Write data/chunks/en/{act_number}.json
+  4. Write a versioned extraction bundle and hash-verified sidecar
 
-Chunk schema:
-  act_number, act_title, section_number, content, page_number, language
+Chunk schema adds document_id, extraction_id, content_sha256, and page bounds.
 
 The page_number enables #page=N deep links to the AGC PDF.
 
-Resumable: skips acts whose chunk file already exists.
+Resumable: extraction identity is document bytes + extractor version/config.
 """
 import json
 import logging
@@ -27,7 +26,15 @@ from scraper.config import (
     PDF_EN_DIR,
     CHUNKS_EN_DIR,
     EXTRACT_REPORT,
+    CORPUS_MANIFEST,
+    CORPUS_ASSET_DIR,
+    CORPUS_SIDECAR_DIR,
+    CORPUS_EXTRACTION_DIR,
 )
+
+from corpus.extraction import extract_manifest
+from corpus.manifest import dump_json
+from corpus.registry import CorpusRegistry
 
 logger = logging.getLogger(__name__)
 
@@ -132,57 +139,25 @@ def extract_act(pdf_path: Path, act_number: str, act_title: str) -> dict:
 
 
 def run_step4() -> None:
-    pdf_dir    = Path(PDF_EN_DIR)
-    chunks_dir = Path(CHUNKS_EN_DIR)
-    chunks_dir.mkdir(parents=True, exist_ok=True)
-
-    title_map = _load_title_map()
-
-    pdf_files = sorted(pdf_dir.glob("*.pdf"), key=lambda f: int(f.stem) if f.stem.isdigit() else 0)
-    logger.info("Step 4: %d PDFs to process", len(pdf_files))
-
-    ok = scanned = failed = skipped = 0
-    scanned_acts: list[str] = []
-
-    for i, pdf_path in enumerate(pdf_files, 1):
-        act_number = pdf_path.stem
-        out_file   = chunks_dir / f"{act_number}.json"
-
-        if out_file.exists():
-            skipped += 1
-            continue
-
-        act_title = title_map.get(act_number, "")
-        logger.info("[%d/%d] Act %s — %s", i, len(pdf_files), act_number, act_title[:60])
-
-        result = extract_act(pdf_path, act_number, act_title)
-
-        if result["status"] == "ok":
-            out_file.write_text(
-                json.dumps(result["chunks"], indent=2, ensure_ascii=False),
-                encoding="utf-8",
-            )
-            ok += 1
-        elif result["status"] == "scanned":
-            scanned += 1
-            scanned_acts.append(act_number)
-        else:
-            failed += 1
-
-    logger.info("Step 4 complete. ok=%d scanned=%d failed=%d skipped=%d", ok, scanned, failed, skipped)
-
-    if scanned_acts:
-        logger.info("Scanned PDFs (%d) — not ingested: %s", len(scanned_acts), ", ".join(sorted(scanned_acts, key=lambda x: int(x) if x.isdigit() else x)))
-
-    report = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
-        "ok":      ok,
-        "scanned": scanned,
-        "failed":  failed,
-        "skipped": skipped,
-        "scanned_acts": scanned_acts,
-    }
-    report_path = Path(EXTRACT_REPORT)
-    report_path.parent.mkdir(parents=True, exist_ok=True)
-    report_path.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
-    logger.info("Report written to %s", EXTRACT_REPORT)
+    manifest_path = Path(CORPUS_MANIFEST)
+    registry = CorpusRegistry(
+        manifest_path,
+        asset_root=Path(CORPUS_ASSET_DIR),
+        sidecar_root=Path(CORPUS_SIDECAR_DIR),
+    )
+    selected = [
+        document.document_id
+        for document in registry.documents.values()
+        if document.lifecycle_status in {"registered", "extracted"}
+    ]
+    logger.info("Step 4: %d immutable documents to process", len(selected))
+    manifest, report = extract_manifest(
+        registry,
+        extraction_root=Path(CORPUS_EXTRACTION_DIR),
+        sidecar_root=Path(CORPUS_SIDECAR_DIR),
+        document_ids=selected,
+        activate_ready=False,
+    )
+    dump_json(manifest_path, manifest)
+    dump_json(Path(EXTRACT_REPORT), report)
+    logger.info("Step 4 complete. ready=%d blocked=%d", report["ready"], report["blocked"])

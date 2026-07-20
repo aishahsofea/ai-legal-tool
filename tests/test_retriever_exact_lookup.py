@@ -57,6 +57,24 @@ class SearchHelperTests(unittest.TestCase):
             ("777", "COMPANIES ACT 2016"),
         )
 
+    def test_exact_registered_source_url_wins_and_amendments_are_not_fallbacks(self):
+        rows = [{
+            "act_number": "144", "page_number": 2, "page_start": 2,
+            "document_id": "act-144-bm-sha256-fixture",
+            "source_url": "https://lom.agc.gov.my/LOM/MY/Akta-144.pdf",
+        }]
+        with patch.object(search, "_pdf_url_map", return_value={"144": "https://mutable.example/reprint.pdf"}):
+            result = search.attach_pdf_urls(rows)
+        self.assertEqual(result[0]["pdf_url"], "https://lom.agc.gov.my/LOM/MY/Akta-144.pdf#page=2")
+        self.assertNotIn("source_url", result[0])
+
+    def test_dual_read_excludes_legacy_rows_after_act_language_activation(self):
+        predicate = search._provenance_visibility("dual")
+        self.assertIn("a.document_id IS NOT NULL", predicate)
+        self.assertIn("NOT EXISTS", predicate)
+        self.assertIn("current.act_number = c.act_number", predicate)
+        self.assertIn("current.language = c.language", predicate)
+
 
 class RetrieverNodeTests(unittest.TestCase):
     def test_statute_lookup_uses_exact_lookup_without_semantic_when_it_hits(self):

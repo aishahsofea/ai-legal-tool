@@ -10,7 +10,7 @@ advice, and hands off to a human lawyer** when a query is about a specific clien
 
 ## Highlights
 
-- **Cited, statute-grounded answers.** Every response links act + section + PDF page. For Acts 56, 265, 574, 709, and 777, citations open an in-app **Citation Receipt** against the exact immutable PDF snapshot used for extraction; other Acts retain the Official Source Link to AGC.
+- **Cited, statute-grounded answers.** Every response links Act + section + PDF page. A citation opens an in-app **Citation Receipt** whenever its retrieved chunk carries a verified immutable document/extraction identity; otherwise it fails closed to the Official Source Link.
 - **Bilingual.** English / Bahasa Malaysia / code-switched queries, retrieving across EN and BM chunks at once.
 - **Guardrails, not vibes.** A supervisor blocks legal-advice phrasing, requires a disclaimer, and escalates client-specific questions to a human before retrieval even starts.
 - **Agentic retrieval (optional).** A ReAct agent chooses between semantic search and exact-section lookup and re-searches on weak hits — failing open to a deterministic pgvector path, so it can never retrieve *less* than the proven path.
@@ -88,7 +88,7 @@ data: {"type": "response",  "content": "...", "citations": [...], "violations": 
 data: {"type": "done"}
 ```
 
-- **`response`** carries `content`, `violations`, and `citations` — each with `act_number`, `act_title`, `section_number`, `pdf_url` (the remote AGC action), and `page_number`. A pilot citation also has optional `receipt: { document_id, evidence: [{ claim, quote }] }`; non-pilot responses remain backward-compatible.
+- **`response`** carries `content`, `violations`, and `citations` — each with `act_number`, `act_title`, `section_number`, `pdf_url` (the official AGC fallback), and `page_number`. A provenance-backed citation also has `receipt: { document_id, extraction_id, evidence: [{ claim, quote }] }`; legacy/unavailable rows omit it.
 - **`tool_call`** (`name`, `summary`) is emitted only on the agentic-retrieval path, once per retrieval tool the agent calls; the frontend renders these in the collapsible PROCESS panel.
 - **`status`** messages track the phase and reflect short-circuits: `"Resolving follow-up..."`, `"Refining response..."` (a retry), `"Escalating to human lawyer..."`, or `"Responding..."` (conversational).
 - **`interrupt`** (`question`, `interrupt_id`) is emitted when the graph pauses to ask the user a clarifying question (see below). The stream ends on the `interrupt`; no `response` follows until you resume.
@@ -107,12 +107,13 @@ The answer is merged with the original query into one self-contained query, so r
 
 ### Citation Receipt API
 
-The five-Act pilot reuses the canonical extraction snapshots under `data/pdfs/en/`. The corpus remains ignored except for `data/pdfs/manifest.json` and the five selectively tracked pilot files. Each file is resolved only through that manifest and revalidated against its SHA-256, byte size, and page count before use; an integrity failure disables the Receipt Document without suppressing the legal answer.
+`data/pdfs/manifest.json` is a deterministic corpus-wide registry generated from scraper metadata and actual bytes. It supports multiple versions and languages per Act, content-derived IDs, historical aliases, extraction identities, coordinate-sidecar hashes, and an explicit active Act/language mapping. `data/corpus/coverage.json` accounts for every locally audited PDF and gives blocker/remediation details. The current local audit registered 596 canonical reprints from 624 PDFs, produced 576 shadow extraction identities, kept the five existing pilots active, and excluded 48 ineligible inputs (28 amendment-only, 15 zero-chunk, 5 scanned). BM-only Acts 144, 152, 194, 220, 228, and 230 are registered as BM.
 
-- `GET /receipts/{document_id}/pdf` — exact `application/pdf` bytes with immutable caching, ETag, inline disposition, and range requests.
-- `POST /receipts/{document_id}/locate { evidence_quote?, start_page }` — strict normalized token location with 1-based pages. It returns `matched`, `not_found`, or `ambiguous`; only `matched` includes normalized rectangles.
+- `GET|HEAD /receipts/{document_id}/pdf` — verified local/proxied bytes or a verified CDN redirect, with immutable cache headers, ETag/304, byte ranges, and CORS.
+- `POST /receipts/{document_id}/locate { evidence_quote?, start_page, extraction_id? }` — strict normalized-token matching against the exact hash-verified coordinate sidecar. It returns `matched`, `not_found`, or `ambiguous`; only `matched` includes rectangles.
+- `POST /receipts/telemetry` — accepts a small allowlisted, quote-free frontend failure event.
 
-The responsive viewer renders one page at a time, keeps the answer visible beside a desktop drawer, becomes a full-screen sheet on narrower screens, and always labels the separate “Check latest on AGC” escape hatch. An empty, missing, ambiguous, or failed match never draws a highlight.
+The responsive viewer renders one page at a time, labels the registered source language, validates locator identity/geometry at runtime, and always keeps the separate “Check latest on AGC” escape hatch. Missing, mismatched, corrupt, ambiguous, or failed provenance never draws a highlight. See [docs/corpus-receipts.md](docs/corpus-receipts.md) for lifecycle and operator commands.
 
 ### Eval dashboard API
 
@@ -135,6 +136,7 @@ The server refuses stale corpora, prevents concurrent runs, and terminates a run
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** — local setup, env vars & feature flags, running evals, model overrides
 - **[CONTEXT.md](CONTEXT.md)** — domain language, supervisor rules, query-language behaviour, memory model
 - **[docs/data-pipeline.md](docs/data-pipeline.md)** — the five scrape → embed steps and the JSON each produces
+- **[docs/corpus-receipts.md](docs/corpus-receipts.md)** — immutable corpus lifecycle, storage, rollout, and rollback
 - **`docs/adr/`** — architecture decision records
 
 ### Eval harness
@@ -167,13 +169,15 @@ ai-legal-tool/
 │   ├── main.py         # FastAPI app: query/resume/cancel + feature routers
 │   ├── receipts.py     # immutable PDF delivery + strict on-demand locator API
 │   └── evals.py        # eval coverage, isolated subprocess SSE, cancellation, saved results
-├── citation_receipts/  # manifest integrity registry + PyMuPDF word-coordinate locator
+├── corpus/             # identities, manifest/audit, extraction, storage, DB lifecycle + CLI
+├── citation_receipts/  # delivery/locator compatibility façade + telemetry
 ├── scraper/            # pipeline steps 1–4 (index, detail, PDFs, extract) + parsers
 ├── ingestion/          # step 5: embed + ingest into pgvector
 ├── evals/              # dataset, coverage logic, L1/L2 checks, runner, eval DB setup, debug tools
 ├── tests/              # unit tests (graph retry, checkpointer memory, ...)
 ├── frontend/           # Next.js app-router chat UI (Vercel AI SDK)
-├── data/               # scraped corpus; five canonical PDFs are selectively tracked for receipts
+├── migrations/         # additive corpus provenance schema
+├── data/               # scraped corpus + deterministic manifest/coverage and pilot receipt assets
 ├── .github/workflows/  # evals.yml smoke run
 └── docs/               # PRD, build-log, ADRs, data-pipeline reference
 ```

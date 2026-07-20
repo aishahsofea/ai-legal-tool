@@ -17,6 +17,8 @@ RETRIEVED_90A = {
     "content": "90A. A document produced by a computer shall be admissible as evidence if produced in the course of ordinary use.",
     "page_number": 1,
     "language": "en",
+    "document_id": "act-56-en-sha256-c11400ad1b0a9941919d7328c60fc1c2b49fb2788671bf9697c2923364c96d07",
+    "extraction_id": "extraction-sha256-fixture",
 }
 
 CITATION_90A = {
@@ -29,7 +31,11 @@ CITATION_90A = {
 
 CITATION_90A_WITH_RECEIPT = {
     **CITATION_90A,
-    "receipt": {"document_id": "act-56-reprint-2017-c11400ad", "evidence": []},
+    "receipt": {
+        "document_id": RETRIEVED_90A["document_id"],
+        "extraction_id": RETRIEVED_90A["extraction_id"],
+        "evidence": [],
+    },
 }
 
 
@@ -242,7 +248,8 @@ class GroundingCheckTests(unittest.TestCase):
         citation = {
             **CITATION_90A,
             "receipt": {
-                "document_id": "act-56-reprint-2017-c11400ad",
+                "document_id": RETRIEVED_90A["document_id"],
+                "extraction_id": RETRIEVED_90A["extraction_id"],
                 "evidence": [stale_span],
             },
         }

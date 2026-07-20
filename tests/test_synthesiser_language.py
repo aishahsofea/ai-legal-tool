@@ -16,6 +16,8 @@ _CHUNK = {
     "page_number": 12,
     "language": "en",
     "pdf_url": "",
+    "document_id": "act-574-en-sha256-89c0f2f6f13f20c0b085a0de404d3d056de92374c9f300704d42c50800a77fa0",
+    "extraction_id": "extraction-sha256-4ad8efde3b09933e28a63411f7162a910655c520e7a6a6d637e0ccddb27a2382",
 }
 
 _ANSWER = "Di bawah seksyen 34 Kanun Keseksaan, setiap orang yang bertindak bersama adalah bertanggungjawab."
@@ -70,7 +72,8 @@ class SynthesiserDisclaimerTests(unittest.TestCase):
         self.assertEqual(len(result["citations"]), 1)
         self.assertEqual(result["citations"][0]["act_number"], "574")
         self.assertEqual(result["citations"][0]["section_number"], "34")
-        self.assertEqual(result["citations"][0]["receipt"]["document_id"], "act-574-reprint-2023-89c0f2f6")
+        self.assertEqual(result["citations"][0]["receipt"]["document_id"], _CHUNK["document_id"])
+        self.assertEqual(result["citations"][0]["receipt"]["extraction_id"], _CHUNK["extraction_id"])
         self.assertEqual(result["citations"][0]["receipt"]["evidence"], [])
 
     def test_non_pilot_citation_has_no_receipt(self):

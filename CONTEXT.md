@@ -23,23 +23,29 @@ Regulations, rules, or orders made under an Act. Referenced by P.U. number (e.g.
 _Avoid_: sub-act, regulations (alone)
 
 **Reprint**:
-A consolidated version of an Act that incorporates all amendments up to a given date. The `latest_reprint_pdf` field in the metadata is the canonical current English text of the Act. A corresponding BM reprint is also fetched where available.
+A consolidated version of an Act that incorporates amendments up to a given date. The `latest_reprint_pdf` field is the canonical source selected by the scraper and may be English or BM; its registered language is derived from AGC metadata/URL markers, never from a legacy local directory name.
 _Avoid_: latest version, current version
 
 **Citation Receipt**:
-The in-app verification experience opened from a pilot citation. It keeps the delivered claim and its source visible together, renders one physical PDF page at a time, and draws a highlight only for a uniquely matched **Evidence Span**. On desktop it is a right-hand drawer; on narrower screens it is a full-screen sheet.
+The in-app verification experience opened from a provenance-backed citation. It keeps the delivered claim and its source visible together, renders one physical PDF page at a time, and draws a highlight only for a uniquely matched **Evidence Span**. On desktop it is a right-hand drawer; on narrower screens it is a full-screen sheet.
 _Avoid_: PDF link, source popup
 
 **Receipt Document**:
-An immutable, manifest-identified PDF snapshot whose bytes are exactly those used to extract the stored chunks and section-start `page_number`. Its SHA-256, byte size, and page count are checked before enrichment, location, or delivery. The five-Act pilot contains Acts 56, 265, 574, 709, and 777.
+An immutable, manifest-identified PDF snapshot whose bytes are exactly those used by one **Extraction Run**. Its content-derived identity includes Act, source language, and full SHA-256; byte size and page count are also checked before enrichment, location, or delivery. Multiple languages and historical versions may exist for one Act.
 _Avoid_: latest PDF, remote PDF, Official Source Link
+
+**Extraction Run**:
+A deterministic extraction of one **Receipt Document**, identified by document identity, extractor/version, and configuration hash. It owns a chunk-set hash and a hash-verified word-coordinate sidecar. Retrieval chunks carry its `document_id`, `extraction_id`, content hash, and page bounds.
+
+**Active Corpus Mapping**:
+The reversible pointer from one `(Act, language)` pair to a ready **Receipt Document** and **Extraction Run**. New bytes are registered and shadow-ingested before this pointer moves; the prior mapping remains in activation history for rollback.
 
 **Evidence Span**:
 A legal claim from the delivered draft plus one short, contiguous supporting quote. It exists only after application code independently confirms the supported label, cited Act/section, claim occurrence in the draft, and quote occurrence in the retrieved chunk. Partial, unsupported, hallucinated, overlong, and duplicate spans are excluded.
 _Avoid_: model highlight, source chunk
 
 **Locator Result**:
-The outcome of strict, on-demand PyMuPDF word-coordinate matching for an **Evidence Span** against its **Receipt Document**: `matched`, `not_found`, or `ambiguous`. Only a unique contiguous normalized-token match produces page-grouped rectangles. The citation `page_number` is merely the fallback **Section-start page**, not proof that evidence occurs there.
+The outcome of strict matching for an **Evidence Span** against the exact **Extraction Run** coordinate sidecar: `matched`, `not_found`, or `ambiguous`. Only a unique contiguous normalized-token match produces page-grouped rectangles. The citation `page_number` is merely the fallback section-start page, not proof that evidence occurs there.
 
 **Official Source Link**:
 The citation's remote AGC `pdf_url`, offered separately as “Check latest on AGC”. It lets a practitioner inspect the government portal's current remote source, but it is not the **Receipt Document** and its bytes are never used to assert an exact highlight.
@@ -93,8 +99,9 @@ A recommendation about what a specific person should do in a specific legal situ
 ## Relationships
 
 - An **Act** has one or more **Timeline Entries**
-- A pilot **Act** has one immutable **Receipt Document** selected from a recorded **Timeline Entry**
-- A pilot citation may carry zero or more validated **Evidence Spans** and opens one shared **Citation Receipt**
+- An **Act** may have multiple immutable **Receipt Documents** across languages and historical versions
+- An **Active Corpus Mapping** selects one ready **Extraction Run** per Act/language without deleting history
+- A provenance-backed citation may carry zero or more validated **Evidence Spans** and opens one shared **Citation Receipt**
 - A **Locator Result** maps one selected **Evidence Span** to physical rectangles in the **Receipt Document**; uncertainty maps to no rectangles
 - The **Official Source Link** remains separate from the **Receipt Document** because remote bytes and pagination can change
 - An **Act** may have zero or more **Subsidiary Legislation** items
@@ -121,9 +128,7 @@ These constraints apply to **legal-answer turns** only — a **Conversational Tu
 
 ## Query Language Behaviour
 
-Malaysian law practitioners code-switch heavily — mixing BM and English in a single query ("tolong check Section 14 Evidence Act"). Language detection on code-switched queries is unreliable. The system retrieves from both English and BM chunks simultaneously. Cited statute text is always English (the authoritative court version). Response prose mirrors the dominant language of the query.
-
-**v1 pilot corpus is English-only.** BM and code-switched queries still work via cross-lingual embedding similarity, with somewhat degraded accuracy for BM-heavy queries. BM corpus is added before the public write-up, at which point retrieval accuracy improvement is measured as a before/after eval.
+Malaysian law practitioners code-switch heavily — mixing BM and English in a single query ("tolong check Section 14 Evidence Act"). The system may retrieve English and BM chunks together. A citation and quotation retain the registered source language; BM-only Acts 144, 152, 194, 220, 228, and 230 must never be relabeled as English. Response prose mirrors the dominant language of the query.
 
 ## Interruption: two distinct mechanisms
 
@@ -145,6 +150,8 @@ node-level trace, the query lifecycle (`agent/query_lifecycle.py`) labels each r
 These are the same signals the **Supervisor Rules** and evidence checks compute, so
 groundedness and pass-rate become chartable over time. Feedback is fail-open and off
 the hot path — it never changes or delays a **Legal Research Query** response.
+
+Receipt delivery separately emits structured availability, integrity, delivery, and locator-outcome events. The browser reports only allowlisted render/request failure metadata; claims, quotes, and source URLs are never included.
 
 ## Evaluation dashboard
 

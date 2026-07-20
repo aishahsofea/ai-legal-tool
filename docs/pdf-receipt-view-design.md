@@ -1,5 +1,7 @@
 # PDF Citation Receipt View — Cold Implementation Handoff
 
+> **Historical pilot record (superseded):** this document describes the original five-Act UI pilot. The current corpus-wide provenance, storage, migration, rollout, and operator contract is [corpus-receipts.md](corpus-receipts.md). Preserve this file as the implementation record; do not use its pilot-only scope as current architecture.
+
 > **Status:** Approved design. This is a build handoff, not a brainstorming document.
 >
 > **Audience:** An implementing agent starting cold, without the design conversation.
