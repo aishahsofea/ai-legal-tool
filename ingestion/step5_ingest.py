@@ -1,150 +1,106 @@
+"""Step 5 — atomically embed and ingest immutable extraction bundles.
+
+All embeddings for one extraction are obtained before database mutation. The
+database write then replaces exactly that extraction in one transaction and
+verifies the stored row count. Activation remains a separate operator action.
 """
-Step 5 — Embed section chunks and ingest into pgvector.
 
-Reads data/chunks/en/*.json, calls text-embedding-3-small in batches,
-inserts into the chunks table in the local Postgres database.
+from __future__ import annotations
 
-Resumable: skips acts whose act_number is already present in the DB.
-After all data is inserted, rebuilds the HNSW index for fast similarity search.
-
-Cost estimate: ~25,000 chunks × 300 tokens × $0.02/1M = ~$0.15 total.
-"""
-import json
 import logging
 import os
-import time
 from pathlib import Path
 
 import psycopg2
-import psycopg2.extras
 from dotenv import load_dotenv
 from openai import OpenAI
 
-load_dotenv()
+from corpus.db import apply_migration, ingest_extraction, load_bundle
+from corpus.registry import CorpusRegistry
 
+load_dotenv()
 logger = logging.getLogger(__name__)
 
-CHUNKS_DIR   = Path("data/chunks/en")
-EMBED_MODEL  = "text-embedding-3-small"
-BATCH_SIZE   = 100   # chunks per OpenAI API call
-EMBED_DIMS   = 1536
+MANIFEST_PATH = Path(os.getenv("CORPUS_MANIFEST_PATH", "data/pdfs/manifest.json"))
+PDF_ROOT = Path(os.getenv("CORPUS_LOCAL_ROOT", "data/pdfs"))
+SIDECAR_ROOT = Path(os.getenv("CORPUS_SIDECAR_ROOT", "data/corpus/sidecars"))
+EXTRACTION_ROOT = Path("data/corpus/extractions")
+EMBED_MODEL = os.getenv("CORPUS_EMBEDDING_MODEL", "text-embedding-3-small")
+BATCH_SIZE = 100
 
 
 def _connect():
-    url = os.environ["DATABASE_URL"]
-    return psycopg2.connect(url)
+    return psycopg2.connect(os.environ["DATABASE_URL"])
 
 
-def _already_ingested(cur) -> set[str]:
-    cur.execute("SELECT DISTINCT act_number FROM chunks;")
-    return {row[0] for row in cur.fetchall()}
-
-
-def _embed_batch(client: OpenAI, texts: list[str]) -> list[list[float]]:
-    resp = client.embeddings.create(model=EMBED_MODEL, input=texts)
-    return [item.embedding for item in resp.data]
-
-
-def _insert_batch(cur, rows: list[dict], embeddings: list[list[float]]) -> None:
-    records = [
-        (
-            r["act_number"],
-            r["act_title"],
-            r["section_number"],
-            r["content"],
-            r.get("page_number"),
-            r.get("language", "en"),
-            emb,
+def _embed_all(client: OpenAI, chunks: list[dict]) -> list[list[float]]:
+    embeddings: list[list[float]] = []
+    for offset in range(0, len(chunks), BATCH_SIZE):
+        response = client.embeddings.create(
+            model=EMBED_MODEL,
+            input=[item["content"] for item in chunks[offset:offset + BATCH_SIZE]],
         )
-        for r, emb in zip(rows, embeddings)
-    ]
-    psycopg2.extras.execute_values(
-        cur,
+        embeddings.extend(item.embedding for item in response.data)
+    if len(embeddings) != len(chunks):
+        raise ValueError("embedding provider returned an incomplete batch")
+    return embeddings
+
+
+def _ready_extractions(cursor) -> set[str]:
+    cursor.execute(
         """
-        INSERT INTO chunks
-            (act_number, act_title, section_number, content, page_number, language, embedding)
-        VALUES %s
-        """,
-        records,
-        template="(%s, %s, %s, %s, %s, %s, %s::vector)",
+        SELECT e.extraction_id
+        FROM extraction_runs e
+        JOIN LATERAL (
+            SELECT COUNT(*) AS stored FROM chunks c WHERE c.extraction_id = e.extraction_id
+        ) counts ON TRUE
+        WHERE e.status = 'ready' AND counts.stored = e.chunk_count
+        """
     )
+    return {row[0] for row in cursor.fetchall()}
 
 
 def run_step5() -> None:
+    registry = CorpusRegistry(MANIFEST_PATH, asset_root=PDF_ROOT, sidecar_root=SIDECAR_ROOT)
     client = OpenAI()
-    conn   = _connect()
-
-    with conn:
-        with conn.cursor() as cur:
-            done = _already_ingested(cur)
-            logger.info("Already ingested: %d acts", len(done))
-
-    chunk_files = sorted(
-        CHUNKS_DIR.glob("*.json"),
-        key=lambda f: int(f.stem) if f.stem.isdigit() else 0,
-    )
-
-    to_process = []
-    for f in chunk_files:
-        chunks = json.loads(f.read_text(encoding="utf-8"))
-        if not chunks:
-            continue
-        if chunks[0]["act_number"] in done:
-            continue
-        to_process.append((f, chunks))
-
-    total_acts   = len(to_process)
-    total_chunks = sum(len(c) for _, c in to_process)
-    logger.info("Acts to ingest: %d  |  chunks: %d", total_acts, total_chunks)
-
-    ingested_chunks = 0
-    ingested_acts   = 0
-
-    with conn:
-        with conn.cursor() as cur:
-            # Drop ivfflat index — it was created before data existed.
-            # We'll create an HNSW index after ingestion instead.
-            cur.execute("DROP INDEX IF EXISTS chunks_embedding_idx;")
-
-    for act_idx, (f, chunks) in enumerate(to_process, 1):
-        act_number = chunks[0]["act_number"]
-        act_title  = chunks[0].get("act_title", "")
-        logger.info("[%d/%d] Act %s — %s (%d sections)",
-                    act_idx, total_acts, act_number, act_title[:50], len(chunks))
-
-        # Process in batches of BATCH_SIZE
-        for batch_start in range(0, len(chunks), BATCH_SIZE):
-            batch = chunks[batch_start : batch_start + BATCH_SIZE]
-            texts = [c["content"] for c in batch]
-
+    connection = _connect()
+    try:
+        apply_migration(connection)
+        with connection.cursor() as cursor:
+            completed = _ready_extractions(cursor)
+        runs = [
+            run for run in registry.extraction_runs.values()
+            if run.status == "ready" and run.extraction_id not in completed
+        ]
+        logger.info("Shadow extractions to ingest: %d", len(runs))
+        ingested = failed = 0
+        for index, run in enumerate(sorted(runs, key=lambda item: item.extraction_id), 1):
+            document = registry.get(run.document_id)
+            bundle_path = EXTRACTION_ROOT / f"{run.extraction_id}.chunks.json"
             try:
-                embeddings = _embed_batch(client, texts)
-            except Exception as exc:
-                logger.error("Embedding failed for act %s batch %d: %s",
-                             act_number, batch_start, exc)
-                time.sleep(5)
+                bundle = load_bundle(bundle_path)
+                embeddings = _embed_all(client, bundle.get("chunks", []))
+                ingest_extraction(connection, document, run, bundle, embeddings)
+            except Exception:
+                # No rows for this extraction have been committed: embedding occurs
+                # first and ingest_extraction owns one all-or-nothing transaction.
+                failed += 1
+                logger.exception(
+                    "[%d/%d] extraction failed atomically: %s",
+                    index, len(runs), run.extraction_id,
+                )
                 continue
+            ingested += 1
+            logger.info("[%d/%d] ingested %s (%d chunks)", index, len(runs), run.extraction_id, run.chunk_count)
 
-            with conn:
-                with conn.cursor() as cur:
-                    _insert_batch(cur, batch, embeddings)
-
-            ingested_chunks += len(batch)
-
-        ingested_acts += 1
-        logger.info("  → ingested. Total so far: %d chunks", ingested_chunks)
-
-    logger.info("Ingestion complete. Acts: %d  Chunks: %d", ingested_acts, ingested_chunks)
-
-    # Build HNSW index now that data is loaded — better than ivfflat for
-    # incremental inserts and doesn't require pre-training on the full dataset.
-    logger.info("Building HNSW index...")
-    with conn:
-        with conn.cursor() as cur:
-            cur.execute("""
-                CREATE INDEX IF NOT EXISTS chunks_embedding_hnsw_idx
-                ON chunks USING hnsw (embedding vector_cosine_ops);
-            """)
-    logger.info("HNSW index built.")
-
-    conn.close()
+        with connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """
+                    CREATE INDEX IF NOT EXISTS chunks_embedding_hnsw_idx
+                    ON chunks USING hnsw (embedding vector_cosine_ops)
+                    """
+                )
+        logger.info("Shadow ingestion complete. ingested=%d failed=%d", ingested, failed)
+    finally:
+        connection.close()

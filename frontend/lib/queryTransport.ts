@@ -12,6 +12,7 @@ export interface EvidenceSpan {
 
 export interface CitationReceipt {
   document_id: string;
+  extraction_id?: string;
   evidence: EvidenceSpan[];
 }
 

@@ -39,6 +39,12 @@ ANTHROPIC_API_KEY=...
 LANGSMITH_TRACING=true
 LANGSMITH_API_KEY=lsv2_...
 LANGSMITH_PROJECT=ai-legal-tool
+CORPUS_RETRIEVAL_MODE=dual
+CORPUS_MANIFEST_PATH=data/pdfs/manifest.json
+CORPUS_LOCAL_ROOT=data/pdfs
+CORPUS_SIDECAR_ROOT=data/corpus/sidecars
+RECEIPT_DELIVERY_MODE=auto
+# CORPUS_CDN_BASE_URL=https://statutes.example.com
 ```
 
 With `LANGSMITH_TRACING=true`, every graph run is traced to LangSmith. The query
@@ -57,6 +63,8 @@ Optional flags (both default off / to Postgres):
 - `SEMANTIC_MEMORY_EXTRACT=on` — enable the background **write** path (`agent/memory/extractor.py`) that extracts durable practitioner facts (including the practitioner's own background — ADR 0012) after a legal or conversational turn and upserts them into the store. Off by default, fail-open, and runs off the hot path (after the response is delivered). Turn both flags on to see recall surface facts written on earlier turns.
 - `SEMANTIC_MEMORY_PRUNE=on` — enable the background **maintenance** path (`agent/memory/pruner.py`) that consolidates duplicate profiles / near-duplicate topics and evicts low-value topics by importance+recency (not TTL). Off by default, fail-open, off the hot path, size-debounced, and conservative (never deletes the sole profile or empties a namespace).
 - `AGENTIC_RETRIEVAL=on` — swap the deterministic `retriever` node for a `create_react_agent` that binds the `search_statutes` / `lookup_section` tools and decides how to search (ADR 0013). Off by default, fail-open (any error or empty result falls back to the deterministic pgvector path). With it on, the retry loop also re-retrieves with feedback on an evidence-shaped violation instead of only re-drafting, and the retrieval tools stream `tool_call` SSE events into the PROCESS panel. The eval `tool_selection` assertion (dataset `expected_tool`) only activates when this flag is on. `RETRIEVAL_RECURSION_LIMIT` (default 6) bounds the ReAct loop.
+- `CORPUS_RETRIEVAL_MODE=dual|verified|legacy` — `dual` (default) reads legacy rows plus only provenance rows joined to the active Act/language mapping; `verified` reads active provenance only; `legacy` is the rollback path and excludes shadow rows.
+- `RECEIPT_DELIVERY_MODE=auto|local|redirect|proxy` — `auto` uses verified local bytes when present, otherwise CDN objects whose length, content type, and `x-amz-meta-sha256` match the registry. Remote coordinate sidecars are hash-checked again after download. `redirect` and `proxy` require `CORPUS_CDN_BASE_URL`.
 
 Create `frontend/.env.local`:
 
@@ -67,20 +75,12 @@ NEXT_PUBLIC_EVALS=1
 
 ### 3. Database schema
 
-```sql
-CREATE EXTENSION IF NOT EXISTS vector;
-
-CREATE TABLE chunks (
-    id             BIGSERIAL PRIMARY KEY,
-    act_number     TEXT NOT NULL,
-    act_title      TEXT,
-    section_number TEXT,
-    content        TEXT,
-    page_number    INT,
-    language       TEXT DEFAULT 'en',
-    embedding      vector(1536)
-);
+```bash
+python3 -m corpus migrate --dry-run
+python3 -m corpus migrate
 ```
+
+The additive migration creates immutable document/source/extraction tables, active and historical mappings, and nullable provenance columns on legacy `chunks`. It does not infer provenance for existing rows.
 
 ### 4. Build the knowledge base (one-time, ~1 hour)
 
@@ -88,7 +88,7 @@ CREATE TABLE chunks (
 python run.py --step all
 ```
 
-All steps are resumable — re-running skips already-completed work. Run steps individually if needed:
+All steps are idempotent. Step 3 re-observes authoritative PDF bytes to detect same-URL replacements, while content/extraction identities prevent duplicate downstream work. Run steps individually if needed:
 
 ```bash
 python run.py --step 1   # scrape Act listing pages (~1 min)
@@ -112,8 +112,8 @@ Endpoints:
 - `POST /query { query, thread_id, user_id? }` — run a turn (streams SSE)
 - `POST /resume { thread_id, value, user_id? }` — answer a clarify interrupt and stream the resumed turn (see ADR 0015)
 - `POST /cancel { thread_id }` — barge-in: stop the in-flight turn for a thread (see ADR 0014)
-- `GET /receipts/{document_id}/pdf` — serve one integrity-checked immutable Receipt Document (range requests supported)
-- `POST /receipts/{document_id}/locate { evidence_quote?, start_page }` — locate one Evidence Span with strict token matching
+- `GET|HEAD /receipts/{document_id}/pdf` — serve, proxy, or redirect one verified immutable Receipt Document (ETag/304 and ranges supported)
+- `POST /receipts/{document_id}/locate { evidence_quote?, start_page, extraction_id? }` — locate one Evidence Span against the exact extraction sidecar
 - `GET /evals/coverage` — dataset coverage and best-effort dedicated-corpus status
 - `POST /evals/run { subset }` — isolated eval run streamed as SSE; one active run at a time
 - `POST /evals/cancel` — terminate the active eval subprocess
@@ -137,7 +137,31 @@ The Citation Receipt viewer uses `react-pdf` with the matching `pdfjs-dist` work
 
 ### Citation Receipt assets and verification
 
-`data/pdfs/manifest.json` is the deployment inventory for the exact five English PDF snapshots used during extraction (Acts 56, 265, 574, 709, and 777). Those same canonical binaries remain under `data/pdfs/en/`; `.gitignore` selectively tracks only the five pilot files while keeping the rest of the 624-document corpus ignored. When replacing a snapshot, update its opaque `document_id`, SHA-256, byte size, page count, source Timeline Entry, and scrape timestamp together. Never substitute a fresh remote download without regenerating chunks and page numbers against those same bytes.
+`data/pdfs/manifest.json` is generated, never hand-edited. A changed PDF hash creates a new staged `document_id`; the previous bytes remain addressable and the active mapping does not move until the new extraction is embedded and explicitly activated. Step 3 accepts reprints only, re-observes their bytes even when the source URL is unchanged, validates them, and registers them under a content-addressed local/object key. Amendment-only files are individual coverage blockers, never base Acts.
+
+Corpus lifecycle commands:
+
+```bash
+python3 -m corpus generate-manifest \
+  --pdf-root /path/to/data/pdfs \
+  --existing-manifest data/pdfs/manifest.json
+python3 -m corpus shadow-extract --pdf-root /path/to/data/pdfs
+python3 -m corpus validate --pdf-root /path/to/data/pdfs \
+  --sidecar-root data/corpus/sidecars --scope full --deep --format json
+python3 -m corpus register --dry-run
+python3 -m corpus ingest --bundle data/corpus/extractions/<extraction>.chunks.json \
+  --extraction-id <extraction-id> --dry-run
+python3 -m corpus activate --document-id <document-id> \
+  --extraction-id <extraction-id> --dry-run
+python3 -m corpus rollback --act-number 574 --language en --dry-run
+python3 -m corpus upload --pdf-root /path/to/data/pdfs \
+  --sidecar-root /path/to/full/sidecars --bucket <r2-bucket> \
+  --endpoint-url https://<account>.r2.cloudflarestorage.com --dry-run
+python3 -m corpus validate --cdn-base-url https://statutes.example.com \
+  --scope full --deep --format json
+```
+
+Remove `--dry-run` only with reviewed database/object-store credentials. Live upload uses optional `boto3`; it is not an application dependency. Configure R2 bucket retention/object-lock policy and custom-domain CORS (`GET`, `HEAD`, `OPTIONS`; request headers `Range`, `If-None-Match`; expose `ETag`, `Accept-Ranges`, `Content-Range`, `Content-Length`) outside this repository.
 
 Run all automated checks from the repository root and frontend respectively:
 
@@ -151,14 +175,14 @@ npm run build
 
 `npm test` uses Vitest in non-watch CI mode. Receipt interaction tests mock the canvas renderer and assert state/DOM behavior; geometry is verified against real pilot PDFs separately.
 
-Local endpoint smoke against the Act 56 snapshot:
+Local endpoint smoke against the saved Act 56 alias (historical aliases remain valid):
 
 ```bash
 curl -sS http://localhost:8000/receipts/act-56-reprint-2017-c11400ad/pdf -o /tmp/act-56-receipt.pdf
 shasum -a 256 /tmp/act-56-receipt.pdf
 curl -sS -X POST http://localhost:8000/receipts/act-56-reprint-2017-c11400ad/locate \
   -H "Content-Type: application/json" \
-  -d '{"evidence_quote":"In any criminal or civil proceeding","start_page":72}'
+  -d '{"evidence_quote":"In any criminal or civil proceeding","start_page":72,"extraction_id":"extraction-sha256-b4c94c5a446bcc44df76324ff254d096dba1ccea6fbe190784d9014d8c0ef81b"}'
 ```
 
 The expected SHA-256 is `c11400ad1b0a9941919d7328c60fc1c2b49fb2788671bf9697c2923364c96d07`; the locate response should be `matched` on physical page 72. Run the five questions in `docs/pdf-receipt-view-design.md` for the manual local/deployed visual matrix before release.

@@ -16,6 +16,7 @@ from citation_receipts.registry import (
     ReceiptManifestError,
     ReceiptRegistry,
 )
+from corpus.storage import CdnCorpusStorage
 
 
 def _write_pdf(path: Path, page_lines: list[list[str]]) -> None:
@@ -60,11 +61,15 @@ def _fixture_registry(tmp_path: Path) -> tuple[ReceiptRegistry, Path, str]:
     return ReceiptRegistry(manifest_path), pdf_path, document_id
 
 
-def test_production_manifest_declares_and_validates_all_five_exact_documents():
+def test_production_manifest_registers_full_corpus_and_validates_active_pilots():
     registry = ReceiptRegistry(DEFAULT_MANIFEST_PATH)
 
+    assert len(registry.documents) == 596
     assert set(registry.documents_by_act) == {"56", "265", "574", "709", "777"}
-    for document in registry.documents.values():
+    assert {
+        document.act_number for document in registry.documents.values() if document.language == "bm"
+    } == {"144", "152", "194", "220", "228", "230"}
+    for document in registry.documents_by_act.values():
         path = registry.validate(document)
         assert path.stat().st_size == document.byte_size
         assert hashlib.sha256(path.read_bytes()).hexdigest() == document.sha256
@@ -181,6 +186,98 @@ def test_pdf_endpoint_returns_identity_headers_range_and_exact_bytes(tmp_path: P
     assert response.content == pdf_path.read_bytes()
     assert partial.status_code == 206
     assert partial.content == pdf_path.read_bytes()[:16]
+
+
+def test_pdf_head_conditional_ranges_and_cors(tmp_path: Path):
+    registry, pdf_path, document_id = _fixture_registry(tmp_path)
+    document = registry.get(document_id)
+    with patch("api.receipts.get_receipt_registry", return_value=registry):
+        client = TestClient(app)
+        head = client.head(f"/receipts/{document_id}/pdf")
+        cached = client.get(
+            f"/receipts/{document_id}/pdf",
+            headers={"If-None-Match": f'"{document.sha256}"'},
+        )
+        suffix = client.get(f"/receipts/{document_id}/pdf", headers={"Range": "bytes=-8"})
+        invalid = client.get(f"/receipts/{document_id}/pdf", headers={"Range": "bytes=999999-"})
+        cors = client.options(
+            f"/receipts/{document_id}/pdf",
+            headers={
+                "Origin": "https://frontend.example",
+                "Access-Control-Request-Method": "HEAD",
+                "Access-Control-Request-Headers": "Range,If-None-Match",
+            },
+        )
+
+    assert head.status_code == 200
+    assert head.content == b""
+    assert int(head.headers["content-length"]) == document.byte_size
+    assert cached.status_code == 304 and cached.content == b""
+    assert suffix.status_code == 206 and suffix.content == pdf_path.read_bytes()[-8:]
+    assert invalid.status_code == 416
+    assert invalid.headers["content-range"] == f"bytes */{document.byte_size}"
+    assert cors.status_code == 200
+    assert "HEAD" in cors.headers["access-control-allow-methods"]
+
+
+def test_verified_cdn_redirect_only_after_metadata_check(tmp_path: Path):
+    registry, _pdf_path, document_id = _fixture_registry(tmp_path)
+    storage = Mock()
+    storage.url.return_value = "https://cdn.example/statutes/document.pdf"
+    with patch("api.receipts.get_receipt_registry", return_value=registry), patch(
+        "api.receipts.validate_available", return_value=("redirect", storage)
+    ):
+        response = TestClient(app).get(
+            f"/receipts/{document_id}/pdf", follow_redirects=False
+        )
+
+    assert response.status_code == 307
+    assert response.headers["location"] == "https://cdn.example/statutes/document.pdf"
+    storage.url.assert_called_once_with(registry.get(document_id))
+
+
+def test_cdn_sidecar_is_verified_by_metadata_and_download_hash():
+    registry = ReceiptRegistry(DEFAULT_MANIFEST_PATH)
+    document = registry.for_act("56")
+    assert document is not None
+    run = registry.active_extraction(document)
+    assert run is not None and run.coordinate_sidecar is not None
+    payload = registry.sidecar_path(run).read_bytes()
+    head = Mock(
+        headers={
+            "Content-Length": str(len(payload)),
+            "X-Corpus-SHA256": run.coordinate_sidecar.sha256,
+            "Content-Type": "application/gzip",
+            "ETag": '"sidecar"',
+        }
+    )
+    head.raise_for_status.return_value = None
+    download = Mock(content=payload)
+    download.raise_for_status.return_value = None
+    storage = CdnCorpusStorage("https://cdn.example")
+
+    with patch("corpus.storage.requests.head", return_value=head), patch(
+        "corpus.storage.requests.get", return_value=download
+    ):
+        metadata = storage.verify_sidecar(run)
+        received = storage.get_sidecar(run)
+
+    assert metadata.sha256 == run.coordinate_sidecar.sha256
+    assert received == payload
+
+
+def test_cdn_deep_verification_streams_and_hashes_exact_pdf(tmp_path: Path):
+    registry, pdf_path, document_id = _fixture_registry(tmp_path)
+    document = registry.get(document_id)
+    response = Mock()
+    response.raise_for_status.return_value = None
+    response.iter_content.return_value = [pdf_path.read_bytes()[:13], pdf_path.read_bytes()[13:]]
+    storage = CdnCorpusStorage("https://cdn.example")
+
+    with patch("corpus.storage.requests.get", return_value=response):
+        storage.deep_verify(document)
+
+    response.close.assert_called_once()
 
 
 def test_corrupt_document_endpoint_never_serves_bytes(tmp_path: Path):

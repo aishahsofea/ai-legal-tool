@@ -34,7 +34,7 @@ const FAQS = [
   },
   {
     q: "Can I ask in English or Bahasa Malaysia?",
-    a: "Yes. Locus accepts English, Bahasa Malaysia, and code-switched queries. The current pilot corpus is English-first, so BM-heavy retrieval may be less precise until the bilingual corpus is complete.",
+    a: "Yes. Locus accepts English, Bahasa Malaysia, and code-switched queries. Citations retain the registered source language, including Acts available only in Bahasa Malaysia.",
   },
   {
     q: "Is Locus a substitute for legal advice?",

@@ -123,7 +123,7 @@ function linkifyValue(value: string, lookups: Lookups): ElementContent[] | null 
 /**
  * rehype plugin: turns in-prose mentions of a cited section ("Section 12(1)") or
  * act title ("Employment Act 1955") into source anchors. The shared React click path
- * opens a Citation Receipt for unmodified pilot clicks; the real href remains the
+ * opens a Citation Receipt for unmodified provenance-backed clicks; the real href remains the
  * Official Source Link (or internal Receipt Document fallback).
  */
 export function rehypeCitationLinks(options: { citations: Citation[] }) {

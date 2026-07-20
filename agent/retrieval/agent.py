@@ -55,7 +55,7 @@ one-line note of what you found — do not answer the legal question yourself.""
 
 def _dedupe_chunks(left: list[dict] | None, right: list[dict] | None) -> list[dict]:
     """Reducer for the retrieved_chunks channel: accumulate across tool calls,
-    keeping the first-seen chunk per (act_number, section_number, language)."""
+    keeping the first-seen chunk per exact document/extraction/section identity."""
     merged: list[dict] = []
     seen: set[tuple] = set()
     for chunk in (left or []) + (right or []):
@@ -63,6 +63,8 @@ def _dedupe_chunks(left: list[dict] | None, right: list[dict] | None) -> list[di
             str(chunk.get("act_number", "")),
             str(chunk.get("section_number", "")).upper(),
             str(chunk.get("language", "")),
+            str(chunk.get("document_id", "")),
+            str(chunk.get("extraction_id", "")),
         )
         if key in seen:
             continue

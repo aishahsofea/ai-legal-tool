@@ -23,8 +23,9 @@ Endpoints:
   POST /query        { query, thread_id, user_id? } — run a turn (SSE stream)
   POST /resume       { thread_id, value, user_id? }  — answer a clarify interrupt (SSE stream)
   POST /cancel       { thread_id }                   — barge-in: stop the in-flight turn
-  GET  /receipts/{document_id}/pdf                  — immutable Receipt Document bytes
+  GET|HEAD /receipts/{document_id}/pdf              — verified immutable bytes/redirect
   POST /receipts/{document_id}/locate               — locate one verified Evidence Span
+  POST /receipts/telemetry                           — sanitized browser receipt failures
   GET  /evals/coverage                              — static eval coverage + corpus status
   POST /evals/run    { subset }                     — run a subset (SSE stream)
   POST /evals/cancel                                — stop the active eval run
@@ -66,8 +67,9 @@ app.include_router(receipts_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],   # tighten to frontend URL in production
-    allow_methods=["POST", "GET", "OPTIONS"],
+    allow_methods=["POST", "GET", "HEAD", "OPTIONS"],
     allow_headers=["*"],
+    expose_headers=["Accept-Ranges", "Content-Length", "Content-Range", "ETag", "Location"],
 )
 
 

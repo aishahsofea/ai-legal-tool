@@ -10,12 +10,17 @@ vi.mock("react-pdf", async () => {
   const React = await import("react");
   return {
     pdfjs: { GlobalWorkerOptions: { workerSrc: "" } },
-    Document: ({ children, file, onLoadSuccess }: { children: React.ReactNode; file: string; onLoadSuccess: (value: { numPages: number }) => void }) => {
+    Document: ({ children, file, onLoadSuccess, onLoadError }: { children: React.ReactNode; file: string; onLoadSuccess: (value: { numPages: number }) => void; onLoadError?: (error: Error) => void }) => {
       const onLoadRef = React.useRef(onLoadSuccess);
       React.useEffect(() => onLoadRef.current({ numPages: 12 }), []);
-      return <div data-testid="mock-document" data-file={file}>{children}</div>;
+      return <div data-testid="mock-document" data-file={file}>
+        <button type="button" data-testid="mock-document-error" onClick={() => onLoadError?.(new Error("mock PDF failure"))}>Fail document</button>
+        {children}
+      </div>;
     },
-    Page: ({ pageNumber, width }: { pageNumber: number; width: number }) => <div data-testid="mock-page" data-page={pageNumber} data-width={width} />,
+    Page: ({ pageNumber, width, onRenderError }: { pageNumber: number; width: number; onRenderError?: (error: Error) => void }) => <div data-testid="mock-page" data-page={pageNumber} data-width={width}>
+      <button type="button" data-testid="mock-page-error" onClick={() => onRenderError?.(new Error("mock page failure"))}>Fail page</button>
+    </div>,
   };
 });
 
@@ -30,7 +35,7 @@ const PILOT: Citation = {
   section_number: "90A",
   pdf_url: "https://lom.agc.gov.my/latest.pdf",
   page_number: 3,
-  receipt: { document_id: "act-56-reprint-2017-c11400ad", evidence },
+  receipt: { document_id: "act-56-reprint-2017-c11400ad", extraction_id: "extraction-fixture", evidence },
 };
 
 const NON_PILOT: Citation = {
@@ -56,6 +61,7 @@ function located(status: "matched" | "not_found" | "ambiguous", page = 7) {
       document_id: PILOT.receipt!.document_id,
       act_number: "56",
       act_title: "EVIDENCE ACT 1950",
+      language: "en",
       timeline_date: "2017-05-23",
       timeline_type: "REPRINT ONLINE",
       sha256: "c11400ad",
@@ -241,6 +247,35 @@ describe("CitationReceiptViewer", () => {
     expect(await screen.findByRole("alert")).toHaveTextContent("HTTP 503");
     expect(screen.queryByTestId("receipt-highlight")).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: /check latest on agc/i })).toHaveAttribute("href", PILOT.pdf_url);
+  });
+
+  it("labels a BM source from registry metadata", async () => {
+    const bm = located("matched");
+    bm.document.language = "bm";
+    vi.stubGlobal("fetch", vi.fn(() => response(bm)));
+    render(<CitationReceiptViewer citation={PILOT} onClose={() => {}} />);
+
+    expect(await screen.findByText(/Bahasa Malaysia/)).toBeInTheDocument();
+  });
+
+  it("reports PDF rendering failures without exposing evidence and keeps the official link", async () => {
+    const fetchMock = vi.fn(() => response(located("matched")));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<CitationReceiptViewer citation={PILOT} onClose={() => {}} />);
+    await screen.findByText(/verified passage located/i);
+
+    await userEvent.click(screen.getByTestId("mock-document-error"));
+
+    expect(screen.getByRole("alert")).toHaveTextContent("mock PDF failure");
+    expect(screen.queryByTestId("receipt-highlight")).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /check latest on agc/i })).toHaveAttribute("href", PILOT.pdf_url);
+    const telemetry = JSON.parse(fetchMock.mock.calls.at(-1)?.[1]?.body as string);
+    expect(telemetry).toMatchObject({
+      event: "pdf_document_load_failed",
+      document_id: PILOT.receipt!.document_id,
+      stage: "document",
+    });
+    expect(telemetry).not.toHaveProperty("quote");
   });
 
   it("Escape closes and restores focus to the opening control", async () => {
