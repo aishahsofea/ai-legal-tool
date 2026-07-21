@@ -33,6 +33,7 @@ describe("receipt pane sizing", () => {
 
     render(<Harness />);
     const separator = screen.getByRole("separator", { name: "Resize Citation Receipt" });
+    expect(separator).toHaveClass("hidden");
 
     separator.focus();
     await userEvent.keyboard("{ArrowLeft}");

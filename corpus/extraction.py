@@ -256,6 +256,7 @@ def extract_manifest(
             active[key].to_dict() for key in sorted(active)
         ],
         "aliases": dict(sorted(registry.aliases.items())),
+        "source_observations": list(registry.source_observations),
     }
     report = {
         "schema_version": 1,

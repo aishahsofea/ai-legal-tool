@@ -168,6 +168,31 @@ describe("Citation Receipt integration", () => {
 });
 
 describe("CitationReceiptViewer", () => {
+  it("retains a bounded, scrollable fallback when responsive CSS is stale", async () => {
+    vi.stubGlobal("fetch", vi.fn(() => response(located("matched"))));
+    render(<CitationReceiptViewer citation={PILOT} modal={false} onClose={() => {}} />);
+
+    expect(await screen.findByTestId("receipt-layer")).toHaveClass(
+      "fixed",
+      "inset-0",
+      "min-h-0",
+      "min-w-0",
+      "z-50",
+    );
+    expect(screen.getByRole("dialog")).toHaveClass(
+      "absolute",
+      "inset-y-0",
+      "right-0",
+      "h-full",
+      "overflow-hidden",
+      "lg:w-[min(54vw,800px)]",
+    );
+    expect(screen.getByTestId("receipt-pdf-scroll")).toHaveClass(
+      "min-h-0",
+      "overflow-auto",
+    );
+  });
+
   it("is non-modal and leaves the workspace reachable in desktop pane mode", async () => {
     vi.stubGlobal("fetch", vi.fn(() => response(located("matched"))));
     render(<>

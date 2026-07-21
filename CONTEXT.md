@@ -40,6 +40,9 @@ A deterministic extraction of one **Receipt Document**, identified by document i
 **Active Corpus Mapping**:
 The reversible pointer from one `(Act, language)` pair to a ready **Receipt Document** and **Extraction Run**. New bytes are registered and shadow-ingested before this pointer moves; the prior mapping remains in activation history for rollback.
 
+**Corpus Rollout**:
+The idempotent operator workflow that prepares missing immutable assets, applies the provenance migration, registers identities, ingests only absent **Extraction Runs**, and advances **Active Corpus Mappings** only for verified successes. It is normally run as one resumable command; the individual lifecycle commands are recovery controls, not required setup steps.
+
 **Evidence Span**:
 A legal claim from the delivered draft plus one short, contiguous supporting quote. It exists only after application code independently confirms the supported label, cited Act/section, claim occurrence in the draft, and quote occurrence in the retrieved chunk. Partial, unsupported, hallucinated, overlong, and duplicate spans are excluded.
 _Avoid_: model highlight, source chunk

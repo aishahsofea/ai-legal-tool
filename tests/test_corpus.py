@@ -6,7 +6,7 @@ import fitz
 import pytest
 
 from citation_receipts.locator import locate_evidence
-from corpus.extraction import extract_document
+from corpus.extraction import extract_document, extract_manifest
 from corpus.identity import asset_key, document_id, sha256_file
 from corpus.manifest import generate_manifest
 from corpus.models import CorpusDocument
@@ -148,6 +148,11 @@ def test_exact_extraction_sidecar_locator_and_scanned_failure(tmp_path: Path):
     manifest_path.write_text(json.dumps({
         "schema_version": 2, "identity_algorithm": "sha256", "documents": [document.to_dict()],
         "extraction_runs": [], "active_documents": [], "aliases": {},
+        "source_observations": [{
+            "document_id": document.document_id,
+            "source_url": document.source_url,
+            "observed_at": document.metadata_scraped_at,
+        }],
     }), encoding="utf-8")
     registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=sidecar_root)
     run, _bundle = extract_document(
@@ -159,6 +164,14 @@ def test_exact_extraction_sidecar_locator_and_scanned_failure(tmp_path: Path):
         document_id=document.document_id, document_sha256=document.sha256,
     )
     assert located.status == "matched" and located.pages[0].rectangles
+
+    updated_manifest, _report = extract_manifest(
+        registry,
+        extraction_root=extraction_root,
+        sidecar_root=sidecar_root,
+        document_ids=[document.document_id],
+    )
+    assert updated_manifest["source_observations"] == registry.source_observations
 
     scanned_path = asset_root / "scanned.pdf"
     _pdf(scanned_path, [])

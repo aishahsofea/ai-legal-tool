@@ -75,18 +75,17 @@ NEXT_PUBLIC_EVALS=1
 
 ### 3. Database schema
 
-```bash
-python3 -m corpus migrate --dry-run
-python3 -m corpus migrate
-```
-
-The additive migration creates immutable document/source/extraction tables, active and historical mappings, and nullable provenance columns on legacy `chunks`. It does not infer provenance for existing rows.
+The normal corpus rollout command applies the additive migration automatically after local assets pass verification. The migration creates immutable document/source/extraction tables, active and historical mappings, and nullable provenance columns on legacy `chunks`; it never infers provenance for existing rows. `python3 -m corpus migrate` remains available for database-only maintenance.
 
 ### 4. Build the knowledge base (one-time, ~1 hour)
 
 ```bash
 python run.py --step all
+python3 -m corpus rollout --dry-run
+python3 -m corpus rollout
 ```
+
+`corpus rollout` is the normal receipt setup and upgrade path. It is idempotent and resumable: missing extraction assets are generated, the schema and registry are applied, only absent exact extractions are embedded and ingested, and only successful verified runs are activated. A failure for one document is reported without activating it or preventing other documents from completing. Embedding requests default to a US$1 hard cap per invocation; use `--max-embedding-cost-usd` to set a different explicit ceiling. Oversized chunks are embedded as token-bounded segments and pooled back to their single immutable chunk identity. Use `--document-id` to limit a rollout and `--no-activate` to prepare/ingest without switching retrieval.
 
 All steps are idempotent. Step 3 re-observes authoritative PDF bytes to detect same-URL replacements, while content/extraction identities prevent duplicate downstream work. Run steps individually if needed:
 
@@ -142,6 +141,11 @@ The Citation Receipt viewer uses `react-pdf` with the matching `pdfjs-dist` work
 Corpus lifecycle commands:
 
 ```bash
+# Normal end-to-end path (safe to rerun)
+python3 -m corpus rollout --dry-run
+python3 -m corpus rollout
+
+# Granular recovery and production-storage operations
 python3 -m corpus generate-manifest \
   --pdf-root /path/to/data/pdfs \
   --existing-manifest data/pdfs/manifest.json
@@ -161,7 +165,7 @@ python3 -m corpus validate --cdn-base-url https://statutes.example.com \
   --scope full --deep --format json
 ```
 
-Remove `--dry-run` only with reviewed database/object-store credentials. Live upload uses optional `boto3`; it is not an application dependency. Configure R2 bucket retention/object-lock policy and custom-domain CORS (`GET`, `HEAD`, `OPTIONS`; request headers `Range`, `If-None-Match`; expose `ETag`, `Accept-Ranges`, `Content-Range`, `Content-Length`) outside this repository.
+The CLI loads the repository `.env`; manually exporting `DATABASE_URL` is unnecessary. Preview `rollout` before its first run against a database because live execution performs embedding calls and changes active retrieval mappings. Live upload uses optional `boto3`; it is not an application dependency. Configure R2 bucket retention/object-lock policy and custom-domain CORS (`GET`, `HEAD`, `OPTIONS`; request headers `Range`, `If-None-Match`; expose `ETag`, `Accept-Ranges`, `Content-Range`, `Content-Length`) outside this repository.
 
 Run all automated checks from the repository root and frontend respectively:
 

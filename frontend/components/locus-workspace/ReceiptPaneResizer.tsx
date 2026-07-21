@@ -82,7 +82,7 @@ export function ReceiptPaneResizer({
 
   return (
     <div
-      className="workspace-receipt-resizer"
+      className="workspace-receipt-resizer hidden"
       role="separator"
       aria-label="Resize Citation Receipt"
       aria-controls="citation-receipt-pane"
