@@ -11,6 +11,12 @@ python run.py --step all   # idempotent; immutable identities prevent duplicate 
 
 ## Steps
 
+## Separate statutory reference graph (Phase 1)
+
+The reference graph is intentionally **not** a sixth scraper/extraction/embedding step. For Act 265 it reads only the existing immutable PDF snapshot and manifest alias offline, then writes a deterministic candidate under `data/reference_graph/act-265-reprint-2023-6fec2f07/.work/`. It does not download bytes, alter Act metadata, regenerate chunks, touch pgvector retrieval, or run embeddings.
+
+Candidate artifacts contain provision nodes, explicit resolved edges, unresolved candidates with reason codes, and a PDF-receipt audit list. A human must audit every edge before a complete decision set can be promoted into the API-visible `provisions.json`, `edges.json`, `unresolved.json`, and `audit.json` index. The graph database migration is additive and has no `chunks` mutation.
+
 ### Step 1 — Scrape Act index → `data/acts_index.json`
 
 Fetches the full list of Acts across all categories (updated, revised, repealed, amendment, translated).

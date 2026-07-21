@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Statutory reference graph human edge audit",
+  "type": "object",
+  "required": ["schema_version", "state", "document", "audit_state", "candidates"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "state": {"enum": ["candidate", "promoted"]},
+    "audit_state": {"enum": ["pending_human_edge_audit", "human_edge_audit_complete", "promoted_after_human_edge_audit"]},
+    "candidates": {"type": "array", "items": {"type": "object", "required": ["candidate_id", "decision", "evidence"]}}
+  }
+}

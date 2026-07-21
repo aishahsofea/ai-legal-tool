@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Statutory reference graph unresolved candidates",
+  "type": "object",
+  "required": ["schema_version", "state", "document", "unresolved"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "state": {"enum": ["candidate", "promoted"]},
+    "unresolved": {"type": "array", "items": {"type": "object", "required": ["candidate_id", "source_provision_id", "reason_code", "evidence"]}}
+  }
+}
