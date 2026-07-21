@@ -52,7 +52,8 @@ describe("receipt transport", () => {
     const result = await locateReceipt(citation, 0);
 
     expect(result.document.language).toBe("bm");
-    expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({
+    const calls = fetchMock.mock.calls as unknown as Array<[RequestInfo | URL, RequestInit | undefined]>;
+    expect(JSON.parse(calls[0]?.[1]?.body as string)).toEqual({
       evidence_quote: "Petikan tepat",
       start_page: 4,
       extraction_id: "extraction-sha256-fixture",
@@ -77,7 +78,8 @@ describe("receipt transport", () => {
       "locator_request_failed", citation.receipt!.document_id,
       { stage: "locate", error: new TypeError("secret quote must not be sent"), httpStatus: 503 },
     )).not.toThrow();
-    const body = JSON.parse(fetchMock.mock.calls[0][1].body);
+    const calls = fetchMock.mock.calls as unknown as Array<[RequestInfo | URL, RequestInit | undefined]>;
+    const body = JSON.parse(calls[0]?.[1]?.body as string);
     expect(body).toMatchObject({ event: "locator_request_failed", error_class: "TypeError", http_status: 503 });
     expect(JSON.stringify(body)).not.toContain("secret quote");
   });
