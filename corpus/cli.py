@@ -4,11 +4,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import os
 from pathlib import Path
 from typing import Sequence
 
 import psycopg2
+from dotenv import load_dotenv
 
 from corpus.db import (
     MIGRATION_PATH,
@@ -24,7 +26,10 @@ from corpus.db import (
 from corpus.extraction import extract_manifest
 from corpus.manifest import dump_json, generate_manifest
 from corpus.registry import CorpusRegistry
+from corpus.rollout import rollout_corpus
 from corpus.validation import validate_manifest
+
+load_dotenv()
 
 
 def _path(value: str) -> Path:
@@ -207,6 +212,37 @@ def _rollback(args: argparse.Namespace) -> int:
     return 0
 
 
+def _rollout(args: argparse.Namespace) -> int:
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+    manifest = _path(args.manifest)
+    pdf_root = _path(args.pdf_root) if args.pdf_root else None
+    sidecar_root = _path(args.sidecar_root)
+    extraction_root = _path(args.extraction_root)
+    registry = CorpusRegistry(
+        manifest,
+        asset_root=pdf_root,
+        sidecar_root=sidecar_root,
+    )
+    result = rollout_corpus(
+        registry,
+        extraction_root=extraction_root,
+        sidecar_root=sidecar_root,
+        database_url=_database_url(args.database_url),
+        embedding_model=args.embedding_model,
+        batch_size=args.batch_size,
+        max_embedding_cost_usd=args.max_embedding_cost_usd,
+        document_ids=args.document_id or None,
+        dry_run=args.dry_run,
+        activate_ready=args.activate_ready,
+    )
+    if not args.verbose:
+        result.pop("selected_extractions", None)
+    _print(result)
+    if result["failures"]:
+        return 2
+    return 0 if args.dry_run or result["status"] == "complete" else 2
+
+
 def _upload(args: argparse.Namespace) -> int:
     registry = CorpusRegistry(
         _path(args.manifest), asset_root=_path(args.pdf_root), sidecar_root=_path(args.sidecar_root)
@@ -326,6 +362,48 @@ def build_parser() -> argparse.ArgumentParser:
     command.add_argument("--database-url")
     command.add_argument("--dry-run", action="store_true")
     command.set_defaults(func=_rollback)
+
+    command = sub.add_parser(
+        "rollout",
+        help="prepare, migrate, ingest, and activate every verified ready extraction",
+    )
+    command.add_argument("--manifest", default="data/pdfs/manifest.json")
+    command.add_argument("--pdf-root", default=os.getenv("CORPUS_LOCAL_ROOT"))
+    command.add_argument(
+        "--sidecar-root",
+        default=os.getenv("CORPUS_SIDECAR_ROOT", "data/corpus/sidecars"),
+    )
+    command.add_argument("--extraction-root", default="data/corpus/extractions")
+    command.add_argument("--database-url")
+    command.add_argument(
+        "--embedding-model",
+        default=os.getenv("CORPUS_EMBEDDING_MODEL", "text-embedding-3-small"),
+    )
+    command.add_argument("--batch-size", type=int, default=100)
+    command.add_argument(
+        "--max-embedding-cost-usd",
+        type=float,
+        default=1.0,
+        help="hard cap for embedding requests in this run (default: $1.00)",
+    )
+    command.add_argument(
+        "--document-id",
+        action="append",
+        help="limit rollout to one document identity; repeat for multiple documents",
+    )
+    command.add_argument("--dry-run", action="store_true")
+    command.add_argument(
+        "--verbose",
+        action="store_true",
+        help="include every selected extraction identity in the final report",
+    )
+    command.add_argument(
+        "--no-activate",
+        dest="activate_ready",
+        action="store_false",
+        help="prepare and ingest without changing active retrieval mappings",
+    )
+    command.set_defaults(func=_rollout, activate_ready=True)
 
     command = sub.add_parser("upload", help="upload immutable PDFs/sidecars to S3-compatible storage")
     command.add_argument("--manifest", default="data/pdfs/manifest.json")

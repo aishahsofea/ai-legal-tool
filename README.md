@@ -24,6 +24,8 @@ Full setup — env vars, database, frontend, evals — lives in [CONTRIBUTING.md
 ```bash
 pip3 install -r requirements.txt
 python run.py --step all                     # build the knowledge base (~1h, one-time, resumable)
+python3 -m corpus rollout --dry-run           # preview receipt migration/ingestion/activation
+python3 -m corpus rollout                     # finish every verified receipt, safely resumable
 uvicorn api.main:app --port 8000 --reload    # start the API
 ```
 
@@ -108,6 +110,8 @@ The answer is merged with the original query into one self-contained query, so r
 ### Citation Receipt API
 
 `data/pdfs/manifest.json` is a deterministic corpus-wide registry generated from scraper metadata and actual bytes. It supports multiple versions and languages per Act, content-derived IDs, historical aliases, extraction identities, coordinate-sidecar hashes, and an explicit active Act/language mapping. `data/corpus/coverage.json` accounts for every locally audited PDF and gives blocker/remediation details. The current local audit registered 596 canonical reprints from 624 PDFs, produced 576 shadow extraction identities, kept the five existing pilots active, and excluded 48 ineligible inputs (28 amendment-only, 15 zero-chunk, 5 scanned). BM-only Acts 144, 152, 194, 220, 228, and 230 are registered as BM.
+
+For the normal local/operator path, `python3 -m corpus rollout` performs the complete verified rollout in one idempotent command: it prepares missing bundles/sidecars, applies the additive database migration, registers identities, embeds only missing extraction runs, and activates only successfully ingested Act/language mappings. Re-running it skips completed work; `--dry-run` previews the plan without mutation. Embedding requests have a default US$1 hard cap per invocation, and oversized source chunks are token-segmented and pooled without changing their immutable receipt identity. The granular lifecycle commands remain available for incident response and controlled partial rollouts.
 
 - `GET|HEAD /receipts/{document_id}/pdf` — verified local/proxied bytes or a verified CDN redirect, with immutable cache headers, ETag/304, byte ranges, and CORS.
 - `POST /receipts/{document_id}/locate { evidence_quote?, start_page, extraction_id? }` — strict normalized-token matching against the exact hash-verified coordinate sidecar. It returns `matched`, `not_found`, or `ambiguous`; only `matched` includes rectangles.

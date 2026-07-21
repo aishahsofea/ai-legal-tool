@@ -25,7 +25,16 @@ The locator reads the hash-verified sidecar for v2 extractions. Live PyMuPDF wor
 
 The checked-in audit has 624 inputs: 596 canonical reprints registered, 576 exact shadow extractions ready, five repaired pilots active, and 48 blocked inputs (28 amendment-only, 15 no-chunk, 5 scanned). The six BM-only documents remain `bm` sources.
 
-Production rollout is intentionally operator-gated:
+The normal local/operator workflow is one idempotent command:
+
+```bash
+python3 -m corpus rollout --dry-run
+python3 -m corpus rollout
+```
+
+It validates or regenerates missing bundles and sidecars, applies the migration, registers immutable identities, embeds and ingests only missing extractions, and activates every successfully verified unambiguous Act/language mapping. A rerun resumes from database and filesystem state; one failed document remains inactive without stopping the rest. Embedding submissions have a US$1 default hard cap per invocation (`--max-embedding-cost-usd` changes it), with automatic API retries disabled so the ceiling remains enforceable. Source chunks over the embedding model's token limit are segmented for embedding and their vectors are length-weighted and normalized back to one immutable chunk. `--document-id` limits the operation and `--no-activate` leaves successful ingestions in shadow mode.
+
+Production asset upload remains intentionally operator-gated because object-storage credentials, retention, and CDN verification live outside the application:
 
 1. apply `migrations/0001_corpus_provenance.sql` with `python -m corpus migrate`;
 2. upload all registered PDFs and the 576 generated sidecars, then run full CDN metadata/byte validation;

@@ -151,7 +151,12 @@ export function CitationReceiptViewer({
   if (!receipt) return null;
 
   return (
-    <div className="citation-receipt-layer" data-mode={modal ? "sheet" : "pane"} aria-live="off">
+    <div
+      className="citation-receipt-layer fixed inset-0 z-50 min-h-0 min-w-0"
+      data-mode={modal ? "sheet" : "pane"}
+      data-testid="receipt-layer"
+      aria-live="off"
+    >
       {modal && (
         <button
           type="button"
@@ -166,7 +171,7 @@ export function CitationReceiptViewer({
         role="dialog"
         aria-modal={modal ? true : undefined}
         aria-labelledby="citation-receipt-title"
-        className="citation-receipt-panel flex flex-col border-l border-(--line) bg-(--canvas) shadow-2xl motion-reduce:transition-none"
+        className="citation-receipt-panel absolute inset-y-0 right-0 flex h-full w-full min-h-0 min-w-0 flex-col overflow-hidden border-l border-(--line) bg-(--canvas) shadow-2xl motion-reduce:transition-none lg:w-[min(54vw,800px)]"
       >
         <header className="shrink-0 border-b border-(--line) bg-(--surface) px-4 py-3 sm:px-5">
           <div className="flex items-start justify-between gap-4">
@@ -238,7 +243,12 @@ export function CitationReceiptViewer({
             </p>
           </div>
 
-          <div ref={containerRef} className="min-h-0 flex-1 overflow-auto bg-(--surface-strong) p-4" aria-busy={locating}>
+          <div
+            ref={containerRef}
+            className="min-h-0 flex-1 overflow-auto bg-(--surface-strong) p-4"
+            data-testid="receipt-pdf-scroll"
+            aria-busy={locating}
+          >
             <Document
               file={receiptPdfUrl(receipt.document_id)}
               onLoadSuccess={({ numPages }) => {
