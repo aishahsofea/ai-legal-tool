@@ -26,6 +26,8 @@ Endpoints:
   GET|HEAD /receipts/{document_id}/pdf              — verified immutable bytes/redirect
   POST /receipts/{document_id}/locate               — locate one verified Evidence Span
   POST /receipts/telemetry                           — sanitized browser receipt failures
+  GET  /reference-graph/status                       — graph availability (flag-gated)
+  GET  /reference-graph/neighborhood                 — one-hop direct in/out edges (flag-gated)
   GET  /evals/coverage                              — static eval coverage + corpus status
   POST /evals/run    { subset }                     — run a subset (SSE stream)
   POST /evals/cancel                                — stop the active eval run
@@ -33,6 +35,7 @@ Endpoints:
 """
 import json
 import logging
+import asyncio
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
@@ -43,26 +46,55 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
 from api.evals import router as evals_router
+from api.reference_graph import router as reference_graph_router
 from api.receipts import router as receipts_router
 
 load_dotenv()
 
-from agent.graph import lifespan_graph
 from agent.query_lifecycle import cancel_thread, run_query_stream, set_graph
 
 logger = logging.getLogger(__name__)
 
 
+class _AgentRuntime:
+    """Start chat resources only for chat requests, never for graph/health."""
+
+    def __init__(self) -> None:
+        self._context = None
+        self._lock = asyncio.Lock()
+
+    async def ensure_started(self) -> None:
+        if self._context is not None:
+            return
+        async with self._lock:
+            if self._context is not None:
+                return
+            from agent.graph import lifespan_graph
+            context = lifespan_graph()
+            graph = await context.__aenter__()
+            self._context = context
+            set_graph(graph)
+
+    async def close(self) -> None:
+        if self._context is not None:
+            context, self._context = self._context, None
+            await context.__aexit__(None, None, None)
+
+
 @asynccontextmanager
-async def lifespan(_app: FastAPI):
-    async with lifespan_graph() as g:
-        set_graph(g)
+async def lifespan(app: FastAPI):
+    runtime = _AgentRuntime()
+    app.state.agent_runtime = runtime
+    try:
         yield
+    finally:
+        await runtime.close()
 
 
 app = FastAPI(title="Malaysian Legal Research API", lifespan=lifespan)
 app.include_router(evals_router)
 app.include_router(receipts_router)
+app.include_router(reference_graph_router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -132,7 +164,8 @@ def health():
 
 
 @app.post("/query")
-async def query_endpoint(req: QueryRequest):
+async def query_endpoint(req: QueryRequest, request: Request):
+    await request.app.state.agent_runtime.ensure_started()
     return StreamingResponse(
         _stream_query(req.query, req.thread_id, req.user_id),
         media_type="text/event-stream",
@@ -145,13 +178,14 @@ async def query_endpoint(req: QueryRequest):
 
 
 @app.post("/resume")
-async def resume_endpoint(req: ResumeRequest):
+async def resume_endpoint(req: ResumeRequest, request: Request):
     """Resume a turn paused at a clarify interrupt (ADR 0015).
 
     The graph suspended at the clarify node and emitted an `interrupt` SSE event on the
     prior /query stream; this feeds the user's answer back as Command(resume=value) and
     streams the continuation (the resolved turn's real response) on the same thread_id.
     """
+    await request.app.state.agent_runtime.ensure_started()
     return StreamingResponse(
         _stream_query(None, req.thread_id, req.user_id, resume=req.value),
         media_type="text/event-stream",

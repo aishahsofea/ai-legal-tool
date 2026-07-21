@@ -119,6 +119,15 @@ For the normal local/operator path, `python3 -m corpus rollout` performs the com
 
 The responsive viewer renders one page at a time, labels the registered source language, validates locator identity/geometry at runtime, and always keeps the separate “Check latest on AGC” escape hatch. Missing, mismatched, corrupt, ambiguous, or failed provenance never draws a highlight. See [docs/corpus-receipts.md](docs/corpus-receipts.md) for lifecycle and operator commands.
 
+### Statutory reference graph
+
+The Phase 1 graph is a separate, deterministic index of explicit cross-references in the immutable Employment Act 1955 receipt `act-265-reprint-2023-6fec2f07`. It never downloads or parses PDFs in the API, never changes chunks, retrieval, or evaluations, and is unavailable unless a manually audited artifact has been promoted and `REFERENCE_GRAPH_ENABLED=on` is set.
+
+- `GET /reference-graph/status?document_id=...` — returns `available`, `not_indexed`, `graph_unavailable`, or `flag-off`.
+- `GET /reference-graph/neighborhood?document_id=...&focus_provision_id=...` — returns direct incoming/outgoing edges only; it has no depth parameter.
+
+The Citation Inspector’s **References** tab and `/reference-graph` render that one-hop neighborhood lazily. A non-promoted snapshot displays “Reference graph not yet indexed for this snapshot.”
+
 ### Eval dashboard API
 
 The developer-only `/evals` page is enabled at build time with `NEXT_PUBLIC_EVALS=1`. It uses a dedicated corpus configured by `EVALS_DATABASE_URL`; eval runs never fall back to the app's `DATABASE_URL`.

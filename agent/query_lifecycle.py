@@ -88,6 +88,18 @@ def set_graph(g) -> None:
     graph = g
 
 
+def _active_graph():
+    """Return the installed API graph or lazily create the sync eval graph."""
+    global graph
+    if graph is None:
+        # Keep the established synchronous eval behaviour, including its chosen
+        # checkpointer/store, but defer those resources until an eval actually
+        # runs.  The FastAPI runtime always installs its async graph first.
+        from agent.graph import _make_checkpointer, _make_store, build_graph
+        graph = build_graph(_make_checkpointer(), _make_store())
+    return graph
+
+
 def _response_text(state: dict) -> str:
     return state.get("final_response") or state.get("draft_response") or ""
 
@@ -107,7 +119,7 @@ def run_query(query: str, thread_id: str, user_id: str | None = None) -> QueryRe
     # Sync path is eval-only (evals/run_evals.py); tag it `source=eval` so eval
     # runs stay separable from live traffic in the LangSmith dashboard.
     collector = RunCollectorCallbackHandler()
-    state = graph.invoke(_turn_input(query), _config(thread_id, user_id, collector, source="eval"))
+    state = _active_graph().invoke(_turn_input(query), _config(thread_id, user_id, collector, source="eval"))
 
     # The sync eval path cannot resume an interrupt (no human in the loop). If a query
     # paused at the clarify node (ADR 0015), surface it as a clarify result rather than
@@ -155,7 +167,8 @@ async def _drive_query_stream(
     # "updates" carries node outputs (for per-node status); "custom" carries the
     # tool-call events the retrieval agent's tools write via get_stream_writer
     # (agent/retrieval/tools.py). With multiple modes each item is (mode, chunk).
-    async for mode, chunk in graph.astream(
+    active_graph = _active_graph()
+    async for mode, chunk in active_graph.astream(
         graph_input, config, stream_mode=["updates", "custom"]
     ):
         if mode == "custom":
@@ -228,10 +241,10 @@ async def _drive_query_stream(
     # Disclaimer stripped so the extractor sees the answer, not boilerplate; gating +
     # fail-open live in the callee.
     if state.get("query_type") not in ("", "escalate"):
-        schedule_extraction(graph.store, user_id, query, strip_disclaimer(final))
+        schedule_extraction(active_graph.store, user_id, query, strip_disclaimer(final))
         # Consolidate + cap the store off the hot path (ADR 0010, Phase 4). Independent
         # of extraction (eventual consistency); size-debounced and fail-open in the callee.
-        schedule_pruning(graph.store, user_id)
+        schedule_pruning(active_graph.store, user_id)
 
 
 # ── Barge-in / cancellation ──────────────────────────────────────────────────
