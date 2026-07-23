@@ -44,6 +44,7 @@ CORPUS_MANIFEST_PATH=data/pdfs/manifest.json
 CORPUS_LOCAL_ROOT=data/pdfs
 CORPUS_SIDECAR_ROOT=data/corpus/sidecars
 RECEIPT_DELIVERY_MODE=auto
+REFERENCE_GRAPH_ENABLED=off
 # CORPUS_CDN_BASE_URL=https://statutes.example.com
 ```
 
@@ -65,6 +66,7 @@ Optional flags (both default off / to Postgres):
 - `AGENTIC_RETRIEVAL=on` — swap the deterministic `retriever` node for a `create_react_agent` that binds the `search_statutes` / `lookup_section` tools and decides how to search (ADR 0013). Off by default, fail-open (any error or empty result falls back to the deterministic pgvector path). With it on, the retry loop also re-retrieves with feedback on an evidence-shaped violation instead of only re-drafting, and the retrieval tools stream `tool_call` SSE events into the PROCESS panel. The eval `tool_selection` assertion (dataset `expected_tool`) only activates when this flag is on. `RETRIEVAL_RECURSION_LIMIT` (default 6) bounds the ReAct loop.
 - `CORPUS_RETRIEVAL_MODE=dual|verified|legacy` — `dual` (default) reads legacy rows plus only provenance rows joined to the active Act/language mapping; `verified` reads active provenance only; `legacy` is the rollback path and excludes shadow rows.
 - `RECEIPT_DELIVERY_MODE=auto|local|redirect|proxy` — `auto` uses verified local bytes when present, otherwise CDN objects whose length, content type, and `x-amz-meta-sha256` match the registry. Remote coordinate sidecars are hash-checked again after download. `redirect` and `proxy` require `CORPUS_CDN_BASE_URL`.
+- `REFERENCE_GRAPH_ENABLED=on` — exposes a **promoted**, independently validated statutory reference graph. It is off by default; this flag does not build, promote, or load anything. `REFERENCE_GRAPH_ROOT` may point at a read-only promoted-artifact root for an operator deployment.
 
 Create `frontend/.env.local`:
 
@@ -113,6 +115,8 @@ Endpoints:
 - `POST /cancel { thread_id }` — barge-in: stop the in-flight turn for a thread (see ADR 0014)
 - `GET|HEAD /receipts/{document_id}/pdf` — serve, proxy, or redirect one verified immutable Receipt Document (ETag/304 and ranges supported)
 - `POST /receipts/{document_id}/locate { evidence_quote?, start_page, extraction_id? }` — locate one Evidence Span against the exact extraction sidecar
+- `GET /reference-graph/status?document_id?` — flag-gated graph status, independent of chat and health
+- `GET /reference-graph/neighborhood?document_id=&focus_provision_id=` — one-hop direct incoming/outgoing edges only; no depth parameter
 - `GET /evals/coverage` — dataset coverage and best-effort dedicated-corpus status
 - `POST /evals/run { subset }` — isolated eval run streamed as SSE; one active run at a time
 - `POST /evals/cancel` — terminate the active eval subprocess
@@ -133,6 +137,19 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000). With `NEXT_PUBLIC_EVALS=1`, the standalone developer dashboard is at [http://localhost:3000/evals](http://localhost:3000/evals); without that build-time flag the route returns 404.
 
 The Citation Receipt viewer uses `react-pdf` with the matching `pdfjs-dist` worker bundled by Next.js from `pdfjs-dist/build/pdf.worker.min.mjs`; do not replace it with a runtime CDN. The viewer module is client-only and is dynamically imported with SSR disabled.
+
+### Statutory reference-graph operator workflow
+
+The graph uses only the checked-in `data/pdfs/en/265.pdf` snapshot selected through its historical alias `act-265-reprint-2023-6fec2f07`. It is an offline, deterministic index; do **not** rerun scraper steps 2–5 or rebuild chunks, retrieval, or evals for it.
+
+```bash
+# Candidate only: writes data/reference_graph/<document_id>/.work/
+python3 -m reference_graph.cli build
+python3 -m reference_graph.cli validate --candidate
+python3 -m reference_graph.cli audit
+```
+
+Every proposed edge must be checked against its immutable PDF receipt before an operator records complete approved/rejected decisions. Only then may the operator run `audit --decisions`, `promote`, `validate`, `load`, and `verify-db`; rejected candidates are retained as unresolved. Do not set `REFERENCE_GRAPH_ENABLED` before that workflow completes. The additive `migrations/0001_reference_graph.sql` creates only graph tables and never touches `chunks`.
 
 ### Citation Receipt assets and verification
 

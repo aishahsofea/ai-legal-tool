@@ -6,6 +6,7 @@ Extracts:
 - PDF URL from iframe[data-src] inside each timeline entry
 - The latest reprint/reprint-online PDF URL (the consolidated version)
 """
+from datetime import datetime
 from urllib.parse import urlparse, parse_qs, unquote
 from bs4 import BeautifulSoup
 
@@ -95,14 +96,21 @@ def find_latest_reprint(timeline: list[dict]) -> str:
     Return the PDF URL of the most recent REPRINT ONLINE or REPRINT entry.
     Falls back to empty string if none exists.
 
-    Priority: REPRINT ONLINE > REPRINT (by recency within each type).
+    The legal source's labels are delivery formats, not a freshness ranking.
+    Select across both labels by their strictly parsed DD/MM/YYYY date.  Entries
+    with a missing or malformed date are deliberately ignored rather than being
+    allowed to inherit the scrape order.
     """
-    for priority_type in ("REPRINT ONLINE", "REPRINT"):
-        candidates = [e for e in timeline if e["log_type"] == priority_type and e["pdf_url"]]
-        if candidates:
-            # Take the last one chronologically (list is assumed date-ascending)
-            return candidates[-1]["pdf_url"]
-    return ""
+    candidates: list[tuple[datetime, str]] = []
+    for entry in timeline:
+        if entry.get("log_type") not in _REPRINT_TYPES or not entry.get("pdf_url"):
+            continue
+        try:
+            date = datetime.strptime(str(entry.get("date", "")), "%d/%m/%Y")
+        except ValueError:
+            continue
+        candidates.append((date, entry["pdf_url"]))
+    return max(candidates, default=(datetime.min, ""), key=lambda item: item[0])[1]
 
 
 def find_latest_amendment(timeline: list[dict]) -> str:

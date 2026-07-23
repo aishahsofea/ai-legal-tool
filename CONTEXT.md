@@ -53,6 +53,13 @@ The outcome of strict matching for an **Evidence Span** against the exact **Extr
 **Official Source Link**:
 The citation's remote AGC `pdf_url`, offered separately as “Check latest on AGC”. It lets a practitioner inspect the government portal's current remote source, but it is not the **Receipt Document** and its bytes are never used to assert an exact highlight.
 
+**Statutory Reference Graph**:
+An offline, deterministic index of only literal statutory cross-references for one immutable **Receipt Document**. It records readable stable provision identities plus document-qualified version identities, exact half-open evidence offsets, physical receipt provenance, resolved one-hop edges, and unresolved reason codes. It never infers a cross-Act snapshot, calls an API to resolve ambiguity, or alters retrieval chunks.
+_Avoid_: citation graph (it is a statutory-text index, not answer provenance).
+
+**Reference Graph Audit Candidate**:
+A build artifact held under the graph snapshot's `.work` directory until a human has checked every proposed edge against the immutable **Receipt Document**. Only a complete approved/rejected decision set can produce a promoted graph; rejected candidates remain unresolved.
+
 **Timeline Entry**:
 A dated version event for an Act: ORIGINAL, REPRINT, REPRINT ONLINE, or AMENDMENTS. Stored in the `timeline` array of each act metadata file.
 
@@ -107,6 +114,7 @@ A recommendation about what a specific person should do in a specific legal situ
 - A provenance-backed citation may carry zero or more validated **Evidence Spans** and opens one shared **Citation Receipt**
 - A **Locator Result** maps one selected **Evidence Span** to physical rectangles in the **Receipt Document**; uncertainty maps to no rectangles
 - The **Official Source Link** remains separate from the **Receipt Document** because remote bytes and pagination can change
+- A **Receipt Document** may have zero or one promoted **Statutory Reference Graph** per document version; a graph remains independent from retrieval and chat availability
 - An **Act** may have zero or more **Subsidiary Legislation** items
 - The most recent **Reprint** Timeline Entry is the canonical text used for ingestion
 - A **Legal Research Query** is answered using **Acts** (v1) and eventually **Case Law** (v2)

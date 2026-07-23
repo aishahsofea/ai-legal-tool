@@ -1,36 +1,17 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frontend
 
-## Getting Started
-
-First, run the development server:
+The Next.js client provides the research workspace, Citation Receipt inspector, eval dashboard, and the standalone `/reference-graph` page.
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run lint
+npm run test
+npx tsc --noEmit
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Set `NEXT_PUBLIC_API_URL` to the API origin. `NEXT_PUBLIC_EVALS=1` exposes `/evals` at build time.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The Citation Inspector loads the PDF receipt client-only. Its **References** tab lazily imports the pinned `cytoscape` package directly (no React graph wrapper) and requests only `/reference-graph/neighborhood` for the selected citation provision. The standalone graph page preserves `document_id`, `focus_provision_id`, `layout`, and reserved `compare_document_id` URL values, but deliberately has no chat, Act-wide browser, search, or comparison mode.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+If the backend has no promoted graph for that immutable snapshot, the UI says: `Reference graph not yet indexed for this snapshot.`

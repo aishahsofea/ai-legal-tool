@@ -277,8 +277,11 @@ def build_graph(checkpointer=None, store=None) -> StateGraph:
     return g.compile(checkpointer=checkpointer, store=store)
 
 
-# Module-level compiled graph — Phase 4 wires the real checkpointer in.
-graph = build_graph(_make_checkpointer(), _make_store())
+# The default compiled graph is created on first synchronous use by
+# ``agent.query_lifecycle``.  Importing this module must not open a Postgres
+# connection: the reference-graph and health endpoints are intentionally
+# independent from chat's checkpointer/store runtime.
+graph = None
 
 
 @contextlib.asynccontextmanager

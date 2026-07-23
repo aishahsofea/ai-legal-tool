@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { Document, Page, pdfjs } from "react-pdf";
 import type { Citation } from "@/lib/useQuery";
 import {
@@ -11,6 +12,11 @@ import {
   type LocatorResult,
 } from "@/lib/receiptTransport";
 import { formatSourceTitle } from "./citationRefs";
+
+const CitationReferences = dynamic(
+  () => import("@/components/reference-graph/ReferenceGraphExplorer").then((module) => module.ReferenceGraphExplorer),
+  { ssr: false, loading: () => <p className="p-4 text-sm text-(--text-muted)" role="status">Loading references…</p> },
+);
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
@@ -75,6 +81,7 @@ export function CitationReceiptViewer({
   const [pageNumber, setPageNumber] = useState(citation.page_number ?? 1);
   const [pageCount, setPageCount] = useState(0);
   const [zoom, setZoom] = useState(1);
+  const [inspectorTab, setInspectorTab] = useState<"receipt" | "references">("receipt");
   const dialogRef = useRef<HTMLElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const requestSequence = useRef(0);
@@ -222,8 +229,18 @@ export function CitationReceiptViewer({
             )}
             <span className="text-xs text-(--text-subtle)">Receipt snapshot {receipt.document_id}</span>
           </div>
+          <div className="mt-3 flex gap-2" role="tablist" aria-label="Citation Inspector">
+            <button type="button" role="tab" aria-selected={inspectorTab === "receipt"} onClick={() => setInspectorTab("receipt")} className={`rounded border px-3 py-1 font-mono text-[10px] uppercase tracking-wide ${inspectorTab === "receipt" ? "border-(--accent) text-(--accent)" : "border-(--line) text-(--text-muted)"}`}>Receipt</button>
+            <button type="button" role="tab" aria-selected={inspectorTab === "references"} onClick={() => setInspectorTab("references")} className={`rounded border px-3 py-1 font-mono text-[10px] uppercase tracking-wide ${inspectorTab === "references" ? "border-(--accent) text-(--accent)" : "border-(--line) text-(--text-muted)"}`}>References</button>
+          </div>
         </header>
 
+        {inspectorTab === "references" ? (
+          <CitationReferences
+            documentId={receipt.document_id}
+            focusProvisionId={`act:${citation.act_number}/section:${citation.section_number}`}
+          />
+        ) : (
         <div className="flex min-h-0 flex-1 flex-col">
           <div className="shrink-0 border-b border-(--line-soft) bg-(--surface-soft) px-4 py-2">
             <div className="flex flex-wrap items-center justify-between gap-2">
@@ -300,6 +317,7 @@ export function CitationReceiptViewer({
             </Document>
           </div>
         </div>
+        )}
       </aside>
     </div>
   );

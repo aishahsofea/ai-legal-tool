@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Statutory reference graph provisions",
+  "type": "object",
+  "required": ["schema_version", "state", "document", "provisions"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "state": {"enum": ["candidate", "promoted"]},
+    "document": {"type": "object", "required": ["document_id", "corpus_document_id", "sha256", "receipt_path"]},
+    "provisions": {"type": "array", "items": {"type": "object", "required": ["provision_id", "version_id", "kind", "start_offset", "end_offset", "page_start", "page_end"]}}
+  }
+}

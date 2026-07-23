@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Statutory reference graph explicit edges",
+  "type": "object",
+  "required": ["schema_version", "state", "document", "edges"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "state": {"enum": ["candidate", "promoted"]},
+    "edges": {"type": "array", "items": {"type": "object", "required": ["edge_id", "source_provision_id", "target_provision_id", "relationship", "evidence"]}}
+  }
+}

@@ -45,5 +45,9 @@ venv/
 
 evals/review-checklist.md
 
+# Reference-graph builds are review candidates until every edge has a human PDF
+# receipt decision. Only their per-snapshot .work directories are generated.
+data/reference_graph/**/.work/
+
 # Vercel
 .vercel

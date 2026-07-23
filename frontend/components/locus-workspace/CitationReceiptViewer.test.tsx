@@ -294,7 +294,8 @@ describe("CitationReceiptViewer", () => {
     expect(screen.getByRole("alert")).toHaveTextContent("mock PDF failure");
     expect(screen.queryByTestId("receipt-highlight")).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: /check latest on agc/i })).toHaveAttribute("href", PILOT.pdf_url);
-    const telemetry = JSON.parse(fetchMock.mock.calls.at(-1)?.[1]?.body as string);
+    const telemetryCalls = fetchMock.mock.calls as unknown as Array<[RequestInfo | URL, RequestInit | undefined]>;
+    const telemetry = JSON.parse(telemetryCalls.at(-1)?.[1]?.body as string);
     expect(telemetry).toMatchObject({
       event: "pdf_document_load_failed",
       document_id: PILOT.receipt!.document_id,
