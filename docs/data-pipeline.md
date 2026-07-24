@@ -11,11 +11,28 @@ python run.py --step all   # idempotent; immutable identities prevent duplicate 
 
 ## Steps
 
-## Separate statutory reference graph (Phase 1)
+## Separate statutory reference graph
 
-The reference graph is intentionally **not** a sixth scraper/extraction/embedding step. For Act 265 it reads only the existing immutable PDF snapshot and manifest alias offline, then writes a deterministic candidate under `data/reference_graph/act-265-reprint-2023-6fec2f07/.work/`. It does not download bytes, alter Act metadata, regenerate chunks, touch pgvector retrieval, or run embeddings.
+The reference graph is intentionally **not** a sixth scraper/extraction/embedding step. It never changes chunks, active corpus mappings, retrieval, or evaluations. The API never downloads or parses PDFs.
 
-Candidate artifacts contain provision nodes, explicit resolved edges, unresolved candidates with reason codes, and a PDF-receipt audit list. A human must audit every edge before a complete decision set can be promoted into the API-visible `provisions.json`, `edges.json`, `unresolved.json`, and `audit.json` index. The graph database migration is additive and has no `chunks` mutation.
+For Act 265, `python3 -m reference_graph.cli catalog` reads `data/acts_metadata/265.json` and the corpus manifest offline, accepts only strict-dated REPRINT/REPRINT ONLINE observations, and lists them chronologically. `acquire --download --snapshot-date YYYY-MM-DD` is the only network path. It validates the response, stores immutable bytes under `data/pdfs/objects/sha256/`, and registers source observation plus content-derived document metadata without moving the research index. The report distinguishes ready/already-registered snapshots from unavailable, integrity-failed, and scanned/unparseable blockers. Timeline dates are observed snapshot labels, not exact effective dates.
+
+`data/reference_graph/snapshot-acquisition-act-265.json` records the 2023 pilot acquisition, while `snapshot-acquisition-act-265-older.json` records the remaining observations. The current immutable catalog state is:
+
+| Observed source date | Registered document | Readiness |
+| --- | --- | --- |
+| 10/01/1975 | `act-265-en-sha256-f9235f48…` | Blocked: scanned/unparseable text layer |
+| 20/08/2001 | `act-265-en-sha256-96b5741a…` | Blocked: scanned/unparseable text layer |
+| 24/01/2006 | `act-265-en-sha256-aaeb175a…` | Promoted/audited graph |
+| 26/05/2012 | `act-265-en-sha256-1ee65655…` | Promoted/audited graph |
+| 01/02/2023 | `act-265-reprint-2023-6fec2f07` | Promoted/audited Phase 1 graph |
+| 02/09/2023 | `act-265-en-sha256-6ef0ba72…` | Promoted/audited comparison graph |
+
+Each exact registered PDF is parsed independently with stable readable provision IDs and document-qualified version IDs. Candidate artifacts stay under `data/reference_graph/<document_id>/.work/` and contain provision nodes, only literal resolved edges, unresolved reason codes, and exact PDF evidence/rectangle audit material. Cross-Act targets remain version-neutral. Every attempt persists `.work/build-report.json`; an unparseable registered layout is `blocked`, never guessed. `verify-determinism` proves two clean builds have identical artifact hashes.
+
+A human must audit every candidate against its exact receipt before the complete approved/rejected set can be promoted into API-visible `provisions.json`, `edges.json`, `unresolved.json`, and `audit.json`. Rejections remain represented in unresolved/audit output. Candidate or incomplete-audit snapshots cannot be loaded, selected, or compared.
+
+The comparison layer unions two promoted one-hop neighborhoods and matches a multiset logical key of source, target, reference kind, relationship, and normalized literal wording. It never compares offset-derived `edge_id` values. Evidence remains snapshot-specific, and results are only added, removed, or unchanged; a literal wording change is removed plus added. The promoted JSON artifacts are the production read source. Additive PostgreSQL graph tables mirror their counts and artifact hashes transactionally and never mutate `chunks`.
 
 ### Step 1 — Scrape Act index → `data/acts_index.json`
 
