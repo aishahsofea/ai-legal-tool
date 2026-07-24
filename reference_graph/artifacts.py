@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from hashlib import sha256
 from pathlib import Path
 from typing import Any
 
@@ -11,6 +12,13 @@ ARTIFACT_NAMES = ("provisions.json", "edges.json", "unresolved.json", "audit.jso
 
 
 def graph_dir(root: Path, document_id: str) -> Path:
+    if (
+        not document_id
+        or document_id in {".", ".."}
+        or "/" in document_id
+        or "\\" in document_id
+    ):
+        raise ValueError("invalid_graph_document_id")
     return root / document_id
 
 
@@ -31,6 +39,19 @@ def _load(path: Path) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"artifact_not_object:{path.name}")
     return value
+
+
+def artifact_hashes(directory: Path) -> dict[str, str]:
+    """Return stable SHA-256 hashes for the complete four-file representation."""
+    result: dict[str, str] = {}
+    for name in ARTIFACT_NAMES:
+        path = Path(directory) / name
+        digest = sha256()
+        with path.open("rb") as stream:
+            for block in iter(lambda: stream.read(1024 * 1024), b""):
+                digest.update(block)
+        result[name] = digest.hexdigest()
+    return result
 
 
 def write_candidate(root: Path, document: SourceDocument, provisions: list[Provision], edges: list[Edge],
@@ -77,11 +98,12 @@ def read_decisions(path: Path) -> dict[str, dict[str, str]]:
         raise ValueError("audit_decisions_malformed")
     result: dict[str, dict[str, str]] = {}
     for candidate_id, item in items.items():
-        if isinstance(item, str):
-            item = {"decision": item, "audit_note": ""}
         if not isinstance(item, dict) or item.get("decision") not in {"approved", "rejected"}:
             raise ValueError("audit_decision_invalid")
-        result[str(candidate_id)] = {"decision": str(item["decision"]), "audit_note": str(item.get("audit_note", ""))}
+        audit_note = str(item.get("audit_note", "")).strip()
+        if not audit_note:
+            raise ValueError("audit_note_required")
+        result[str(candidate_id)] = {"decision": str(item["decision"]), "audit_note": audit_note}
     return result
 
 
@@ -94,6 +116,12 @@ def apply_audit_decisions(root: Path, document_id: str, decisions: dict[str, dic
     expected = {str(item.get("candidate_id", "")) for item in candidates}
     if expected != set(decisions):
         raise ValueError("audit_decisions_not_complete")
+    if any(
+        item.get("decision") not in {"approved", "rejected"}
+        or not str(item.get("audit_note", "")).strip()
+        for item in decisions.values()
+    ):
+        raise ValueError("audit_decision_or_note_invalid")
     audit["candidates"] = [
         {**item, **decisions[str(item["candidate_id"])]}
         for item in candidates
@@ -107,7 +135,11 @@ def promote(root: Path, document_id: str) -> Path:
     """Promote only a complete human decision set; rejected references become unresolved."""
     candidate = load_artifacts(candidate_dir(root, document_id))
     audits = candidate["audit"].get("candidates", [])
-    if not isinstance(audits, list) or any(item.get("decision") not in {"approved", "rejected"} for item in audits):
+    if not isinstance(audits, list) or any(
+        item.get("decision") not in {"approved", "rejected"}
+        or not str(item.get("audit_note", "")).strip()
+        for item in audits
+    ):
         raise ValueError("human_edge_audit_required")
     decisions = {str(item["candidate_id"]): str(item["decision"]) for item in audits}
     approved = {candidate_id for candidate_id, decision in decisions.items() if decision == "approved"}
