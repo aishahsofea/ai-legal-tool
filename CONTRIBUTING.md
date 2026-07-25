@@ -45,6 +45,7 @@ CORPUS_LOCAL_ROOT=data/pdfs
 CORPUS_SIDECAR_ROOT=data/corpus/sidecars
 RECEIPT_DELIVERY_MODE=auto
 REFERENCE_GRAPH_ENABLED=off
+REFERENCE_GRAPH_COMPARISON_ENABLED=off
 # CORPUS_CDN_BASE_URL=https://statutes.example.com
 ```
 
@@ -67,6 +68,7 @@ Optional flags (both default off / to Postgres):
 - `CORPUS_RETRIEVAL_MODE=dual|verified|legacy` — `dual` (default) reads legacy rows plus only provenance rows joined to the active Act/language mapping; `verified` reads active provenance only; `legacy` is the rollback path and excludes shadow rows.
 - `RECEIPT_DELIVERY_MODE=auto|local|redirect|proxy` — `auto` uses verified local bytes when present, otherwise CDN objects whose length, content type, and `x-amz-meta-sha256` match the registry. Remote coordinate sidecars are hash-checked again after download. `redirect` and `proxy` require `CORPUS_CDN_BASE_URL`.
 - `REFERENCE_GRAPH_ENABLED=on` — exposes a **promoted**, independently validated statutory reference graph. It is off by default; this flag does not build, promote, or load anything. `REFERENCE_GRAPH_ROOT` may point at a read-only promoted-artifact root for an operator deployment.
+- `REFERENCE_GRAPH_COMPARISON_ENABLED=on` — additionally exposes snapshot selection and one-hop comparison, but only while the base graph flag is also on. It is independently off by default and fails closed without disabling Phase 1.
 
 Create `frontend/.env.local`:
 
@@ -117,6 +119,8 @@ Endpoints:
 - `POST /receipts/{document_id}/locate { evidence_quote?, start_page, extraction_id? }` — locate one Evidence Span against the exact extraction sidecar
 - `GET /reference-graph/status?document_id?` — flag-gated graph status, independent of chat and health
 - `GET /reference-graph/neighborhood?document_id=&focus_provision_id=` — one-hop direct incoming/outgoing edges only; no depth parameter
+- `GET /reference-graph/snapshots?act_number=265&language=en` — promoted/audited snapshot selector data
+- `GET /reference-graph/compare?base_document_id=&compare_document_id=&focus_provision_id=` — one Act/language pair, one focus, and one one-hop overlay
 - `GET /evals/coverage` — dataset coverage and best-effort dedicated-corpus status
 - `POST /evals/run { subset }` — isolated eval run streamed as SSE; one active run at a time
 - `POST /evals/cancel` — terminate the active eval subprocess
@@ -140,16 +144,57 @@ The Citation Receipt viewer uses `react-pdf` with the matching `pdfjs-dist` work
 
 ### Statutory reference-graph operator workflow
 
-The graph uses only the checked-in `data/pdfs/en/265.pdf` snapshot selected through its historical alias `act-265-reprint-2023-6fec2f07`. It is an offline, deterministic index; do **not** rerun scraper steps 2–5 or rebuild chunks, retrieval, or evals for it.
+The graph builds each consolidated Act 265 snapshot independently from its exact registered PDF. The February 2023 graph retains the historical alias `act-265-reprint-2023-6fec2f07`. Do **not** overwrite `data/pdfs/en/265.pdf`, rerun scraper steps 2–5, rebuild chunks, or change an active corpus mapping.
 
 ```bash
-# Candidate only: writes data/reference_graph/<document_id>/.work/
-python3 -m reference_graph.cli build
-python3 -m reference_graph.cli validate --candidate
-python3 -m reference_graph.cli audit
+# Offline and network-free: strict chronological REPRINT/REPRINT ONLINE catalog
+python3 -m reference_graph.cli catalog
+
+# Explicit operator download; resumable and content-addressed, never activates retrieval
+python3 -m reference_graph.cli acquire --download --snapshot-date 2023-09-02
+
+# Candidate only: writes this immutable snapshot's isolated .work directory
+python3 -m reference_graph.cli --document-id act-265-en-sha256-... build
+python3 -m reference_graph.cli --document-id act-265-en-sha256-... verify-determinism
+python3 -m reference_graph.cli --document-id act-265-en-sha256-... validate --candidate
+python3 -m reference_graph.cli --document-id act-265-en-sha256-... audit
+python3 -m reference_graph.cli --document-id act-265-en-sha256-... audit \
+  --export-decisions audit-decisions.json
 ```
 
-Every proposed edge must be checked against its immutable PDF receipt before an operator records complete approved/rejected decisions. Only then may the operator run `audit --decisions`, `promote`, `validate`, `load`, and `verify-db`; rejected candidates are retained as unresolved. Do not set `REFERENCE_GRAPH_ENABLED` before that workflow completes. The additive `migrations/0001_reference_graph.sql` creates only graph tables and never touches `chunks`.
+`acquire` without `--download` is a network-free catalog action. With `--download`, every result is reported as downloaded, already registered, unavailable, integrity failure, scanned/unparseable, or ready. A successful registration records exact source URL/date/type, SHA-256, byte size, page count, content-addressed local path, and receipt route idempotently. Unreachable, corrupt, or unparseable sources remain explicit blockers; no data is guessed. Recorded dates describe observed snapshots, not exact effective dates.
+
+Keep separate deterministic operator reports when acquiring the pilot and older observations (the checked-in examples are `snapshot-acquisition-act-265.json` and `snapshot-acquisition-act-265-older.json`). Re-running acquisition must report `already_registered`, make no further request for locally verified bytes, and leave `active_documents` unchanged.
+
+Each build writes `.work/build-report.json`. A registered PDF whose text layout cannot be parsed produces a persistent `blocked` report with its failure stage and error class instead of guessed provisions.
+
+Every candidate decision must be checked against that snapshot’s exact PDF receipt. A complete JSON decision mapping with an audit note for every candidate ID is mandatory:
+
+```json
+{
+  "decisions": {
+    "candidate:...": {
+      "decision": "approved",
+      "audit_note": "Checked against the exact receipt and page rectangles."
+    }
+  }
+}
+```
+
+Only after the human gate:
+
+```bash
+python3 -m reference_graph.cli --document-id act-265-en-sha256-... audit --decisions audit-decisions.json
+python3 -m reference_graph.cli --document-id act-265-en-sha256-... promote
+python3 -m reference_graph.cli --document-id act-265-en-sha256-... validate
+python3 -m reference_graph.cli migrate
+python3 -m reference_graph.cli --document-id act-265-en-sha256-... load
+python3 -m reference_graph.cli --document-id act-265-en-sha256-... verify-db
+```
+
+Rejected candidates remain in the promoted unresolved/audit artifacts. Promotion, loading, `/snapshots`, and `/compare` reject candidate-only or incomplete-audit data. Migrations `0001_reference_graph.sql` and `0002_reference_graph_artifact_identity.sql` are additive and never touch `chunks`; the database is an idempotent verified mirror while the API consistently reads promoted artifacts.
+
+Roll out code, migrations, immutable assets, and approved artifacts with comparison still off. Load and verify only audited snapshots, verify February-versus-September in staging, then enable comparison separately. Roll back by turning `REFERENCE_GRAPH_COMPARISON_ENABLED` off first; Phase 1 neighborhoods, receipts, and chat continue working. If graph data is wrong, reload the prior approved artifact. Never enable either flag merely because acquisition or a candidate build succeeded.
 
 ### Citation Receipt assets and verification
 

@@ -2397,6 +2397,42 @@
       "local_path": "en/264.pdf"
     },
     {
+      "document_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95",
+      "act_number": "265",
+      "act_title": "EMPLOYMENT ACT 1955",
+      "language": "en",
+      "asset_key": "statutes/sha256/1e/e6/1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95.pdf",
+      "sha256": "1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95",
+      "byte_size": 673871,
+      "page_count": 120,
+      "source_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 265 - Employment Act 1955.pdf",
+      "timeline_date": "26/05/2012",
+      "timeline_type": "REPRINT ONLINE",
+      "metadata_scraped_at": "2026-05-04T10:27:50.773789+00:00",
+      "lifecycle_status": "registered",
+      "document_kind": "reprint",
+      "detail_url": "https://lom.agc.gov.my/act-detail.php?act=265&lang=BI",
+      "local_path": "objects/sha256/1e/e6/1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95.pdf"
+    },
+    {
+      "document_id": "act-265-en-sha256-6ef0ba72dc9c149c474d7989b8c3b39168c753472d11a64d720bd227e12a3bf7",
+      "act_number": "265",
+      "act_title": "EMPLOYMENT ACT 1955",
+      "language": "en",
+      "asset_key": "statutes/sha256/6e/f0/6ef0ba72dc9c149c474d7989b8c3b39168c753472d11a64d720bd227e12a3bf7.pdf",
+      "sha256": "6ef0ba72dc9c149c474d7989b8c3b39168c753472d11a64d720bd227e12a3bf7",
+      "byte_size": 1585700,
+      "page_count": 121,
+      "source_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1744567_BI/Reprint Act 265 (Final).pdf",
+      "timeline_date": "02/09/2023",
+      "timeline_type": "REPRINT",
+      "metadata_scraped_at": "2026-05-04T10:27:50.773789+00:00",
+      "lifecycle_status": "registered",
+      "document_kind": "reprint",
+      "detail_url": "https://lom.agc.gov.my/act-detail.php?act=265&lang=BI",
+      "local_path": "objects/sha256/6e/f0/6ef0ba72dc9c149c474d7989b8c3b39168c753472d11a64d720bd227e12a3bf7.pdf"
+    },
+    {
       "document_id": "act-265-en-sha256-6fec2f07b49d8f381851906781259b1e09a2152db8dcf1599ab77a592eae100b",
       "act_number": "265",
       "act_title": "EMPLOYMENT ACT 1955",
@@ -2413,6 +2449,60 @@
       "document_kind": "reprint",
       "detail_url": "https://lom.agc.gov.my/act-detail.php?act=265&lang=BI",
       "local_path": "en/265.pdf"
+    },
+    {
+      "document_id": "act-265-en-sha256-96b5741acff0fedda7f6188aa7b86c21d335045bb7dbb613b60ab4b894e537ca",
+      "act_number": "265",
+      "act_title": "EMPLOYMENT ACT 1955",
+      "language": "en",
+      "asset_key": "statutes/sha256/96/b5/96b5741acff0fedda7f6188aa7b86c21d335045bb7dbb613b60ab4b894e537ca.pdf",
+      "sha256": "96b5741acff0fedda7f6188aa7b86c21d335045bb7dbb613b60ab4b894e537ca",
+      "byte_size": 34820810,
+      "page_count": 90,
+      "source_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2255964_BI/265 EMPLOYMENT 1955 REPRINT 2001 1.pdf",
+      "timeline_date": "20/08/2001",
+      "timeline_type": "REPRINT",
+      "metadata_scraped_at": "2026-05-04T10:27:50.773789+00:00",
+      "lifecycle_status": "registered",
+      "document_kind": "reprint",
+      "detail_url": "https://lom.agc.gov.my/act-detail.php?act=265&lang=BI",
+      "local_path": "objects/sha256/96/b5/96b5741acff0fedda7f6188aa7b86c21d335045bb7dbb613b60ab4b894e537ca.pdf"
+    },
+    {
+      "document_id": "act-265-en-sha256-aaeb175a7c6986b6d535da37680c05535597c09ec0f5813233ec779c986f7caa",
+      "act_number": "265",
+      "act_title": "EMPLOYMENT ACT 1955",
+      "language": "en",
+      "asset_key": "statutes/sha256/aa/eb/aaeb175a7c6986b6d535da37680c05535597c09ec0f5813233ec779c986f7caa.pdf",
+      "sha256": "aaeb175a7c6986b6d535da37680c05535597c09ec0f5813233ec779c986f7caa",
+      "byte_size": 401531,
+      "page_count": 93,
+      "source_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2255966_BI/265 EMPLOYMENT 1955 REPRINT 2006_unlocked.pdf",
+      "timeline_date": "24/01/2006",
+      "timeline_type": "REPRINT",
+      "metadata_scraped_at": "2026-05-04T10:27:50.773789+00:00",
+      "lifecycle_status": "registered",
+      "document_kind": "reprint",
+      "detail_url": "https://lom.agc.gov.my/act-detail.php?act=265&lang=BI",
+      "local_path": "objects/sha256/aa/eb/aaeb175a7c6986b6d535da37680c05535597c09ec0f5813233ec779c986f7caa.pdf"
+    },
+    {
+      "document_id": "act-265-en-sha256-f9235f48a1843e426c4f2ee4703d7573a87bfcc1332720134f2cecdc9217eef8",
+      "act_number": "265",
+      "act_title": "EMPLOYMENT ACT 1955",
+      "language": "en",
+      "asset_key": "statutes/sha256/f9/23/f9235f48a1843e426c4f2ee4703d7573a87bfcc1332720134f2cecdc9217eef8.pdf",
+      "sha256": "f9235f48a1843e426c4f2ee4703d7573a87bfcc1332720134f2cecdc9217eef8",
+      "byte_size": 39417416,
+      "page_count": 59,
+      "source_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2255961_BI/265 REPRINT 1975 BI.pdf",
+      "timeline_date": "10/01/1975",
+      "timeline_type": "REPRINT",
+      "metadata_scraped_at": "2026-05-04T10:27:50.773789+00:00",
+      "lifecycle_status": "registered",
+      "document_kind": "reprint",
+      "detail_url": "https://lom.agc.gov.my/act-detail.php?act=265&lang=BI",
+      "local_path": "objects/sha256/f9/23/f9235f48a1843e426c4f2ee4703d7573a87bfcc1332720134f2cecdc9217eef8.pdf"
     },
     {
       "document_id": "act-266-en-sha256-1c573a4897b9658145b1c6419b268a2ef93bb3cf414630f50dcea47cebcbd75f",
@@ -21236,9 +21326,44 @@
       "observed_at": "2026-05-04T10:27:57.767619+00:00"
     },
     {
+      "document_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95",
+      "source_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 265 - Employment Act 1955.pdf",
+      "observed_at": "2026-05-04T10:27:50.773789+00:00",
+      "timeline_date": "26/05/2012",
+      "timeline_type": "REPRINT ONLINE"
+    },
+    {
+      "document_id": "act-265-en-sha256-6ef0ba72dc9c149c474d7989b8c3b39168c753472d11a64d720bd227e12a3bf7",
+      "source_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1744567_BI/Reprint Act 265 (Final).pdf",
+      "observed_at": "2026-05-04T10:27:50.773789+00:00",
+      "timeline_date": "02/09/2023",
+      "timeline_type": "REPRINT"
+    },
+    {
       "document_id": "act-265-en-sha256-6fec2f07b49d8f381851906781259b1e09a2152db8dcf1599ab77a592eae100b",
       "source_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1741197_BI/Act 265_FINAL_as at 1 Jan 2023 (30.3.23).pdf",
       "observed_at": "2026-05-04T10:27:50.773789+00:00"
+    },
+    {
+      "document_id": "act-265-en-sha256-96b5741acff0fedda7f6188aa7b86c21d335045bb7dbb613b60ab4b894e537ca",
+      "source_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2255964_BI/265 EMPLOYMENT 1955 REPRINT 2001 1.pdf",
+      "observed_at": "2026-05-04T10:27:50.773789+00:00",
+      "timeline_date": "20/08/2001",
+      "timeline_type": "REPRINT"
+    },
+    {
+      "document_id": "act-265-en-sha256-aaeb175a7c6986b6d535da37680c05535597c09ec0f5813233ec779c986f7caa",
+      "source_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2255966_BI/265 EMPLOYMENT 1955 REPRINT 2006_unlocked.pdf",
+      "observed_at": "2026-05-04T10:27:50.773789+00:00",
+      "timeline_date": "24/01/2006",
+      "timeline_type": "REPRINT"
+    },
+    {
+      "document_id": "act-265-en-sha256-f9235f48a1843e426c4f2ee4703d7573a87bfcc1332720134f2cecdc9217eef8",
+      "source_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2255961_BI/265 REPRINT 1975 BI.pdf",
+      "observed_at": "2026-05-04T10:27:50.773789+00:00",
+      "timeline_date": "10/01/1975",
+      "timeline_type": "REPRINT"
     },
     {
       "document_id": "act-266-en-sha256-1c573a4897b9658145b1c6419b268a2ef93bb3cf414630f50dcea47cebcbd75f",

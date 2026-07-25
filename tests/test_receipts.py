@@ -64,7 +64,7 @@ def _fixture_registry(tmp_path: Path) -> tuple[ReceiptRegistry, Path, str]:
 def test_production_manifest_registers_full_corpus_and_validates_active_pilots():
     registry = ReceiptRegistry(DEFAULT_MANIFEST_PATH)
 
-    assert len(registry.documents) == 596
+    assert len(registry.documents) == 601
     assert set(registry.documents_by_act) == {"56", "265", "574", "709", "777"}
     assert {
         document.act_number for document in registry.documents.values() if document.language == "bm"

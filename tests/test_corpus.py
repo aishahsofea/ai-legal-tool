@@ -203,7 +203,22 @@ def test_checked_in_coverage_accounts_for_every_source_pdf():
     assert coverage["ready_pdf_count"] == 571
     assert coverage["blocked_pdf_count"] == 48
     assert coverage["reason_counts"]["amendment_only"] == 28
-    assert len(manifest["documents"]) == 596
+    assert len(manifest["documents"]) == 601
+    september = next(
+        item for item in manifest["documents"]
+        if item["document_id"]
+        == "act-265-en-sha256-6ef0ba72dc9c149c474d7989b8c3b39168c753472d11a64d720bd227e12a3bf7"
+    )
+    assert september["timeline_date"] == "02/09/2023"
+    assert september["timeline_type"] == "REPRINT"
+    assert {
+        item["timeline_date"]
+        for item in manifest["documents"]
+        if item["act_number"] == "265"
+    } == {
+        "10/01/1975", "20/08/2001", "24/01/2006",
+        "26/05/2012", "01/02/2023", "02/09/2023",
+    }
     assert len(manifest["extraction_runs"]) == 576
     assert {item["act_number"] for item in manifest["documents"] if item["language"] == "bm"} == {
         "144", "152", "194", "220", "228", "230",

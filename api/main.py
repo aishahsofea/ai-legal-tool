@@ -28,6 +28,8 @@ Endpoints:
   POST /receipts/telemetry                           — sanitized browser receipt failures
   GET  /reference-graph/status                       — graph availability (flag-gated)
   GET  /reference-graph/neighborhood                 — one-hop direct in/out edges (flag-gated)
+  GET  /reference-graph/snapshots                    — promoted audited snapshot selector
+  GET  /reference-graph/compare                      — one-hop snapshot comparison (separate flag)
   GET  /evals/coverage                              — static eval coverage + corpus status
   POST /evals/run    { subset }                     — run a subset (SSE stream)
   POST /evals/cancel                                — stop the active eval run

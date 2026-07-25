@@ -59,6 +59,10 @@ def register_pdf(
     act_title: str,
     manifest_path: Path,
     asset_root: Path,
+    source_url: str | None = None,
+    timeline_date: str | None = None,
+    timeline_type: str | None = None,
+    language: str | None = None,
 ) -> CorpusDocument:
     """Copy exact bytes into content-addressed local storage and stage metadata.
 
@@ -75,12 +79,16 @@ def register_pdf(
         signature = stream.read(5)
     if signature != b"%PDF-":
         raise ValueError("downloaded response is not a PDF")
-    source_url = str(metadata.get("latest_reprint_pdf", ""))
+    source_url = str(source_url or metadata.get("latest_reprint_pdf", ""))
     if not source_url:
         raise ValueError("base-Act registration requires a reprint source")
-    language = source_language(metadata, source_url)
+    language = language or source_language(metadata, source_url)
     identity = document_id(metadata["act_number"], language, digest)
-    timeline_date, timeline_type = _timeline_for(metadata, source_url)
+    observed_date, observed_type = _timeline_for(metadata, source_url)
+    timeline_date = str(timeline_date if timeline_date is not None else observed_date)
+    timeline_type = str(timeline_type if timeline_type is not None else observed_type)
+    if timeline_type not in {"REPRINT", "REPRINT ONLINE"}:
+        raise ValueError("base-Act registration requires a consolidated snapshot")
     local_path = f"objects/sha256/{digest[:2]}/{digest[2:4]}/{digest}.pdf"
     destination = Path(asset_root) / local_path
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -124,8 +132,30 @@ def register_pdf(
         "document_id": identity,
         "source_url": source_url,
         "observed_at": str(metadata.get("scraped_at", "")),
+        "timeline_date": timeline_date,
+        "timeline_type": timeline_type,
     }
-    if observation["observed_at"] and observation not in observations:
+    existing_observation = next(
+        (
+            item for item in observations
+            if item.get("document_id") == identity
+            and item.get("source_url") == source_url
+            and item.get("observed_at") == observation["observed_at"]
+        ),
+        None,
+    )
+    if existing_observation is not None:
+        if (
+            existing_observation.get("timeline_date")
+            and existing_observation["timeline_date"] != timeline_date
+        ) or (
+            existing_observation.get("timeline_type")
+            and existing_observation["timeline_type"] != timeline_type
+        ):
+            raise ValueError("source observation timeline metadata conflicts")
+        existing_observation.setdefault("timeline_date", timeline_date)
+        existing_observation.setdefault("timeline_type", timeline_type)
+    elif observation["observed_at"]:
         observations.append(observation)
         observations.sort(key=lambda item: (item["document_id"], item["source_url"], item["observed_at"]))
     Path(manifest_path).parent.mkdir(parents=True, exist_ok=True)

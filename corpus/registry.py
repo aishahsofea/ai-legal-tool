@@ -201,6 +201,10 @@ class CorpusRegistry:
                 "source_url": str(value.get("source_url", "")),
                 "observed_at": str(value.get("observed_at", "")),
             }
+            if value.get("timeline_date"):
+                observation["timeline_date"] = str(value["timeline_date"])
+            if value.get("timeline_type"):
+                observation["timeline_type"] = str(value["timeline_type"])
             key = (
                 observation["document_id"], observation["source_url"],
                 observation["observed_at"],
@@ -209,6 +213,10 @@ class CorpusRegistry:
                 observation["document_id"] not in documents
                 or not observation["source_url"].startswith("https://")
                 or not observation["observed_at"]
+                or (
+                    observation.get("timeline_type")
+                    and observation["timeline_type"] not in {"REPRINT", "REPRINT ONLINE"}
+                )
                 or key in seen
             ):
                 raise ValueError("invalid source observation")

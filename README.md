@@ -109,7 +109,7 @@ The answer is merged with the original query into one self-contained query, so r
 
 ### Citation Receipt API
 
-`data/pdfs/manifest.json` is a deterministic corpus-wide registry generated from scraper metadata and actual bytes. It supports multiple versions and languages per Act, content-derived IDs, historical aliases, extraction identities, coordinate-sidecar hashes, and an explicit active Act/language mapping. `data/corpus/coverage.json` accounts for every locally audited PDF and gives blocker/remediation details. The current local audit registered 596 canonical reprints from 624 PDFs, produced 576 shadow extraction identities, kept the five existing pilots active, and excluded 48 ineligible inputs (28 amendment-only, 15 zero-chunk, 5 scanned). BM-only Acts 144, 152, 194, 220, 228, and 230 are registered as BM.
+`data/pdfs/manifest.json` is a deterministic corpus-wide registry generated from scraper metadata and actual bytes. It supports multiple versions and languages per Act, content-derived IDs, historical aliases, extraction identities, coordinate-sidecar hashes, and an explicit active Act/language mapping. `data/corpus/coverage.json` accounts for every locally audited PDF and gives blocker/remediation details. The current local audit registered 596 canonical reprints from 624 PDFs; the registry also holds five additional immutable Act 265 observations used by the reference-graph snapshot catalog (1975, 2001, 2006, 2012, and September 2023), for 601 registered documents total. It produced 576 shadow extraction identities, kept the five existing pilots active, and excluded 48 ineligible inputs (28 amendment-only, 15 zero-chunk, 5 scanned). BM-only Acts 144, 152, 194, 220, 228, and 230 are registered as BM.
 
 For the normal local/operator path, `python3 -m corpus rollout` performs the complete verified rollout in one idempotent command: it prepares missing bundles/sidecars, applies the additive database migration, registers identities, embeds only missing extraction runs, and activates only successfully ingested Act/language mappings. Re-running it skips completed work; `--dry-run` previews the plan without mutation. Embedding requests have a default US$1 hard cap per invocation, and oversized source chunks are token-segmented and pooled without changing their immutable receipt identity. The granular lifecycle commands remain available for incident response and controlled partial rollouts.
 
@@ -121,12 +121,18 @@ The responsive viewer renders one page at a time, labels the registered source l
 
 ### Statutory reference graph
 
-The Phase 1 graph is a separate, deterministic index of explicit cross-references in the immutable Employment Act 1955 receipt `act-265-reprint-2023-6fec2f07`. It never downloads or parses PDFs in the API, never changes chunks, retrieval, or evaluations, and is unavailable unless a manually audited artifact has been promoted and `REFERENCE_GRAPH_ENABLED=on` is set.
+The graph is a separate, deterministic index of explicit cross-references in immutable Employment Act 1955 receipts. Phase 1 remains available through the audited February 2023 alias `act-265-reprint-2023-6fec2f07`. Phase 2 can compare that graph with another independently built and audited consolidated Act 265 snapshot. Source timeline dates are observation/snapshot labels, not assertions of exact legal effective dates.
 
-- `GET /reference-graph/status?document_id=...` — returns `available`, `not_indexed`, `graph_unavailable`, or `flag-off`.
-- `GET /reference-graph/neighborhood?document_id=...&focus_provision_id=...` — returns direct incoming/outgoing edges only; it has no depth parameter.
+The production API reads validated promoted JSON artifacts as its sole graph source; the additive PostgreSQL tables are an operator-verified mirror. Neither path downloads PDFs, changes active corpus mappings, rebuilds chunks, alters retrieval, or infers a cross-Act target snapshot.
 
-The Citation Inspector’s **References** tab and `/reference-graph` render that one-hop neighborhood lazily. A non-promoted snapshot displays “Reference graph not yet indexed for this snapshot.”
+The checked-in acquisition reports record every consolidated Act 265 source. The 2006, 2012, February 2023, and September 2023 graphs are independently audited and promoted. The authoritative 1975 and 2001 receipts are registered but explicitly blocked as scanned/image-only sources whose text layers are below the parsing threshold; no graph data is guessed for them.
+
+- `GET /reference-graph/status?document_id=...` — Phase 1-compatible availability.
+- `GET /reference-graph/neighborhood?document_id=...&focus_provision_id=...` — one direct one-hop neighborhood; no depth input.
+- `GET /reference-graph/snapshots?act_number=265&language=en` — promoted, audited snapshots only.
+- `GET /reference-graph/compare?base_document_id=...&compare_document_id=...&focus_provision_id=...` — one focused one-hop union classified only as `added`, `removed`, or `unchanged`.
+
+`REFERENCE_GRAPH_ENABLED=on` exposes the base graph. Comparison additionally requires the independently default-off `REFERENCE_GRAPH_COMPARISON_ENABLED=on`; turning comparison off leaves Phase 1 receipts, neighborhoods, and chat untouched. The Citation Inspector’s **References** tab and `/reference-graph` lazily instantiate the pinned Cytoscape dependency. The standalone route persists the base, comparison, focus, layout, and overlay mode in the URL while keeping union-node positions fixed across view toggles. A non-promoted or unaudited snapshot is reported as not indexed and never rendered as an empty graph.
 
 ### Eval dashboard API
 

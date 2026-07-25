@@ -1,0 +1,1845 @@
+{
+  "document": {
+    "act_number": "265",
+    "act_title": "EMPLOYMENT ACT 1955",
+    "corpus_document_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95",
+    "document_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95",
+    "language": "en",
+    "manifest_path": "data/pdfs/manifest.json",
+    "page_count": 120,
+    "pdf_path": "data/pdfs/objects/sha256/1e/e6/1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95.pdf",
+    "receipt_path": "/receipts/act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/pdf",
+    "sha256": "1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95"
+  },
+  "schema_version": 1,
+  "state": "promoted",
+  "unresolved": [
+    {
+      "candidate_id": "candidate:2db77fd9c164d566",
+      "evidence": {
+        "end_offset": 455,
+        "pages": [
+          {
+            "page_number": 25,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.159817,
+                "x": 0.632078,
+                "y": 0.534665
+              }
+            ]
+          }
+        ],
+        "start_offset": 442,
+        "text": "paragraph (2)"
+      },
+      "literal": "paragraph (2)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:12/subsection:3/paragraph:f",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:12/subsection:3/paragraph:f"
+    },
+    {
+      "candidate_id": "candidate:d31390179e34fa3d",
+      "evidence": {
+        "end_offset": 93,
+        "pages": [
+          {
+            "page_number": 33,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.160348,
+                "x": 0.344444,
+                "y": 0.648301
+              }
+            ]
+          }
+        ],
+        "start_offset": 80,
+        "text": "paragraph (4)"
+      },
+      "literal": "paragraph (4)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:24/subsection:5",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:24/subsection:5"
+    },
+    {
+      "candidate_id": "candidate:e93031e8110a3b2b",
+      "evidence": {
+        "end_offset": 146,
+        "pages": [
+          {
+            "page_number": 39,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.14439,
+                "x": 0.174384,
+                "y": 0.7241
+              }
+            ]
+          }
+        ],
+        "start_offset": 131,
+        "text": "paragraph 70(f)"
+      },
+      "literal": "paragraph 70(f)",
+      "reason_code": "target_not_indexed",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:32/subsection:2",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:32/subsection:2"
+    },
+    {
+      "candidate_id": "candidate:f5ead1e9dac1dd6c",
+      "evidence": {
+        "end_offset": 86,
+        "pages": [
+          {
+            "page_number": 43,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.186251,
+                "x": 0.238765,
+                "y": 0.45575
+              }
+            ]
+          }
+        ],
+        "start_offset": 70,
+        "text": "subparagraph (a)"
+      },
+      "literal": "subparagraph (a)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "subparagraph",
+      "source_provision_id": "act:265/section:37/subsection:1/paragraph:aa",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:37/subsection:1/paragraph:aa"
+    },
+    {
+      "candidate_id": "candidate:41da50e7533dbc48",
+      "evidence": {
+        "end_offset": 279,
+        "pages": [
+          {
+            "page_number": 43,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.168344,
+                "x": 0.174384,
+                "y": 0.512596
+              }
+            ]
+          }
+        ],
+        "start_offset": 266,
+        "text": "paragraph (2)"
+      },
+      "literal": "paragraph (2)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:37/subsection:1/paragraph:aa",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:37/subsection:1/paragraph:aa"
+    },
+    {
+      "candidate_id": "candidate:f889f063bdc66622",
+      "evidence": {
+        "end_offset": 38,
+        "pages": [
+          {
+            "page_number": 44,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.192275,
+                "x": 0.401771,
+                "y": 0.250011
+              }
+            ]
+          }
+        ],
+        "start_offset": 22,
+        "text": "subparagraph (a)"
+      },
+      "literal": "subparagraph (a)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "subparagraph",
+      "source_provision_id": "act:265/section:37/subsection:1/paragraph:c",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:37/subsection:1/paragraph:c"
+    },
+    {
+      "candidate_id": "candidate:a7f860f3165412e5",
+      "evidence": {
+        "end_offset": 85,
+        "pages": [
+          {
+            "page_number": 44,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.154234,
+                "x": 0.2341,
+                "y": 0.700878
+              }
+            ]
+          }
+        ],
+        "start_offset": 72,
+        "text": "paragraph (1)"
+      },
+      "literal": "paragraph (1)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:37/subsection:2/paragraph:b",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:37/subsection:2/paragraph:b"
+    },
+    {
+      "candidate_id": "candidate:7152bc564fe44494",
+      "evidence": {
+        "end_offset": 34,
+        "pages": [
+          {
+            "page_number": 48,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.115435,
+                "x": 0.392008,
+                "y": 0.704666
+              }
+            ]
+          }
+        ],
+        "start_offset": 23,
+        "text": "paragraph 1"
+      },
+      "literal": "paragraph 1",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:44A",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:44A"
+    },
+    {
+      "candidate_id": "candidate:605cfc679b83247f",
+      "evidence": {
+        "end_offset": 41,
+        "pages": [
+          {
+            "page_number": 50,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.159743,
+                "x": 0.419704,
+                "y": 0.575014
+              }
+            ]
+          }
+        ],
+        "start_offset": 28,
+        "text": "paragraph (1)"
+      },
+      "literal": "paragraph (1)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:57B/subsection:2",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:57B/subsection:2"
+    },
+    {
+      "candidate_id": "candidate:cc62574dbd4b2860",
+      "evidence": {
+        "end_offset": 135,
+        "pages": [
+          {
+            "page_number": 53,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.191105,
+                "x": 0.634751,
+                "y": 0.379828
+              }
+            ]
+          }
+        ],
+        "start_offset": 115,
+        "text": "paragraph (a) or (b)"
+      },
+      "literal": "paragraph (a) or (b)",
+      "reason_code": "target_not_indexed",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:60/subsection:3/paragraph:c",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60/subsection:3/paragraph:c"
+    },
+    {
+      "candidate_id": "candidate:5e9346d38db52294",
+      "evidence": {
+        "end_offset": 38,
+        "pages": [
+          {
+            "page_number": 53,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.158895,
+                "x": 0.503491,
+                "y": 0.853409
+              }
+            ]
+          }
+        ],
+        "start_offset": 25,
+        "text": "paragraph (1)"
+      },
+      "literal": "paragraph (1)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:60A/subsection:1/paragraph:d/subparagraph:i",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60A/subsection:1/paragraph:d/subparagraph:i"
+    },
+    {
+      "candidate_id": "candidate:7eb86a8770eb5970",
+      "evidence": {
+        "end_offset": 430,
+        "pages": [
+          {
+            "page_number": 54,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.162277,
+                "x": 0.174384,
+                "y": 0.628867
+              }
+            ]
+          }
+        ],
+        "start_offset": 417,
+        "text": "paragraph (1)"
+      },
+      "literal": "paragraph (1)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:60A/subsection:1A",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60A/subsection:1A"
+    },
+    {
+      "candidate_id": "candidate:67575c2133b03629",
+      "evidence": {
+        "end_offset": 69,
+        "pages": [
+          {
+            "page_number": 56,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.092701,
+                "x": 0.732651,
+                "y": 0.231072
+              },
+              {
+                "height": 0.018231,
+                "width": 0.0893,
+                "x": 0.174384,
+                "y": 0.250011
+              }
+            ]
+          }
+        ],
+        "start_offset": 52,
+        "text": "paragraph \n60D(3)"
+      },
+      "literal": "paragraph \n60D(3)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:60A/subsection:3/paragraph:c",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60A/subsection:3/paragraph:c"
+    },
+    {
+      "candidate_id": "candidate:0c0ddffedb8313c1",
+      "evidence": {
+        "end_offset": 106,
+        "pages": [
+          {
+            "page_number": 56,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.126263,
+                "x": 0.452255,
+                "y": 0.780424
+              }
+            ]
+          }
+        ],
+        "start_offset": 93,
+        "text": "paragraph (a)"
+      },
+      "literal": "paragraph (a)",
+      "reason_code": "target_not_indexed",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:60A/subsection:4/paragraph:aa",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60A/subsection:4/paragraph:aa"
+    },
+    {
+      "candidate_id": "candidate:3f4ff76fbfea9a27",
+      "evidence": {
+        "end_offset": 146,
+        "pages": [
+          {
+            "page_number": 57,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.158581,
+                "x": 0.174384,
+                "y": 0.250505
+              }
+            ]
+          }
+        ],
+        "start_offset": 133,
+        "text": "paragraph (3)"
+      },
+      "literal": "paragraph (3)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:60A/subsection:4/paragraph:b",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60A/subsection:4/paragraph:b"
+    },
+    {
+      "candidate_id": "candidate:edbc37e18cba22a5",
+      "evidence": {
+        "end_offset": 61,
+        "pages": [
+          {
+            "page_number": 57,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.195126,
+                "x": 0.630428,
+                "y": 0.398932
+              }
+            ]
+          }
+        ],
+        "start_offset": 48,
+        "text": "paragraph (2)"
+      },
+      "literal": "paragraph (2)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:60A/subsection:7",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60A/subsection:7"
+    },
+    {
+      "candidate_id": "candidate:4bdadb879b40ba06",
+      "evidence": {
+        "end_offset": 84,
+        "pages": [
+          {
+            "page_number": 57,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.15893,
+                "x": 0.281009,
+                "y": 0.853409
+              }
+            ]
+          }
+        ],
+        "start_offset": 71,
+        "text": "paragraph (1)"
+      },
+      "literal": "paragraph (1)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:60C/subsection:1",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60C/subsection:1"
+    },
+    {
+      "candidate_id": "candidate:da74905b59cfc3a5",
+      "evidence": {
+        "end_offset": 62,
+        "pages": [
+          {
+            "page_number": 58,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.127197,
+                "x": 0.622098,
+                "y": 0.250011
+              }
+            ]
+          }
+        ],
+        "start_offset": 48,
+        "text": "subsection (l)"
+      },
+      "literal": "subsection (l)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "subsection",
+      "source_provision_id": "act:265/section:60C/subsection:1A",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60C/subsection:1A"
+    },
+    {
+      "candidate_id": "candidate:df476a34a00cd9af",
+      "evidence": {
+        "end_offset": 218,
+        "pages": [
+          {
+            "page_number": 59,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.152991,
+                "x": 0.174384,
+                "y": 0.612563
+              }
+            ]
+          }
+        ],
+        "start_offset": 205,
+        "text": "paragraph (1)"
+      },
+      "literal": "paragraph (1)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:60D/subsection:1A",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60D/subsection:1A"
+    },
+    {
+      "candidate_id": "candidate:d3024fa3b799f1af",
+      "evidence": {
+        "end_offset": 311,
+        "pages": [
+          {
+            "page_number": 59,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.159503,
+                "x": 0.363366,
+                "y": 0.631503
+              }
+            ]
+          }
+        ],
+        "start_offset": 298,
+        "text": "paragraph (1)"
+      },
+      "literal": "paragraph (1)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:60D/subsection:1A",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60D/subsection:1A"
+    },
+    {
+      "candidate_id": "candidate:06165afc4dc14e3c",
+      "evidence": {
+        "end_offset": 518,
+        "pages": [
+          {
+            "page_number": 59,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.159232,
+                "x": 0.174384,
+                "y": 0.726241
+              }
+            ]
+          }
+        ],
+        "start_offset": 505,
+        "text": "paragraph (1)"
+      },
+      "literal": "paragraph (1)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:60D/subsection:1A",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60D/subsection:1A"
+    },
+    {
+      "candidate_id": "candidate:e7c27d645e03238c",
+      "evidence": {
+        "end_offset": 706,
+        "pages": [
+          {
+            "page_number": 59,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.158639,
+                "x": 0.45005,
+                "y": 0.801998
+              }
+            ]
+          }
+        ],
+        "start_offset": 693,
+        "text": "paragraph (1)"
+      },
+      "literal": "paragraph (1)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:60D/subsection:1A",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60D/subsection:1A"
+    },
+    {
+      "candidate_id": "candidate:ac47730edccc9fe7",
+      "evidence": {
+        "end_offset": 89,
+        "pages": [
+          {
+            "page_number": 60,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.183639,
+                "x": 0.312366,
+                "y": 0.837242
+              }
+            ]
+          }
+        ],
+        "start_offset": 73,
+        "text": "subparagraph (a)"
+      },
+      "literal": "subparagraph (a)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "subparagraph",
+      "source_provision_id": "act:265/section:60D/subsection:3/paragraph:aa",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60D/subsection:3/paragraph:aa"
+    },
+    {
+      "candidate_id": "candidate:90098af3bce7fb57",
+      "evidence": {
+        "end_offset": 89,
+        "pages": [
+          {
+            "page_number": 61,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.18966,
+                "x": 0.310484,
+                "y": 0.155808
+              }
+            ]
+          }
+        ],
+        "start_offset": 73,
+        "text": "subparagraph (a)"
+      },
+      "literal": "subparagraph (a)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "subparagraph",
+      "source_provision_id": "act:265/section:60D/subsection:3/paragraph:aaa",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60D/subsection:3/paragraph:aaa"
+    },
+    {
+      "candidate_id": "candidate:12b941c47544b18c",
+      "evidence": {
+        "end_offset": 84,
+        "pages": [
+          {
+            "page_number": 64,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.174899,
+                "x": 0.174384,
+                "y": 0.742545
+              }
+            ]
+          }
+        ],
+        "start_offset": 70,
+        "text": "paragraphs (1)"
+      },
+      "literal": "paragraphs (1)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraphs",
+      "source_provision_id": "act:265/section:60F/subsection:1A",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60F/subsection:1A"
+    },
+    {
+      "candidate_id": "candidate:b9cc8585f85df681",
+      "evidence": {
+        "end_offset": 311,
+        "pages": [
+          {
+            "page_number": 64,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.178715,
+                "x": 0.602789,
+                "y": 0.818303
+              }
+            ]
+          }
+        ],
+        "start_offset": 297,
+        "text": "paragraphs (1)"
+      },
+      "literal": "paragraphs (1)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraphs",
+      "source_provision_id": "act:265/section:60F/subsection:1A",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60F/subsection:1A"
+    },
+    {
+      "candidate_id": "candidate:a97da80c4b8af7e7",
+      "evidence": {
+        "end_offset": 39,
+        "pages": [
+          {
+            "page_number": 69,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.16559,
+                "x": 0.466554,
+                "y": 0.465001
+              }
+            ]
+          }
+        ],
+        "start_offset": 26,
+        "text": "paragraph (3)"
+      },
+      "literal": "paragraph (3)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:60K/subsection:4",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60K/subsection:4"
+    },
+    {
+      "candidate_id": "candidate:9494d40700f7bb85",
+      "evidence": {
+        "end_offset": 399,
+        "pages": [
+          {
+            "page_number": 74,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.092724,
+                "x": 0.732888,
+                "y": 0.55311
+              },
+              {
+                "height": 0.018231,
+                "width": 0.027011,
+                "x": 0.261545,
+                "y": 0.572049
+              }
+            ]
+          }
+        ],
+        "start_offset": 385,
+        "text": "paragraph \n(a)"
+      },
+      "literal": "paragraph \n(a)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:67",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:67"
+    },
+    {
+      "candidate_id": "candidate:20895d19edfb7b40",
+      "evidence": {
+        "end_offset": 466,
+        "pages": [
+          {
+            "page_number": 74,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.132043,
+                "x": 0.261545,
+                "y": 0.590989
+              }
+            ]
+          }
+        ],
+        "start_offset": 453,
+        "text": "paragraph (b)"
+      },
+      "literal": "paragraph (b)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:67",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:67"
+    },
+    {
+      "candidate_id": "candidate:e2db6f1bc7c66746",
+      "evidence": {
+        "end_offset": 38,
+        "pages": [
+          {
+            "page_number": 74,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.137541,
+                "x": 0.404176,
+                "y": 0.818303
+              }
+            ]
+          }
+        ],
+        "start_offset": 24,
+        "text": "subsection (1)"
+      },
+      "literal": "subsection (1)",
+      "reason_code": "target_not_indexed",
+      "reference_kind": "subsection",
+      "source_provision_id": "act:265/section:67/subsection:2",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:67/subsection:2"
+    },
+    {
+      "candidate_id": "candidate:82a3fafd2ac946c8",
+      "evidence": {
+        "end_offset": 96,
+        "pages": [
+          {
+            "page_number": 75,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.136657,
+                "x": 0.275081,
+                "y": 0.174747
+              }
+            ]
+          }
+        ],
+        "start_offset": 82,
+        "text": "subsection (1)"
+      },
+      "literal": "subsection (1)",
+      "reason_code": "target_not_indexed",
+      "reference_kind": "subsection",
+      "source_provision_id": "act:265/section:67/subsection:3",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:67/subsection:3"
+    },
+    {
+      "candidate_id": "candidate:f80794de4f81ac89",
+      "evidence": {
+        "end_offset": 37,
+        "pages": [
+          {
+            "page_number": 75,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.167531,
+                "x": 0.420239,
+                "y": 0.780918
+              }
+            ]
+          }
+        ],
+        "start_offset": 24,
+        "text": "paragraph (3)"
+      },
+      "literal": "paragraph (3)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:67/subsection:4",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:67/subsection:4"
+    },
+    {
+      "candidate_id": "candidate:08c5d22d8caaf1d3",
+      "evidence": {
+        "end_offset": 361,
+        "pages": [
+          {
+            "page_number": 78,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.098071,
+                "x": 0.727282,
+                "y": 0.628867
+              },
+              {
+                "height": 0.018231,
+                "width": 0.050349,
+                "x": 0.261545,
+                "y": 0.647807
+              }
+            ]
+          }
+        ],
+        "start_offset": 344,
+        "text": "subsection \n20(3)"
+      },
+      "literal": "subsection \n20(3)",
+      "reason_code": "target_not_indexed",
+      "reference_kind": "subsection",
+      "source_provision_id": "act:265/section:69A",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:69A"
+    },
+    {
+      "candidate_id": "candidate:0b41ab29d9ddfd20",
+      "evidence": {
+        "end_offset": 34,
+        "pages": [
+          {
+            "page_number": 91,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.115435,
+                "x": 0.392135,
+                "y": 0.278544
+              }
+            ]
+          }
+        ],
+        "start_offset": 23,
+        "text": "paragraph 1"
+      },
+      "literal": "paragraph 1",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:81G",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:81G"
+    },
+    {
+      "candidate_id": "candidate:49255f5fb4dab03f",
+      "evidence": {
+        "end_offset": 550,
+        "pages": [
+          {
+            "page_number": 98,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.092701,
+                "x": 0.732419,
+                "y": 0.761484
+              },
+              {
+                "height": 0.018231,
+                "width": 0.032775,
+                "x": 0.261545,
+                "y": 0.780424
+              }
+            ]
+          }
+        ],
+        "start_offset": 536,
+        "text": "paragraph \n(a)"
+      },
+      "literal": "paragraph \n(a)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:94",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:94"
+    },
+    {
+      "candidate_id": "candidate:31948fe9a6095960",
+      "evidence": {
+        "end_offset": 838,
+        "pages": [
+          {
+            "page_number": 98,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.092492,
+                "x": 0.732675,
+                "y": 0.856209
+              },
+              {
+                "height": 0.018231,
+                "width": 0.083043,
+                "x": 0.261545,
+                "y": 0.875148
+              }
+            ]
+          }
+        ],
+        "start_offset": 822,
+        "text": "paragraph \n37(1)"
+      },
+      "literal": "paragraph \n37(1)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:94",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:94"
+    },
+    {
+      "candidate_id": "candidate:3bf4cf395b3d8388",
+      "evidence": {
+        "end_offset": 1200,
+        "pages": [
+          {
+            "page_number": 99,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.09291,
+                "x": 0.732373,
+                "y": 0.212626
+              },
+              {
+                "height": 0.018231,
+                "width": 0.032822,
+                "x": 0.261545,
+                "y": 0.231566
+              }
+            ]
+          }
+        ],
+        "start_offset": 1186,
+        "text": "paragraph \n(b)"
+      },
+      "literal": "paragraph \n(b)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:94",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:94"
+    },
+    {
+      "candidate_id": "candidate:a8c322b32366e2ad",
+      "evidence": {
+        "end_offset": 232,
+        "pages": [
+          {
+            "page_number": 99,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.140202,
+                "x": 0.261545,
+                "y": 0.599388
+              }
+            ]
+          }
+        ],
+        "start_offset": 219,
+        "text": "paragraph (a)"
+      },
+      "literal": "paragraph (a)",
+      "reason_code": "relative_context_missing",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:97",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:97"
+    },
+    {
+      "candidate_id": "candidate:06aa66e97db436a0",
+      "evidence": {
+        "end_offset": 151,
+        "pages": [
+          {
+            "page_number": 29,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.199492,
+                "x": 0.213668,
+                "y": 0.383122
+              }
+            ]
+          }
+        ],
+        "start_offset": 136,
+        "text": "paragraph 14(1)"
+      },
+      "literal": "paragraph 14(1)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:21/subsection:1",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:21/subsection:1"
+    },
+    {
+      "candidate_id": "candidate:11bf10e661efdb08",
+      "evidence": {
+        "end_offset": 757,
+        "pages": [
+          {
+            "page_number": 77,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.182295,
+                "x": 0.562018,
+                "y": 0.648301
+              }
+            ]
+          }
+        ],
+        "start_offset": 742,
+        "text": "paragraph 14(1)"
+      },
+      "literal": "paragraph 14(1)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:69/subsection:3",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:69/subsection:3"
+    },
+    {
+      "candidate_id": "candidate:16542da2baf3d3e1",
+      "evidence": {
+        "end_offset": 98,
+        "pages": [
+          {
+            "page_number": 35,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.218735,
+                "x": 0.23503,
+                "y": 0.764449
+              }
+            ]
+          }
+        ],
+        "start_offset": 75,
+        "text": "subsections (1) and (2)"
+      },
+      "literal": "subsections (1) and (2)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "subsections",
+      "source_provision_id": "act:265/section:25A/subsection:5",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:25A/subsection:5"
+    },
+    {
+      "candidate_id": "candidate:27fb4acea5b0eff7",
+      "evidence": {
+        "end_offset": 406,
+        "pages": [
+          {
+            "page_number": 55,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.192333,
+                "x": 0.174384,
+                "y": 0.686221
+              }
+            ]
+          }
+        ],
+        "start_offset": 385,
+        "text": "paragraphs (a) to (f)"
+      },
+      "literal": "paragraphs (a) to (f)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "paragraphs",
+      "source_provision_id": "act:265/section:60A/subsection:2/paragraph:f",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60A/subsection:2/paragraph:f"
+    },
+    {
+      "candidate_id": "candidate:29be9935f829d13f",
+      "evidence": {
+        "end_offset": 98,
+        "pages": [
+          {
+            "page_number": 28,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.196819,
+                "x": 0.301464,
+                "y": 0.683586
+              }
+            ]
+          }
+        ],
+        "start_offset": 81,
+        "text": "paragraphs 60D(1)"
+      },
+      "literal": "paragraphs 60D(1)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "paragraphs",
+      "source_provision_id": "act:265/section:19/subsection:2",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:19/subsection:2"
+    },
+    {
+      "candidate_id": "candidate:29f199016ad33d85",
+      "evidence": {
+        "end_offset": 374,
+        "pages": [
+          {
+            "page_number": 63,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.181842,
+                "x": 0.351999,
+                "y": 0.364183
+              }
+            ]
+          }
+        ],
+        "start_offset": 359,
+        "text": "paragraph 14(1)"
+      },
+      "literal": "paragraph 14(1)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:60E/subsection:3A",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60E/subsection:3A"
+    },
+    {
+      "candidate_id": "candidate:2a31f3d691064ed4",
+      "evidence": {
+        "end_offset": 106,
+        "pages": [
+          {
+            "page_number": 78,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.186467,
+                "x": 0.468759,
+                "y": 0.818303
+              }
+            ]
+          }
+        ],
+        "start_offset": 91,
+        "text": "paragraph 69(1)"
+      },
+      "literal": "paragraph 69(1)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:69B/subsection:1",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:69B/subsection:1"
+    },
+    {
+      "candidate_id": "candidate:2e9950e68aaf14d5",
+      "evidence": {
+        "end_offset": 352,
+        "pages": [
+          {
+            "page_number": 90,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.09291,
+                "x": 0.73214,
+                "y": 0.799693
+              },
+              {
+                "height": 0.018231,
+                "width": 0.087738,
+                "x": 0.278979,
+                "y": 0.818632
+              }
+            ]
+          }
+        ],
+        "start_offset": 335,
+        "text": "paragraph \n81B(5)"
+      },
+      "literal": "paragraph \n81B(5)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:81F",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:81F"
+    },
+    {
+      "candidate_id": "candidate:314c72c79b44eacc",
+      "evidence": {
+        "end_offset": 141,
+        "pages": [
+          {
+            "page_number": 101,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.06576,
+                "x": 0.75953,
+                "y": 0.875642
+              }
+            ]
+          },
+          {
+            "page_number": 102,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.034868,
+                "x": 0.174384,
+                "y": 0.09899
+              }
+            ]
+          }
+        ],
+        "start_offset": 128,
+        "text": "section \n\n102"
+      },
+      "literal": "section \n\n102",
+      "reason_code": "audit_rejected",
+      "reference_kind": "section",
+      "source_provision_id": "act:265/section:100/subsection:5",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:100/subsection:5"
+    },
+    {
+      "candidate_id": "candidate:41e275656a04118c",
+      "evidence": {
+        "end_offset": 116,
+        "pages": [
+          {
+            "page_number": 67,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.266198,
+                "x": 0.381846,
+                "y": 0.351337
+              }
+            ]
+          }
+        ],
+        "start_offset": 87,
+        "text": "subsection (1A), (1B) or (1C)"
+      },
+      "literal": "subsection (1A), (1B) or (1C)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "subsection",
+      "source_provision_id": "act:265/section:60I/subsection:2",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60I/subsection:2"
+    },
+    {
+      "candidate_id": "candidate:5967ee74889abdd1",
+      "evidence": {
+        "end_offset": 127,
+        "pages": [
+          {
+            "page_number": 79,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.270975,
+                "x": 0.469014,
+                "y": 0.799857
+              }
+            ]
+          }
+        ],
+        "start_offset": 100,
+        "text": "subsection 69B(1) or 69C(1)"
+      },
+      "literal": "subsection 69B(1) or 69C(1)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "subsection",
+      "source_provision_id": "act:265/section:69E",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:69E"
+    },
+    {
+      "candidate_id": "candidate:59f0f7073d70b2f0",
+      "evidence": {
+        "end_offset": 130,
+        "pages": [
+          {
+            "page_number": 29,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.220184,
+                "x": 0.605788,
+                "y": 0.364183
+              }
+            ]
+          }
+        ],
+        "start_offset": 107,
+        "text": "subsection 13(1) or (2)"
+      },
+      "literal": "subsection 13(1) or (2)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "subsection",
+      "source_provision_id": "act:265/section:21/subsection:1",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:21/subsection:1"
+    },
+    {
+      "candidate_id": "candidate:60f2b46aca560963",
+      "evidence": {
+        "end_offset": 58,
+        "pages": [
+          {
+            "page_number": 34,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.29814,
+                "x": 0.406315,
+                "y": 0.136375
+              }
+            ]
+          }
+        ],
+        "start_offset": 25,
+        "text": "subsections (2), (3), (4) and (6)"
+      },
+      "literal": "subsections (2), (3), (4) and (6)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "subsections",
+      "source_provision_id": "act:265/section:24/subsection:7",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:24/subsection:7"
+    },
+    {
+      "candidate_id": "candidate:6724aa51859f6dd0",
+      "evidence": {
+        "end_offset": 380,
+        "pages": [
+          {
+            "page_number": 77,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.092701,
+                "x": 0.732876,
+                "y": 0.515725
+              },
+              {
+                "height": 0.018231,
+                "width": 0.077445,
+                "x": 0.174384,
+                "y": 0.534665
+              }
+            ]
+          }
+        ],
+        "start_offset": 364,
+        "text": "paragraph \n14(1)"
+      },
+      "literal": "paragraph \n14(1)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:69/subsection:3",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:69/subsection:3"
+    },
+    {
+      "candidate_id": "candidate:67f6d0b69cd05523",
+      "evidence": {
+        "end_offset": 113,
+        "pages": [
+          {
+            "page_number": 79,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.263222,
+                "x": 0.373733,
+                "y": 0.629362
+              }
+            ]
+          }
+        ],
+        "start_offset": 86,
+        "text": "subsection 69B(1) or 69C(1)"
+      },
+      "literal": "subsection 69B(1) or 69C(1)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "subsection",
+      "source_provision_id": "act:265/section:69D",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:69D"
+    },
+    {
+      "candidate_id": "candidate:6f91b95b54b82b93",
+      "evidence": {
+        "end_offset": 65,
+        "pages": [
+          {
+            "page_number": 35,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.212669,
+                "x": 0.566775,
+                "y": 0.593953
+              }
+            ]
+          }
+        ],
+        "start_offset": 42,
+        "text": "subsections (1) and (2)"
+      },
+      "literal": "subsections (1) and (2)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "subsections",
+      "source_provision_id": "act:265/section:25A/subsection:3",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:25A/subsection:3"
+    },
+    {
+      "candidate_id": "candidate:7349d7efd7dfa21a",
+      "evidence": {
+        "end_offset": 119,
+        "pages": [
+          {
+            "page_number": 59,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.202979,
+                "x": 0.510673,
+                "y": 0.858844
+              }
+            ]
+          }
+        ],
+        "start_offset": 97,
+        "text": "subsection (1) or (1A)"
+      },
+      "literal": "subsection (1) or (1A)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "subsection",
+      "source_provision_id": "act:265/section:60D/subsection:1B",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60D/subsection:1B"
+    },
+    {
+      "candidate_id": "candidate:78b9ab0e581f01f9",
+      "evidence": {
+        "end_offset": 145,
+        "pages": [
+          {
+            "page_number": 105,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.085728,
+                "x": 0.302758,
+                "y": 0.425777
+              }
+            ]
+          }
+        ],
+        "start_offset": 137,
+        "text": "Parts XV"
+      },
+      "literal": "Parts XV",
+      "reason_code": "audit_rejected",
+      "reference_kind": "parts",
+      "source_provision_id": "act:265/section:102/subsection:2/paragraph:h/subparagraph:i",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:102/subsection:2/paragraph:h/subparagraph:i"
+    },
+    {
+      "candidate_id": "candidate:7927accfa80f0442",
+      "evidence": {
+        "end_offset": 70,
+        "pages": [
+          {
+            "page_number": 77,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.219425,
+                "x": 0.606199,
+                "y": 0.402061
+              }
+            ]
+          }
+        ],
+        "start_offset": 47,
+        "text": "subsections (1) and (2)"
+      },
+      "literal": "subsections (1) and (2)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "subsections",
+      "source_provision_id": "act:265/section:69/subsection:3",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:69/subsection:3"
+    },
+    {
+      "candidate_id": "candidate:95e75c375b5385ee",
+      "evidence": {
+        "end_offset": 712,
+        "pages": [
+          {
+            "page_number": 45,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.245398,
+                "x": 0.174384,
+                "y": 0.477846
+              }
+            ]
+          }
+        ],
+        "start_offset": 689,
+        "text": "subsection 40(1) or (2)"
+      },
+      "literal": "subsection 40(1) or (2)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "subsection",
+      "source_provision_id": "act:265/section:37/subsection:3",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:37/subsection:3"
+    },
+    {
+      "candidate_id": "candidate:9a0218bfe736d856",
+      "evidence": {
+        "end_offset": 47,
+        "pages": [
+          {
+            "page_number": 70,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.218852,
+                "x": 0.403037,
+                "y": 0.835595
+              }
+            ]
+          }
+        ],
+        "start_offset": 24,
+        "text": "subsections (1) and (2)"
+      },
+      "literal": "subsections (1) and (2)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "subsections",
+      "source_provision_id": "act:265/section:61/subsection:3",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:61/subsection:3"
+    },
+    {
+      "candidate_id": "candidate:bb8c060035c9d9b0",
+      "evidence": {
+        "end_offset": 93,
+        "pages": [
+          {
+            "page_number": 35,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.230614,
+                "x": 0.174384,
+                "y": 0.840206
+              }
+            ]
+          }
+        ],
+        "start_offset": 70,
+        "text": "subsections (1) and (2)"
+      },
+      "literal": "subsections (1) and (2)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "subsections",
+      "source_provision_id": "act:265/section:25A/subsection:6",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:25A/subsection:6"
+    },
+    {
+      "candidate_id": "candidate:c731653a4f88b9e5",
+      "evidence": {
+        "end_offset": 45,
+        "pages": [
+          {
+            "page_number": 28,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.246513,
+                "x": 0.413033,
+                "y": 0.759343
+              }
+            ]
+          }
+        ],
+        "start_offset": 22,
+        "text": "subsections (1) and (2)"
+      },
+      "literal": "subsections (1) and (2)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "subsections",
+      "source_provision_id": "act:265/section:19/subsection:3",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:19/subsection:3"
+    },
+    {
+      "candidate_id": "candidate:c86a17c4bf10cba0",
+      "evidence": {
+        "end_offset": 830,
+        "pages": [
+          {
+            "page_number": 97,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.160809,
+                "x": 0.243398,
+                "y": 0.398438
+              }
+            ]
+          }
+        ],
+        "start_offset": 814,
+        "text": "Parts III and IV"
+      },
+      "literal": "Parts III and IV",
+      "reason_code": "audit_rejected",
+      "reference_kind": "parts",
+      "source_provision_id": "act:265/section:90A",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:90A"
+    },
+    {
+      "candidate_id": "candidate:cd55a6c9760b9a53",
+      "evidence": {
+        "end_offset": 58,
+        "pages": [
+          {
+            "page_number": 60,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.315729,
+                "x": 0.46208,
+                "y": 0.515231
+              }
+            ]
+          }
+        ],
+        "start_offset": 28,
+        "text": "subsections (1), (1A) and (1B)"
+      },
+      "literal": "subsections (1), (1A) and (1B)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "subsections",
+      "source_provision_id": "act:265/section:60D/subsection:3",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60D/subsection:3"
+    },
+    {
+      "candidate_id": "candidate:d15eaff4f0d9754d",
+      "evidence": {
+        "end_offset": 33,
+        "pages": [
+          {
+            "page_number": 79,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.193329,
+                "x": 0.346529,
+                "y": 0.212626
+              }
+            ]
+          }
+        ],
+        "start_offset": 17,
+        "text": "Parts XV and XVI"
+      },
+      "literal": "Parts XV and XVI",
+      "reason_code": "audit_rejected",
+      "reference_kind": "parts",
+      "source_provision_id": "act:265/section:69B/subsection:3",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:69B/subsection:3"
+    },
+    {
+      "candidate_id": "candidate:d2fa04c64930f0aa",
+      "evidence": {
+        "end_offset": 136,
+        "pages": [
+          {
+            "page_number": 29,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.220409,
+                "x": 0.604835,
+                "y": 0.686221
+              }
+            ]
+          }
+        ],
+        "start_offset": 113,
+        "text": "subsection 13(1) or (2)"
+      },
+      "literal": "subsection 13(1) or (2)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "subsection",
+      "source_provision_id": "act:265/section:21/subsection:2",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:21/subsection:2"
+    },
+    {
+      "candidate_id": "candidate:e57f4cc328b03e83",
+      "evidence": {
+        "end_offset": 65,
+        "pages": [
+          {
+            "page_number": 58,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.204661,
+                "x": 0.62094,
+                "y": 0.439446
+              }
+            ]
+          }
+        ],
+        "start_offset": 48,
+        "text": "paragraphs 60A(2)"
+      },
+      "literal": "paragraphs 60A(2)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "paragraphs",
+      "source_provision_id": "act:265/section:60C/subsection:2",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60C/subsection:2"
+    },
+    {
+      "candidate_id": "candidate:edc6cf1c4cd9c23c",
+      "evidence": {
+        "end_offset": 302,
+        "pages": [
+          {
+            "page_number": 44,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.192302,
+                "x": 0.317596,
+                "y": 0.757697
+              }
+            ]
+          }
+        ],
+        "start_offset": 286,
+        "text": "paragraph 102(2)"
+      },
+      "literal": "paragraph 102(2)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "paragraph",
+      "source_provision_id": "act:265/section:37/subsection:2/paragraph:b",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:37/subsection:2/paragraph:b"
+    },
+    {
+      "candidate_id": "candidate:ffa9b80d4fcbfa2c",
+      "evidence": {
+        "end_offset": 37,
+        "pages": [
+          {
+            "page_number": 57,
+            "rectangles": [
+              {
+                "height": 0.018231,
+                "width": 0.210743,
+                "x": 0.438137,
+                "y": 0.834442
+              }
+            ]
+          }
+        ],
+        "start_offset": 20,
+        "text": "paragraphs 60A(1)"
+      },
+      "literal": "paragraphs 60A(1)",
+      "reason_code": "audit_rejected",
+      "reference_kind": "paragraphs",
+      "source_provision_id": "act:265/section:60C/subsection:1",
+      "source_version_id": "act-265-en-sha256-1ee65655aedadc7d1ea2e47526036106149835583d246e61d3de3d10749e1b95/provision:act:265/section:60C/subsection:1"
+    }
+  ]
+}

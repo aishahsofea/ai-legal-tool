@@ -60,6 +60,15 @@ _Avoid_: citation graph (it is a statutory-text index, not answer provenance).
 **Reference Graph Audit Candidate**:
 A build artifact held under the graph snapshot's `.work` directory until a human has checked every proposed edge against the immutable **Receipt Document**. Only a complete approved/rejected decision set can produce a promoted graph; rejected candidates remain unresolved.
 
+**Snapshot Catalog**:
+The strict chronological list of consolidated REPRINT and REPRINT ONLINE timeline observations eligible for an Act’s reference graph. Cataloguing is network-free. Its dates label observed snapshots and must not be described as exact amendment-effective dates.
+
+**Logical Reference**:
+A comparison identity made from readable source and target provision identities, reference kind, relationship, and normalized literal wording. It excludes PDF offsets and edge IDs. Repeated identical occurrences are retained with deterministic ordinals, and a wording change is one removed plus one added reference.
+
+**Reference Graph Comparison**:
+A fixed-position overlay of the union of two independently audited, promoted one-hop neighborhoods for the same Act and language. It reports only observed added, removed, and unchanged **Logical References**, keeps each snapshot’s evidence and receipt separate, and makes no claim about when or why a difference arose.
+
 **Timeline Entry**:
 A dated version event for an Act: ORIGINAL, REPRINT, REPRINT ONLINE, or AMENDMENTS. Stored in the `timeline` array of each act metadata file.
 

@@ -128,6 +128,16 @@ def generate_manifest(
             "document_id": str(item.get("document_id", "")),
             "source_url": str(item.get("source_url", "")),
             "observed_at": str(item.get("observed_at", "")),
+            **(
+                {"timeline_date": str(item["timeline_date"])}
+                if item.get("timeline_date")
+                else {}
+            ),
+            **(
+                {"timeline_type": str(item["timeline_type"])}
+                if item.get("timeline_type")
+                else {}
+            ),
         }
         for item in previous.get("source_observations", [])
         if (

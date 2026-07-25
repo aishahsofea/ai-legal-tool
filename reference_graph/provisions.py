@@ -1,4 +1,4 @@
-"""Parse provision nodes from the one immutable Employment Act snapshot."""
+"""Parse snapshot-versioned provision nodes from one immutable Act receipt."""
 from __future__ import annotations
 
 import re
@@ -7,12 +7,21 @@ from dataclasses import dataclass
 from .models import Provision, SourceDocument, stable_id, versioned_id
 from .pdf_text import PdfPage, PdfText
 
-SECTION_RE = re.compile(r"(?m)^\s*(\d{1,3}[A-Z]{0,2})\.\s*(?=(?:\(\d+[A-Z]?\)|[A-Z]))")
-SUBSECTION_RE = re.compile(r"(?m)^\s*\((\d+[A-Z]?)\)\s+")
+SECTION_RE = re.compile(
+    r"^\s*(\d{1,3}[A-Z]{0,2})\.\s*(?=(?:\(\d+[A-Z]?\)|[A-Z]))",
+    re.MULTILINE | re.IGNORECASE,
+)
+SUBSECTION_RE = re.compile(r"^\s*\((\d+[A-Z]?)\)\s+", re.MULTILINE | re.IGNORECASE)
 PARAGRAPH_RE = re.compile(r"(?m)^\s*\(([a-z]{1,3})\)\s+")
 SUBPARAGRAPH_RE = re.compile(r"(?m)^\s*\(([ivxlcdm]+)\)\s+", re.IGNORECASE)
 PART_RE = re.compile(r"(?m)^\s*PART\s+([XIVLCDM]+[A-Z]?)\s*$", re.IGNORECASE)
 SCHEDULE_RE = re.compile(r"(?m)^\s*(FIRST|SECOND)\s+SCHEDULE\s*$", re.IGNORECASE)
+_ANY_SCHEDULE_RE = re.compile(
+    r"(?m)^\s*(?:(FIRST|SECOND|THIRD|FOURTH|FIFTH)\s+)?SCHEDULE(?:S)?\s*$",
+    re.IGNORECASE,
+)
+_APPENDIX_RE = re.compile(r"\b(?:LIST|TABLE)\s+OF\s+AMENDMENTS\b", re.IGNORECASE)
+_LEGACY_PILOT_SHA256 = "6fec2f07b49d8f381851906781259b1e09a2152db8dcf1599ab77a592eae100b"
 
 
 @dataclass(frozen=True)
@@ -24,9 +33,57 @@ class _Span:
     page_end: int
 
 
-def _main_pages(pdf: PdfText) -> list[PdfPage]:
-    # The substantive Act begins at printed page 12; PDFs may keep cover/contents first.
-    return [page for page in pdf.pages if 12 <= page.page_number <= 111]
+@dataclass(frozen=True)
+class PageGroups:
+    """Physical page groups used for parser offsets and receipt provenance."""
+
+    main: list[PdfPage]
+    schedules: list[PdfPage]
+
+
+def _page_range(pdf: PdfText, start: int, end: int) -> list[PdfPage]:
+    return [page for page in pdf.pages if start <= page.page_number <= end]
+
+
+def page_groups(pdf: PdfText, document: SourceDocument) -> PageGroups:
+    """Detect substantive/schedule pages while preserving the audited pilot offsets."""
+    if document.sha256 == _LEGACY_PILOT_SHA256:
+        return PageGroups(_page_range(pdf, 12, 111), _page_range(pdf, 112, 115))
+
+    body_start = next(
+        (
+            page.page_number
+            for page in pdf.pages
+            if re.search(r"\bAn\s+Act\b", page.text, re.IGNORECASE)
+            and any(match.group(1).upper() == "1" for match in SECTION_RE.finditer(page.text))
+        ),
+        None,
+    )
+    if body_start is None:
+        raise ValueError("provision_body_not_found")
+
+    appendix_start = next(
+        (page.page_number for page in pdf.pages if page.page_number >= body_start and _APPENDIX_RE.search(page.text)),
+        pdf.page_count + 1,
+    )
+    schedule_start = next(
+        (
+            page.page_number
+            for page in pdf.pages
+            if body_start < page.page_number < appendix_start and _ANY_SCHEDULE_RE.search(page.text)
+        ),
+        None,
+    )
+    main_end = (schedule_start or appendix_start) - 1
+    schedules = (
+        _page_range(pdf, schedule_start, appendix_start - 1)
+        if schedule_start is not None
+        else []
+    )
+    main = _page_range(pdf, body_start, main_end)
+    if not main:
+        raise ValueError("provision_main_pages_empty")
+    return PageGroups(main, schedules)
 
 
 def _join(pages: list[PdfPage]) -> tuple[str, list[int]]:
@@ -68,11 +125,16 @@ def _children(provisions: list[Provision], document: SourceDocument, section: Pr
     subsection_matches = [(match.start(), match.group(1)) for match in SUBSECTION_RE.finditer(text, section_start, section_end)]
     # The first subsection follows the section number on the same printed line,
     # rather than beginning a new line. Include it explicitly.
-    heading = re.match(r"\s*\d{1,3}[A-Z]{0,2}\.\s*\((\d+[A-Z]?)\)\s+", text[section_start:section_end])
+    heading = re.match(
+        r"\s*\d{1,3}[A-Z]{0,2}\.\s*\((\d+[A-Z]?)\)\s+",
+        text[section_start:section_end],
+        re.IGNORECASE,
+    )
     if heading is not None:
         subsection_matches.append((section_start + heading.start(1) - 1, heading.group(1)))
     subsection_matches.sort(key=lambda item: item[0])
     for index, (start, number) in enumerate(subsection_matches):
+        number = number.upper()
         end = subsection_matches[index + 1][0] if index + 1 < len(subsection_matches) else section_end
         subsection = _append(provisions, document, "subsection", f"{section.label}({number})", section.provision_id,
                              text, start, end, page_start, page_end,
@@ -99,18 +161,24 @@ def _children(provisions: list[Provision], document: SourceDocument, section: Pr
                         ("paragraph", letter), ("subparagraph", roman))
 
 
-def parse_provisions(pdf: PdfText, document: SourceDocument) -> list[Provision]:
+def parse_provisions(
+    pdf: PdfText,
+    document: SourceDocument,
+    *,
+    groups: PageGroups | None = None,
+) -> list[Provision]:
     provisions: list[Provision] = [Provision(
         stable_id(document.act_number), versioned_id(document.document_id, stable_id(document.act_number)), "act",
         f"Act {document.act_number}", None, document.act_title, 0, len(document.act_title), 1, pdf.page_count,
     )]
-    pages = _main_pages(pdf)
+    groups = groups or page_groups(pdf, document)
+    pages = groups.main
     text, offsets = _join(pages)
     section_matches = list(SECTION_RE.finditer(text))
     for index, match in enumerate(section_matches):
         start = match.start()
         end = section_matches[index + 1].start() if index + 1 < len(section_matches) else len(text)
-        number = match.group(1)
+        number = match.group(1).upper()
         page_start, page_end = _pages_for_span(pages, offsets, start, end)
         section = _append(provisions, document, "section", f"Section {number}", stable_id(document.act_number), text,
                           start, end, page_start, page_end, ("section", number))
@@ -124,9 +192,9 @@ def parse_provisions(pdf: PdfText, document: SourceDocument) -> list[Provision]:
         _append(provisions, document, "description", f"Part {part}", stable_id(document.act_number), text,
                 match.start(), match.end(), page_start, page_end, ("description", f"part-{part.lower()}"))
 
-    # The supplied receipt ends the Second Schedule on physical page 115. The
-    # following amendment table is a different descriptive appendix.
-    schedule_pages = [page for page in pdf.pages if 112 <= page.page_number <= 115]
+    schedule_pages = groups.schedules
+    if not schedule_pages:
+        return sorted(provisions, key=lambda item: (item.provision_id.count("/"), item.provision_id))
     schedule_text, schedule_offsets = _join(schedule_pages)
     matches = list(SCHEDULE_RE.finditer(schedule_text))
     table_marker = schedule_text.find("TABLE OF AMENDMENTS")
