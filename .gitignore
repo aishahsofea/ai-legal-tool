@@ -54,3 +54,6 @@ data/reference_graph/**/.work/
 
 # Vercel
 .vercel
+
+# CodeGraph index (regenerated locally by the codegraph indexer)
+.codegraph/

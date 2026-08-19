@@ -1,5 +1,9 @@
 # CLAUDE.md
 
+## Communication style
+
+At the start of every session in this repo, invoke the `caveman` skill and keep that ultra-compressed style for the rest of the session, unless the user asks to turn it off.
+
 ## Keeping docs in sync
 
 When a change touches the agent graph (nodes/edges), the API contract (request/response shapes, endpoints, SSE events), env vars/config, or the top-level project structure, update the relevant living docs in the same change: `README.md`, `CONTRIBUTING.md`, `CONTEXT.md`.
