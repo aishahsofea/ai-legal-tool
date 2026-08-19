@@ -10,11 +10,11 @@ import contextlib
 import os
 from functools import lru_cache
 
-from langgraph._internal._runnable import RunnableCallable
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, StateGraph
 from langgraph.store.memory import InMemoryStore
 
+from agent._runnable import RunnableCallable
 from agent.nodes.citation_validator import citation_validator_node
 from agent.nodes.clarify import clarify_node
 from agent.nodes.contextualize import acontextualize_node, contextualize_node
