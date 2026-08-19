@@ -2,21 +2,21 @@
 
 > Ask about Malaysian legislation in English, Bahasa Malaysia, or a mix of both — and get an answer grounded in the actual statute text, with citations that deep-link to the exact page of the official PDF.
 
-A LangGraph agent over a pgvector corpus of section-level chunks scraped from the
-[AGC portal](https://lom.agc.gov.my). It cites every legal claim, never gives legal
-advice, and hands off to a human lawyer when a query is about a specific client situation.
+A LangGraph agent that answers over a pgvector corpus of section-level chunks scraped from the
+[AGC portal](https://lom.agc.gov.my). It cites every legal claim. It never gives legal
+advice. If a query is about a specific client situation, it hands off to a human lawyer.
 
 **Stack:** LangGraph · FastAPI (Railway) · Next.js (Vercel) · Postgres + pgvector (Supabase) · OpenAI `text-embedding-3-small` · GPT-4.1 — provider-agnostic via `agent/llm_factory.py` (Claude/Gemini swappable; Claude runs the eval judge).
 
 ## Highlights
 
-- Every response cites Act + section + PDF page. A citation opens an in-app **Citation Receipt** whenever its retrieved chunk carries a verified immutable document/extraction identity; otherwise it falls back to the Official Source Link.
-- Bilingual: handles English, Bahasa Malaysia, and code-switched queries, retrieving across EN and BM chunks at once.
-- A supervisor blocks legal-advice phrasing, requires a disclaimer, and escalates client-specific questions to a human before retrieval even starts.
-- Agentic retrieval (optional): a ReAct agent chooses between semantic search and exact-section lookup and re-searches on weak hits, falling back to a deterministic pgvector path so it never retrieves less than that path would.
-- Selective reference following (optional): explicit reference questions may add one bounded, promoted-graph hop after an exact retrieved anchor. Off by default and invisible otherwise; graph failures leave normal retrieval untouched.
-- Memory: server-side per-thread history, plus optional cross-thread semantic memory that remembers a practitioner's preferences and recurring topics.
-- Evaluated: a hand-validated benchmark with deterministic (L1) assertions and an LLM judge (L2), gated in CI.
+- Every response cites Act + section + PDF page. If the retrieved chunk has a verified, immutable document/extraction identity, the citation opens an in-app **Citation Receipt**. Otherwise it falls back to the Official Source Link.
+- Bilingual: handles English, Bahasa Malaysia, and code-switched queries. It retrieves across EN and BM chunks at the same time.
+- A supervisor blocks legal-advice phrasing, requires a disclaimer, and escalates client-specific questions to a human — before retrieval even starts.
+- Agentic retrieval (optional): a ReAct agent picks between semantic search and exact-section lookup, and re-searches on weak hits. It falls back to a deterministic pgvector path, so it never retrieves less than that path would.
+- Selective reference following (optional): for a question that explicitly asks about a reference, the agent can take one bounded hop through the promoted reference graph, after it has already retrieved an exact anchor. Off by default, and invisible when off. If the graph fails, normal retrieval is unaffected.
+- Memory: server-side per-thread history, plus an optional cross-thread semantic memory that remembers a practitioner's preferences and recurring topics.
+- Evaluated: a hand-validated benchmark with deterministic checks (L1) and an LLM judge (L2), gated in CI.
 
 ## Quick start
 
@@ -61,7 +61,7 @@ Three paths skip the full pipeline:
 - **clarify** — an un-actionable legal query (a section with no Act) routes to a `clarify` node that pauses the graph with LangGraph's `interrupt()`, asks the user a question, and resumes on `POST /resume` (once per turn). See ADR 0015.
 - **retry** — a `supervisor` violation with a retry remaining (`MAX_RETRIES=1`) loops back before re-running the checks.
 
-The single retry is split by what went wrong. A policy/phrasing violation (advice phrase, missing disclaimer) loops back to `synthesiser` to re-draft against the same chunks. An evidence violation (a citation not in the sources, or an unsupported claim) instead routes — only when `AGENTIC_RETRIEVAL` is on — to `retry_retrieve`, which re-runs the retrieval agent with feedback about the gap. An evidence gap that survives re-retrieval fails closed to the safe fallback.
+The single retry is split by what went wrong. A policy/phrasing violation (advice phrase, missing disclaimer) loops back to `synthesiser`, which re-drafts against the same chunks. An evidence violation (a citation not in the sources, or an unsupported claim) is different: only when `AGENTIC_RETRIEVAL` is on, it routes instead to `retry_retrieve`, which re-runs the retrieval agent with feedback about the gap. If the evidence gap survives re-retrieval, the turn fails closed to the safe fallback.
 
 </details>
 
@@ -110,11 +110,11 @@ The answer is merged with the original query into one self-contained query, so r
 
 ### Citation Receipt API
 
-`data/pdfs/manifest.json` is a deterministic corpus-wide registry generated from scraper metadata and actual bytes: multiple versions/languages per Act, content-derived IDs, historical aliases, extraction identities, coordinate-sidecar hashes, and an explicit active Act/language mapping. `data/corpus/coverage.json` accounts for every locally audited PDF with blocker/remediation details.
+`data/pdfs/manifest.json` is a deterministic, corpus-wide registry, generated from scraper metadata and actual bytes. It tracks multiple versions and languages per Act, content-derived IDs, historical aliases, extraction identities, coordinate-sidecar hashes, and an explicit active Act/language mapping. `data/corpus/coverage.json` accounts for every locally audited PDF, with blocker and remediation details for each.
 
-The current local audit registered 596 canonical reprints from 624 PDFs, plus five additional immutable Act 265 observations used by the reference-graph snapshot catalog (1975, 2001, 2006, 2012, September 2023) — 601 registered documents total. It produced 576 shadow extraction identities, kept the five existing pilots active, and excluded 48 ineligible inputs (28 amendment-only, 15 zero-chunk, 5 scanned). BM-only Acts 144, 152, 194, 220, 228, and 230 are registered as BM.
+The current local audit registered 596 canonical reprints from 624 PDFs. It also registered five additional immutable Act 265 observations used by the reference-graph snapshot catalog (1975, 2001, 2006, 2012, September 2023) — 601 registered documents in total. It produced 576 shadow extraction identities and kept the five existing pilots active. It excluded 48 ineligible inputs: 28 amendment-only, 15 zero-chunk, 5 scanned. BM-only Acts 144, 152, 194, 220, 228, and 230 are registered as BM.
 
-For the normal local/operator path, `python3 -m corpus rollout` does the whole verified rollout in one idempotent command: prepares missing bundles/sidecars, applies the additive database migration, registers identities, embeds only missing extraction runs, and activates only successfully ingested Act/language mappings. Re-running it skips completed work; `--dry-run` previews the plan without mutation. Embedding requests default to a US$1 hard cap per invocation, and oversized source chunks are token-segmented and pooled without changing their immutable receipt identity. Granular lifecycle commands remain available for incident response and controlled partial rollouts.
+For the normal local/operator path, one command — `python3 -m corpus rollout` — does the whole verified rollout. It's idempotent: it prepares missing bundles/sidecars, applies the additive database migration, registers identities, embeds only missing extraction runs, and activates only the Act/language mappings that ingested successfully. Re-running it skips completed work. `--dry-run` previews the plan without changing anything. Embedding requests default to a US$1 hard cap per invocation. Oversized source chunks are split into tokens and pooled back together, without changing their immutable receipt identity. Granular lifecycle commands are still available, for incident response and controlled partial rollouts.
 
 - `GET|HEAD /receipts/{document_id}/pdf` — verified local/proxied bytes or a verified CDN redirect, with immutable cache headers, ETag/304, byte ranges, and CORS.
 - `POST /receipts/{document_id}/locate { evidence_quote?, start_page, extraction_id? }` — strict normalized-token matching against the exact hash-verified coordinate sidecar. Returns `matched`, `not_found`, or `ambiguous`; only `matched` includes rectangles.
@@ -124,28 +124,28 @@ The responsive viewer renders one page at a time, labels the registered source l
 
 ### Statutory reference graph
 
-A separate, deterministic index of explicit cross-references in immutable Employment Act 1955 receipts. Phase 1 remains available through the audited February 2023 alias `act-265-reprint-2023-6fec2f07`. Phase 2 can compare that graph with another independently built and audited consolidated Act 265 snapshot. Phase 3 optionally lets the Retrieval Agent follow a direct published reference when the question explicitly asks what an already-retrieved provision refers to, is subject to/notwithstanding, or what refers to it. Source timeline dates are observation/snapshot labels, not exact legal effective dates.
+A separate, deterministic index of explicit cross-references in immutable Employment Act 1955 receipts. Phase 1 is available through the audited February 2023 alias `act-265-reprint-2023-6fec2f07`. Phase 2 can compare that graph with another independently built and audited consolidated Act 265 snapshot. Phase 3 is optional: it lets the Retrieval Agent follow a direct published reference, but only when the question explicitly asks what an already-retrieved provision refers to, is subject to or notwithstanding, or what refers to it. Source timeline dates are observation/snapshot labels — not exact legal effective dates.
 
-The production API reads validated promoted JSON artifacts as its sole graph source; the additive PostgreSQL tables are an operator-verified mirror. Neither path downloads PDFs, changes active corpus mappings, rebuilds chunks, alters retrieval, or infers a cross-Act target snapshot.
+The production API reads validated, promoted JSON artifacts as its only graph source. The additive PostgreSQL tables are an operator-verified mirror, nothing more. Neither path downloads PDFs, changes active corpus mappings, rebuilds chunks, alters retrieval, or infers a cross-Act target snapshot.
 
-The checked-in acquisition reports record every consolidated Act 265 source. The 2006, 2012, February 2023, and September 2023 graphs are independently audited and promoted. The authoritative 1975 and 2001 receipts are registered but explicitly blocked as scanned/image-only sources whose text layers are below the parsing threshold — no graph data is guessed for them.
+The checked-in acquisition reports record every consolidated Act 265 source. The 2006, 2012, February 2023, and September 2023 graphs are independently audited and promoted. The authoritative 1975 and 2001 receipts are registered, but explicitly blocked: they're scanned/image-only sources whose text layers fall below the parsing threshold. No graph data is guessed for them.
 
 - `GET /reference-graph/status?document_id=...` — Phase 1-compatible availability.
 - `GET /reference-graph/neighborhood?document_id=...&focus_provision_id=...` — one direct one-hop neighborhood; no depth input.
 - `GET /reference-graph/snapshots?act_number=265&language=en` — promoted, audited snapshots only.
 - `GET /reference-graph/compare?base_document_id=...&compare_document_id=...&focus_provision_id=...` — one focused one-hop union classified only as `added`, `removed`, or `unchanged`.
 
-`REFERENCE_GRAPH_ENABLED=on` exposes the base graph. Comparison additionally requires the independently default-off `REFERENCE_GRAPH_COMPARISON_ENABLED=on`; turning comparison off leaves Phase 1 receipts, neighborhoods, and chat untouched. The Citation Inspector's **References** tab and `/reference-graph` lazily instantiate the pinned Cytoscape dependency. The standalone route persists the base, comparison, focus, layout, and overlay mode in the URL while keeping union-node positions fixed across view toggles. A non-promoted or unaudited snapshot is reported as not indexed and never rendered as an empty graph.
+`REFERENCE_GRAPH_ENABLED=on` exposes the base graph. Comparison needs its own flag on top, `REFERENCE_GRAPH_COMPARISON_ENABLED=on` (default off). Turning comparison off leaves Phase 1 receipts, neighborhoods, and chat untouched. The Citation Inspector's **References** tab and `/reference-graph` load the pinned Cytoscape dependency lazily. The standalone route keeps the base, comparison, focus, layout, and overlay mode in the URL, and keeps union-node positions fixed across view toggles. A snapshot that isn't promoted or audited is reported as "not indexed" — never rendered as an empty graph.
 
-`FOLLOW_REFERENCES_ENABLED=on` conditionally binds the internal `follow_references` retrieval tool; it also requires `AGENTIC_RETRIEVAL=1` (accepts `1`, `true`, or `yes`), but deliberately doesn't require `REFERENCE_GRAPH_ENABLED` — public graph UI/API exposure stays independent from internal promoted-artifact consumption. With the flag off, the Retrieval Agent still sees exactly `search_statutes` and `lookup_section` with its pre-Phase-3 prompt.
+`FOLLOW_REFERENCES_ENABLED=on` conditionally binds the internal `follow_references` retrieval tool. It also requires `AGENTIC_RETRIEVAL=1` (accepts `1`, `true`, or `yes`), but deliberately doesn't require `REFERENCE_GRAPH_ENABLED` — public graph UI/API exposure is independent from internal promoted-artifact consumption. With the flag off, the Retrieval Agent still sees exactly `search_statutes` and `lookup_section`, with its pre-Phase-3 prompt.
 
-Following is execution-bounded as well as prompt-bounded: a deterministic intent gate, an exact `document_id` + `extraction_id` anchor already returned by search/lookup, one operation per retrieval run, one direct outgoing/incoming scope, deterministic ordering, and at most five published edges. A section anchor includes references emitted by its audited child provisions, but targets are never followed again. Unresolved candidates are hidden and boundary/unindexed nodes are reported without expansion.
+Following is bounded both by the prompt and at execution time: a deterministic intent gate, an exact `document_id` + `extraction_id` anchor already returned by search/lookup, one operation per retrieval run, one direct outgoing/incoming scope, deterministic ordering, and at most five published edges. A section anchor includes references from its audited child provisions, but a target is never followed a second time. Unresolved candidates are hidden. Boundary/unindexed nodes are reported without being expanded.
 
-The graph identifies targets; it never supplies answer text or a legal-text citation. Same-Act target text must be retrieved from the anchor's exact document/extraction. A cross-Act target remains a version-neutral Act + provision identity and, if independently found in the active corpus, keeps that target chunk's own provenance without implying it was in force as of the source snapshot. Missing/malformed graphs, snapshot mismatches, unavailable targets, and telemetry failures all fail open to existing search/lookup, synthesis, citations, and PDF receipts.
+The graph only identifies targets — it never supplies answer text or a legal-text citation. Same-Act target text must be retrieved from the anchor's exact document/extraction. A cross-Act target stays a version-neutral Act + provision identity; if it's independently found in the active corpus, it keeps that target chunk's own provenance, and the system never implies it was in force as of the source snapshot. Missing or malformed graphs, snapshot mismatches, unavailable targets, and telemetry failures all fail open — search/lookup, synthesis, citations, and PDF receipts keep working normally.
 
 ### Eval dashboard API
 
-The developer-only `/evals` page is enabled at build time with `NEXT_PUBLIC_EVALS=1`. It uses a dedicated corpus configured by `EVALS_DATABASE_URL`; eval runs never fall back to the app's `DATABASE_URL`.
+The developer-only `/evals` page is enabled at build time with `NEXT_PUBLIC_EVALS=1`. It uses a dedicated corpus, configured by `EVALS_DATABASE_URL`. Eval runs never fall back to the app's `DATABASE_URL`.
 
 - `GET /evals/coverage` — static dataset counts and fixed coverage-gap flags, plus a best-effort eval-corpus staleness check.
 - `POST /evals/run { subset }` — stream one subset (`"smoke"`, `"all"`, category, scenario, or case ID) from an isolated subprocess. SSE events are `run_start`, `case_start`, `case_result`, `run_summary`, `error`, and `done`.
@@ -156,8 +156,8 @@ The server refuses stale corpora, prevents concurrent runs, and terminates a run
 
 ### Memory
 
-- **Conversation history** is kept server-side in a LangGraph checkpointer keyed by `thread_id` — the client never resends prior turns. `DATABASE_URL` set → `PostgresSaver`; otherwise an in-process `MemorySaver`. History is trimmed to a token budget (`MAX_HISTORY_TOKENS`, default 4000) in whole turns, oldest first (ADR 0008).
-- **Semantic memory** (cross-thread, off by default) remembers a practitioner across threads — their durable preferences and recurring topics, scoped by `user_id`. A background write path extracts them, `recall` reads them back as soft framing hints (never cited, never treated as fact), and a maintenance path keeps the namespace bounded. Confidential client/matter facts are excluded by construction. Each path has its own fail-open flag (`SEMANTIC_MEMORY_RECALL` / `_EXTRACT` / `_PRUNE`). See [CONTEXT.md](CONTEXT.md) and ADR 0010/0012.
+- **Conversation history** is kept server-side, in a LangGraph checkpointer keyed by `thread_id` — the client never resends prior turns. If `DATABASE_URL` is set, it uses `PostgresSaver`; otherwise an in-process `MemorySaver`. History is trimmed to a token budget (`MAX_HISTORY_TOKENS`, default 4000), in whole turns, oldest first (ADR 0008).
+- **Semantic memory** (cross-thread, off by default) remembers a practitioner across threads: their durable preferences and recurring topics, scoped by `user_id`. A background path writes them; `recall` reads them back as soft framing hints — never cited, never treated as fact. A separate maintenance path keeps the namespace bounded. Confidential client/matter facts are excluded by construction. Each path has its own fail-open flag: `SEMANTIC_MEMORY_RECALL`, `SEMANTIC_MEMORY_EXTRACT`, `SEMANTIC_MEMORY_PRUNE`. See [CONTEXT.md](CONTEXT.md) and ADR 0010/0012.
 
 ## Docs & data
 
@@ -169,15 +169,15 @@ The server refuses stale corpora, prevents concurrent runs, and terminates a run
 
 ### Eval harness
 
-`evals/dataset.json` holds 50 hand-validated cases for the Evidence Act 1950, Penal Code, PDPA 2010,
-Companies Act 2016, Employment Act 1955, plus escalation cases that must be blocked. A GitHub Actions
+`evals/dataset.json` holds 50 hand-validated cases, covering the Evidence Act 1950, Penal Code, PDPA 2010,
+Companies Act 2016, and Employment Act 1955, plus escalation cases that must be blocked. A GitHub Actions
 workflow (`.github/workflows/evals.yml`, manually triggered) runs a 10-case smoke eval against the
-GPT-4.1 defaults and posts the judge pass rate and key L1 metrics as a PR comment — failing if the
+GPT-4.1 defaults, then posts the judge pass rate and key L1 metrics as a PR comment. It fails if the
 pass rate drops below 80%. The gated `/evals` dashboard adds static coverage analysis, interactive
 subset runs, per-case drill-down, and a per-scenario summary. See [CONTRIBUTING.md](CONTRIBUTING.md)
 for dedicated eval-database setup and local usage.
 
-`evals/reference_follow_dataset.json` is the separate Phase 3 enablement gate: it asserts lookup-before-follow ordering, at most one follow call, positive/incoming selection, and non-invocation for ordinary exact, topical, broad, and unrelated-Act queries. It fails fast unless both retrieval flags are explicitly on.
+`evals/reference_follow_dataset.json` is the separate Phase 3 enablement gate. It asserts lookup-before-follow ordering, at most one follow call, positive/incoming selection, and no invocation at all for ordinary exact, topical, broad, and unrelated-Act queries. It fails fast unless both retrieval flags are explicitly on.
 
 <details>
 <summary><strong>Project structure</strong></summary>
