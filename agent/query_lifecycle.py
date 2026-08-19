@@ -10,6 +10,7 @@ from collections.abc import AsyncIterator
 from langchain_core.tracers.run_collector import RunCollectorCallbackHandler
 from langgraph.types import Command
 
+from agent.feature_flags import flag_enabled
 from agent.graph import graph
 from agent.memory.extractor import schedule_extraction
 from agent.memory.pruner import schedule_pruning
@@ -37,10 +38,6 @@ def _turn_input(query: str) -> dict:
     return {"query": query}
 
 
-def _flag(name: str) -> bool:
-    return os.getenv(name, "").lower() in ("1", "true", "yes", "on")
-
-
 def _config(
     thread_id: str,
     user_id: str | None = None,
@@ -60,10 +57,10 @@ def _config(
         "thread_id": thread_id,
         "user_id": user_id or "anonymous",
         "source": source,
-        "agentic_retrieval": _flag("AGENTIC_RETRIEVAL"),
-        "follow_references": _flag("FOLLOW_REFERENCES_ENABLED"),
-        "semantic_recall": _flag("SEMANTIC_MEMORY_RECALL"),
-        "semantic_extract": _flag("SEMANTIC_MEMORY_EXTRACT"),
+        "agentic_retrieval": flag_enabled("AGENTIC_RETRIEVAL"),
+        "follow_references": flag_enabled("FOLLOW_REFERENCES_ENABLED"),
+        "semantic_recall": flag_enabled("SEMANTIC_MEMORY_RECALL"),
+        "semantic_extract": flag_enabled("SEMANTIC_MEMORY_EXTRACT"),
         "checkpointer": "memory" if memory_checkpointer else "postgres",
     }
     flag_tags = [

@@ -16,11 +16,11 @@ deliberate, separate pass.
 import asyncio
 import logging
 import math
-import os
 from datetime import datetime, timezone
 
 from langgraph.store.base import BaseStore, SearchItem
 
+from agent.feature_flags import flag_enabled
 from agent.memory import stats
 
 logger = logging.getLogger(__name__)
@@ -43,7 +43,7 @@ _LOAD_LIMIT = 1000         # ceiling on items pulled for one pass
 
 
 def _enabled() -> bool:
-    return os.getenv("SEMANTIC_MEMORY_PRUNE", "").strip().lower() == "on"
+    return flag_enabled("SEMANTIC_MEMORY_PRUNE")
 
 
 def _kind(item: SearchItem) -> str:

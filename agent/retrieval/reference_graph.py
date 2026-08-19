@@ -11,6 +11,7 @@ from pathlib import Path
 from threading import Lock
 from typing import Any, Literal, TypedDict
 
+from agent.feature_flags import flag_enabled
 from agent.retrieval.search import (
     exact_section_lookup,
     exact_section_lookup_for_document,
@@ -28,7 +29,6 @@ logger = logging.getLogger(__name__)
 
 ROOT = Path(__file__).resolve().parents[2]
 MAX_REFERENCE_EDGES = 5
-_TRUE_VALUES = {"1", "true", "yes", "on"}
 _PROVISION_SECTION_RE = re.compile(r"(?:^|/)section:([^/]+)", re.IGNORECASE)
 _PROVISION_ACT_RE = re.compile(r"^act:([^/]+)", re.IGNORECASE)
 
@@ -56,14 +56,9 @@ class RetrievalReferenceContext(TypedDict):
     follow_guard: FollowOnceGuard
 
 
-def parse_feature_flag(value: str | None) -> bool:
-    """Parse the repository's accepted true spellings; unknown values stay off."""
-    return str(value or "").strip().casefold() in _TRUE_VALUES
-
-
 def follow_references_enabled() -> bool:
     """The internal retrieval flag is independent of public graph UI/API flags."""
-    return parse_feature_flag(os.getenv("FOLLOW_REFERENCES_ENABLED"))
+    return flag_enabled("FOLLOW_REFERENCES_ENABLED")
 
 
 _REFERENCE_INTENT_PATTERNS = (

@@ -14,6 +14,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, StateGraph
 from langgraph.store.memory import InMemoryStore
 
+from agent.feature_flags import flag_enabled
 from agent._runnable import RunnableCallable
 from agent.nodes.citation_validator import citation_validator_node
 from agent.nodes.clarify import clarify_node
@@ -87,7 +88,7 @@ def _retry_retrieve_node(state: AgentState) -> dict:
 
 
 def _agentic_retrieval_enabled() -> bool:
-    return os.getenv("AGENTIC_RETRIEVAL", "").lower() in ("1", "true", "yes")
+    return flag_enabled("AGENTIC_RETRIEVAL")
 
 
 def _route_from_supervisor(state: AgentState) -> str:
@@ -210,7 +211,7 @@ def _select_retriever_node():
     retriever for the ReAct agent (agent/retrieval/agent.py); the "retriever" node
     id and its edges are unchanged, and the agent wrapper fails open to the
     deterministic path so the graph shape and safety net are preserved."""
-    if os.getenv("AGENTIC_RETRIEVAL", "").lower() in ("1", "true", "yes"):
+    if flag_enabled("AGENTIC_RETRIEVAL"):
         return agentic_retriever_node
     return retriever_node
 

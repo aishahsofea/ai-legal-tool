@@ -35,10 +35,10 @@ in either execution mode.
 import asyncio
 import json
 import logging
-import os
 
 from langgraph.store.base import BaseStore, SearchItem
 
+from agent.feature_flags import flag_enabled
 from agent.memory import stats
 from agent.state import AgentState
 
@@ -73,7 +73,7 @@ _pending: set[asyncio.Task] = set()
 
 
 def _enabled() -> bool:
-    return os.getenv("SEMANTIC_MEMORY_RECALL", "").strip().lower() == "on"
+    return flag_enabled("SEMANTIC_MEMORY_RECALL")
 
 
 def _user_id(config) -> str | None:
