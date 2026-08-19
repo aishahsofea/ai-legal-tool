@@ -2,9 +2,9 @@
 
 Date: 2026-07-05
 
-Citation checking is split into **two concerns with two mechanisms**: citation *presence and reality* is a deterministic check over the synthesiser's **structured `citations`** list, and citation *support* (does the cited section actually back the claim) is an LLM grounding check. Neither concern is enforced by matching **citation format in prose** any longer. The prose-format regexes in `supervisor` and `citation_validator` are removed.
+Citation checking is split into **two concerns with two mechanisms**. Citation *presence and reality* is a deterministic check over the synthesiser's **structured `citations`** list. Citation *support* — does the cited section actually back the claim — is an LLM grounding check. Neither is enforced by matching **citation format in prose** any longer; the prose-format regexes in `supervisor` and `citation_validator` are removed.
 
-This reverses an earlier implicit design — that "at least one citation exists" could be asserted deterministically by pattern-matching the answer text — because that regex was silently calibrated to one model's citation style and broke on every phrasing it did not anticipate.
+An earlier implicit design asserted "at least one citation exists" by pattern-matching the answer text. That regex was silently calibrated to one model's citation style, and broke on every phrasing it did not anticipate.
 
 ## Context
 
@@ -12,19 +12,19 @@ The supervisor enforced "Citation required" (Supervisor Rule 2) with `_CITATION_
 
 `citation_validator` carried a second prose regex, `_PROSE_CITATION_RE`, to verify prose citations were mirrored by structured citations. It was brittle in the same way (English-only, adjacency-dependent), though it failed *safe*: an unparsed prose citation was simply not cross-checked, never falsely flagged.
 
-By the time either regex ran, the graph already had a stronger signal. The synthesiser emits `citation_refs`, filtered to only sections that matched a retrieved chunk, and `grounding_check` already walks every claim and its cited section with an LLM. The deterministic prose matching was duplicating — brittlely — work the structured data and the grounding layer do better.
+By the time either regex ran, the graph already had a stronger signal. The synthesiser emits `citation_refs`, filtered to only sections that matched a retrieved chunk, and `grounding_check` already walks every claim and its cited section with an LLM.
 
 ## Decisions
 
 - **Citation presence is checked over structured `citations`, not prose.** A legal answer is "cited" when `state["citations"]` is non-empty. Because those entries are pre-filtered to real, retrieved sections, non-emptiness means "the model named at least one real section." This is model- and language-agnostic: it does not care whether the prose reads `Section 379 of the Penal Code`, `under section 379`, or `seksyen 379`.
 - **Presence lives in `citation_validator`, not the supervisor.** All citation concerns — presence, reality (cited ∈ retrieved), and Act-metadata existence — now live in one node. `supervisor` keeps only prose-pattern policy rules that genuinely belong on the final draft: advice phrases, disclaimer, escalation. `_CITATION_RE` is deleted.
-- **`_PROSE_CITATION_RE` and its prose-extraction helpers are deleted.** The prose↔structured *mirror* check is removed rather than reimplemented. Its core failure mode — the model dropping citations entirely (`citation_refs: []`) — is now caught more robustly by the presence check. The remaining failure modes (a prose citation that is hallucinated or omitted from the structured list) fall to `grounding_check`, which already verifies each load-bearing claim against its cited section.
+- **`_PROSE_CITATION_RE` and its prose-extraction helpers are deleted.** The prose↔structured *mirror* check is removed rather than reimplemented. Its core failure mode — the model dropping citations entirely (`citation_refs: []`) — is now caught more robustly by the presence check. The remaining failure modes (a prose citation that is hallucinated or omitted from the structured list) fall to `grounding_check`.
 - **`_normalise_section` stays.** It uses `re` to parse a section number out of a *structured field value* (`"90A(1)"` → `"90A"`). That is normalising known structured data, not sniffing free prose, and is not what this ADR removes.
 - **Answer-level, not claim-level.** The deterministic rule guarantees the answer cites *something* real. Whether *each individual claim* is supported is owned by `grounding_check`. `CONTEXT.md` Rule 2 is corrected to state this explicitly, so the doc stops promising a claim-level guarantee the deterministic layer never provided.
 
 ## Considered options
 
-- **Broaden `_CITATION_RE` again.** Rejected. This is the third failure of the same kind; each fix re-calibrates to the current model and the next model breaks it. The regex was "deterministic and testable" but silently coupled to Claude's citation style — a property that is a liability, not a guarantee.
+- **Broaden `_CITATION_RE` again.** Rejected. This is the third failure of the same kind; each fix re-calibrates to the current model and the next model breaks it. Its "deterministic and testable" property was a liability, not a guarantee.
 - **Swap Rule 2 to a structured check but keep it in `supervisor`.** Rejected. Smaller diff, but leaves citation logic split across two nodes and the dead regex in place. Consolidating in `citation_validator` gives one node one job.
 - **Keep the mirror check, reimplemented as an LLM check inside `citation_validator`.** Rejected for this change. `grounding_check` is already an LLM walking every claim and its citation; a second LLM mirror pass would duplicate it. Folded the coverage into grounding rather than adding a node.
 - **Add a loose prose sanity token (`section|seksyen \d+`, no Act adjacency) as belt-and-suspenders.** Rejected. Re-imports prose matching to chase a failure mode (structured populated, prose visibly uncited) that does not occur in practice for a legal-answer model.
