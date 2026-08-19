@@ -207,7 +207,7 @@ Rollback is immediate: set `FOLLOW_REFERENCES_ENABLED=off`, restart workers, and
 
 ### Citation Receipt assets and verification
 
-`data/pdfs/manifest.json` is generated, never hand-edited. A changed PDF hash creates a new staged `document_id`; the previous bytes stay addressable, and the active mapping doesn't move until the new extraction is embedded and explicitly activated. Step 3 accepts reprints only, re-observes their bytes even when the source URL is unchanged, validates them, registers them under a content-addressed local/object key. Amendment-only files are individual coverage blockers, never base Acts.
+`data/pdfs/manifest.json` is generated, never hand-edited. A changed PDF hash creates a new staged `document_id`; the previous bytes stay addressable, and the active mapping doesn't move until the new extraction is embedded and explicitly activated. See [docs/data-pipeline.md](docs/data-pipeline.md) (Step 3) for how a PDF gets registered, and [docs/corpus-receipts.md](docs/corpus-receipts.md) for the full identity lifecycle.
 
 Corpus lifecycle commands:
 

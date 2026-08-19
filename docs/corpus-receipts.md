@@ -4,12 +4,11 @@ The receipt system treats source bytes, extraction output, and activation as sep
 
 ## Identity and lifecycle
 
-1. Step 3 re-observes each consolidated reprint, verifies it's an openable PDF, computes SHA-256/size/pages, registers content-addressed bytes plus a source observation. Catches replacements even when AGC reuses a URL. Amendment-only files are blockers, not base Acts.
-2. A changed hash creates `act-<act>-<language>-sha256-<fullhash>` and stays staged. Existing and historical identities stay addressable.
-3. Shadow extraction validates those bytes, computes content hashes/page bounds and a chunk-set hash, writes a deterministic gzip word-coordinate sidecar. The extraction ID binds document, extractor/version, configuration.
-4. Ingestion obtains every embedding before opening the replacement transaction. One transaction: registers metadata, replaces exactly one extraction's chunks, verifies row count, marks the extraction ready. Failures roll back the entire extraction.
-5. Activation atomically switches the `(act_number, language)` mapping, records the previous mapping. Rollback restores that prior document/extraction.
-6. Dual-read retrieval returns an active provenance extraction when one exists for that Act/language, legacy rows otherwise. Only exact provenance rows get receipts — every failure falls back to the official AGC link.
+PDF registration and shadow extraction (Steps 3–4) are covered in [docs/data-pipeline.md](data-pipeline.md). A changed hash there stages a new identity as `act-<act>-<language>-sha256-<fullhash>`; existing and historical identities stay addressable. What the receipt system adds on top:
+
+1. Ingestion obtains every embedding before opening the replacement transaction. One transaction: registers metadata, replaces exactly one extraction's chunks, verifies row count, marks the extraction ready. Failures roll back the entire extraction.
+2. Activation atomically switches the `(act_number, language)` mapping, records the previous mapping. Rollback restores that prior document/extraction.
+3. Dual-read retrieval returns an active provenance extraction when one exists for that Act/language, legacy rows otherwise. Only exact provenance rows get receipts — every failure falls back to the official AGC link.
 
 Deterministic inventory: `data/pdfs/manifest.json`. `data/corpus/coverage.json` holds one row per audited input PDF — status, reason, remediation, effort, re-download/re-extraction flags, official fallback.
 
@@ -32,7 +31,7 @@ python3 -m corpus rollout --dry-run
 python3 -m corpus rollout
 ```
 
-It validates or regenerates missing bundles and sidecars, applies the migration, registers immutable identities, embeds and ingests only missing extractions, activates every successfully verified unambiguous Act/language mapping. A rerun resumes from database and filesystem state — one failed document stays inactive without stopping the rest. Embedding submissions cap at US$1 per invocation by default (`--max-embedding-cost-usd` changes it); automatic API retries stay disabled so the cap actually holds. Source chunks over the embedding model's token limit get segmented, embedded, then their vectors length-weighted and normalized back to one immutable chunk. `--document-id` limits the operation; `--no-activate` leaves successful ingestions in shadow mode.
+Full flag semantics (embedding cost cap, `--document-id`, `--no-activate`, resumability) are in [CONTRIBUTING.md](../CONTRIBUTING.md#4-build-the-knowledge-base-one-time-1-hour).
 
 Production asset upload stays intentionally operator-gated — object-storage credentials, retention, and CDN verification live outside the application:
 
