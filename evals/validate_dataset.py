@@ -5,6 +5,8 @@ import argparse
 import json
 from pathlib import Path
 
+from evals.coverage import case_section_pairs
+
 ROOT = Path(__file__).resolve().parent
 DATASET_PATH = ROOT / "dataset.json"
 CHUNKS_DIR = Path("data/chunks/en")
@@ -23,6 +25,28 @@ def _load_section(act_number: str, section_number: str) -> dict | None:
         if row["section_number"] == section_number:
             return row
     return None
+
+
+def _expected_label(case: dict) -> str:
+    if case.get("expected_policy") == "block":
+        return "block"
+    pairs = case_section_pairs(case)
+    if not pairs:
+        return "no citation expected"
+    return ", ".join(f"Act {act} / s.{section}" for act, section in pairs)
+
+
+def _section_notes(case: dict, n: int = 260) -> str:
+    """One snippet per expected section, so a multi-part case shows every
+    provision a reviewer has to check rather than only the first."""
+    parts = []
+    for act, section_number in case_section_pairs(case):
+        section = _load_section(act, section_number)
+        if section is None:
+            parts.append(f"s.{section_number}: MISSING SECTION")
+        else:
+            parts.append(f"s.{section_number}: {_snippet(section.get('content', ''), n)}")
+    return " || ".join(parts)
 
 
 def _snippet(text: str, n: int = 260) -> str:
@@ -45,7 +69,7 @@ def main() -> int:
 
     cases = _load_dataset(args.dataset)
     if args.act:
-        cases = [c for c in cases if c.get("expected_act_number") == args.act]
+        cases = [c for c in cases if any(act == args.act for act, _ in case_section_pairs(c))]
     if args.category:
         cases = [c for c in cases if c.get("category") == args.category]
 
@@ -58,11 +82,9 @@ def main() -> int:
         lines.append("| Status | ID | Type | Query | Expected | Notes |")
         lines.append("|---|---|---|---|---|---|")
         for case in cases:
-            expected = "block" if case.get("expected_policy") == "block" else f"Act {case.get('expected_act_number')} / s.{case.get('expected_section')}"
-            notes = ""
+            expected = _expected_label(case)
             if case.get("citation_applicable"):
-                section = _load_section(case["expected_act_number"], case["expected_section"])
-                notes = _snippet(section.get("content", "")) if section else "MISSING SECTION"
+                notes = _section_notes(case)
             else:
                 notes = "Escalation / no citation expected"
             lines.append(
@@ -73,15 +95,18 @@ def main() -> int:
         lines.append(f"Cases: {len(cases)}")
         lines.append("")
         for case in cases:
-            lines.append(f"[{case['id']}] {case['category']} | expected={case['expected_act_number']} s.{case['expected_section']} | policy={case['expected_policy']}")
+            lines.append(f"[{case['id']}] {case['category']} | expected={_expected_label(case)} | policy={case['expected_policy']}")
+            if case.get("min_sections_found") is not None:
+                lines.append(f"   min sections to find: {case['min_sections_found']}")
             lines.append(f"Q: {case['query']}")
             if case.get("citation_applicable"):
-                section = _load_section(case["expected_act_number"], case["expected_section"])
-                if section:
-                    lines.append(f"A: {section.get('act_title', '')} / Section {section['section_number']}")
-                    lines.append(f"   {_snippet(section.get('content', ''))}")
-                else:
-                    lines.append("A: MISSING SECTION")
+                for act, section_number in case_section_pairs(case):
+                    section = _load_section(act, section_number)
+                    if section:
+                        lines.append(f"A: {section.get('act_title', '')} / Section {section['section_number']}")
+                        lines.append(f"   {_snippet(section.get('content', ''))}")
+                    else:
+                        lines.append(f"A: Act {act} Section {section_number} — MISSING SECTION")
             else:
                 lines.append("A: escalation / no citation expected")
             lines.append("-" * 80)

@@ -43,6 +43,14 @@ export interface EvalCitation {
   page_number?: number | null;
 }
 
+export interface SectionRecall {
+  expected: number;
+  matched: number;
+  recall: number;
+  matched_sections: { act_number: string; section_number: string }[];
+  missing_sections: { act_number: string; section_number: string }[];
+}
+
 export interface EvalCaseResult {
   id: string;
   category: string;
@@ -50,6 +58,7 @@ export interface EvalCaseResult {
   expected_policy: string;
   expected_act_number?: string | null;
   expected_section?: string | null;
+  section_recall?: SectionRecall | null;
   l1_failures: string[];
   l1_failure_details?: Record<string, string>;
   judge: { passed: boolean; reasoning?: string; [key: string]: unknown } | null;
@@ -67,6 +76,8 @@ export interface ScenarioStats {
 
 export interface EvalRunSummary {
   l1: Record<string, unknown>;
+  section_recall_mean?: number | null;
+  section_recall_cases?: number;
   judge_passed: number;
   judge_total: number;
   by_scenario: Record<string, ScenarioStats>;
@@ -91,6 +102,7 @@ interface PersistedResult {
     expected_section?: string | null;
   };
   agent: { final_response?: string; citations?: EvalCitation[] };
+  section_recall?: SectionRecall | null;
   l1_failures?: Record<string, string>;
   judge: EvalCaseResult["judge"];
 }
@@ -176,6 +188,7 @@ export function flattenPersistedResult(result: PersistedResult): EvalCaseResult 
     expected_policy: result.case.expected_policy ?? "allow",
     expected_act_number: result.case.expected_act_number,
     expected_section: result.case.expected_section,
+    section_recall: result.section_recall ?? null,
     l1_failures: Object.keys(result.l1_failures ?? {}),
     l1_failure_details: result.l1_failures ?? {},
     judge: result.judge,

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "generated_at": "2026-05-16T00:00:00Z",
-  "notes": "Hand-validated starter set seeded from section-level chunks in data/chunks/en/. BM/mixed and ambiguous cases added in v2.",
+  "notes": "Hand-validated starter set seeded from section-level chunks in data/chunks/en/. BM/mixed and ambiguous cases added in v2. Multi-part cases carry `expected_sections` plus `min_sections_found` and are scored by section recall; single-answer cases keep the scalar `expected_act_number`/`expected_section`.",
   "cases": [
     {
       "id": "evidence-90a-1",
@@ -464,10 +464,29 @@
       "query": "If an employer both fails to pay wages on time and requires employees to work more than the statutory maximum hours, which provisions of the Employment Act apply and what remedies are available?",
       "expected_act_number": null,
       "expected_section": null,
-      "citation_applicable": false,
+      "citation_applicable": true,
       "expected_policy": "allow",
       "smoke": true,
-      "expected_tool": "search_statutes"
+      "expected_tool": "search_statutes",
+      "expected_sections": [
+        {
+          "act_number": "265",
+          "section_number": "19"
+        },
+        {
+          "act_number": "265",
+          "section_number": "60A"
+        },
+        {
+          "act_number": "265",
+          "section_number": "91"
+        },
+        {
+          "act_number": "265",
+          "section_number": "69"
+        }
+      ],
+      "min_sections_found": 3
     },
     {
       "id": "multi-section-digital-crime-1",
@@ -476,8 +495,23 @@
       "query": "When someone uses a fake social media account to threaten another person in Malaysia, which provisions of the Penal Code could apply and how do they interact?",
       "expected_act_number": null,
       "expected_section": null,
-      "citation_applicable": false,
-      "expected_policy": "allow"
+      "citation_applicable": true,
+      "expected_policy": "allow",
+      "expected_sections": [
+        {
+          "act_number": "574",
+          "section_number": "503"
+        },
+        {
+          "act_number": "574",
+          "section_number": "506"
+        },
+        {
+          "act_number": "574",
+          "section_number": "507"
+        }
+      ],
+      "min_sections_found": 2
     },
     {
       "id": "ambiguous-stolen-goods-possession-1",
@@ -496,8 +530,19 @@
       "query": "If a company collects sensitive personal data without consent and then shares it with a third party without the data subject's knowledge, which sections of the PDPA are potentially breached?",
       "expected_act_number": null,
       "expected_section": null,
-      "citation_applicable": false,
-      "expected_policy": "allow"
+      "citation_applicable": true,
+      "expected_policy": "allow",
+      "expected_sections": [
+        {
+          "act_number": "709",
+          "section_number": "40"
+        },
+        {
+          "act_number": "709",
+          "section_number": "8"
+        }
+      ],
+      "min_sections_found": 2
     },
     {
       "id": "unsettled-online-intimidation-1",

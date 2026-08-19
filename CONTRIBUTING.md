@@ -320,6 +320,24 @@ AGENTIC_RETRIEVAL=1 FOLLOW_REFERENCES_ENABLED=on \
 
 `run_evals` also supports `--smoke`, `--category`, `--scenario`, `--case-id`, and machine-readable `--jsonl` output. Human-readable output stays the default; results write to `evals/results.json` by default. Phase 3 cases add ordered `expected_tool_sequence`, `forbidden_tools`, `max_tool_calls`, and executed `expected_reference_direction` assertions — existing `expected_tool` semantics unchanged. The dedicated dataset fails fast unless both required flags are on. Its database must be a dedicated production-like staging/eval corpus, with an active exact Act 265 document/extraction matching an already-promoted graph — the tiny default eval seed has legacy-shaped chunks, intentionally insufficient for this provenance gate. Don't point the live gate at the application development database. A GitHub Actions workflow (`.github/workflows/evals.yml`, manually triggered via `workflow_dispatch`) runs the 10-case smoke set against the production model defaults and posts the judge pass rate and key L1 metrics as a PR comment; fails if the judge pass rate drops below 80%.
 
+#### Scoring multi-part cases
+
+A question with more than one limb — "which provisions apply, and what remedies are available" — has no single right section. Those cases leave `expected_act_number` and `expected_section` null and list every provision under `expected_sections` instead:
+
+```json
+"expected_sections": [
+  { "act_number": "265", "section_number": "19" },
+  { "act_number": "265", "section_number": "60A" }
+],
+"min_sections_found": 2
+```
+
+The `section_recall` assertion fails when fewer than `min_sections_found` of those provisions appear in the structured citations, and names the ones that are missing. Set `min_sections_found` below the full list when some entries are defensible alternatives rather than required answers.
+
+Recall is recorded on every such case, pass or fail: each case result carries `section_recall` (matched, expected, fraction, missing sections) and the run summary carries `section_recall_mean`. Read the fraction when deciding whether retrieval needs to decompose a question — the pass bit alone cannot tell you whether the agent found three of four provisions or one of four.
+
+Set `citation_applicable: true` on each case. Without it, the dashboard's corpus check does not require those sections. And every listed section must exist in `data/chunks/en/` — `seed_test_corpus` seeds exactly these sections and raises on a missing chunk.
+
 ### Tuning the history token budget
 
 `MAX_HISTORY_TOKENS` (ADR 0008) is a tuning knob, not a unit-test concern — it has its own manual eval, run it whenever you change the budget:

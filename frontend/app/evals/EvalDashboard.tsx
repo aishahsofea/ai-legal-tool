@@ -98,7 +98,23 @@ function CaseDetails({ result }: { result: EvalCaseResult }) {
           <DetailBlock title="Query"><p>{result.query}</p></DetailBlock>
           <DetailBlock title="Expected">
             <p>Policy: {result.expected_policy}</p>
-            <p>Act {result.expected_act_number ?? "—"} · Section {result.expected_section ?? "—"}</p>
+            {result.section_recall ? (
+              <>
+                <p>
+                  Sections found: {result.section_recall.matched}/{result.section_recall.expected}
+                  {" "}({Math.round(result.section_recall.recall * 100)}%)
+                </p>
+                <p>
+                  Missing: {result.section_recall.missing_sections.length
+                    ? result.section_recall.missing_sections
+                        .map((entry) => `Act ${entry.act_number} §${entry.section_number}`)
+                        .join(" · ")
+                    : "none"}
+                </p>
+              </>
+            ) : (
+              <p>Act {result.expected_act_number ?? "—"} · Section {result.expected_section ?? "—"}</p>
+            )}
           </DetailBlock>
           <DetailBlock title="Actual citations">
             <p>{result.citations.length

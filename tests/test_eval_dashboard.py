@@ -1,5 +1,6 @@
 from evals.coverage import (
     aggregate_scenarios,
+    case_section_pairs,
     coverage_summary,
     missing_section_pairs,
     required_section_pairs,
@@ -162,6 +163,7 @@ def test_jsonl_serializer_exposes_the_documented_case_result_shape():
         "expected_policy": "block",
         "expected_act_number": "56",
         "expected_section": "90A",
+        "section_recall": None,
         "l1_failures": ["expected_section"],
         "l1_failure_details": {"expected_section": "Expected section was absent."},
         "judge": None,
@@ -183,3 +185,30 @@ def test_scenario_aggregation_requires_both_l1_and_judge_to_pass():
         "exact_match": {"passed": 1, "total": 2, "rate": 0.5},
         "mixed_language": {"passed": 0, "total": 1, "rate": 0.0},
     }
+
+
+def test_required_section_pairs_includes_multi_part_expected_sections():
+    case = _case("multi-1", act=None, section=None)
+    case["expected_sections"] = [
+        {"act_number": "265", "section_number": "19"},
+        {"act_number": "Act 265", "section_number": "Section 60a"},
+    ]
+
+    assert required_section_pairs([case]) == {("265", "19"), ("265", "60A")}
+
+
+def test_required_section_pairs_skips_multi_part_case_that_is_not_citation_applicable():
+    case = _case("multi-2", act=None, section=None, citation_applicable=False)
+    case["expected_sections"] = [{"act_number": "265", "section_number": "19"}]
+
+    assert required_section_pairs([case]) == set()
+
+
+def test_case_section_pairs_merges_scalar_and_multi_part_without_duplicates():
+    case = _case("both-1", act="265", section="19")
+    case["expected_sections"] = [
+        {"act_number": "265", "section_number": "19"},
+        {"act_number": "265", "section_number": "60A"},
+    ]
+
+    assert case_section_pairs(case) == [("265", "19"), ("265", "60A")]

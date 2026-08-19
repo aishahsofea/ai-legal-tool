@@ -17,15 +17,31 @@ def _normalized_pair(act_number: Any, section_number: Any) -> tuple[str, str] | 
     return (act, section) if act and section else None
 
 
+def case_section_pairs(case: dict[str, Any]) -> list[tuple[str, str]]:
+    """Every Act/section pair one case expects, scalar and multi-part alike.
+
+    A multi-part case leaves the scalar fields null and lists its provisions in
+    `expected_sections`; reading only the scalar fields would let those sections
+    go unseeded and unchecked.
+    """
+    pairs: list[tuple[str, str]] = []
+    scalar = _normalized_pair(case.get("expected_act_number"), case.get("expected_section"))
+    if scalar:
+        pairs.append(scalar)
+    for entry in case.get("expected_sections") or []:
+        pair = _normalized_pair(entry.get("act_number"), entry.get("section_number"))
+        if pair and pair not in pairs:
+            pairs.append(pair)
+    return pairs
+
+
 def required_section_pairs(cases: Iterable[dict[str, Any]]) -> set[tuple[str, str]]:
     """Return the distinct Act/section pairs required by citation-applicable cases."""
     pairs: set[tuple[str, str]] = set()
     for case in cases:
         if not case.get("citation_applicable"):
             continue
-        pair = _normalized_pair(case.get("expected_act_number"), case.get("expected_section"))
-        if pair:
-            pairs.add(pair)
+        pairs.update(case_section_pairs(case))
     return pairs
 
 

@@ -11,6 +11,8 @@ import psycopg2.extras
 from dotenv import load_dotenv
 from openai import OpenAI
 
+from evals.coverage import case_section_pairs
+
 load_dotenv()
 
 ROOT = Path(__file__).resolve().parent
@@ -48,11 +50,10 @@ def _load_dataset(path: Path) -> list[dict]:
 
 def _load_sections(cases: list[dict]) -> list[dict]:
     wanted = {
-        (case["expected_act_number"], case["expected_section"])
+        pair
         for case in cases
         if case.get("citation_applicable")
-        and case.get("expected_act_number")
-        and case.get("expected_section")
+        for pair in case_section_pairs(case)
     }
 
     by_act: dict[str, dict[str, dict]] = {}

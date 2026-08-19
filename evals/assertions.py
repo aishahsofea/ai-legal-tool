@@ -79,6 +79,92 @@ def check_expected_section(
     )
 
 
+def _citation_keys(citations: list[dict[str, Any]]) -> set[tuple[str, str]]:
+    keys: set[tuple[str, str]] = set()
+    for citation in citations or []:
+        key = canonicalize_citation_key(
+            citation.get("act_number"),
+            citation.get("section_number"),
+        )
+        if all(key):
+            keys.add(key)
+    return keys
+
+
+def _expected_section_keys(
+    expected_sections: list[dict[str, Any]] | None,
+) -> list[tuple[str, str]]:
+    """Canonical keys in dataset order, deduped — the order is what the failure
+    message and the `missing` list are reported in, so it must be stable."""
+    keys: list[tuple[str, str]] = []
+    for entry in expected_sections or []:
+        key = canonicalize_citation_key(
+            entry.get("act_number"),
+            entry.get("section_number"),
+        )
+        if all(key) and key not in keys:
+            keys.append(key)
+    return keys
+
+
+def section_recall(
+    citations: list[dict[str, Any]],
+    expected_sections: list[dict[str, Any]] | None,
+) -> dict[str, Any] | None:
+    """Fraction of a multi-part case's expected provisions that were cited.
+
+    Returned even when the case passes: coverage on multi-part questions is the
+    measurement the assertion exists to produce, and a pass/fail bit alone cannot
+    show whether the agent found three of four provisions or one of four.
+    Returns None when the case declares no `expected_sections`.
+    """
+    expected_keys = _expected_section_keys(expected_sections)
+    if not expected_keys:
+        return None
+    cited = _citation_keys(citations)
+    matched = [key for key in expected_keys if key in cited]
+    missing = [key for key in expected_keys if key not in cited]
+    return {
+        "expected": len(expected_keys),
+        "matched": len(matched),
+        "recall": len(matched) / len(expected_keys),
+        "matched_sections": [
+            {"act_number": act, "section_number": section} for act, section in matched
+        ],
+        "missing_sections": [
+            {"act_number": act, "section_number": section} for act, section in missing
+        ],
+    }
+
+
+def check_section_recall(
+    citations: list[dict[str, Any]],
+    expected_sections: list[dict[str, Any]] | None,
+    min_sections_found: int | None = None,
+) -> str | None:
+    """Fail when fewer than `min_sections_found` expected provisions were cited.
+
+    `min_sections_found` defaults to every listed provision. A case sets it lower
+    when some listed provisions are defensible alternatives rather than required
+    ones — the recall figure still records which were actually found.
+    """
+    recall = section_recall(citations, expected_sections)
+    if recall is None:
+        return None
+    threshold = recall["expected"] if min_sections_found is None else int(min_sections_found)
+    threshold = max(0, min(threshold, recall["expected"]))
+    if recall["matched"] >= threshold:
+        return None
+    missing = ", ".join(
+        f"Section {entry['section_number']} of Act {entry['act_number']}"
+        for entry in recall["missing_sections"]
+    )
+    return (
+        f"Expected at least {threshold} of {recall['expected']} provisions in the "
+        f"structured citations, found {recall['matched']}. Missing: {missing}."
+    )
+
+
 def check_language_register(query: str, response: str) -> str | None:
     """Return None if BM query has BM response markers, or a failure message."""
     query_lower = query.lower()
@@ -177,6 +263,8 @@ def run_assertions(
     expected_section: str | None,
     expected_policy: str,
     db_conn: Any,
+    expected_sections: list[dict[str, Any]] | None = None,
+    min_sections_found: int | None = None,
     tool_trace: list[str] | None = None,
     expected_tool: str | None = None,
     expected_tool_sequence: list[str] | None = None,
@@ -207,6 +295,10 @@ def run_assertions(
     result = check_expected_section(citations, expected_act_number, expected_section)
     if result is not None:
         failures["expected_section"] = result
+
+    result = check_section_recall(citations, expected_sections, min_sections_found)
+    if result is not None:
+        failures["section_recall"] = result
 
     result = check_language_register(query, response)
     if result is not None:
