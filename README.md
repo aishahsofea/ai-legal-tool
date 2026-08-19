@@ -14,6 +14,7 @@ advice, and hands off to a human lawyer** when a query is about a specific clien
 - **Bilingual.** English / Bahasa Malaysia / code-switched queries, retrieving across EN and BM chunks at once.
 - **Guardrails, not vibes.** A supervisor blocks legal-advice phrasing, requires a disclaimer, and escalates client-specific questions to a human before retrieval even starts.
 - **Agentic retrieval (optional).** A ReAct agent chooses between semantic search and exact-section lookup and re-searches on weak hits — failing open to a deterministic pgvector path, so it can never retrieve *less* than the proven path.
+- **Selective reference following (optional).** Only explicit reference questions may add one bounded, promoted-graph hop after an exact retrieved anchor. The default-off tool is invisible otherwise, and graph-only failures leave normal retrieval untouched.
 - **Memory.** Server-side per-thread history, plus optional cross-thread *semantic memory* that remembers a practitioner's preferences and recurring topics.
 - **Evaluated.** A hand-validated benchmark with deterministic (L1) assertions and an LLM judge (L2), gated in CI.
 
@@ -41,7 +42,7 @@ query + thread_id (EN / BM / mixed)
   → start_turn           load thread history, reset per-turn scratch state
   → router               classify (or short-circuit: escalate → hand-off, conversational → warm reply, clarify → ask the user)
   → contextualize        rewrite an elliptical follow-up into a standalone query
-  → retriever            pgvector similarity search over section chunks (or an agentic ReAct agent)
+  → retriever            pgvector section search (or ReAct search/lookup; optionally one selective published-reference hop)
   → recall               surface saved practitioner preferences as framing hints (optional)
   → synthesiser          draft the answer with citations (act, section, page deep-link)
   → citation_validator   reject citations absent from the retrieved sources
@@ -121,7 +122,7 @@ The responsive viewer renders one page at a time, labels the registered source l
 
 ### Statutory reference graph
 
-The graph is a separate, deterministic index of explicit cross-references in immutable Employment Act 1955 receipts. Phase 1 remains available through the audited February 2023 alias `act-265-reprint-2023-6fec2f07`. Phase 2 can compare that graph with another independently built and audited consolidated Act 265 snapshot. Source timeline dates are observation/snapshot labels, not assertions of exact legal effective dates.
+The graph is a separate, deterministic index of explicit cross-references in immutable Employment Act 1955 receipts. Phase 1 remains available through the audited February 2023 alias `act-265-reprint-2023-6fec2f07`. Phase 2 can compare that graph with another independently built and audited consolidated Act 265 snapshot. Phase 3 optionally lets the Retrieval Agent follow a direct published reference when the question explicitly asks what an already-retrieved provision refers to, is subject to/notwithstanding, or what refers to it. Source timeline dates are observation/snapshot labels, not assertions of exact legal effective dates.
 
 The production API reads validated promoted JSON artifacts as its sole graph source; the additive PostgreSQL tables are an operator-verified mirror. Neither path downloads PDFs, changes active corpus mappings, rebuilds chunks, alters retrieval, or infers a cross-Act target snapshot.
 
@@ -133,6 +134,12 @@ The checked-in acquisition reports record every consolidated Act 265 source. The
 - `GET /reference-graph/compare?base_document_id=...&compare_document_id=...&focus_provision_id=...` — one focused one-hop union classified only as `added`, `removed`, or `unchanged`.
 
 `REFERENCE_GRAPH_ENABLED=on` exposes the base graph. Comparison additionally requires the independently default-off `REFERENCE_GRAPH_COMPARISON_ENABLED=on`; turning comparison off leaves Phase 1 receipts, neighborhoods, and chat untouched. The Citation Inspector’s **References** tab and `/reference-graph` lazily instantiate the pinned Cytoscape dependency. The standalone route persists the base, comparison, focus, layout, and overlay mode in the URL while keeping union-node positions fixed across view toggles. A non-promoted or unaudited snapshot is reported as not indexed and never rendered as an empty graph.
+
+`FOLLOW_REFERENCES_ENABLED=on` conditionally binds the internal `follow_references` retrieval tool; it also requires `AGENTIC_RETRIEVAL=1` (the existing retrieval flag accepts `1`, `true`, or `yes`), but deliberately does **not** require `REFERENCE_GRAPH_ENABLED`. Public graph UI/API exposure therefore remains independent from internal promoted-artifact consumption. With the flag off, the Retrieval Agent still sees exactly `search_statutes` and `lookup_section` with its pre-Phase-3 prompt.
+
+Following is execution-bounded as well as prompt-bounded: a deterministic intent gate, an exact `document_id` + `extraction_id` anchor already returned by search/lookup, one operation per retrieval run, one direct outgoing/incoming scope, deterministic ordering, and at most five published edges. A section anchor includes references emitted by its audited child provisions, but targets are never followed again. Unresolved candidates are hidden and boundary/unindexed nodes are reported without expansion.
+
+The graph identifies targets; it never supplies answer text or a legal-text citation. Same-Act target text must be retrieved from the anchor’s exact document/extraction. A cross-Act target remains a version-neutral Act + provision identity and, if independently found in the active corpus, keeps that target chunk’s own provenance without implying it was in force as of the source snapshot. Missing/malformed graphs, snapshot mismatches, unavailable targets, and telemetry failures all fail open to existing search/lookup, synthesis, citations, and PDF receipts.
 
 ### Eval dashboard API
 
@@ -166,7 +173,10 @@ workflow (`.github/workflows/evals.yml`, manually triggered) runs a 10-case smok
 GPT-4.1 defaults and posts the judge pass rate and key L1 metrics as a PR comment — failing if the
 pass rate drops below 80%. The gated `/evals` dashboard adds static coverage analysis, interactive
 subset runs, per-case drill-down, and a per-scenario summary. See [CONTRIBUTING.md](CONTRIBUTING.md)
-for dedicated eval-database setup and local usage.
+for dedicated eval-database setup and local usage. `evals/reference_follow_dataset.json` is the
+separate Phase 3 enablement gate: it asserts lookup-before-follow ordering, at most one follow call,
+positive/incoming selection, and non-invocation for ordinary exact, topical, broad, and unrelated-Act
+queries. It fails fast unless both retrieval flags are explicitly on.
 
 <details>
 <summary><strong>Project structure</strong></summary>

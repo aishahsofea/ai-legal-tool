@@ -24,6 +24,7 @@ class BuildFeedbackTests(unittest.TestCase):
         self.assertEqual(fb["fallback_delivered"], 0.0)
         self.assertEqual(fb["escalated"], 0.0)
         self.assertEqual(fb["query_type"], "topical")
+        self.assertEqual(fb["reference_follow_calls"], 0.0)
 
     def test_violations_and_fallback(self):
         # Unresolved violations => delivered_response is the safe fallback.
@@ -51,6 +52,36 @@ class BuildFeedbackTests(unittest.TestCase):
         fb = build_feedback({})
         self.assertEqual(fb["passed"], 1.0)
         self.assertEqual(fb["num_citations"], 0.0)
+
+    def test_reference_follow_metrics_are_low_cardinality_numeric_scores(self):
+        fb = build_feedback({
+            "reference_metrics": {
+                "calls": 1,
+                "skipped": 0,
+                "disabled": 0,
+                "unavailable": 1,
+                "edges_considered": 7,
+                "edges_returned": 5,
+                "targets_looked_up": 4,
+                "targets_resolved": 3,
+                "targets_failed": 1,
+                "boundary_targets": 2,
+                "fail_open": 1,
+            },
+        })
+        self.assertEqual(fb["reference_follow_calls"], 1.0)
+        self.assertEqual(fb["reference_follow_unavailable"], 1.0)
+        self.assertEqual(fb["reference_edges_returned"], 5.0)
+        self.assertEqual(fb["reference_targets_resolved"], 3.0)
+        self.assertEqual(fb["reference_boundary_targets"], 2.0)
+        self.assertEqual(fb["reference_fail_open"], 1.0)
+        reference_scores = {
+            key: value
+            for key, value in fb.items()
+            if key.startswith("reference_")
+        }
+        self.assertTrue(all(isinstance(value, float) for value in reference_scores.values()))
+        self.assertFalse(any("text" in key or "content" in key for key in reference_scores))
 
 
 class EmitFeedbackTests(unittest.TestCase):
@@ -124,6 +155,12 @@ class ConfigTests(unittest.TestCase):
         self.assertEqual(cfg["metadata"]["user_id"], "anonymous")
         self.assertEqual(cfg["metadata"]["source"], "eval")
         self.assertIn("source:eval", cfg["tags"])
+
+    def test_follow_reference_flag_is_low_cardinality_metadata_and_tag(self):
+        with patch.dict("os.environ", {"FOLLOW_REFERENCES_ENABLED": "on"}):
+            cfg = _config("t1", "u1")
+        self.assertTrue(cfg["metadata"]["follow_references"])
+        self.assertIn("follow_references", cfg["tags"])
 
     def test_collector_added_to_callbacks(self):
         sentinel = object()

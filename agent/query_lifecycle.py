@@ -61,11 +61,21 @@ def _config(
         "user_id": user_id or "anonymous",
         "source": source,
         "agentic_retrieval": _flag("AGENTIC_RETRIEVAL"),
+        "follow_references": _flag("FOLLOW_REFERENCES_ENABLED"),
         "semantic_recall": _flag("SEMANTIC_MEMORY_RECALL"),
         "semantic_extract": _flag("SEMANTIC_MEMORY_EXTRACT"),
         "checkpointer": "memory" if memory_checkpointer else "postgres",
     }
-    flag_tags = [k for k in ("agentic_retrieval", "semantic_recall", "semantic_extract") if metadata[k]]
+    flag_tags = [
+        key
+        for key in (
+            "agentic_retrieval",
+            "follow_references",
+            "semantic_recall",
+            "semantic_extract",
+        )
+        if metadata[key]
+    ]
     config: dict = {
         "configurable": {"thread_id": thread_id, "user_id": user_id},
         "metadata": metadata,
@@ -141,13 +151,16 @@ def run_query(query: str, thread_id: str, user_id: str | None = None) -> QueryRe
     state = _fail_closed_if_violations(state)
     emit_feedback(root_run_id(collector), state)
 
-    return {
+    result: QueryResult = {
         "query_type": state.get("query_type", ""),
         "response": _response_text(state),
         "citations": state.get("citations", []),
         "violations": state.get("violations", []),
         "tool_trace": state.get("tool_trace", []),
     }
+    if state.get("reference_trace"):
+        result["reference_trace"] = state["reference_trace"]
+    return result
 
 
 async def _drive_query_stream(

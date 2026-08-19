@@ -75,6 +75,117 @@ class SearchHelperTests(unittest.TestCase):
         self.assertIn("current.act_number = c.act_number", predicate)
         self.assertIn("current.language = c.language", predicate)
 
+    def test_exact_document_wrapper_requires_both_provenance_identifiers(self):
+        with patch.object(search, "exact_section_lookup", return_value=[]) as lookup:
+            result = search.exact_section_lookup_for_document(
+                "60D",
+                act_number="265",
+                document_id="document",
+                extraction_id="extraction",
+            )
+        self.assertEqual(result, [])
+        lookup.assert_called_once_with(
+            "60D",
+            act_number="265",
+            document_id="document",
+            extraction_id="extraction",
+        )
+
+        with patch.object(search, "exact_section_lookup") as lookup:
+            self.assertEqual(search.exact_section_lookup_for_document(
+                "60D",
+                act_number="265",
+                document_id="",
+                extraction_id="extraction",
+            ), [])
+        lookup.assert_not_called()
+
+    def test_exact_document_lookup_adds_identity_filters_to_active_corpus_query(self):
+        class Cursor:
+            def __init__(self):
+                self.calls = []
+                self._schema_check = False
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                return False
+
+            def execute(self, sql, params=None):
+                self.calls.append((str(sql), params))
+                self._schema_check = "to_regclass" in str(sql)
+
+            def fetchone(self):
+                return {"available": True}
+
+            def fetchall(self):
+                return [{
+                    "act_number": "265",
+                    "section_number": "60D",
+                    "document_id": "document",
+                    "extraction_id": "extraction",
+                }]
+
+        class Connection:
+            def __init__(self):
+                self.cursor_value = Cursor()
+
+            def cursor(self, **_kwargs):
+                return self.cursor_value
+
+            def close(self):
+                pass
+
+        connection = Connection()
+        with patch.dict(os.environ, {"CORPUS_RETRIEVAL_MODE": "dual"}), \
+             patch.object(search.psycopg2, "connect", return_value=connection), \
+             patch.object(search, "attach_pdf_urls", side_effect=lambda rows: rows):
+            rows = search.exact_section_lookup_for_document(
+                "60D",
+                act_number="265",
+                document_id="document",
+                extraction_id="extraction",
+            )
+
+        self.assertEqual(len(rows), 1)
+        sql, params = connection.cursor_value.calls[-1]
+        self.assertIn("c.document_id = %s", sql)
+        self.assertIn("c.extraction_id = %s", sql)
+        self.assertIn("active_corpus_documents", sql)
+        self.assertEqual(params[3:5], ("document", "extraction"))
+
+    def test_exact_document_lookup_refuses_legacy_mode(self):
+        class Cursor:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                return False
+
+            def execute(self, _sql, _params=None):
+                pass
+
+            def fetchone(self):
+                return {"available": True}
+
+        class Connection:
+            def cursor(self, **_kwargs):
+                return Cursor()
+
+            def close(self):
+                pass
+
+        with patch.dict(os.environ, {"CORPUS_RETRIEVAL_MODE": "legacy"}), \
+             patch.object(search.psycopg2, "connect", return_value=Connection()):
+            rows = search.exact_section_lookup_for_document(
+                "60D",
+                act_number="265",
+                document_id="document",
+                extraction_id="extraction",
+            )
+        self.assertEqual(rows, [])
+
 
 class RetrieverNodeTests(unittest.TestCase):
     def test_statute_lookup_uses_exact_lookup_without_semantic_when_it_hits(self):

@@ -13,14 +13,23 @@ than the whole graph raising.
 from __future__ import annotations
 
 import logging
+from typing import Literal
 
 from langchain_core.messages import ToolMessage
 from langchain_core.tools import tool
 from langchain_core.tools.base import InjectedToolCallId
 from langgraph.config import get_stream_writer
+from langgraph.prebuilt import ToolRuntime
 from langgraph.types import Command
 from typing_extensions import Annotated
 
+from agent.retrieval.reference_graph import (
+    MAX_REFERENCE_EDGES,
+    FollowOnceGuard,
+    RetrievalReferenceContext,
+    empty_reference_metrics,
+    follow_published_references,
+)
 from agent.retrieval.search import exact_section_lookup, semantic_search
 
 logger = logging.getLogger(__name__)
@@ -54,6 +63,127 @@ def _command(rows: list[dict], summary: str, tool_call_id: str) -> Command:
             "messages": [ToolMessage(summary, tool_call_id=tool_call_id)],
         }
     )
+
+
+def _reference_summary(result: dict) -> str:
+    status = result.get("status", "skipped")
+    reason = result.get("reason", "unknown")
+    metrics = result.get("metrics", {})
+    if status == "followed":
+        targets = ", ".join(
+            f"{target.get('provision_id', '?')} ({target.get('lookup_status', 'unknown')})"
+            for target in result.get("targets", [])[:MAX_REFERENCE_EDGES]
+        )
+        suffix = f" Targets: {targets}." if targets else ""
+        return (
+            "Published one-hop reference follow completed: "
+            f"{metrics.get('edges_returned', 0)} edge(s), "
+            f"{metrics.get('targets_resolved', 0)} citable target(s), "
+            f"{metrics.get('targets_failed', 0)} lookup failure(s), and "
+            f"{metrics.get('boundary_targets', 0)} boundary target(s)."
+            f"{suffix}"
+        )
+    if status == "graph_unavailable":
+        return (
+            "Published reference graph unavailable "
+            f"({reason}); continue with the existing search/lookup evidence."
+        )
+    return (
+        f"Reference follow skipped ({reason}); continue with the existing "
+        "search/lookup evidence."
+    )
+
+
+def _guard_from_context(context) -> FollowOnceGuard | None:
+    if isinstance(context, dict):
+        guard = context.get("follow_guard")
+        return guard if isinstance(guard, FollowOnceGuard) else None
+    return None
+
+
+def _skipped_follow(reason: str) -> dict:
+    metrics = empty_reference_metrics()
+    metrics.update({"calls": 1, "skipped": 1})
+    return {
+        "status": "skipped",
+        "reason": reason,
+        "chunks": [],
+        "metrics": metrics,
+    }
+
+
+@tool
+def follow_references(
+    act: str,
+    provision: str,
+    runtime: ToolRuntime[RetrievalReferenceContext, dict],
+    direction: Literal["outgoing", "incoming", "both"] = "outgoing",
+    relationship_kinds: list[str] | None = None,
+    max_edges: int = MAX_REFERENCE_EDGES,
+    document_id: str | None = None,
+) -> Command:
+    """Follow direct, published statutory references from one exact retrieved anchor.
+
+    Use this only for explicit reference intent (what a provision refers to, is
+    subject to/notwithstanding, what refers to it, or a definition explicitly
+    located elsewhere), and only after ``lookup_section`` or ``search_statutes``
+    has returned the anchor section. Never use it for an ordinary exact lookup,
+    a topical/broad question, or as a default second search. One call is allowed
+    per retrieval run; results are one hop and at most five published edges.
+
+    Args:
+        act: Anchor Act number or recognized Act name/alias.
+        provision: Anchor section/provision, such as ``60D`` or ``section 60D``.
+        direction: Direct outgoing, incoming, or both edges.
+        relationship_kinds: Optional existing graph relationship literals only.
+        max_edges: Requested edge bound; execution hard-caps this at five.
+        document_id: Optional exact document ID already present on the retrieved
+            anchor. Omit it to let execution resolve the unique exact chunk.
+    """
+    state = runtime.state if isinstance(runtime.state, dict) else {}
+    context = runtime.context
+    guard = _guard_from_context(context)
+    if state.get("reference_followed") or guard is None or not guard.claim():
+        result = _skipped_follow("already_followed_this_run")
+    else:
+        follow_allowed = (
+            bool(context.get("follow_allowed"))
+            if isinstance(context, dict)
+            else False
+        )
+        if not follow_allowed:
+            result = _skipped_follow("intent_not_selective")
+        else:
+            result = follow_published_references(
+                act=act,
+                provision=provision,
+                retrieved_chunks=state.get("retrieved_chunks", []),
+                direction=direction,
+                relationship_kinds=relationship_kinds,
+                max_edges=max_edges,
+                document_id=document_id,
+            )
+
+    summary = _reference_summary(result)
+    _emit(
+        "follow_references",
+        "Following direct published statutory references",
+    )
+    trace = {
+        key: value
+        for key, value in result.items()
+        if key not in {"chunks", "metrics"}
+    }
+    return Command(update={
+        "retrieved_chunks": result.get("chunks", []),
+        "reference_followed": True,
+        "reference_trace": [trace],
+        "reference_metrics": result.get("metrics", empty_reference_metrics()),
+        "messages": [ToolMessage(
+            summary,
+            tool_call_id=runtime.tool_call_id or "follow_references",
+        )],
+    })
 
 
 @tool

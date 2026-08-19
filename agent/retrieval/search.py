@@ -48,6 +48,11 @@ _openai = OpenAI()
 _db_url = os.environ["DATABASE_URL"]
 
 
+def get_connection():
+    """Open a connection callers can share across several lookups in one request."""
+    return psycopg2.connect(_db_url)
+
+
 @lru_cache(maxsize=1)
 def _pdf_url_map() -> dict[str, str]:
     """Build official base-Act links from reprints only.
@@ -240,24 +245,35 @@ def exact_section_lookup(
     section: str,
     act_number: str | None = None,
     act_title: str | None = None,
+    *,
+    document_id: str | None = None,
+    extraction_id: str | None = None,
+    conn=None,
 ) -> list[dict]:
     """Exact match on a section number within a specific Act (no embedding call).
 
     Needs a section plus at least one Act hint (`act_number` or `act_title`);
     returns [] otherwise so callers can fall back to semantic search. English
-    chunks and the exact-act match are ordered first.
+    chunks and the exact-act match are ordered first. Pass an open `conn` to
+    reuse a connection across several lookups in one request; the caller then
+    owns closing it.
     """
     section_number = extract_section_number(section) or (section or "").strip().upper()
     if not section_number or not (act_number or act_title):
         return []
+    if bool(document_id) != bool(extraction_id):
+        return []
 
     title_pattern = f"%{act_title}%" if act_title else ""
-    conn = psycopg2.connect(_db_url)
+    owns_conn = conn is None
+    conn = conn or psycopg2.connect(_db_url)
     try:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             mode = _retrieval_mode()
             provenance = _has_provenance_schema(cur)
             if mode == "verified" and not provenance:
+                return []
+            if document_id and (not provenance or mode == "legacy"):
                 return []
             joins = """
                 LEFT JOIN active_corpus_documents a
@@ -266,6 +282,11 @@ def exact_section_lookup(
                 LEFT JOIN corpus_documents d ON d.document_id = c.document_id
             """ if provenance else ""
             provenance_filter = f"AND {_provenance_visibility(mode)}" if provenance else ""
+            identity_filter = ""
+            identity_params: list[str] = []
+            if document_id and extraction_id:
+                identity_filter = "AND c.document_id = %s AND c.extraction_id = %s"
+                identity_params = [document_id, extraction_id]
             prefix = "c." if provenance else ""
             cur.execute(
                 f"""
@@ -276,14 +297,49 @@ def exact_section_lookup(
                 WHERE UPPER({prefix}section_number) = %s
                   AND ({prefix}act_number = %s OR {prefix}act_title ILIKE %s)
                   {provenance_filter}
+                  {identity_filter}
                 ORDER BY
                   CASE WHEN {prefix}act_number = %s THEN 0 ELSE 1 END,
                   CASE WHEN {prefix}language = 'en' THEN 0 ELSE 1 END
                 LIMIT %s
                 """,
-                (section_number, act_number or "", title_pattern, act_number or "", EXACT_TOP_K),
+                (
+                    section_number,
+                    act_number or "",
+                    title_pattern,
+                    *identity_params,
+                    act_number or "",
+                    EXACT_TOP_K,
+                ),
             )
             rows = [dict(row) for row in cur.fetchall()]
     finally:
-        conn.close()
+        if owns_conn:
+            conn.close()
     return attach_pdf_urls(rows)
+
+
+def exact_section_lookup_for_document(
+    section: str,
+    *,
+    act_number: str,
+    document_id: str,
+    extraction_id: str,
+    conn=None,
+) -> list[dict]:
+    """Look up a section only in one active, exact corpus extraction.
+
+    Legacy/unversioned rows and a non-active extraction return no result. This is
+    intentionally stricter than ``exact_section_lookup`` so a graph snapshot can
+    never be silently mapped to whichever corpus version happens to be latest.
+    """
+    if not document_id or not extraction_id:
+        return []
+    kwargs = {"conn": conn} if conn is not None else {}
+    return exact_section_lookup(
+        section,
+        act_number=act_number,
+        document_id=document_id,
+        extraction_id=extraction_id,
+        **kwargs,
+    )

@@ -26,6 +26,7 @@ from agent.nodes.retriever import agentic_retriever_node, retriever_node
 from agent.nodes.supervisor import ESCALATION_RESPONSE, supervisor_node
 from agent.nodes.synthesiser import asynthesiser_node, synthesiser_node
 from agent.query_policy import MAX_RETRIES, delivered_response, strip_disclaimer
+from agent.retrieval.reference_graph import empty_reference_metrics, follow_references_enabled
 from agent.state import AgentState
 
 
@@ -65,8 +66,9 @@ def _increment_retry_node(state: AgentState) -> dict:
 def _build_retrieval_feedback(evidence_violations: list[str]) -> str:
     joined = " ".join(evidence_violations)
     return (
-        "The previous answer had missing or unsupported citations: "
-        f"{joined} Search for statute sections that directly address these points."
+        "The previous answer had missing or unsupported citations to directly "
+        f"referenced provisions: {joined} Search for statute sections that "
+        "directly address these points."
     )
 
 
@@ -79,6 +81,8 @@ def _retry_retrieve_node(state: AgentState) -> dict:
         "violations": [],
         "evidence_violations": [],
         "retrieval_feedback": _build_retrieval_feedback(state.get("evidence_violations", [])),
+        "reference_trace": [],
+        "reference_metrics": empty_reference_metrics(),
     }
 
 
@@ -113,6 +117,8 @@ def _start_turn(state: AgentState) -> dict:
         "recalled_memory": "",
         "retrieval_feedback": "",
         "tool_trace": [],
+        "reference_trace": [],
+        "reference_metrics": empty_reference_metrics(disabled=not follow_references_enabled()),
         "final_response": "",
         "retry_count": 0,
         "clarifying_question": "",

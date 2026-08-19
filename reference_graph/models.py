@@ -9,6 +9,7 @@ GRAPH_SCHEMA_VERSION = 1
 DEFAULT_GRAPH_DOCUMENT_ID = "act-265-reprint-2023-6fec2f07"
 # Backward-compatible import retained for Phase 1 callers and saved tests.
 GRAPH_DOCUMENT_ID = DEFAULT_GRAPH_DOCUMENT_ID
+RELATIONSHIP_KINDS = {"explicit_reference"}
 PROVISION_KINDS = {
     "act", "section", "subsection", "paragraph", "subparagraph", "schedule", "description",
 }

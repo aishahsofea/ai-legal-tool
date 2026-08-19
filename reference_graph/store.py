@@ -5,7 +5,7 @@ import json
 from functools import lru_cache
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from corpus.registry import DEFAULT_MANIFEST_PATH, CorpusRegistry
 
@@ -90,6 +90,70 @@ class ReferenceGraphStore:
         nodes = [provisions[provision_id] for provision_id in sorted(related) if provision_id in provisions]
         return {"status": "available", "document_id": document_id, "focus_provision_id": focus_provision_id,
                 "nodes": nodes, "edges": edges}
+
+    def published_edges(
+        self,
+        document_id: str,
+        focus_provision_id: str,
+        *,
+        direction: Literal["outgoing", "incoming", "both"] = "both",
+        include_descendants: bool = False,
+    ) -> dict[str, Any]:
+        """Return direct promoted edges touching one provision scope.
+
+        This is the read-only authority seam used by internal retrieval. It reads
+        only the validated promoted ``edges`` artifact; unresolved/audit
+        candidates are never returned. ``include_descendants`` lets a section
+        anchor include references emitted by its audited subsections/paragraphs
+        without following any target for a second hop.
+        """
+        if direction not in {"outgoing", "incoming", "both"}:
+            raise ValueError("invalid_reference_direction")
+
+        data = self._load(document_id)
+        provisions = {
+            item["provision_id"]: item
+            for item in data["provisions"]["provisions"]
+        }
+        if focus_provision_id not in provisions:
+            return {
+                "status": "provision_not_found",
+                "document_id": document_id,
+                "focus_provision_id": focus_provision_id,
+            }
+
+        def in_scope(provision_id: str) -> bool:
+            return provision_id == focus_provision_id or (
+                include_descendants and provision_id.startswith(f"{focus_provision_id}/")
+            )
+
+        edges = []
+        for edge in data["edges"]["edges"]:
+            outgoing = in_scope(str(edge["source_provision_id"]))
+            incoming = in_scope(str(edge["target_provision_id"]))
+            if (
+                (direction == "outgoing" and outgoing)
+                or (direction == "incoming" and incoming)
+                or (direction == "both" and (outgoing or incoming))
+            ):
+                edges.append(edge)
+
+        related_ids = {focus_provision_id}
+        for edge in edges:
+            related_ids.add(str(edge["source_provision_id"]))
+            related_ids.add(str(edge["target_provision_id"]))
+        nodes = [
+            provisions[provision_id]
+            for provision_id in sorted(related_ids)
+            if provision_id in provisions
+        ]
+        return {
+            "status": "available",
+            "document_id": document_id,
+            "focus_provision_id": focus_provision_id,
+            "nodes": nodes,
+            "edges": edges,
+        }
 
     def compare(
         self,

@@ -72,10 +72,31 @@ def _build_messages(state: AgentState) -> list[dict]:
     response_language = state.get("response_language", "en")
     recalled_memory = state.get("recalled_memory", "")
 
-    context = "\n\n".join(
-        f"[Section {c['section_number']}, {c['act_title']} (Act {c['act_number']}), source language: {c.get('language', 'unknown')}]\n{c['content']}"
-        for c in chunks
-    )
+    def format_chunk(chunk: dict) -> str:
+        reference = chunk.get("_reference_context")
+        provenance_note = ""
+        if isinstance(reference, dict):
+            related = reference.get("related_provision_id", "the related provision")
+            directions = "/".join(reference.get("directions", [])) or "direct"
+            if reference.get("provenance_scope") == "version_neutral_cross_act_independent_corpus":
+                provenance_note = (
+                    f"\n[Reference context: a published {directions} one-hop edge identified "
+                    f"{related}. This cross-Act identity is version-neutral; this target text "
+                    "comes from its own independently retrieved corpus document and does not "
+                    "establish that target version was in force as of the source snapshot.]"
+                )
+            else:
+                provenance_note = (
+                    f"\n[Reference context: a published {directions} one-hop edge identified "
+                    f"{related}; this target text is from the anchor's exact document and extraction.]"
+                )
+        return (
+            f"[Section {chunk['section_number']}, {chunk['act_title']} "
+            f"(Act {chunk['act_number']}), source language: "
+            f"{chunk.get('language', 'unknown')}]{provenance_note}\n{chunk['content']}"
+        )
+
+    context = "\n\n".join(format_chunk(chunk) for chunk in chunks)
     history_text = "\n\n".join(
         f"{turn['role'].title()}: {turn['content']}" for turn in history
     )

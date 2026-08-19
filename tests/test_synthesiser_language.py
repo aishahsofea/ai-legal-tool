@@ -122,6 +122,61 @@ class SynthesiserDisclaimerTests(unittest.TestCase):
                 self.assertEqual(result["citations"][0]["act_number"], "574")
                 self.assertEqual(result["citations"][0]["section_number"], "34")
 
+    def test_disabled_mode_chunk_prompt_has_no_reference_annotation(self):
+        messages = synthesiser._build_messages({
+            "query": "What does section 34 say?",
+            "retrieved_chunks": [_CHUNK],
+            "history": [],
+            "response_language": "en",
+        })
+        self.assertNotIn("Reference context:", messages[1]["content"])
+
+    def test_cross_act_target_prompt_preserves_version_neutral_provenance(self):
+        chunk = {
+            **_CHUNK,
+            "_reference_context": {
+                "source_document_id": "act-265-en-sha256-source",
+                "source_act_number": "265",
+                "related_provision_id": "act:574/section:34",
+                "directions": ["outgoing"],
+                "provenance_scope": "version_neutral_cross_act_independent_corpus",
+            },
+        }
+        messages = synthesiser._build_messages({
+            "query": "What does the source provision refer to?",
+            "retrieved_chunks": [chunk],
+            "history": [],
+            "response_language": "en",
+        })
+        prompt = messages[1]["content"]
+        self.assertIn("cross-Act identity is version-neutral", prompt)
+        self.assertIn("does not establish that target version was in force", prompt)
+        self.assertEqual(prompt.count(_CHUNK["content"]), 1)
+
+    def test_reference_target_citation_still_uses_only_chunk_receipt_provenance(self):
+        chunk = {
+            **_CHUNK,
+            "_reference_context": {
+                "source_document_id": "act-265-en-sha256-source",
+                "source_act_number": "265",
+                "related_provision_id": "act:574/section:34",
+                "directions": ["outgoing"],
+                "provenance_scope": "version_neutral_cross_act_independent_corpus",
+            },
+        }
+        output = _SynthesiserOutput(
+            answer="Section 34 applies.",
+            citation_refs=[_CitationRef(act_number="574", section_number="34")],
+        )
+        result = synthesiser._finalise(output, {
+            "retrieved_chunks": [chunk],
+            "response_language": "en",
+        })
+        citation = result["citations"][0]
+        self.assertEqual(citation["receipt"]["document_id"], _CHUNK["document_id"])
+        self.assertEqual(citation["receipt"]["extraction_id"], _CHUNK["extraction_id"])
+        self.assertNotIn("source_document_id", citation["receipt"])
+
 
 if __name__ == "__main__":
     unittest.main()

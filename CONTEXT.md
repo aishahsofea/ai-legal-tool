@@ -69,6 +69,10 @@ A comparison identity made from readable source and target provision identities,
 **Reference Graph Comparison**:
 A fixed-position overlay of the union of two independently audited, promoted one-hop neighborhoods for the same Act and language. It reports only observed added, removed, and unchanged **Logical References**, keeps each snapshot’s evidence and receipt separate, and makes no claim about when or why a difference arose.
 
+**Reference Follow Operation**:
+A selective internal **Retrieval Agent** operation that starts only after an existing search/lookup has established one unique exact **Receipt Document** + **Extraction Run** anchor. It reads published edges from that anchor’s promoted **Statutory Reference Graph**, scopes a section to its audited child provisions, orders deterministically, returns at most five direct outgoing/incoming edges, and runs at most once per retrieval run. It never follows a target for a second hop, exposes unresolved candidates, expands a boundary node, or treats graph text/evidence as answerable citation content. Same-Act target text comes from the anchor’s exact extraction; cross-Act targets are version-neutral identities whose independently retrieved text keeps its own corpus provenance and makes no source-snapshot as-of claim. Missing graph/target data fails open.
+_Avoid_: graph search, automatic traversal, graph citation.
+
 **Timeline Entry**:
 A dated version event for an Act: ORIGINAL, REPRINT, REPRINT ONLINE, or AMENDMENTS. Stored in the `timeline` array of each act metadata file.
 
@@ -90,7 +94,7 @@ The history-resolved, self-contained version of a follow-up **Legal Research Que
 _Avoid_: expanded query, resolved query
 
 **Retrieval Agent**:
-The tool-calling form of the retrieval step (flag `AGENTIC_RETRIEVAL`, ADR 0013). Rather than a fixed "exact-lookup-else-vector-search" dispatch, an LLM binds two **Retrieval Tools** — `search_statutes` (semantic search) and `lookup_section` (exact section lookup) — and decides which to call, with what arguments, and whether to search again when results look weak. It gathers sources only; it never drafts the answer. It **fails open** to the deterministic retriever, so it can never return less than the proven path.
+The tool-calling form of the retrieval step (flag `AGENTIC_RETRIEVAL`, ADR 0013). Rather than a fixed "exact-lookup-else-vector-search" dispatch, an LLM normally binds two **Retrieval Tools** — `search_statutes` (semantic search) and `lookup_section` (exact section lookup) — and decides which to call, with what arguments, and whether to search again when results look weak. The independently default-off `FOLLOW_REFERENCES_ENABLED` flag adds `follow_references` and its conditional prompt; when off, the original two-tool surface and prompt remain unchanged. This internal flag requires the Retrieval Agent but not public `REFERENCE_GRAPH_ENABLED`. A deterministic intent gate plus an invocation-scoped/state guard enforce the **Reference Follow Operation** even if the model selects badly or emits parallel duplicate calls. It gathers sources only; it never drafts the answer. It **fails open** to the deterministic retriever, so it can never return less than the proven path.
 _Avoid_: calling it "the retriever" without qualification (that name is the deterministic node); "search agent"
 
 **Re-retrieval**:
@@ -124,6 +128,7 @@ A recommendation about what a specific person should do in a specific legal situ
 - A **Locator Result** maps one selected **Evidence Span** to physical rectangles in the **Receipt Document**; uncertainty maps to no rectangles
 - The **Official Source Link** remains separate from the **Receipt Document** because remote bytes and pagination can change
 - A **Receipt Document** may have zero or one promoted **Statutory Reference Graph** per document version; a graph remains independent from retrieval and chat availability
+- A **Reference Follow Operation** may consume one available promoted graph without exposing the public graph API, but only exact corpus chunks—not graph text—can become answer/citation sources
 - An **Act** may have zero or more **Subsidiary Legislation** items
 - The most recent **Reprint** Timeline Entry is the canonical text used for ingestion
 - A **Legal Research Query** is answered using **Acts** (v1) and eventually **Case Law** (v2)
@@ -167,6 +172,10 @@ node-level trace, the query lifecycle (`agent/query_lifecycle.py`) labels each r
 `user_id`/`thread_id` metadata — and posts the turn's quality outcome as run
 **feedback** (`agent/observability.py`): `passed`, violation/citation counts,
 `retry_count`, `fallback_delivered`, `escalated`, and categorical `query_type`.
+Reference following adds only numeric low-cardinality feedback: calls,
+skipped/disabled/unavailable outcomes, edges considered/returned, targets
+looked up/resolved/failed, boundary targets, and fail-open occurrences. It does
+not log provision text, graph evidence phrases, source content, or query text.
 These are the same signals the **Supervisor Rules** and evidence checks compute, so
 groundedness and pass-rate become chartable over time. Feedback is fail-open and off
 the hot path — it never changes or delays a **Legal Research Query** response.
