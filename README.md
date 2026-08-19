@@ -3,20 +3,20 @@
 > Ask about Malaysian legislation in English, Bahasa Malaysia, or a mix of both — and get an answer grounded in the actual statute text, with citations that deep-link to the exact page of the official PDF.
 
 A LangGraph agent that answers over a pgvector corpus of section-level chunks scraped from the
-[AGC portal](https://lom.agc.gov.my). It cites every legal claim. It never gives legal
-advice. If a query is about a specific client situation, it hands off to a human lawyer.
+[AGC portal](https://lom.agc.gov.my). It cites every legal claim. It never gives legal advice.
+For anything client-specific, it hands off to a human lawyer.
 
 **Stack:** LangGraph · FastAPI (Railway) · Next.js (Vercel) · Postgres + pgvector (Supabase) · OpenAI `text-embedding-3-small` · GPT-4.1 — provider-agnostic via `agent/llm_factory.py` (Claude/Gemini swappable; Claude runs the eval judge).
 
 ## Highlights
 
-- Every response cites Act + section + PDF page. If the retrieved chunk has a verified, immutable document/extraction identity, the citation opens an in-app **Citation Receipt**. Otherwise it falls back to the Official Source Link.
-- Bilingual: handles English, Bahasa Malaysia, and code-switched queries. It retrieves across EN and BM chunks at the same time.
+- Every response cites Act + section + PDF page. A verified chunk opens an in-app **Citation Receipt**; otherwise the citation falls back to the Official Source Link.
+- Bilingual: English, Bahasa Malaysia, and code-switched queries, retrieving EN and BM chunks together.
 - A supervisor blocks legal-advice phrasing, requires a disclaimer, and escalates client-specific questions to a human — before retrieval even starts.
-- Agentic retrieval (optional): a ReAct agent picks between semantic search and exact-section lookup, and re-searches on weak hits. It falls back to a deterministic pgvector path, so it never retrieves less than that path would.
-- Selective reference following (optional): for a question that explicitly asks about a reference, the agent can take one bounded hop through the promoted reference graph, after it has already retrieved an exact anchor. Off by default, and invisible when off. If the graph fails, normal retrieval is unaffected.
-- Memory: server-side per-thread history, plus an optional cross-thread semantic memory that remembers a practitioner's preferences and recurring topics.
-- Evaluated: a hand-validated benchmark with deterministic checks (L1) and an LLM judge (L2), gated in CI.
+- Agentic retrieval (optional): a ReAct agent picks semantic search or exact-section lookup, and re-searches on weak hits. Falls back to a deterministic pgvector path — never retrieves less than that path would.
+- Selective reference following (optional): one bounded hop through the promoted reference graph, only for explicit reference questions, only after an exact anchor is retrieved. Off by default, invisible when off, fails open on graph errors.
+- Memory: server-side per-thread history, plus an optional cross-thread semantic memory for a practitioner's preferences and recurring topics.
+- Evaluated: a hand-validated benchmark, deterministic checks (L1) plus an LLM judge (L2), gated in CI.
 
 ## Quick start
 
@@ -34,8 +34,8 @@ Then `cd frontend && npm install && npm run dev` for the chat UI at `localhost:3
 
 ## How it works
 
-A query carries a `thread_id` and flows through a LangGraph graph: it's classified, retrieved
-against, drafted, then checked for citations, grounding, and policy before it ever reaches the user.
+A query carries a `thread_id` and flows through a LangGraph graph: classified, retrieved
+against, drafted, then checked for citations, grounding, and policy before it reaches the user.
 
 ```text
 query + thread_id (EN / BM / mixed)
@@ -61,7 +61,7 @@ Three paths skip the full pipeline:
 - **clarify** — an un-actionable legal query (a section with no Act) routes to a `clarify` node that pauses the graph with LangGraph's `interrupt()`, asks the user a question, and resumes on `POST /resume` (once per turn). See ADR 0015.
 - **retry** — a `supervisor` violation with a retry remaining (`MAX_RETRIES=1`) loops back before re-running the checks.
 
-The single retry is split by what went wrong. A policy/phrasing violation (advice phrase, missing disclaimer) loops back to `synthesiser`, which re-drafts against the same chunks. An evidence violation (a citation not in the sources, or an unsupported claim) is different: only when `AGENTIC_RETRIEVAL` is on, it routes instead to `retry_retrieve`, which re-runs the retrieval agent with feedback about the gap. If the evidence gap survives re-retrieval, the turn fails closed to the safe fallback.
+The single retry splits on what went wrong. A policy/phrasing violation (advice phrase, missing disclaimer) loops back to `synthesiser` to re-draft against the same chunks. An evidence violation (an uncited claim, or a citation not in the sources) instead routes to `retry_retrieve` — but only when `AGENTIC_RETRIEVAL` is on — which re-runs the retrieval agent with feedback about the gap. An evidence gap that survives re-retrieval fails closed to the safe fallback.
 
 </details>
 
@@ -92,11 +92,11 @@ data: {"type": "done"}
 ```
 
 - **`response`** carries `content`, `violations`, and `citations` — each with `act_number`, `act_title`, `section_number`, `pdf_url` (the official AGC fallback), and `page_number`. A provenance-backed citation also has `receipt: { document_id, extraction_id, evidence: [{ claim, quote }] }`; legacy/unavailable rows omit it.
-- **`tool_call`** (`name`, `summary`) is emitted only on the agentic-retrieval path, once per retrieval tool the agent calls; the frontend renders these in the collapsible PROCESS panel.
-- **`status`** messages track the phase and reflect short-circuits: `"Resolving follow-up..."`, `"Refining response..."` (a retry), `"Escalating to human lawyer..."`, or `"Responding..."` (conversational).
-- **`interrupt`** (`question`, `interrupt_id`) is emitted when the graph pauses to ask the user a clarifying question (see below). The stream ends on the `interrupt`; no `response` follows until you resume.
+- **`tool_call`** (`name`, `summary`) fires only on the agentic-retrieval path, once per retrieval tool call; the frontend renders these in the collapsible PROCESS panel.
+- **`status`** tracks the phase and reflects short-circuits: `"Resolving follow-up..."`, `"Refining response..."` (a retry), `"Escalating to human lawyer..."`, or `"Responding..."` (conversational).
+- **`interrupt`** (`question`, `interrupt_id`) fires when the graph pauses to ask the user a clarifying question (see below). The stream ends there — no `response` follows until you resume.
 
-**Clarification (graph asks you a question):** when a query is un-actionable as written — most often a section number with no Act ("what does section 5 say?") — the router routes to a `clarify` node that calls LangGraph's `interrupt()`. The turn suspends, the `/query` stream emits an `interrupt` event with the `question`, and the graph waits. Answer it with `POST /resume { thread_id, value }`, which streams the continuation of the same turn:
+**Clarification (graph asks you a question):** an un-actionable query — most often a section number with no Act ("what does section 5 say?") — routes to a `clarify` node that calls LangGraph's `interrupt()`. The turn suspends, the `/query` stream emits an `interrupt` event with the `question`, and the graph waits. Answer it with `POST /resume { thread_id, value }`, which streams the continuation of the same turn:
 
 ```bash
 curl -N -X POST http://localhost:8000/resume \
@@ -104,60 +104,41 @@ curl -N -X POST http://localhost:8000/resume \
   -d '{"thread_id": "demo-1", "value": "the Contracts Act 1950"}'
 ```
 
-The answer is merged with the original query into one self-contained query, so retrieval sees the full intent, not just the answer. History records the single merged turn. This is graph-initiated pause — distinct from the user-initiated barge-in below. See ADR 0015.
+The answer merges with the original query into one self-contained query, so retrieval sees the full intent, not just the answer. History records the single merged turn. This is a graph-initiated pause, distinct from the user-initiated barge-in below. See ADR 0015.
 
-**Barge-in (stop a running turn):** `POST /cancel { thread_id }` cancels the in-flight turn for a thread — the Stop button / Esc. Cancellation aborts the live model request and the `/query` SSE stream for that thread ends on its own. A cancelled turn writes nothing — no `response`, no history, no memory — so the next prompt starts clean. Returns `{"status": "cancelled"}` or `{"status": "no_active_run"}`; idempotent. There's one active run per `thread_id`, so a new `POST /query` on the same thread also supersedes any in-flight run — "change my mind, ask something else" needs no explicit cancel. See ADR 0014.
+**Barge-in (stop a running turn):** `POST /cancel { thread_id }` cancels the in-flight turn for a thread — the Stop button / Esc. It aborts the live model request; the `/query` SSE stream for that thread ends on its own. A cancelled turn writes nothing — no `response`, no history, no memory — so the next prompt starts clean. Returns `{"status": "cancelled"}` or `{"status": "no_active_run"}`; idempotent. One active run per `thread_id`, so a new `POST /query` on the same thread also supersedes any in-flight run — no explicit cancel needed to change your mind. See ADR 0014.
 
 ### Citation Receipt API
 
-`data/pdfs/manifest.json` is a deterministic, corpus-wide registry, generated from scraper metadata and actual bytes. It tracks multiple versions and languages per Act, content-derived IDs, historical aliases, extraction identities, coordinate-sidecar hashes, and an explicit active Act/language mapping. `data/corpus/coverage.json` accounts for every locally audited PDF, with blocker and remediation details for each.
+`data/pdfs/manifest.json` is a deterministic, corpus-wide registry of every PDF's identity, version, and language. The current audit: 596 canonical reprints registered, 601 documents total, 48 excluded (amendment-only, zero-chunk, or scanned). Full numbers and the rollout command live in [docs/corpus-receipts.md](docs/corpus-receipts.md); how to run it locally is in [CONTRIBUTING.md](CONTRIBUTING.md#4-build-the-knowledge-base-one-time-1-hour).
 
-The current local audit registered 596 canonical reprints from 624 PDFs. It also registered five additional immutable Act 265 observations used by the reference-graph snapshot catalog (1975, 2001, 2006, 2012, September 2023) — 601 registered documents in total. It produced 576 shadow extraction identities and kept the five existing pilots active. It excluded 48 ineligible inputs: 28 amendment-only, 15 zero-chunk, 5 scanned. BM-only Acts 144, 152, 194, 220, 228, and 230 are registered as BM.
+- `GET|HEAD /receipts/{document_id}/pdf`, `POST /receipts/{document_id}/locate`, `POST /receipts/telemetry` — see [CONTRIBUTING.md](CONTRIBUTING.md#5-start-the-api) for the full signatures.
 
-For the normal local/operator path, one command — `python3 -m corpus rollout` — does the whole verified rollout. It's idempotent: it prepares missing bundles/sidecars, applies the additive database migration, registers identities, embeds only missing extraction runs, and activates only the Act/language mappings that ingested successfully. Re-running it skips completed work. `--dry-run` previews the plan without changing anything. Embedding requests default to a US$1 hard cap per invocation. Oversized source chunks are split into tokens and pooled back together, without changing their immutable receipt identity. Granular lifecycle commands are still available, for incident response and controlled partial rollouts.
-
-- `GET|HEAD /receipts/{document_id}/pdf` — verified local/proxied bytes or a verified CDN redirect, with immutable cache headers, ETag/304, byte ranges, and CORS.
-- `POST /receipts/{document_id}/locate { evidence_quote?, start_page, extraction_id? }` — strict normalized-token matching against the exact hash-verified coordinate sidecar. Returns `matched`, `not_found`, or `ambiguous`; only `matched` includes rectangles.
-- `POST /receipts/telemetry` — accepts a small allowlisted, quote-free frontend failure event.
-
-The responsive viewer renders one page at a time, labels the registered source language, validates locator identity/geometry at runtime, and always keeps the separate "Check latest on AGC" escape hatch. Missing, mismatched, corrupt, ambiguous, or failed provenance never draws a highlight. See [docs/corpus-receipts.md](docs/corpus-receipts.md) for lifecycle and operator commands.
+The viewer renders one page at a time and always keeps the "Check latest on AGC" escape hatch. This is the trust boundary: missing, mismatched, corrupt, ambiguous, or failed provenance never draws a highlight — an uncertain match shows nothing rather than a guess.
 
 ### Statutory reference graph
 
-A separate, deterministic index of explicit cross-references in immutable Employment Act 1955 receipts. Phase 1 is available through the audited February 2023 alias `act-265-reprint-2023-6fec2f07`. Phase 2 can compare that graph with another independently built and audited consolidated Act 265 snapshot. Phase 3 is optional: it lets the Retrieval Agent follow a direct published reference, but only when the question explicitly asks what an already-retrieved provision refers to, is subject to or notwithstanding, or what refers to it. Source timeline dates are observation/snapshot labels — not exact legal effective dates.
+A deterministic index of cross-references inside Employment Act 1955 receipts, in three phases: **Phase 1** live now (audited alias `act-265-reprint-2023-6fec2f07`, Feb 2023), **Phase 2** compares two independently audited snapshots, **Phase 3** (optional) lets the Retrieval Agent follow one published reference when a question explicitly asks about it. Timeline dates label observed snapshots, not exact legal effective dates.
 
-The production API reads validated, promoted JSON artifacts as its only graph source. The additive PostgreSQL tables are an operator-verified mirror, nothing more. Neither path downloads PDFs, changes active corpus mappings, rebuilds chunks, alters retrieval, or infers a cross-Act target snapshot.
+Flags: `REFERENCE_GRAPH_ENABLED` (base graph), `REFERENCE_GRAPH_COMPARISON_ENABLED` (snapshot comparison, needs the base flag too), `FOLLOW_REFERENCES_ENABLED` (binds the agent's `follow_references` tool, needs `AGENTIC_RETRIEVAL=1` too). All default off, all fail open. Full flag semantics, the follow operation's exact constraints (five-edge cap, one hop, deterministic ordering), and the audited-snapshot table are in [CONTRIBUTING.md](CONTRIBUTING.md#statutory-reference-graph-operator-workflow) and [CONTEXT.md](CONTEXT.md).
 
-The checked-in acquisition reports record every consolidated Act 265 source. The 2006, 2012, February 2023, and September 2023 graphs are independently audited and promoted. The authoritative 1975 and 2001 receipts are registered, but explicitly blocked: they're scanned/image-only sources whose text layers fall below the parsing threshold. No graph data is guessed for them.
-
-- `GET /reference-graph/status?document_id=...` — Phase 1-compatible availability.
-- `GET /reference-graph/neighborhood?document_id=...&focus_provision_id=...` — one direct one-hop neighborhood; no depth input.
-- `GET /reference-graph/snapshots?act_number=265&language=en` — promoted, audited snapshots only.
-- `GET /reference-graph/compare?base_document_id=...&compare_document_id=...&focus_provision_id=...` — one focused one-hop union classified only as `added`, `removed`, or `unchanged`.
-
-`REFERENCE_GRAPH_ENABLED=on` exposes the base graph. Comparison needs its own flag on top, `REFERENCE_GRAPH_COMPARISON_ENABLED=on` (default off). Turning comparison off leaves Phase 1 receipts, neighborhoods, and chat untouched. The Citation Inspector's **References** tab and `/reference-graph` load the pinned Cytoscape dependency lazily. The standalone route keeps the base, comparison, focus, layout, and overlay mode in the URL, and keeps union-node positions fixed across view toggles. A snapshot that isn't promoted or audited is reported as "not indexed" — never rendered as an empty graph.
-
-`FOLLOW_REFERENCES_ENABLED=on` conditionally binds the internal `follow_references` retrieval tool. It also requires `AGENTIC_RETRIEVAL=1` (accepts `1`, `true`, or `yes`), but deliberately doesn't require `REFERENCE_GRAPH_ENABLED` — public graph UI/API exposure is independent from internal promoted-artifact consumption. With the flag off, the Retrieval Agent still sees exactly `search_statutes` and `lookup_section`, with its pre-Phase-3 prompt.
-
-Following is bounded both by the prompt and at execution time: a deterministic intent gate, an exact `document_id` + `extraction_id` anchor already returned by search/lookup, one operation per retrieval run, one direct outgoing/incoming scope, deterministic ordering, and at most five published edges. A section anchor includes references from its audited child provisions, but a target is never followed a second time. Unresolved candidates are hidden. Boundary/unindexed nodes are reported without being expanded.
-
-The graph only identifies targets — it never supplies answer text or a legal-text citation. Same-Act target text must be retrieved from the anchor's exact document/extraction. A cross-Act target stays a version-neutral Act + provision identity; if it's independently found in the active corpus, it keeps that target chunk's own provenance, and the system never implies it was in force as of the source snapshot. Missing or malformed graphs, snapshot mismatches, unavailable targets, and telemetry failures all fail open — search/lookup, synthesis, citations, and PDF receipts keep working normally.
+The graph only identifies targets — it never supplies answer text or a citation itself. Same-Act text always comes from the anchor's own extraction; nothing here changes what gets cited.
 
 ### Eval dashboard API
 
-The developer-only `/evals` page is enabled at build time with `NEXT_PUBLIC_EVALS=1`. It uses a dedicated corpus, configured by `EVALS_DATABASE_URL`. Eval runs never fall back to the app's `DATABASE_URL`.
+The developer-only `/evals` page needs `NEXT_PUBLIC_EVALS=1` at build time. It uses a dedicated corpus (`EVALS_DATABASE_URL`) — never falls back to the app's `DATABASE_URL`.
 
-- `GET /evals/coverage` — static dataset counts and fixed coverage-gap flags, plus a best-effort eval-corpus staleness check.
-- `POST /evals/run { subset }` — stream one subset (`"smoke"`, `"all"`, category, scenario, or case ID) from an isolated subprocess. SSE events are `run_start`, `case_start`, `case_result`, `run_summary`, `error`, and `done`.
+- `GET /evals/coverage` — static dataset counts, fixed coverage-gap flags, best-effort eval-corpus staleness check.
+- `POST /evals/run { subset }` — stream one subset (`"smoke"`, `"all"`, category, scenario, or case ID) from an isolated subprocess. SSE events: `run_start`, `case_start`, `case_result`, `run_summary`, `error`, `done`.
 - `POST /evals/cancel` — terminate the single active eval subprocess; returns `cancelled` or `no_active_run`.
-- `GET /evals/results` — return the last `evals/results.json` report, or 404 when no run is available.
+- `GET /evals/results` — last `evals/results.json` report, or 404 when no run is available.
 
-The server refuses stale corpora, prevents concurrent runs, and terminates a run when its browser stream disconnects so an abandoned page can't keep spending tokens.
+The server refuses stale corpora, blocks concurrent runs, and kills a run when its browser stream disconnects — no abandoned page keeps burning tokens.
 
 ### Memory
 
-- **Conversation history** is kept server-side, in a LangGraph checkpointer keyed by `thread_id` — the client never resends prior turns. If `DATABASE_URL` is set, it uses `PostgresSaver`; otherwise an in-process `MemorySaver`. History is trimmed to a token budget (`MAX_HISTORY_TOKENS`, default 4000), in whole turns, oldest first (ADR 0008).
-- **Semantic memory** (cross-thread, off by default) remembers a practitioner across threads: their durable preferences and recurring topics, scoped by `user_id`. A background path writes them; `recall` reads them back as soft framing hints — never cited, never treated as fact. A separate maintenance path keeps the namespace bounded. Confidential client/matter facts are excluded by construction. Each path has its own fail-open flag: `SEMANTIC_MEMORY_RECALL`, `SEMANTIC_MEMORY_EXTRACT`, `SEMANTIC_MEMORY_PRUNE`. See [CONTEXT.md](CONTEXT.md) and ADR 0010/0012.
+- **Conversation history** — server-side, keyed by `thread_id`, trimmed to a token budget (ADR 0008). The client never resends prior turns.
+- **Semantic memory** (cross-thread, off by default) — remembers a practitioner's preferences and recurring topics across threads, as soft framing hints, never cited or treated as fact. Confidential client/matter facts excluded by construction. Flags and mechanics: [CONTRIBUTING.md](CONTRIBUTING.md#2-environment-variables). Full model: [CONTEXT.md](CONTEXT.md) and ADR 0010/0012.
 
 ## Docs & data
 
@@ -169,15 +150,15 @@ The server refuses stale corpora, prevents concurrent runs, and terminates a run
 
 ### Eval harness
 
-`evals/dataset.json` holds 50 hand-validated cases, covering the Evidence Act 1950, Penal Code, PDPA 2010,
-Companies Act 2016, and Employment Act 1955, plus escalation cases that must be blocked. A GitHub Actions
+`evals/dataset.json` holds 50 hand-validated cases: Evidence Act 1950, Penal Code, PDPA 2010,
+Companies Act 2016, Employment Act 1955, plus escalation cases that must be blocked. A GitHub Actions
 workflow (`.github/workflows/evals.yml`, manually triggered) runs a 10-case smoke eval against the
-GPT-4.1 defaults, then posts the judge pass rate and key L1 metrics as a PR comment. It fails if the
+GPT-4.1 defaults and posts the judge pass rate and key L1 metrics as a PR comment — fails if the
 pass rate drops below 80%. The gated `/evals` dashboard adds static coverage analysis, interactive
 subset runs, per-case drill-down, and a per-scenario summary. See [CONTRIBUTING.md](CONTRIBUTING.md)
 for dedicated eval-database setup and local usage.
 
-`evals/reference_follow_dataset.json` is the separate Phase 3 enablement gate. It asserts lookup-before-follow ordering, at most one follow call, positive/incoming selection, and no invocation at all for ordinary exact, topical, broad, and unrelated-Act queries. It fails fast unless both retrieval flags are explicitly on.
+`evals/reference_follow_dataset.json` is the separate Phase 3 enablement gate: asserts lookup-before-follow ordering, at most one follow call, positive/incoming selection, no invocation on ordinary exact/topical/broad/unrelated-Act queries. Fails fast unless both retrieval flags are explicitly on.
 
 <details>
 <summary><strong>Project structure</strong></summary>
@@ -205,11 +186,11 @@ ai-legal-tool/
 ├── ingestion/          # step 5: embed + ingest into pgvector
 ├── evals/              # dataset, coverage logic, L1/L2 checks, runner, eval DB setup, debug tools
 ├── tests/              # unit tests (graph retry, checkpointer memory, ...)
-├── frontend/           # Next.js app-router chat UI (Vercel AI SDK)
-├── migrations/         # additive corpus provenance schema
-├── data/               # scraped corpus + deterministic manifest/coverage and pilot receipt assets
-├── .github/workflows/  # evals.yml smoke run
-└── docs/               # PRD, build-log, ADRs, data-pipeline reference
+├── frontend/            # Next.js app-router chat UI (Vercel AI SDK)
+├── migrations/          # additive corpus provenance schema
+├── data/                 # scraped corpus + deterministic manifest/coverage and pilot receipt assets
+├── .github/workflows/   # evals.yml smoke run
+└── docs/                # PRD, build-log, ADRs, data-pipeline reference
 ```
 
 </details>
