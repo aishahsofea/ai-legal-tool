@@ -50,30 +50,20 @@ FOLLOW_REFERENCES_ENABLED=off
 # CORPUS_CDN_BASE_URL=https://statutes.example.com
 ```
 
-With `LANGSMITH_TRACING=true`, every graph run is traced to LangSmith. The query
-lifecycle also tags each run (`run_name=legal_query`; `source:api`/`source:eval`;
-active feature flags) and attaches `user_id`/`thread_id` metadata, and posts the
-turn's quality signals as run **feedback** — `passed`, `num_violations`,
-`num_evidence_violations`, `retry_count`, `num_citations`, `fallback_delivered`,
-`escalated`, and a categorical `query_type` (`agent/observability.py`). Feedback
-also includes numeric, low-cardinality reference-follow counters (calls,
-skips/disabled/unavailable, edges considered/returned, target lookup outcomes,
-boundaries, and fail-open occurrences); it never includes provision text,
-evidence phrases, or query content. Feedback is fail-open and off the hot path — it never alters or delays a response. Leave
-`LANGSMITH_TRACING` unset to disable tracing and feedback entirely.
+With `LANGSMITH_TRACING=true`, every graph run is traced to LangSmith. The query lifecycle also tags each run (`run_name=legal_query`; `source:api`/`source:eval`; active feature flags), attaches `user_id`/`thread_id` metadata, and posts the turn's quality signals as run **feedback** — `passed`, `num_violations`, `num_evidence_violations`, `retry_count`, `num_citations`, `fallback_delivered`, `escalated`, and a categorical `query_type` (`agent/observability.py`). Feedback also includes numeric, low-cardinality reference-follow counters (calls, skips/disabled/unavailable, edges considered/returned, target lookup outcomes, boundaries, fail-open occurrences) — never provision text, evidence phrases, or query content. Feedback is fail-open and off the hot path — it never alters or delays a response. Leave `LANGSMITH_TRACING` unset to disable tracing and feedback entirely.
 
 Optional flags (both default off / to Postgres):
 
 - `CHECKPOINTER=memory` — force the in-process `MemorySaver` + `InMemoryStore` instead of Postgres (handy for local runs without a database; the test suite sets this automatically).
 - `SEMANTIC_MEMORY_RECALL=on` — enable the `recall` node so the synthesiser **reads** cross-thread **Semantic Memory** (ADR 0010). Off by default, fail-open.
-- `SEMANTIC_MEMORY_EXTRACT=on` — enable the background **write** path (`agent/memory/extractor.py`) that extracts durable practitioner facts (including the practitioner's own background — ADR 0012) after a legal or conversational turn and upserts them into the store. Off by default, fail-open, and runs off the hot path (after the response is delivered). Turn both flags on to see recall surface facts written on earlier turns.
-- `SEMANTIC_MEMORY_PRUNE=on` — enable the background **maintenance** path (`agent/memory/pruner.py`) that consolidates duplicate profiles / near-duplicate topics and evicts low-value topics by importance+recency (not TTL). Off by default, fail-open, off the hot path, size-debounced, and conservative (never deletes the sole profile or empties a namespace).
-- `AGENTIC_RETRIEVAL=1` — swap the deterministic `retriever` node for a `create_react_agent` that binds the `search_statutes` / `lookup_section` tools and decides how to search (ADR 0013). The existing flag accepts `1`, `true`, or `yes`; it is off by default and fail-open (any error or empty result falls back to the deterministic pgvector path). With it enabled, the retry loop also re-retrieves with feedback on an evidence-shaped violation instead of only re-drafting, and the retrieval tools stream `tool_call` SSE events into the PROCESS panel. The eval `tool_selection` assertion (dataset `expected_tool`) only activates when this flag is enabled. `RETRIEVAL_RECURSION_LIMIT` (default 6) bounds the ReAct loop.
+- `SEMANTIC_MEMORY_EXTRACT=on` — enable the background **write** path (`agent/memory/extractor.py`) that extracts durable practitioner facts (including the practitioner's own background — ADR 0012) after a legal or conversational turn and upserts them into the store. Off by default, fail-open, runs off the hot path (after the response is delivered). Turn both flags on to see recall surface facts written on earlier turns.
+- `SEMANTIC_MEMORY_PRUNE=on` — enable the background **maintenance** path (`agent/memory/pruner.py`) that consolidates duplicate profiles / near-duplicate topics and evicts low-value topics by importance+recency (not TTL). Off by default, fail-open, off the hot path, size-debounced, conservative (never deletes the sole profile or empties a namespace).
+- `AGENTIC_RETRIEVAL=1` — swap the deterministic `retriever` node for a `create_react_agent` that binds the `search_statutes` / `lookup_section` tools and decides how to search (ADR 0013). Accepts `1`, `true`, or `yes`; off by default and fail-open (any error or empty result falls back to the deterministic pgvector path). With it enabled, the retry loop also re-retrieves with feedback on an evidence-shaped violation instead of only re-drafting, and the retrieval tools stream `tool_call` SSE events into the PROCESS panel. The eval `tool_selection` assertion (dataset `expected_tool`) only activates when this flag is enabled. `RETRIEVAL_RECURSION_LIMIT` (default 6) bounds the ReAct loop.
 - `CORPUS_RETRIEVAL_MODE=dual|verified|legacy` — `dual` (default) reads legacy rows plus only provenance rows joined to the active Act/language mapping; `verified` reads active provenance only; `legacy` is the rollback path and excludes shadow rows.
 - `RECEIPT_DELIVERY_MODE=auto|local|redirect|proxy` — `auto` uses verified local bytes when present, otherwise CDN objects whose length, content type, and `x-amz-meta-sha256` match the registry. Remote coordinate sidecars are hash-checked again after download. `redirect` and `proxy` require `CORPUS_CDN_BASE_URL`.
-- `REFERENCE_GRAPH_ENABLED=on` — exposes a **promoted**, independently validated statutory reference graph. It is off by default; this flag does not build, promote, or load anything. `REFERENCE_GRAPH_ROOT` may point at a read-only promoted-artifact root for an operator deployment.
-- `REFERENCE_GRAPH_COMPARISON_ENABLED=on` — additionally exposes snapshot selection and one-hop comparison, but only while the base graph flag is also on. It is independently off by default and fails closed without disabling Phase 1.
-- `FOLLOW_REFERENCES_ENABLED=on` — adds `follow_references` to the **Retrieval Agent** only, so `AGENTIC_RETRIEVAL=1` (or another accepted true spelling above) is also required. It is independently off by default and does **not** require `REFERENCE_GRAPH_ENABLED`: internal retrieval reads the same validated promoted artifacts directly through `ReferenceGraphStore`, while public UI/API exposure stays separately controlled. With this flag off the model sees the original two tools and original prompt. `REFERENCE_GRAPH_ROOT` controls the read-only artifact root for both uses.
+- `REFERENCE_GRAPH_ENABLED=on` — exposes a **promoted**, independently validated statutory reference graph. Off by default; this flag doesn't build, promote, or load anything on its own. `REFERENCE_GRAPH_ROOT` may point at a read-only promoted-artifact root for an operator deployment.
+- `REFERENCE_GRAPH_COMPARISON_ENABLED=on` — additionally exposes snapshot selection and one-hop comparison, but only while the base graph flag is also on. Independently off by default and fails closed without disabling Phase 1.
+- `FOLLOW_REFERENCES_ENABLED=on` — adds `follow_references` to the **Retrieval Agent** only, so `AGENTIC_RETRIEVAL=1` (or another accepted true spelling above) is also required. Independently off by default and doesn't require `REFERENCE_GRAPH_ENABLED`: internal retrieval reads the same validated promoted artifacts directly through `ReferenceGraphStore`, while public UI/API exposure stays separately controlled. With this flag off the model sees the original two tools and original prompt. `REFERENCE_GRAPH_ROOT` controls the read-only artifact root for both uses.
 
 Create `frontend/.env.local`:
 
@@ -94,7 +84,7 @@ python3 -m corpus rollout --dry-run
 python3 -m corpus rollout
 ```
 
-`corpus rollout` is the normal receipt setup and upgrade path. It is idempotent and resumable: missing extraction assets are generated, the schema and registry are applied, only absent exact extractions are embedded and ingested, and only successful verified runs are activated. A failure for one document is reported without activating it or preventing other documents from completing. Embedding requests default to a US$1 hard cap per invocation; use `--max-embedding-cost-usd` to set a different explicit ceiling. Oversized chunks are embedded as token-bounded segments and pooled back to their single immutable chunk identity. Use `--document-id` to limit a rollout and `--no-activate` to prepare/ingest without switching retrieval.
+`corpus rollout` is the normal receipt setup and upgrade path. It's idempotent and resumable: missing extraction assets are generated, the schema and registry are applied, only absent exact extractions are embedded and ingested, and only successful verified runs are activated. A failure for one document is reported without activating it or blocking other documents from completing. Embedding requests default to a US$1 hard cap per invocation; use `--max-embedding-cost-usd` to set a different explicit ceiling. Oversized chunks are embedded as token-bounded segments and pooled back to their single immutable chunk identity. Use `--document-id` to limit a rollout and `--no-activate` to prepare/ingest without switching retrieval.
 
 All steps are idempotent. Step 3 re-observes authoritative PDF bytes to detect same-URL replacements, while content/extraction identities prevent duplicate downstream work. Run steps individually if needed:
 
@@ -133,7 +123,7 @@ Endpoints:
 
 > **Adding an LLM node?** Give it a **sync + async twin** — `x_node` (calls `.invoke`) and `ax_node` (`await .ainvoke`), sharing extracted prompt-building/post-processing — and register it as `RunnableCallable(x_node, ax_node, name=...)` in `graph.py` (see `synthesiser`/`recall`). The async twin lets a barge-in cancel the in-flight model request; the sync twin keeps the eval path (`run_query` → `graph.invoke`) working. Pure-Python nodes (e.g. `supervisor`) need no twin. A node's `except Exception` stays cancellation-safe as-is — `asyncio.CancelledError` is a `BaseException`, so a barge-in propagates through it instead of being swallowed.
 
-> **Adding a human-in-the-loop pause?** Call LangGraph's `interrupt(payload)` inside a **dedicated, side-effect-free node** (see `agent/nodes/clarify.py`). The node re-runs from the top on resume, so put nothing non-idempotent before the `interrupt()`. `_drive_query_stream` detects the `__interrupt__` update, emits an `interrupt` SSE event, and returns *before* the post-loop feedback/memory side effects — a paused turn writes nothing, exactly like a barged-in one. Resume feeds `Command(resume=value)` on the same `thread_id`. No async twin is needed: `interrupt()` is not an awaited model call, so a barge-in has nothing to tear down there.
+> **Adding a human-in-the-loop pause?** Call LangGraph's `interrupt(payload)` inside a **dedicated, side-effect-free node** (see `agent/nodes/clarify.py`). The node re-runs from the top on resume, so put nothing non-idempotent before the `interrupt()`. `_drive_query_stream` detects the `__interrupt__` update, emits an `interrupt` SSE event, and returns *before* the post-loop feedback/memory side effects — a paused turn writes nothing, exactly like a barged-in one. Resume feeds `Command(resume=value)` on the same `thread_id`. No async twin is needed: `interrupt()` isn't an awaited model call, so a barge-in has nothing to tear down there.
 
 ### 6. Start the frontend
 
@@ -145,7 +135,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000). With `NEXT_PUBLIC_EVALS=1`, the standalone developer dashboard is at [http://localhost:3000/evals](http://localhost:3000/evals); without that build-time flag the route returns 404.
 
-The Citation Receipt viewer uses `react-pdf` with the matching `pdfjs-dist` worker bundled by Next.js from `pdfjs-dist/build/pdf.worker.min.mjs`; do not replace it with a runtime CDN. The viewer module is client-only and is dynamically imported with SSR disabled.
+The Citation Receipt viewer uses `react-pdf` with the matching `pdfjs-dist` worker bundled by Next.js from `pdfjs-dist/build/pdf.worker.min.mjs`; don't replace it with a runtime CDN. The viewer module is client-only and dynamically imported with SSR disabled.
 
 ### Statutory reference-graph operator workflow
 
@@ -167,13 +157,13 @@ python3 -m reference_graph.cli --document-id act-265-en-sha256-... audit \
   --export-decisions audit-decisions.json
 ```
 
-`acquire` without `--download` is a network-free catalog action. With `--download`, every result is reported as downloaded, already registered, unavailable, integrity failure, scanned/unparseable, or ready. A successful registration records exact source URL/date/type, SHA-256, byte size, page count, content-addressed local path, and receipt route idempotently. Unreachable, corrupt, or unparseable sources remain explicit blockers; no data is guessed. Recorded dates describe observed snapshots, not exact effective dates.
+`acquire` without `--download` just catalogs, network-free. With `--download`, every result is reported as downloaded, already registered, unavailable, integrity failure, scanned/unparseable, or ready. A successful registration records exact source URL/date/type, SHA-256, byte size, page count, content-addressed local path, and receipt route idempotently. Unreachable, corrupt, or unparseable sources stay explicit blockers — nothing is guessed. Recorded dates describe observed snapshots, not exact effective dates.
 
 Keep separate deterministic operator reports when acquiring the pilot and older observations (the checked-in examples are `snapshot-acquisition-act-265.json` and `snapshot-acquisition-act-265-older.json`). Re-running acquisition must report `already_registered`, make no further request for locally verified bytes, and leave `active_documents` unchanged.
 
-Each build writes `.work/build-report.json`. A registered PDF whose text layout cannot be parsed produces a persistent `blocked` report with its failure stage and error class instead of guessed provisions.
+Each build writes `.work/build-report.json`. A registered PDF whose text layout can't be parsed produces a persistent `blocked` report with its failure stage and error class instead of guessed provisions.
 
-Every candidate decision must be checked against that snapshot’s exact PDF receipt. A complete JSON decision mapping with an audit note for every candidate ID is mandatory:
+Every candidate decision must be checked against that snapshot's exact PDF receipt. A complete JSON decision mapping with an audit note for every candidate ID is mandatory:
 
 ```json
 {
@@ -197,26 +187,26 @@ python3 -m reference_graph.cli --document-id act-265-en-sha256-... load
 python3 -m reference_graph.cli --document-id act-265-en-sha256-... verify-db
 ```
 
-Rejected candidates remain in the promoted unresolved/audit artifacts. Promotion, loading, `/snapshots`, and `/compare` reject candidate-only or incomplete-audit data. Migrations `0001_reference_graph.sql` and `0002_reference_graph_artifact_identity.sql` are additive and never touch `chunks`; the database is an idempotent verified mirror while the API consistently reads promoted artifacts.
+Rejected candidates stay in the promoted unresolved/audit artifacts. Promotion, loading, `/snapshots`, and `/compare` reject candidate-only or incomplete-audit data. Migrations `0001_reference_graph.sql` and `0002_reference_graph_artifact_identity.sql` are additive and never touch `chunks`; the database is an idempotent verified mirror while the API consistently reads promoted artifacts.
 
-Roll out code, migrations, immutable assets, and approved artifacts with comparison still off. Load and verify only audited snapshots, verify February-versus-September in staging, then enable comparison separately. Roll back by turning `REFERENCE_GRAPH_COMPARISON_ENABLED` off first; Phase 1 neighborhoods, receipts, and chat continue working. If graph data is wrong, reload the prior approved artifact. Never enable either flag merely because acquisition or a candidate build succeeded.
+Roll out code, migrations, immutable assets, and approved artifacts with comparison still off. Load and verify only audited snapshots, verify February-versus-September in staging, then enable comparison separately. To roll back, turn `REFERENCE_GRAPH_COMPARISON_ENABLED` off first — Phase 1 neighborhoods, receipts, and chat keep working. If graph data is wrong, reload the prior approved artifact. Never enable either flag just because acquisition or a candidate build succeeded.
 
 Phase 3 ships with `FOLLOW_REFERENCES_ENABLED=off`. Before enabling it, require all focused positive/negative selection checks, exact provenance/citation tests, the relevant full regression suite, already-promoted/audited graph artifacts, and explicit operator approval. It consumes published `edges.json` records only; changing graph data or published edges requires the existing manual artifact audit again.
 
 The internal follow contract is deliberately narrow:
 
 - establish a unique exact anchor through existing search/lookup first; legacy/unversioned chunks never map to a newer graph snapshot;
-- allow one follow operation per retrieval run, one direct outgoing/incoming scope, deterministic truncation, and at most five edges;
+- allow one follow operation per retrieval run, one direct outgoing/incoming scope, deterministic truncation, at most five edges;
 - treat a section as the scope containing its audited subsection/paragraph edges, without traversing a target for another hop;
-- retrieve same-Act target text only from the anchor’s exact document/extraction; retrieve any cross-Act target independently with its own provenance and no source-snapshot as-of claim;
+- retrieve same-Act target text only from the anchor's exact document/extraction; retrieve any cross-Act target independently with its own provenance and no source-snapshot as-of claim;
 - report but never expand boundary targets, and never expose unresolved candidates or use graph provision/evidence text as a normal RAG citation source;
 - fail open on absent/malformed artifacts, snapshot mismatch, target lookup failure, or telemetry failure.
 
-Rollback is immediate: set `FOLLOW_REFERENCES_ENABLED=off` and restart workers so the cached disabled agent variant exposes only `search_statutes` and `lookup_section`. This does not require disabling public graph features, deleting graph/database data, changing active corpus mappings, or touching Phase 1/2 artifacts. If code rollback is necessary, revert Phase 3 only.
+Rollback is immediate: set `FOLLOW_REFERENCES_ENABLED=off` and restart workers so the cached disabled agent variant exposes only `search_statutes` and `lookup_section`. This doesn't require disabling public graph features, deleting graph/database data, changing active corpus mappings, or touching Phase 1/2 artifacts. If code rollback is necessary, revert Phase 3 only.
 
 ### Citation Receipt assets and verification
 
-`data/pdfs/manifest.json` is generated, never hand-edited. A changed PDF hash creates a new staged `document_id`; the previous bytes remain addressable and the active mapping does not move until the new extraction is embedded and explicitly activated. Step 3 accepts reprints only, re-observes their bytes even when the source URL is unchanged, validates them, and registers them under a content-addressed local/object key. Amendment-only files are individual coverage blockers, never base Acts.
+`data/pdfs/manifest.json` is generated, never hand-edited. A changed PDF hash creates a new staged `document_id`; the previous bytes stay addressable and the active mapping doesn't move until the new extraction is embedded and explicitly activated. Step 3 accepts reprints only, re-observes their bytes even when the source URL is unchanged, validates them, and registers them under a content-addressed local/object key. Amendment-only files are individual coverage blockers, never base Acts.
 
 Corpus lifecycle commands:
 
@@ -245,7 +235,7 @@ python3 -m corpus validate --cdn-base-url https://statutes.example.com \
   --scope full --deep --format json
 ```
 
-The CLI loads the repository `.env`; manually exporting `DATABASE_URL` is unnecessary. Preview `rollout` before its first run against a database because live execution performs embedding calls and changes active retrieval mappings. Live upload uses optional `boto3`; it is not an application dependency. Configure R2 bucket retention/object-lock policy and custom-domain CORS (`GET`, `HEAD`, `OPTIONS`; request headers `Range`, `If-None-Match`; expose `ETag`, `Accept-Ranges`, `Content-Range`, `Content-Length`) outside this repository.
+The CLI loads the repository `.env`; you don't need to manually export `DATABASE_URL`. Preview `rollout` before its first run against a database, since live execution performs embedding calls and changes active retrieval mappings. Live upload uses optional `boto3`; it's not an application dependency. Configure R2 bucket retention/object-lock policy and custom-domain CORS (`GET`, `HEAD`, `OPTIONS`; request headers `Range`, `If-None-Match`; expose `ETag`, `Accept-Ranges`, `Content-Range`, `Content-Length`) outside this repository.
 
 Run all automated checks from the repository root and frontend respectively:
 
@@ -294,7 +284,7 @@ EVALS_DATABASE_URL=postgresql://user@/ai_legal_tool_evals?host=/path/to/pg/socke
   python3 -m evals.setup_eval_db
 ```
 
-Keep `EVALS_DATABASE_URL` in the API's `.env`. Dashboard subprocesses remap it to `DATABASE_URL` and force `CHECKPOINTER=memory`, so the eval database needs only the `chunks` table. Corpus staleness is checked before every dashboard run; if required sections are missing, rerun the setup command. Seeding is deliberately never available as an HTTP or dashboard action.
+Keep `EVALS_DATABASE_URL` in the API's `.env`. Dashboard subprocesses remap it to `DATABASE_URL` and force `CHECKPOINTER=memory`, so the eval database only needs the `chunks` table. Corpus staleness is checked before every dashboard run; if required sections are missing, rerun the setup command. Seeding is deliberately never available as an HTTP or dashboard action.
 
 For direct CLI runs, explicitly point `DATABASE_URL` at the same eval database:
 
@@ -318,7 +308,7 @@ AGENTIC_RETRIEVAL=1 FOLLOW_REFERENCES_ENABLED=on \
   python3 -m evals.run_evals --dataset evals/reference_follow_dataset.json --mode full
 ```
 
-`run_evals` also supports `--smoke`, `--category`, `--scenario`, `--case-id`, and machine-readable `--jsonl` output. Human-readable output remains the default. Results are written to `evals/results.json` by default. Phase 3 cases add ordered `expected_tool_sequence`, `forbidden_tools`, `max_tool_calls`, and executed `expected_reference_direction` assertions without changing existing `expected_tool` semantics; the dedicated dataset fails fast unless both required flags are on. Its database must be a dedicated production-like staging/eval corpus with an active exact Act 265 document/extraction matching an already-promoted graph. The tiny default eval seed has legacy-shaped chunks and is intentionally insufficient for this provenance gate; do not point the live gate at the application development database. A GitHub Actions workflow (`.github/workflows/evals.yml`, manually triggered via `workflow_dispatch`) runs the 10-case smoke set against the production model defaults and posts the judge pass rate and key L1 metrics as a PR comment; it fails if the judge pass rate drops below 80%.
+`run_evals` also supports `--smoke`, `--category`, `--scenario`, `--case-id`, and machine-readable `--jsonl` output. Human-readable output stays the default, and results write to `evals/results.json` by default. Phase 3 cases add ordered `expected_tool_sequence`, `forbidden_tools`, `max_tool_calls`, and executed `expected_reference_direction` assertions without changing existing `expected_tool` semantics; the dedicated dataset fails fast unless both required flags are on. Its database must be a dedicated production-like staging/eval corpus with an active exact Act 265 document/extraction matching an already-promoted graph — the tiny default eval seed has legacy-shaped chunks and is intentionally insufficient for this provenance gate, so don't point the live gate at the application development database. A GitHub Actions workflow (`.github/workflows/evals.yml`, manually triggered via `workflow_dispatch`) runs the 10-case smoke set against the production model defaults and posts the judge pass rate and key L1 metrics as a PR comment; it fails if the judge pass rate drops below 80%.
 
 ### Tuning the history token budget
 
@@ -333,7 +323,7 @@ It checks whether `contextualize` can still resolve an elliptical follow-up afte
 
 ### Model overrides
 
-The router, contextualize, conversational, synthesiser, and grounding-check nodes — plus the agentic retriever and the background Semantic Memory extractor — each have an env var that controls which model they use. All are resolved through the provider-agnostic factory in `agent/llm_factory.py`: a `claude-*` name routes to Anthropic, `gemini-*` to Google, and anything else (including the `gpt-*` default) to OpenAI. The contextualize and conversational nodes and the memory extractor default to a cheaper mini-class model, since rewriting a query, replying to small talk, and extracting durable facts are lighter tasks than classification or synthesis. The grounding check is the one node that defaults to a Claude model, since it acts as an independent judge of whether the synthesiser's claims are supported by the cited sources. The conversational node is the one node that runs hot (`temperature=0.7`) so repeated greetings vary in wording; every other node runs at the factory default `temperature=0` for reproducible output.
+The router, contextualize, conversational, synthesiser, and grounding-check nodes — plus the agentic retriever and the background Semantic Memory extractor — each have an env var controlling which model they use. All resolve through the provider-agnostic factory in `agent/llm_factory.py`: a `claude-*` name routes to Anthropic, `gemini-*` to Google, and anything else (including the `gpt-*` default) to OpenAI. The contextualize and conversational nodes and the memory extractor default to a cheaper mini-class model, since rewriting a query, replying to small talk, and extracting durable facts are lighter tasks than classification or synthesis. The grounding check is the one node that defaults to a Claude model, since it acts as an independent judge of whether the synthesiser's claims are supported by the cited sources. The conversational node is the one node that runs hot (`temperature=0.7`) so repeated greetings vary in wording; every other node runs at the factory default `temperature=0` for reproducible output.
 
 | Env var | Node | Default |
 |---|---|---|
@@ -358,7 +348,7 @@ ROUTER_MODEL=claude-haiku-4-5-20251001 python3 -m evals.run_evals --smoke
 
 Shell exports take priority over `.env` values, so you can temporarily override your local default in a single command. Set them in `.env` for a persistent local default.
 
-**When to trust Haiku eval results:** L1 assertions (regex, DB lookups, string matching) are LLM-free and fully reliable regardless of model. L2 judge signal is lower-fidelity when both nodes use Haiku — useful for detecting gross failures, but do not treat a passing Haiku eval as equivalent to a passing GPT-4.1 eval when tuning prompts. CI uses the `gpt-4.1` defaults (no `ROUTER_MODEL`/`SYNTHESISER_MODEL` set); `EVALS_JUDGE_MODEL` is set to `claude-haiku-4-5-20251001` for the L2 judge.
+**When to trust Haiku eval results:** L1 assertions (regex, DB lookups, string matching) are LLM-free and fully reliable regardless of model. L2 judge signal is lower-fidelity when both nodes use Haiku — useful for detecting gross failures, but don't treat a passing Haiku eval as equivalent to a passing GPT-4.1 eval when tuning prompts. CI uses the `gpt-4.1` defaults (no `ROUTER_MODEL`/`SYNTHESISER_MODEL` set); `EVALS_JUDGE_MODEL` is set to `claude-haiku-4-5-20251001` for the L2 judge.
 
 ---
 
