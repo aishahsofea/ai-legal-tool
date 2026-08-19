@@ -1,8 +1,8 @@
 # Chunk Acts at section level, not page or token level
 
-Malaysian Acts are structured as Part → Division → Section → Subsection → Paragraph. Practitioners cite by section number ("Section 114 of the Evidence Act"), not by page. Page-level chunking produces retrieval results that split sections across chunks, breaking citation accuracy. Fixed-token chunking discards section boundaries entirely.
+Malaysian Acts are structured as Part → Division → Section → Subsection → Paragraph. Practitioners cite by section number ("Section 114 of the Evidence Act"), not by page. Page-level chunking splits sections across chunks, which breaks citation accuracy. Fixed-token chunking is worse — it discards section boundaries entirely.
 
-Section-level chunking, with Act/Part/Section number stored as metadata, is the only approach that enables citation-accurate retrieval and supports deterministic `lookup_section()` tool calls.
+Section-level chunking is the only approach that gives citation-accurate retrieval and supports deterministic `lookup_section()` tool calls. Act/Part/Section number get stored as metadata on each chunk.
 
 ## Consequences
 

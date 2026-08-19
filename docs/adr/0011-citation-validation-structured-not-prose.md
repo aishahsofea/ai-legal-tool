@@ -8,7 +8,7 @@ This reverses an earlier implicit design — that "at least one citation exists"
 
 ## Context
 
-The supervisor enforced "Citation required" (Supervisor Rule 2) with `_CITATION_RE`, a regex over the draft prose requiring `Section X of [Act]` adjacency. The build log records it being re-tuned twice — once to accept `Code` as well as `Act`, once to accept a subsection-first form for non-Claude models — each time to fit a specific model's phrasing. It failed a third time on a factually correct GPT-4.1 answer that cited sections as `under section 379` and `(section 379)`, with the Act name earlier in the sentence: no `Section X of [Act]` substring, so Rule 2 fired, forced retries, and shipped the fail-closed fallback despite a correct answer.
+The supervisor enforced "Citation required" (Supervisor Rule 2) with `_CITATION_RE`, a regex over the draft prose requiring `Section X of [Act]` adjacency. The build log records it being re-tuned twice — once to accept `Code` as well as `Act`, once to accept a subsection-first form for non-Claude models — each time to fit a specific model's phrasing. It failed a third time on a factually correct GPT-4.1 answer. That answer cited sections as `under section 379` and `(section 379)`, with the Act name earlier in the sentence — so no `Section X of [Act]` substring existed. Rule 2 fired, forced retries, and shipped the fail-closed fallback despite the answer being correct.
 
 `citation_validator` carried a second prose regex, `_PROSE_CITATION_RE`, to verify prose citations were mirrored by structured citations. It was brittle in the same way (English-only, adjacency-dependent), though it failed *safe*: an unparsed prose citation was simply not cross-checked, never falsely flagged.
 

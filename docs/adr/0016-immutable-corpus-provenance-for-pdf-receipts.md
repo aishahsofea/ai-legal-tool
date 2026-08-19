@@ -2,7 +2,7 @@
 
 Date: 2026-07-20
 
-The Citation Receipt pilot attached five PDFs through a hand-authored manifest keyed by Act number. That was sufficient to validate the viewer, but not to prove corpus-wide that the displayed PDF was the exact document used for extraction and page numbering. The scraper also wrote mutable `data/pdfs/en/{act}.pdf` paths, retrieval rows carried no document identity, and ingestion could leave partial Act data. A remote AGC URL or matching Act number is not immutable provenance: either can point at different bytes later.
+The Citation Receipt pilot attached five PDFs through a hand-authored manifest keyed by Act number. That was sufficient to validate the viewer, but not to prove corpus-wide that the displayed PDF was the exact document used for extraction and page numbering. The scraper also wrote mutable `data/pdfs/en/{act}.pdf` paths. Retrieval rows carried no document identity. Ingestion could leave partial Act data. A remote AGC URL or matching Act number is not immutable provenance: either can point at different bytes later.
 
 This ADR establishes a corpus lifecycle in which source bytes, extraction output, database activation, and receipt delivery are separately identified and verified. The previous five-Act manifest remains supported only as a dual-read compatibility layer while the corpus is migrated.
 
@@ -35,7 +35,7 @@ This ADR establishes a corpus lifecycle in which source bytes, extraction output
 - The schema gains immutable document/source/extraction tables, nullable provenance columns for legacy chunks, active mappings, and activation history. Ingestion becomes per-extraction and transactional instead of skipping or partially persisting an Act.
 - Runtime receipt availability depends on verified PDF and sidecar assets. R2 retention, custom-domain CORS, upload, CDN deep validation, database migration, shadow embedding, and activation remain explicit deployment steps rather than application startup behavior.
 - Full generated extraction bundles and sidecars are intentionally not committed. The five tracked pilot fixtures support local compatibility and smoke tests; the corpus-wide set is regenerated and uploaded immutably.
-- The initial audit is frozen at 624 input PDFs: 596 canonical reprints registered, 576 extraction identities ready, five pilots active, and 48 blocked inputs (28 amendment-only, 15 no-chunk, 5 scanned/image-only). The six BM-only sources remain labeled `bm`.
+- The initial audit is frozen at 624 input PDFs: 596 canonical reprints registered; 576 extraction identities ready; five pilots active; 48 blocked (28 amendment-only, 15 no-chunk, 5 scanned/image-only). The six BM-only sources remain labeled `bm`.
 
 ## Related
 

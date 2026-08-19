@@ -1,10 +1,10 @@
 # Embed English and BM sections separately using text-embedding-3-small
 
-Practitioners query in both English and Bahasa Malaysia. Cross-lingual retrieval (BM query → English chunk) is unreliable even with multilingual embedding models. AGC portal provides both English (lang=BI) and BM (lang=BM) PDFs for most Acts.
+Practitioners query in both English and Bahasa Malaysia. Cross-lingual retrieval (a BM query matching an English chunk) is unreliable, even with multilingual embedding models. The AGC portal provides both English (lang=BI) and BM (lang=BM) PDFs for most Acts, so there's a way around this.
 
-Decision: embed both language versions of each section as separate chunks, linked by act_number + section_number + language metadata. BM queries hit BM chunks; English queries hit English chunks. No cross-lingual gap to bridge.
+Decision: embed both language versions of each section as separate chunks, linked by act_number + section_number + language metadata. A BM query hits BM chunks; an English query hits English chunks. No cross-lingual gap to bridge.
 
-Embedding model: OpenAI text-embedding-3-small (1536 dims). Cost for ~880 Acts × ~50 sections × 2 languages × ~300 tokens ≈ $0.50 total. Straightforward LangChain integration.
+Embedding model: OpenAI text-embedding-3-small (1536 dims), with straightforward LangChain integration. Cost for ~880 Acts × ~50 sections × 2 languages × ~300 tokens comes to about $0.50 total.
 
 ## Phased rollout
 
