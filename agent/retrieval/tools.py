@@ -1,14 +1,12 @@
 """
 Retrieval tools the agentic retriever binds (agent/retrieval/agent.py).
 
-Each tool wraps a function from agent/retrieval/search.py and returns a
-``Command`` that merges the found chunks into the agent's ``retrieved_chunks``
-state channel (see RetrievalState), plus a short ``ToolMessage`` summary the
-model reads to judge hit quality and decide whether to search again.
+Each tool returns a ``Command`` that writes into the agent's state channels plus
+a short ``ToolMessage``. That summary exists for the model, not for us — it is
+what the model reads to judge hit quality and decide whether to search again.
 
-Reliability: a tool must never crash the ReAct loop. DB/embedding errors are
-caught and reported back as a ToolMessage so the model can retry or stop rather
-than the whole graph raising.
+A tool must never crash the ReAct loop, so DB and embedding errors come back as
+a ToolMessage the model can act on instead of raising through the whole graph.
 """
 from __future__ import annotations
 
@@ -36,8 +34,8 @@ logger = logging.getLogger(__name__)
 
 
 def _emit(name: str, summary: str) -> None:
-    """Surface a tool call on the graph's custom stream so the UI can show it as a
-    PROCESS step. A no-op when no stream is active (e.g. .invoke() in tests)."""
+    """Feeds the UI's PROCESS panel. Silent when no stream is active — a plain
+    .invoke() (tests, evals) has no writer, and that is not an error."""
     try:
         get_stream_writer()({"tool_call": {"name": name, "summary": summary}})
     except Exception:
@@ -45,7 +43,8 @@ def _emit(name: str, summary: str) -> None:
 
 
 def _summarise(rows: list[dict]) -> str:
-    """One-line, model-readable summary of a result set."""
+    """The model reads this to judge hit quality, so it names sections rather
+    than only counting them."""
     if not rows:
         return "No sections found."
     heads = ", ".join(
@@ -56,10 +55,13 @@ def _summarise(rows: list[dict]) -> str:
     return f"Found {len(rows)} section(s): {heads}{more}."
 
 
-def _command(rows: list[dict], summary: str, tool_call_id: str) -> Command:
+def _command(rows: list[dict], summary: str, tool_call_id: str, name: str) -> Command:
+    """`name` is passed in rather than inferred so ``tool_trace`` records what
+    actually ran, not what the model asked for."""
     return Command(
         update={
             "retrieved_chunks": rows,
+            "tool_trace": [name],
             "messages": [ToolMessage(summary, tool_call_id=tool_call_id)],
         }
     )
@@ -176,6 +178,7 @@ def follow_references(
     }
     return Command(update={
         "retrieved_chunks": result.get("chunks", []),
+        "tool_trace": ["follow_references"],
         "reference_followed": True,
         "reference_trace": [trace],
         "reference_metrics": result.get("metrics", empty_reference_metrics()),
@@ -212,8 +215,13 @@ def search_statutes(
         rows = semantic_search(query, top_k=top_k, act_number=act, language=language)
     except Exception:
         logger.warning("search_statutes failed", exc_info=True)
-        return _command([], f"search_statutes error for query '{query}'. Try a different query.", tool_call_id)
-    return _command(rows, _summarise(rows), tool_call_id)
+        return _command(
+            [],
+            f"search_statutes error for query '{query}'. Try a different query.",
+            tool_call_id,
+            "search_statutes",
+        )
+    return _command(rows, _summarise(rows), tool_call_id, "search_statutes")
 
 
 @tool
@@ -239,8 +247,8 @@ def lookup_section(
 
     act_number, act_title = (None, None)
     if act:
-        # Accept either a bare number or a name/alias by reusing the same resolver
-        # the deterministic node uses.
+        # Reuse the deterministic node's resolver so both paths accept the same
+        # aliases.
         act_number, act_title = extract_act_hint(act)
         if not (act_number or act_title):
             act_number = act.strip()  # assume it was already an Act number
@@ -249,12 +257,18 @@ def lookup_section(
         rows = exact_section_lookup(section, act_number=act_number, act_title=act_title)
     except Exception:
         logger.warning("lookup_section failed", exc_info=True)
-        return _command([], f"lookup_section error for section '{section}'. Try search_statutes instead.", tool_call_id)
+        return _command(
+            [],
+            f"lookup_section error for section '{section}'. Try search_statutes instead.",
+            tool_call_id,
+            "lookup_section",
+        )
 
     if not rows:
         return _command(
             [],
             f"No exact match for section {section} in act '{act}'. Try search_statutes instead.",
             tool_call_id,
+            "lookup_section",
         )
-    return _command(rows, _summarise(rows), tool_call_id)
+    return _command(rows, _summarise(rows), tool_call_id, "lookup_section")

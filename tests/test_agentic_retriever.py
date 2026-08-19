@@ -79,6 +79,55 @@ class AgenticRetrieverNodeTests(unittest.TestCase):
         self.assertEqual(result["retrieved_chunks"], det_rows)
 
 
+class ToolTraceChannelTests(unittest.TestCase):
+    """Error and empty-result paths must land in the trace too. Each tool writes
+    its own name, so an omission is silent — nothing else would catch it."""
+
+    @staticmethod
+    def _invoke(tool, **kwargs):
+        return tool.invoke(
+            {"name": tool.name, "args": kwargs, "id": "call_1", "type": "tool_call"},
+        )
+
+    def test_search_statutes_traces_on_hit(self):
+        rows = [{"act_number": "56", "section_number": "90A"}]
+        with patch.object(retrieval_tools, "semantic_search", return_value=rows):
+            command = self._invoke(retrieval_tools.search_statutes, query="privacy")
+        self.assertEqual(command.update["tool_trace"], ["search_statutes"])
+        self.assertEqual(command.update["retrieved_chunks"], rows)
+
+    def test_search_statutes_traces_when_search_raises(self):
+        with patch.object(retrieval_tools, "semantic_search", side_effect=RuntimeError("boom")):
+            command = self._invoke(retrieval_tools.search_statutes, query="privacy")
+        self.assertEqual(command.update["tool_trace"], ["search_statutes"])
+        self.assertEqual(command.update["retrieved_chunks"], [])
+
+    def test_lookup_section_traces_on_hit(self):
+        rows = [{"act_number": "265", "section_number": "60D"}]
+        with patch.object(retrieval_tools, "exact_section_lookup", return_value=rows):
+            command = self._invoke(
+                retrieval_tools.lookup_section, section="60D", act="Employment Act",
+            )
+        self.assertEqual(command.update["tool_trace"], ["lookup_section"])
+        self.assertEqual(command.update["retrieved_chunks"], rows)
+
+    def test_lookup_section_traces_on_no_match(self):
+        with patch.object(retrieval_tools, "exact_section_lookup", return_value=[]):
+            command = self._invoke(
+                retrieval_tools.lookup_section, section="999Z", act="Employment Act",
+            )
+        self.assertEqual(command.update["tool_trace"], ["lookup_section"])
+        self.assertEqual(command.update["retrieved_chunks"], [])
+
+    def test_lookup_section_traces_when_lookup_raises(self):
+        with patch.object(retrieval_tools, "exact_section_lookup", side_effect=RuntimeError("boom")):
+            command = self._invoke(
+                retrieval_tools.lookup_section, section="60D", act="Employment Act",
+            )
+        self.assertEqual(command.update["tool_trace"], ["lookup_section"])
+        self.assertEqual(command.update["retrieved_chunks"], [])
+
+
 class FollowToolBindingTests(unittest.TestCase):
     def setUp(self):
         retrieval_agent._build_retrieval_agent.cache_clear()
