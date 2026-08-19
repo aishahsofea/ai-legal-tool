@@ -9,6 +9,7 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException, Query, Request
 
+from agent.feature_flags import flag_enabled
 from corpus.registry import DEFAULT_MANIFEST_PATH
 from reference_graph.models import DEFAULT_GRAPH_DOCUMENT_ID
 from reference_graph.store import (
@@ -26,15 +27,14 @@ DOCUMENT_ID_PATTERN = r"^[A-Za-z0-9][A-Za-z0-9._:-]*$"
 
 def reference_graph_enabled() -> bool:
     """The only source of truth for graph exposure; default safely disabled."""
-    return os.getenv("REFERENCE_GRAPH_ENABLED", "").strip().casefold() in {"1", "true", "yes", "on"}
+    return flag_enabled("REFERENCE_GRAPH_ENABLED")
 
 
 def reference_graph_comparison_enabled() -> bool:
     """Comparison fails independently and is always off unless both flags are on."""
     return (
         reference_graph_enabled()
-        and os.getenv("REFERENCE_GRAPH_COMPARISON_ENABLED", "").strip().casefold()
-        in {"1", "true", "yes", "on"}
+        and flag_enabled("REFERENCE_GRAPH_COMPARISON_ENABLED")
     )
 
 

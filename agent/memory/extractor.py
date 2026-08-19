@@ -12,6 +12,7 @@ import os
 
 from langgraph.store.base import BaseStore
 
+from agent.feature_flags import flag_enabled
 from agent.llm_factory import make_llm
 from agent.memory.schemas import PractitionerProfile, RecurringTopic
 
@@ -53,7 +54,7 @@ and add a recurring topic only when it is genuinely new."""
 
 
 def _enabled() -> bool:
-    return os.getenv("SEMANTIC_MEMORY_EXTRACT", "").strip().lower() == "on"
+    return flag_enabled("SEMANTIC_MEMORY_EXTRACT")
 
 
 def _model_name() -> str:

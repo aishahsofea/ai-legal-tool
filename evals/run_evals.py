@@ -19,7 +19,7 @@ from agent.nodes.retriever import retriever_node
 from agent.nodes.router import router_node
 from agent.nodes.synthesiser import synthesiser_node
 from agent.query_lifecycle import run_query
-from agent.retrieval.reference_graph import parse_feature_flag
+from agent.feature_flags import flag_enabled
 from evals.assertions import BM_FUNCTION_WORDS, run_assertions
 from evals.coverage import aggregate_scenarios, select_cases
 from evals.judge import JudgeContext, judge_case
@@ -211,8 +211,8 @@ def iter_suite(
     # tool_selection only applies to the agentic retriever (it's the only path that
     # produces a tool trace). With the flag off, expected_tool is treated as absent
     # so the assertion is skipped and the default eval is unaffected.
-    agentic_on = os.getenv("AGENTIC_RETRIEVAL", "").lower() in ("1", "true", "yes")
-    follow_on = parse_feature_flag(os.getenv("FOLLOW_REFERENCES_ENABLED"))
+    agentic_on = flag_enabled("AGENTIC_RETRIEVAL")
+    follow_on = flag_enabled("FOLLOW_REFERENCES_ENABLED")
     if any(case.get("requires_follow_references") for case in cases) and not (
         mode == "full" and agentic_on and follow_on
     ):

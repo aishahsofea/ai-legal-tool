@@ -139,7 +139,7 @@ class FollowToolBindingTests(unittest.TestCase):
         sentinel = object()
         with patch.dict(os.environ, {"FOLLOW_REFERENCES_ENABLED": ""}), \
              patch.object(retrieval_agent, "make_llm", return_value=object()), \
-             patch.object(retrieval_agent, "create_react_agent", return_value=sentinel) as create:
+             patch.object(retrieval_agent, "create_agent", return_value=sentinel) as create:
             self.assertIs(retrieval_agent.get_retrieval_agent(), sentinel)
 
         kwargs = create.call_args.kwargs
@@ -147,7 +147,7 @@ class FollowToolBindingTests(unittest.TestCase):
             [tool.name for tool in kwargs["tools"]],
             ["search_statutes", "lookup_section"],
         )
-        self.assertEqual(kwargs["prompt"], retrieval_agent._SYSTEM)
+        self.assertEqual(kwargs["system_prompt"], retrieval_agent._SYSTEM)
         self.assertIs(kwargs["state_schema"], retrieval_agent.RetrievalState)
         self.assertNotIn("context_schema", kwargs)
 
@@ -155,7 +155,7 @@ class FollowToolBindingTests(unittest.TestCase):
         sentinel = object()
         with patch.dict(os.environ, {"FOLLOW_REFERENCES_ENABLED": "on"}), \
              patch.object(retrieval_agent, "make_llm", return_value=object()), \
-             patch.object(retrieval_agent, "create_react_agent", return_value=sentinel) as create:
+             patch.object(retrieval_agent, "create_agent", return_value=sentinel) as create:
             self.assertIs(retrieval_agent.get_retrieval_agent(), sentinel)
 
         kwargs = create.call_args.kwargs
@@ -163,7 +163,7 @@ class FollowToolBindingTests(unittest.TestCase):
             [tool.name for tool in kwargs["tools"]],
             ["search_statutes", "lookup_section", "follow_references"],
         )
-        self.assertIn("explicit statutory-reference intent only", kwargs["prompt"])
+        self.assertIn("explicit statutory-reference intent only", kwargs["system_prompt"])
         self.assertIs(
             kwargs["state_schema"],
             retrieval_agent.ReferenceRetrievalState,
@@ -182,7 +182,7 @@ class FollowToolBindingTests(unittest.TestCase):
             return value
 
         with patch.object(retrieval_agent, "make_llm", return_value=object()), \
-             patch.object(retrieval_agent, "create_react_agent", side_effect=fake_create):
+             patch.object(retrieval_agent, "create_agent", side_effect=fake_create):
             with patch.dict(os.environ, {"FOLLOW_REFERENCES_ENABLED": ""}):
                 disabled_first = retrieval_agent.get_retrieval_agent()
             with patch.dict(os.environ, {"FOLLOW_REFERENCES_ENABLED": "true"}):

@@ -6,13 +6,13 @@ from unittest.mock import patch
 os.environ.setdefault("DATABASE_URL", "postgresql://example")
 os.environ.setdefault("OPENAI_API_KEY", "test-key")
 
+from agent.feature_flags import parse_feature_flag
 from agent.retrieval.reference_graph import (
     FollowOnceGuard,
     MAX_REFERENCE_EDGES,
     RetrievalReferenceContext,
     follow_published_references,
     follow_references_enabled,
-    parse_feature_flag,
     should_follow_references,
 )
 from reference_graph.store import ReferenceGraphStore
