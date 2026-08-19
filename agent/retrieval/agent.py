@@ -103,6 +103,10 @@ class RetrievalState(_ReactAgentState):
     # side channel the tools write their found rows into, with a dedupe reducer so
     # repeated/overlapping searches accumulate cleanly.
     retrieved_chunks: Annotated[list[dict], _dedupe_chunks]
+    # Each tool appends its own name as it runs, so the trace is a record of what
+    # executed rather than a re-reading of the message list. Order is preserved by
+    # `add`; the tool_selection eval asserts on it.
+    tool_trace: Annotated[list[str], add]
 
 
 def _merge_metrics(left: dict | None, right: dict | None) -> dict:
@@ -147,17 +151,6 @@ def _build_retrieval_agent(follow_enabled: bool):
 def get_retrieval_agent():
     """Return the cached variant for the flag's value at this invocation."""
     return _build_retrieval_agent(follow_references_enabled())
-
-
-def _tool_names(messages: list) -> list[str]:
-    """Names of tools the agent called, in order, from its message trace."""
-    names: list[str] = []
-    for m in messages or []:
-        for tc in getattr(m, "tool_calls", None) or []:
-            name = tc.get("name") if isinstance(tc, dict) else getattr(tc, "name", None)
-            if name:
-                names.append(name)
-    return names
 
 
 def run_retrieval_agent(query: str, feedback: str = "", config=None) -> dict:
@@ -218,7 +211,7 @@ def run_retrieval_agent(query: str, feedback: str = "", config=None) -> dict:
 
     result = {
         "chunks": final_state.get("retrieved_chunks", []),
-        "tools": _tool_names(final_state.get("messages", [])),
+        "tools": final_state.get("tool_trace", []),
     }
     if follow_enabled:
         result.update({

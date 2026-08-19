@@ -3,8 +3,9 @@ Retrieval tools the agentic retriever binds (agent/retrieval/agent.py).
 
 Each tool wraps a function from agent/retrieval/search.py and returns a
 ``Command`` that merges the found chunks into the agent's ``retrieved_chunks``
-state channel (see RetrievalState), plus a short ``ToolMessage`` summary the
-model reads to judge hit quality and decide whether to search again.
+state channel (see RetrievalState), records its own name in ``tool_trace``, and
+adds a short ``ToolMessage`` summary the model reads to judge hit quality and
+decide whether to search again.
 
 Reliability: a tool must never crash the ReAct loop. DB/embedding errors are
 caught and reported back as a ToolMessage so the model can retry or stop rather
@@ -56,10 +57,14 @@ def _summarise(rows: list[dict]) -> str:
     return f"Found {len(rows)} section(s): {heads}{more}."
 
 
-def _command(rows: list[dict], summary: str, tool_call_id: str) -> Command:
+def _command(rows: list[dict], summary: str, tool_call_id: str, name: str) -> Command:
+    """Build a tool's state update. `name` is recorded in the `tool_trace`
+    channel so the trace reflects what actually ran, rather than being
+    re-derived by walking the message list."""
     return Command(
         update={
             "retrieved_chunks": rows,
+            "tool_trace": [name],
             "messages": [ToolMessage(summary, tool_call_id=tool_call_id)],
         }
     )
@@ -176,6 +181,7 @@ def follow_references(
     }
     return Command(update={
         "retrieved_chunks": result.get("chunks", []),
+        "tool_trace": ["follow_references"],
         "reference_followed": True,
         "reference_trace": [trace],
         "reference_metrics": result.get("metrics", empty_reference_metrics()),
@@ -212,8 +218,13 @@ def search_statutes(
         rows = semantic_search(query, top_k=top_k, act_number=act, language=language)
     except Exception:
         logger.warning("search_statutes failed", exc_info=True)
-        return _command([], f"search_statutes error for query '{query}'. Try a different query.", tool_call_id)
-    return _command(rows, _summarise(rows), tool_call_id)
+        return _command(
+            [],
+            f"search_statutes error for query '{query}'. Try a different query.",
+            tool_call_id,
+            "search_statutes",
+        )
+    return _command(rows, _summarise(rows), tool_call_id, "search_statutes")
 
 
 @tool
@@ -249,12 +260,18 @@ def lookup_section(
         rows = exact_section_lookup(section, act_number=act_number, act_title=act_title)
     except Exception:
         logger.warning("lookup_section failed", exc_info=True)
-        return _command([], f"lookup_section error for section '{section}'. Try search_statutes instead.", tool_call_id)
+        return _command(
+            [],
+            f"lookup_section error for section '{section}'. Try search_statutes instead.",
+            tool_call_id,
+            "lookup_section",
+        )
 
     if not rows:
         return _command(
             [],
             f"No exact match for section {section} in act '{act}'. Try search_statutes instead.",
             tool_call_id,
+            "lookup_section",
         )
-    return _command(rows, _summarise(rows), tool_call_id)
+    return _command(rows, _summarise(rows), tool_call_id, "lookup_section")
