@@ -3,7 +3,7 @@ Agentic retriever — a ReAct agent that decides how to search the statute corpu
 
 Replaces the deterministic retriever node's fixed "exact-lookup else vector
 search" dispatch, so the LLM picks the tool, the arguments, and whether weak
-results are worth searching again. Built on langgraph's create_react_agent.
+results are worth searching again. Built on LangChain's create_agent.
 
 Tools write their rows into the `retrieved_chunks` state channel rather than
 into ToolMessage text, so results come back losslessly instead of via parsing.
@@ -16,10 +16,10 @@ from functools import lru_cache
 from operator import add, or_
 
 from langgraph.config import get_stream_writer
-from langgraph.graph.message import add_messages
-from langgraph.prebuilt import create_react_agent
-from langgraph.prebuilt.chat_agent_executor import AgentState as _ReactAgentState
 from typing_extensions import Annotated
+
+from langchain.agents import AgentState as _ReactAgentState
+from langchain.agents import create_agent
 
 from agent.llm_factory import make_llm
 from agent.retrieval.reference_graph import (
@@ -124,18 +124,18 @@ def _build_retrieval_agent(follow_enabled: bool):
     tool list would bind follow_references while the flag is off."""
     model = make_llm(os.getenv("RETRIEVAL_AGENT_MODEL", "gpt-4.1"))
     tools = [search_statutes, lookup_section]
-    prompt = _SYSTEM
+    system_prompt = _SYSTEM
     state_schema = RetrievalState
     kwargs = {}
     if follow_enabled:
         tools.append(follow_references)
-        prompt = _FOLLOW_REFERENCES_SYSTEM
+        system_prompt = _FOLLOW_REFERENCES_SYSTEM
         state_schema = ReferenceRetrievalState
         kwargs["context_schema"] = RetrievalReferenceContext
-    return create_react_agent(
+    return create_agent(
         model,
         tools=tools,
-        prompt=prompt,
+        system_prompt=system_prompt,
         state_schema=state_schema,
         **kwargs,
     )
