@@ -2,7 +2,7 @@
 
 Date: 2026-07-02
 
-Agent memory is split into **three tiers with three independent lifecycles**, rather than treated as one "conversation memory" backed by the checkpoint. Conflating them was the root of the design gap: the LangGraph checkpoint is *episodic* persistence only, and stretching it (or the history token budget) to cover cross-session knowledge would have scaled cost and latency faster than context quality.
+Agent memory is split into **three tiers with three independent lifecycles**, rather than treated as one "conversation memory" backed by the checkpoint. Conflating them was the root of the design gap. The LangGraph checkpoint is *episodic* persistence only; stretching it (or the history token budget) to cover cross-session knowledge would have scaled cost and latency faster than context quality.
 
 | Tier | What it is | Backing store | Scope key | Lifecycle |
 | --- | --- | --- | --- | --- |
@@ -17,7 +17,7 @@ Agent memory is split into **three tiers with three independent lifecycles**, ra
 - **We remember preferences + recurring topics, not client/matter facts.** The extraction schema captures: response language, citation/format style, practice-area focus, frequently-referenced **Acts**, and recurring research topics. Confidential client or matter facts mentioned in chat are **excluded by construction** — pulling them into a durable store would create retention and privilege obligations a pilot is not equipped to honour.
 - **Extraction runs in the background, off the hot path.** The turn's response never waits on memory extraction. The hot path only *reads* recalled facts; writing (extract → merge → upsert) happens after the turn is delivered.
 - **LangMem is the extract/merge/persist layer.** It provides a background memory manager over a `BaseStore` and uses Trustcall underneath for schema-driven, dedup-aware upserts. Chosen over calling Trustcall directly (less glue) and over a hand-rolled extractor (less to maintain, and the collection/merge semantics are the hard part we do not want to reinvent).
-- **Collection strategy, over-update accepted.** Recurring topics are a growing collection, not a single overwritten profile. The known trade-off is a tendency to over-update / accrete near-duplicates; acceptable at pilot size and the reason pruning (below) is designed now even though it ships later.
+- **Collection strategy, over-update accepted.** Recurring topics are a growing collection, not a single overwritten profile. The known trade-off is a tendency to over-update and accrete near-duplicates. This is acceptable at pilot size, and it is why pruning (below) is designed now even though it ships later.
 - **Pruning is importance + recency, not TTL alone.** TTL reclaims storage but does not improve retrieval quality — it can evict a stale-but-valuable fact while keeping recent chatter. The eviction policy combines recency with importance / retrieval-frequency (or an offline evaluator), so valuable memories survive and low-value ones decay. Deferred in implementation, fixed in direction.
 - **Compression stays retrieve-then-trim, summarise only under pressure.** Consistent with ADR 0008: the first lever is retrieving only task-relevant facts and trimming by token budget. A summary buffer is added only when a *reproduced* eval shows a generous budget still dropping a needed referent — not because a conversation "feels long."
 
