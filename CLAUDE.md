@@ -20,6 +20,27 @@ Precision beats brevity when they conflict. Operational invariants ("amendment-o
 
 Run the `plain-english` skill before committing any doc change. It reviews the prose with a subagent that has no context on this project, which is the only reliable way to catch density you can no longer see in your own writing. The subagent flags passages; you decide which are filler and which are load-bearing, because it cannot tell the difference.
 
+## Code comments
+
+Comments explain **why**, not **what**. If a reader can't tell what a block does from the block itself, rename things or restructure it. Don't narrate it.
+
+Write a comment when the code can't carry the reason on its own:
+
+- Why this approach and not the obvious one (`maxsize=2` so the two flag variants never share a compiled agent).
+- Why a number is that number (`RECURSION_LIMIT = 6` leaves room for two search rounds plus slack).
+- A constraint from outside this file — a framework contract, an upstream bug, a fail-open rule an operator depends on.
+- Why an empty `except` is correct, rather than that it's empty.
+
+Delete a comment when it:
+
+- restates the line below it
+- describes machinery that lives in a library, not in this file
+- tracks history the git log already holds ("we used to parse the message list")
+
+Docstrings follow the same rule. Keep the part a caller can't infer — raising behavior, which caller owns the fail-open decision, what a non-obvious parameter is for. Drop the opening sentence that repeats the function name.
+
+**Exception: text the model reads is behavior, not commentary.** Tool docstrings in `agent/retrieval/tools.py` become the tool schema sent to the LLM, and the system prompts in `agent/nodes/*.py` and `agent/retrieval/agent.py` steer the graph the same way. They describe what and when on purpose, at length, because that is what drives tool selection and routing. Never trim them for brevity. Changing them changes what the agent does, and the `tool_selection` evals will catch it.
+
 ## Build Log
 
 Short notes on challenges and learnings. Full entries in `docs/build-log.md`.

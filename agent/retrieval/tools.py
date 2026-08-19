@@ -1,15 +1,12 @@
 """
 Retrieval tools the agentic retriever binds (agent/retrieval/agent.py).
 
-Each tool wraps a function from agent/retrieval/search.py and returns a
-``Command`` that merges the found chunks into the agent's ``retrieved_chunks``
-state channel (see RetrievalState), records its own name in ``tool_trace``, and
-adds a short ``ToolMessage`` summary the model reads to judge hit quality and
-decide whether to search again.
+Each tool returns a ``Command`` that writes into the agent's state channels plus
+a short ``ToolMessage``. That summary exists for the model, not for us — it is
+what the model reads to judge hit quality and decide whether to search again.
 
-Reliability: a tool must never crash the ReAct loop. DB/embedding errors are
-caught and reported back as a ToolMessage so the model can retry or stop rather
-than the whole graph raising.
+A tool must never crash the ReAct loop, so DB and embedding errors come back as
+a ToolMessage the model can act on instead of raising through the whole graph.
 """
 from __future__ import annotations
 
@@ -37,8 +34,8 @@ logger = logging.getLogger(__name__)
 
 
 def _emit(name: str, summary: str) -> None:
-    """Surface a tool call on the graph's custom stream so the UI can show it as a
-    PROCESS step. A no-op when no stream is active (e.g. .invoke() in tests)."""
+    """Feeds the UI's PROCESS panel. Silent when no stream is active — a plain
+    .invoke() (tests, evals) has no writer, and that is not an error."""
     try:
         get_stream_writer()({"tool_call": {"name": name, "summary": summary}})
     except Exception:
@@ -46,7 +43,8 @@ def _emit(name: str, summary: str) -> None:
 
 
 def _summarise(rows: list[dict]) -> str:
-    """One-line, model-readable summary of a result set."""
+    """The model reads this to judge hit quality, so it names sections rather
+    than only counting them."""
     if not rows:
         return "No sections found."
     heads = ", ".join(
@@ -58,9 +56,8 @@ def _summarise(rows: list[dict]) -> str:
 
 
 def _command(rows: list[dict], summary: str, tool_call_id: str, name: str) -> Command:
-    """Build a tool's state update. `name` is recorded in the `tool_trace`
-    channel so the trace reflects what actually ran, rather than being
-    re-derived by walking the message list."""
+    """`name` is passed in rather than inferred so ``tool_trace`` records what
+    actually ran, not what the model asked for."""
     return Command(
         update={
             "retrieved_chunks": rows,
@@ -250,8 +247,8 @@ def lookup_section(
 
     act_number, act_title = (None, None)
     if act:
-        # Accept either a bare number or a name/alias by reusing the same resolver
-        # the deterministic node uses.
+        # Reuse the deterministic node's resolver so both paths accept the same
+        # aliases.
         act_number, act_title = extract_act_hint(act)
         if not (act_number or act_title):
             act_number = act.strip()  # assume it was already an Act number

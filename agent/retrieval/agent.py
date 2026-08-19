@@ -2,17 +2,11 @@
 Agentic retriever — a ReAct agent that decides how to search the statute corpus.
 
 Replaces the deterministic retriever node's fixed "exact-lookup else vector
-search" dispatch with an LLM that binds two retrieval tools (search_statutes,
-lookup_section) and chooses which to call, with what arguments, and whether to
-search again on weak results. Built on langgraph's create_react_agent prebuilt.
+search" dispatch, so the LLM picks the tool, the arguments, and whether weak
+results are worth searching again. Built on langgraph's create_react_agent.
 
-How the loop runs (what the prebuilt abstracts):
-  agent(LLM.bind_tools) → tools_condition → ToolNode → back to agent → …
-The LLM emits a tool call, the ToolNode runs it and appends a ToolMessage, the
-LLM sees the result and either calls another tool or stops. Our tools also write
-their rows into the `retrieved_chunks` state channel via Command(update=...), so
-after the loop we read them back losslessly instead of parsing ToolMessage text.
-The loop is bounded by RECURSION_LIMIT so it can never spin forever.
+Tools write their rows into the `retrieved_chunks` state channel rather than
+into ToolMessage text, so results come back losslessly instead of via parsing.
 """
 from __future__ import annotations
 
@@ -79,8 +73,8 @@ When and only when `follow_references` is available:
 
 
 def _dedupe_chunks(left: list[dict] | None, right: list[dict] | None) -> list[dict]:
-    """Reducer for the retrieved_chunks channel: accumulate across tool calls,
-    keeping the first-seen chunk per exact document/extraction/section identity."""
+    """Repeated and broadened searches overlap heavily, so accumulate across tool
+    calls without letting the same section land in the list twice."""
     merged: list[dict] = []
     seen: set[tuple] = set()
     for chunk in (left or []) + (right or []):
@@ -99,13 +93,11 @@ def _dedupe_chunks(left: list[dict] | None, right: list[dict] | None) -> list[di
 
 
 class RetrievalState(_ReactAgentState):
-    # `messages` (with add_messages) comes from the base ReAct AgentState. We add a
-    # side channel the tools write their found rows into, with a dedupe reducer so
-    # repeated/overlapping searches accumulate cleanly.
+    # Reducers rather than plain overwrites: one run makes several tool calls, and
+    # each must add to what the earlier ones found instead of replacing it.
     retrieved_chunks: Annotated[list[dict], _dedupe_chunks]
-    # Each tool appends its own name as it runs, so the trace is a record of what
-    # executed rather than a re-reading of the message list. Order is preserved by
-    # `add`; the tool_selection eval asserts on it.
+    # Written by the tools themselves, so the trace records what actually ran
+    # rather than what the model asked for. The tool_selection eval asserts order.
     tool_trace: Annotated[list[str], add]
 
 
@@ -128,7 +120,8 @@ class ReferenceRetrievalState(RetrievalState):
 
 @lru_cache(maxsize=2)
 def _build_retrieval_agent(follow_enabled: bool):
-    """Compile one disabled/enabled variant without leaking tools across flags."""
+    """maxsize=2 so the two flag variants never share a compiled agent — a leaked
+    tool list would bind follow_references while the flag is off."""
     model = make_llm(os.getenv("RETRIEVAL_AGENT_MODEL", "gpt-4.1"))
     tools = [search_statutes, lookup_section]
     prompt = _SYSTEM
@@ -149,27 +142,23 @@ def _build_retrieval_agent(follow_enabled: bool):
 
 
 def get_retrieval_agent():
-    """Return the cached variant for the flag's value at this invocation."""
+    """Reads the flag per call, not at import, so flipping the dark launch takes
+    effect without a restart."""
     return _build_retrieval_agent(follow_references_enabled())
 
 
 def run_retrieval_agent(query: str, feedback: str = "", config=None) -> dict:
     """Run the ReAct loop for one query.
 
-    Returns {"chunks": [...], "tools": [...]} — the accumulated chunks and the
-    tool names the agent called (order preserved; used by the tool_selection
-    eval). `feedback` (a re-retrieval pass, Phase 4) is appended to the request so
-    the agent can adjust its search. `config` is the parent graph's RunnableConfig
-    — forwarding it lets the tools' custom stream writes reach the parent's stream
-    (so tool calls surface in the UI). We copy it and pin our own recursion_limit
-    so the sub-loop stays bounded. Raises on failure — the wrapper decides whether
-    to fail open.
+    `feedback` comes from a re-retrieval pass so the agent can adjust its search.
+    `config` is the parent graph's RunnableConfig; forwarding it is what lets the
+    tools' stream writes reach the parent's stream. Raises on failure — the
+    caller in agent/nodes/retriever.py decides whether to fail open.
     """
     request = query if not feedback else f"{query}\n\nRe-retrieval note: {feedback}"
-    # Spread forwards the parent's metadata/tags/callbacks (so the sub-agent's
-    # nested runs stay filterable in LangSmith); we pin our own recursion_limit
-    # and run_name so this sub-loop reads as "retrieval_agent" rather than
-    # inheriting whatever run name the parent config carried.
+    # Spreading keeps the parent's metadata/tags/callbacks so nested runs stay
+    # filterable in LangSmith; recursion_limit and run_name are pinned so the
+    # sub-loop stays bounded and doesn't inherit the parent's run name.
     invoke_config = {**(config or {}), "recursion_limit": RECURSION_LIMIT, "run_name": "retrieval_agent"}
     follow_enabled = follow_references_enabled()
     agent = _build_retrieval_agent(follow_enabled)
@@ -183,10 +172,9 @@ def run_retrieval_agent(query: str, feedback: str = "", config=None) -> dict:
         else None
     )
 
-    # The tools emit tool_call events on THIS run's custom stream. A manually
-    # invoked sub-agent's stream doesn't bubble to the parent graph, so when a
-    # parent stream is active we stream the sub-agent and re-emit each custom
-    # event through the parent writer; otherwise a plain invoke is enough.
+    # A manually invoked sub-agent's custom stream doesn't bubble up to the parent
+    # graph, so when a parent stream is active we stream and re-emit each event
+    # through the parent's writer rather than plain-invoking.
     parent_writer = None
     try:
         parent_writer = get_stream_writer()
@@ -206,7 +194,7 @@ def run_retrieval_agent(query: str, feedback: str = "", config=None) -> dict:
         for mode, chunk in agent.stream(agent_input, invoke_config, **stream_kwargs):
             if mode == "custom":
                 parent_writer(chunk)
-            else:  # "values" — full state snapshots; keep the last
+            else:  # "values" emits full snapshots, so the last one is final
                 final_state = chunk
 
     result = {

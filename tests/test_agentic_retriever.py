@@ -80,10 +80,8 @@ class AgenticRetrieverNodeTests(unittest.TestCase):
 
 
 class ToolTraceChannelTests(unittest.TestCase):
-    """Each tool records its own name in the `tool_trace` state channel as it
-    runs, so the trace is a record of what executed. The error and empty-result
-    paths still appear in it — they did so for free when the trace was read off
-    the message list, and must keep doing so now that tools write it."""
+    """Error and empty-result paths must land in the trace too. Each tool writes
+    its own name, so an omission is silent — nothing else would catch it."""
 
     @staticmethod
     def _invoke(tool, **kwargs):
