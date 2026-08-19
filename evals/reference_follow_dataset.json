@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "reference-follow-outgoing-60d",
+      "category": "tool_selection",
+      "scenario": "reference_follow_positive",
+      "query": "What provisions does section 60D of the Employment Act refer to?",
+      "expected_policy": "allow",
+      "citation_applicable": true,
+      "expected_act_number": "265",
+      "expected_section": "60D",
+      "expected_tool_sequence": ["lookup_section", "follow_references"],
+      "expected_reference_direction": "outgoing",
+      "max_tool_calls": {"follow_references": 1},
+      "requires_follow_references": true
+    },
+    {
+      "id": "reference-follow-subject-to-60d",
+      "category": "tool_selection",
+      "scenario": "reference_follow_positive",
+      "query": "What is section 60D of the Employment Act subject to?",
+      "expected_policy": "allow",
+      "citation_applicable": true,
+      "expected_act_number": "265",
+      "expected_section": "60D",
+      "expected_tool_sequence": ["lookup_section", "follow_references"],
+      "expected_reference_direction": "outgoing",
+      "max_tool_calls": {"follow_references": 1},
+      "requires_follow_references": true
+    },
+    {
+      "id": "reference-follow-incoming-60d",
+      "category": "tool_selection",
+      "scenario": "reference_follow_incoming",
+      "query": "Which provisions refer to section 60D of the Employment Act?",
+      "expected_policy": "allow",
+      "citation_applicable": true,
+      "expected_act_number": "265",
+      "expected_section": "60D",
+      "expected_tool_sequence": ["lookup_section", "follow_references"],
+      "expected_reference_direction": "incoming",
+      "max_tool_calls": {"follow_references": 1},
+      "requires_follow_references": true
+    },
+    {
+      "id": "reference-follow-negative-exact",
+      "category": "tool_selection",
+      "scenario": "reference_follow_negative",
+      "query": "What does section 60D of the Employment Act say?",
+      "expected_policy": "allow",
+      "citation_applicable": true,
+      "expected_act_number": "265",
+      "expected_section": "60D",
+      "expected_tool": "lookup_section",
+      "forbidden_tools": ["follow_references"],
+      "requires_follow_references": true
+    },
+    {
+      "id": "reference-follow-negative-topical",
+      "category": "tool_selection",
+      "scenario": "reference_follow_negative",
+      "query": "What employment protections apply to paid public holidays?",
+      "expected_policy": "allow",
+      "citation_applicable": true,
+      "expected_act_number": "265",
+      "expected_section": "60D",
+      "expected_tool": "search_statutes",
+      "forbidden_tools": ["follow_references"],
+      "requires_follow_references": true
+    },
+    {
+      "id": "reference-follow-negative-broad",
+      "category": "tool_selection",
+      "scenario": "reference_follow_negative",
+      "query": "Research Malaysian employment law broadly.",
+      "expected_policy": "allow",
+      "citation_applicable": false,
+      "expected_act_number": null,
+      "expected_section": null,
+      "forbidden_tools": ["follow_references"],
+      "requires_follow_references": true
+    },
+    {
+      "id": "reference-follow-negative-unrelated-act",
+      "category": "tool_selection",
+      "scenario": "reference_follow_negative",
+      "query": "What does section 90A of the Evidence Act say?",
+      "expected_policy": "allow",
+      "citation_applicable": true,
+      "expected_act_number": "56",
+      "expected_section": "90A",
+      "expected_tool": "lookup_section",
+      "forbidden_tools": ["follow_references"],
+      "requires_follow_references": true
+    }
+  ]
+}

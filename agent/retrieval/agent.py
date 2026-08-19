@@ -19,6 +19,7 @@ from __future__ import annotations
 import logging
 import os
 from functools import lru_cache
+from operator import add, or_
 
 from langgraph.config import get_stream_writer
 from langgraph.graph.message import add_messages
@@ -27,7 +28,14 @@ from langgraph.prebuilt.chat_agent_executor import AgentState as _ReactAgentStat
 from typing_extensions import Annotated
 
 from agent.llm_factory import make_llm
-from agent.retrieval.tools import lookup_section, search_statutes
+from agent.retrieval.reference_graph import (
+    FollowOnceGuard,
+    RetrievalReferenceContext,
+    empty_reference_metrics,
+    follow_references_enabled,
+    should_follow_references,
+)
+from agent.retrieval.tools import follow_references, lookup_section, search_statutes
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +59,23 @@ Choose tools deliberately:
 
 Stop as soon as you have relevant sections. When you are done, reply with a
 one-line note of what you found — do not answer the legal question yourself."""
+
+_FOLLOW_REFERENCES_SYSTEM = _SYSTEM + """
+
+When and only when `follow_references` is available:
+- It is for explicit statutory-reference intent only: what an anchored provision
+  refers to, is subject to/notwithstanding, which provisions refer to it, a
+  definition explicitly located under another provision, or targeted retry
+  feedback that says a directly referenced provision is missing.
+- First establish the concrete anchor with `lookup_section` or
+  `search_statutes`. Never call `follow_references` in the same tool-call batch
+  as that initial lookup/search.
+- Do not use it for an ordinary "what does section X say?", topical employment
+  questions, broad research, unrelated Acts, or as a routine second step.
+- Call it at most once. It follows only direct published outgoing/incoming edges,
+  never a second hop, and returns at most five edges. Boundary targets cannot be
+  expanded. A graph or target lookup failure means keep the existing evidence
+  and stop or continue through the normal search path."""
 
 
 def _dedupe_chunks(left: list[dict] | None, right: list[dict] | None) -> list[dict]:
@@ -80,16 +105,48 @@ class RetrievalState(_ReactAgentState):
     retrieved_chunks: Annotated[list[dict], _dedupe_chunks]
 
 
-@lru_cache(maxsize=1)
-def get_retrieval_agent():
-    """Compile the retrieval agent once (lazily, so import is cheap and offline)."""
+def _merge_metrics(left: dict | None, right: dict | None) -> dict:
+    merged = empty_reference_metrics()
+    for source in (left or {}, right or {}):
+        for key in merged:
+            try:
+                merged[key] += int(source.get(key, 0))
+            except (TypeError, ValueError):
+                continue
+    return merged
+
+
+class ReferenceRetrievalState(RetrievalState):
+    reference_followed: Annotated[bool, or_]
+    reference_trace: Annotated[list[dict], add]
+    reference_metrics: Annotated[dict, _merge_metrics]
+
+
+@lru_cache(maxsize=2)
+def _build_retrieval_agent(follow_enabled: bool):
+    """Compile one disabled/enabled variant without leaking tools across flags."""
     model = make_llm(os.getenv("RETRIEVAL_AGENT_MODEL", "gpt-4.1"))
+    tools = [search_statutes, lookup_section]
+    prompt = _SYSTEM
+    state_schema = RetrievalState
+    kwargs = {}
+    if follow_enabled:
+        tools.append(follow_references)
+        prompt = _FOLLOW_REFERENCES_SYSTEM
+        state_schema = ReferenceRetrievalState
+        kwargs["context_schema"] = RetrievalReferenceContext
     return create_react_agent(
         model,
-        tools=[search_statutes, lookup_section],
-        prompt=_SYSTEM,
-        state_schema=RetrievalState,
+        tools=tools,
+        prompt=prompt,
+        state_schema=state_schema,
+        **kwargs,
     )
+
+
+def get_retrieval_agent():
+    """Return the cached variant for the flag's value at this invocation."""
+    return _build_retrieval_agent(follow_references_enabled())
 
 
 def _tool_names(messages: list) -> list[str]:
@@ -121,8 +178,17 @@ def run_retrieval_agent(query: str, feedback: str = "", config=None) -> dict:
     # and run_name so this sub-loop reads as "retrieval_agent" rather than
     # inheriting whatever run name the parent config carried.
     invoke_config = {**(config or {}), "recursion_limit": RECURSION_LIMIT, "run_name": "retrieval_agent"}
-    agent = get_retrieval_agent()
+    follow_enabled = follow_references_enabled()
+    agent = _build_retrieval_agent(follow_enabled)
     agent_input = {"messages": [{"role": "user", "content": request}]}
+    context = (
+        RetrievalReferenceContext(
+            follow_allowed=should_follow_references(query, feedback),
+            follow_guard=FollowOnceGuard(),
+        )
+        if follow_enabled
+        else None
+    )
 
     # The tools emit tool_call events on THIS run's custom stream. A manually
     # invoked sub-agent's stream doesn't bubble to the parent graph, so when a
@@ -135,16 +201,31 @@ def run_retrieval_agent(query: str, feedback: str = "", config=None) -> dict:
         parent_writer = None
 
     if parent_writer is None:
-        final_state = agent.invoke(agent_input, invoke_config)
+        if context is None:
+            final_state = agent.invoke(agent_input, invoke_config)
+        else:
+            final_state = agent.invoke(agent_input, invoke_config, context=context)
     else:
         final_state = {}
-        for mode, chunk in agent.stream(agent_input, invoke_config, stream_mode=["custom", "values"]):
+        stream_kwargs = {"stream_mode": ["custom", "values"]}
+        if context is not None:
+            stream_kwargs["context"] = context
+        for mode, chunk in agent.stream(agent_input, invoke_config, **stream_kwargs):
             if mode == "custom":
                 parent_writer(chunk)
             else:  # "values" — full state snapshots; keep the last
                 final_state = chunk
 
-    return {
+    result = {
         "chunks": final_state.get("retrieved_chunks", []),
         "tools": _tool_names(final_state.get("messages", [])),
     }
+    if follow_enabled:
+        result.update({
+            "reference_trace": final_state.get("reference_trace", []),
+            "reference_metrics": final_state.get(
+                "reference_metrics",
+                empty_reference_metrics(),
+            ),
+        })
+    return result

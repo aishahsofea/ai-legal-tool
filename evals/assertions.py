@@ -109,20 +109,63 @@ def check_ai_refusal(response: str, expected_policy: str) -> str | None:
 def check_tool_selection(
     tool_trace: list[str],
     expected_tool: str | None,
+    expected_tool_sequence: list[str] | None = None,
+    forbidden_tools: list[str] | None = None,
+    max_tool_calls: dict[str, int] | None = None,
+    reference_trace: list[dict] | None = None,
+    expected_reference_direction: str | None = None,
 ) -> str | None:
-    """Return None if the agent called the expected retrieval tool, else a message.
+    """Validate optional presence, ordered-subsequence, exclusion, and call caps.
 
-    Applies only when a case declares `expected_tool` (agentic retrieval). Passes
-    as long as the expected tool appears somewhere in the trace — the agent may
-    also call others (e.g. a fallback search after an exact-lookup miss)."""
-    if not expected_tool:
-        return None
-    if expected_tool in (tool_trace or []):
-        return None
-    return (
-        f"Expected the agent to call `{expected_tool}`, but the tool trace was "
-        f"{tool_trace or '[]'}."
-    )
+    Each contract is optional and backward-compatible with the original
+    `expected_tool` field. Other tools may appear unless a sequence, exclusion,
+    or per-tool cap says otherwise."""
+    trace = tool_trace or []
+    if expected_tool and expected_tool not in trace:
+        return (
+            f"Expected the agent to call `{expected_tool}`, but the tool trace was "
+            f"{trace or '[]'}."
+        )
+
+    sequence = expected_tool_sequence or []
+    position = 0
+    for tool_name in trace:
+        if position < len(sequence) and tool_name == sequence[position]:
+            position += 1
+    if position != len(sequence):
+        return (
+            f"Expected ordered tool subsequence {sequence}, but the tool trace "
+            f"was {trace or '[]'}."
+        )
+
+    forbidden = sorted(set(forbidden_tools or []) & set(trace))
+    if forbidden:
+        return (
+            f"Forbidden retrieval tool(s) appeared: {forbidden}; tool trace was "
+            f"{trace or '[]'}."
+        )
+
+    for tool_name, maximum in (max_tool_calls or {}).items():
+        count = trace.count(tool_name)
+        if count > int(maximum):
+            return (
+                f"Expected at most {maximum} call(s) to `{tool_name}`, got "
+                f"{count}; tool trace was {trace or '[]'}."
+            )
+
+    if expected_reference_direction:
+        followed_directions = {
+            item.get("direction")
+            for item in (reference_trace or [])
+            if isinstance(item, dict) and item.get("status") == "followed"
+        }
+        if expected_reference_direction not in followed_directions:
+            return (
+                "Expected a completed reference follow with direction "
+                f"`{expected_reference_direction}`, but observed directions were "
+                f"{sorted(direction for direction in followed_directions if direction) or '[]'}."
+            )
+    return None
 
 
 def run_assertions(
@@ -136,6 +179,11 @@ def run_assertions(
     db_conn: Any,
     tool_trace: list[str] | None = None,
     expected_tool: str | None = None,
+    expected_tool_sequence: list[str] | None = None,
+    forbidden_tools: list[str] | None = None,
+    max_tool_calls: dict[str, int] | None = None,
+    reference_trace: list[dict] | None = None,
+    expected_reference_direction: str | None = None,
 ) -> dict[str, str]:
     """Run all L1 assertions. Returns {assertion_name: failure_message} for failures only."""
     failures: dict[str, str] = {}
@@ -144,7 +192,15 @@ def run_assertions(
     if result is not None:
         failures["citation_existence"] = result
 
-    result = check_tool_selection(tool_trace or [], expected_tool)
+    result = check_tool_selection(
+        tool_trace or [],
+        expected_tool,
+        expected_tool_sequence,
+        forbidden_tools,
+        max_tool_calls,
+        reference_trace,
+        expected_reference_direction,
+    )
     if result is not None:
         failures["tool_selection"] = result
 

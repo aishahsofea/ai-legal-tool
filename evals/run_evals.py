@@ -19,6 +19,7 @@ from agent.nodes.retriever import retriever_node
 from agent.nodes.router import router_node
 from agent.nodes.synthesiser import synthesiser_node
 from agent.query_lifecycle import run_query
+from agent.retrieval.reference_graph import parse_feature_flag
 from evals.assertions import BM_FUNCTION_WORDS, run_assertions
 from evals.coverage import aggregate_scenarios, select_cases
 from evals.judge import JudgeContext, judge_case
@@ -58,7 +59,7 @@ def _run_full_agent(query: str, history: list[dict[str, Any]] | None = None) -> 
     # an independent single-turn query, so use a fresh thread_id (dataset cases carry
     # no prior history; multi-turn eval seeding would replay turns on one thread_id).
     result = run_query(query, uuid.uuid4().hex)
-    return {
+    state = {
         "query_type": result["query_type"],
         "final_response": result["response"],
         "citations": result["citations"],
@@ -67,6 +68,9 @@ def _run_full_agent(query: str, history: list[dict[str, Any]] | None = None) -> 
         "retrieved_chunks": [],
         "tool_trace": result.get("tool_trace", []),
     }
+    if result.get("reference_trace"):
+        state["reference_trace"] = result["reference_trace"]
+    return state
 
 
 def _run_raw_agent(query: str) -> dict[str, Any]:
@@ -97,7 +101,7 @@ def _response_text(state: dict[str, Any]) -> str:
 
 
 def _compact_state(state: dict[str, Any]) -> dict[str, Any]:
-    return {
+    compact = {
         "query_type": state.get("query_type", ""),
         "final_response": _response_text(state),
         "citations": state.get("citations", []),
@@ -113,6 +117,9 @@ def _compact_state(state: dict[str, Any]) -> dict[str, Any]:
             for c in state.get("retrieved_chunks", [])[:8]
         ],
     }
+    if state.get("reference_trace"):
+        compact["reference_trace"] = state["reference_trace"]
+    return compact
 
 
 def _load_dataset(path: Path) -> list[dict[str, Any]]:
@@ -161,11 +168,21 @@ def _assertion_applicable(
     expected_section: str | None,
     expected_policy: str,
     expected_tool: str | None = None,
+    expected_tool_sequence: list[str] | None = None,
+    forbidden_tools: list[str] | None = None,
+    max_tool_calls: dict[str, int] | None = None,
+    expected_reference_direction: str | None = None,
 ) -> bool:
     if name == "citation_existence":
         return bool(citations)
     if name == "tool_selection":
-        return bool(expected_tool)
+        return bool(
+            expected_tool
+            or expected_tool_sequence
+            or forbidden_tools
+            or max_tool_calls
+            or expected_reference_direction
+        )
     if name == "expected_section":
         return bool(expected_act_number and expected_section)
     if name == "language_register":
@@ -195,6 +212,14 @@ def iter_suite(
     # produces a tool trace). With the flag off, expected_tool is treated as absent
     # so the assertion is skipped and the default eval is unaffected.
     agentic_on = os.getenv("AGENTIC_RETRIEVAL", "").lower() in ("1", "true", "yes")
+    follow_on = parse_feature_flag(os.getenv("FOLLOW_REFERENCES_ENABLED"))
+    if any(case.get("requires_follow_references") for case in cases) and not (
+        mode == "full" and agentic_on and follow_on
+    ):
+        raise ValueError(
+            "This dataset requires AGENTIC_RETRIEVAL=on, "
+            "FOLLOW_REFERENCES_ENABLED=on, and --mode full"
+        )
 
     db_conn = psycopg2.connect(os.environ["DATABASE_URL"])
     try:
@@ -215,6 +240,15 @@ def iter_suite(
             expected_section = case.get("expected_section")
             expected_policy = case.get("expected_policy", "allow")
             expected_tool = case.get("expected_tool") if agentic_on else None
+            expected_tool_sequence = (
+                case.get("expected_tool_sequence") if agentic_on else None
+            )
+            forbidden_tools = case.get("forbidden_tools") if agentic_on else None
+            max_tool_calls = case.get("max_tool_calls") if agentic_on else None
+            expected_reference_direction = (
+                case.get("expected_reference_direction") if agentic_on else None
+            )
+            reference_trace = agent_output.get("reference_trace", [])
 
             applicable = [
                 name
@@ -227,6 +261,10 @@ def iter_suite(
                     expected_section=expected_section,
                     expected_policy=expected_policy,
                     expected_tool=expected_tool,
+                    expected_tool_sequence=expected_tool_sequence,
+                    forbidden_tools=forbidden_tools,
+                    max_tool_calls=max_tool_calls,
+                    expected_reference_direction=expected_reference_direction,
                 )
             ]
 
@@ -240,6 +278,11 @@ def iter_suite(
                 db_conn=db_conn,
                 tool_trace=tool_trace,
                 expected_tool=expected_tool,
+                expected_tool_sequence=expected_tool_sequence,
+                forbidden_tools=forbidden_tools,
+                max_tool_calls=max_tool_calls,
+                reference_trace=reference_trace,
+                expected_reference_direction=expected_reference_direction,
             )
 
             case_result: dict[str, Any] = {
@@ -306,7 +349,7 @@ def _build_report(mode: str, results: list[dict[str, Any]]) -> dict[str, Any]:
 
     summary = {
         "mode": mode,
-        "total_cases": len(cases),
+        "total_cases": len(results),
         "l1": l1_summary,
         "judge_passed": judge_passed,
         "judge_total": judge_total,

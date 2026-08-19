@@ -30,6 +30,54 @@ class CheckToolSelectionTests(unittest.TestCase):
     def test_fails_on_empty_trace(self):
         self.assertIsNotNone(check_tool_selection([], "search_statutes"))
 
+    def test_accepts_ordered_subsequence_with_other_tools_between(self):
+        self.assertIsNone(check_tool_selection(
+            ["lookup_section", "search_statutes", "follow_references"],
+            None,
+            ["lookup_section", "follow_references"],
+        ))
+
+    def test_rejects_follow_before_anchor_lookup(self):
+        result = check_tool_selection(
+            ["follow_references", "lookup_section"],
+            None,
+            ["lookup_section", "follow_references"],
+        )
+        self.assertIn("ordered tool subsequence", result)
+
+    def test_rejects_forbidden_tool_and_call_cap(self):
+        self.assertIn(
+            "Forbidden",
+            check_tool_selection(
+                ["lookup_section", "follow_references"],
+                "lookup_section",
+                forbidden_tools=["follow_references"],
+            ),
+        )
+        self.assertIn(
+            "at most 1",
+            check_tool_selection(
+                ["lookup_section", "follow_references", "follow_references"],
+                None,
+                max_tool_calls={"follow_references": 1},
+            ),
+        )
+
+    def test_rejects_missing_or_wrong_completed_reference_direction(self):
+        self.assertIsNone(check_tool_selection(
+            ["lookup_section", "follow_references"],
+            None,
+            reference_trace=[{"status": "followed", "direction": "incoming"}],
+            expected_reference_direction="incoming",
+        ))
+        failure = check_tool_selection(
+            ["lookup_section", "follow_references"],
+            None,
+            reference_trace=[{"status": "followed", "direction": "outgoing"}],
+            expected_reference_direction="incoming",
+        )
+        self.assertIn("direction `incoming`", failure)
+
 
 def _make_db_conn(exists: bool) -> MagicMock:
     cur = MagicMock()

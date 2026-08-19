@@ -42,6 +42,17 @@ def build_feedback(state: dict[str, Any]) -> dict[str, Any]:
     citations = state.get("citations") or []
     query_type = state.get("query_type", "")
     fallback = delivered_response(state) == FINAL_FAILURE_RESPONSE
+    reference_metrics = (
+        state.get("reference_metrics")
+        if isinstance(state.get("reference_metrics"), dict)
+        else {}
+    )
+
+    def reference_metric(name: str) -> float:
+        try:
+            return float(reference_metrics.get(name, 0))
+        except (TypeError, ValueError):
+            return 0.0
 
     return {
         "passed": 0.0 if violations else 1.0,
@@ -51,6 +62,17 @@ def build_feedback(state: dict[str, Any]) -> dict[str, Any]:
         "num_citations": float(len(citations)),
         "fallback_delivered": 1.0 if fallback else 0.0,
         "escalated": 1.0 if query_type == "escalate" else 0.0,
+        "reference_follow_calls": reference_metric("calls"),
+        "reference_follow_skipped": reference_metric("skipped"),
+        "reference_follow_disabled": reference_metric("disabled"),
+        "reference_follow_unavailable": reference_metric("unavailable"),
+        "reference_edges_considered": reference_metric("edges_considered"),
+        "reference_edges_returned": reference_metric("edges_returned"),
+        "reference_targets_looked_up": reference_metric("targets_looked_up"),
+        "reference_targets_resolved": reference_metric("targets_resolved"),
+        "reference_targets_failed": reference_metric("targets_failed"),
+        "reference_boundary_targets": reference_metric("boundary_targets"),
+        "reference_fail_open": reference_metric("fail_open"),
         # Categorical — posted as a feedback `value`, not a `score`.
         "query_type": query_type,
     }

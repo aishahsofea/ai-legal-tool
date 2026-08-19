@@ -32,6 +32,7 @@ class QueryResult(TypedDict):
     citations: list[Citation]
     violations: list[str]
     tool_trace: list[str]    # retrieval tools the agent called (agentic retrieval)
+    reference_trace: NotRequired[list[dict]]  # enabled-only compact follow outcome
 
 
 class QueryEvent(TypedDict, total=False):
@@ -62,5 +63,7 @@ class AgentState(TypedDict):
     recalled_memory: str     # Semantic Memory recalled for the synthesiser
     retrieval_feedback: str  # feedback fed to the agentic retriever on a re-retrieval pass
     tool_trace: list[str]    # retrieval tool names the agent called this turn
+    reference_trace: list[dict]  # compact graph/lookup statuses; never graph provision text
+    reference_metrics: dict[str, int]  # low-cardinality follow counters for observability
     final_response: str
     retry_count: int
