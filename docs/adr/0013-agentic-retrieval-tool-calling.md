@@ -2,7 +2,11 @@
 
 Date: 2026-07-11
 
-Retrieval is done by an LLM that binds two tools — `search_statutes` (semantic pgvector search) and `lookup_section` (exact section lookup) — and **decides** which to call, with what arguments, and whether to search again, replacing the fixed "if `statute_lookup` try exact-lookup else vector search" dispatch in the retriever node. The agent is a LangGraph `create_react_agent`. The whole path is gated behind `AGENTIC_RETRIEVAL` (off by default) and **fails open** to the deterministic retriever. A second change rides on the same tool loop: an evidence-shaped supervision failure now **re-retrieves** with feedback instead of only re-drafting.
+Retrieval is done by an LLM with two tools: `search_statutes` (semantic pgvector search) and `lookup_section` (exact section lookup). The LLM **decides** which to call, with what arguments, and whether to search again. This replaces the fixed "if `statute_lookup` try exact-lookup else vector search" dispatch in the retriever node.
+
+The agent is a LangGraph `create_react_agent`. The whole path is gated behind `AGENTIC_RETRIEVAL` (off by default) and **fails open** to the deterministic retriever.
+
+A second change rides on the same tool loop: an evidence-shaped supervision failure now **re-retrieves** with feedback instead of only re-drafting.
 
 ## Context
 
@@ -28,7 +32,7 @@ This project is also a portfolio artifact for agent-engineering roles whose bar 
 - **Hand-roll the ReAct loop with `ToolNode` + `tools_condition`.** Rejected for this change. More educational per line, but the prebuilt is the industry-standard boundary and the loop mechanics aren't the risk here. Documented how it works (README) so the abstraction isn't a black box.
 - **Add the agent as a subgraph *node* in the parent graph.** Automatic stream propagation, but it forces a state-schema mapping between `AgentState` and the react agent's `MessagesState`, and complicates the fail-open fallback. Rejected in favour of a thin wrapper that invokes a self-contained compiled agent and keeps the existing `{"retrieved_chunks": ...}` interface.
 - **Return chunks as `ToolMessage` text and re-parse.** Rejected — lossy and fragile. `Command`-into-custom-state is the current idiom.
-- **More retry budget for re-retrieval.** Rejected. Re-retrieval is expensive; one smarter retry preserves the cost/latency envelope and the fail-closed guarantee.
+- **More retry budget for re-retrieval.** Rejected. Re-retrieval is expensive.
 - **Keep the fixed dispatch and just add filters.** Rejected. It defers the same backlog items and demonstrates none of the tool-calling the project exists to show.
 
 ## Consequences
