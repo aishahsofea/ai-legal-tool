@@ -112,6 +112,7 @@ Endpoints:
 - `POST /cancel { thread_id }` — barge-in: stop the in-flight turn for a thread (ADR 0014)
 - `GET|HEAD /receipts/{document_id}/pdf` — serve, proxy, or redirect one verified immutable Receipt Document (ETag/304, ranges supported)
 - `POST /receipts/{document_id}/locate { evidence_quote?, start_page, extraction_id? }` — locate one Evidence Span against the exact extraction sidecar
+- `POST /receipts/telemetry` — accepts a small allowlisted, quote-free frontend failure event
 - `GET /reference-graph/status?document_id?` — flag-gated graph status, independent of chat and health
 - `GET /reference-graph/neighborhood?document_id=&focus_provision_id=` — one-hop direct incoming/outgoing edges only; no depth parameter
 - `GET /reference-graph/snapshots?act_number=265&language=en` — promoted/audited snapshot selector data

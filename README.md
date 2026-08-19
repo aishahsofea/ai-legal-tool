@@ -110,43 +110,19 @@ The answer merges with the original query into one self-contained query, so retr
 
 ### Citation Receipt API
 
-`data/pdfs/manifest.json` is a deterministic, corpus-wide registry generated from scraper metadata and actual bytes: multiple versions/languages per Act, content-derived IDs, historical aliases, extraction identities, coordinate-sidecar hashes, and an active Act/language mapping. `data/corpus/coverage.json` covers every locally audited PDF, with blocker/remediation details.
+`data/pdfs/manifest.json` is a deterministic, corpus-wide registry of every PDF's identity, version, and language. The current audit: 596 canonical reprints registered, 601 documents total, 48 excluded (amendment-only, zero-chunk, or scanned). Full numbers and the rollout command live in [docs/corpus-receipts.md](docs/corpus-receipts.md); how to run it locally is in [CONTRIBUTING.md](CONTRIBUTING.md#4-build-the-knowledge-base-one-time-1-hour).
 
-The current local audit: 596 canonical reprints registered from 624 PDFs, plus five more immutable Act 265 observations for the reference-graph snapshot catalog (1975, 2001, 2006, 2012, September 2023) — 601 documents total. 576 shadow extraction identities produced. Five existing pilots stayed active. 48 inputs excluded (28 amendment-only, 15 zero-chunk, 5 scanned). BM-only Acts 144, 152, 194, 220, 228, 230 are registered as BM.
+- `GET|HEAD /receipts/{document_id}/pdf`, `POST /receipts/{document_id}/locate`, `POST /receipts/telemetry` — see [CONTRIBUTING.md](CONTRIBUTING.md#5-start-the-api) for the full signatures.
 
-One command does the whole verified rollout for the normal local/operator path:
-
-```bash
-python3 -m corpus rollout
-```
-
-It prepares missing bundles/sidecars, applies the additive database migration, registers identities, embeds only missing extraction runs, and activates only successfully ingested Act/language mappings. Idempotent — re-running it skips completed work. `--dry-run` previews the plan without touching anything. Embedding requests default to a US$1 hard cap per invocation. Oversized source chunks get token-segmented and pooled back without changing their immutable receipt identity. Granular lifecycle commands stay available for incident response and controlled partial rollouts.
+The viewer renders one page at a time and always keeps the "Check latest on AGC" escape hatch. This is the trust boundary: missing, mismatched, corrupt, ambiguous, or failed provenance never draws a highlight — an uncertain match shows nothing rather than a guess.
 
 ### Statutory reference graph
 
-A deterministic index of cross-references inside Employment Act 1955 receipts. Three phases:
+A deterministic index of cross-references inside Employment Act 1955 receipts, in three phases: **Phase 1** live now (audited alias `act-265-reprint-2023-6fec2f07`, Feb 2023), **Phase 2** compares two independently audited snapshots, **Phase 3** (optional) lets the Retrieval Agent follow one published reference when a question explicitly asks about it. Timeline dates label observed snapshots, not exact legal effective dates.
 
-- **Phase 1**: live now, via audited alias `act-265-reprint-2023-6fec2f07` (Feb 2023).
-- **Phase 2**: compares that graph against another independently audited Act 265 snapshot.
-- **Phase 3** (optional): lets the Retrieval Agent follow one published reference — only when the question explicitly asks what a retrieved provision refers to, is subject to/notwithstanding, or what refers to it.
+Flags: `REFERENCE_GRAPH_ENABLED` (base graph), `REFERENCE_GRAPH_COMPARISON_ENABLED` (snapshot comparison, needs the base flag too), `FOLLOW_REFERENCES_ENABLED` (binds the agent's `follow_references` tool, needs `AGENTIC_RETRIEVAL=1` too). All default off, all fail open. Full flag semantics, the follow operation's exact constraints (five-edge cap, one hop, deterministic ordering), and the audited-snapshot table are in [CONTRIBUTING.md](CONTRIBUTING.md#statutory-reference-graph-operator-workflow) and [CONTEXT.md](CONTEXT.md).
 
-Timeline dates label observed snapshots, not exact legal effective dates.
-
-The production API reads only validated, promoted JSON artifacts. The additive PostgreSQL tables are an operator-verified mirror, nothing more. Neither path downloads PDFs, changes active corpus mappings, rebuilds chunks, alters retrieval, or infers a cross-Act target snapshot.
-
-Every consolidated Act 265 source is recorded in the checked-in acquisition reports. The 2006, 2012, February 2023, and September 2023 graphs are independently audited and promoted. The authoritative 1975 and 2001 receipts are registered but explicitly blocked — scanned/image-only, text layer below the parsing threshold. No graph data is guessed for them.
-
-Flags:
-
-- `REFERENCE_GRAPH_ENABLED=on` — exposes the base graph.
-- `REFERENCE_GRAPH_COMPARISON_ENABLED=on` — adds snapshot comparison, but only with the base flag also on. Turning it off leaves Phase 1 receipts, neighborhoods, and chat untouched.
-- `FOLLOW_REFERENCES_ENABLED=on` — binds the internal `follow_references` retrieval tool. Also needs `AGENTIC_RETRIEVAL=1` (`1`, `true`, or `yes`), but not `REFERENCE_GRAPH_ENABLED` — public graph UI/API exposure is separate from internal artifact consumption. Flag off → the Retrieval Agent sees exactly `search_statutes` and `lookup_section`, pre-Phase-3 prompt.
-
-The Citation Inspector's **References** tab and `/reference-graph` lazily load the pinned Cytoscape dependency. The standalone route keeps base, comparison, focus, layout, and overlay mode in the URL, and holds union-node positions fixed across view toggles. A non-promoted or unaudited snapshot reports as "not indexed" — never renders as an empty graph.
-
-Following is bounded at execution time, not just by the prompt: a deterministic intent gate, an exact `document_id` + `extraction_id` anchor already returned by search/lookup, one operation per retrieval run, one direct outgoing/incoming scope, deterministic ordering, at most five published edges. A section anchor includes references from its audited child provisions — targets are never followed twice. Unresolved candidates stay hidden; boundary/unindexed nodes are reported without expansion.
-
-The graph only identifies targets — it never supplies answer text or a legal-text citation. Same-Act target text comes from the anchor's exact document/extraction. A cross-Act target stays a version-neutral Act + provision identity; if independently found in the active corpus, it keeps that target chunk's own provenance, with no claim it was in force as of the source snapshot. Missing/malformed graphs, snapshot mismatches, unavailable targets, and telemetry failures all fail open — search/lookup, synthesis, citations, and PDF receipts keep working.
+The graph only identifies targets — it never supplies answer text or a citation itself. Same-Act text always comes from the anchor's own extraction; nothing here changes what gets cited.
 
 ### Eval dashboard API
 
@@ -161,8 +137,8 @@ The server refuses stale corpora, blocks concurrent runs, and kills a run when i
 
 ### Memory
 
-- **Conversation history** — server-side, in a LangGraph checkpointer keyed by `thread_id`. Client never resends prior turns. `DATABASE_URL` set → `PostgresSaver`; otherwise an in-process `MemorySaver`. Trimmed to a token budget (`MAX_HISTORY_TOKENS`, default 4000), whole turns, oldest first (ADR 0008).
-- **Semantic memory** (cross-thread, off by default) — remembers a practitioner across threads: durable preferences, recurring topics, scoped by `user_id`. A background path writes them; `recall` reads them back as soft framing hints, never cited, never treated as fact. A separate maintenance path keeps the namespace bounded. Confidential client/matter facts excluded by construction. Own fail-open flag per path: `SEMANTIC_MEMORY_RECALL`, `SEMANTIC_MEMORY_EXTRACT`, `SEMANTIC_MEMORY_PRUNE`. See [CONTEXT.md](CONTEXT.md) and ADR 0010/0012.
+- **Conversation history** — server-side, keyed by `thread_id`, trimmed to a token budget (ADR 0008). The client never resends prior turns.
+- **Semantic memory** (cross-thread, off by default) — remembers a practitioner's preferences and recurring topics across threads, as soft framing hints, never cited or treated as fact. Confidential client/matter facts excluded by construction. Flags and mechanics: [CONTRIBUTING.md](CONTRIBUTING.md#2-environment-variables). Full model: [CONTEXT.md](CONTEXT.md) and ADR 0010/0012.
 
 ## Docs & data
 
