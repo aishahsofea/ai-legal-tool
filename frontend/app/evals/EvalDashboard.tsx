@@ -68,6 +68,10 @@ function formatScenario(scenario: string) {
   return scenario.replaceAll("_", " ");
 }
 
+function formatSectionRef(entry: { act_number: string; section_number: string }) {
+  return `Act ${entry.act_number} §${entry.section_number}`;
+}
+
 function CaseDetails({ result }: { result: EvalCaseResult }) {
   const kind = caseFailureKind(result);
   const passed = kind === "Pass";
@@ -106,9 +110,7 @@ function CaseDetails({ result }: { result: EvalCaseResult }) {
                 </p>
                 <p>
                   Missing: {result.section_recall.missing_sections.length
-                    ? result.section_recall.missing_sections
-                        .map((entry) => `Act ${entry.act_number} §${entry.section_number}`)
-                        .join(" · ")
+                    ? result.section_recall.missing_sections.map(formatSectionRef).join(" · ")
                     : "none"}
                 </p>
               </>
@@ -118,7 +120,7 @@ function CaseDetails({ result }: { result: EvalCaseResult }) {
           </DetailBlock>
           <DetailBlock title="Actual citations">
             <p>{result.citations.length
-              ? result.citations.map((citation) => `Act ${citation.act_number} §${citation.section_number}`).join(" · ")
+              ? result.citations.map(formatSectionRef).join(" · ")
               : "No citations returned"}</p>
           </DetailBlock>
         </div>

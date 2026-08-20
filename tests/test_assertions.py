@@ -353,3 +353,17 @@ class CheckSectionRecallTests(unittest.TestCase):
         result = check_section_recall([], _WAGES_SECTIONS, 1)
         self.assertIsNotNone(result)
         self.assertIn("found 0", result)
+
+    def test_bool_min_sections_found_raises_instead_of_silently_zeroing_threshold(self):
+        with self.assertRaises(ValueError):
+            check_section_recall([], _WAGES_SECTIONS, False)
+
+    def test_precomputed_recall_is_reused_instead_of_recomputed(self):
+        citations = [{"act_number": "265", "section_number": "19"}]
+        recall = section_recall(citations, _WAGES_SECTIONS)
+        # A precomputed recall (matched=1, expected=3) must win over recomputing
+        # from the stale citations=[]/expected_sections=[] arguments below, which
+        # would report "not applicable" (None) instead of a threshold failure.
+        result = check_section_recall([], [], 2, recall=recall)
+        self.assertIsNotNone(result)
+        self.assertIn("found 1", result)

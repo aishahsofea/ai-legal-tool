@@ -137,6 +137,11 @@ async def get_coverage():
 def _run_summary(results: list[dict[str, Any]]) -> dict[str, Any]:
     l1_passed = sum(not result.get("l1_failures") for result in results)
     judged = [result["judge"] for result in results if isinstance(result.get("judge"), dict)]
+    recalls = [
+        result["section_recall"]["recall"]
+        for result in results
+        if isinstance(result.get("section_recall"), dict)
+    ]
     return {
         "type": "run_summary",
         "l1": {
@@ -144,6 +149,8 @@ def _run_summary(results: list[dict[str, Any]]) -> dict[str, Any]:
             "total": len(results),
             "rate": 0.0 if not results else l1_passed / len(results),
         },
+        "section_recall_mean": sum(recalls) / len(recalls) if recalls else None,
+        "section_recall_cases": len(recalls),
         "judge_passed": sum(verdict.get("passed") is True for verdict in judged),
         "judge_total": len(judged),
         "by_scenario": aggregate_scenarios(results),

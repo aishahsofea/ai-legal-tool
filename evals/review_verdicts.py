@@ -11,6 +11,8 @@ import argparse
 import json
 from pathlib import Path
 
+from evals.coverage import case_section_pairs
+
 ROOT = Path(__file__).resolve().parent
 DEFAULT_RESULTS_PATH = ROOT / "results.json"
 
@@ -88,8 +90,10 @@ def main() -> None:
         case = r["case"]
         print(f"[{mark}] {case['id']}")
         print(f"  Query   : {case['query']}")
-        if case.get("expected_act_number"):
-            print(f"  Expect  : Act {case['expected_act_number']} s{case.get('expected_section', '?')}")
+        pairs = case_section_pairs(case)
+        if pairs:
+            expected = ", ".join(f"Act {act} s{section}" for act, section in pairs)
+            print(f"  Expect  : {expected}")
         print(f"  Reason  : {reason[:400]}" if reason else "  Reason  : —")
         print()
         shown += 1

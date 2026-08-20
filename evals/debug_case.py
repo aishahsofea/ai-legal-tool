@@ -22,6 +22,7 @@ from agent.nodes.router import router_node
 from agent.nodes.supervisor import supervisor_node
 from agent.nodes.synthesiser import synthesiser_node
 from agent.query_policy import FINAL_FAILURE_RESPONSE, MAX_RETRIES
+from evals.coverage import case_section_pairs
 
 DATASET = Path(__file__).parent / "dataset.json"
 
@@ -67,7 +68,9 @@ def run_debug(case_id: str) -> None:
     print(SEP)
     print(f"CASE    : {case_id}")
     print(f"QUERY   : {query}")
-    print(f"EXPECTS : Act {case.get('expected_act_number')} s{case.get('expected_section')}")
+    pairs = case_section_pairs(case)
+    expected = ", ".join(f"Act {act} s{section}" for act, section in pairs) if pairs else "—"
+    print(f"EXPECTS : {expected}")
     print(f"POLICY  : {case.get('expected_policy', 'allow')}")
     print(SEP)
 

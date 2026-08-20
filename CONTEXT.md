@@ -175,7 +175,7 @@ Receipt delivery separately emits structured availability, integrity, delivery, 
 An **Eval Run** is a single, explicitly selected slice of the hand-validated eval dataset — not prompt-version history. The developer dashboard separates two views:
 
 - **Coverage** is static metadata derived from `evals/dataset.json`: case counts, smoke coverage, policy balance, scenarios, advisory gap flags. Available without a database.
-- **Effectiveness** is the result of a live **Eval Run**: deterministic L1 assertions, then the LLM judge only when L1 passes, pass rates grouped by scenario for that run.
+- **Effectiveness** is the result of a live **Eval Run**: deterministic L1 assertions, then the LLM judge only when L1 passes, pass rates grouped by scenario for that run. A multi-part case is scored by **section recall** — the fraction of its expected statute sections the agent cited — instead of one expected section; see [CONTRIBUTING.md](CONTRIBUTING.md#scoring-multi-part-cases).
 
 Live runs execute one at a time, in an isolated subprocess, against `EVALS_DATABASE_URL` — never the application's `DATABASE_URL`. Before starting, the API checks that every citation-applicable Act/section pair exists in the dedicated eval corpus. Streams each completed case as JSONL-backed SSE, terminates the subprocess on explicit cancellation or browser disconnect. `CHECKPOINTER=memory` is forced, since every eval case is a fresh single-turn thread — the eval database only needs to store curated `chunks`.
 

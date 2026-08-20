@@ -41,6 +41,17 @@ def test_min_sections_found_is_a_reachable_threshold():
         assert 1 <= minimum <= len(case_section_pairs(case)), case["id"]
 
 
+def test_every_citation_applicable_case_declares_at_least_one_expected_section():
+    """Guards the exact bug this suite exists to catch: a citation_applicable case
+    that declares zero sections (neither scalar fields nor expected_sections) would
+    be silently unscored and unseeded, regardless of which `scenario` it's filed
+    under -- unlike the other tests here, this one is not scoped to multi_section."""
+    for case in _load_dataset(DATASET):
+        if not case.get("citation_applicable"):
+            continue
+        assert case_section_pairs(case), case["id"]
+
+
 def test_every_required_section_exists_in_the_chunk_corpus():
     """The eval seeder raises on a missing chunk, so a section listed here that
     the corpus does not carry breaks `seed_test_corpus` rather than failing one

@@ -47,8 +47,8 @@ export interface SectionRecall {
   expected: number;
   matched: number;
   recall: number;
-  matched_sections: { act_number: string; section_number: string }[];
-  missing_sections: { act_number: string; section_number: string }[];
+  matched_sections: MissingSection[];
+  missing_sections: MissingSection[];
 }
 
 export interface EvalCaseResult {

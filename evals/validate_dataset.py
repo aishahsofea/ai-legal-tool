@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from functools import lru_cache
 from pathlib import Path
 
 from evals.coverage import case_section_pairs
@@ -16,12 +17,16 @@ def _load_dataset(path: Path) -> list[dict]:
     return json.loads(path.read_text(encoding="utf-8"))["cases"]
 
 
-def _load_section(act_number: str, section_number: str) -> dict | None:
+@lru_cache(maxsize=None)
+def _act_rows(act_number: str) -> tuple[dict, ...]:
     path = CHUNKS_DIR / f"{act_number}.json"
     if not path.exists():
-        return None
-    rows = json.loads(path.read_text(encoding="utf-8"))
-    for row in rows:
+        return ()
+    return tuple(json.loads(path.read_text(encoding="utf-8")))
+
+
+def _load_section(act_number: str, section_number: str) -> dict | None:
+    for row in _act_rows(act_number):
         if row["section_number"] == section_number:
             return row
     return None
@@ -39,8 +44,11 @@ def _expected_label(case: dict) -> str:
 def _section_notes(case: dict, n: int = 260) -> str:
     """One snippet per expected section, so a multi-part case shows every
     provision a reviewer has to check rather than only the first."""
+    pairs = case_section_pairs(case)
+    if not pairs:
+        return "MISSING SECTION"
     parts = []
-    for act, section_number in case_section_pairs(case):
+    for act, section_number in pairs:
         section = _load_section(act, section_number)
         if section is None:
             parts.append(f"s.{section_number}: MISSING SECTION")
@@ -100,7 +108,10 @@ def main() -> int:
                 lines.append(f"   min sections to find: {case['min_sections_found']}")
             lines.append(f"Q: {case['query']}")
             if case.get("citation_applicable"):
-                for act, section_number in case_section_pairs(case):
+                pairs = case_section_pairs(case)
+                if not pairs:
+                    lines.append("A: MISSING SECTION")
+                for act, section_number in pairs:
                     section = _load_section(act, section_number)
                     if section:
                         lines.append(f"A: {section.get('act_title', '')} / Section {section['section_number']}")

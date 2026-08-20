@@ -4,7 +4,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from agent.citation_keys import canonicalize_citation_key
+from agent.citation_keys import canonicalize_citation_key, normalized_citation_pair
 
 # BM function words: if the query contains any, the response must also contain at least one.
 BM_FUNCTION_WORDS: list[str] = [
@@ -82,12 +82,9 @@ def check_expected_section(
 def _citation_keys(citations: list[dict[str, Any]]) -> set[tuple[str, str]]:
     keys: set[tuple[str, str]] = set()
     for citation in citations or []:
-        key = canonicalize_citation_key(
-            citation.get("act_number"),
-            citation.get("section_number"),
-        )
-        if all(key):
-            keys.add(key)
+        pair = normalized_citation_pair(citation.get("act_number"), citation.get("section_number"))
+        if pair:
+            keys.add(pair)
     return keys
 
 
@@ -98,12 +95,9 @@ def _expected_section_keys(
     message and the `missing` list are reported in, so it must be stable."""
     keys: list[tuple[str, str]] = []
     for entry in expected_sections or []:
-        key = canonicalize_citation_key(
-            entry.get("act_number"),
-            entry.get("section_number"),
-        )
-        if all(key) and key not in keys:
-            keys.append(key)
+        pair = normalized_citation_pair(entry.get("act_number"), entry.get("section_number"))
+        if pair and pair not in keys:
+            keys.append(pair)
     return keys
 
 
@@ -141,17 +135,32 @@ def check_section_recall(
     citations: list[dict[str, Any]],
     expected_sections: list[dict[str, Any]] | None,
     min_sections_found: int | None = None,
+    *,
+    recall: dict[str, Any] | None = None,
 ) -> str | None:
     """Fail when fewer than `min_sections_found` expected provisions were cited.
 
     `min_sections_found` defaults to every listed provision. A case sets it lower
     when some listed provisions are defensible alternatives rather than required
     ones — the recall figure still records which were actually found.
+
+    `recall` lets a caller that already computed `section_recall(citations,
+    expected_sections)` pass the result in, instead of this function computing
+    it again from the same inputs.
     """
-    recall = section_recall(citations, expected_sections)
+    if recall is None:
+        recall = section_recall(citations, expected_sections)
     if recall is None:
         return None
-    threshold = recall["expected"] if min_sections_found is None else int(min_sections_found)
+    if min_sections_found is None:
+        threshold = recall["expected"]
+    elif isinstance(min_sections_found, bool):
+        # bool is a subclass of int, so int(min_sections_found) would silently
+        # yield a threshold of 0 or 1 (False -> 0 lets zero citations pass)
+        # instead of surfacing a bad dataset value.
+        raise ValueError(f"min_sections_found must be an int, got bool {min_sections_found!r}")
+    else:
+        threshold = int(min_sections_found)
     threshold = max(0, min(threshold, recall["expected"]))
     if recall["matched"] >= threshold:
         return None
@@ -265,6 +274,7 @@ def run_assertions(
     db_conn: Any,
     expected_sections: list[dict[str, Any]] | None = None,
     min_sections_found: int | None = None,
+    section_recall_result: dict[str, Any] | None = None,
     tool_trace: list[str] | None = None,
     expected_tool: str | None = None,
     expected_tool_sequence: list[str] | None = None,
@@ -296,7 +306,9 @@ def run_assertions(
     if result is not None:
         failures["expected_section"] = result
 
-    result = check_section_recall(citations, expected_sections, min_sections_found)
+    result = check_section_recall(
+        citations, expected_sections, min_sections_found, recall=section_recall_result
+    )
     if result is not None:
         failures["section_recall"] = result
 
