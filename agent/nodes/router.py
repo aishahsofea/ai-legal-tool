@@ -28,10 +28,12 @@ _llm = make_llm(_MODEL)
 
 
 class _RouterOutput(BaseModel):
+    # Field order is the fill order for structured output: reasoning first makes
+    # the model think before it commits to query_type, not rationalize after.
+    reasoning: str
     query_type: Literal["statute_lookup", "topical", "provision_extraction", "conversational", "clarify"]
     response_language: Literal["en", "bm", "mixed"]
     clarifying_question: str = ""
-    reasoning: str
 
 
 _structured_llm = _llm.with_structured_output(_RouterOutput)
@@ -69,7 +71,7 @@ Set response_language based on the dominant language of the current query:
 - "bm": query is primarily in Bahasa Malaysia (e.g. contains "seksyen", "akta", "tolong semak", "bagaimana")
 - "mixed": query meaningfully mixes both languages (e.g. "tolong check seksyen 34 Penal Code")
 
-Reply with the most appropriate type, the response language, and a brief one-sentence reasoning."""
+Reply with a brief one-sentence reasoning first, then the most appropriate type and the response language."""
 
 
 def _escalation_shortcut(state: AgentState) -> dict | None:

@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel, Field, field_validator
 
 from agent.citation_keys import canonicalize_citation_key
-from agent.llm_factory import make_llm
+from agent.llm_factory import make_llm, system_content
 from agent.state import AgentState
 from citation_receipts.locator import contains_normalized_sequence, normalized_tokens
 
@@ -110,7 +110,7 @@ def _collect_cited_sources(state: AgentState) -> list[dict]:
 def _messages(answer: str, sources: list[dict]) -> list[dict]:
     payload = {"answer": answer, "cited_sources": sources}
     return [
-        {"role": "system", "content": _SYSTEM},
+        {"role": "system", "content": system_content(_SYSTEM, _MODEL)},
         {"role": "user", "content": json.dumps(payload, ensure_ascii=False, indent=2)},
     ]
 
