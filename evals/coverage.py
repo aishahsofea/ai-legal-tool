@@ -4,17 +4,28 @@ from __future__ import annotations
 from collections import Counter
 from typing import Any, Iterable
 
-from agent.citation_keys import canonicalize_citation_key
+from agent.citation_keys import normalized_citation_pair as _normalized_pair
 
 THIN_COVERAGE_THRESHOLD = 5
 BOUNDARY_COVERAGE_THRESHOLD = 0.20
 
 
-def _normalized_pair(act_number: Any, section_number: Any) -> tuple[str, str] | None:
-    if act_number is None or section_number is None:
-        return None
-    act, section = canonicalize_citation_key(act_number, section_number)
-    return (act, section) if act and section else None
+def case_section_pairs(case: dict[str, Any]) -> list[tuple[str, str]]:
+    """Every Act/section pair one case expects, scalar and multi-part alike.
+
+    A multi-part case leaves the scalar fields null and lists its provisions in
+    `expected_sections`; reading only the scalar fields would let those sections
+    go unseeded and unchecked.
+    """
+    pairs: list[tuple[str, str]] = []
+    scalar = _normalized_pair(case.get("expected_act_number"), case.get("expected_section"))
+    if scalar:
+        pairs.append(scalar)
+    for entry in case.get("expected_sections") or []:
+        pair = _normalized_pair(entry.get("act_number"), entry.get("section_number"))
+        if pair and pair not in pairs:
+            pairs.append(pair)
+    return pairs
 
 
 def required_section_pairs(cases: Iterable[dict[str, Any]]) -> set[tuple[str, str]]:
@@ -23,9 +34,7 @@ def required_section_pairs(cases: Iterable[dict[str, Any]]) -> set[tuple[str, st
     for case in cases:
         if not case.get("citation_applicable"):
             continue
-        pair = _normalized_pair(case.get("expected_act_number"), case.get("expected_section"))
-        if pair:
-            pairs.add(pair)
+        pairs.update(case_section_pairs(case))
     return pairs
 
 

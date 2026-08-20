@@ -7,8 +7,10 @@ from evals.assertions import (
     check_citation_existence,
     check_expected_section,
     check_language_register,
+    check_section_recall,
     check_tool_selection,
     check_uuid_leakage,
+    section_recall,
 )
 
 
@@ -258,3 +260,110 @@ class CheckAiRefusalTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+_WAGES_SECTIONS = [
+    {"act_number": "265", "section_number": "19"},
+    {"act_number": "265", "section_number": "60A"},
+    {"act_number": "265", "section_number": "91"},
+]
+
+
+class SectionRecallTests(unittest.TestCase):
+    def test_returns_none_when_case_declares_no_expected_sections(self):
+        self.assertIsNone(section_recall([{"act_number": "265", "section_number": "19"}], None))
+        self.assertIsNone(section_recall([], []))
+
+    def test_reports_the_fraction_found(self):
+        citations = [
+            {"act_number": "265", "section_number": "19"},
+            {"act_number": "265", "section_number": "60A"},
+        ]
+        result = section_recall(citations, _WAGES_SECTIONS)
+        self.assertEqual(result["expected"], 3)
+        self.assertEqual(result["matched"], 2)
+        self.assertAlmostEqual(result["recall"], 2 / 3)
+        self.assertEqual(
+            result["missing_sections"], [{"act_number": "265", "section_number": "91"}]
+        )
+
+    def test_matches_formatted_citation_identifiers(self):
+        citations = [{"act_number": "Act 265", "section_number": "Section 60a(1)"}]
+        result = section_recall(citations, _WAGES_SECTIONS)
+        self.assertEqual(result["matched"], 1)
+        self.assertEqual(
+            result["matched_sections"], [{"act_number": "265", "section_number": "60A"}]
+        )
+
+    def test_extra_citations_do_not_inflate_recall(self):
+        citations = [
+            {"act_number": "265", "section_number": "19"},
+            {"act_number": "574", "section_number": "503"},
+        ]
+        result = section_recall(citations, _WAGES_SECTIONS)
+        self.assertEqual(result["matched"], 1)
+
+    def test_zero_recall_on_empty_citations(self):
+        result = section_recall([], _WAGES_SECTIONS)
+        self.assertEqual(result["matched"], 0)
+        self.assertEqual(result["recall"], 0.0)
+
+    def test_duplicate_expected_sections_counted_once(self):
+        expected = [
+            {"act_number": "265", "section_number": "19"},
+            {"act_number": "Act 265", "section_number": "s 19"},
+        ]
+        result = section_recall([{"act_number": "265", "section_number": "19"}], expected)
+        self.assertEqual(result["expected"], 1)
+        self.assertEqual(result["recall"], 1.0)
+
+
+class CheckSectionRecallTests(unittest.TestCase):
+    def test_not_applicable_without_expected_sections(self):
+        self.assertIsNone(check_section_recall([], None))
+        self.assertIsNone(check_section_recall([], [], 2))
+
+    def test_passes_when_threshold_met(self):
+        citations = [
+            {"act_number": "265", "section_number": "19"},
+            {"act_number": "265", "section_number": "60A"},
+        ]
+        self.assertIsNone(check_section_recall(citations, _WAGES_SECTIONS, 2))
+
+    def test_fails_when_below_threshold_and_names_missing_sections(self):
+        citations = [{"act_number": "265", "section_number": "19"}]
+        result = check_section_recall(citations, _WAGES_SECTIONS, 2)
+        self.assertIsNotNone(result)
+        self.assertIn("60A", result)
+        self.assertIn("91", result)
+        self.assertNotIn("Section 19", result)
+
+    def test_threshold_defaults_to_every_listed_section(self):
+        citations = [
+            {"act_number": "265", "section_number": "19"},
+            {"act_number": "265", "section_number": "60A"},
+        ]
+        self.assertIsNotNone(check_section_recall(citations, _WAGES_SECTIONS))
+
+    def test_threshold_above_the_list_cannot_make_a_full_match_fail(self):
+        citations = [dict(entry) for entry in _WAGES_SECTIONS]
+        self.assertIsNone(check_section_recall(citations, _WAGES_SECTIONS, 9))
+
+    def test_boundary_fails_when_no_citations_at_all(self):
+        result = check_section_recall([], _WAGES_SECTIONS, 1)
+        self.assertIsNotNone(result)
+        self.assertIn("found 0", result)
+
+    def test_bool_min_sections_found_raises_instead_of_silently_zeroing_threshold(self):
+        with self.assertRaises(ValueError):
+            check_section_recall([], _WAGES_SECTIONS, False)
+
+    def test_precomputed_recall_is_reused_instead_of_recomputed(self):
+        citations = [{"act_number": "265", "section_number": "19"}]
+        recall = section_recall(citations, _WAGES_SECTIONS)
+        # A precomputed recall (matched=1, expected=3) must win over recomputing
+        # from the stale citations=[]/expected_sections=[] arguments below, which
+        # would report "not applicable" (None) instead of a threshold failure.
+        result = check_section_recall([], [], 2, recall=recall)
+        self.assertIsNotNone(result)
+        self.assertIn("found 1", result)

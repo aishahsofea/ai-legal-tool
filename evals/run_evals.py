@@ -20,8 +20,8 @@ from agent.nodes.router import router_node
 from agent.nodes.synthesiser import synthesiser_node
 from agent.query_lifecycle import run_query
 from agent.feature_flags import flag_enabled
-from evals.assertions import BM_FUNCTION_WORDS, run_assertions
-from evals.coverage import aggregate_scenarios, select_cases
+from evals.assertions import BM_FUNCTION_WORDS, run_assertions, section_recall
+from evals.coverage import aggregate_scenarios, case_section_pairs, select_cases
 from evals.judge import JudgeContext, judge_case
 
 load_dotenv()
@@ -34,6 +34,7 @@ _ASSERTION_NAMES = [
     "citation_existence",
     "tool_selection",
     "expected_section",
+    "section_recall",
     "language_register",
     "uuid_leakage",
     "ai_refusal",
@@ -149,6 +150,7 @@ def serialize_case_result(result: dict[str, Any]) -> dict[str, Any]:
         "expected_policy": case.get("expected_policy", "allow"),
         "expected_act_number": case.get("expected_act_number"),
         "expected_section": case.get("expected_section"),
+        "section_recall": result.get("section_recall"),
         "l1_failures": list(failure_details),
         "l1_failure_details": failure_details,
         "judge": result.get("judge"),
@@ -167,6 +169,7 @@ def _assertion_applicable(
     expected_act_number: str | None,
     expected_section: str | None,
     expected_policy: str,
+    section_recall_result: dict[str, Any] | None = None,
     expected_tool: str | None = None,
     expected_tool_sequence: list[str] | None = None,
     forbidden_tools: list[str] | None = None,
@@ -185,6 +188,12 @@ def _assertion_applicable(
         )
     if name == "expected_section":
         return bool(expected_act_number and expected_section)
+    if name == "section_recall":
+        # Matches check_section_recall's own not-applicable check (every entry
+        # fails to canonicalize -> section_recall_result is None), not raw
+        # expected_sections truthiness -- otherwise an all-malformed list would
+        # count as "applicable" and then vacuously pass.
+        return section_recall_result is not None
     if name == "language_register":
         return any(w in query.lower() for w in BM_FUNCTION_WORDS)
     if name == "uuid_leakage":
@@ -238,6 +247,17 @@ def iter_suite(
             tool_trace = agent_output.get("tool_trace", [])
             expected_act_number = case.get("expected_act_number")
             expected_section = case.get("expected_section")
+            expected_sections = case.get("expected_sections")
+            if expected_sections and expected_act_number and expected_section:
+                # case_section_pairs() folds the scalar pair into the list for a
+                # case that (unusually) declares both shapes, so recall/coverage
+                # agree on what's required instead of section_recall silently
+                # undercounting the scalar-only provision.
+                expected_sections = [
+                    {"act_number": act, "section_number": section}
+                    for act, section in case_section_pairs(case)
+                ]
+            min_sections_found = case.get("min_sections_found")
             expected_policy = case.get("expected_policy", "allow")
             expected_tool = case.get("expected_tool") if agentic_on else None
             expected_tool_sequence = (
@@ -249,6 +269,10 @@ def iter_suite(
                 case.get("expected_reference_direction") if agentic_on else None
             )
             reference_trace = agent_output.get("reference_trace", [])
+            # Computed once and threaded through the applicability check, the L1
+            # assertion, and the persisted result below instead of each of the
+            # three recomputing it from citations/expected_sections.
+            recall = section_recall(citations, expected_sections)
 
             applicable = [
                 name
@@ -260,6 +284,7 @@ def iter_suite(
                     expected_act_number=expected_act_number,
                     expected_section=expected_section,
                     expected_policy=expected_policy,
+                    section_recall_result=recall,
                     expected_tool=expected_tool,
                     expected_tool_sequence=expected_tool_sequence,
                     forbidden_tools=forbidden_tools,
@@ -276,6 +301,9 @@ def iter_suite(
                 expected_section=expected_section,
                 expected_policy=expected_policy,
                 db_conn=db_conn,
+                expected_sections=expected_sections,
+                min_sections_found=min_sections_found,
+                section_recall_result=recall,
                 tool_trace=tool_trace,
                 expected_tool=expected_tool,
                 expected_tool_sequence=expected_tool_sequence,
@@ -290,6 +318,8 @@ def iter_suite(
                 "agent": agent_output,
                 "_l1_applicable": applicable,
             }
+            if recall is not None:
+                case_result["section_recall"] = recall
 
             if l1_failures:
                 case_result["l1_failures"] = l1_failures
@@ -305,6 +335,7 @@ def iter_suite(
                         expected_section=expected_section,
                         expected_policy=expected_policy,
                         retrieved_chunks=agent_output["retrieved_chunks"],
+                        expected_sections=expected_sections,
                     )
                 )
                 case_result["judge"] = verdict.model_dump()
@@ -316,6 +347,8 @@ def iter_suite(
 
 def _persisted_result(result: dict[str, Any]) -> dict[str, Any]:
     persisted = {"case": result["case"], "agent": result["agent"]}
+    if "section_recall" in result:
+        persisted["section_recall"] = result["section_recall"]
     if "l1_failures" in result:
         persisted["l1_failures"] = result["l1_failures"]
     persisted["judge"] = result.get("judge")
@@ -347,10 +380,21 @@ def _build_report(mode: str, results: list[dict[str, Any]]) -> dict[str, Any]:
         for name in _ASSERTION_NAMES
     }
 
+    # Mean coverage across multi-part cases. The pass/fail bit above only says
+    # whether the threshold was met; this is the figure that shows how much of a
+    # multi-part question the agent actually reached.
+    recalls = [
+        result["section_recall"]["recall"]
+        for result in results
+        if isinstance(result.get("section_recall"), dict)
+    ]
+
     summary = {
         "mode": mode,
         "total_cases": len(results),
         "l1": l1_summary,
+        "section_recall_mean": sum(recalls) / len(recalls) if recalls else None,
+        "section_recall_cases": len(recalls),
         "judge_passed": judge_passed,
         "judge_total": judge_total,
         "judge_pass_rate": _rate(judge_passed, judge_total),

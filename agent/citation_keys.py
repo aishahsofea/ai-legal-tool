@@ -46,3 +46,9 @@ def canonicalize_citation_key(
         canonicalize_act_number(act_number),
         canonicalize_section_number(section_number),
     )
+
+
+def normalized_citation_pair(act_number: Any, section_number: Any) -> tuple[str, str] | None:
+    """Canonical (act, section) pair, or None if either half fails to canonicalize."""
+    act, section = canonicalize_citation_key(act_number, section_number)
+    return (act, section) if act and section else None

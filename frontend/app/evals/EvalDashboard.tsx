@@ -68,6 +68,10 @@ function formatScenario(scenario: string) {
   return scenario.replaceAll("_", " ");
 }
 
+function formatSectionRef(entry: { act_number: string; section_number: string }) {
+  return `Act ${entry.act_number} §${entry.section_number}`;
+}
+
 function CaseDetails({ result }: { result: EvalCaseResult }) {
   const kind = caseFailureKind(result);
   const passed = kind === "Pass";
@@ -98,11 +102,25 @@ function CaseDetails({ result }: { result: EvalCaseResult }) {
           <DetailBlock title="Query"><p>{result.query}</p></DetailBlock>
           <DetailBlock title="Expected">
             <p>Policy: {result.expected_policy}</p>
-            <p>Act {result.expected_act_number ?? "—"} · Section {result.expected_section ?? "—"}</p>
+            {result.section_recall ? (
+              <>
+                <p>
+                  Sections found: {result.section_recall.matched}/{result.section_recall.expected}
+                  {" "}({Math.round(result.section_recall.recall * 100)}%)
+                </p>
+                <p>
+                  Missing: {result.section_recall.missing_sections.length
+                    ? result.section_recall.missing_sections.map(formatSectionRef).join(" · ")
+                    : "none"}
+                </p>
+              </>
+            ) : (
+              <p>Act {result.expected_act_number ?? "—"} · Section {result.expected_section ?? "—"}</p>
+            )}
           </DetailBlock>
           <DetailBlock title="Actual citations">
             <p>{result.citations.length
-              ? result.citations.map((citation) => `Act ${citation.act_number} §${citation.section_number}`).join(" · ")
+              ? result.citations.map(formatSectionRef).join(" · ")
               : "No citations returned"}</p>
           </DetailBlock>
         </div>
