@@ -140,7 +140,7 @@ def follow_references(
         relationship_kinds: Optional existing graph relationship literals only.
         max_edges: Requested edge bound; execution hard-caps this at five.
         document_id: Optional exact document ID already present on the retrieved
-            anchor. Omit it to let execution resolve the unique exact chunk.
+        anchor. Omit it to let execution resolve the unique exact chunk.
     """
     state = runtime.state if isinstance(runtime.state, dict) else {}
     context = runtime.context
