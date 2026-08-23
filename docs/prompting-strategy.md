@@ -1,43 +1,129 @@
 # Prompting Strategy
 
-We split legal research into six small LLM calls instead of one big one: router, contextualize, retrieval (tool-calling agent), synthesiser, grounding_check, conversational. Each has its own small prompt and its own job. This doc lists the ideas we reuse across those prompts. Each bullet points to a real example in the code and an outside source, so this isn't just us patting ourselves on the back.
+This doc is about the words we send the model, and nothing else. Graph shape,
+which model each node uses, and what happens when a call fails are in
+[CONTRIBUTING.md](../CONTRIBUTING.md#model-overrides) and [README.md](../README.md).
 
-- **One small model per step, not one big model for everything.** Every node picks its model through an env var, so cheap steps use a cheap model and only the hard steps use a strong one.
-  Example: [router.py:26](../agent/nodes/router.py:26) uses `gpt-4.1`, [contextualize.py:31](../agent/nodes/contextualize.py:31) uses `gpt-4.1-mini`.
-  Backed by: Anthropic recommends exactly this — "routing easy/common questions to smaller, cost-efficient models... and hard/unusual questions to more capable models" ([Building Effective AI Agents](https://www.anthropic.com/research/building-effective-agents)). The [RouteLLM paper](https://arxiv.org/pdf/2605.18796) (UC Berkeley, ICLR 2025) measured over 85% cost reduction from this kind of routing with output quality staying near-identical.
+Legal research runs as six LLM calls — router, contextualize, retrieval
+(tool-calling agent), synthesiser, grounding_check, conversational — and each one
+has its own prompt. Below are the prompting ideas we reuse across them. Each has a
+real example in the code and an outside source.
 
-- **Ask for structured output, not prose to parse.** Every classification or judgment step returns a typed object, not free text we regex apart. This removes a whole class of "the model phrased it slightly differently" bugs.
+- **One prompt per step, not one prompt for everything.** Each node's prompt does a
+  single job, and the next node reads its output. A prompt that only has to classify
+  a query is easier to write, test, and fix than one that also has to search, cite,
+  and check itself.
+  Example: the six node prompts, one per file in [agent/nodes/](../agent/nodes/) plus
+  [agent/retrieval/agent.py](../agent/retrieval/agent.py).
+  Backed by: Anthropic calls this prompt chaining — "decomposes a task into a sequence
+  of steps, where each LLM call processes the output of the previous one"
+  ([Building Effective AI Agents](https://www.anthropic.com/research/building-effective-agents)).
+  Their current prompting guide keeps it for the case we're in: "still useful when you
+  need to inspect intermediate outputs or enforce a specific pipeline structure"
+  ([Chain complex prompts](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#chain-complex-prompts)).
+
+- **Ask for structured output, not prose to parse.** Every classification or judgment
+  step returns a typed object, not free text we regex apart. This removes a whole class
+  of "the model phrased it slightly differently" bugs.
   Example: [router.py:30](../agent/nodes/router.py:30), `_RouterOutput`.
-  Backed by: OpenAI's own numbers — with Structured Outputs, `gpt-4o-2024-08-06` hit 100% schema-following reliability, versus under 40% for the older model without it ([Introducing Structured Outputs in the API](https://openai.com/index/introducing-structured-outputs-in-the-api/)).
+  Backed by: OpenAI's own docs — "only Structured Outputs ensure schema adherence"
+  ([Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)).
 
-- **Put the reasoning field before the decision field.** Structured output fills fields in the order they're declared. Reasoning after the decision is just an excuse for a choice already made. Reasoning before the decision actually shapes it.
-  Example: [router.py:30-36](../agent/nodes/router.py:30) — `reasoning` is declared before `query_type`.
-  Backed by: Claude's own docs state the principle directly — "Claude should always output its thinking... without outputting the thought process, no thinking occurs" ([Let Claude think](https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/chain-of-thought)).
+- **Put the reasoning field before the decision field.** Structured output fills fields
+  in the order they're declared. Reasoning after the decision is an excuse for a choice
+  already made. Reasoning before it actually shapes it.
+  Example: [router.py:30-36](../agent/nodes/router.py:30) — `reasoning` is declared
+  before `query_type`.
+  Example: [grounding_check.py:30-45](../agent/nodes/grounding_check.py:30) — the judge
+  declares `quote`, then `reason`, then `support`. It has to find the passage in the cited
+  section before it labels the claim, instead of labelling first and hunting for a quote
+  that fits. The system prompt names the same order in words, because the field order alone
+  is easy for a model to read past.
+  Backed by: the original chain-of-thought paper — "generating a chain of thought — a
+  series of intermediate reasoning steps — significantly improves the ability of large
+  language models to perform complex reasoning" (Wei et al.,
+  ["Chain-of-Thought Prompting Elicits Reasoning in Large Language Models"](https://arxiv.org/abs/2201.11903),
+  NeurIPS 2022). The gain comes from reasoning produced *before* the answer, which is
+  exactly what field order buys us here.
 
-- **A tool's docstring is a prompt too.** In the tool-calling retrieval agent, the model reads each tool's docstring to decide when to call it. Hard rules go straight into the docstring, not only the system prompt.
-  Example: [tools.py:127-144](../agent/retrieval/tools.py:127), the `follow_references` docstring gives three rules: "only after lookup_section or search_statutes"; "never in the same batch"; "one call per run".
-  Backed by: Anthropic's tool-building guide says the same — Claude relies heavily on tool descriptions, and even small refinements to them "yield dramatic improvements"; their own team cut error rates and raised completion on SWE-bench purely by rewriting tool descriptions ([Writing effective tools for AI agents](https://www.anthropic.com/engineering/writing-tools-for-agents)).
+- **Long data first, the question last.** In a prompt that mixes retrieved text with a short
+  question, put the text at the top. Put the question at the bottom, next to the instruction
+  that acts on it. A question stranded above eight statute
+  sections is a question the model has to hold in mind while it reads past everything else.
+  Example: [synthesiser.py:118-126](../agent/nodes/synthesiser.py:118) — retrieved sections,
+  then history, then preferences, then the query and "Answer the query using only the
+  sections above". Same order in the grounding judge's payload at
+  [grounding_check.py:126](../agent/nodes/grounding_check.py:126): cited sources first, the
+  answer under judgment last.
+  Backed by: Anthropic's long-context guidance — "Place your long documents and inputs near
+  the top of your prompt, above your query, instructions, and examples", and "Queries at the
+  end can improve response quality by up to 30 percent in tests"
+  ([Long context prompting](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#long-context-prompting)).
 
-- **Tell the agent explicitly when to stop.** Left alone, a tool-calling loop can keep searching forever. We cap it in the prompt ("call again ONCE with a reformulated query... do not keep searching indefinitely"). We cap it again in code with a hard recursion limit, so a prompt slip-up can't cause a runaway loop.
-  Example: stop language at [agent.py:41-55](../agent/retrieval/agent.py:41), hard cap at [agent.py:39](../agent/retrieval/agent.py:39).
-  Backed by: Anthropic's agent-building guide flags this as standard practice — "it's also common to include stopping conditions (such as a maximum number of iterations) to maintain control" ([Building Effective AI Agents](https://www.anthropic.com/research/building-effective-agents)).
+- **A tool's docstring is a prompt too.** In the tool-calling retrieval agent, the model
+  reads each tool's docstring to decide when to call it. Hard rules go straight into the
+  docstring, not only the system prompt.
+  Example: [tools.py:127-144](../agent/retrieval/tools.py:127), the `follow_references`
+  docstring gives three rules: only after `lookup_section` or `search_statutes`; never
+  for an ordinary lookup; one call per retrieval run.
+  Backed by: Anthropic's tool-building guide — "Even small refinements to tool
+  descriptions can yield dramatic improvements." Their own team hit state of the art on
+  SWE-bench Verified "after we made precise refinements to tool descriptions, dramatically
+  reducing error rates and improving task completion"
+  ([Writing effective tools for AI agents](https://www.anthropic.com/engineering/writing-tools-for-agents)).
 
-- **Repeat guardrail wording word-for-word across prompts.** When two nodes need the same rule, we copy the exact sentence instead of rephrasing it per node — for example, "practitioner memory is a hint, never legal authority." One wording is easier to audit and update than several near-duplicates that can quietly drift apart.
-  Example: compare [synthesiser.py:54](../agent/nodes/synthesiser.py:54) and [conversational.py:56-59](../agent/nodes/conversational.py:56).
-  Backed by (weaker source — flagging this honestly): this is closer to general software discipline (DRY, single source of truth) applied to prompts than a named, citable LLM best practice. The clearest write-up we found is a practitioner piece arguing prompt reuse should be exact, not paraphrased, and that a clear source of truth beats rewriting phrasing ([Prompt Engineering in MCP](https://medium.com/tech-ai-made-easy/prompt-engineering-in-mcp-structured-prompts-parameterization-reuse-versioning-and-7dcc598858bd)) — a Medium post, not a primary lab source. Treat this bullet as sound engineering judgment we're applying to prompts, not as an industry-canon rule.
+- **Tell the agent explicitly when to stop.** Left alone, a tool-calling loop can keep
+  searching forever. The prompt caps it — "call `search_statutes` again ONCE with a
+  reformulated query... Do not keep searching indefinitely" — and a hard recursion limit
+  in code catches a prompt slip-up.
+  Example: stop language at [agent.py:41-55](../agent/retrieval/agent.py:41), hard cap at
+  [agent.py:39](../agent/retrieval/agent.py:39).
+  Backed by: Anthropic's agent guide calls this standard — "it's also common to include
+  stopping conditions (such as a maximum number of iterations) to maintain control"
+  ([Building Effective AI Agents](https://www.anthropic.com/research/building-effective-agents)).
 
-- **Decide fail-open vs fail-closed per node, on purpose.** An LLM call breaking shouldn't always mean the same thing. Each node picks whether a broken call should quietly degrade (fail open) or block the answer (fail closed), with a comment saying why.
-  Example: [contextualize.py:76-79](../agent/nodes/contextualize.py:76) fails open to the raw query; [conversational.py:101-104](../agent/nodes/conversational.py:101) fails closed to a static reply.
-  Backed by (general engineering, not LLM-specific): this is a standard reliability-engineering trade-off, not something unique to prompting — "fail open prioritizes availability over control, while fail closed prioritizes control over availability" ([Fail Open vs. Fail Closed](https://authzed.com/blog/fail-open)). We're applying a pre-LLM systems-design principle here, not following an AI-specific playbook.
+- **Spell out the tie-break, don't leave it implicit.** When two categories could both
+  fit, the prompt says which one wins and why, instead of hoping the model infers it.
+  Example: [router.py:59-61](../agent/nodes/router.py:59) — "only use conversational when
+  the message is UNAMBIGUOUSLY social or meta... When in doubt... classify it as one of
+  the three legal types."
+  Backed by: Anthropic's guidance is to be explicit rather than let the model infer —
+  "Claude responds well to clear, explicit instructions... Think of Claude as a brilliant
+  but new employee who lacks context on your norms and workflows"
+  ([Be clear and direct](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#be-clear-and-direct)).
 
-- **Have a second LLM check the first LLM's work.** The node that writes the answer (synthesiser) is separate from the node that checks each claim is actually backed by the cited statute text (grounding_check). Different call, same evidence — the writer can't grade its own homework.
-  Example: [grounding_check.py:205-225](../agent/nodes/grounding_check.py:205).
-  Backed by: this is Anthropic's named "evaluator-optimizer" workflow — "one LLM call generates a response while another provides evaluation and feedback in a loop" ([Building Effective AI Agents](https://www.anthropic.com/research/building-effective-agents)). The underlying idea, that a strong LLM judge can score another model's output reliably, is validated in the peer-reviewed ["Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena"](https://arxiv.org/abs/2306.05685) (Zheng et al., NeurIPS 2023), which found LLM judges agree with human preference over 80% of the time — matching human-to-human agreement.
+- **Name the shape you want, not only the shape you don't.** A ban tells the model which
+  words to avoid and leaves it to invent the replacement. Showing the wanted form first, and
+  the ban second, gives it somewhere to go.
+  Example: [synthesiser.py:55](../agent/nodes/synthesiser.py:55) — "Write about the
+  provision, not about the reader" with two model phrasings, then the banned second-person
+  phrases. The rule also says what happens if it slips: the supervisor rejects those phrases
+  and forces a re-draft. A model that knows the cost reframes on the first pass. The prompt
+  lists every phrase the supervisor rejects. An earlier, partial list left the missing
+  phrases free to appear and then fail the check.
+  Backed by: Anthropic's formatting guidance — "Tell Claude what to do instead of what not to
+  do", with the worked example of replacing "Do not use markdown in your response" with "Your
+  response should be composed of smoothly flowing prose paragraphs"
+  ([Control the format of responses](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#control-the-format-of-responses)).
 
-- **Turn on prompt caching for Claude models automatically.** One shared helper decides the message format per provider, so every node gets Claude's prompt caching for free without repeating that logic.
-  Example: [llm_factory.py:22-26](../agent/llm_factory.py:22), called from every node's message-building function, including [grounding_check.py:113](../agent/nodes/grounding_check.py:113).
-  Backed by: Anthropic's own benchmark for this feature — prompt caching cut response time on a 100K-token example from 11.5s to 2.4s, up to 85% latency reduction for long prompts ([Anthropic prompt caching docs](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching)).
-
-- **Spell out the tie-break, don't leave it implicit.** When two categories could plausibly both fit, the prompt states which one wins and why, instead of hoping the model infers it.
-  Example: [router.py:59-61](../agent/nodes/router.py:59) — "only use conversational when the message is UNAMBIGUOUSLY social or meta... when in doubt, classify it as one of the three legal types."
-  Backed by: Anthropic's prompt-engineering guidance says to give the model explicit instructions for ambiguous or unexpected input rather than let it guess, to stop it from confidently giving a wrong answer ([Be clear, direct, and detailed](https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/be-clear-and-direct)).
+- **Put the caveat on the data, not only in the system prompt.** Recalled practitioner memory
+  reaches the model already labelled — "Known practitioner preferences (framing only, not legal
+  authority)". The caveat sits on the block being read, not forty lines above it.
+  Two nodes read that memory. A prompt inherits nothing from the node before it, so each states
+  the caveat again in its own system prompt. The label and the caveat sentence both come from
+  [query_policy.py](../agent/query_policy.py), as `preferences_block` and
+  `memory_soft_context_rule`, so they can't drift. See
+  [synthesiser.py:60](../agent/nodes/synthesiser.py:60) and
+  [conversational.py:60-62](../agent/nodes/conversational.py:60). One clause is a parameter,
+  because the ranking genuinely differs: in the synthesiser, preferences lose to the retrieved
+  sections; in small talk, they lose to the hard guardrails. Hand-written copies said it in
+  different words for a while. That is how one node ends up looser than the other and nobody
+  notices. `tests/test_memory_caveat_convergence.py` pins it.
+  Backed by: Anthropic's prompt-structure guidance — wrapping "each type of content in its own tag
+  (for example, `<instructions>`, `<context>`, `<input>`) reduces misinterpretation", and "Use
+  consistent, descriptive tag names across your prompts"
+  ([Structure prompts with XML tags](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#structure-prompts-with-xml-tags)).
+  We label with a header line rather than a tag, which is the weaker form of the same idea. Their
+  context-engineering post names the failure this avoids: guidance that "falsely assumes shared
+  context"
+  ([Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)).

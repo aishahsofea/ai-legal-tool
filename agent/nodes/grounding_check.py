@@ -28,15 +28,20 @@ _llm = make_llm(_MODEL)
 
 
 class _GroundingClaim(BaseModel):
+    # Field order is the fill order for structured output: quote and reason are declared
+    # before support so the judge finds the passage before it picks a label.
     claim: str = Field(description="A sentence or clause from the answer that makes a legal claim.")
     cited_act_number: str = Field(description="Act number used to support the claim.")
     cited_section_number: str = Field(description="Section number used to support the claim.")
-    support: Literal["supported", "partial", "unsupported"]
-    reason: str
     quote: str = Field(
         default="",
-        description="A short contiguous verbatim quote from the cited source supporting this claim.",
+        description=(
+            "The best short contiguous verbatim passage from the cited source that carries "
+            "this claim, or empty when the source contains none."
+        ),
     )
+    reason: str
+    support: Literal["supported", "partial", "unsupported"]
 
 
 class _GroundingOutput(BaseModel):
@@ -57,7 +62,8 @@ _SYSTEM = """You are a strict grounding verifier for Malaysian statute research 
 
 Task:
 - Identify every sentence or clause in the answer that makes a legal claim.
-- For each legal claim, decide whether the cited statute section text supports it.
+- For each legal claim, find the passage in the cited statute section text that carries
+  it, then label how far that passage goes.
 - Use only the provided cited source text. Do not use outside legal knowledge.
 
 Labels:
@@ -65,9 +71,16 @@ Labels:
 - partial: the cited section text supports only part of the claim or the claim overstates the text.
 - unsupported: the cited section text does not support the claim.
 
-For every supported claim, copy one short, contiguous supporting quote from the cited
-source into quote. Do not paraphrase, splice passages, or add ellipses. For partial or
-unsupported claims, return an empty quote.
+Work each claim in this order, and fill the fields in this order:
+1. quote: copy the best passage from the cited source text that carries the claim — one
+   short, contiguous, verbatim passage. Do not paraphrase, splice passages, or add
+   ellipses. Leave quote empty when the cited text holds no such passage.
+2. reason: say what the quote does and does not cover.
+3. support: label the claim. Only use "supported" when quote holds a real passage that
+   carries the whole claim.
+
+Deciding the label from the passage you found is the point of this order. Do not pick a
+label first and then look for a quote that fits it.
 
 Ignore non-legal text such as disclaimers, transitions, headings, and source labels.
 Return only the structured result."""
@@ -108,7 +121,9 @@ def _collect_cited_sources(state: AgentState) -> list[dict]:
 
 
 def _messages(answer: str, sources: list[dict]) -> list[dict]:
-    payload = {"answer": answer, "cited_sources": sources}
+    # Sources before answer, which is the reverse of this function's own argument order:
+    # the section text is the long block and the judged answer belongs last.
+    payload = {"cited_sources": sources, "answer": answer}
     return [
         {"role": "system", "content": system_content(_SYSTEM, _MODEL)},
         {"role": "user", "content": json.dumps(payload, ensure_ascii=False, indent=2)},

@@ -116,3 +116,32 @@ def trim_history(history: list[Message] | None, max_tokens: int = MAX_HISTORY_TO
         kept.insert(0, turn)
         total += turn_tokens
     return [message for turn in kept for message in turn]
+
+
+# The synthesiser and the conversational node both receive recalled Semantic Memory
+# (ADR 0010), and a prompt inherits nothing from the node before it, so each states
+# this caveat itself. Both the label and the rule live here because two hand-written
+# copies drift, and the drift is silent: the looser copy is the node that starts
+# letting preferences act as legal authority.
+#
+# `overridden_by` stays a parameter because that clause genuinely differs per node —
+# the synthesiser has retrieved sections to lose to, small talk has only guardrails.
+_MEMORY_SOFT_CONTEXT_RULE = (
+    'Any "Known practitioner preferences" are soft context about how this practitioner '
+    "likes answers framed (language, format, focus). They are NOT legal authority: never "
+    "cite them, never state them back as facts about the law, and never let them override "
+    "{overridden_by}."
+)
+
+MEMORY_BLOCK_LABEL = "Known practitioner preferences (framing only, not legal authority):"
+
+
+def memory_soft_context_rule(overridden_by: str) -> str:
+    return _MEMORY_SOFT_CONTEXT_RULE.format(overridden_by=overridden_by)
+
+
+def preferences_block(recalled_memory: str) -> str:
+    """Returns "" when recall found nothing, so the caller can interpolate it blind."""
+    if not recalled_memory:
+        return ""
+    return f"\n{MEMORY_BLOCK_LABEL}\n{recalled_memory}\n"

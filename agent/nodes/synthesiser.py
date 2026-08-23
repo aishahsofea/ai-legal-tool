@@ -14,7 +14,13 @@ from pydantic import BaseModel
 
 from agent.citation_keys import canonicalize_citation_key
 from agent.llm_factory import make_llm, system_content
-from agent.query_policy import _DISCLAIMER_BM, _DISCLAIMER_EN, trim_history
+from agent.query_policy import (
+    _DISCLAIMER_BM,
+    _DISCLAIMER_EN,
+    memory_soft_context_rule,
+    preferences_block,
+    trim_history,
+)
 from agent.state import AgentState
 from citation_receipts import ReceiptDocumentIntegrityError, ReceiptManifestError, get_receipt_registry
 from citation_receipts.service import validate_available, validate_coordinate_available
@@ -46,12 +52,12 @@ Write like a knowledgeable, plain-spoken colleague: clear and natural, not robot
 Rules you MUST follow on every response:
 1. LANGUAGE: You MUST respond in {language_instruction}. This rule overrides everything else.
 2. Every legal claim must cite the relevant section explicitly.
-3. Do NOT use phrases like "you should", "you must", "in your case", or "I recommend".
+3. Write about the provision, not about the reader: "Section 90A requires...", "the Act provides that...". Never address the reader's own situation — no "you should", "you must", "you need to", "you are advised", "in your case", or "I recommend". A response containing any of those phrases is rejected and re-drafted, so the reframing has to happen here.
 4. Only state what the statute says — do not advise on what a person should do.
 5. If the retrieved sections do not contain enough information to answer, say so clearly rather than speculating.
 6. Omit the disclaimer from your answer field — it will be appended separately.
 7. In citation_refs, include an entry for EVERY section you mention in your answer. If you mention section 90A(1) and 90A(2), add one entry with section_number "90A". Never leave citation_refs empty if your answer cites any section.
-8. Any "Known practitioner preferences" are soft context about how this practitioner likes answers framed (language, format, focus). They are NOT legal authority: never cite them, never treat them as facts about the law, and let the retrieved sections and the query override them whenever they conflict."""
+8. {memory_rule}"""
 
 _LANGUAGE_INSTRUCTIONS = {
     "en": "English",
@@ -102,24 +108,22 @@ def _build_messages(state: AgentState) -> list[dict]:
     )
 
     system_prompt = _SYSTEM_TEMPLATE.format(
-        language_instruction=_LANGUAGE_INSTRUCTIONS.get(response_language, _LANGUAGE_INSTRUCTIONS["en"])
+        language_instruction=_LANGUAGE_INSTRUCTIONS.get(response_language, _LANGUAGE_INSTRUCTIONS["en"]),
+        memory_rule=memory_soft_context_rule("the retrieved sections or the query"),
     )
 
-    preferences_block = (
-        f"\nKnown practitioner preferences (framing only, not legal authority):\n{recalled_memory}\n"
-        if recalled_memory
-        else ""
-    )
-
-    user_message = f"""Conversation history:
-{history_text or '(none)'}
-{preferences_block}
-Query: {state['query']}
-
-Retrieved statute sections:
+    # Retrieved sections lead and the query closes: the sections are by far the longest
+    # block here, and answer quality drops when a long block sits between the query and
+    # the instruction that acts on it.
+    user_message = f"""Retrieved statute sections:
 {context}
 
-Answer the query using only the sections provided above. Cite each section you rely on."""
+Conversation history:
+{history_text or '(none)'}
+{preferences_block(recalled_memory)}
+Query: {state['query']}
+
+Answer the query using only the sections above. Cite each section you rely on."""
 
     return [
         {"role": "system", "content": system_content(system_prompt, _MODEL)},
