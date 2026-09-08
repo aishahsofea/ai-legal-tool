@@ -12,6 +12,7 @@ from typing import Sequence
 import psycopg2
 from dotenv import load_dotenv
 
+from agent.embeddings import corpus_embedding_model, embedding_client
 from corpus.db import (
     MIGRATION_PATH,
     activate,
@@ -154,8 +155,6 @@ def _register(args: argparse.Namespace) -> int:
 
 
 def _ingest(args: argparse.Namespace) -> int:
-    from openai import OpenAI
-
     registry = CorpusRegistry(_path(args.manifest), asset_root=_path(args.pdf_root) if args.pdf_root else None)
     run = registry.extraction(args.extraction_id)
     document = registry.get(run.document_id)
@@ -164,7 +163,7 @@ def _ingest(args: argparse.Namespace) -> int:
     if args.dry_run:
         _print({"status": "dry_run", "document_id": document.document_id, "extraction_id": run.extraction_id, "chunks": len(chunks)})
         return 0
-    client = OpenAI()
+    client = embedding_client()
     embeddings: list[list[float]] = []
     for offset in range(0, len(chunks), args.batch_size):
         response = client.embeddings.create(
@@ -342,7 +341,7 @@ def build_parser() -> argparse.ArgumentParser:
     command.add_argument("--bundle", required=True)
     command.add_argument("--extraction-id", required=True)
     command.add_argument("--database-url")
-    command.add_argument("--embedding-model", default="text-embedding-3-small")
+    command.add_argument("--embedding-model", default=corpus_embedding_model())
     command.add_argument("--batch-size", type=int, default=100)
     command.add_argument("--dry-run", action="store_true")
     command.set_defaults(func=_ingest)
@@ -375,10 +374,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     command.add_argument("--extraction-root", default="data/corpus/extractions")
     command.add_argument("--database-url")
-    command.add_argument(
-        "--embedding-model",
-        default=os.getenv("CORPUS_EMBEDDING_MODEL", "text-embedding-3-small"),
-    )
+    command.add_argument("--embedding-model", default=corpus_embedding_model())
     command.add_argument("--batch-size", type=int, default=100)
     command.add_argument(
         "--max-embedding-cost-usd",

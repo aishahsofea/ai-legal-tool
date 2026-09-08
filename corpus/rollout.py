@@ -19,6 +19,7 @@ from typing import Any, Protocol
 
 import psycopg2
 
+from agent.embeddings import DEFAULT_EMBEDDING_MODEL, embedding_client
 from corpus.db import (
     activate,
     apply_migration,
@@ -352,11 +353,9 @@ class OpenAIEmbedder:
 
     def _ensure_dependencies(self) -> None:
         if self._client is None:
-            from openai import OpenAI
-
             # A retry could resubmit a successfully processed request and make a
             # strict client-side dollar cap impossible to guarantee.
-            self._client = OpenAI(max_retries=0)
+            self._client = embedding_client(max_retries=0)
         if self._encoding is None:
             import tiktoken
 
@@ -452,7 +451,7 @@ def rollout_corpus(
     extraction_root: Path,
     sidecar_root: Path,
     database_url: str | None = None,
-    embedding_model: str = "text-embedding-3-small",
+    embedding_model: str = DEFAULT_EMBEDDING_MODEL,
     batch_size: int = 100,
     max_embedding_cost_usd: float | Decimal | None = None,
     document_ids: Iterable[str] | None = None,

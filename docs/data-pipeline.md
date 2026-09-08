@@ -78,7 +78,7 @@ Validates each registered PDF, extracts section-level text with PyMuPDF, writes 
 
 ### Step 5 — Embed and ingest → pgvector
 
-Embeds each shadow bundle with `text-embedding-3-small` and atomically ingests its exact extraction into Postgres (see the [corpus migration](../CONTRIBUTING.md#3-database-schema)).
+Embeds each shadow bundle with the corpus embedding model, then atomically ingests its exact extraction into Postgres. See the [corpus migration](../CONTRIBUTING.md#3-database-schema) for the schema and [model overrides](../CONTRIBUTING.md#model-overrides) for the embedding model.
 
 - ~25,000 chunks in batches of 100 — ~5 minutes, ~$0.15 in embedding costs
 - All embeddings for one extraction get obtained before database mutation — a failure commits no partial rows
