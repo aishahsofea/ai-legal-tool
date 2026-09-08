@@ -363,6 +363,14 @@ Each of the router, contextualize, conversational, synthesiser, and grounding-ch
 | `RETRIEVAL_AGENT_MODEL` | agentic retriever ReAct agent (`AGENTIC_RETRIEVAL` on) | `gpt-4.1` |
 | `MEMORY_EXTRACT_MODEL` | Semantic Memory extractor (background write path) | `gpt-4.1-mini` |
 
+Embedding models resolve through their own factory, `agent/embeddings.py` — separate from the chat-model factory above, since embeddings need a shared vector space instead of provider routing. `CORPUS_EMBEDDING_MODEL` drives both ingestion (`ingestion/step5_ingest.py`) and query-side statute search (`agent/retrieval/search.py`) together, because corpus-side and query-side embeddings must come from the same model or retrieval degrades silently — no error, just worse hits. `MEMORY_EMBEDDING_MODEL` is separate and drives only the Semantic Memory store (`agent/graph.py`), which is its own collection with no reason to move when the corpus model changes. `EMBEDDING_BASE_URL` is optional and passes through to the OpenAI client for both, so an OpenAI-compatible provider can be pointed at without code changes.
+
+| Env var | Drives | Default |
+|---|---|---|
+| `CORPUS_EMBEDDING_MODEL` | ingestion + statute search | `text-embedding-3-small` |
+| `MEMORY_EMBEDDING_MODEL` | Semantic Memory store | `text-embedding-3-small` |
+| `EMBEDDING_BASE_URL` | both embedders (optional) | unset |
+
 Override to `claude-haiku-4-5-20251001` (~3× cheaper than GPT-4.1) for fast pipeline-correctness signal without the GPT-4.1 default:
 
 ```bash

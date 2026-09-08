@@ -173,20 +173,24 @@ def _make_checkpointer():
 
 
 @lru_cache(maxsize=1)
-def _openai_client():
-    from openai import OpenAI
-    return OpenAI()
+def _memory_embedder():
+    from agent.embeddings import make_memory_embedder
+    return make_memory_embedder()
 
 
 def _embed_texts(texts: list[str]) -> list[list[float]]:
-    # Same embedding model as the retriever (agent/nodes/retriever.py) so recall and
-    # retrieval share one vector space. Called lazily by the store on search/put only —
-    # never at import time, and never on the default path where recall is flagged off.
-    resp = _openai_client().embeddings.create(model="text-embedding-3-small", input=texts)
+    # MEMORY_EMBEDDING_MODEL (agent/embeddings.py) is independent of CORPUS_EMBEDDING_MODEL —
+    # this store is a separate collection with no reason to move when the corpus model changes.
+    # Called lazily by the store on search/put only — never at import time, and never on the
+    # default path where recall is flagged off.
+    client, model = _memory_embedder()
+    resp = client.embeddings.create(model=model, input=texts)
     return [item.embedding for item in resp.data]
 
 
-# text-embedding-3-small → 1536 dims. Backs cross-thread semantic search over the store.
+# Default MEMORY_EMBEDDING_MODEL (text-embedding-3-small) → 1536 dims. Backs cross-thread
+# semantic search over the store. Pointing MEMORY_EMBEDDING_MODEL at a model with different
+# dims also needs a matching pgvector column change — out of scope for the env var itself.
 _STORE_INDEX = {"dims": 1536, "embed": _embed_texts}
 
 

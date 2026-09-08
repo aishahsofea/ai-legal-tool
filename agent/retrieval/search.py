@@ -17,7 +17,8 @@ from pathlib import Path
 import psycopg2
 import psycopg2.extras
 from dotenv import load_dotenv
-from openai import OpenAI
+
+from agent.embeddings import make_corpus_embedder
 
 load_dotenv()
 
@@ -44,7 +45,7 @@ _ACT_ALIASES: dict[str, tuple[str, str]] = {
     "akta perlindungan data peribadi": ("709", "PERSONAL DATA PROTECTION ACT 2010"),
 }
 
-_openai = OpenAI()
+_openai, _EMBED_MODEL = make_corpus_embedder()
 _db_url = os.environ["DATABASE_URL"]
 
 
@@ -71,7 +72,7 @@ def _pdf_url_map() -> dict[str, str]:
 
 
 def _embed(text: str) -> list[float]:
-    resp = _openai.embeddings.create(model="text-embedding-3-small", input=[text])
+    resp = _openai.embeddings.create(model=_EMBED_MODEL, input=[text])
     return resp.data[0].embedding
 
 

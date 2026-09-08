@@ -15,6 +15,7 @@ import psycopg2
 from dotenv import load_dotenv
 from openai import OpenAI
 
+from agent.embeddings import make_corpus_embedder
 from corpus.db import apply_migration, ingest_extraction, load_bundle
 from corpus.registry import CorpusRegistry
 
@@ -25,7 +26,7 @@ MANIFEST_PATH = Path(os.getenv("CORPUS_MANIFEST_PATH", "data/pdfs/manifest.json"
 PDF_ROOT = Path(os.getenv("CORPUS_LOCAL_ROOT", "data/pdfs"))
 SIDECAR_ROOT = Path(os.getenv("CORPUS_SIDECAR_ROOT", "data/corpus/sidecars"))
 EXTRACTION_ROOT = Path("data/corpus/extractions")
-EMBED_MODEL = os.getenv("CORPUS_EMBEDDING_MODEL", "text-embedding-3-small")
+_EMBED_CLIENT, EMBED_MODEL = make_corpus_embedder()
 BATCH_SIZE = 100
 
 
@@ -62,7 +63,7 @@ def _ready_extractions(cursor) -> set[str]:
 
 def run_step5() -> None:
     registry = CorpusRegistry(MANIFEST_PATH, asset_root=PDF_ROOT, sidecar_root=SIDECAR_ROOT)
-    client = OpenAI()
+    client = _EMBED_CLIENT
     connection = _connect()
     try:
         apply_migration(connection)
