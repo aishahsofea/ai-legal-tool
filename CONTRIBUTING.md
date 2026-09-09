@@ -333,7 +333,7 @@ Every case declares a `language`: `en`, `bm` (Bahasa Malaysia), or `mixed` (code
 
 `evals/language_id.py` splits the response on sentence boundaries, classifies each segment, and weights each by word count. The classifier is a local fastText model, `mesolitica/fasttext-language-detection-bahasa-en`, downloaded once and cached under `~/.cache/huggingface`. A `bm` case needs a BM share of at least 0.60. A `mixed` case needs 0.25, because the right answer to a code-switched query is bilingual: BM framing around English statute quotes. An English answer carrying one stray "seksyen" scores near 0.00 and fails, which the keyword check this replaced let through.
 
-Both thresholds come from measured answers: every `bm` answer scored 1.00 and `mixed` answers ran 0.42 to 1.00. English cases never load the model, so `.github/workflows/evals.yml` is unaffected.
+Both thresholds come from measured answers: every `bm` answer scored 1.00 and `mixed` answers ran 0.42 to 1.00. English cases never load the model, so `.github/workflows/evals.yml` is unaffected. `BM_LANGID_MODEL_REPO` and `BM_LANGID_MODEL_FILE` override which classifier is loaded; both are eval-only and default to the model named above.
 
 #### Retrieval recall
 
