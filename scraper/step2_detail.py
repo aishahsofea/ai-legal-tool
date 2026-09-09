@@ -2,12 +2,22 @@
 Step 1.2 — Scrape act-detail pages and subsidiary legislation.
 
 For each act in acts_index.json (updated + revised types by default):
-  1. GET act-detail.php?act={number}&lang=BI  → parse timeline
-  2. POST json-subsid-2024.php?act={number}   → subsidiary legislation
+  1. GET act-detail.php?act={number}&lang=BI  → parse timeline (primary)
+  2. GET act-detail.php?act={number}&lang=BM  → parse timeline (secondary, if BI succeeded)
+  3. POST json-subsid-2024.php?act={number}   → subsidiary legislation
+
+AGC publishes both language versions for most Acts. The primary fields
+(detail_url, timeline, latest_reprint_pdf, latest_amendment_pdf) keep their
+existing meaning — lang=BI, or lang=BM as a fallback when BI is entirely
+unavailable — so a currently-registered document's language never moves.
+A genuine second version lands in the parallel *_bm fields instead.
 
 Writes one file per act: data/acts_metadata/{act_number}.json
 
-Resumable: skips acts whose output file already exists.
+Resumable: skips acts whose output file already exists and already has the
+*_bm fields. An existing file scraped before this variant existed gets its
+missing lang=BM side backfilled in place, without re-fetching the primary
+side (never risks moving an already-registered document's language).
 The HTTP cache (requests-cache) handles skipping already-fetched pages.
 """
 import json
@@ -125,24 +135,45 @@ def fetch_subsidiary(session, act_number: str) -> list[dict]:
     return parse_subsid_records(all_records)
 
 
+def _fetch_html(session, url: str, timeout: int) -> str | None:
+    resp = _safe_get(session, url, timeout=timeout)
+    return resp.text if resp is not None else None
+
+
+def _fetch_secondary(session, act_number: str, timeout: int) -> tuple[str, list[dict]]:
+    """Fetch the lang=BM detail page. Returns (url, timeline); ("", []) if none exists."""
+    url = f"{DETAIL_URL}?act={act_number}&lang=BM"
+    html = _fetch_html(session, url, timeout)
+    if html is None:
+        return "", []
+    timeline = parse_timeline(html)
+    if not timeline:
+        return "", []
+    return url, timeline
+
+
 def scrape_act(session, act_number: str, act_type: str, timeout: int = 120, html: str | None = None) -> dict | None:
     """
-    Scrape one act. If html is provided, skip the HTTP fetch and parse that directly.
-    Otherwise tries lang=BI first, falls back to lang=BM.
+    Scrape one act. If html is provided, skip the HTTP fetch and parse that directly
+    (used for offline/manual recovery — no secondary fetch is attempted in that case).
+    Otherwise tries lang=BI first, falls back to lang=BM, then — only when lang=BI
+    succeeded — also fetches lang=BM as a second, independent document.
     """
-    if html is not None:
+    offline = html is not None
+    used_bm_fallback = False
+    if offline:
         url = f"{DETAIL_URL}?act={act_number}&lang=BI"
         logger.info("[%s] Parsing from provided HTML", act_number)
     else:
         url = f"{DETAIL_URL}?act={act_number}&lang=BI"
-        resp = _safe_get(session, url, timeout=timeout)
-        if resp is None:
+        html = _fetch_html(session, url, timeout)
+        if html is None:
             logger.warning("[%s] lang=BI failed, trying lang=BM", act_number)
             url = f"{DETAIL_URL}?act={act_number}&lang=BM"
-            resp = _safe_get(session, url, timeout=timeout)
-        if resp is None:
+            html = _fetch_html(session, url, timeout)
+            used_bm_fallback = True
+        if html is None:
             return None
-        html = resp.text
 
     timeline = parse_timeline(html)
     if not timeline:
@@ -151,6 +182,11 @@ def scrape_act(session, act_number: str, act_type: str, timeout: int = 120, html
         logger.warning("[%s] No timeline entries found — raw HTML saved to %s for inspection", act_number, debug_path)
 
     time.sleep(REQUEST_DELAY)
+
+    secondary_url, secondary_timeline = "", []
+    if not offline and not used_bm_fallback:
+        secondary_url, secondary_timeline = _fetch_secondary(session, act_number, timeout)
+        time.sleep(REQUEST_DELAY)
 
     subsidiary = fetch_subsidiary(session, act_number)
 
@@ -162,9 +198,39 @@ def scrape_act(session, act_number: str, act_type: str, timeout: int = 120, html
         "timeline":             timeline,
         "latest_reprint_pdf":   find_latest_reprint(timeline),
         "latest_amendment_pdf": find_latest_amendment(timeline),
+        "detail_url_bm":           secondary_url,
+        "timeline_bm":             secondary_timeline,
+        "latest_reprint_pdf_bm":   find_latest_reprint(secondary_timeline),
+        "latest_amendment_pdf_bm": find_latest_amendment(secondary_timeline),
         "subsidiary_legislation": subsidiary,
         "subsidiary_total":     len(subsidiary),
     }
+
+
+def _needs_bm_backfill(existing: dict) -> bool:
+    return not existing.get("stub") and "detail_url_bm" not in existing
+
+
+def backfill_bm_variant(session, act_number: str, existing: dict, timeout: int = 120) -> dict:
+    """Add the lang=BM fields to an Act scraped before they existed.
+
+    Never re-fetches or touches the existing primary fields (detail_url,
+    timeline, latest_reprint_pdf, latest_amendment_pdf) — only the *_bm
+    fields are added, so an already-registered document's language can't
+    move. When the primary itself was already the lang=BM fallback (the
+    BM-only Acts), there is no separate second version to find, so no
+    request is made at all.
+    """
+    merged = dict(existing)
+    if "lang=bm" in str(existing.get("detail_url", "")).lower():
+        secondary_url, secondary_timeline = "", []
+    else:
+        secondary_url, secondary_timeline = _fetch_secondary(session, act_number, timeout)
+    merged["detail_url_bm"] = secondary_url
+    merged["timeline_bm"] = secondary_timeline
+    merged["latest_reprint_pdf_bm"] = find_latest_reprint(secondary_timeline)
+    merged["latest_amendment_pdf_bm"] = find_latest_amendment(secondary_timeline)
+    return merged
 
 
 def run_step2(detail_types: list[str] | None = None) -> None:
@@ -190,6 +256,7 @@ def run_step2(detail_types: list[str] | None = None) -> None:
     done = 0
     skipped = 0
     failed = 0
+    backfilled = 0
 
     try:
         for i, act in enumerate(acts, 1):
@@ -197,7 +264,16 @@ def run_step2(detail_types: list[str] | None = None) -> None:
             out_file = out_dir / f"{act_number}.json"
 
             if out_file.exists():
-                skipped += 1
+                existing = json.loads(out_file.read_text(encoding="utf-8"))
+                if not _needs_bm_backfill(existing):
+                    skipped += 1
+                    continue
+                logger.info("[%d/%d] Act %s — backfilling lang=BM", i, len(acts), act_number)
+                result = backfill_bm_variant(session, act_number, existing)
+                out_file.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
+                backfilled += 1
+                if result["detail_url_bm"]:
+                    time.sleep(REQUEST_DELAY)
                 continue
 
             logger.info("[%d/%d] Scraping act %s — %s", i, len(acts), act_number, act.get("title_en", ""))
@@ -225,10 +301,10 @@ def run_step2(detail_types: list[str] | None = None) -> None:
             time.sleep(REQUEST_DELAY)
 
     except KeyboardInterrupt:
-        logger.info("Interrupted. Progress: done=%d skipped=%d failed=%d", done, skipped, failed)
+        logger.info("Interrupted. Progress: done=%d skipped=%d backfilled=%d failed=%d", done, skipped, backfilled, failed)
         return
 
-    logger.info("Step 2 complete. done=%d skipped=%d failed=%d", done, skipped, failed)
+    logger.info("Step 2 complete. done=%d skipped=%d backfilled=%d failed=%d", done, skipped, backfilled, failed)
 
     # Print stub list at the end so the user knows what needs manual re-scraping
     stubs = [f.stem for f in Path(METADATA_DIR).glob("*.json")

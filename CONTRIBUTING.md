@@ -105,6 +105,8 @@ python run.py --step 4   # extract section-level chunks (~5 min)
 python run.py --step 5   # embed + ingest into pgvector (~5 min, ~$0.15)
 ```
 
+Steps 2 and 3 request and register both the `lang=BI` and `lang=BM` version of each Act. A full rescrape that picks up the second language roughly doubles the timings above; an Act with only one version costs the same as before. Steps 4-5 grow with however many BM extractions you choose to shadow-ingest.
+
 See [docs/data-pipeline.md](docs/data-pipeline.md) for what each step does and the JSON it produces.
 
 ### 5. Start the API
