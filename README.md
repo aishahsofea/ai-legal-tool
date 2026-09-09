@@ -6,7 +6,9 @@ A LangGraph agent that answers over a pgvector corpus of section-level chunks sc
 [AGC portal](https://lom.agc.gov.my). It cites every legal claim. It never gives legal advice.
 For anything client-specific, it hands off to a human lawyer.
 
-**Stack:** LangGraph · FastAPI (Railway) · Next.js (Vercel) · Postgres + pgvector (Supabase) · OpenAI `text-embedding-3-small` · GPT-4.1 — provider-agnostic via `agent/llm_factory.py` (Claude/Gemini swappable; Claude runs the eval judge).
+**Stack:** LangGraph · FastAPI (Railway) · Next.js (Vercel) · Postgres + pgvector (Supabase) · OpenAI `text-embedding-3-small` · GPT-4.1
+
+Provider-agnostic: `agent/llm_factory.py` for chat models, `agent/embeddings.py` for embeddings. Claude and Gemini are swappable in; Claude runs the eval judge. The `text-embedding-3-small` and GPT-4.1 defaults are both env-overridable — see [model overrides](CONTRIBUTING.md#model-overrides).
 
 ## Highlights
 

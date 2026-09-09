@@ -11,6 +11,7 @@ import psycopg2.extras
 from dotenv import load_dotenv
 from openai import OpenAI
 
+from agent.embeddings import corpus_embedding_model, embedding_client
 from evals.coverage import case_section_pairs
 
 load_dotenv()
@@ -18,7 +19,7 @@ load_dotenv()
 ROOT = Path(__file__).resolve().parent
 DATASET_PATH = ROOT / "dataset.json"
 CHUNKS_DIR = Path("data/chunks/en")
-EMBED_MODEL = "text-embedding-3-small"
+EMBED_MODEL = corpus_embedding_model()
 BATCH_SIZE = 64
 
 
@@ -110,7 +111,7 @@ def main() -> int:
     cases = _load_dataset(args.dataset)
     rows = _load_sections(cases)
 
-    client = OpenAI()
+    client = embedding_client()
     conn = _connect()
     try:
         with conn:

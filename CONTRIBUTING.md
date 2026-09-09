@@ -363,6 +363,27 @@ Each of the router, contextualize, conversational, synthesiser, and grounding-ch
 | `RETRIEVAL_AGENT_MODEL` | agentic retriever ReAct agent (`AGENTIC_RETRIEVAL` on) | `gpt-4.1` |
 | `MEMORY_EXTRACT_MODEL` | Semantic Memory extractor (background write path) | `gpt-4.1-mini` |
 
+Embedding models resolve through their own factory, `agent/embeddings.py`, separate from the chat-model factory above. Embeddings need one shared vector space, not provider routing.
+
+`CORPUS_EMBEDDING_MODEL` moves the whole statute corpus at once:
+
+- ingestion — `ingestion/step5_ingest.py`
+- the operator CLI — `corpus/cli.py` ingest and rollout
+- the eval seeder — `evals/seed_test_corpus.py`
+- query-side search — `agent/retrieval/search.py`
+
+Nothing may embed into the `chunks` table outside the factory. A corpus written with one model and queried with another degrades silently — no error, just worse hits.
+
+`MEMORY_EMBEDDING_MODEL` moves only the Semantic Memory store (`agent/graph.py`). That store is its own collection, so it has no reason to follow the corpus.
+
+Use 1536-dimension models only. The corpus `chunks.embedding` column and the memory store index are both `vector(1536)`, so `text-embedding-3-large` (3072) fails on insert. Migrating the columns is separate work.
+
+| Env var | Drives | Default |
+|---|---|---|
+| `CORPUS_EMBEDDING_MODEL` | every corpus write + statute search | `text-embedding-3-small` |
+| `MEMORY_EMBEDDING_MODEL` | Semantic Memory store | `text-embedding-3-small` |
+| `EMBEDDING_BASE_URL` | both embedders, for an OpenAI-compatible provider (optional) | unset |
+
 Override to `claude-haiku-4-5-20251001` (~3× cheaper than GPT-4.1) for fast pipeline-correctness signal without the GPT-4.1 default:
 
 ```bash
