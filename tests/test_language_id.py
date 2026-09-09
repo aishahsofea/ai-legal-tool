@@ -1,9 +1,8 @@
 """Tests for the BM/English scorer behind the `language_register` assertion.
 
 The classifier tests are skipped when the fastText model is not available
-(package missing, or no cached copy and no network), so an offline checkout can
-still run the suite. CI installs requirements.txt and downloads the model on
-first use, so they do run there.
+(package missing, or no cached copy), so a fresh checkout runs the suite
+without a 331MB download. Run the evals once to populate the cache.
 """
 import json
 import unittest
@@ -11,6 +10,8 @@ from pathlib import Path
 
 from evals.language_id import (
     BM_SHARE_THRESHOLDS,
+    DEFAULT_MODEL_FILE,
+    DEFAULT_MODEL_REPO,
     LanguageModelUnavailable,
     _segments,
     bm_share,
@@ -20,6 +21,14 @@ DATASET = Path(__file__).resolve().parent.parent / "evals" / "dataset.json"
 
 
 def _model_available() -> bool:
+    """Cache-only: probing with `bm_share` would pull 331MB the first time
+    anyone runs the suite. An eval run downloads it; `pytest` should not."""
+    try:
+        from huggingface_hub import try_to_load_from_cache
+    except ImportError:
+        return False
+    if try_to_load_from_cache(DEFAULT_MODEL_REPO, DEFAULT_MODEL_FILE) is None:
+        return False
     try:
         bm_share("Ini adalah satu ayat dalam Bahasa Malaysia.")
     except LanguageModelUnavailable:
