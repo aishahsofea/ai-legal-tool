@@ -153,7 +153,7 @@ These constraints apply to **legal-answer turns** only — a **Conversational Tu
 
 ## Query Language Behaviour
 
-Malaysian law practitioners code-switch heavily — mixing BM and English in a single query ("tolong check Section 14 Evidence Act"). The system may retrieve English and BM chunks together. A citation and quotation keep the registered source language; BM-only Acts 144, 152, 194, 220, 228, and 230 must never be relabeled as English. Response prose mirrors the dominant language of the query. The eval suite measures this: it scores what share of an answer is BM and fails a BM query answered mostly in English — see [CONTRIBUTING.md](CONTRIBUTING.md#scoring-bilingual-cases).
+Malaysian law practitioners code-switch heavily — mixing BM and English in a single query ("tolong check Section 14 Evidence Act"). The system may retrieve English and BM chunks together. When a BM chunk wins, it resolves to its English sibling by Act and section for citation and quotation — English stays the default source. Quoting stays in the registered source language only when no English sibling exists. BM-only Acts 144, 152, 194, 220, 228, and 230 must never be relabeled as English — the citation's own `language` field says so. See ADR 0017 for the full resolution rule. Response prose still mirrors the dominant language of the query. The eval suite measures this: it scores what share of an answer is BM and fails a BM query answered mostly in English — see [CONTRIBUTING.md](CONTRIBUTING.md#scoring-bilingual-cases).
 
 ## Interruption: two distinct mechanisms
 
