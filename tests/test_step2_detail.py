@@ -50,6 +50,21 @@ class _FakeSession:
         return _FakeResponse(200)
 
 
+class _FlakySession(_FakeSession):
+    """Like _FakeSession, but a URL mapped to FAILS 500s instead of 404ing —
+    simulates a transient failure that is not a real "page doesn't exist"."""
+
+    FAILS = object()
+
+    def get(self, url, timeout=None):
+        self.requested.append(url)
+        if self._pages.get(url) is self.FAILS:
+            return _FakeResponse(500)
+        if url not in self._pages or self._pages[url] is None:
+            return _FakeResponse(404)
+        return _FakeResponse(200, self._pages[url])
+
+
 @pytest.fixture(autouse=True)
 def _no_sleep(monkeypatch):
     monkeypatch.setattr(step2_detail.time, "sleep", lambda *_: None)
@@ -143,8 +158,9 @@ def test_backfill_bm_variant_never_touches_primary_fields():
         _bm_url("5"): _detail_html("01/01/2019", "REPRINT ONLINE", "AKTA5.pdf"),
     })
 
-    result = step2_detail.backfill_bm_variant(session, "5", existing)
+    result, made_request = step2_detail.backfill_bm_variant(session, "5", existing)
 
+    assert made_request is True
     assert result["detail_url"] == existing["detail_url"]
     assert result["timeline"] == existing["timeline"]
     assert result["latest_reprint_pdf"] == existing["latest_reprint_pdf"]
@@ -162,8 +178,9 @@ def test_backfill_bm_variant_skips_network_for_bm_only_acts():
     }
     session = _FakeSession({})  # any request would 404 and be visible via .requested
 
-    result = step2_detail.backfill_bm_variant(session, "144", existing)
+    result, made_request = step2_detail.backfill_bm_variant(session, "144", existing)
 
+    assert made_request is False
     assert session.requested == []
     assert result["detail_url_bm"] == ""
     assert result["latest_reprint_pdf"] == existing["latest_reprint_pdf"]
@@ -204,3 +221,83 @@ def test_run_step2_backfills_old_format_files_without_touching_primary(tmp_path,
     session.requested.clear()
     step2_detail.run_step2()
     assert session.requested == []
+
+
+def test_scrape_act_secondary_transient_failure_is_not_cached_as_absent():
+    """A 500/timeout on the BM fetch must not look like "confirmed no BM
+    version" — that would permanently block the backfill from ever retrying."""
+    session = _FlakySession({
+        _bi_url("6"): _detail_html("01/01/2020", "REPRINT ONLINE", "ACT6-EN.pdf"),
+        _bm_url("6"): _FlakySession.FAILS,
+    })
+
+    result = step2_detail.scrape_act(session, "6", "updated")
+
+    assert result["latest_reprint_pdf"].endswith("ACT6-EN.pdf")
+    assert "detail_url_bm" not in result
+
+
+def test_run_step2_backfill_retries_after_transient_bm_failure(tmp_path, monkeypatch):
+    index = {"acts": [{"act_number": "8", "act_type": "updated", "title_en": "FIXTURE"}]}
+    (tmp_path / "index.json").write_text(json.dumps(index), encoding="utf-8")
+    monkeypatch.setattr(step2_detail, "INDEX_FILE", str(tmp_path / "index.json"))
+
+    metadata_dir = tmp_path / "metadata"
+    metadata_dir.mkdir()
+    monkeypatch.setattr(step2_detail, "METADATA_DIR", str(metadata_dir))
+    old_format = {
+        "act_number": "8",
+        "act_type": "updated",
+        "detail_url": _bi_url("8"),
+        "timeline": [{"date": "01/01/2018", "log_type": "REPRINT ONLINE", "pdf_url": "https://old/ACT8.pdf"}],
+        "latest_reprint_pdf": "https://old/ACT8.pdf",
+        "latest_amendment_pdf": "",
+        "subsidiary_legislation": [],
+        "subsidiary_total": 0,
+    }
+    (metadata_dir / "8.json").write_text(json.dumps(old_format), encoding="utf-8")
+
+    flaky = _FlakySession({_bm_url("8"): _FlakySession.FAILS})
+    monkeypatch.setattr("scraper.session.build_session", lambda: flaky)
+    step2_detail.run_step2()
+
+    saved = json.loads((metadata_dir / "8.json").read_text(encoding="utf-8"))
+    assert "detail_url_bm" not in saved
+
+    # Once the page is reachable again, a later run backfills it instead of
+    # having given up permanently.
+    healthy = _FakeSession({_bm_url("8"): _detail_html("01/01/2018", "REPRINT ONLINE", "AKTA8.pdf")})
+    monkeypatch.setattr("scraper.session.build_session", lambda: healthy)
+    step2_detail.run_step2()
+
+    saved = json.loads((metadata_dir / "8.json").read_text(encoding="utf-8"))
+    assert saved["detail_url_bm"] == _bm_url("8")
+
+
+def test_run_step2_corrupt_metadata_file_does_not_abort_sweep(tmp_path, monkeypatch):
+    index = {"acts": [
+        {"act_number": "20", "act_type": "updated", "title_en": "CORRUPT FIXTURE"},
+        {"act_number": "21", "act_type": "updated", "title_en": "GOOD FIXTURE"},
+    ]}
+    (tmp_path / "index.json").write_text(json.dumps(index), encoding="utf-8")
+    monkeypatch.setattr(step2_detail, "INDEX_FILE", str(tmp_path / "index.json"))
+
+    metadata_dir = tmp_path / "metadata"
+    metadata_dir.mkdir()
+    monkeypatch.setattr(step2_detail, "METADATA_DIR", str(metadata_dir))
+    (metadata_dir / "20.json").write_text("{not valid json", encoding="utf-8")
+
+    session = _FakeSession({
+        _bi_url("20"): _detail_html("01/01/2020", "REPRINT ONLINE", "ACT20-EN.pdf"),
+        _bm_url("20"): _detail_html("01/01/2020", "REPRINT ONLINE", "ACT20-BM.pdf"),
+        _bi_url("21"): _detail_html("01/01/2020", "REPRINT ONLINE", "ACT21-EN.pdf"),
+        _bm_url("21"): _detail_html("01/01/2020", "REPRINT ONLINE", "ACT21-BM.pdf"),
+    })
+    monkeypatch.setattr("scraper.session.build_session", lambda: session)
+
+    step2_detail.run_step2()  # must not raise despite the corrupt file
+
+    act20 = json.loads((metadata_dir / "20.json").read_text(encoding="utf-8"))
+    act21 = json.loads((metadata_dir / "21.json").read_text(encoding="utf-8"))
+    assert act20["latest_reprint_pdf"].endswith("ACT20-EN.pdf")
+    assert act21["latest_reprint_pdf"].endswith("ACT21-EN.pdf")
