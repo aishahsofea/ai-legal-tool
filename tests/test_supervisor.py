@@ -24,6 +24,11 @@ class SupervisorRule3Tests(unittest.TestCase):
         result = supervisor_node({"draft_response": draft, "violations": []})
         self.assertEqual(result["violations"], [])
 
+    def test_mixed_draft_with_en_disclaimer_passes(self):
+        draft = "Section 3 applies. Seksyen ini relevan." + _DISCLAIMER_EN
+        result = supervisor_node({"draft_response": draft, "violations": []})
+        self.assertEqual(result["violations"], [])
+
     def test_en_draft_with_no_disclaimer_fails(self):
         draft = "Section 3 applies here, no disclaimer attached."
         result = supervisor_node({"draft_response": draft, "violations": []})
