@@ -1,20 +1,19 @@
-"""L1 eval assertions — pure functions, no LLM calls."""
+"""L1 eval assertions — deterministic checks, no LLM calls.
+
+All of them are pure functions of the agent output except `language_register`,
+which scores BM/English composition with a local fastText classifier
+(evals/language_id.py). No network call once the model is cached."""
 from __future__ import annotations
 
 import re
 from typing import Any
 
 from agent.citation_keys import canonicalize_citation_key, normalized_citation_pair
+from evals.language_id import BM_SHARE_THRESHOLDS, bm_share
 
-# BM function words: if the query contains any, the response must also contain at least one.
-BM_FUNCTION_WORDS: list[str] = [
-    "apakah", "bagaimana", "bolehkah", "adakah", "apabila",
-    "kepada", "oleh", "dalam", "adalah", "dengan", "untuk",
-    "dan", "atau", "tidak", "jika", "sekiranya", "mahkamah",
-    "akta", "seksyen", "undang-undang", "peguam", "pendakwa",
-    "tertuduh", "plaintif", "defendan", "hakim", "rayuan",
-    "majikan", "pekerja", "gaji", "syarikat", "fitnah",
-]
+# Case languages the language_register assertion applies to. Everything else
+# (an English case, or a case that never declared one) is not applicable.
+BM_LANGUAGES = frozenset(BM_SHARE_THRESHOLDS)
 
 _UUID_RE = re.compile(
     r"\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b",
@@ -174,14 +173,30 @@ def check_section_recall(
     )
 
 
-def check_language_register(query: str, response: str) -> str | None:
-    """Return None if BM query has BM response markers, or a failure message."""
-    query_lower = query.lower()
-    if not any(w in query_lower for w in BM_FUNCTION_WORDS):
+def check_language_register(response: str, expected_language: str | None) -> str | None:
+    """Fail when a BM or mixed case gets an answer that is not BM enough.
+
+    Scores the share of the response that is Bahasa Malaysia and compares it to
+    the threshold for the language the case declares — a mostly-English answer
+    carrying one BM word fails, which the previous wordlist check did not catch.
+    `mixed` has a lower threshold on purpose: the correct answer to a
+    code-switched query is bilingual, with English statute quotes inside BM
+    framing.
+
+    Not applicable to English cases, so an English-only run never loads the
+    classifier.
+    """
+    if expected_language not in BM_LANGUAGES:
         return None
-    response_lower = response.lower()
-    if not any(w in response_lower for w in BM_FUNCTION_WORDS):
-        return "BM query received a response with no BM language markers."
+    share = bm_share(response)
+    if share is None:
+        return "BM query received a response with no scoreable text."
+    threshold = BM_SHARE_THRESHOLDS[expected_language]
+    if share < threshold:
+        return (
+            f"BM query received a response that is {share:.0%} Bahasa Malaysia; "
+            f"a `{expected_language}` case needs at least {threshold:.0%}."
+        )
     return None
 
 
@@ -266,12 +281,12 @@ def check_tool_selection(
 def run_assertions(
     *,
     citations: list[dict[str, Any]],
-    query: str,
     response: str,
     expected_act_number: str | None,
     expected_section: str | None,
     expected_policy: str,
     db_conn: Any,
+    expected_language: str | None = None,
     expected_sections: list[dict[str, Any]] | None = None,
     min_sections_found: int | None = None,
     section_recall_result: dict[str, Any] | None = None,
@@ -312,7 +327,7 @@ def run_assertions(
     if result is not None:
         failures["section_recall"] = result
 
-    result = check_language_register(query, response)
+    result = check_language_register(response, expected_language)
     if result is not None:
         failures["language_register"] = result
 

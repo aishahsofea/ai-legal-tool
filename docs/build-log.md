@@ -6,6 +6,40 @@ Short notes on challenges and learnings while building this app.
 
 <!-- Format: **YYYY-MM-DD** — what we hit or learned -->
 
+**2026-09-09** — Built the BM-heavy eval set and recorded the bilingual baseline (issue #38). The dataset went from 11 BM/mixed cases to 40, split evenly between pure BM and code-switched. `language_register` stopped being a keyword check. Everything here is a measurement — nothing it exposed was fixed.
+
+**The old assertion could not fail.** It looked for one BM function word in the response, matched as a substring, so "Under section 60A (seksyen 60A)..." passed as a BM answer. The substring matching also fired on English: "dan" is inside "abundant". The replacement (`evals/language_id.py`) splits a response on sentence boundaries, classifies each segment with `mesolitica/fasttext-language-detection-bahasa-en`, and weights by word count. Segment-level, not whole-text, for two reasons. The right answer to a code-switched query is bilingual: BM framing around English statute quotes. And fastText scores a whole document as whichever language has more words in it.
+
+**Thresholds came from measured answers.** Every `bm` answer scored 1.00 and `mixed` answers ran 0.42 to 1.00, so the gates sit at 0.60 and 0.25. An English answer with a stray BM word scores 0.00 to 0.05.
+
+**Applicability comes from the case's declared `language`, not from detecting the query.** Detection was tried first and is unreliable at query length in both directions: the classifier reads "Am I liable if I posted the comment online?" (an English escalation case) as 48% BM, and reads two of the code-switched cases as almost entirely English. Detecting would have pulled English cases into the gate and pushed real BM cases out of it. A declared label also means an English-only run never loads the model, so the CI smoke set is untouched.
+
+**Baseline, against the current English-only corpus (49k chunks, 578 Acts).** Retrieval first, measured with the new `evals/retrieval_recall.py` (no LLM, one embedding call per case):
+
+| subset | semantic @1 / @3 / @8 | retriever @1 / @3 / @8 |
+|---|---|---|
+| en (23 cases) | 78% / 96% / 100% | 83% / 91% / 96% |
+| bm (17 cases) | 29% / 35% / 53% | 65% / 71% / 71% |
+| mixed (19 cases) | 42% / 79% / 89% | 74% / 89% / 95% |
+
+`semantic` is vector search alone; `retriever` mirrors `retriever_node`, which tries the exact section lookup first. The gap between the two columns for BM is the whole finding. Cross-lingual embedding is weak — BM recall@8 of 53% against 100% for English. The exact-lookup path already understands `seksyen`, and that is what rescues section-named BM queries. Topical BM, where no section is named, has nothing to fall back on.
+
+**Every BM and mixed case fails end-to-end on the production path, and the cause is one English string.** Full-mode judge pass rate on the 40-case subset is 0/40, and the judge never ran on any of them: `language_register` failed 40/40 first. `supervisor_node` Rule 3 requires the literal "does not constitute legal advice" in the draft, but `synthesiser_node` appends `_DISCLAIMER_BM` for `bm` and `mixed`. Rule 3 fires, the graph retries, and the retry fails the same way. The turn ends in `FINAL_FAILURE_RESPONSE`, an English fail-closed message — correctly scored as an English answer to a BM question. Not fixed here.
+
+**With the supervisor out of the path, the picture is different.** Raw mode (router → retriever → synthesiser) on the same 40 cases:
+
+| metric | result |
+|---|---|
+| `language_register` | 40 of 40 |
+| `expected_section` | 29 of 36 cases that name one (81%) |
+| judge | 30 of 33 cases that reached it (91%) |
+| end-to-end `bm` | 12 of 20 |
+| end-to-end `mixed` | 18 of 20 |
+
+So BM synthesis is not the weak part. Every one of the 7 citation misses is BM-heavy (6 `bm`, 1 `mixed`). These are the numbers #41 (embedding bake-off) and #42 (reranking) should be compared against; the full-mode 0% only measures the disclaimer bug.
+
+Two smaller things the measurement turned up. Exact lookup short-circuits semantic search, which costs one English case. `evidence-32a-1` asks about s.265A of the CPC, but the answer lives in Evidence Act s.32A. The lookup returns the named section and never retrieves the cross-referenced provision; vector search alone ranks it 1st. Separately, the deterministic escalation pre-check in `router_node` is English-only keywords, and whether the LLM router catches BM equivalents is unmeasured because there is no BM `block` case. Adding one is awkward: escalation replies in English by design, so a BM `block` case would fail the language gate even when the router behaves correctly.
+
 **2026-07-11** — Gave retrieval real LLM tool-calling (ADR 0013). The retriever was the last fixed-dispatch node; replaced it with a `create_react_agent` that binds `search_statutes` + `lookup_section` and decides how to search, gated behind `AGENTIC_RETRIEVAL` and fail-open to the deterministic path. Also split the retry: an evidence-shaped violation now re-retrieves with feedback instead of re-drafting the same chunks. What shaped it:
 
 - **The hard part was streaming, not the agent.** `create_react_agent` worked first try, but tool-call events wouldn't reach the UI. Root cause: a sub-agent invoked manually inside a node runs its **own** Pregel stream — its custom writes don't bubble to the parent graph, and forwarding the parent `config` gives the inner node a *real* writer that still writes to the inner stream. The fix that worked: stream the sub-agent (`stream_mode=["custom","values"]`) and re-emit each custom event through the parent writer, which the wrapper node obtains in its own context. Only graphs added as **nodes** auto-propagate; a manual `.invoke()` does not.

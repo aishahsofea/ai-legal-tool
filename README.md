@@ -152,14 +152,19 @@ The server refuses stale corpora, blocks concurrent runs, and kills a run when i
 
 ### Eval harness
 
-`evals/dataset.json` holds 50 hand-validated cases: Evidence Act 1950, Penal Code, PDPA 2010,
-Companies Act 2016, Employment Act 1955, plus escalation cases that must be blocked. A GitHub Actions
-workflow (`.github/workflows/evals.yml`, manually triggered) runs a 10-case smoke eval against the
-GPT-4.1 defaults and posts the judge pass rate and key L1 metrics as a PR comment — fails if the
-pass rate drops below 80%. The gated `/evals` dashboard adds static coverage analysis, interactive
-subset runs, per-case drill-down, and a per-scenario summary. Multi-part cases are scored by how many
-of their provisions the agent cited, not by one expected section. See [CONTRIBUTING.md](CONTRIBUTING.md)
-for dedicated eval-database setup, multi-part scoring, and local usage.
+`evals/dataset.json` holds 79 hand-validated cases: Evidence Act 1950, Penal Code, PDPA 2010,
+Companies Act 2016, Employment Act 1955, plus escalation cases that must be blocked. 40 of them are
+Bahasa Malaysia or code-switched.
+
+A GitHub Actions workflow (`.github/workflows/evals.yml`, manually triggered) runs a 10-case smoke
+eval against the GPT-4.1 defaults. It posts the judge pass rate and key L1 metrics as a PR comment,
+and fails if the pass rate drops below 80%. The gated `/evals` dashboard adds static coverage
+analysis, interactive subset runs, per-case drill-down, and a per-scenario summary.
+
+Multi-part cases are scored by how many of their provisions the agent cited, not by one expected
+section. `evals/retrieval_recall.py` scores retrieval on its own, so a retrieval regression is not
+hidden behind answer quality. See [CONTRIBUTING.md](CONTRIBUTING.md) for dedicated eval-database
+setup, multi-part and bilingual scoring, retrieval recall, and local usage.
 
 `evals/reference_follow_dataset.json` is the separate Phase 3 enablement gate: asserts lookup-before-follow ordering, at most one follow call, positive/incoming selection, no invocation on ordinary exact/topical/broad/unrelated-Act queries. Fails fast unless both retrieval flags are explicitly on.
 

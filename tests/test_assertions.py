@@ -1,8 +1,8 @@
 import unittest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 from evals.assertions import (
-    BM_FUNCTION_WORDS,
+    BM_SHARE_THRESHOLDS,
     check_ai_refusal,
     check_citation_existence,
     check_expected_section,
@@ -183,36 +183,49 @@ class CheckExpectedSectionTests(unittest.TestCase):
 
 
 class CheckLanguageRegisterTests(unittest.TestCase):
-    def test_passes_for_english_only_query(self):
-        self.assertIsNone(
-            check_language_register("What is defamation?", "Defamation is defined in section 499...")
-        )
+    """The BM share is stubbed: these test the threshold contract, not the
+    classifier. tests/test_language_id.py exercises the real model."""
 
-    def test_passes_when_bm_query_has_bm_response(self):
-        self.assertIsNone(
-            check_language_register(
-                "Apakah definisi fitnah dalam Kanun Keseksaan?",
-                "Fitnah di bawah akta ini bermaksud...",
-            )
-        )
+    def _check(self, response, expected_language, share):
+        with patch("evals.assertions.bm_share", return_value=share) as scorer:
+            result = check_language_register(response, expected_language)
+        return result, scorer
 
-    def test_fails_when_bm_query_gets_english_only_response(self):
-        result = check_language_register(
-            "Apakah hak pekerja untuk mendapatkan gaji?",
-            "An employee has the right to receive wages on time under the Employment Act.",
-        )
+    def test_not_applicable_to_an_english_case(self):
+        result, scorer = self._check("Defamation is defined in section 499...", "en", 0.0)
+        self.assertIsNone(result)
+        # An English-only run must never load the classifier.
+        scorer.assert_not_called()
+
+    def test_not_applicable_when_the_case_declares_no_language(self):
+        result, scorer = self._check("Any response at all.", None, 0.0)
+        self.assertIsNone(result)
+        scorer.assert_not_called()
+
+    def test_passes_when_a_bm_case_gets_a_bm_response(self):
+        result, _ = self._check("Di bawah seksyen 60A...", "bm", 0.95)
+        self.assertIsNone(result)
+
+    def test_fails_when_a_bm_case_gets_a_mostly_english_response(self):
+        result, _ = self._check("Under section 60A (seksyen 60A)...", "bm", 0.04)
         self.assertIsNotNone(result)
+        self.assertIn("4%", result)
 
-    def test_boundary_empty_query_is_not_bm(self):
-        self.assertIsNone(check_language_register("", "Some English response."))
+    def test_bilingual_answer_passes_mixed_but_fails_bm(self):
+        # One share, two verdicts: a bilingual answer is right for a
+        # code-switched query and wrong for a pure-BM one.
+        self.assertIsNone(self._check("BM framing, English quote.", "mixed", 0.38)[0])
+        self.assertIsNotNone(self._check("BM framing, English quote.", "bm", 0.38)[0])
 
-    def test_boundary_bm_word_in_response_is_sufficient(self):
-        self.assertIsNone(
-            check_language_register(
-                "Bagaimana mahkamah menentukan niat?",
-                "The court (mahkamah) determines intent by examining...",
-            )
+    def test_boundary_share_exactly_at_the_threshold_passes(self):
+        self.assertIsNone(self._check("...", "bm", BM_SHARE_THRESHOLDS["bm"])[0])
+        self.assertIsNotNone(
+            self._check("...", "bm", BM_SHARE_THRESHOLDS["bm"] - 0.01)[0]
         )
+
+    def test_unscoreable_response_fails_rather_than_passing_vacuously(self):
+        result, _ = self._check("", "bm", None)
+        self.assertIsNotNone(result)
 
 
 class CheckUuidLeakageTests(unittest.TestCase):
