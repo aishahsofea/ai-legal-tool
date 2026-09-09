@@ -20,7 +20,7 @@ from agent.nodes.router import router_node
 from agent.nodes.synthesiser import synthesiser_node
 from agent.query_lifecycle import run_query
 from agent.feature_flags import flag_enabled
-from evals.assertions import BM_FUNCTION_WORDS, run_assertions, section_recall
+from evals.assertions import BM_LANGUAGES, run_assertions, section_recall
 from evals.coverage import aggregate_scenarios, case_section_pairs, select_cases
 from evals.judge import JudgeContext, judge_case
 
@@ -165,7 +165,7 @@ def _assertion_applicable(
     name: str,
     *,
     citations: list[dict[str, Any]],
-    query: str,
+    expected_language: str | None,
     expected_act_number: str | None,
     expected_section: str | None,
     expected_policy: str,
@@ -195,7 +195,12 @@ def _assertion_applicable(
         # count as "applicable" and then vacuously pass.
         return section_recall_result is not None
     if name == "language_register":
-        return any(w in query.lower() for w in BM_FUNCTION_WORDS)
+        # The case's declared language, not a guess from the query text: a
+        # detector would have to run on every English case too, and a short
+        # English question ("Am I liable if I posted the comment online?")
+        # scores close enough to BM to flip the CI gate on cases that have
+        # always been out of scope for it.
+        return expected_language in BM_LANGUAGES
     if name == "uuid_leakage":
         return True
     if name == "ai_refusal":
@@ -259,6 +264,7 @@ def iter_suite(
                 ]
             min_sections_found = case.get("min_sections_found")
             expected_policy = case.get("expected_policy", "allow")
+            expected_language = case.get("language")
             expected_tool = case.get("expected_tool") if agentic_on else None
             expected_tool_sequence = (
                 case.get("expected_tool_sequence") if agentic_on else None
@@ -280,7 +286,7 @@ def iter_suite(
                 if _assertion_applicable(
                     name,
                     citations=citations,
-                    query=query,
+                    expected_language=expected_language,
                     expected_act_number=expected_act_number,
                     expected_section=expected_section,
                     expected_policy=expected_policy,
@@ -295,12 +301,12 @@ def iter_suite(
 
             l1_failures = run_assertions(
                 citations=citations,
-                query=query,
                 response=response,
                 expected_act_number=expected_act_number,
                 expected_section=expected_section,
                 expected_policy=expected_policy,
                 db_conn=db_conn,
+                expected_language=expected_language,
                 expected_sections=expected_sections,
                 min_sections_found=min_sections_found,
                 section_recall_result=recall,
@@ -415,12 +421,21 @@ def _resolve_cli_cases(
     category: str | None = None,
     scenario: str | None = None,
     case_id: str | None = None,
+    language: str | None = None,
     limit: int | None = None,
 ) -> list[dict[str, Any]]:
     cases = _load_dataset(dataset_path)
-    subset_filters = [smoke, category is not None, scenario is not None, case_id is not None]
+    subset_filters = [
+        smoke,
+        category is not None,
+        scenario is not None,
+        case_id is not None,
+        language is not None,
+    ]
     if sum(subset_filters) > 1:
-        raise ValueError("Choose only one of --smoke, --category, --scenario, or --case-id")
+        raise ValueError(
+            "Choose only one of --smoke, --category, --scenario, --case-id, or --language"
+        )
     if smoke:
         cases = select_cases(cases, "smoke")
     elif category is not None:
@@ -429,6 +444,13 @@ def _resolve_cli_cases(
         cases = select_cases(cases, {"scenario": scenario})
     elif case_id is not None:
         cases = select_cases(cases, {"case_id": case_id})
+    elif language is not None:
+        # `bm,mixed` is one subset, not two runs: the BM baseline every later
+        # bilingual change is compared against covers both halves together.
+        wanted = {value.strip() for value in language.split(",") if value.strip()}
+        cases = [case for case in cases if case.get("language", "en") in wanted]
+        if not cases:
+            raise ValueError("Eval subset matched no cases")
     return _maybe_limit(cases, limit)
 
 
@@ -441,6 +463,7 @@ def run_suite(
     category: str | None = None,
     scenario: str | None = None,
     case_id: str | None = None,
+    language: str | None = None,
     progress: bool = True,
     on_case_result: Callable[[dict[str, Any]], None] | None = None,
 ) -> dict[str, Any]:
@@ -450,6 +473,7 @@ def run_suite(
         category=category,
         scenario=scenario,
         case_id=case_id,
+        language=language,
         limit=limit,
     )
 
@@ -486,6 +510,10 @@ def main() -> int:
     parser.add_argument("--category")
     parser.add_argument("--scenario")
     parser.add_argument("--case-id")
+    parser.add_argument(
+        "--language",
+        help="Comma-separated case languages, e.g. bm,mixed (the BM/mixed baseline subset).",
+    )
     parser.add_argument("--jsonl", action="store_true", help="Emit one JSON object per completed case")
     parser.add_argument("--fail-under", type=float, default=0.8)
     args = parser.parse_args()
@@ -506,6 +534,7 @@ def main() -> int:
             category=args.category,
             scenario=args.scenario,
             case_id=args.case_id,
+            language=args.language,
             progress=not args.jsonl,
             on_case_result=(
                 lambda result: print(json.dumps(result, ensure_ascii=False), flush=True)

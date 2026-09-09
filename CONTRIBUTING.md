@@ -318,7 +318,33 @@ AGENTIC_RETRIEVAL=1 FOLLOW_REFERENCES_ENABLED=on \
   python3 -m evals.run_evals --dataset evals/reference_follow_dataset.json --mode full
 ```
 
-`run_evals` also supports `--smoke`, `--category`, `--scenario`, `--case-id`, and machine-readable `--jsonl` output. Human-readable output stays the default; results write to `evals/results.json` by default. Phase 3 cases add ordered `expected_tool_sequence`, `forbidden_tools`, `max_tool_calls`, and executed `expected_reference_direction` assertions — existing `expected_tool` semantics unchanged. The dedicated dataset fails fast unless both required flags are on. Its database must be a dedicated production-like staging/eval corpus, with an active exact Act 265 document/extraction matching an already-promoted graph — the tiny default eval seed has legacy-shaped chunks, intentionally insufficient for this provenance gate. Don't point the live gate at the application development database. A GitHub Actions workflow (`.github/workflows/evals.yml`, manually triggered via `workflow_dispatch`) runs the 10-case smoke set against the production model defaults and posts the judge pass rate and key L1 metrics as a PR comment; fails if the judge pass rate drops below 80%.
+`run_evals` also supports `--smoke`, `--category`, `--scenario`, `--case-id`, `--language` (comma-separated, e.g. `--language bm,mixed` for the bilingual subset), and machine-readable `--jsonl` output. Human-readable output stays the default; results write to `evals/results.json` by default. Phase 3 cases add ordered `expected_tool_sequence`, `forbidden_tools`, `max_tool_calls`, and executed `expected_reference_direction` assertions — existing `expected_tool` semantics unchanged. The dedicated dataset fails fast unless both required flags are on. Its database must be a dedicated production-like staging/eval corpus, with an active exact Act 265 document/extraction matching an already-promoted graph — the tiny default eval seed has legacy-shaped chunks, intentionally insufficient for this provenance gate. Don't point the live gate at the application development database. A GitHub Actions workflow (`.github/workflows/evals.yml`, manually triggered via `workflow_dispatch`) runs the 10-case smoke set against the production model defaults and posts the judge pass rate and key L1 metrics as a PR comment; fails if the judge pass rate drops below 80%.
+
+#### Scoring bilingual cases
+
+Every case declares a `language`: `en`, `bm` (Bahasa Malaysia), or `mixed` (code-switched). 40 of the cases are `bm` or `mixed`, split evenly. They cover:
+
+- exact section lookup in BM
+- topical BM with no section named
+- BM Act aliases and acronyms (Akta SPRM, APDP, Kanun Tatacara Jenayah)
+- questions whose correct answer is that the retrieved sections do not say
+
+`language` also decides where the `language_register` assertion applies: `bm` and `mixed` cases only. It does not guess from the query text, because short queries are unreliable in both directions. The classifier reads "Am I liable if I posted the comment online?" as almost half BM, and reads two of the code-switched cases as nearly all English. A case that omits `language` is treated as English and stops being checked at all, so `tests/test_language_id.py` fails if any case is missing one.
+
+`evals/language_id.py` splits the response on sentence boundaries, classifies each segment, and weights each by word count. The classifier is a local fastText model, `mesolitica/fasttext-language-detection-bahasa-en`, downloaded once and cached under `~/.cache/huggingface`. A `bm` case needs a BM share of at least 0.60. A `mixed` case needs 0.25, because the right answer to a code-switched query is bilingual: BM framing around English statute quotes. An English answer carrying one stray "seksyen" scores near 0.00 and fails, which the keyword check this replaced let through.
+
+Both thresholds come from measured answers: every `bm` answer scored 1.00 and `mixed` answers ran 0.42 to 1.00. English cases never load the model, so `.github/workflows/evals.yml` is unaffected. `BM_LANGID_MODEL_REPO` and `BM_LANGID_MODEL_FILE` override which classifier is loaded; both are eval-only and default to the model named above.
+
+#### Retrieval recall
+
+`section_recall` measures what the agent *cited*. To measure what retrieval *found*, independent of the answer:
+
+```bash
+DATABASE_URL="$EVALS_DATABASE_URL" python3 -m evals.retrieval_recall --language bm,mixed
+DATABASE_URL="$EVALS_DATABASE_URL" python3 -m evals.retrieval_recall --mode retriever --output evals/recall.json
+```
+
+It runs no LLM: one embedding call and one vector search per case. For every case that names a single `expected_section`, it reports recall@1/@3/@8 overall and per language. `--mode semantic` (the default) searches vectors only, which is what an embedding or reranking change moves. `--mode retriever` mirrors `retriever_node`: exact section lookup first, vector search as the fallback, so it measures what the agent actually sees.
 
 #### Scoring multi-part cases
 
@@ -397,7 +423,7 @@ ROUTER_MODEL=claude-haiku-4-5-20251001 python3 -m evals.run_evals --smoke
 
 Shell exports beat `.env` values, so you can override your local default in a single command. Set them in `.env` for a persistent local default.
 
-**When to trust Haiku eval results:** L1 assertions (regex, DB lookups, string matching) are LLM-free, fully reliable regardless of model. L2 judge signal gets lower-fidelity when both nodes use Haiku — useful for catching gross failures, but don't treat a passing Haiku eval as equivalent to a passing GPT-4.1 eval when tuning prompts. CI uses the `gpt-4.1` defaults (no `ROUTER_MODEL`/`SYNTHESISER_MODEL` set); `EVALS_JUDGE_MODEL` is set to `claude-haiku-4-5-20251001` for the L2 judge.
+**When to trust Haiku eval results:** L1 assertions (regex, DB lookups, string matching, and the local fastText language scorer) make no LLM call, so they are fully reliable regardless of which model the nodes use. L2 judge signal gets lower-fidelity when both nodes use Haiku — useful for catching gross failures, but don't treat a passing Haiku eval as equivalent to a passing GPT-4.1 eval when tuning prompts. CI uses the `gpt-4.1` defaults (no `ROUTER_MODEL`/`SYNTHESISER_MODEL` set); `EVALS_JUDGE_MODEL` is set to `claude-haiku-4-5-20251001` for the L2 judge.
 
 ---
 
