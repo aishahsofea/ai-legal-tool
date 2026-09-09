@@ -5,6 +5,8 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 export type EvalSubset =
   | "smoke"
   | "all"
+  // Comma-separated, e.g. "bm,mixed": the bilingual baseline is one subset.
+  | { language: string }
   | { category: string }
   | { scenario: string }
   | { case_id: string };
@@ -29,6 +31,7 @@ export interface CoverageResponse {
   by_policy: Record<string, number>;
   by_category: Record<string, number>;
   by_scenario: Record<string, number>;
+  by_language: Record<string, number>;
   gap_flags: GapFlag[];
   corpus_staleness:
     | { checked: true; missing_sections: MissingSection[] }

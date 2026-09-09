@@ -62,6 +62,7 @@ def coverage_summary(cases: list[dict[str, Any]]) -> dict[str, Any]:
     by_policy = Counter(str(case.get("expected_policy", "allow")) for case in cases)
     by_category = Counter(str(case.get("category", "unknown")) for case in cases)
     by_scenario = Counter(str(case.get("scenario", "unknown")) for case in cases)
+    by_language = Counter(str(case.get("language", "en")) for case in cases)
     smoke_by_scenario = Counter(
         str(case.get("scenario", "unknown")) for case in cases if case.get("smoke")
     )
@@ -101,6 +102,7 @@ def coverage_summary(cases: list[dict[str, Any]]) -> dict[str, Any]:
         "by_policy": dict(by_policy),
         "by_category": dict(by_category),
         "by_scenario": dict(by_scenario),
+        "by_language": dict(by_language),
         "gap_flags": flags,
     }
 
@@ -116,10 +118,19 @@ def select_cases(
         selected = [case for case in cases if case.get("smoke")]
     elif isinstance(subset, dict) and len(subset) == 1:
         key, value = next(iter(subset.items()))
-        field = {"category": "category", "scenario": "scenario", "case_id": "id"}.get(key)
-        if field is None or not isinstance(value, str) or not value:
-            raise ValueError("Invalid eval subset")
-        selected = [case for case in cases if case.get(field) == value]
+        if key == "language":
+            # Comma-separated on purpose: `bm,mixed` is one subset, not two runs.
+            # The bilingual baseline every later change is compared against
+            # covers both halves together.
+            wanted = {part.strip() for part in str(value).split(",") if part.strip()}
+            if not isinstance(value, str) or not wanted:
+                raise ValueError("Invalid eval subset")
+            selected = [case for case in cases if case.get("language", "en") in wanted]
+        else:
+            field = {"category": "category", "scenario": "scenario", "case_id": "id"}.get(key)
+            if field is None or not isinstance(value, str) or not value:
+                raise ValueError("Invalid eval subset")
+            selected = [case for case in cases if case.get(field) == value]
     else:
         raise ValueError("Invalid eval subset")
 

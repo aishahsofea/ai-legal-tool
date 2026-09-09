@@ -318,7 +318,7 @@ AGENTIC_RETRIEVAL=1 FOLLOW_REFERENCES_ENABLED=on \
   python3 -m evals.run_evals --dataset evals/reference_follow_dataset.json --mode full
 ```
 
-`run_evals` also supports `--smoke`, `--category`, `--scenario`, `--case-id`, `--language` (comma-separated, e.g. `--language bm,mixed` for the bilingual subset), and machine-readable `--jsonl` output. Human-readable output stays the default; results write to `evals/results.json` by default. Phase 3 cases add ordered `expected_tool_sequence`, `forbidden_tools`, `max_tool_calls`, and executed `expected_reference_direction` assertions — existing `expected_tool` semantics unchanged. The dedicated dataset fails fast unless both required flags are on. Its database must be a dedicated production-like staging/eval corpus, with an active exact Act 265 document/extraction matching an already-promoted graph — the tiny default eval seed has legacy-shaped chunks, intentionally insufficient for this provenance gate. Don't point the live gate at the application development database. A GitHub Actions workflow (`.github/workflows/evals.yml`, manually triggered via `workflow_dispatch`) runs the 10-case smoke set against the production model defaults and posts the judge pass rate and key L1 metrics as a PR comment; fails if the judge pass rate drops below 80%.
+`run_evals` also supports `--smoke`, `--category`, `--scenario`, `--case-id`, `--language` (comma-separated, e.g. `--language bm,mixed` for the bilingual subset, also offered in the `/evals` picker), and machine-readable `--jsonl` output. Human-readable output stays the default; results write to `evals/results.json` by default. Phase 3 cases add ordered `expected_tool_sequence`, `forbidden_tools`, `max_tool_calls`, and executed `expected_reference_direction` assertions — existing `expected_tool` semantics unchanged. The dedicated dataset fails fast unless both required flags are on. Its database must be a dedicated production-like staging/eval corpus, with an active exact Act 265 document/extraction matching an already-promoted graph — the tiny default eval seed has legacy-shaped chunks, intentionally insufficient for this provenance gate. Don't point the live gate at the application development database. A GitHub Actions workflow (`.github/workflows/evals.yml`, manually triggered via `workflow_dispatch`) runs the 10-case smoke set against the production model defaults and posts the judge pass rate and key L1 metrics as a PR comment; fails if the judge pass rate drops below 80%.
 
 #### Scoring bilingual cases
 
@@ -335,6 +335,8 @@ Every case declares a `language`: `en`, `bm` (Bahasa Malaysia), or `mixed` (code
 
 Both thresholds come from measured answers: every `bm` answer scored 1.00 and `mixed` answers ran 0.42 to 1.00. English cases never load the model, so `.github/workflows/evals.yml` is unaffected. `BM_LANGID_MODEL_REPO` and `BM_LANGID_MODEL_FILE` override which classifier is loaded; both are eval-only and default to the model named above.
 
+A run whose subset contains any `bm` or `mixed` case loads the classifier before the first agent call, so a missing model costs nothing instead of stopping the run part-way. A cached copy is read from disk, so only the first run needs the network. The 331MB download lands in `~/.cache/huggingface` of whoever runs the suite — including the machine serving `/evals`, because the dashboard runs the same command in a subprocess.
+
 #### Retrieval recall
 
 `section_recall` measures what the agent *cited*. To measure what retrieval *found*, independent of the answer:
@@ -344,7 +346,7 @@ DATABASE_URL="$EVALS_DATABASE_URL" python3 -m evals.retrieval_recall --language 
 DATABASE_URL="$EVALS_DATABASE_URL" python3 -m evals.retrieval_recall --mode retriever --output evals/recall.json
 ```
 
-It runs no LLM: one embedding call and one vector search per case. For every case that names a single `expected_section`, it reports recall@1/@3/@8 overall and per language. `--mode semantic` (the default) searches vectors only, which is what an embedding or reranking change moves. `--mode retriever` mirrors `retriever_node`: exact section lookup first, vector search as the fallback, so it measures what the agent actually sees.
+It runs no LLM: one embedding call and one vector search per case. For every case that names a single `expected_section`, it reports recall@1/@3/@8 overall and per language. `--mode semantic` (the default) searches vectors only, which is what an embedding or reranking change moves. `--mode retriever` mirrors `retriever_node`: exact section lookup first, vector search as the fallback, so it measures what the agent actually sees. It assumes the router sends the query down the `statute_lookup` path, because asking the real router costs the LLM call this tool exists to avoid. A query the router routes elsewhere scores what `semantic` scores, so treat the `retriever` column as an upper bound.
 
 #### Scoring multi-part cases
 

@@ -112,6 +112,19 @@ def test_run_streams_fake_jsonl_and_aggregates_a_summary(tmp_path, monkeypatch):
     }
 
 
+def test_runner_command_passes_each_dashboard_subset_through_as_its_cli_flag():
+    assert evals_api.runner_command("smoke")[-1] == "--smoke"
+    assert "--smoke" not in evals_api.runner_command("all")
+
+    for subset, flag, value in (
+        ({"category": "citation"}, "--category", "citation"),
+        ({"scenario": "mixed_language"}, "--scenario", "mixed_language"),
+        ({"case_id": "evidence-90a-1"}, "--case-id", "evidence-90a-1"),
+        ({"language": "bm,mixed"}, "--language", "bm,mixed"),
+    ):
+        assert evals_api.runner_command(subset)[-2:] == [flag, value]
+
+
 def test_results_returns_unavailable_then_the_last_report_verbatim(tmp_path, monkeypatch):
     results_path = tmp_path / "results.json"
     client = _client(monkeypatch, _dataset(tmp_path), results_path)
