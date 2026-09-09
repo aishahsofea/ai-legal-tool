@@ -15,7 +15,11 @@ import {
   type GapFlag,
 } from "@/lib/evalsTransport";
 
-type PickerMode = "smoke" | "all" | "category" | "scenario" | "case_id";
+type PickerMode = "smoke" | "all" | "language" | "category" | "scenario" | "case_id";
+
+// The bilingual baseline runs BM and code-switched cases together, so it is one
+// option rather than two separate runs.
+const BILINGUAL_SUBSET = "bm,mixed";
 type ResultSource = "cached" | "live" | "empty";
 
 const palette = {
@@ -293,6 +297,11 @@ export default function EvalDashboard() {
     if (mode === "all") return coverage.total_cases;
     if (mode === "category") return coverage.by_category[value] ?? 0;
     if (mode === "scenario") return coverage.by_scenario[value] ?? 0;
+    if (mode === "language") {
+      return value
+        .split(",")
+        .reduce((total, language) => total + (coverage.by_language[language.trim()] ?? 0), 0);
+    }
     return value ? 1 : 0;
   }, [coverage, mode, value]);
 
@@ -418,6 +427,7 @@ export default function EvalDashboard() {
               >
                 <option value="smoke">Smoke subset</option>
                 <option value="all">All cases</option>
+                <option value="language">By language</option>
                 <option value="category">By category</option>
                 <option value="scenario">By scenario</option>
                 <option value="case_id">Single case ID</option>
@@ -425,6 +435,13 @@ export default function EvalDashboard() {
             </label>
 
             <div>
+              {mode === "language" && (
+                <select value={value} onChange={(event) => setValue(event.target.value)} className="w-full rounded-xl border px-3 py-2.5 text-sm" style={{ borderColor: palette.line, background: palette.panel }}>
+                  <option value="">Choose language…</option>
+                  <option value={BILINGUAL_SUBSET}>bm + mixed (bilingual baseline)</option>
+                  {Object.keys(coverage.by_language).map((language) => <option key={language}>{language}</option>)}
+                </select>
+              )}
               {mode === "category" && (
                 <select value={value} onChange={(event) => setValue(event.target.value)} className="w-full rounded-xl border px-3 py-2.5 text-sm" style={{ borderColor: palette.line, background: palette.panel }}>
                   <option value="">Choose category…</option>

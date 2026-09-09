@@ -19,8 +19,9 @@ def _case(
     act: str | None = "56",
     section: str | None = "90A",
     citation_applicable: bool = True,
+    language: str | None = None,
 ) -> dict:
-    return {
+    case = {
         "id": case_id,
         "category": category,
         "scenario": scenario,
@@ -31,6 +32,9 @@ def _case(
         "expected_policy": policy,
         "smoke": smoke,
     }
+    if language is not None:
+        case["language"] = language
+    return case
 
 
 def test_coverage_summary_counts_cases_and_flags_only_values_below_thresholds():
@@ -51,6 +55,8 @@ def test_coverage_summary_counts_cases_and_flags_only_values_below_thresholds():
     assert summary["smoke_cases"] == 2
     assert summary["by_policy"] == {"allow": 6, "block": 4}
     assert summary["by_category"] == {"citation": 7, "policy": 3}
+    # No case declares one, so the dashboard sees them all as English.
+    assert summary["by_language"] == {"en": 10}
     assert summary["by_scenario"] == {
         "exact_match": 5,
         "mixed_language": 2,
@@ -132,10 +138,25 @@ def test_select_cases_resolves_each_supported_dashboard_subset():
     assert [case["id"] for case in select_cases(cases, {"case_id": "policy-case"})] == ["policy-case"]
 
 
+def test_language_subset_takes_several_languages_and_defaults_missing_labels_to_english():
+    cases = [
+        _case("bm-case", language="bm"),
+        _case("mixed-case", language="mixed"),
+        _case("en-case", language="en"),
+        _case("unlabelled-case"),
+    ]
+
+    bilingual = select_cases(cases, {"language": "bm,mixed"})
+    english = select_cases(cases, {"language": "en"})
+
+    assert [case["id"] for case in bilingual] == ["bm-case", "mixed-case"]
+    assert [case["id"] for case in english] == ["en-case", "unlabelled-case"]
+
+
 def test_select_cases_rejects_unknown_or_empty_subsets():
     cases = [_case("only")]
 
-    for subset in ({"category": "missing"}, {"unknown": "value"}, "invalid"):
+    for subset in ({"category": "missing"}, {"unknown": "value"}, "invalid", {"language": " , "}):
         try:
             select_cases(cases, subset)
         except ValueError:

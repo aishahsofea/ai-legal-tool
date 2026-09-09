@@ -75,7 +75,12 @@ def runner_command(subset: str | dict[str, str]) -> list[str]:
         command.append("--smoke")
     elif isinstance(subset, dict):
         key, value = next(iter(subset.items()))
-        flag = {"category": "--category", "scenario": "--scenario", "case_id": "--case-id"}[key]
+        flag = {
+            "category": "--category",
+            "scenario": "--scenario",
+            "case_id": "--case-id",
+            "language": "--language",
+        }[key]
         command.extend([flag, value])
     return command
 

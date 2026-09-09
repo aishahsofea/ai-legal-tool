@@ -51,6 +51,12 @@ def _retrieve(query: str, mode: str) -> list[dict[str, Any]]:
     # `retriever` mirrors retriever_node on a statute_lookup query: try the exact
     # section lookup first, fall back to vector search. It measures what the
     # agent actually sees; `semantic` measures the embedding on its own.
+    #
+    # The gate is assumed, not run: retriever_node only tries the exact lookup
+    # when the router classified the query as statute_lookup, and asking the
+    # router costs the LLM call this module exists to avoid. So `retriever` is an
+    # upper bound — a query the router sends down another path scores whatever
+    # `semantic` scores.
     section = extract_section_number(query)
     act_number, act_title = extract_act_hint(query)
     rows = exact_section_lookup(section, act_number, act_title) if section else []
@@ -68,15 +74,23 @@ def _summarize(ranks: list[int | None]) -> dict[str, Any]:
 
 
 def measure(cases: list[dict[str, Any]], mode: str, *, progress: bool = True) -> dict[str, Any]:
-    per_case: list[dict[str, Any]] = []
-    for index, case in enumerate(cases, 1):
-        expected = normalized_citation_pair(
-            case.get("expected_act_number"), case.get("expected_section")
+    # Filtered before the loop, not skipped inside it, so the progress counter
+    # counts the cases that are actually measured.
+    measurable = [
+        (case, expected)
+        for case in cases
+        if (
+            expected := normalized_citation_pair(
+                case.get("expected_act_number"), case.get("expected_section")
+            )
         )
-        if expected is None:
-            continue
+        is not None
+    ]
+
+    per_case: list[dict[str, Any]] = []
+    for index, (case, expected) in enumerate(measurable, 1):
         if progress:
-            print(f"[{index}/{len(cases)}] {case['id']} ...", flush=True)
+            print(f"[{index}/{len(measurable)}] {case['id']} ...", flush=True)
         rows = _retrieve(case["query"], mode)
         rank = _rank_of_expected(rows, expected)
         per_case.append({
@@ -132,7 +146,10 @@ def main() -> int:
         "--mode",
         choices=("semantic", "retriever"),
         default="semantic",
-        help="`semantic` searches vectors only; `retriever` tries the exact section lookup first.",
+        help=(
+            "`semantic` searches vectors only; `retriever` tries the exact section lookup "
+            "first, as retriever_node does for a statute_lookup query."
+        ),
     )
     args = parser.parse_args()
 

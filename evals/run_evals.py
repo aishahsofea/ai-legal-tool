@@ -23,6 +23,7 @@ from agent.feature_flags import flag_enabled
 from evals.assertions import BM_LANGUAGES, run_assertions, section_recall
 from evals.coverage import aggregate_scenarios, case_section_pairs, select_cases
 from evals.judge import JudgeContext, judge_case
+from evals.language_id import ensure_available as ensure_language_model
 
 load_dotenv()
 
@@ -235,6 +236,12 @@ def iter_suite(
             "FOLLOW_REFERENCES_ENABLED=on, and --mode full"
         )
 
+    # Load the language classifier up front when the subset needs it. Scoring
+    # raises if the model is missing, and raising on case 12 of 40 throws away
+    # every LLM call already paid for.
+    if any(case.get("language") in BM_LANGUAGES for case in cases):
+        ensure_language_model()
+
     db_conn = psycopg2.connect(os.environ["DATABASE_URL"])
     try:
         for idx, case in enumerate(cases, 1):
@@ -445,12 +452,7 @@ def _resolve_cli_cases(
     elif case_id is not None:
         cases = select_cases(cases, {"case_id": case_id})
     elif language is not None:
-        # `bm,mixed` is one subset, not two runs: the BM baseline every later
-        # bilingual change is compared against covers both halves together.
-        wanted = {value.strip() for value in language.split(",") if value.strip()}
-        cases = [case for case in cases if case.get("language", "en") in wanted]
-        if not cases:
-            raise ValueError("Eval subset matched no cases")
+        cases = select_cases(cases, {"language": language})
     return _maybe_limit(cases, limit)
 
 
@@ -500,6 +502,24 @@ def run_suite(
     return _build_report(mode, results)
 
 
+def _subset_label(args: argparse.Namespace) -> str:
+    """What the banner calls the subset, so a filtered run does not announce
+    itself as `all`."""
+    if args.smoke:
+        subset = "smoke cases"
+    elif args.category:
+        subset = f"category {args.category}"
+    elif args.scenario:
+        subset = f"scenario {args.scenario}"
+    elif args.case_id:
+        subset = f"case {args.case_id}"
+    elif args.language:
+        subset = f"language {args.language}"
+    else:
+        subset = "all cases"
+    return f"the first {args.limit} of {subset}" if args.limit else subset
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run evals against the agent graph.")
     parser.add_argument("--dataset", type=Path, default=DEFAULT_DATASET_PATH)
@@ -519,9 +539,9 @@ def main() -> int:
     args = parser.parse_args()
 
     if not args.jsonl:
-        case_label = "smoke" if args.smoke else (str(args.limit) if args.limit else "all")
+        case_label = _subset_label(args)
         print(
-            f"Running evals in {args.mode} mode on {case_label} cases...",
+            f"Running evals in {args.mode} mode on {case_label}...",
             flush=True,
         )
         print("This can take a while: each case runs the live agent and then Claude-as-judge.", flush=True)

@@ -19,14 +19,15 @@ English. A declared label also keeps an English-only run model-free.
 
 The classifier is mesolitica/fasttext-language-detection-bahasa-en, downloaded
 from the Hugging Face Hub on first use and cached under ~/.cache/huggingface.
-It is only loaded when a BM or mixed case is actually scored, so an
+A cached copy is loaded straight from disk, so a second run needs no network at
+all. It is only loaded when a BM or mixed case is actually scored, so an
 English-only run (the CI smoke gate) never touches it.
 """
 from __future__ import annotations
 
 import os
 import re
-from functools import lru_cache
+from typing import Any
 
 # Share of a response that must be BM, by the language the case declares.
 # Calibrated in issue #38 against the synthesiser's answers to all 40 BM/mixed
@@ -55,25 +56,96 @@ class LanguageModelUnavailable(RuntimeError):
     """
 
 
-@lru_cache(maxsize=1)
-def _model():
+# Two sentences whose language is not in doubt. Predicting both at load time is
+# how a wrong `BM_LANGID_MODEL_REPO` is caught: a classifier with different label
+# names would otherwise score every segment 0/0, and each case would fail as
+# "no scoreable text" — which reads like an agent regression, not a config error.
+_LABEL_PROBES = (
+    "Seseorang pekerja tidak boleh dikehendaki bekerja lebih daripada lapan jam sehari.",
+    "An employee shall not be required to work more than eight hours in one day.",
+)
+
+_model_cache: Any = None
+_load_error: LanguageModelUnavailable | None = None
+
+
+def _download_path(repo: str, filename: str) -> str:
+    try:
+        from huggingface_hub import hf_hub_download, try_to_load_from_cache
+    except ImportError as exc:
+        raise LanguageModelUnavailable(
+            "language_register scoring needs `fasttext-predict` and `huggingface-hub` "
+            "(both in requirements.txt)."
+        ) from exc
+
+    # hf_hub_download revalidates the etag over HTTP even on a cache hit, so a
+    # cached copy is resolved from disk first: an eval run with no network still
+    # scores, and a run with network makes no request at all.
+    cached = try_to_load_from_cache(repo, filename)
+    if isinstance(cached, str):
+        return cached
+    return hf_hub_download(repo_id=repo, filename=filename)
+
+
+def _check_labels(model, repo: str, filename: str) -> None:
+    seen: set[str] = set()
+    for probe in _LABEL_PROBES:
+        labels, _ = model.predict(probe, k=3)
+        seen.update(label.removeprefix("__label__") for label in labels)
+    missing = {"bahasa", "english"} - seen
+    if missing:
+        raise LanguageModelUnavailable(
+            f"The classifier {repo}/{filename} never predicts {sorted(missing)}; "
+            f"it labels text {sorted(seen)}. `language_register` scores the "
+            "`bahasa` and `english` labels, so this model cannot back it."
+        )
+
+
+def _load_model():
     repo = os.getenv("BM_LANGID_MODEL_REPO", DEFAULT_MODEL_REPO)
     filename = os.getenv("BM_LANGID_MODEL_FILE", DEFAULT_MODEL_FILE)
     try:
         import fasttext
-        from huggingface_hub import hf_hub_download
     except ImportError as exc:
         raise LanguageModelUnavailable(
             "language_register scoring needs `fasttext-predict` and `huggingface-hub` "
             "(both in requirements.txt)."
         ) from exc
     try:
-        path = hf_hub_download(repo_id=repo, filename=filename)
-        return fasttext.load_model(path)
+        model = fasttext.load_model(_download_path(repo, filename))
+    except LanguageModelUnavailable:
+        raise
     except Exception as exc:
         raise LanguageModelUnavailable(
             f"Could not load the language classifier {repo}/{filename}: {exc}"
         ) from exc
+    _check_labels(model, repo, filename)
+    return model
+
+
+def _model():
+    global _model_cache, _load_error
+    if _model_cache is not None:
+        return _model_cache
+    # A failure is remembered, so a missing model is not retried once per segment
+    # of every case. `ensure_available()` is where a run is meant to hit it.
+    if _load_error is not None:
+        raise _load_error
+    try:
+        _model_cache = _load_model()
+    except LanguageModelUnavailable as exc:
+        _load_error = exc
+        raise
+    return _model_cache
+
+
+def ensure_available() -> None:
+    """Load the classifier now, so a run that needs it fails before the first
+    LLM call rather than part-way through a paid eval.
+
+    Raises LanguageModelUnavailable.
+    """
+    _model()
 
 
 def _segments(text: str) -> list[str]:
