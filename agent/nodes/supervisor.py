@@ -9,6 +9,7 @@ Returns violations (list of strings). Empty list = pass.
 """
 import re
 
+from agent.query_policy import _DISCLAIMER_BM, _DISCLAIMER_EN
 from agent.state import AgentState
 
 _ADVICE_RE = re.compile(
@@ -17,7 +18,9 @@ _ADVICE_RE = re.compile(
     re.IGNORECASE,
 )
 
-_DISCLAIMER = "does not constitute legal advice"
+# Same constants the synthesiser appends (agent/query_policy.py), so Rule 3
+# recognizes whichever language the synthesiser actually used.
+_DISCLAIMERS = (_DISCLAIMER_EN.lower(), _DISCLAIMER_BM.lower())
 
 _ESCALATION_RE = re.compile(
     r'\bmy client\b|\bam i liable\b|\bi have been charged\b',
@@ -40,8 +43,8 @@ def supervisor_node(state: AgentState) -> dict:
     if _ADVICE_RE.search(draft):
         violations.append("Contains specific advice phrases (you should / you must / I recommend).")
 
-    # Rule 3 — disclaimer present
-    if _DISCLAIMER not in draft.lower():
+    # Rule 3 — disclaimer present (either language the synthesiser may have used)
+    if not any(d in draft.lower() for d in _DISCLAIMERS):
         violations.append("Missing disclaimer that this is not legal advice.")
 
     # Rule 4 — escalation trigger in the response itself (shouldn't happen, but guard it)
