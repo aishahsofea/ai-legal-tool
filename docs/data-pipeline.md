@@ -49,20 +49,22 @@ Fetches the full list of Acts across all categories (updated, revised, repealed,
 
 ### Step 2 — Scrape Act detail pages → `data/acts_metadata/`
 
-For each Act, fetches the detail page (amendment timeline + PDF URLs) and subsidiary legislation. One JSON file per Act.
+For each Act, fetches the detail page (amendment timeline + PDF URLs) in both `lang=BI` (primary) and `lang=BM` (secondary), plus subsidiary legislation. One JSON file per Act, with `_bm`-suffixed fields holding the second language.
 
-- ~1,756 HTTP requests at 1.5s delay — ~45 minutes
-- Resumable: skips acts that already have an output file
+- ~1,756 HTTP requests at 1.5s delay for the primary language — ~45 minutes. Each Act with a separate BM version adds one more request, up to ~90 minutes total on a full rescrape
+- Resumable: skips acts whose file already has both languages recorded. An Act scraped before the BM fetch existed gets its BM fields backfilled on the next run, without touching its existing primary fields. So an already-registered document's language never moves
+- If a BM fetch fails for any reason other than a real 404 (timeout, connection error), it's left for a later run rather than recorded as "no BM version"
 - By default scrapes `updated` and `revised` acts only (the ones with stable numeric IDs and full detail pages)
 
 ### Step 3 — Download and register immutable reprints
 
-Downloads the canonical reprint for each Act into content-addressed local storage and updates `data/pdfs/manifest.json` atomically.
+Downloads the canonical reprint(s) for each Act into content-addressed local storage and updates `data/pdfs/manifest.json` atomically. An Act with both a BI and a BM reprint registers two separate documents.
 
-- ~700 downloads at 1.5s delay — ~18 minutes
-- PDF selection: `latest_reprint_pdf`, or skip. An amendment never substitutes for a base Act.
+- ~700 downloads at 1.5s delay for the primary language — ~18 minutes. One more download per Act with a BM reprint adds to that total
+- PDF selection: `latest_reprint_pdf` (primary) and `latest_reprint_pdf_bm` (secondary), or skip. An amendment never substitutes for a base Act, in either language.
 - Needs an openable PDF response. Then records full SHA-256, byte size, page count, source URL/timeline, language, content-derived document/object identities.
 - Every run re-observes the authoritative bytes, so same-URL replacements get caught. Unchanged hash → records a source observation, no duplicate document. Changed hash → stages a new identity, active mapping doesn't move.
+- New BM documents land as unactivated shadow rows — activating them for retrieval is separate, manual work.
 - Report: `data/pdfs/download_report.json`
 
 ### Step 4 — Shadow extraction and coordinate sidecars
@@ -121,6 +123,10 @@ Embeds each shadow bundle with the corpus embedding model, then atomically inges
     { "date": "2017-11-24", "log_type": "REPRINT",  "pdf_url": "https://lom.agc.gov.my/..." }
   ],
   "latest_reprint_pdf": "https://lom.agc.gov.my/...",
+  "timeline_bm": [
+    { "date": "2017-11-24", "log_type": "REPRINT", "pdf_url": "https://lom.agc.gov.my/..." }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/...",
   "subsidiary_legislation": [...]
 }
 ```

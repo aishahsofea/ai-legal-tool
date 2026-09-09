@@ -1,9 +1,14 @@
 """
 Step 3 — Download and immutably register the canonical PDF for each Act.
 
-For each act in data/acts_metadata/, tries in order:
-  1. latest_reprint_pdf  — consolidated current text (preferred)
-  2. skip — amendments are never a base-Act fallback
+For each act in data/acts_metadata/, downloads and registers a document for
+every consolidated reprint it has:
+  1. latest_reprint_pdf     — primary version (preferred; language derived
+                               from the metadata's own URL/detail markers)
+  2. latest_reprint_pdf_bm  — secondary version, when step 2 found one
+  Amendments never represent base Acts, in either language.
+
+An Act with only one reprint registers one document, exactly as before.
 
 Output: content-addressed data/pdfs/objects/sha256/... assets + manifest v2
 Report: data/pdfs/download_report.json
@@ -22,7 +27,7 @@ import requests
 
 from corpus.registration import register_pdf
 from corpus.registry import CorpusRegistry
-from corpus.manifest import source_language
+from corpus.manifest import source_language, _timeline_for
 
 from scraper.config import (
     METADATA_DIR,
@@ -78,12 +83,21 @@ def _download_pdf(session: requests.Session, url: str, dest: Path, timeout: int 
     return False
 
 
-def _pick_url(meta: dict) -> tuple[str, str]:
-    """Return only a consolidated reprint; amendments never represent base Acts."""
-    reprint = meta.get("latest_reprint_pdf", "")
-    if reprint:
-        return reprint, "reprint"
-    return "", ""
+def _pick_urls(meta: dict) -> list[tuple[str, str, str | None]]:
+    """Return (url, source_label, explicit_language) for every consolidated
+    reprint this Act has. Amendments never represent base Acts, in either
+    language. The secondary (bm) language is explicit rather than inferred,
+    since its URL alone may carry no lang=bm marker for source_language() to
+    key off — step 2 already knows it came from the lang=BM detail page.
+    """
+    picks: list[tuple[str, str, str | None]] = []
+    primary = meta.get("latest_reprint_pdf", "")
+    if primary:
+        picks.append((primary, "reprint", None))
+    secondary = meta.get("latest_reprint_pdf_bm", "")
+    if secondary and secondary != primary:
+        picks.append((secondary, "reprint_bm", "bm"))
+    return picks
 
 
 def run_step3() -> None:
@@ -128,45 +142,51 @@ def run_step3() -> None:
     try:
         for i, meta in enumerate(acts, 1):
             act_number = meta["act_number"]
-            url, source = _pick_url(meta)
-            if not url:
+            picks = _pick_urls(meta)
+            if not picks:
                 logger.info("[%d/%d] Act %s — no reprint PDF; amendment fallback prohibited", i, len(acts), act_number)
                 skipped_no_url += 1
                 continue
 
-            language = source_language(meta, url)
-            title = titles.get(act_number, {}).get(f"title_{language}", "")
-            logger.info("[%d/%d] Act %s (%s) — downloading %s", i, len(acts), act_number, title[:50], source)
+            for url, source, explicit_language in picks:
+                language = explicit_language or source_language(meta, url)
+                title = titles.get(act_number, {}).get(f"title_{language}", "")
+                timeline_key = "timeline_bm" if explicit_language else "timeline"
+                timeline_date, timeline_type = _timeline_for(meta, url, key=timeline_key)
+                logger.info("[%d/%d] Act %s (%s) — downloading %s", i, len(acts), act_number, title[:50], source)
 
-            staging = out_dir / "staging"
-            staging.mkdir(parents=True, exist_ok=True)
-            with tempfile.NamedTemporaryFile(dir=staging, suffix=".pdf", delete=False) as temp:
-                temp_path = Path(temp.name)
-            try:
-                ok = _download_pdf(session, url, temp_path)
-                if ok:
-                    document = register_pdf(
-                        temp_path, metadata=meta, act_title=title,
-                        manifest_path=manifest_path, asset_root=out_dir,
-                    )
-                    if document.document_id in known_documents:
-                        verified_unchanged += 1
+                staging = out_dir / "staging"
+                staging.mkdir(parents=True, exist_ok=True)
+                with tempfile.NamedTemporaryFile(dir=staging, suffix=".pdf", delete=False) as temp:
+                    temp_path = Path(temp.name)
+                try:
+                    ok = _download_pdf(session, url, temp_path)
+                    if ok:
+                        document = register_pdf(
+                            temp_path, metadata=meta, act_title=title,
+                            manifest_path=manifest_path, asset_root=out_dir,
+                            source_url=url, language=language,
+                            timeline_date=timeline_date, timeline_type=timeline_type,
+                            detail_url=meta.get("detail_url_bm", "") if explicit_language else None,
+                        )
+                        if document.document_id in known_documents:
+                            verified_unchanged += 1
+                        else:
+                            downloaded += 1
+                            known_documents.add(document.document_id)
+                        logger.info("[%d/%d] Act %s — registered %s", i, len(acts), act_number, document.document_id)
                     else:
-                        downloaded += 1
-                        known_documents.add(document.document_id)
-                    logger.info("[%d/%d] Act %s — registered %s", i, len(acts), act_number, document.document_id)
-                else:
+                        failed += 1
+                        failures.append({"act_number": act_number, "url": url, "source": source})
+                        logger.warning("Act %s — download failed", act_number)
+                except Exception as exc:
                     failed += 1
-                    failures.append({"act_number": act_number, "url": url, "source": source})
-                    logger.warning("Act %s — download failed", act_number)
-            except Exception as exc:
-                failed += 1
-                failures.append({"act_number": act_number, "url": url, "source": source, "reason": str(exc)})
-                logger.warning("Act %s — registration failed: %s", act_number, exc)
-            finally:
-                temp_path.unlink(missing_ok=True)
+                    failures.append({"act_number": act_number, "url": url, "source": source, "reason": str(exc)})
+                    logger.warning("Act %s — registration failed: %s", act_number, exc)
+                finally:
+                    temp_path.unlink(missing_ok=True)
 
-            time.sleep(REQUEST_DELAY)
+                time.sleep(REQUEST_DELAY)
 
     except KeyboardInterrupt:
         logger.info("Interrupted. downloaded=%d verified_unchanged=%d skipped_no_url=%d failed=%d",

@@ -22,7 +22,7 @@ The locator reads the hash-verified sidecar for v2 extractions. Live PyMuPDF wor
 
 ## Rollout
 
-The checked-in audit: 624 inputs, 596 canonical reprints registered, 576 exact shadow extractions ready, five repaired pilots active, 48 blocked (28 amendment-only, 15 no-chunk, 5 scanned). The six BM-only documents stay `bm` sources.
+The checked-in audit: 624 inputs, 596 canonical reprints registered, 576 exact shadow extractions ready, five repaired pilots active, 48 blocked (28 amendment-only, 15 no-chunk, 5 scanned). The six BM-only documents stay `bm` sources. That audit predates full bilingual ingestion (issue #39) — Steps 2 and 3 now also fetch `lang=BM`; see [CONTRIBUTING.md](../CONTRIBUTING.md#4-build-the-knowledge-base-one-time-1-hour) for what that changes. New BM documents shadow-ingest through the same Steps 3-5 and stay unactivated — nothing changes for retrieval until an Act/language mapping is explicitly activated. Rerun `corpus generate-manifest` after a full rescrape to refresh the numbers above.
 
 One idempotent command for the normal local/operator workflow:
 

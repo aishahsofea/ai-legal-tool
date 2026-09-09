@@ -63,6 +63,7 @@ def register_pdf(
     timeline_date: str | None = None,
     timeline_type: str | None = None,
     language: str | None = None,
+    detail_url: str | None = None,
 ) -> CorpusDocument:
     """Copy exact bytes into content-addressed local storage and stage metadata.
 
@@ -113,7 +114,7 @@ def register_pdf(
         metadata_scraped_at=str(metadata.get("scraped_at", "")),
         lifecycle_status="registered",
         document_kind="reprint",
-        detail_url=str(metadata.get("detail_url", "")),
+        detail_url=str(detail_url if detail_url is not None else metadata.get("detail_url", "")),
         local_path=local_path,
     )
     try:
