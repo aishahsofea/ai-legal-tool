@@ -272,8 +272,9 @@ def run_step2(detail_types: list[str] | None = None) -> None:
                 result = backfill_bm_variant(session, act_number, existing)
                 out_file.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
                 backfilled += 1
-                if result["detail_url_bm"]:
-                    time.sleep(REQUEST_DELAY)
+                # Always pace requests, even on a miss — a request was made either way
+                # (backfill_bm_variant only skips the request itself for BM-primary Acts).
+                time.sleep(REQUEST_DELAY)
                 continue
 
             logger.info("[%d/%d] Scraping act %s — %s", i, len(acts), act_number, act.get("title_en", ""))
