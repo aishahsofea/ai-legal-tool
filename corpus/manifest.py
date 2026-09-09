@@ -48,8 +48,8 @@ def source_language(metadata: dict, source_url: str) -> str:
     return "en"
 
 
-def _timeline_for(metadata: dict, source_url: str) -> tuple[str, str]:
-    for event in metadata.get("timeline", []):
+def _timeline_for(metadata: dict, source_url: str, key: str = "timeline") -> tuple[str, str]:
+    for event in metadata.get(key, []):
         if str(event.get("pdf_url", "")) == source_url:
             return str(event.get("date", "")), str(event.get("log_type", ""))
     return "", ""

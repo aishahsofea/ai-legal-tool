@@ -130,6 +130,9 @@ def test_run_step3_registers_both_languages_for_a_dual_language_act(tmp_path, mo
     bm_doc = next(d for d in documents if d.language == "bm")
     assert en_doc.document_id != bm_doc.document_id
     assert bm_doc.act_title == "AKTA CONTOH"
+    assert en_doc.detail_url == meta["detail_url"]
+    assert bm_doc.detail_url == meta["detail_url_bm"]
+    assert bm_doc.detail_url != en_doc.detail_url
 
     report = json.loads(Path(step3_pdfs.DOWNLOAD_REPORT).read_text(encoding="utf-8"))
     assert report["downloaded"] == 2

@@ -27,7 +27,7 @@ import requests
 
 from corpus.registration import register_pdf
 from corpus.registry import CorpusRegistry
-from corpus.manifest import source_language
+from corpus.manifest import source_language, _timeline_for
 
 from scraper.config import (
     METADATA_DIR,
@@ -81,13 +81,6 @@ def _download_pdf(session: requests.Session, url: str, dest: Path, timeout: int 
             logger.warning("Connection error for %s: %s", dest.name, exc)
     logger.error("Exhausted retries for %s", dest.name)
     return False
-
-
-def _timeline_lookup(events: list[dict], source_url: str) -> tuple[str, str]:
-    for event in events:
-        if str(event.get("pdf_url", "")) == source_url:
-            return str(event.get("date", "")), str(event.get("log_type", ""))
-    return "", ""
 
 
 def _pick_urls(meta: dict) -> list[tuple[str, str, str | None]]:
@@ -158,8 +151,8 @@ def run_step3() -> None:
             for url, source, explicit_language in picks:
                 language = explicit_language or source_language(meta, url)
                 title = titles.get(act_number, {}).get(f"title_{language}", "")
-                timeline_events = meta.get("timeline_bm", []) if explicit_language else meta.get("timeline", [])
-                timeline_date, timeline_type = _timeline_lookup(timeline_events, url)
+                timeline_key = "timeline_bm" if explicit_language else "timeline"
+                timeline_date, timeline_type = _timeline_for(meta, url, key=timeline_key)
                 logger.info("[%d/%d] Act %s (%s) — downloading %s", i, len(acts), act_number, title[:50], source)
 
                 staging = out_dir / "staging"
@@ -174,6 +167,7 @@ def run_step3() -> None:
                             manifest_path=manifest_path, asset_root=out_dir,
                             source_url=url, language=language,
                             timeline_date=timeline_date, timeline_type=timeline_type,
+                            detail_url=meta.get("detail_url_bm", "") if explicit_language else None,
                         )
                         if document.document_id in known_documents:
                             verified_unchanged += 1
