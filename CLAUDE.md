@@ -4,6 +4,18 @@
 
 At the start of every session in this repo, invoke the `caveman` skill and keep that ultra-compressed style for the rest of the session, unless the user asks to turn it off.
 
+## Issues before PRs
+
+Anything worth a PR is worth an issue first. Agree the scope there, then branch and build. The issue is where the reasoning lives; the PR is where the code lives. Reference the issue in the PR.
+
+The rule covers spikes and investigations too — findings that would otherwise stay in a chat log. Write them up even when nobody will pick them up yet. Title those ones `(placeholder, <what unblocks it>)`, as in "Reranking for BM and code-switched retrieval (placeholder, blocked on #41)".
+
+Match the house structure: `## Problem`, `## Scope`, `## Acceptance criteria`, `## Files`, `## Out of scope`, `## Sequence`. Put the evidence in `## Problem`: real `file:line`, real numbers, real command output. A reader should be able to tell a measured claim from a guess. Say in `## Sequence` what has to land first and why.
+
+If a change alters a guarantee an ADR made, say so in the issue and treat the ADR as part of the work. A performance change must not quietly relax a correctness promise.
+
+Skip the issue only when the change carries no decision — a typo, a one-line fix.
+
 ## Keeping docs in sync
 
 When a change touches the agent graph (nodes/edges), the API contract (request/response shapes, endpoints, SSE events), env vars/config, or the top-level project structure, update the relevant living docs in the same change: `README.md`, `CONTRIBUTING.md`, `CONTEXT.md`.
