@@ -50,3 +50,20 @@ def test_extract_response_key_finds_key_in_principal_page():
 def test_extract_response_key_raises_when_missing():
     with pytest.raises(DecryptionError):
         extract_response_key("<html>no key here</html>")
+
+
+def test_decrypt_envelope_passes_through_a_plain_datatables_payload():
+    """AGC rolled encryption out one endpoint at a time and can roll it back
+    the same way. A plain payload is a valid response, not a decryption
+    failure — raising would abort the whole run and lose the endpoints that
+    did decrypt."""
+    payload = {"draw": 1, "recordsTotal": 2, "data": [{"lgt_act_no": "1"}]}
+
+    assert decrypt_envelope(payload, FAKE_RESPONSE_KEY) == payload
+
+
+def test_decrypt_envelope_still_rejects_a_shape_that_is_neither():
+    """No recordsTotal means it isn't a DataTables payload either — an error
+    page or a truncated body must never read as zero records."""
+    with pytest.raises(DecryptionError):
+        decrypt_envelope({"data": []}, FAKE_RESPONSE_KEY)

@@ -24,7 +24,8 @@ Writes one file per act: data/acts_metadata/{act_number}.json
 Resumable: skips acts whose output file already exists and already has the
 *_bm fields. An existing file scraped before this variant existed gets its
 missing lang=BM side backfilled in place, without re-fetching the primary
-side (never risks moving an already-registered document's language).
+side (never risks moving an already-registered document's language). A stub
+left by an earlier failed scrape is retried, not skipped.
 The HTTP cache (requests-cache) handles skipping already-fetched pages.
 """
 import json
@@ -44,7 +45,7 @@ from scraper.config import (
     INDEX_FILE,
     METADATA_DIR,
 )
-from scraper.crypto import decrypt_envelope, fetch_response_key
+from scraper.crypto import DecryptionError, decrypt_envelope, fetch_response_key
 from scraper.parsers.detail_parser import parse_timeline, is_detail_page, find_latest_reprint, find_latest_amendment
 from scraper.parsers.subsid_parser import parse_subsid_records
 
@@ -283,6 +284,37 @@ def _needs_bm_backfill(existing: dict) -> bool:
     return not existing.get("stub") and "detail_url_bm" not in existing
 
 
+def _index_predates_signed_links(acts: list[dict]) -> bool:
+    """True when acts_index.json was written before Step 1 captured signed links.
+
+    An empty title_link_bm means "AGC's listing has no Malay detail page" and
+    is recorded as confirmed absent. A *missing* key means the index says
+    nothing at all. Conflating the two would stamp every Act confirmed-absent
+    without issuing a request, so Step 2 refuses to run on an old index
+    instead.
+    """
+    return any("title_link_en" not in act and "title_link_bm" not in act for act in acts)
+
+
+def _scrape_act_refreshing_key(session, key_hex: str, act: dict, **kwargs) -> tuple[dict | None, str]:
+    """scrape_act, retried once with a freshly scraped key on DecryptionError.
+
+    AGC rotates SEARCH_RESPONSE_KEY without notice and a full sweep runs for
+    hours on one key, so a mid-run rotation would otherwise abort every
+    remaining Act. Returns the key actually used, so the caller keeps the new
+    one. A second failure still propagates — that is a real break, not a
+    rotation.
+    """
+    args = (session, act["act_number"], act["act_type"])
+    links = {"link_en": act.get("title_link_en", ""), "link_bm": act.get("title_link_bm", "")}
+    try:
+        return scrape_act(*args, key_hex, **links, **kwargs), key_hex
+    except DecryptionError as exc:
+        logger.warning("[%s] Decryption failed (%s) — refetching the response key", act["act_number"], exc)
+        key_hex = fetch_response_key(session)
+        return scrape_act(*args, key_hex, **links, **kwargs), key_hex
+
+
 def backfill_bm_variant(
     session, act_number: str, existing: dict, link_bm: str = "", timeout: int = 120
 ) -> tuple[dict | None, bool]:
@@ -294,7 +326,9 @@ def backfill_bm_variant(
     move.
 
     link_bm is the current listing's signed Malay link for this Act (empty
-    when the listing has none). Returns (merged_metadata, made_request).
+    when the listing has none). An empty link_bm is only authoritative on an
+    index that carries the title_link_* keys at all — callers check that with
+    _index_predates_signed_links first. Returns (merged_metadata, made_request).
     made_request is False when there is no separate Malay version to fetch
     at all — either the primary itself was already the lang=BM fallback (the
     pre-#64 BM-only shape), or the current listing carries no Malay link.
@@ -335,6 +369,13 @@ def run_step2(detail_types: list[str] | None = None) -> None:
 
     index = json.loads(index_path.read_text(encoding="utf-8"))
     acts = [a for a in index["acts"] if a["act_type"] in detail_types]
+    if _index_predates_signed_links(acts):
+        logger.error(
+            "acts_index.json carries no title_link_en/title_link_bm — it was written "
+            "before issue #64. Re-run step 1 first; running on it would record every "
+            "Act as having no Malay version without fetching anything."
+        )
+        return
     logger.info("Step 2: %d acts to process (types: %s)", len(acts), detail_types)
 
     out_dir = Path(METADATA_DIR)
@@ -359,32 +400,35 @@ def run_step2(detail_types: list[str] | None = None) -> None:
                 except (OSError, json.JSONDecodeError) as exc:
                     logger.warning("[%d/%d] Act %s — corrupt metadata file (%s), re-scraping", i, len(acts), act_number, exc)
                 else:
-                    if not _needs_bm_backfill(existing):
+                    if existing.get("stub"):
+                        # A stub is a failed scrape, not a result — the signed
+                        # token may just have gone stale mid-sweep. Fall through
+                        # and retry instead of leaving it for a manual
+                        # `run.py --act`.
+                        logger.info("[%d/%d] Act %s — retrying previous stub", i, len(acts), act_number)
+                    elif not _needs_bm_backfill(existing):
                         skipped += 1
                         continue
-                    logger.info("[%d/%d] Act %s — backfilling lang=BM", i, len(acts), act_number)
-                    result, made_request = backfill_bm_variant(
-                        session, act_number, existing, link_bm=act.get("title_link_bm", "")
-                    )
-                    if result is None:
-                        logger.warning("[%d/%d] Act %s — lang=BM fetch failed, will retry next run", i, len(acts), act_number)
-                        failed += 1
                     else:
-                        out_file.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
-                        backfilled += 1
-                    # Pace only when a request was actually made — backfill_bm_variant
-                    # skips the request entirely for BM-primary Acts.
-                    if made_request:
-                        time.sleep(REQUEST_DELAY)
-                    continue
+                        logger.info("[%d/%d] Act %s — backfilling lang=BM", i, len(acts), act_number)
+                        result, made_request = backfill_bm_variant(
+                            session, act_number, existing, link_bm=act.get("title_link_bm", "")
+                        )
+                        if result is None:
+                            logger.warning("[%d/%d] Act %s — lang=BM fetch failed, will retry next run", i, len(acts), act_number)
+                            failed += 1
+                        else:
+                            out_file.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
+                            backfilled += 1
+                        # Pace only when a request was actually made — backfill_bm_variant
+                        # skips the request entirely for BM-primary Acts.
+                        if made_request:
+                            time.sleep(REQUEST_DELAY)
+                        continue
 
             logger.info("[%d/%d] Scraping act %s — %s", i, len(acts), act_number, act.get("title_en", ""))
 
-            result = scrape_act(
-                session, act_number, act["act_type"], key_hex,
-                link_en=act.get("title_link_en", ""),
-                link_bm=act.get("title_link_bm", ""),
-            )
+            result, key_hex = _scrape_act_refreshing_key(session, key_hex, act)
             if result is None:
                 logger.warning("Failed to scrape act %s — writing stub so PDF download can proceed", act_number)
                 result = {
@@ -439,7 +483,9 @@ def list_stubs() -> None:
 def run_single_act(act_number: str, html_path: str | None = None) -> None:
     """
     Manually re-scrape one act with a longer timeout (5 minutes).
-    Deletes the existing stub file first so it gets replaced with real data.
+    An existing stub is left in place until a successful scrape overwrites it,
+    so a failed attempt can't drop the Act out of the metadata dir (and out of
+    the stub list) entirely.
 
     If html_path is given, parse that file instead of making an HTTP request —
     useful for acts whose page loads in a browser but times out in the scraper.
@@ -456,6 +502,13 @@ def run_single_act(act_number: str, html_path: str | None = None) -> None:
     if act is None:
         logger.error("Act %s not found in acts_index.json", act_number)
         return
+    if html_path is None and _index_predates_signed_links([act]):
+        logger.error(
+            "Act %s has no title_link_en/title_link_bm — acts_index.json predates "
+            "issue #64 and carries no signed detail link to fetch. Re-run step 1 first.",
+            act_number,
+        )
+        return
 
     out_file = Path(METADATA_DIR) / f"{act_number}.json"
     if out_file.exists():
@@ -463,7 +516,6 @@ def run_single_act(act_number: str, html_path: str | None = None) -> None:
         if not existing.get("stub"):
             logger.info("Act %s already has complete data — delete the file manually to force re-scrape", act_number)
             return
-        out_file.unlink()
 
     html = None
     if html_path:
@@ -474,11 +526,7 @@ def run_single_act(act_number: str, html_path: str | None = None) -> None:
 
     session = build_session()
     key_hex = fetch_response_key(session)
-    result = scrape_act(
-        session, act_number, act["act_type"], key_hex, timeout=300, html=html,
-        link_en=act.get("title_link_en", ""),
-        link_bm=act.get("title_link_bm", ""),
-    )
+    result, _ = _scrape_act_refreshing_key(session, key_hex, act, timeout=300, html=html)
 
     if result is None:
         logger.error(

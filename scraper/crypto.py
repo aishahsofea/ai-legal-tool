@@ -63,8 +63,24 @@ def fetch_response_key(session) -> str:
     raise DecryptionError(f"Could not fetch response key from {PRINCIPAL_URL}")
 
 
+def _is_plain_datatables(payload: dict) -> bool:
+    """A DataTables payload AGC served without encrypting it.
+
+    `recordsTotal` is DataTables' own envelope field, so an encrypted
+    response never carries it — it sits inside the ciphertext. AGC rolled
+    encryption out one endpoint at a time and can roll it back the same way,
+    so a plain payload is a valid response, not a decryption failure.
+    Raising on it would abort a whole Step 1 run and lose the endpoints that
+    did decrypt.
+    """
+    return not payload.get("encrypted") and "recordsTotal" in payload
+
+
 def decrypt_envelope(envelope: dict, key_hex: str) -> dict:
     """Decrypt a {"encrypted": true, "data": "..."} response into its JSON payload."""
+    if isinstance(envelope, dict) and _is_plain_datatables(envelope):
+        logger.info("Response is not encrypted — reading it as a plain DataTables payload")
+        return envelope
     if not isinstance(envelope, dict) or not envelope.get("encrypted"):
         raise DecryptionError(f"Response is not an encrypted envelope: {envelope!r:.200}")
     data = envelope.get("data")

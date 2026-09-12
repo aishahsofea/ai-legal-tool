@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 import pytest
 
@@ -393,3 +394,151 @@ def test_run_step2_corrupt_metadata_file_does_not_abort_sweep(tmp_path, monkeypa
     act21 = json.loads((metadata_dir / "21.json").read_text(encoding="utf-8"))
     assert act20["latest_reprint_pdf"].endswith("ACT20-EN.pdf")
     assert act21["latest_reprint_pdf"].endswith("ACT21-EN.pdf")
+
+
+def _index_file(tmp_path, monkeypatch, acts: list[dict]) -> Path:
+    path = tmp_path / "index.json"
+    path.write_text(json.dumps({"acts": acts}), encoding="utf-8")
+    monkeypatch.setattr(step2_detail, "INDEX_FILE", str(path))
+    return path
+
+
+def _metadata_dir_for(tmp_path, monkeypatch) -> Path:
+    metadata_dir = tmp_path / "metadata"
+    metadata_dir.mkdir()
+    monkeypatch.setattr(step2_detail, "METADATA_DIR", str(metadata_dir))
+    return metadata_dir
+
+
+def test_run_step2_refuses_an_index_written_before_signed_links(tmp_path, monkeypatch, caplog):
+    """An index with no title_link_* keys says nothing about which languages
+    exist. Running on it would stamp every Act confirmed-absent without a
+    single request, so Step 2 must refuse instead."""
+    _index_file(tmp_path, monkeypatch, [{"act_number": "9", "act_type": "updated", "title_en": "OLD INDEX"}])
+    metadata_dir = _metadata_dir_for(tmp_path, monkeypatch)
+    old_format = {
+        "act_number": "9",
+        "act_type": "updated",
+        "detail_url": "https://lom.agc.gov.my/act-detail.php?act=9&lang=BI",
+        "timeline": [{"date": "01/01/2018", "log_type": "REPRINT ONLINE", "pdf_url": "https://old/ACT9.pdf"}],
+        "latest_reprint_pdf": "https://old/ACT9.pdf",
+        "latest_amendment_pdf": "",
+    }
+    (metadata_dir / "9.json").write_text(json.dumps(old_format), encoding="utf-8")
+
+    session = _FakeSession({})
+    monkeypatch.setattr("scraper.session.build_session", lambda: session)
+    monkeypatch.setattr(step2_detail, "fetch_response_key", lambda s: FAKE_RESPONSE_KEY)
+
+    with caplog.at_level("ERROR"):
+        step2_detail.run_step2()
+
+    assert "re-run step 1" in caplog.text.lower()
+    assert json.loads((metadata_dir / "9.json").read_text(encoding="utf-8")) == old_format
+    assert step2_detail._needs_bm_backfill(old_format) is True
+
+
+def test_run_step2_retries_a_previous_stub(tmp_path, monkeypatch):
+    """A stub is a failed scrape, not a result — a stale token that works on a
+    later run must be picked up automatically."""
+    _index_file(tmp_path, monkeypatch, [
+        {"act_number": "10", "act_type": "updated", "title_en": "STUB FIXTURE",
+         "title_link_en": _en_link("10"), "title_link_bm": ""},
+    ])
+    metadata_dir = _metadata_dir_for(tmp_path, monkeypatch)
+    (metadata_dir / "10.json").write_text(json.dumps({
+        "act_number": "10", "act_type": "updated", "stub": True,
+        "timeline": [], "latest_reprint_pdf": "", "latest_amendment_pdf": "",
+        "subsidiary_legislation": [], "subsidiary_total": 0,
+    }), encoding="utf-8")
+
+    session = _FakeSession({_en_link("10"): _detail_html("01/01/2021", "REPRINT ONLINE", "ACT10-EN.pdf")})
+    monkeypatch.setattr("scraper.session.build_session", lambda: session)
+    monkeypatch.setattr(step2_detail, "fetch_response_key", lambda s: FAKE_RESPONSE_KEY)
+
+    step2_detail.run_step2()
+
+    saved = json.loads((metadata_dir / "10.json").read_text(encoding="utf-8"))
+    assert "stub" not in saved
+    assert saved["latest_reprint_pdf"].endswith("ACT10-EN.pdf")
+
+
+def test_run_step2_refetches_the_key_when_agc_rotates_it_mid_sweep(tmp_path, monkeypatch):
+    """A sweep runs for hours on one key. A rotation part-way through must not
+    abort every remaining Act."""
+    _index_file(tmp_path, monkeypatch, [
+        {"act_number": "11", "act_type": "updated", "title_link_en": _en_link("11"), "title_link_bm": ""},
+        {"act_number": "12", "act_type": "updated", "title_link_en": _en_link("12"), "title_link_bm": ""},
+    ])
+    metadata_dir = _metadata_dir_for(tmp_path, monkeypatch)
+
+    rotated_key = "ab" * 32
+
+    class _RotatingSession(_FakeSession):
+        """Subsidiary POSTs stop decrypting under the old key after act 11."""
+
+        def __init__(self, pages):
+            super().__init__(pages)
+            self.current_key = FAKE_RESPONSE_KEY
+            self.posts = 0
+
+        def post(self, url, data=None, timeout=None):
+            self.posts += 1
+            if self.posts > 1:
+                self.current_key = rotated_key
+            return _FakeResponse(200, json_body=encrypt_envelope({"recordsTotal": 0, "records": []},
+                                                                key_hex=self.current_key))
+
+    session = _RotatingSession({
+        _en_link("11"): _detail_html("01/01/2021", "REPRINT ONLINE", "ACT11-EN.pdf"),
+        _en_link("12"): _detail_html("01/01/2021", "REPRINT ONLINE", "ACT12-EN.pdf"),
+    })
+    monkeypatch.setattr("scraper.session.build_session", lambda: session)
+
+    keys = iter([FAKE_RESPONSE_KEY, rotated_key])
+    monkeypatch.setattr(step2_detail, "fetch_response_key", lambda s: next(keys))
+
+    step2_detail.run_step2()
+
+    assert json.loads((metadata_dir / "11.json").read_text(encoding="utf-8"))["latest_reprint_pdf"].endswith("ACT11-EN.pdf")
+    saved12 = json.loads((metadata_dir / "12.json").read_text(encoding="utf-8"))
+    assert "stub" not in saved12
+    assert saved12["latest_reprint_pdf"].endswith("ACT12-EN.pdf")
+
+
+def test_run_single_act_keeps_the_stub_when_the_rescrape_fails(tmp_path, monkeypatch):
+    """A failed manual re-scrape must not drop the Act out of the metadata dir
+    — it would vanish from the stub list too."""
+    _index_file(tmp_path, monkeypatch, [
+        {"act_number": "13", "act_type": "updated", "title_link_en": _en_link("13"), "title_link_bm": ""},
+    ])
+    metadata_dir = _metadata_dir_for(tmp_path, monkeypatch)
+    stub = {
+        "act_number": "13", "act_type": "updated", "stub": True,
+        "timeline": [], "latest_reprint_pdf": "", "latest_amendment_pdf": "",
+        "subsidiary_legislation": [], "subsidiary_total": 0,
+    }
+    (metadata_dir / "13.json").write_text(json.dumps(stub), encoding="utf-8")
+
+    session = _FlakySession({_en_link("13"): _FlakySession.FAILS})
+    monkeypatch.setattr("scraper.session.build_session", lambda: session)
+    monkeypatch.setattr(step2_detail, "fetch_response_key", lambda s: FAKE_RESPONSE_KEY)
+
+    step2_detail.run_single_act("13")
+
+    assert json.loads((metadata_dir / "13.json").read_text(encoding="utf-8")) == stub
+
+
+def test_run_single_act_refuses_an_index_written_before_signed_links(tmp_path, monkeypatch, caplog):
+    _index_file(tmp_path, monkeypatch, [{"act_number": "14", "act_type": "updated"}])
+    _metadata_dir_for(tmp_path, monkeypatch)
+
+    session = _FakeSession({})
+    monkeypatch.setattr("scraper.session.build_session", lambda: session)
+    monkeypatch.setattr(step2_detail, "fetch_response_key", lambda s: FAKE_RESPONSE_KEY)
+
+    with caplog.at_level("ERROR"):
+        step2_detail.run_single_act("14")
+
+    assert "re-run step 1" in caplog.text.lower()
+    assert session.requested == []

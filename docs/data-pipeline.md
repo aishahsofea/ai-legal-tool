@@ -44,7 +44,7 @@ Comparison unions two promoted one-hop neighborhoods and matches on a multiset k
 
 Fetches the full list of Acts across all categories (updated, revised, repealed, amendment, translated).
 
-Since 2026-09 (issue #64), AGC encrypts every listing response with AES-256-GCM. Step 1 scrapes the decryption key from `principal.php` at the start of each run, then decrypts each page before parsing. The key is never hardcoded, since AGC can rotate it without notice. A page that fails to decrypt raises and aborts the run; it is never treated as zero records.
+Since 2026-09 (issue #64), AGC encrypts every listing response with AES-256-GCM. Step 1 scrapes the decryption key from `principal.php` at the start of each run, then decrypts each page before parsing. The key is never hardcoded, since AGC can rotate it without notice. A page that fails to decrypt raises and aborts the run; it is never treated as zero records. A page AGC serves unencrypted is read as-is, not as a failure. Encryption arrived one endpoint at a time and can be rolled back the same way.
 
 For the `updated` and `revised` types, each listing row also carries a signed `processFile.php` link per language (AGC's replacement for the old `act-detail.php?act=&lang=` query, which AGC now rejects). Step 1 stores these as `title_link_en` / `title_link_bm` on the Act record — empty when that language has no detail page at all. Step 2 fetches these links directly instead of building its own URL.
 
@@ -60,6 +60,9 @@ The primary fields (`detail_url`, `timeline`, `latest_reprint_pdf`, `latest_amen
 - ~1,756 HTTP requests at 1.5s delay for the primary language — ~45 minutes. Each Act with a separate BM version adds one more request, up to ~90 minutes total on a full rescrape
 - Resumable: skips acts whose file already has both languages recorded. An Act scraped before the BM fetch existed gets its BM fields backfilled on the next run, using the current listing's stored Malay link. Its existing primary fields are left untouched
 - The listing is authoritative for which languages exist: an empty `title_link_bm` means confirmed absent, recorded immediately. A stored link can fail to fetch for several reasons (stale token, timeout, connection error). Any such failure is treated as transient: left for a later run, never recorded as confirmed absent
+- Step 2 refuses to run on an `acts_index.json` that predates issue #64 and has no `title_link_en`/`title_link_bm`, and tells you to re-run Step 1. Reading a missing field as "no Malay version" would stamp every Act confirmed-absent without a single request
+- An Act whose scrape failed is written as a stub and retried on the next run. A failed manual re-scrape leaves the stub in place rather than deleting it
+- If AGC rotates the decryption key mid-sweep, Step 2 scrapes the new key and retries that Act instead of aborting the rest
 - By default scrapes `updated` and `revised` acts only — the only types with stable numeric IDs, full detail pages, and signed links from Step 1
 
 ### Step 3 — Download and register immutable reprints
