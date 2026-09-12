@@ -542,3 +542,31 @@ def test_run_single_act_refuses_an_index_written_before_signed_links(tmp_path, m
 
     assert "re-run step 1" in caplog.text.lower()
     assert session.requested == []
+
+
+def test_run_step2_skips_an_act_whose_number_breaks_its_path(tmp_path, monkeypatch, caplog):
+    """An act_number with a path separator makes every metadata path for it
+    unwritable. That must cost one Act, not the rest of the sweep (#70)."""
+    _index_file(tmp_path, monkeypatch, [
+        {"act_number": "49/1965", "act_type": "updated",
+         "title_link_en": _en_link("49-1965"), "title_link_bm": ""},
+        {"act_number": "15", "act_type": "updated",
+         "title_link_en": _en_link("15"), "title_link_bm": ""},
+    ])
+    metadata_dir = _metadata_dir_for(tmp_path, monkeypatch)
+
+    session = _FakeSession({
+        _en_link("49-1965"): _detail_html("01/01/2021", "REPRINT ONLINE", "ACT49-EN.pdf"),
+        _en_link("15"): _detail_html("01/01/2021", "REPRINT ONLINE", "ACT15-EN.pdf"),
+    })
+    monkeypatch.setattr("scraper.session.build_session", lambda: session)
+    monkeypatch.setattr(step2_detail, "fetch_response_key", lambda s: FAKE_RESPONSE_KEY)
+
+    with caplog.at_level("ERROR"):
+        step2_detail.run_step2()
+
+    assert "49/1965" in caplog.text
+    assert not (metadata_dir / "49").exists()
+    # The Act behind the broken one still gets scraped.
+    saved = json.loads((metadata_dir / "15.json").read_text(encoding="utf-8"))
+    assert saved["latest_reprint_pdf"].endswith("ACT15-EN.pdf")

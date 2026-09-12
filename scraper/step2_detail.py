@@ -391,64 +391,79 @@ def run_step2(detail_types: list[str] | None = None) -> None:
 
     try:
         for i, act in enumerate(acts, 1):
-            act_number = act["act_number"]
-            out_file = out_dir / f"{act_number}.json"
+            try:
+                act_number = act["act_number"]
+                out_file = out_dir / f"{act_number}.json"
 
-            if out_file.exists():
-                try:
-                    existing = json.loads(out_file.read_text(encoding="utf-8"))
-                except (OSError, json.JSONDecodeError) as exc:
-                    logger.warning("[%d/%d] Act %s — corrupt metadata file (%s), re-scraping", i, len(acts), act_number, exc)
-                else:
-                    if existing.get("stub"):
-                        # A stub is a failed scrape, not a result — the signed
-                        # token may just have gone stale mid-sweep. Fall through
-                        # and retry instead of leaving it for a manual
-                        # `run.py --act`.
-                        logger.info("[%d/%d] Act %s — retrying previous stub", i, len(acts), act_number)
-                    elif not _needs_bm_backfill(existing):
-                        skipped += 1
-                        continue
+                if out_file.exists():
+                    try:
+                        existing = json.loads(out_file.read_text(encoding="utf-8"))
+                    except (OSError, json.JSONDecodeError) as exc:
+                        logger.warning("[%d/%d] Act %s — corrupt metadata file (%s), re-scraping", i, len(acts), act_number, exc)
                     else:
-                        logger.info("[%d/%d] Act %s — backfilling lang=BM", i, len(acts), act_number)
-                        result, made_request = backfill_bm_variant(
-                            session, act_number, existing, link_bm=act.get("title_link_bm", "")
-                        )
-                        if result is None:
-                            logger.warning("[%d/%d] Act %s — lang=BM fetch failed, will retry next run", i, len(acts), act_number)
-                            failed += 1
+                        if existing.get("stub"):
+                            # A stub is a failed scrape, not a result — the signed
+                            # token may just have gone stale mid-sweep. Fall through
+                            # and retry instead of leaving it for a manual
+                            # `run.py --act`.
+                            logger.info("[%d/%d] Act %s — retrying previous stub", i, len(acts), act_number)
+                        elif not _needs_bm_backfill(existing):
+                            skipped += 1
+                            continue
                         else:
-                            out_file.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
-                            backfilled += 1
-                        # Pace only when a request was actually made — backfill_bm_variant
-                        # skips the request entirely for BM-primary Acts.
-                        if made_request:
-                            time.sleep(REQUEST_DELAY)
-                        continue
+                            logger.info("[%d/%d] Act %s — backfilling lang=BM", i, len(acts), act_number)
+                            result, made_request = backfill_bm_variant(
+                                session, act_number, existing, link_bm=act.get("title_link_bm", "")
+                            )
+                            if result is None:
+                                logger.warning("[%d/%d] Act %s — lang=BM fetch failed, will retry next run", i, len(acts), act_number)
+                                failed += 1
+                            else:
+                                out_file.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
+                                backfilled += 1
+                            # Pace only when a request was actually made — backfill_bm_variant
+                            # skips the request entirely for BM-primary Acts.
+                            if made_request:
+                                time.sleep(REQUEST_DELAY)
+                            continue
 
-            logger.info("[%d/%d] Scraping act %s — %s", i, len(acts), act_number, act.get("title_en", ""))
+                logger.info("[%d/%d] Scraping act %s — %s", i, len(acts), act_number, act.get("title_en", ""))
 
-            result, key_hex = _scrape_act_refreshing_key(session, key_hex, act)
-            if result is None:
-                logger.warning("Failed to scrape act %s — writing stub so PDF download can proceed", act_number)
-                result = {
-                    "act_number": act_number,
-                    "act_type":   act["act_type"],
-                    "title_en":   act.get("title_en", ""),
-                    "title_bm":   act.get("title_bm", ""),
-                    "scraped_at": datetime.now(timezone.utc).isoformat(),
-                    "stub":       True,
-                    "timeline":             [],
-                    "latest_reprint_pdf":   "",
-                    "latest_amendment_pdf": "",
-                    "subsidiary_legislation": [],
-                    "subsidiary_total":     0,
-                }
+                result, key_hex = _scrape_act_refreshing_key(session, key_hex, act)
+                if result is None:
+                    logger.warning("Failed to scrape act %s — writing stub so PDF download can proceed", act_number)
+                    result = {
+                        "act_number": act_number,
+                        "act_type":   act["act_type"],
+                        "title_en":   act.get("title_en", ""),
+                        "title_bm":   act.get("title_bm", ""),
+                        "scraped_at": datetime.now(timezone.utc).isoformat(),
+                        "stub":       True,
+                        "timeline":             [],
+                        "latest_reprint_pdf":   "",
+                        "latest_amendment_pdf": "",
+                        "subsidiary_legislation": [],
+                        "subsidiary_total":     0,
+                    }
+                    failed += 1
+
+                out_file.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
+                done += 1
+                time.sleep(REQUEST_DELAY)
+            except OSError as exc:
+                # One Act must not abort the sweep, the same rule every other
+                # per-act failure here follows. An act_number carrying a path
+                # separator ("49/1965") makes every metadata path for it
+                # unwritable, so not even a stub can be written — see #70.
+                # requests' own errors subclass OSError, so a stray network or
+                # non-JSON response that escapes the retry helpers lands here
+                # too, and costs one Act instead of the rest of the run.
+                logger.error(
+                    "[%d/%d] Act %s — unrecoverable I/O error (%s), skipping",
+                    i, len(acts), act_number, exc,
+                )
                 failed += 1
-
-            out_file.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
-            done += 1
-            time.sleep(REQUEST_DELAY)
+                continue
 
     except KeyboardInterrupt:
         logger.info("Interrupted. Progress: done=%d skipped=%d backfilled=%d failed=%d", done, skipped, backfilled, failed)
