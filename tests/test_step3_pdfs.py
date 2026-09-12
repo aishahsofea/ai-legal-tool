@@ -1,6 +1,7 @@
 import json
 import threading
 import time as real_time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import fitz
@@ -73,9 +74,19 @@ class _FakeResponse:
         self.status_code = status_code
         self.headers = {"Content-Type": content_type}
         self._content = content
+        self.closed = False
 
     def iter_content(self, chunk_size):
         yield self._content
+
+    # requests.Response is a context manager and closing it is what returns the
+    # connection to the pool, so the fake has to be one too.
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *_exc):
+        self.closed = True
+        return False
 
 
 class _FakeHost:
@@ -94,6 +105,7 @@ class _FakeHost:
         self._in_flight = 0
         self.requested: list[str] = []
         self.sessions: list["_FakeDownloadSession"] = []
+        self.responses: list[_FakeResponse] = []
         self.peak_in_flight = 0
 
     def session(self) -> "_FakeDownloadSession":
@@ -129,17 +141,20 @@ class _FakeDownloadSession:
         outcome = self._host.next_outcome(url)
         if isinstance(outcome, Exception):
             raise outcome
-        if isinstance(outcome, bytes):
-            return _FakeResponse(200, outcome)
-        return outcome
+        response = _FakeResponse(200, outcome) if isinstance(outcome, bytes) else outcome
+        self._host.responses.append(response)
+        return response
 
     def close(self):
         self.closed = True
 
 
 @pytest.fixture(autouse=True)
-def _no_sleep(monkeypatch):
-    monkeypatch.setattr(step3_pdfs.time, "sleep", lambda *_: None)
+def sleeps(monkeypatch):
+    """Every sleep step 3 would take, recorded instead of served."""
+    recorded: list[float] = []
+    monkeypatch.setattr(step3_pdfs.time, "sleep", recorded.append)
+    return recorded
 
 
 def _wire(tmp_path, monkeypatch, *, index, metadata_files):
@@ -390,3 +405,92 @@ def test_an_unexpected_worker_error_is_recorded_not_fatal(tmp_path, monkeypatch)
     report = json.loads(Path(step3_pdfs.DOWNLOAD_REPORT).read_text(encoding="utf-8"))
     assert report["failed"] == 3
     assert all(f["reason"] == "RuntimeError: disk on fire" for f in report["failures"])
+
+
+def test_rate_limiting_does_not_sleep_after_the_final_attempt(tmp_path, sleeps):
+    # The last 429 has no attempt left to protect, so its 480s back-off would
+    # only hold a pool slot open before a failure nothing retries.
+    url = "https://example.test/busy-forever.pdf"
+    throttle = step3_pdfs._Throttle(8)
+    host = _FakeHost({url: _FakeResponse(503, content_type="text/html")})
+
+    outcome = step3_pdfs._download_pdf(host.session(), url, tmp_path / "busy.pdf", throttle=throttle)
+
+    assert not outcome.ok
+    assert len(host.requested) == len(step3_pdfs.RETRY_DELAYS) + 1
+    assert 480 not in sleeps, "final attempt still backed off before giving up"
+    # A back-off after each of the first four tries, interleaved with the outer
+    # retry waits, and nothing after the fifth.
+    assert sleeps == [30, 5, 60, 15, 120, 30, 240, 60]
+
+
+def test_the_last_failure_decides_the_reason(tmp_path):
+    # A timeout on the first attempt used to mask every status after it.
+    url = "https://example.test/flapping.pdf"
+    host = _FakeHost({url: [
+        requests.exceptions.ReadTimeout("read timed out"),
+        _FakeResponse(502, content_type="application/pdf"),
+    ]})
+
+    outcome = step3_pdfs._download_pdf(host.session(), url, tmp_path / "flapping.pdf")
+
+    assert not outcome.ok
+    assert outcome.reason == "exhausted retries (last HTTP 502)"
+
+
+def test_every_response_is_closed_even_when_the_fetch_fails(tmp_path):
+    absent = "https://example.test/absent.pdf"
+    missing = "https://example.test/missing.pdf"
+    busy = "https://example.test/busy.pdf"
+    host = _FakeHost({
+        missing: _FakeResponse(500, b"<html>500</html>", content_type="text/html"),
+        busy: _FakeResponse(503, content_type="text/html"),
+    })
+    session = host.session()
+
+    for url in (absent, missing, busy):
+        step3_pdfs._download_pdf(session, url, tmp_path / "out.pdf")
+
+    assert host.responses, "no responses handed out"
+    assert all(r.closed for r in host.responses)
+
+
+def test_a_worker_that_cannot_stage_a_temp_file_is_recorded_not_fatal(tmp_path, monkeypatch):
+    metadata_files, urls, index = _many_acts(3)
+    _wire(tmp_path, monkeypatch, index=index, metadata_files=metadata_files)
+
+    def _no_disk(*_args, **_kwargs):
+        raise OSError(28, "No space left on device")
+
+    monkeypatch.setattr("scraper.session.build_download_session", _FakeHost(urls).session)
+    monkeypatch.setattr(step3_pdfs.tempfile, "NamedTemporaryFile", _no_disk)
+
+    step3_pdfs.run_step3()
+
+    report = json.loads(Path(step3_pdfs.DOWNLOAD_REPORT).read_text(encoding="utf-8"))
+    assert report["failed"] == 3
+    assert all("No space left on device" in f["reason"] for f in report["failures"])
+
+
+def test_a_future_failing_outside_the_worker_guard_still_lands_in_the_report(tmp_path, monkeypatch):
+    metadata_files, urls, index = _many_acts(3)
+    _wire(tmp_path, monkeypatch, index=index, metadata_files=metadata_files)
+
+    def _pool_failure(_task):
+        raise RuntimeError("pool died")
+
+    class _ExplodingExecutor(ThreadPoolExecutor):
+        """Stands in for the executor itself failing, which _fetch cannot catch."""
+
+        def submit(self, _fn, *args, **kwargs):
+            return super().submit(_pool_failure, *args, **kwargs)
+
+    monkeypatch.setattr("scraper.session.build_download_session", _FakeHost(urls).session)
+    monkeypatch.setattr(step3_pdfs, "ThreadPoolExecutor", _ExplodingExecutor)
+
+    step3_pdfs.run_step3()
+
+    report = json.loads(Path(step3_pdfs.DOWNLOAD_REPORT).read_text(encoding="utf-8"))
+    assert report["failed"] == 3
+    assert {f["act_number"] for f in report["failures"]} == {"1", "2", "3"}
+    assert all(f["reason"] == "RuntimeError: pool died" for f in report["failures"])

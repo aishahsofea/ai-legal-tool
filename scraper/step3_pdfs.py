@@ -122,8 +122,10 @@ def _download_pdf(
     """
     encoded = _encode_url(url)
     slot = throttle.slot if throttle is not None else nullcontext
-    last_status: int | None = None
-    last_error: str | None = None
+    # Overwritten by every failed attempt, so the reason describes the failure
+    # that actually ended the run rather than the first one seen.
+    last_reason: str | None = None
+    final_attempt = len(RETRY_DELAYS)
 
     for attempt, wait_seconds in enumerate([0] + RETRY_DELAYS):
         if wait_seconds:
@@ -132,8 +134,10 @@ def _download_pdf(
 
         backoff = 0
         try:
-            with slot():
-                resp = session.get(encoded, timeout=timeout, stream=True)
+            # Closed on every path: with stream=True an unread response holds
+            # its connection out of the pool until the garbage collector runs,
+            # and this host answers every missing file with a 5xx.
+            with slot(), session.get(encoded, timeout=timeout, stream=True) as resp:
                 if resp.status_code == 200:
                     content_type = resp.headers.get("Content-Type", "").lower()
                     if content_type and "pdf" not in content_type and "octet-stream" not in content_type:
@@ -153,9 +157,12 @@ def _download_pdf(
                 # limiting, not as one of this host's missing-file 500s.
                 if resp.status_code in (429, 503):
                     limit = throttle.back_off() if throttle is not None else 0
-                    backoff = 30 * (2 ** attempt)
-                    last_status = resp.status_code
-                    logger.warning("Rate limited (%s), concurrency now %d, sleeping %ss",
+                    # Nothing to back off for on the last attempt, where the
+                    # wait would only hold a pool slot for up to 480s before a
+                    # failure nothing retries.
+                    backoff = 30 * (2 ** attempt) if attempt < final_attempt else 0
+                    last_reason = f"exhausted retries (last HTTP {resp.status_code})"
+                    logger.warning("Rate limited (%s), concurrency now %d, backing off %ss",
                                    resp.status_code, limit, backoff)
                 else:
                     content_type = resp.headers.get("Content-Type", "").lower()
@@ -167,13 +174,13 @@ def _download_pdf(
                         return _FetchOutcome(
                             False, f"permanent miss: HTTP {resp.status_code} ({content_type})"
                         )
-                    last_status = resp.status_code
+                    last_reason = f"exhausted retries (last HTTP {resp.status_code})"
                     logger.warning("HTTP %s for %s", resp.status_code, encoded)
         except requests.exceptions.Timeout:
-            last_error = "read timeout"
+            last_reason = "read timeout"
             logger.warning("Timeout for %s (attempt %d)", dest.name, attempt + 1)
         except requests.exceptions.ConnectionError as exc:
-            last_error = f"connection error: {exc}"
+            last_reason = f"connection error: {exc}"
             logger.warning("Connection error for %s: %s", dest.name, exc)
 
         # Slept outside the permit so a rate-limited worker is not holding a
@@ -181,9 +188,7 @@ def _download_pdf(
         if backoff:
             time.sleep(backoff)
 
-    reason = last_error or (
-        f"exhausted retries (last HTTP {last_status})" if last_status else "exhausted retries"
-    )
+    reason = last_reason or "exhausted retries"
     logger.error("Exhausted retries for %s: %s", dest.name, reason)
     return _FetchOutcome(False, reason)
 
@@ -276,12 +281,16 @@ def run_step3() -> None:
                 sessions.append(session)
         return session
 
-    def _fetch(task: _DownloadTask) -> tuple[_DownloadTask, Path, _FetchOutcome]:
-        with tempfile.NamedTemporaryFile(dir=staging, suffix=".pdf", delete=False) as temp:
-            temp_path = Path(temp.name)
-        with bookkeeping:
-            staged.add(temp_path)
+    def _fetch(task: _DownloadTask) -> tuple[_DownloadTask, Path | None, _FetchOutcome]:
+        # Staging the temp file is inside the try as well: a full disk here
+        # would otherwise escape through future.result() and end the run before
+        # it writes a report for the Acts already registered.
+        temp_path: Path | None = None
         try:
+            with tempfile.NamedTemporaryFile(dir=staging, suffix=".pdf", delete=False) as temp:
+                temp_path = Path(temp.name)
+            with bookkeeping:
+                staged.add(temp_path)
             outcome = _download_pdf(_worker_session(), task.url, temp_path, throttle=throttle)
         except Exception as exc:
             # One worker must not take the run down. The serial version recorded
@@ -289,7 +298,9 @@ def run_step3() -> None:
             outcome = _FetchOutcome(False, f"{type(exc).__name__}: {exc}")
         return task, temp_path, outcome
 
-    def _discard(temp_path: Path) -> None:
+    def _discard(temp_path: Path | None) -> None:
+        if temp_path is None:
+            return
         temp_path.unlink(missing_ok=True)
         with bookkeeping:
             staged.discard(temp_path)
@@ -308,6 +319,9 @@ def run_step3() -> None:
     done = 0
     queued = iter(tasks)
     pending: set[Future] = set()
+    # Kept so a future that fails outside _fetch's own guard can still be
+    # reported against the Act it belonged to.
+    task_of: dict[Future, _DownloadTask] = {}
     executor = ThreadPoolExecutor(max_workers=DOWNLOAD_CONCURRENCY, thread_name_prefix="step3-fetch")
 
     try:
@@ -319,7 +333,9 @@ def run_step3() -> None:
                 task = next(queued, None)
                 if task is None:
                     break
-                pending.add(executor.submit(_fetch, task))
+                future = executor.submit(_fetch, task)
+                task_of[future] = task
+                pending.add(future)
             if not pending:
                 break
 
@@ -328,7 +344,14 @@ def run_step3() -> None:
             # Registration stays on this thread: the manifest write is serial
             # and the identity it assigns must not depend on fetch order.
             for future in finished:
-                task, temp_path, outcome = future.result()
+                task = task_of.pop(future)
+                temp_path = None
+                try:
+                    _, temp_path, outcome = future.result()
+                except Exception as exc:
+                    # _fetch catches everything it raises itself, so this is the
+                    # executor failing. The report still owes a row for this Act.
+                    outcome = _FetchOutcome(False, f"{type(exc).__name__}: {exc}")
                 done += 1
                 try:
                     if not outcome.ok:

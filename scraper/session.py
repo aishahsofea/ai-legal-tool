@@ -35,23 +35,30 @@ _IGNORED_PARAMS = [
 
 _DEFAULT_FORCELIST = [429, 500, 502, 503, 504]
 
-# The AGC asset host answers a missing file with 500 and an HTML body rather
-# than 404 (/robots.txt does the same), so retrying a 500 there buys nothing.
-# _download_pdf reads Content-Type to tell a missing file from a real fault.
-_DOWNLOAD_FORCELIST = [429, 502, 503, 504]
+# Empty on purpose. _download_pdf owns the download retry schedule, including
+# the 429/503 back-off that shrinks concurrency, and a second layer underneath
+# it is invisible to that back-off: urllib3 would quietly spend four requests
+# per call before _download_pdf ever sees the 429. The AGC asset host also
+# answers a missing file with 500 and an HTML body rather than 404, which
+# _download_pdf tells apart by Content-Type and never retries.
+_DOWNLOAD_FORCELIST: list[int] = []
 
 
-def _retry_adapter(*, read: int | bool = False, status_forcelist: list[int] | None = None) -> HTTPAdapter:
-    """read defaults to False so the cached session used by steps 1 and 2 keeps
-    the behaviour it has always had. Only the download path opts in.
+def _retry_adapter(*, status_forcelist: list[int] | None = None) -> HTTPAdapter:
+    """None means the shared default; an empty list disables status retries.
+
+    read stays False everywhere. With a read budget urllib3 turns an exhausted
+    read timeout into MaxRetryError, which requests raises as ConnectionError,
+    so the caller's `except Timeout` never fires and one attempt silently costs
+    two full read timeouts.
     """
     retry = Retry(
         total=3,
         backoff_factor=2.0,
-        status_forcelist=status_forcelist or _DEFAULT_FORCELIST,
+        status_forcelist=_DEFAULT_FORCELIST if status_forcelist is None else status_forcelist,
         allowed_methods=["GET", "POST"],
         raise_on_status=False,
-        read=read,
+        read=False,
     )
     return HTTPAdapter(max_retries=retry)
 
@@ -63,9 +70,7 @@ def build_download_session() -> requests.Session:
     sharing one, so the default pool_maxsize of 10 is ample for each.
     """
     session = requests.Session()
-    # read=1 rather than the full budget: the retry loop in _download_pdf owns
-    # the schedule, and stacking both layers would multiply out to 5N attempts.
-    adapter = _retry_adapter(read=1, status_forcelist=_DOWNLOAD_FORCELIST)
+    adapter = _retry_adapter(status_forcelist=_DOWNLOAD_FORCELIST)
     session.mount("https://", adapter)
     session.mount("http://", adapter)
     session.headers.update({
