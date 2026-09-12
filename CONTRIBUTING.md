@@ -100,7 +100,7 @@ All steps are idempotent. Step 3 re-observes authoritative PDF bytes to catch sa
 ```bash
 python run.py --step 1   # scrape Act listing pages (~1 min)
 python run.py --step 2   # scrape Act detail pages (~45 min)
-python run.py --step 3   # download PDFs (~2 min)
+python run.py --step 3   # download PDFs (~1 min)
 python run.py --step 4   # extract section-level chunks (~5 min)
 python run.py --step 5   # embed + ingest into pgvector (~5 min, ~$0.15)
 ```
