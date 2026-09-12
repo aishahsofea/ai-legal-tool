@@ -203,7 +203,10 @@ def test_checked_in_coverage_accounts_for_every_source_pdf():
     assert coverage["ready_pdf_count"] == 571
     assert coverage["blocked_pdf_count"] == 48
     assert coverage["reason_counts"]["amendment_only"] == 28
-    assert len(manifest["documents"]) == 601
+    # More documents than coverage inputs: the 38 Acts the step 3 timeout fix
+    # recovered are registered but not yet extracted, so coverage.json has not
+    # been regenerated for them.
+    assert len(manifest["documents"]) == 639
     september = next(
         item for item in manifest["documents"]
         if item["document_id"]

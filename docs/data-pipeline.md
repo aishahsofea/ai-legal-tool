@@ -60,7 +60,9 @@ For each Act, fetches the detail page (amendment timeline + PDF URLs) in both `l
 
 Downloads the canonical reprint(s) for each Act into content-addressed local storage and updates `data/pdfs/manifest.json` atomically. An Act with both a BI and a BM reprint registers two separate documents.
 
-- ~700 downloads at 1.5s delay for the primary language — ~18 minutes. One more download per Act with a BM reprint adds to that total
+- Downloads run concurrently — 636 fetches in 19s on the English-only corpus. An Act with a BM reprint adds a second fetch, so a bilingual run is roughly double that. `DOWNLOAD_CONCURRENCY`, backoff, and failure reasons are in [CONTRIBUTING](../CONTRIBUTING.md#4-build-the-knowledge-base-one-time-1-hour)
+- Registration is not parallel. The manifest write stays on one thread, so identity never depends on the order downloads finish
+- Every failure in the report carries a reason
 - PDF selection: `latest_reprint_pdf` (primary) and `latest_reprint_pdf_bm` (secondary), or skip. An amendment never substitutes for a base Act, in either language.
 - Needs an openable PDF response. Then records full SHA-256, byte size, page count, source URL/timeline, language, content-derived document/object identities.
 - Every run re-observes the authoritative bytes, so same-URL replacements get caught. Unchanged hash → records a source observation, no duplicate document. Changed hash → stages a new identity, active mapping doesn't move.
