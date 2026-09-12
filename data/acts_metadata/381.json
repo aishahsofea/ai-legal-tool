@@ -56,5 +56,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 381.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzgxJmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDEzI3RpbWVsaW5lfGI5M2Q2NWNlZDg0M2VjOGU3Y2ZiZmVhYjI2ZDhmYjA4YzUzZjM5ODNhOThlZGI3N2U2MDYyYTFjMmU2NzNhYmQ%3D",
+  "timeline_bm": [
+    {
+      "date": "30/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "23/09/1989",
+      "project_id": "2253991",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2253991_BM/Act 381 disemak.pdf"
+    },
+    {
+      "date": "16/09/2013",
+      "project_id": "3626944",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3626944_BM/Akta 381 September Reprint 2013 online.pdf"
+    },
+    {
+      "date": "05/11/2013",
+      "project_id": "16309",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/16309_BM/Akta 381 November Reprint 2013 online.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/16309_BM/Akta 381 November Reprint 2013 online.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
 }

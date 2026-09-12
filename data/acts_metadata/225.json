@@ -87,5 +87,58 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjI1Jmxhbmc9Qk0mZGF0ZT0wMS0wNC0yMDE0I3RpbWVsaW5lfGYxMGFjMGNlMjNlOThlMDA3YjRkZjk3MmQ4ZjhhMmE4NzkyODQ3NTkzNzUyZmQ2MzU0NTQzNzIyMzFhZTdkOGM%3D",
+  "timeline_bm": [
+    {
+      "date": "01/02/1980",
+      "project_id": "237",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 225- Asal.pdf"
+    },
+    {
+      "date": "03/06/1985",
+      "project_id": "1742047",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta A617.pdf"
+    },
+    {
+      "date": "23/03/1998",
+      "project_id": "1742048",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta A1019.pdf"
+    },
+    {
+      "date": "10/01/1999",
+      "project_id": "3145255",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3145255/P.U.(A) 270.pdf"
+    },
+    {
+      "date": "29/05/2002",
+      "project_id": "1742049",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta A1150.pdf"
+    },
+    {
+      "date": "06/10/2010",
+      "project_id": "1742050",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta A1267.pdf"
+    },
+    {
+      "date": "08/01/2013",
+      "project_id": "16363",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 225 - Akta Majlis Peperiksaan Malaysia 1980.pdf"
+    },
+    {
+      "date": "09/04/2014",
+      "project_id": "16088",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 225 - Akta Majlis Peperiksaan Malaysia 1980(1).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 225 - Akta Majlis Peperiksaan Malaysia 1980(1).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta A1267.pdf"
 }

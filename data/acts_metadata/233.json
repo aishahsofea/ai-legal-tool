@@ -93,5 +93,58 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjMzJmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDEyI3RpbWVsaW5lfDQzNjQ5N2RjYTIzMGIwNDQyZWJhY2JlZDY2NjE2NmUxZjQwYzhiMjExOWRjMDBkMDU3MGNmNzQxZmFkYmYzZTI%3D",
+  "timeline_bm": [
+    {
+      "date": "24/05/1950",
+      "project_id": "245",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 233.pdf"
+    },
+    {
+      "date": "15/11/1958",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "26/12/1965",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/01/1966",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/09/1970",
+      "project_id": "1728227",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728227/02. P.U. (B) 324-1970.pdf"
+    },
+    {
+      "date": "07/01/1980",
+      "project_id": "1742066",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1742066_BM/Akta 233.pdf"
+    },
+    {
+      "date": "31/12/2009",
+      "project_id": "3150880",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3150880/pua026(147)y2009_unlocked.pdf"
+    },
+    {
+      "date": "09/12/2012",
+      "project_id": "16757",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 233 - Akta Pelan dan Dokumen tanah dan Lombong (Salinan Fotograf) 1950.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 233 - Akta Pelan dan Dokumen tanah dan Lombong (Salinan Fotograf) 1950.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3150880/pua026(147)y2009_unlocked.pdf"
 }

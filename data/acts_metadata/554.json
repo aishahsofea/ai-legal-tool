@@ -69,5 +69,46 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTU0Jmxhbmc9Qk0mZGF0ZT0zMS0wNS0yMDA5I3RpbWVsaW5lfGI2MjZlNTY1ZDk4NDhjNDBmN2EzMWQwMTdhOTc4YjUxYjNmOTk1MDI4MmVjN2Y1YjMwZjQ3ZTNjMzI3MTgxYTI%3D",
+  "timeline_bm": [
+    {
+      "date": "27/09/1996",
+      "project_id": "566",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/566_BM/AKTA 554 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "02/06/2009",
+      "project_id": "15413",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15413_BM/AKTA 554 - REPRINT 2009.pdf"
+    },
+    {
+      "date": "14/02/2010",
+      "project_id": "1700305",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700305_BM/AKTA A1368.pdf"
+    },
+    {
+      "date": "23/10/2022",
+      "project_id": "1746547",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1746547/PUA 340 (2022).pdf"
+    },
+    {
+      "date": "27/04/2025",
+      "project_id": "2813180",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2813180_BM/A1757 BM - AKTA AMANAH LABUAN (PINDAAN) 2025.pdf"
+    },
+    {
+      "date": "06/07/2026",
+      "project_id": "3583714",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3583714/PUA 240 (2026).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15413_BM/AKTA 554 - REPRINT 2009.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2813180_BM/A1757 BM - AKTA AMANAH LABUAN (PINDAAN) 2025.pdf"
 }

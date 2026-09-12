@@ -26,5 +26,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 178.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTc4Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfGYxMTJjODUxYmI0MTZiM2MxMjFlZmM0YTI0OGMyODZmZWUzM2QzNjhiZGE4MGRiODRhYWY3YjU2OTdiM2U1YmY%3D",
+  "timeline_bm": [
+    {
+      "date": "29/10/1976",
+      "project_id": "190",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/190_BM/AKTA 178- WARTA ASAL (BM).pdf"
+    },
+    {
+      "date": "02/04/2001",
+      "project_id": "3641627",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3641627_BM/AKTA 178- CETAKAN 2001(BM).pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15882",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 178.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 178.pdf",
+  "latest_amendment_pdf_bm": ""
 }

@@ -44,5 +44,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 492.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDkyJmxhbmc9Qk0mZGF0ZT0yMy0xMS0yMDIzI3RpbWVsaW5lfDQxNDNmMTRhNzkyYjlhYTZlZDkxNjBlZjQ0MDU1YTdlMzFlMjgxN2JkOWI2Zjc4MzAxZDY0ZjJlZWEzYWJiNjE%3D",
+  "timeline_bm": [
+    {
+      "date": "15/08/1957",
+      "project_id": "504",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/504_BM/ilovepdf_merged (7).pdf"
+    },
+    {
+      "date": "16/03/1974",
+      "project_id": "143",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/143_BM/AKTA 131.pdf"
+    },
+    {
+      "date": "26/11/2023",
+      "project_id": "1804981",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/terjemahan/1804981_BM/Akta 492.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/143_BM/AKTA 131.pdf"
 }

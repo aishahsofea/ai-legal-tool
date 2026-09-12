@@ -56,5 +56,52 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 345 - Criminal Justice Act 1953.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728012_BI/A1302 BI_unlocked.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzQ1Jmxhbmc9Qk0mZGF0ZT0wMS0wNi0yMDEzI3RpbWVsaW5lfDRkZGI2NGZjYTg3YWZmMzY1MWY5ODU0NzM3YTQzMWQ3YzY5OTRlMmYyYmZlNjIxODc0MTFlMmI4MDUzN2QxZDU%3D",
+  "timeline_bm": [
+    {
+      "date": "28/04/1953",
+      "project_id": "357",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/357_BM/ORD. 14-1953 BM.pdf"
+    },
+    {
+      "date": "27/06/1987",
+      "project_id": "16257",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 345 - Akta Keadilan Jenayah 1953.pdf"
+    },
+    {
+      "date": "13/06/1988",
+      "project_id": "1727602",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727602_BM/Akta 345 Revised BM.pdf"
+    },
+    {
+      "date": "11/11/1991",
+      "project_id": "1728263",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728263/P.U. A 407-1991.pdf"
+    },
+    {
+      "date": "12/11/1991",
+      "project_id": "1728264",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728264/P.U. A 408-1991.pdf"
+    },
+    {
+      "date": "06/08/2007",
+      "project_id": "1728012",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728012_BM/A1302 BM_unlocked.pdf"
+    },
+    {
+      "date": "08/06/2013",
+      "project_id": "16257",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 345 - Akta Keadilan Jenayah 1953.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 345 - Akta Keadilan Jenayah 1953.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728012_BM/A1302 BM_unlocked.pdf"
 }

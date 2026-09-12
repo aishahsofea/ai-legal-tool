@@ -45,5 +45,28 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjY3Jmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDEyI3RpbWVsaW5lfDBiODQ0OWM3YjJjMjllYmNmZDFmZTRkNDg1NjNmMzI3ODZhZTUyYmQwYTVlNTMyYTkzNDZiNDlkNTRjM2M1NmY%3D",
+  "timeline_bm": [
+    {
+      "date": "27/07/2007",
+      "project_id": "679",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/679_BM/Akta 667 BM_unlocked.pdf"
+    },
+    {
+      "date": "03/11/2012",
+      "project_id": "15804",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15804_BM/Akta 667 Reprint 2012_unlocked.pdf"
+    },
+    {
+      "date": "14/07/2024",
+      "project_id": "2205941",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2205941/PUB_253.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15804_BM/Akta 667 Reprint 2012_unlocked.pdf",
+  "latest_amendment_pdf_bm": ""
 }

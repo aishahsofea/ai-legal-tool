@@ -195,5 +195,112 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 6
+  "subsidiary_total": 6,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDg2Jmxhbmc9Qk0mZGF0ZT0wMS0xMC0yMDIyI3RpbWVsaW5lfDkxNmZmOTA2MjE5ODRmOWFlZTg0MjA0ZDQ5MzdmZDkxNWE4ZGMwNjBiZjIxMjdiYWUxZjZkNjU1NDEwOGFiNzY%3D",
+  "timeline_bm": [
+    {
+      "date": "19/12/1969",
+      "project_id": "3672101",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3672101/PUA 515 1969.pdf"
+    },
+    {
+      "date": "01/05/1971",
+      "project_id": "3667342",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3667342_BM/AKTA A49.pdf"
+    },
+    {
+      "date": "02/09/1973",
+      "project_id": "3667393",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3667393_BM/AKTA A216.pdf"
+    },
+    {
+      "date": "11/03/1974",
+      "project_id": "3672209",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3672209/PUA 81 1974.pdf"
+    },
+    {
+      "date": "01/07/1975",
+      "project_id": "3672240",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3672240/PUA 184 1975.pdf"
+    },
+    {
+      "date": "03/03/1976",
+      "project_id": "3667418",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3667418_BM/AKTA A336.pdf"
+    },
+    {
+      "date": "24/03/1977",
+      "project_id": "3667454",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3667454_BM/AKTA A387.pdf"
+    },
+    {
+      "date": "25/03/1977",
+      "project_id": "3667480",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3667480_BM/AKTA A388.pdf"
+    },
+    {
+      "date": "28/01/1984",
+      "project_id": "3668832",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3668832_BM/AKTA A575.pdf"
+    },
+    {
+      "date": "22/09/1991",
+      "project_id": "3668873",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3668873_BM/AKTA A804.pdf"
+    },
+    {
+      "date": "26/07/1993",
+      "project_id": "3668896",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3668896_BM/AKTA A852.pdf"
+    },
+    {
+      "date": "12/08/1997",
+      "project_id": "3668915",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3668915_BM/AKTA A999.pdf"
+    },
+    {
+      "date": "14/01/2010",
+      "project_id": "1712801",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/PUA 455 2009.pdf"
+    },
+    {
+      "date": "27/01/2011",
+      "project_id": "1712802",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/PUB 16 2011.pdf"
+    },
+    {
+      "date": "24/09/2016",
+      "project_id": "948",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/948_BM/Akta A1517_unlocked.pdf"
+    },
+    {
+      "date": "16/12/2017",
+      "project_id": "7245",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/7245/PUA 374 2017.pdf"
+    },
+    {
+      "date": "17/10/2022",
+      "project_id": "1744763",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1744763/PUA 305 (2022).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/7245/PUA 374 2017.pdf"
 }

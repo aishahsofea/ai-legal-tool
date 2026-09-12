@@ -32,5 +32,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 132.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTMyJmxhbmc9Qk0mZGF0ZT0wMS0wNy0yMDIwI3RpbWVsaW5lfDE2MDAyZGJjODFlOTI0NzNmYjhjMjYwNDYyZDlhZTQ1ODNmNjZkMDdiYzIyN2YwZTFlMzFhNGZhYmNmMzk1N2E%3D",
+  "timeline_bm": [
+    {
+      "date": "14/06/1974",
+      "project_id": "144",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/144_BM/AKTA 132 (ORI) BM.pdf"
+    },
+    {
+      "date": "03/01/1995",
+      "project_id": "2259586",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259586_BM/AKTA 132 CETAKAN SEMULA 1 - 1995 (BM).pdf"
+    },
+    {
+      "date": "03/05/2000",
+      "project_id": "3454306",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3454306_BM/AKTA 132 CETAKAN 2-2000 (BM).pdf"
+    },
+    {
+      "date": "05/07/2020",
+      "project_id": "1674999",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1674999_BM/Akta 132 (Muktamad).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1674999_BM/Akta 132 (Muktamad).pdf",
+  "latest_amendment_pdf_bm": ""
 }

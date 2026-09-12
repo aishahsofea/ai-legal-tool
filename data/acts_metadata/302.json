@@ -56,5 +56,46 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1722716_BI/Act 302 Draf Muktamad (02022022).pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712861_BI/03. A843 BI.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzAyJmxhbmc9Qk0mZGF0ZT0wMi0wMi0yMDIyI3RpbWVsaW5lfDU4OGI1NzkzMjI5NTQzMDVkM2Q3OTA5NTdiM2RlYzk1ZGY0MmU5YzNkZmQ5MWFmN2I3ZTMwOTgzMjYzZGQ0MTA%3D",
+  "timeline_bm": [
+    {
+      "date": "29/06/1984",
+      "project_id": "314",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/314_BM/302 BM.pdf"
+    },
+    {
+      "date": "17/01/1987",
+      "project_id": "1727941",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727941_BM/01. A663 BM.pdf"
+    },
+    {
+      "date": "15/09/1991",
+      "project_id": "1727942",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727942_BM/02. A807 BM.pdf"
+    },
+    {
+      "date": "08/02/1993",
+      "project_id": "1712861",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712861_BM/03. A843 BM.pdf"
+    },
+    {
+      "date": "06/08/2013",
+      "project_id": "16178",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 302 - Akta Petroleum (Langkah-Langkah Keselamatan) 1984.pdf"
+    },
+    {
+      "date": "08/02/2022",
+      "project_id": "1722716",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1722716_BM/Akta 302 Draf Muktamad (02022023).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1722716_BM/Akta 302 Draf Muktamad (02022023).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712861_BM/03. A843 BM.pdf"
 }

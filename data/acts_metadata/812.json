@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1822716_BI/Act 812 - Final (1.6.2023).pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODEyJmxhbmc9Qk0mZGF0ZT0wMS0wNi0yMDIzI3RpbWVsaW5lfDUxNTY1MjM1MTA5ZWZlN2NlNWVkZDU5OGY2MWQ0ODllNTk4OGI2NmFiNTc2MjRmYTRkYWUzZTZhZmFmNDBjZTg%3D",
+  "timeline_bm": [
+    {
+      "date": "28/12/2018",
+      "project_id": "1695979",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1695979_BM/AKTA 812.pdf"
+    },
+    {
+      "date": "03/06/2023",
+      "project_id": "1822716",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1822716_BM/Akta 812 - Muktamad (1.6.2023).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1822716_BM/Akta 812 - Muktamad (1.6.2023).pdf",
+  "latest_amendment_pdf_bm": ""
 }

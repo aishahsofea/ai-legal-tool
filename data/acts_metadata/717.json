@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 717 (bi)- first draft (2).pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzE3Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDE2I3RpbWVsaW5lfDA1ZjhlY2M2ZGQ0ODRhYWQyMWVhOWI4ZTA5NjE3MWMxNzdkMjE0YjM0ZWU1ZWY1YTQwZmFkNTQ1YzZkZDczYjQ%3D",
+  "timeline_bm": [
+    {
+      "date": "31/12/2010",
+      "project_id": "729",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta717 ori.pdf"
+    },
+    {
+      "date": "03/12/2016",
+      "project_id": "16394",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 717 (bm)- draf pertama (2_6_2017).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 717 (bm)- draf pertama (2_6_2017).pdf",
+  "latest_amendment_pdf_bm": ""
 }

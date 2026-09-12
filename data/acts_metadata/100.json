@@ -102,5 +102,88 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTAwJmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfGUzYTk4NTNmZjZlNjkxNzdlZTk2ZDJmYmIwMzg1NzZmODljNWZlNjAzNzJlMGFjYTkzYjQyNTk3NDFlNzg5YWY%3D",
+  "timeline_bm": [
+    {
+      "date": "03/04/1956",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "15/11/1958",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/06/1959",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "25/01/1963",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "20/04/1966",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/01/1973",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "08/03/1973",
+      "project_id": "1727566",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727566_BM/AKTA 100 - REVISED 1973.pdf"
+    },
+    {
+      "date": "05/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "31/01/1976",
+      "project_id": "1702416",
+      "log_type": "TRANSLATE",
+      "pdf_url": ""
+    },
+    {
+      "date": "28/12/1980",
+      "project_id": "1712494",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1712494/008 - P.U. (A) 357-1980.pdf"
+    },
+    {
+      "date": "12/08/1994",
+      "project_id": "3302673",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3302673_BM/AKTA 100 - REPRINT 1994.pdf"
+    },
+    {
+      "date": "12/03/2000",
+      "project_id": "2259630",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259630_BM/AKTA 100 - REPRINT 2000.pdf"
+    },
+    {
+      "date": "14/01/2006",
+      "project_id": "1727313",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 100 (Reprint2006)(BM).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 100 (Reprint2006)(BM).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1712494/008 - P.U. (A) 357-1980.pdf"
 }

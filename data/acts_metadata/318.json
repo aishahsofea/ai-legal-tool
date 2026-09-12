@@ -507,5 +507,208 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 34
+  "subsidiary_total": 34,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzE4Jmxhbmc9Qk0mZGF0ZT0wMS0wNC0yMDIxI3RpbWVsaW5lfDZiODM3Y2JhODk2ZGE1MWMyYTEwMjhiM2E0NWUzMzFiNDIwY2RlY2RiZTRhYzc1MTYyZTJhNTc4MGVhMzJlMGM%3D",
+  "timeline_bm": [
+    {
+      "date": "30/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "03/01/1985",
+      "project_id": "1712866",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/P.U.(B)501(1994).pdf"
+    },
+    {
+      "date": "02/06/1985",
+      "project_id": "330",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/330_BM/Warta Akta Hakmilik Strata 1985 [Act 318].pdf"
+    },
+    {
+      "date": "26/02/1990",
+      "project_id": "1727962",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727962_BM/02. Akta A753 - Akta Hakmilik Strata (Pindaan) 1990.pdf"
+    },
+    {
+      "date": "06/08/1996",
+      "project_id": "1727963",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727963_BM/03. Akta A951 - Akta Hakmilik Strata (Pindaan) 1996.pdf"
+    },
+    {
+      "date": "04/07/2001",
+      "project_id": "1727964",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727964_BM/04. Akta A1107 - Akta Hakmilik Strata (Pindaan) 2001_unlocked.pdf"
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "3249501",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3249501_BM/Akta Hak Milik Strata 1985 (Act 318) (2006)_unlocked.pdf"
+    },
+    {
+      "date": "23/02/2007",
+      "project_id": "1727965",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727965_BM/05. Akta A1290 - Akta Hakmilik Strata (Pindaan) 2007_unlocked.pdf"
+    },
+    {
+      "date": "02/01/2010",
+      "project_id": "1728257",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728257/06. PU(A) 458-2009_unlocked.pdf"
+    },
+    {
+      "date": "17/02/2013",
+      "project_id": "881",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/881_BM/07. Akta A1450_unlocked.pdf"
+    },
+    {
+      "date": "17/01/2015",
+      "project_id": "4886",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20150601_P.U. (A) 105-Perintah Hakmilik Strata (Pindaan Borang) 2015.pdf"
+    },
+    {
+      "date": "13/06/2015",
+      "project_id": "4951",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20150709_P.U. (A) 142_CORRIGENDUM.pdf"
+    },
+    {
+      "date": "22/09/2016",
+      "project_id": "949",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20160909_A1518_BM_Akta A1518 BM.pdf"
+    },
+    {
+      "date": "15/01/2017",
+      "project_id": "6280",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20161229_P.U. (A) 379.pdf"
+    },
+    {
+      "date": "16/08/2017",
+      "project_id": "16522",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Draf Muktamad Akta 318 (Kemas kini 29.08.2017).pdf"
+    },
+    {
+      "date": "17/01/2018",
+      "project_id": "7236",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20171129_P.U. (A) 368 2017.pdf"
+    },
+    {
+      "date": "18/03/2018",
+      "project_id": "1712875",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 318 (online 2018).pdf"
+    },
+    {
+      "date": "19/10/2020",
+      "project_id": "1727538",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 318 (3.11.2020)(ONLINE VERSION).pdf"
+    },
+    {
+      "date": "12/04/2021",
+      "project_id": "1698251",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1698251/13. PUA 128 2021_unlocked.pdf"
+    },
+    {
+      "date": "21/04/2021",
+      "project_id": "1694341",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1694341_BM/Akta 318 Muktamad_28122021.pdf"
+    },
+    {
+      "date": "02/08/2021",
+      "project_id": "1704467",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1704467/PUA 303.pdf"
+    },
+    {
+      "date": "03/11/2021",
+      "project_id": "1712065",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1712065/PUA 393 (2021).pdf"
+    },
+    {
+      "date": "04/11/2021",
+      "project_id": "1712065",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1712065/PUA 393 (2021).pdf"
+    },
+    {
+      "date": "21/11/2021",
+      "project_id": "1713459",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1713459/PUB521 reupload.pdf"
+    },
+    {
+      "date": "25/03/2022",
+      "project_id": "1724560",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1724560/PUB 129.pdf"
+    },
+    {
+      "date": "15/10/2022",
+      "project_id": "1743331",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1743331/PUB453.pdf"
+    },
+    {
+      "date": "23/01/2023",
+      "project_id": "1754341",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1754341/PUB 645.pdf"
+    },
+    {
+      "date": "31/10/2023",
+      "project_id": "1863712",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1863712/PUB 430 (2023).pdf"
+    },
+    {
+      "date": "23/11/2023",
+      "project_id": "1876980",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1876980/PUB479_2023.pdf"
+    },
+    {
+      "date": "29/03/2024",
+      "project_id": "2039992",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2039992/PUB69_2024.pdf"
+    },
+    {
+      "date": "10/10/2024",
+      "project_id": "2339508",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2339508/PUB 352_2024.pdf"
+    },
+    {
+      "date": "04/01/2025",
+      "project_id": "2536388",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2536388/PUB 480 (2024).pdf"
+    },
+    {
+      "date": "19/07/2026",
+      "project_id": "3561006",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3561006/PUB 211_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1694341_BM/Akta 318 Muktamad_28122021.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1698251/13. PUA 128 2021_unlocked.pdf"
 }

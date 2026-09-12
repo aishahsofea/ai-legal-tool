@@ -26,5 +26,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 595-Reprint 2006.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTk1Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfGQ5MWVhZTdlNWY3YWE5NmM3NDExYzc4NTUxYjU1OTQ3Y2ViZGQwOWQ5OTUwOTlhMmJlMjI2MzU1ZDI5YTE1ODA%3D",
+  "timeline_bm": [
+    {
+      "date": "10/09/1999",
+      "project_id": "607",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/607_BM/AKTA 595 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/01/2006",
+      "project_id": "1727497",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 595-Cetakan Semula Jan 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 595-Cetakan Semula Jan 2006.pdf",
+  "latest_amendment_pdf_bm": ""
 }

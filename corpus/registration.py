@@ -11,7 +11,7 @@ from pathlib import Path
 import fitz
 
 from corpus.identity import asset_key, document_id, sha256_file
-from corpus.manifest import _timeline_for, source_language
+from corpus.manifest import _timeline_for, scraped_at_for, source_language
 from corpus.models import CorpusDocument
 
 
@@ -111,7 +111,7 @@ def register_pdf(
         source_url=source_url,
         timeline_date=timeline_date,
         timeline_type=timeline_type,
-        metadata_scraped_at=str(metadata.get("scraped_at", "")),
+        metadata_scraped_at=scraped_at_for(metadata, language),
         lifecycle_status="registered",
         document_kind="reprint",
         detail_url=str(detail_url if detail_url is not None else metadata.get("detail_url", "")),
@@ -132,7 +132,7 @@ def register_pdf(
     observation = {
         "document_id": identity,
         "source_url": source_url,
-        "observed_at": str(metadata.get("scraped_at", "")),
+        "observed_at": scraped_at_for(metadata, language),
         "timeline_date": timeline_date,
         "timeline_type": timeline_type,
     }

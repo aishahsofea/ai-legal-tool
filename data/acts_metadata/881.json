@@ -1,0 +1,29 @@
+{
+  "act_number": "881",
+  "act_type": "updated",
+  "scraped_at": "2026-09-12T16:30:37.151698+00:00",
+  "detail_url": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODgxJmxhbmc9QkkmZGF0ZT0yNi0wNS0yMDI2I3RpbWVsaW5lfDUwNzIzODJlZGQ5YmYwMjRmODgxODBhNzc2MDBlYzU4Y2ZiY2ZjZmZmMzQ3MjhjNDVkYWI5YmI0YjZjZjM5NTg%3D",
+  "timeline": [
+    {
+      "date": "27/05/2026",
+      "project_id": "3522679",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3522679_BI/Act 881 - INTERNATIONAL SETTLEMENT AGREEMENTS RESULTING FROM MEDIATION ACT 2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODgxJmxhbmc9Qk0mZGF0ZT0yNi0wNS0yMDI2I3RpbWVsaW5lfDUwY2Y2ODUyZTg0NDhjNThhMzRhNGYzMTY2ZmU2MmQ3NjVhOTA3ZTRkMTg3OTdlZTUwYzhmZjYzNDhmMTM0MGY%3D",
+  "timeline_bm": [
+    {
+      "date": "27/05/2026",
+      "project_id": "3522679",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3522679_BM/Akta 881 - AKTA PERJANJIAN PENYELESAIAN ANTARABANGSA YANG TERHASIL DARIPADA PENGANTARAAN 2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
+}

@@ -567,5 +567,58 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 26
+  "subsidiary_total": 26,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjEmbGFuZz1CTSZkYXRlPTAxLTAxLTE5NTgjdGltZWxpbmV8YmM2YTdmYjg1N2FhMGUyZTdlYzY2MzU4YjQwY2ZhMDc2MWJlMDEyMTViMjU3YmYxZDkzYjg5YzRiNDdhMzEwOQ%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "02/01/1958",
+      "project_id": "73",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/1970",
+      "project_id": "1734835",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/AKTA A39.pdf"
+    },
+    {
+      "date": "16/10/1972",
+      "project_id": "1734837",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/AKTA A151 thn 1972.pdf"
+    },
+    {
+      "date": "04/02/1975",
+      "project_id": "1734839",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/AKTA A277.pdf"
+    },
+    {
+      "date": "01/09/1976",
+      "project_id": "1734840",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/AKTA A354 thn 1976.pdf"
+    },
+    {
+      "date": "16/06/1977",
+      "project_id": "1734841",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/AKTA A398 thn 1977.pdf"
+    },
+    {
+      "date": "17/08/1979",
+      "project_id": "1734842",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/AKTA A458.pdf"
+    },
+    {
+      "date": "27/02/1988",
+      "project_id": "351",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/351_BM/Akta 339 BM (NEW).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/351_BM/Akta 339 BM (NEW).pdf"
 }

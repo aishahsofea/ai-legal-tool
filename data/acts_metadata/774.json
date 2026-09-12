@@ -54,5 +54,28 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 3
+  "subsidiary_total": 3,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Nzc0Jmxhbmc9Qk0mZGF0ZT0xNS0wNy0yMDIyI3RpbWVsaW5lfDEwYTNkNDJmYzYwNTMzYzQwMzRiMDU1ZGVkM2IyYjVjNTI1MmYwMTFkMjY5MGNlNmU4MmQ1YjdhZjFkYTJhNzY%3D",
+  "timeline_bm": [
+    {
+      "date": "19/02/2016",
+      "project_id": "786",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/aktaBM_20160218_AKTA776-BM.pdf"
+    },
+    {
+      "date": "25/03/2022",
+      "project_id": "1726489",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1726489/PUA 72 (2022).pdf"
+    },
+    {
+      "date": "18/07/2022",
+      "project_id": "1726661",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1726661_BM/15072022_Akta 774 muktamad.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1726661_BM/15072022_Akta 774 muktamad.pdf",
+  "latest_amendment_pdf_bm": ""
 }

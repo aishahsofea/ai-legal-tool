@@ -198,5 +198,58 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 15
+  "subsidiary_total": 15,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDQ2Jmxhbmc9Qk0mZGF0ZT0wMS0wMi0yMDIxI3RpbWVsaW5lfGVjZWRiNjFiMWIwMzAxMjNkYzZiYTUwZDcxZjNlNjBmNWU0NjNhZDIyZGU2ZGU0M2Y2YWExODQ3ZDdhNTAxZmE%3D",
+  "timeline_bm": [
+    {
+      "date": "31/08/1990",
+      "project_id": "458",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/458_BM/AKTA 446.pdf"
+    },
+    {
+      "date": "03/01/2010",
+      "project_id": "2257242",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257242_BM/Akta_446 Reprint 2010.pdf"
+    },
+    {
+      "date": "04/12/2016",
+      "project_id": "16552",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 446.pdf"
+    },
+    {
+      "date": "27/09/2019",
+      "project_id": "632166",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/632166_BM/WJW014169 BM.pdf"
+    },
+    {
+      "date": "06/02/2021",
+      "project_id": "1678637",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1678637_BM/Akta 446 - Reprint 2021.pdf"
+    },
+    {
+      "date": "31/01/2023",
+      "project_id": "1767779",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1767779/P.U. (A) 28_2022 (PERINTAH STANDARD MINIMUM PERUMAHAN PENGINAPAN DAN KEMUDAHAN PEKERJA).pdf"
+    },
+    {
+      "date": "10/02/2026",
+      "project_id": "3344943",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3344943/P.U. (A) 49_2026.pdf"
+    },
+    {
+      "date": "11/02/2026",
+      "project_id": "3344943",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3344943/P.U. (A) 49_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1678637_BM/Akta 446 - Reprint 2021.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/632166_BM/WJW014169 BM.pdf"
 }

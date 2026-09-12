@@ -315,5 +315,76 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 26
+  "subsidiary_total": 26,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTA2Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfDhlODMzYjhhNjgyM2QxMjA3NzY0ZTVmNThhZWE4NDc0ZDQ3NTFmNGExYTA0OWI5ZThhMTI0NTFmZDUwOGMxZGU%3D",
+  "timeline_bm": [
+    {
+      "date": "16/07/1993",
+      "project_id": "518",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/518_BM/Akta 506.pdf"
+    },
+    {
+      "date": "03/01/2006",
+      "project_id": "16057",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 506.pdf"
+    },
+    {
+      "date": "22/07/2007",
+      "project_id": "2997483",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2997483_BM/AKTA A1292.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16707",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 506 - Akta Pusat Jagaan 1993.pdf"
+    },
+    {
+      "date": "27/04/2024",
+      "project_id": "2103126",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2103126/PUB149_2024.pdf"
+    },
+    {
+      "date": "04/08/2024",
+      "project_id": "2243649",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2243649/PUB 292.pdf"
+    },
+    {
+      "date": "25/10/2024",
+      "project_id": "2433392",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2433392/PUB421_2024.pdf"
+    },
+    {
+      "date": "25/03/2025",
+      "project_id": "2763471",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2763471/PUB 104.pdf"
+    },
+    {
+      "date": "08/08/2025",
+      "project_id": "2998514",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2998514/PUB 291_2025.pdf"
+    },
+    {
+      "date": "04/10/2025",
+      "project_id": "3089647",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3089647/PUB 346.pdf"
+    },
+    {
+      "date": "24/11/2025",
+      "project_id": "3193402",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3193402/PUB400_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 506 - Akta Pusat Jagaan 1993.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2997483_BM/AKTA A1292.pdf"
 }

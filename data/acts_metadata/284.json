@@ -38,5 +38,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 284 - Raja-Raja and the Yang di-Pertua-Yang di-Pertua Ne.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Mjg0Jmxhbmc9Qk0mZGF0ZT0wMS0xMC0yMDIxI3RpbWVsaW5lfDExODRmYzdhZGQyZDNhMzEwYjc2ZTBjNDMwMzFlZTRhZGEwN2FkMTI2ZjFkMzk3YTZlNDJiOTJhZmEwNGZjY2M%3D",
+  "timeline_bm": [
+    {
+      "date": "13/05/1983",
+      "project_id": "296",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/296_BM/Akta 284.pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16156",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 284 - Akta Kumpulan Wang Biasiswa Pengajian Tinggi Raja.pdf"
+    },
+    {
+      "date": "04/10/2021",
+      "project_id": "1687453",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1687453_BM/Muktamad_Akta 284_1Okt2021.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1687453_BM/Muktamad_Akta 284_1Okt2021.pdf",
+  "latest_amendment_pdf_bm": ""
 }

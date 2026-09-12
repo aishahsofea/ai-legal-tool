@@ -26,5 +26,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 649.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjQ5Jmxhbmc9Qk0mZGF0ZT0wNi0xMC0yMDIzI3RpbWVsaW5lfDg4ZGY2OWY2NjdhYzE5ZjNhZWM4NjVmODM5NmYwNDdiNGU0ODZmZjk0MDljYmI1NTAwMzFjZjVkZWU1ZjJhZjA%3D",
+  "timeline_bm": [
+    {
+      "date": "31/03/2006",
+      "project_id": "3597103",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3597103_BM/Akta 649 Reprint 2006.pdf"
+    },
+    {
+      "date": "08/10/2023",
+      "project_id": "1843917",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/terjemahan/1843917_BM/Akta 649.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3597103_BM/Akta 649 Reprint 2006.pdf",
+  "latest_amendment_pdf_bm": ""
 }

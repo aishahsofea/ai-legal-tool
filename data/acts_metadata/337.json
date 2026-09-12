@@ -32,5 +32,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15381_BI/Act 337 - Reprint 2006.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzM3Jmxhbmc9Qk0mZGF0ZT0wMS0wOC0yMDE5I3RpbWVsaW5lfDZkY2UzMTNjZWNjNDJjZmU5OWM2N2FmZmE1YWQ1YTUxMmY5YmEzMjFlMGMwMWMzMDU4ZDVlNjE3ZjMyNmUzNmI%3D",
+  "timeline_bm": [
+    {
+      "date": "01/01/1988",
+      "project_id": "349",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/349_BM/AKTA 337.pdf"
+    },
+    {
+      "date": "03/08/2019",
+      "project_id": "1712832",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 337 (Muktamad)-online version 2019.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 337 (Muktamad)-online version 2019.pdf",
+  "latest_amendment_pdf_bm": ""
 }

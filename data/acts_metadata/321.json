@@ -44,5 +44,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 321 - Rubber Statutory Bodies Act 1985.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727741_BI/ACT A349.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzIxJmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDEyI3RpbWVsaW5lfGIxYTNkMmViYjJlODVlMTQzNWVkY2Y4ZjFhZmUzNjc5ZWM1MjRiNjZiNWNiNzRkNjRmYTU0YjQ3ZTJkMzVmZWY%3D",
+  "timeline_bm": [
+    {
+      "date": "30/04/1975",
+      "project_id": "1727740",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727740_BM/AKTA A292.pdf"
+    },
+    {
+      "date": "02/06/1976",
+      "project_id": "1727741",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727741_BM/AKTA A349.pdf"
+    },
+    {
+      "date": "15/09/1985",
+      "project_id": "333",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/333_BM/Warta Asal Akta Badan Berkanun Getah 1985 [Akta 321].pdf"
+    },
+    {
+      "date": "05/12/2012",
+      "project_id": "16748",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 321 - Akta Badan Berkanun Getah 1985.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 321 - Akta Badan Berkanun Getah 1985.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727741_BM/AKTA A349.pdf"
 }

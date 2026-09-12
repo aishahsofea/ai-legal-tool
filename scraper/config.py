@@ -13,9 +13,13 @@ LISTING_ENDPOINTS = {
 
 DETAIL_URL    = f"{BASE_URL}/act-detail.php"
 SUBSID_URL    = f"{BASE_URL}/json-subsid-2024.php"
+PRINCIPAL_URL = f"{BASE_URL}/principal.php"
 HOMEPAGE_URL  = BASE_URL
 
 # Rate limiting
+# Re-verified against the encrypted listing + signed processFile.php
+# endpoints on 2026-09-12 (issue #64): no 429/503 at this pace, so kept
+# rather than carried over by habit from the retired endpoints.
 REQUEST_DELAY  = 1.5   # seconds between requests
 RETRY_DELAYS   = [5, 15, 30, 60]  # successive retry waits in seconds
 FETCH_PAGE_SIZE = 100  # DataTables records per page

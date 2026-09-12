@@ -98,5 +98,100 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2222512_BI/Act 88 Reprint 2006.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/384_BI/ACT 372.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODgmbGFuZz1CTSZkYXRlPTAxLTAxLTIwMDYjdGltZWxpbmV8NDUxOTlkYTA5MzM5OGFhYzBhYzc5YjVmMmRjZTUwMjJlOTRlNTViMGM4ZjA5NDU2MGUwZTM0YjI3MmJmZmM3NQ%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "02/05/1969",
+      "project_id": "18",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/18_BM/AKTA 6.pdf"
+    },
+    {
+      "date": "02/10/1972",
+      "project_id": "100",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "25/03/1973",
+      "project_id": "114",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/114_BM/AKTA 102.pdf"
+    },
+    {
+      "date": "26/08/1974",
+      "project_id": "158",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/158_BM/AKTA 146.pdf"
+    },
+    {
+      "date": "02/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "15/01/1976",
+      "project_id": "1712784",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712784_BM/AKTA A324.pdf"
+    },
+    {
+      "date": "08/03/1979",
+      "project_id": "3342028",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3342028_BM/AKTA A454.pdf"
+    },
+    {
+      "date": "08/03/1983",
+      "project_id": "2257020",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257020_BM/AKTA 88 - REPRINT 1983.pdf"
+    },
+    {
+      "date": "28/01/1984",
+      "project_id": "1727744",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727744_BM/AKTA A573.pdf"
+    },
+    {
+      "date": "10/01/1987",
+      "project_id": "1727745",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727745_BM/AKTA A660.pdf"
+    },
+    {
+      "date": "26/10/1988",
+      "project_id": "15438",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15438_BM/AKTA 88 - REPRINT 1988.pdf"
+    },
+    {
+      "date": "05/09/1989",
+      "project_id": "384",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/384_BM/AKTA 372.pdf"
+    },
+    {
+      "date": "14/05/1994",
+      "project_id": "2257027",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257027_BM/AKTA 88 - REPRINT 1994.pdf"
+    },
+    {
+      "date": "14/10/1999",
+      "project_id": "1727305",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727305_BM/AKTA 88 - REPRINT 1999.pdf"
+    },
+    {
+      "date": "16/01/2006",
+      "project_id": "2222509",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2222509_BM/Akta 88 Cetakan Semula 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2222509_BM/Akta 88 Cetakan Semula 2006.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/384_BM/AKTA 372.pdf"
 }

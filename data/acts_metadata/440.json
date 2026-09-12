@@ -42,5 +42,22 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDQwJmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfDcwN2M4ZWVjZjkxYjQ4NzcyYjE0NmQ1Y2IxNDBlZGNiZDEzOTliMTdjNWRmYzBkYTk2ZGYyMjI3MDgxMTNkNGM%3D",
+  "timeline_bm": [
+    {
+      "date": "31/08/1990",
+      "project_id": "452",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/452_BM/AKTA 440.pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16649",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 440 - Akta Pihak Berkuasa Bersama Malaysia-Thailand 1990.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 440 - Akta Pihak Berkuasa Bersama Malaysia-Thailand 1990.pdf",
+  "latest_amendment_pdf_bm": ""
 }

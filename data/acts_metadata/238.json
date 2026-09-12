@@ -90,5 +90,58 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 3
+  "subsidiary_total": 3,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjM4Jmxhbmc9Qk0mZGF0ZT0wMS0wMi0yMDEzI3RpbWVsaW5lfGIzM2ZhZGRmMmQyNjYyZGU5NzY0ZTM2YWVkYTE2MWU1YWJmNGMzNjE3ZDQzZDI0MzM2YzVkNjA4YTEyODk0NTU%3D",
+  "timeline_bm": [
+    {
+      "date": "08/08/1980",
+      "project_id": "250",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 238.pdf"
+    },
+    {
+      "date": "18/12/1983",
+      "project_id": "1742053",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta A568.pdf"
+    },
+    {
+      "date": "27/07/2002",
+      "project_id": "3159907",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3159907_BM/A1169 PENYELARASAN PENCEN 2002 PINDAAN_unlocked.pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "16118",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "13/01/2009",
+      "project_id": "3159871",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3159871_BM/A1345 PENYELARASAN PENCEN 2009 PINDAAN_unlocked.pdf"
+    },
+    {
+      "date": "07/01/2012",
+      "project_id": "842",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20111231_A1411_BM_JW001644  (Akta A1411).pdf"
+    },
+    {
+      "date": "08/01/2013",
+      "project_id": "878",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20130110_1447_BM_Akta Penyelarasan Pencen (Pindaan) 2013 (BM).1.pdf"
+    },
+    {
+      "date": "09/02/2013",
+      "project_id": "16761",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 238 - Akta Penyelarasan Pencen 1980.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 238 - Akta Penyelarasan Pencen 1980.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20130110_1447_BM_Akta Penyelarasan Pencen (Pindaan) 2013 (BM).1.pdf"
 }

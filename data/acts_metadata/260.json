@@ -129,5 +129,88 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 4
+  "subsidiary_total": 4,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjYwJmxhbmc9Qk0mZGF0ZT0xMC0wMi0xOTgzI3RpbWVsaW5lfGI4Zjk1ZDFhODQyMmJmYTQ3ZGMzMmFhY2I2ZDBmZDA2ODc5YzEyMjMxMDhlOGNlMjE1ZTU1ODNiNmYzNzZlMTM%3D",
+  "timeline_bm": [
+    {
+      "date": "09/04/1955",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "15/11/1958",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "19/03/1964",
+      "project_id": "103",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "22/05/1967",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "02/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "15/01/1976",
+      "project_id": "1712784",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712784_BM/AKTA A324.pdf"
+    },
+    {
+      "date": "21/10/1981",
+      "project_id": "3182619",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3182619_BM/AKTA 260 REVISED 1981.pdf"
+    },
+    {
+      "date": "11/12/1981",
+      "project_id": "272",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "10/07/1982",
+      "project_id": "3223065",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3223065/PUA 196 1982.pdf"
+    },
+    {
+      "date": "20/02/1983",
+      "project_id": "1702429",
+      "log_type": "TRANSLATE",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/06/1985",
+      "project_id": "3223076",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3223076/PUA 217 1985.pdf"
+    },
+    {
+      "date": "05/01/2026",
+      "project_id": "3263388",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3263388/PUA 454_2025.pdf"
+    },
+    {
+      "date": "06/01/2026",
+      "project_id": "3263388",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3263388/PUA 454_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3223076/PUA 217 1985.pdf"
 }

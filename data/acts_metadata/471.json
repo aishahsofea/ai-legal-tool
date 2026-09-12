@@ -38,5 +38,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 471 - Native Courts (Criminal Jurisdiction) Act 1991.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A835.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDcxJmxhbmc9Qk0mZGF0ZT0wMS0wMy0yMDEyI3RpbWVsaW5lfDQ2ZmRjMjI1MzI0YjY5YjY3ZTE1OTMwODZjZjMzNmVlNjBkODBlMDZiYzcyODUwZmNlMjA3YmEzN2U3MTZkMzM%3D",
+  "timeline_bm": [
+    {
+      "date": "13/09/1991",
+      "project_id": "483",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/483_BM/AKTA 471.pdf"
+    },
+    {
+      "date": "05/09/1992",
+      "project_id": "1712843",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712843_BM/AKTA A835.pdf"
+    },
+    {
+      "date": "04/03/2012",
+      "project_id": "16673",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 471 - Akta Mahkamah-Mahkamah Anak Negeri (Bidang Kuasa Jenayah) 1991.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 471 - Akta Mahkamah-Mahkamah Anak Negeri (Bidang Kuasa Jenayah) 1991.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712843_BM/AKTA A835.pdf"
 }

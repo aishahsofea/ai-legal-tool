@@ -38,5 +38,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 415.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDE1Jmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDE2I3RpbWVsaW5lfGI3ODkyNWI1YTgzNThiMWZhNDcwZGM4OTdmYzAwYWI0MTU1N2UxZDU2NjA5OTEzYzM2ZDY5YjBmNWYyODI2ZjM%3D",
+  "timeline_bm": [
+    {
+      "date": "29/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "23/12/1989",
+      "project_id": "427",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "31/12/1989",
+      "project_id": "1727631",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727631_BM/Salinan Akta 415-Disemak tahun 1989 (1).pdf"
+    },
+    {
+      "date": "05/11/2016",
+      "project_id": "16616",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 415-15.8.2016.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 415-15.8.2016.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
 }

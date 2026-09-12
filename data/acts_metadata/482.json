@@ -123,5 +123,58 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 6
+  "subsidiary_total": 6,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDgyJmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDIwI3RpbWVsaW5lfGM4OWRkYWQ4NzIwNDI0OGY2MzViNjljYTkwYmM4NTVkMzQwNjYyZWNkYmJlNzgyMjYzNGQ0ZDg1ZDYxZDEzOGE%3D",
+  "timeline_bm": [
+    {
+      "date": "21/02/1992",
+      "project_id": "494",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/494_BM/AKTA 482.pdf"
+    },
+    {
+      "date": "12/09/1998",
+      "project_id": "3615745",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3615745_BM/AKTA A1037.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "16009",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta_482.pdf"
+    },
+    {
+      "date": "14/01/2018",
+      "project_id": "993",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20180110_A1562_BM_Akta A1562.pdf"
+    },
+    {
+      "date": "06/12/2020",
+      "project_id": "1684998",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1684998_BM/Akta 482 (Muktamad).pdf"
+    },
+    {
+      "date": "12/06/2024",
+      "project_id": "2152265",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2152265/P.U. (A) 150_2024.pdf"
+    },
+    {
+      "date": "17/09/2025",
+      "project_id": "3069020",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3069020/PUA 327_2025.pdf"
+    },
+    {
+      "date": "11/10/2025",
+      "project_id": "3109858",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3109858/PUA 361_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1684998_BM/Akta 482 (Muktamad).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20180110_A1562_BM_Akta A1562.pdf"
 }

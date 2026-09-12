@@ -38,5 +38,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 160.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728096_BI/Act 160 (1).pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTYwJmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfDJmMzM5MTA0Yjg2MjA1NjgzYTk0Y2MwNTMyNTQzNTJkM2YyNjU5NzEyOWMyMTQ1YTI1OTU3YmYxMWYyZDllMjM%3D",
+  "timeline_bm": [
+    {
+      "date": "29/08/1975",
+      "project_id": "172",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "03/07/1997",
+      "project_id": "2259467",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259467_BM/AKTA 160-CETAKAN 1997 (BM).pdf"
+    },
+    {
+      "date": "03/04/2001",
+      "project_id": "15830",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15830_BM/AKTA 160-CETAKAN 2001(BM).pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "1727321",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 160 reprint 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 160 reprint 2006.pdf",
+  "latest_amendment_pdf_bm": ""
 }

@@ -54,5 +54,28 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTI3Jmxhbmc9Qk0mZGF0ZT0zMC0xMC0yMDI0I3RpbWVsaW5lfGIyYmU2Yjc5ZjljYmUzN2MwYTM4OGI5MzM5NWI0ZjczNTllMTNhZDgyNmFmYWYyZDIxYjIzZGUzMzUxOTRhMDI%3D",
+  "timeline_bm": [
+    {
+      "date": "05/02/2020",
+      "project_id": "757516",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/757516_BM/WJW0146XX BM.pdf"
+    },
+    {
+      "date": "16/07/2021",
+      "project_id": "1704610",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1704610/PUA305.pdf"
+    },
+    {
+      "date": "02/11/2024",
+      "project_id": "1975644",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/terjemahan/1975644_BM/Akta 527.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/757516_BM/WJW0146XX BM.pdf"
 }

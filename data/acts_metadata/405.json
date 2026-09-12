@@ -44,5 +44,40 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 405.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3347134_BI/ACT A477.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDA1Jmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDEzI3RpbWVsaW5lfGM5NjIxZjZmMThiYzU5ZGUxZjhkMGY5ZmRhZmFiMTdjNWU5OGUzODYzMGI0Nzg5ZWIxYzY5ZTJkNTY0Y2YxYzA%3D",
+  "timeline_bm": [
+    {
+      "date": "30/03/1973",
+      "project_id": "3348682",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3348682_BM/AKTA A185.pdf"
+    },
+    {
+      "date": "02/02/1980",
+      "project_id": "3347134",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3347134_BM/AKTA A477.pdf"
+    },
+    {
+      "date": "03/12/1989",
+      "project_id": "1727636",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727636_BM/AKTA 405 - REVISED 1989 1.pdf"
+    },
+    {
+      "date": "11/12/1989",
+      "project_id": "417",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/11/2013",
+      "project_id": "16606",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 405 (31.3.2015).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 405 (31.3.2015).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3347134_BM/AKTA A477.pdf"
 }

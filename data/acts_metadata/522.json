@@ -384,5 +384,172 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 29
+  "subsidiary_total": 29,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTIyJmxhbmc9Qk0mZGF0ZT0xNS0wOS0yMDI1I3RpbWVsaW5lfDlhN2JmMzBkMGRiOTU4ZDU3MmYzZTBmYzY5MTgwNDIxNWE3Yjk5YzQ5MTMwNjc0NzQ3NGJjMDliOWI1Zjg4Y2M%3D",
+  "timeline_bm": [
+    {
+      "date": "08/07/1994",
+      "project_id": "534",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/534_BM/AKTA 522.pdf"
+    },
+    {
+      "date": "03/07/2020",
+      "project_id": "1674611",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1674611_BM/Akta 522 (Cetakan Semula 2020).pdf"
+    },
+    {
+      "date": "08/09/2022",
+      "project_id": "1741970",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1741970_BM/Akta A1659.pdf"
+    },
+    {
+      "date": "03/04/2023",
+      "project_id": "1803309",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1803309_BM/Akta 522_Muktamad_as at 30 Mac 23 (3.8.23).pdf"
+    },
+    {
+      "date": "06/04/2024",
+      "project_id": "2108411",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2108411_BM/Akta 522 - (online) as at 1 APRIL 2024 MUKTAMAD.pdf"
+    },
+    {
+      "date": "06/05/2024",
+      "project_id": "2109346",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT_ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2109346_BM/P. U. (A) 31.1997 (ONLINE - MUKTAMAD).pdf"
+    },
+    {
+      "date": "08/05/2024",
+      "project_id": "2111327",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT_ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2111327_BM/P.U. (A) 624_1996 - Muktamad (01.05.2024).pdf"
+    },
+    {
+      "date": "23/06/2024",
+      "project_id": "2109766",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT_ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2109766_BM/P.U. (A) 626 (Muktamad-Dalam Talian).pdf"
+    },
+    {
+      "date": "24/06/2024",
+      "project_id": "2109506",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT_ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2109506_BM/BM Muktamad_P.U. (A) 625 1996_15 Jun 2024 (online).pdf"
+    },
+    {
+      "date": "25/07/2024",
+      "project_id": "2132746",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT_ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2132746_BM/P.U. (A) 16 1974 (Dalam talian 2025).pdf"
+    },
+    {
+      "date": "26/07/2024",
+      "project_id": "2132704",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT_ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2132704_BM/P.U. (A) 14-1974 (Dalam Talian 2024).pdf"
+    },
+    {
+      "date": "27/07/2024",
+      "project_id": "2132788",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT_ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2132788_BM/P.U. (A) 15_1974 (Dalam talian 2024).pdf"
+    },
+    {
+      "date": "14/08/2024",
+      "project_id": "2132834",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT_ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2132834_BM/P.U. (A) 25.1974 (Dalam Talian 2024).pdf"
+    },
+    {
+      "date": "13/09/2024",
+      "project_id": "2132664",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT_ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2132664_BM/P.U. (A) 264 .1994 SEBAGAIMANA 30 OGOS 2024 (MUKTAMAD) (VERSI DALAM TALIAN).pdf"
+    },
+    {
+      "date": "27/12/2024",
+      "project_id": "2561745",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2561745/P.U. (B) 503_2024.pdf"
+    },
+    {
+      "date": "17/08/2025",
+      "project_id": "2133027",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT_ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2133027_BM/P.U. (A) 547_1992 (Dalam talian 2025).pdf"
+    },
+    {
+      "date": "02/10/2025",
+      "project_id": "1961284",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1961284_BM/P.U. (A) 6261996 BM (Cetakan Semula 2025).pdf"
+    },
+    {
+      "date": "03/10/2025",
+      "project_id": "2019899",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2019899_BM/16. WJW240825 P.U. (A) 151974.pdf"
+    },
+    {
+      "date": "04/10/2025",
+      "project_id": "2019810",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2019810_BM/13. WJW240825 P.U. (A) 5471992.pdf"
+    },
+    {
+      "date": "05/10/2025",
+      "project_id": "2019730",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2019730_BM/P.U. (A) 251974 (Cetakan Semula 2025).pdf"
+    },
+    {
+      "date": "06/10/2025",
+      "project_id": "1960954",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1960954_BM/P.U. (A) 311997 BM (Cetakan Semula 2025).pdf"
+    },
+    {
+      "date": "07/10/2025",
+      "project_id": "2019218",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2019218_BM/P.U. (A) 141974 (Nashkah bercetak 2025) BM.pdf"
+    },
+    {
+      "date": "08/10/2025",
+      "project_id": "1961217",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1961217_BM/5. WJW240825 P.U. (A) 6241996 BM.pdf"
+    },
+    {
+      "date": "09/10/2025",
+      "project_id": "1960988",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1960988_BM/WJW240825 P.U. (A) 2641994 (Bercetak 2025).pdf"
+    },
+    {
+      "date": "10/10/2025",
+      "project_id": "1961248",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1961248_BM/WJW240825 P.U. (A) 6251996 BM (Cetakan naskhah 2025).pdf"
+    },
+    {
+      "date": "11/10/2025",
+      "project_id": "2666945",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2666945_BM/WJW240825 P.U. (A) 161974 (2025) BM.pdf"
+    },
+    {
+      "date": "12/10/2025",
+      "project_id": "1960836",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1960836_BM/WJW240825 Akta 522 (Cetakan naskhah 2025).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1960836_BM/WJW240825 Akta 522 (Cetakan naskhah 2025).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1741970_BM/Akta A1659.pdf"
 }

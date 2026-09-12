@@ -38,5 +38,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 410 - Loans (Asian Development Bank) Act 1968.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDEwJmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfDVjNDczMjEzZDJkMzgzZTViMWYxZGY4MmQyY2QxNWU4YmI4YTU4ODNjMzk4NjVlNThmOGNiNmU0NmExNDcwMjE%3D",
+  "timeline_bm": [
+    {
+      "date": "16/09/1968",
+      "project_id": "422",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/422_BM/AKTA 32 THN 1968.pdf"
+    },
+    {
+      "date": "16/12/1989",
+      "project_id": "2253977",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2253977_BM/AKTA 410 REVISED 1989.pdf"
+    },
+    {
+      "date": "04/12/2011",
+      "project_id": "16609",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 410 - Akta Pinjaman (Bank Pembangunan Asia) 1968.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 410 - Akta Pinjaman (Bank Pembangunan Asia) 1968.pdf",
+  "latest_amendment_pdf_bm": ""
 }

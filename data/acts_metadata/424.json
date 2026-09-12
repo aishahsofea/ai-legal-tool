@@ -62,5 +62,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 424 - Powers of Attorney Act 1949.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3098677_BI/ACT A587.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDI0Jmxhbmc9Qk0mZGF0ZT0wMS0wMi0yMDEzI3RpbWVsaW5lfDkxNTk5Zjk2ZDExNWYyMGVmMmYwYWVjMGY3MzE5ZWQ4ZGY0YjQ4NjUxNzY2OGZhZWJlNmIyODIzMTA5ZTAyNzI%3D",
+  "timeline_bm": [
+    {
+      "date": "30/03/1989",
+      "project_id": "3389832",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3389832_BM/AKTA 424 REVISED 1990.pdf"
+    },
+    {
+      "date": "31/03/1990",
+      "project_id": "436",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/03/1991",
+      "project_id": "16622",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 424 - Akta Surat Kuasa Wakil 1949.pdf"
+    },
+    {
+      "date": "05/02/2013",
+      "project_id": "16622",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 424 - Akta Surat Kuasa Wakil 1949.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 424 - Akta Surat Kuasa Wakil 1949.pdf",
+  "latest_amendment_pdf_bm": ""
 }

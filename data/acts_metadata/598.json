@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTk4Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfDc4MTA5ZDg2M2I0MzM1MjExNDBjM2UxNTJkOTU0MjY5NGJjNTdhZTI1MTNjNzJhNmRhZmIyYTQ1NmQwYTljMzg%3D",
+  "timeline_bm": [
+    {
+      "date": "10/09/1999",
+      "project_id": "610",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/610_BM/AKTA 598 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/01/2006",
+      "project_id": "15584",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 598.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 598.pdf",
+  "latest_amendment_pdf_bm": ""
 }

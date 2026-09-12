@@ -69,5 +69,34 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 4
+  "subsidiary_total": 4,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzM2Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDE5I3RpbWVsaW5lfDg3ZGY0NzUzNWViMWVkZjU1MTAyMDIyOWYzZWM1MWUzZDFmZjYyYjdlNzZhMDM0YzdmMzFiMGViZGE1NmM5YTk%3D",
+  "timeline_bm": [
+    {
+      "date": "10/02/2012",
+      "project_id": "748",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20120209_736_BM_JW001759 Akta 736 (BM).pdf"
+    },
+    {
+      "date": "03/09/2015",
+      "project_id": "16492",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 736 - 3_9_2015.pdf"
+    },
+    {
+      "date": "12/08/2019",
+      "project_id": "1696002",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20190809_A1600_BM_Akta A1600.pdf"
+    },
+    {
+      "date": "05/12/2019",
+      "project_id": "1700534",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 736 - Cetakan Semula 2019.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 736 - Cetakan Semula 2019.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20190809_A1600_BM_Akta A1600.pdf"
 }

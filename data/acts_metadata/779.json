@@ -14,5 +14,16 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Nzc5Jmxhbmc9Qk0mZGF0ZT0wMS0wOS0yMDE2I3RpbWVsaW5lfDY1ZTc1MDhkODIxMDAyNTRmM2I1NWQ0ZWZkZTBhZjI2ZWZmZDc5Zjg2MDQ5OGQwZTYzYjM3ZDBjYTZmMmEzNWI%3D",
+  "timeline_bm": [
+    {
+      "date": "02/09/2016",
+      "project_id": "15732",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 779-Disemak 2016.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

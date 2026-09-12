@@ -14,5 +14,16 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODA4Jmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDE4I3RpbWVsaW5lfGQwYTk0NWE2NmMwMTVmOGMzYmQ2ZjZlMzFkMzAwNmYzOWFmYzQ5MDFkZWY0NTkxNTU3MGQ5ZGY3MjU2NDE4OWM%3D",
+  "timeline_bm": [
+    {
+      "date": "02/11/2018",
+      "project_id": "1695971",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20181101_808_BM_Akta Lagu Kebangsaan 1968 Akta 808.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

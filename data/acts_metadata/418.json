@@ -120,5 +120,22 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDE4Jmxhbmc9Qk0mZGF0ZT0yMS0xMi0xOTg5I3RpbWVsaW5lfGZkN2E1MjYzN2IwNGYzNmFhZGQ1MzIwZWRlOTg1MmYxYjJhNzY3ZTUyZDVjY2EzMTJmZWMwNzE0ZjY2YTY4Mjk%3D",
+  "timeline_bm": [
+    {
+      "date": "22/02/1974",
+      "project_id": "3386359",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3386359/PUA 66 1974.pdf"
+    },
+    {
+      "date": "23/12/1989",
+      "project_id": "430",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3386359/PUA 66 1974.pdf"
 }

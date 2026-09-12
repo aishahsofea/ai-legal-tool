@@ -14,5 +14,16 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODcxJmxhbmc9Qk0mZGF0ZT0xNy0xMC0yMDI1I3RpbWVsaW5lfGY0NzUyMjA2NmY5Mjc5ZDA0MWVlMDRiZTExNGVlOGIzYmYyMmFmYTI2NjdjMTAyZWU4M2U0ZmNkNDk5MTkyZDk%3D",
+  "timeline_bm": [
+    {
+      "date": "18/10/2025",
+      "project_id": "3131137",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3131137_BM/AKTA FI (FERI PENGKALAN KUBOR) (PENGESAHAN) 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

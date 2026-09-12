@@ -206,5 +206,22 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BI/ACT 478.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTE5Jmxhbmc9Qk0mZGF0ZT0xMi0wNS0xOTk0I3RpbWVsaW5lfGNiNGJhMDJmZjUxM2I3OGU1MzJkMzI3ZTA4NjA1NTdhYTIzNGVhMjAxNzExNzAzNjZhZjY3NGQ5NzQ1NTljYjI%3D",
+  "timeline_bm": [
+    {
+      "date": "13/05/1994",
+      "project_id": "531",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "14/05/1994",
+      "project_id": "1712765",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 519 - Dimansuhkan oleh Akta 701.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

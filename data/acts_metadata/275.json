@@ -50,5 +50,46 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 275 (10.3.2015).pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3199491_BI/A1242y2005bi_unlocked.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Mjc1Jmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDEzI3RpbWVsaW5lfDc0OWFkN2Q1NjQwNmZmODBiMDk4NDEyMjdiMGNiOGE0MTA5ZmIzNDdkNDc2ODlkZmM0NjFhNTUyOWZiODkxMTY%3D",
+  "timeline_bm": [
+    {
+      "date": "11/03/1983",
+      "project_id": "287",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/287_BM/Akta 275 - Akta Ibu(1).pdf"
+    },
+    {
+      "date": "24/02/1990",
+      "project_id": "3270527",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3270527_BM/AKTA A749.pdf"
+    },
+    {
+      "date": "04/01/2005",
+      "project_id": "3329684",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3329684_BM/AKTA 275 REPRINT 2005.pdf"
+    },
+    {
+      "date": "20/06/2005",
+      "project_id": "3199491",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3199491_BM/A1242y2005bm_unlocked.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "15767",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 275.pdf"
+    },
+    {
+      "date": "07/11/2013",
+      "project_id": "16528",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 275 (10.3.2015).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 275 (10.3.2015).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3199491_BM/A1242y2005bm_unlocked.pdf"
 }

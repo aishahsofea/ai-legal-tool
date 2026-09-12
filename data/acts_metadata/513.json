@@ -26,5 +26,16 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3352784_BI/ACT 513 - REPRINT 2006.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTEzJmxhbmc9Qk0mZGF0ZT0yNC0wMi0xOTk0I3RpbWVsaW5lfDE0NmMzZTExNjUyOGRkM2NmNjJmZTljZDM0MmQ0MDhiYmYyNjQwODIzZThkMWEyZjNkOWI4ODJlODhjYmIzOTM%3D",
+  "timeline_bm": [
+    {
+      "date": "25/02/1994",
+      "project_id": "525",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/525_BM/AKTA 513 - WARTA ASAL.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

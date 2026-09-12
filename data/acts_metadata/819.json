@@ -14,5 +14,22 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODE5Jmxhbmc9Qk0mZGF0ZT0xMy0wOS0yMDIzI3RpbWVsaW5lfGMyNTliOTE1YjM5OTBjM2FlNTkxNjMxNzRkNGZkODRmYmQxMjUxZGU4MDg5MzBkZGEzZDkxYmMxYTYxMzBhMWQ%3D",
+  "timeline_bm": [
+    {
+      "date": "28/12/2019",
+      "project_id": "1696007",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20191227_819_BM.pdf"
+    },
+    {
+      "date": "15/09/2023",
+      "project_id": "1745041",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/terjemahan/1745041_BM/Terjemahan Akta 819.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

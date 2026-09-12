@@ -126,5 +126,64 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 7
+  "subsidiary_total": 7,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzQzJmxhbmc9Qk0mZGF0ZT0wMS0wOC0yMDIyI3RpbWVsaW5lfDZiMGVmODQ1N2VmMjJhZGQ1NThjYjdiM2EyYTYxZGNkMzFlNTIzZjlkNDdjZjMwNDNjMDliZDA5ODViZWRmNzQ%3D",
+  "timeline_bm": [
+    {
+      "date": "10/02/2012",
+      "project_id": "755",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20120209_743_BM_JW001761 Akta 743-BM.pdf"
+    },
+    {
+      "date": "02/02/2017",
+      "project_id": "908",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20150105_A1477_BM_Akta A1477.pdf"
+    },
+    {
+      "date": "04/03/2017",
+      "project_id": "16583",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 743-kelulusan TP-2 5 2018.pdf"
+    },
+    {
+      "date": "19/07/2022",
+      "project_id": "1736657",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1736657/PUA 232.pdf"
+    },
+    {
+      "date": "06/08/2022",
+      "project_id": "1738976",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1738976_BM/010822_Akta 743_muktamad.pdf"
+    },
+    {
+      "date": "20/10/2022",
+      "project_id": "1746192",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1746192/PUB490..pdf"
+    },
+    {
+      "date": "24/10/2024",
+      "project_id": "2430741",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2430741_BM/Akta A1728.pdf"
+    },
+    {
+      "date": "23/04/2025",
+      "project_id": "2814221",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2814221/PUA 121_2025.pdf"
+    },
+    {
+      "date": "24/04/2025",
+      "project_id": "2814221",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2814221/PUA 121_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1738976_BM/010822_Akta 743_muktamad.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2430741_BM/Akta A1728.pdf"
 }

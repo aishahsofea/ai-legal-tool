@@ -14,5 +14,16 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODUxJmxhbmc9Qk0mZGF0ZT0yOS0xMi0yMDIzI3RpbWVsaW5lfDk3MTQ5Y2FjOWIzMjdmNmQxYTFkNzc1ZjZjNzIzMGNkNTc2OThlYWVmYWQzNzYyYjYwMzVkMWM2NWRkZmIwMDQ%3D",
+  "timeline_bm": [
+    {
+      "date": "30/12/2023",
+      "project_id": "1946988",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1946988_BM/WJW231341 BM.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

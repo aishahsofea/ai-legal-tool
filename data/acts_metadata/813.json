@@ -102,5 +102,40 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 7
+  "subsidiary_total": 7,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODEzJmxhbmc9Qk0mZGF0ZT0zMC0xMi0yMDIzI3RpbWVsaW5lfGFjMGFhMGFhZDc3OTA4OTFkMTFjNjI4NmNmZmEwODVkY2NmNjM3M2JiZTM1MzY4ZGY5MzZmMmM3MjY1ZWRiODY%3D",
+  "timeline_bm": [
+    {
+      "date": "18/07/2019",
+      "project_id": "1696000",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20190717_813_BM_WJW013689 BM.pdf"
+    },
+    {
+      "date": "20/10/2022",
+      "project_id": "1745940",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1745940_BM/AKTA A1674.pdf"
+    },
+    {
+      "date": "04/01/2023",
+      "project_id": "1760966",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1760966_BM/Akta 813_Muktamad sbgm 1 Jan 2023 (12.5.23).pdf"
+    },
+    {
+      "date": "03/01/2024",
+      "project_id": "2058968",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2058968_BM/Akta  813 (Dalam talian 2025).pdf"
+    },
+    {
+      "date": "03/12/2025",
+      "project_id": "3223323",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3223323/PUA 420.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2058968_BM/Akta  813 (Dalam talian 2025).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1745940_BM/AKTA A1674.pdf"
 }

@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTc1Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA5I3RpbWVsaW5lfGYwOTZkZGE1ODNmNzk0YzRmNmM3YmNlMzgzODNlMGU3ODQxODE3MzkwNDkwYjFmMjQxMzg5MTllYzM2OTc4ZmE%3D",
+  "timeline_bm": [
+    {
+      "date": "26/09/1997",
+      "project_id": "587",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/2009",
+      "project_id": "1709473",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/575 BM (Dimansuhkan).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

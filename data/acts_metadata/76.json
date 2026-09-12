@@ -128,5 +128,40 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzYmbGFuZz1CTSZkYXRlPTI4LTEyLTIwMTAjdGltZWxpbmV8ODBiZDQzZDM4ODlhZWY2Y2Y4MGY3YjRhNTY5N2VlOTEzNGFjNjNkZDUyOThlMTQ0Nzg5ZDQ3NGQ2MzJiY2YxYQ%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "05/05/1972",
+      "project_id": "88",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 76 (Asal).pdf"
+    },
+    {
+      "date": "03/01/1992",
+      "project_id": "2256957",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/1993",
+      "project_id": "2256951",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/01/1996",
+      "project_id": "2256944",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "02/01/2011",
+      "project_id": "1727252",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 76 (Mansuh).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

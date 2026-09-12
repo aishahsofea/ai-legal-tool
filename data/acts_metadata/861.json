@@ -60,5 +60,34 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 3
+  "subsidiary_total": 3,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODYxJmxhbmc9Qk0mZGF0ZT0yNi0xMS0yMDI0I3RpbWVsaW5lfDEyZTg2NDJjZWRhMjMzODJhMTQxODJiNmQ1ZGRkNjIxOTU5NjI1NjExN2U3MTkyZGMzNjM1OTczMDI0ODViOTc%3D",
+  "timeline_bm": [
+    {
+      "date": "27/11/2024",
+      "project_id": "2509365",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2509365_BM/Akta Kecekapan dan Konservasi Tenaga 2024- Akta 861.pdf"
+    },
+    {
+      "date": "26/12/2024",
+      "project_id": "2586370",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2586370/PUB 521_2024.pdf"
+    },
+    {
+      "date": "03/01/2025",
+      "project_id": "2596767",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2596767/PUA467_2024.pdf"
+    },
+    {
+      "date": "04/01/2025",
+      "project_id": "2596770",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2596770/PUA466_2024.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

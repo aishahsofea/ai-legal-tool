@@ -30,5 +30,22 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODY0Jmxhbmc9Qk0mZGF0ZT0yMC0wMi0yMDI1I3RpbWVsaW5lfDc1YzU3MjUyZjcxNzk3NGMxYjk3MjQ2ZTIzYjkzZTMzNzc4ZjMzNTc4Njg0ODY2MTFkOGExY2UwMWFiZmJiOTQ%3D",
+  "timeline_bm": [
+    {
+      "date": "21/02/2025",
+      "project_id": "2687068",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2687068_BM/Akta 864 - AKTA PERKONGSIAN DATA 2025.pdf"
+    },
+    {
+      "date": "24/04/2025",
+      "project_id": "2827227",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2827227/PUB 155_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

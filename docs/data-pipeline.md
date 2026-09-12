@@ -44,17 +44,26 @@ Comparison unions two promoted one-hop neighborhoods and matches on a multiset k
 
 Fetches the full list of Acts across all categories (updated, revised, repealed, amendment, translated).
 
+Since 2026-09 (issue #64), AGC encrypts every listing response with AES-256-GCM. Step 1 scrapes the decryption key from `principal.php` at the start of each run, then decrypts each page before parsing. The key is never hardcoded, since AGC can rotate it without notice. A page that fails to decrypt raises and aborts the run; it is never treated as zero records. A page AGC serves unencrypted is read as-is, not as a failure. Encryption arrived one endpoint at a time and can be rolled back the same way.
+
+For the `updated` and `revised` types, each listing row also carries a signed `processFile.php` link per language (AGC's replacement for the old `act-detail.php?act=&lang=` query, which AGC now rejects). Step 1 stores these as `title_link_en` / `title_link_bm` on the Act record — empty when that language has no detail page at all. Step 2 fetches these links directly instead of building its own URL.
+
 - ~25 HTTP requests, under a minute
 - To fetch specific types: `python run.py --step 1 --types updated revised`
 
 ### Step 2 — Scrape Act detail pages → `data/acts_metadata/`
 
-For each Act, fetches the detail page (amendment timeline + PDF URLs) in both `lang=BI` (primary) and `lang=BM` (secondary), plus subsidiary legislation. One JSON file per Act, with `_bm`-suffixed fields holding the second language.
+For each Act, Step 2 fetches the signed detail link Step 1 captured for English and for Malay, independently — neither fetch gates the other. It also fetches subsidiary legislation, which is separately AES-256-GCM encrypted; Step 2 scrapes its own copy of the decryption key at the start of the run. One JSON file per Act.
+
+The primary fields (`detail_url`, `timeline`, `latest_reprint_pdf`, `latest_amendment_pdf`) hold English, or Malay when an Act has no English version at all — so an already-registered document's language never moves. A genuine second version lands in the parallel `_bm`-suffixed fields.
 
 - ~1,756 HTTP requests at 1.5s delay for the primary language — ~45 minutes. Each Act with a separate BM version adds one more request, up to ~90 minutes total on a full rescrape
-- Resumable: skips acts whose file already has both languages recorded. An Act scraped before the BM fetch existed gets its BM fields backfilled on the next run, without touching its existing primary fields. So an already-registered document's language never moves
-- If a BM fetch fails for any reason other than a real 404 (timeout, connection error), it's left for a later run rather than recorded as "no BM version"
-- By default scrapes `updated` and `revised` acts only (the ones with stable numeric IDs and full detail pages)
+- Resumable: skips acts whose file already has both languages recorded. An Act scraped before the BM fetch existed gets its BM fields backfilled on the next run, using the current listing's stored Malay link. Its existing primary fields are left untouched
+- The listing is authoritative for which languages exist: an empty `title_link_bm` means confirmed absent, recorded immediately. A stored link can fail to fetch for several reasons (stale token, timeout, connection error). Any such failure is treated as transient: left for a later run, never recorded as confirmed absent
+- Step 2 refuses to run on an `acts_index.json` that predates issue #64 and has no `title_link_en`/`title_link_bm`, and tells you to re-run Step 1. Reading a missing field as "no Malay version" would stamp every Act confirmed-absent without a single request
+- An Act whose scrape failed is written as a stub and retried on the next run. A failed manual re-scrape leaves the stub in place rather than deleting it
+- If AGC rotates the decryption key mid-sweep, Step 2 scrapes the new key and retries that Act instead of aborting the rest
+- By default scrapes `updated` and `revised` acts only — the only types with stable numeric IDs, full detail pages, and signed links from Step 1
 
 ### Step 3 — Download and register immutable reprints
 

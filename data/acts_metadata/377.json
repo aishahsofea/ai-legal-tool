@@ -86,5 +86,34 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/815_BI/Act 56-1965.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Mzc3Jmxhbmc9Qk0mZGF0ZT0zMS0xMi0yMDExI3RpbWVsaW5lfDY5ZjJkMWNjMmIzMDEzMTliNGJjZjBmMGY4M2MwNWE5YTYzM2U4YjZlZDgzZjA4Y2ZkMDM3ZTNiMDcwMDJmOTg%3D",
+  "timeline_bm": [
+    {
+      "date": "08/09/1989",
+      "project_id": "2253993",
+      "log_type": "REVISED",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/2001",
+      "project_id": "1727476",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "1727476",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2012",
+      "project_id": "",
+      "log_type": "REPEALED",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

@@ -38,5 +38,40 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2545292_BI/Act 688 (Online 2025).pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1741964_BI/Act A1664.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Njg4Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDI0I3RpbWVsaW5lfDNhODcxMDRlZDA4ZWNlMTRlNmZkYjI1YjJiNjdkYjc0Yzk5NmFhZDRhMGVjNDE4YWY4NTFhZTEwMDljOGNhYjk%3D",
+  "timeline_bm": [
+    {
+      "date": "26/02/2008",
+      "project_id": "700",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Salinan Warta Akta 688.pdf"
+    },
+    {
+      "date": "03/04/2015",
+      "project_id": "16210",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 688 - Akta Majlis Pembangunan Wilayah Ekonomi Pantai Timur 2008.pdf"
+    },
+    {
+      "date": "04/10/2018",
+      "project_id": "1700498",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 688 (REPRINT 2018).pdf"
+    },
+    {
+      "date": "10/09/2022",
+      "project_id": "1741964",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1741964_BM/Akta A1664.pdf"
+    },
+    {
+      "date": "06/01/2024",
+      "project_id": "2545292",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2545292_BM/Akta 688 (Dalam Talian 2025).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2545292_BM/Akta 688 (Dalam Talian 2025).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1741964_BM/Akta A1664.pdf"
 }

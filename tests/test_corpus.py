@@ -226,3 +226,29 @@ def test_checked_in_coverage_accounts_for_every_source_pdf():
     assert {item["act_number"] for item in manifest["documents"] if item["language"] == "bm"} == {
         "144", "152", "194", "220", "228", "230",
     }
+
+
+def test_scraped_at_for_files_each_language_under_its_own_scrape_date():
+    """A Malay document backfilled onto an Act scraped months earlier must not
+    inherit the English scrape's date (#71)."""
+    from corpus.manifest import scraped_at_for
+
+    metadata = {
+        "scraped_at": "2026-05-07T02:28:40+00:00",
+        "scraped_at_bm": "2026-09-13T00:53:29+00:00",
+    }
+
+    assert scraped_at_for(metadata, "bm") == "2026-09-13T00:53:29+00:00"
+    assert scraped_at_for(metadata, "en") == "2026-05-07T02:28:40+00:00"
+
+
+def test_scraped_at_for_falls_back_to_the_act_level_stamp():
+    """Metadata written before the per-language stamp existed carries only
+    scraped_at, and that is the right answer for the primary document."""
+    from corpus.manifest import scraped_at_for
+
+    metadata = {"scraped_at": "2026-05-07T02:28:40+00:00"}
+
+    assert scraped_at_for(metadata, "bm") == "2026-05-07T02:28:40+00:00"
+    assert scraped_at_for(metadata, "en") == "2026-05-07T02:28:40+00:00"
+    assert scraped_at_for({}, "bm") == ""

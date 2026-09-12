@@ -50,5 +50,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 561 - Syariah Court Evidence (Federal Territories) Act 1997.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTYxJmxhbmc9Qk0mZGF0ZT0wMS0wMi0yMDEzI3RpbWVsaW5lfGUzZjgzNzAzMTRjODYzZmY4ZGQ5ODZmZGUwNTEwYmRkNzE5OWVkZDYwZWNhMzIyNjgzZmU5MjkxNzllYTEwMTM%3D",
+  "timeline_bm": [
+    {
+      "date": "01/04/1997",
+      "project_id": "573",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/573_BM/AKTA 561 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "22/06/2002",
+      "project_id": "3545297",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3545297/P.U. (A) 249-2002.pdf"
+    },
+    {
+      "date": "04/09/2005",
+      "project_id": "1700333",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700333_BM/AKTA A1250.pdf"
+    },
+    {
+      "date": "05/02/2013",
+      "project_id": "16281",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 561 - Akta Keterangan Mahkamah Syariah (Wilayah-Wilayah Persekutuan) 1997.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 561 - Akta Keterangan Mahkamah Syariah (Wilayah-Wilayah Persekutuan) 1997.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700333_BM/AKTA A1250.pdf"
 }

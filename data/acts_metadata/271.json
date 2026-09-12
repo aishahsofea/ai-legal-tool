@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjcxJmxhbmc9Qk0mZGF0ZT0wOC0wMS0xOTk4I3RpbWVsaW5lfGY0OGRkYjg0MmMwZWNmN2FmZWNkMjk5ODViZjBmOTViMmFmYjEyNGQzY2E5N2NkNjU3MjJkNDg3YTIwYjY3Nzc%3D",
+  "timeline_bm": [
+    {
+      "date": "14/05/1982",
+      "project_id": "283",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 271 - Akta Ibu.pdf"
+    },
+    {
+      "date": "10/01/1998",
+      "project_id": "1727260",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 575 BM (Dimansuhkan).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

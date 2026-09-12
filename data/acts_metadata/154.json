@@ -50,5 +50,52 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 154.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1086.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTU0Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfDBmN2VhNGRjMzA3NjQ2M2VkNTRiYTJhMjhmYzE5MzhiMzk4M2QzNzdjYWMyM2I3MmVmZDkzYzE2MTJhNjAxZjM%3D",
+  "timeline_bm": [
+    {
+      "date": "21/02/1975",
+      "project_id": "166",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/166_BM/AKTA 154- WARTA ASAL (BM).pdf"
+    },
+    {
+      "date": "31/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "25/01/1976",
+      "project_id": "1727735",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727735_BM/AKTA A327.pdf"
+    },
+    {
+      "date": "05/07/1997",
+      "project_id": "2259475",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259475_BM/AKTA 154 - CETAKAN 1997 (BM).pdf"
+    },
+    {
+      "date": "05/09/2000",
+      "project_id": "1727812",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727812_BM/AKTA 154- A1086(BM).pdf"
+    },
+    {
+      "date": "06/04/2001",
+      "project_id": "2259473",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259473_BM/AKTA 154 - CETAKAN 2001 (BM).pdf"
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "15821",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 154.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 154.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727812_BM/AKTA 154- A1086(BM).pdf"
 }

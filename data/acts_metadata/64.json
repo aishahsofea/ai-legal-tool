@@ -153,5 +153,28 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 14
+  "subsidiary_total": 14,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjQmbGFuZz1CTSZkYXRlPTE5LTA2LTIwMTQjdGltZWxpbmV8Mjg1MDZjZWYyNTUxZjNhZWZiYmQ0YmY4N2NlYjZmYTE5NTkxNDEzY2E3NWY3YTBlN2M0ZjFkYzJlMWIxMThiYg%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "29/02/1972",
+      "project_id": "76",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/AKTA 64 BM REPEAL.pdf"
+    },
+    {
+      "date": "03/11/2012",
+      "project_id": "16199",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 64 - Akta Cukai Jualan 1972.pdf"
+    },
+    {
+      "date": "22/06/2014",
+      "project_id": "1727278",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/AKTA 64 BM REPEAL.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 64 - Akta Cukai Jualan 1972.pdf",
+  "latest_amendment_pdf_bm": ""
 }

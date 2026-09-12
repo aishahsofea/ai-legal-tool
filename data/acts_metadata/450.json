@@ -62,5 +62,40 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 450.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDUwJmxhbmc9Qk0mZGF0ZT0yOC0xMS0yMDI0I3RpbWVsaW5lfDkwNTc2OGVlM2VkODY5ODFlNDNjZTM0NWU2NWQ5YjZmNmRhN2NhNGM0ZWU4YzIwYjY1NmRhMWJjY2U5OTRjM2Q%3D",
+  "timeline_bm": [
+    {
+      "date": "15/08/1957",
+      "project_id": "462",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/462_BM/ORD NO 36 1957-compressed.pdf"
+    },
+    {
+      "date": "14/05/1983",
+      "project_id": "3502561",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3502561_BM/AKTA A565.pdf"
+    },
+    {
+      "date": "24/05/1987",
+      "project_id": "1700335",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700335_BM/AKTA A671.pdf"
+    },
+    {
+      "date": "11/07/1994",
+      "project_id": "3502591",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3502591_BM/AKTA A893.pdf"
+    },
+    {
+      "date": "03/12/2024",
+      "project_id": "2239087",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/terjemahan/2239087_BM/AKTA PEREMPUAN BERSUAMI 1957 AKTA 450 (TERJEMAHAN).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3502591_BM/AKTA A893.pdf"
 }

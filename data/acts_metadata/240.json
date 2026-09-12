@@ -32,5 +32,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/16764_BI/Act 240.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjQwJmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfDBmNTFhYmJjODM3NzZjMTgyNmNlMTZmZGQ0NWQ2MDdhMjFmMDg4NzBkMDBjNmNmZjBkZmU5ZDE3OTA2MzZkODk%3D",
+  "timeline_bm": [
+    {
+      "date": "08/08/1980",
+      "project_id": "252",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/252_BM/Salinan Warta Akta 240.pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16765",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/16765_BM/Akta 240.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/16765_BM/Akta 240.pdf",
+  "latest_amendment_pdf_bm": ""
 }

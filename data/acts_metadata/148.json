@@ -44,5 +44,40 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/ACT 148 BI - CARRIAGE BY AIR ACT 1974.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1310.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTQ4Jmxhbmc9Qk0mZGF0ZT0wMS0wNi0yMDE1I3RpbWVsaW5lfDM0MTFlMzU3ODYxZmRiZDEwMDJlMTg1ZDc2NzNiZjM2YjNlYzFhMGM5ZDVkOWUzNDM3NTIwODMyNDI0YTQzZTU%3D",
+  "timeline_bm": [
+    {
+      "date": "30/08/1974",
+      "project_id": "160",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/160_BM/AKTA 148 - WARTA ASAL (BM).pdf"
+    },
+    {
+      "date": "03/01/1997",
+      "project_id": "2259493",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259493_BM/AKTA 148 - CETAKAN 1997 (BM)(1).pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "1712828",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 148 (Reprint 2006).pdf"
+    },
+    {
+      "date": "12/10/2007",
+      "project_id": "1712830",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/A1310.pdf"
+    },
+    {
+      "date": "06/06/2015",
+      "project_id": "16432",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/AKTA 148 BM - AKTA PENGANGKUTAN MELALUI UDARA 1974.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/AKTA 148 BM - AKTA PENGANGKUTAN MELALUI UDARA 1974.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/A1310.pdf"
 }

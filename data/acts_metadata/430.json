@@ -56,5 +56,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 430 - Coin (Import and Export) Act 1957.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BI/ACT A996.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDMwJmxhbmc9Qk0mZGF0ZT0wMS0wMy0yMDEzI3RpbWVsaW5lfDllM2U1N2IwMzZiOGFkNTlkNDI5YzcyYzk2YjAyN2RkNGRjZjYyNTY3YzgzNDY1MTcxMTgwNzcxNmVhNGQ1MzA%3D",
+  "timeline_bm": [
+    {
+      "date": "30/03/1990",
+      "project_id": "442",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "21/04/1990",
+      "project_id": "16640",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 430 - Akta Syiling (Import dan Eksport) 1957.pdf"
+    },
+    {
+      "date": "27/07/1997",
+      "project_id": "1728006",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BM/AKTA A996.pdf"
+    },
+    {
+      "date": "05/03/2013",
+      "project_id": "16640",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 430 - Akta Syiling (Import dan Eksport) 1957.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 430 - Akta Syiling (Import dan Eksport) 1957.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BM/AKTA A996.pdf"
 }

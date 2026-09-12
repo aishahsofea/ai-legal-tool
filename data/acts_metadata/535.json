@@ -69,5 +69,28 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 4
+  "subsidiary_total": 4,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTM1Jmxhbmc9Qk0mZGF0ZT0wMS0wNS0yMDE0I3RpbWVsaW5lfGRiZGJmZmUyYTQxMWJjZTVmNzk5Y2M3OWY2Njg4YTE4YmQwM2M1NjI3ZmU0Zjc0NzNlZWMyYzJiZTllZmRmNzc%3D",
+  "timeline_bm": [
+    {
+      "date": "17/02/1995",
+      "project_id": "547",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/547_BM/AKTA 535 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16187",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 535 - Akta Tabung Haji 1995.pdf"
+    },
+    {
+      "date": "04/05/2014",
+      "project_id": "15322",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 535.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 535.pdf",
+  "latest_amendment_pdf_bm": ""
 }

@@ -54,5 +54,28 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 3
+  "subsidiary_total": 3,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Nzc2Jmxhbmc9Qk0mZGF0ZT0xNS0wMS0yMDIxI3RpbWVsaW5lfDk0MjJjZGU2NTE0YTI2YzdkM2Q1YWE5YTAwYzY3NTkxNTc4YjM0NDE2YzYzM2NiYmZiYmU2MTdlNGZlNjMzZWI%3D",
+  "timeline_bm": [
+    {
+      "date": "08/06/2018",
+      "project_id": "788",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/aktaBM_20160607_776-BM.pdf"
+    },
+    {
+      "date": "02/11/2020",
+      "project_id": "1685203",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1685203_BM/WJW015635 Akta A1625.pdf"
+    },
+    {
+      "date": "18/01/2021",
+      "project_id": "1688718",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1688718_BM/Akta 776- Draf Bersih.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1688718_BM/Akta 776- Draf Bersih.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1685203_BM/WJW015635 Akta A1625.pdf"
 }

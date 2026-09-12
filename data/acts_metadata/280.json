@@ -80,5 +80,70 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjgwJmxhbmc9Qk0mZGF0ZT0yOC0wOS0yMDA3I3RpbWVsaW5lfGJhZjZiNzgxOGMxNTljYzgzYmI3YzJlMmY4YTgyNGNmMDM5OGIxNDk3NTNlYzhhZWU1Mjg0OThlYWMyYTg2YTc%3D",
+  "timeline_bm": [
+    {
+      "date": "11/03/1983",
+      "project_id": "292",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 280 - Akta ibu.pdf"
+    },
+    {
+      "date": "03/06/1987",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "18/06/1992",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/03/1993",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/03/1993",
+      "project_id": "510",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta Suruhanjaya Sekuriti 1993 [Akta 498].pdf"
+    },
+    {
+      "date": "05/02/1997",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "08/04/1998",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/11/1998",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "14/01/2004",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "08/10/2007",
+      "project_id": "1727265",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Muka surat depan Akta 671 - Akta Pasaran Modal dan Perkhidmatan 2007.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta Suruhanjaya Sekuriti 1993 [Akta 498].pdf"
 }

@@ -48,5 +48,40 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODAmbGFuZz1CTSZkYXRlPTAxLTAxLTIwMDYjdGltZWxpbmV8YmNlMTY4ZGJmYTZlMThjODI0YmE2ZGZkZDM0YzBjNjczMWJmMWU2OWJmYTJhYmM5YTkyMmFlZjExMzAxZTZjNA%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "14/07/1972",
+      "project_id": "92",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/92_BM/AKTA 80 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "17/01/1987",
+      "project_id": "1727737",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727737_BM/AKTA A667.pdf"
+    },
+    {
+      "date": "04/05/1994",
+      "project_id": "2256993",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2256993_BM/AKTA 80 - REPRINT 1994.pdf"
+    },
+    {
+      "date": "04/09/1999",
+      "project_id": "15408",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 80 (Reprint 1999).pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "1727445",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 80 (Reprint 2006).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 80 (Reprint 2006).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727737_BM/AKTA A667.pdf"
 }

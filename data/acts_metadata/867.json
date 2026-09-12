@@ -30,5 +30,22 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODY3Jmxhbmc9Qk0mZGF0ZT0yMi0wNS0yMDI1I3RpbWVsaW5lfGM3ZWYxZjZiMmY1NThiOTg4ODdlMGQ1ZmRhMzdlYzBiNWU4ZGE1NjlkZTE4OTBmY2ZkMTZkZDE0ZmZmY2VkZTQ%3D",
+  "timeline_bm": [
+    {
+      "date": "23/05/2025",
+      "project_id": "2867079",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2867079_BM/Akta 867-Akta Iltizam Kecekapan Perkhidmatan Kerajaan 2025.pdf"
+    },
+    {
+      "date": "29/11/2025",
+      "project_id": "3221062",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3221062/PUB 417_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

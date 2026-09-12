@@ -134,5 +134,58 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 188 - Treasury Bills (Local) Act 1946.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A747.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTg4Jmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDEyI3RpbWVsaW5lfDBiZWNmY2JiOTVkNmY0ZDRjZGFlNDBhZWU2NmI5Y2U1ZGVlY2FkMThiZDY5YjZjOWUwMmQ5ZDk5YTlmNWYyMDM%3D",
+  "timeline_bm": [
+    {
+      "date": "17/09/1971",
+      "project_id": "1728087",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728087_BM/Akta A76(BM).pdf"
+    },
+    {
+      "date": "16/08/1975",
+      "project_id": "1728088",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728088_BM/Akta A312(BM).pdf"
+    },
+    {
+      "date": "04/09/1977",
+      "project_id": "1728089",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728089_BM/Akta A406(BM).pdf"
+    },
+    {
+      "date": "03/10/1977",
+      "project_id": "1727569",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727569_BM/Akta 188 Revised 1977 (1)(1).pdf"
+    },
+    {
+      "date": "21/01/1987",
+      "project_id": "1728090",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728090_BM/Akta A668(BM).pdf"
+    },
+    {
+      "date": "24/02/1988",
+      "project_id": "1728091",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728091_BM/Akta A696(BM).pdf"
+    },
+    {
+      "date": "29/01/1990",
+      "project_id": "1728092",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728092_BM/Akta A747(BM).pdf"
+    },
+    {
+      "date": "09/11/2012",
+      "project_id": "16628",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 188 - Akta Bil Perbendaharaan (Tempatan) 1946.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 188 - Akta Bil Perbendaharaan (Tempatan) 1946.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728092_BM/Akta A747(BM).pdf"
 }

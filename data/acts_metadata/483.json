@@ -32,5 +32,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 483 - International Fund for Agricultural Development Ac.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDgzJmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfGNjMDQ3YjdiNzhiNzAwYTBkZTkwYTg4N2ZlZmIyMGMwMTMxYmNjM2NlOWZmYzRlNmQyZGYzN2Y1OWQwZmM2MzY%3D",
+  "timeline_bm": [
+    {
+      "date": "21/02/1992",
+      "project_id": "495",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/495_BM/AKTA 483_repaired.pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16680",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 483 - Akta Tabung Antarabangsa bagi Pembangunan Pertani.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 483 - Akta Tabung Antarabangsa bagi Pembangunan Pertani.pdf",
+  "latest_amendment_pdf_bm": ""
 }

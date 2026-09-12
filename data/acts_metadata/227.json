@@ -201,5 +201,112 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 8
+  "subsidiary_total": 8,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjI3Jmxhbmc9Qk0mZGF0ZT0xNS0xMi0yMDI0I3RpbWVsaW5lfGI5YTI5NjBlN2QxZTExMTZmYzlmYTc4N2ZlN2YxOGNjZTkxOGVhM2QwYTQzMDc5NTNjNDdlZGZlODgwZDM1Mzg%3D",
+  "timeline_bm": [
+    {
+      "date": "29/02/1980",
+      "project_id": "239",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/239_BM/Akta 227- Asal(1).pdf"
+    },
+    {
+      "date": "09/08/1980",
+      "project_id": "3016839",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3016839_BM/Akta A495(BM).pdf"
+    },
+    {
+      "date": "18/12/1983",
+      "project_id": "3020680",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3020680_BM/AKTA A568(BM).pdf"
+    },
+    {
+      "date": "16/09/1985",
+      "project_id": "3021832",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3021832_BM/Akta A625(BM).pdf"
+    },
+    {
+      "date": "20/05/1986",
+      "project_id": "3682305",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3682305_BM/Akta A644(BM).pdf"
+    },
+    {
+      "date": "17/04/1991",
+      "project_id": "3682380",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3682380_BM/Akta A793(BM).pdf"
+    },
+    {
+      "date": "23/07/1992",
+      "project_id": "3682390",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3682390_BM/Akta A823(BM).pdf"
+    },
+    {
+      "date": "05/10/2001",
+      "project_id": "3682714",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3682714_BM/Akta A1124(BM).pdf"
+    },
+    {
+      "date": "10/01/2002",
+      "project_id": "3682730",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3682730_BM/Akta A1171(BM).pdf"
+    },
+    {
+      "date": "29/06/2008",
+      "project_id": "3682740",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3682740_BM/Akta A1335(BM).pdf"
+    },
+    {
+      "date": "19/01/2009",
+      "project_id": "3682752",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3682752_BM/Akta A1343(BM).pdf"
+    },
+    {
+      "date": "12/01/2011",
+      "project_id": "2259393",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259393_BM/Akta 227 (Cetakan naskhah 2010-as at 2006).pdf"
+    },
+    {
+      "date": "14/04/2012",
+      "project_id": "16737",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 227.pdf"
+    },
+    {
+      "date": "04/02/2022",
+      "project_id": "1721291",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1721291/PUA16.pdf"
+    },
+    {
+      "date": "16/01/2023",
+      "project_id": "2149590",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT_ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2149590_BM/P.U. (A) 1761980 BM (Dalam talian 2025).pdf"
+    },
+    {
+      "date": "27/05/2023",
+      "project_id": "1816563",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1816563/PUA149_2023.pdf"
+    },
+    {
+      "date": "01/01/2025",
+      "project_id": "2149518",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2149518_BM/Akta 227 Muktamad dalam talian 151224.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2149518_BM/Akta 227 Muktamad dalam talian 151224.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3682752_BM/Akta A1343(BM).pdf"
 }

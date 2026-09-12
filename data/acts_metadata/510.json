@@ -32,5 +32,16 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 510.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTEwJmxhbmc9Qk0mZGF0ZT0yMy0xMS0yMDIzI3RpbWVsaW5lfDYxNjQ3MzI0ODdmY2RjZWVjZDBjZmQ5ZjE4MjExZmNlZTA1Y2JhODFjNDgxYmIzNGNkNWIwOTExYzEzNGQ0NDQ%3D",
+  "timeline_bm": [
+    {
+      "date": "24/11/2023",
+      "project_id": "1843896",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/terjemahan/1843896_BM/AKTA PERSATUAN INSTITUT WANITA KEBANGSAAN MALAYSIA (PEMERBADANAN) 1958 [510].pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

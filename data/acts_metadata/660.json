@@ -36,5 +36,28 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjYwJmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDEyI3RpbWVsaW5lfGVkNTI4MGU5YWM0MWMwNTFlZGUzMDEyMjY3OTY2MmI5MjAwMGQ0M2ZjYmY0ZDRiZjVmOGNkMWEzNzI1NzJhODM%3D",
+  "timeline_bm": [
+    {
+      "date": "01/01/2007",
+      "project_id": "672",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/672_BM/Akta 660 BM_unlocked.pdf"
+    },
+    {
+      "date": "03/11/2012",
+      "project_id": "1700453",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700453_BM/Akta 660 Reprint 2012.pdf"
+    },
+    {
+      "date": "03/07/2022",
+      "project_id": "1735992",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1735992/PUA225.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700453_BM/Akta 660 Reprint 2012.pdf",
+  "latest_amendment_pdf_bm": ""
 }

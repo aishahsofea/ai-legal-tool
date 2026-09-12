@@ -38,5 +38,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 463 - Railways Act 1991.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3480711_BI/A1377y2010bi_unlocked.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDYzJmxhbmc9Qk0mZGF0ZT0wMS0wOS0yMDEyI3RpbWVsaW5lfDIxMTVjMGM1ZjdmNTEzODYxODAwYTVlYzY2Zjg3ZTk2NTIxMjhkY2E2NmU1ODcwOWM5ZmQ3M2Q5NDEzNjZhN2E%3D",
+  "timeline_bm": [
+    {
+      "date": "13/09/1991",
+      "project_id": "475",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/475_BM/AKTA 463.pdf"
+    },
+    {
+      "date": "03/01/2010",
+      "project_id": "2257233",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "13/06/2010",
+      "project_id": "3480711",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3480711_BM/A1377y2010bm_unlocked.pdf"
+    },
+    {
+      "date": "05/09/2012",
+      "project_id": "16663",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 463 - Akta Keretapi 1991.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 463 - Akta Keretapi 1991.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3480711_BM/A1377y2010bm_unlocked.pdf"
 }

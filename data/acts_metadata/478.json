@@ -32,5 +32,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 478 - Revocation of Exemption from Payment of Stamp Duti.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDc4Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfDdjNWEyODI1ZDMzYTRlOTJlNmVjOTI1ZDUwMGQzODI1MDk2MTIwNzYxZTAwYjU5ZjQ2OGY2NWJkOTI3MjJiMmY%3D",
+  "timeline_bm": [
+    {
+      "date": "21/02/1992",
+      "project_id": "490",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BM/AKTA 478.pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16678",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 478 - Akta Pembatalan Pengecualian Daripada Bayaran Dut.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 478 - Akta Pembatalan Pengecualian Daripada Bayaran Dut.pdf",
+  "latest_amendment_pdf_bm": ""
 }

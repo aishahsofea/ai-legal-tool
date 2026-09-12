@@ -56,5 +56,58 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 165.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A711.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTY1Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfDc1N2UwNmYxY2MxNDBiZGI4OGEyZWQ2ZWEwNGFmNzQ4MzI3OTJiNzdmYzc0OGIwYzg1ODQ4MmFhYzBjNWYxNmI%3D",
+  "timeline_bm": [
+    {
+      "date": "12/03/1976",
+      "project_id": "177",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/177_BM/AKTA 165- WARTA ASAL (BM).pdf"
+    },
+    {
+      "date": "03/06/1981",
+      "project_id": "1712494",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1712494/008 - P.U. (A) 357-1980.pdf"
+    },
+    {
+      "date": "26/02/1982",
+      "project_id": "1727828",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta A532.pdf"
+    },
+    {
+      "date": "26/05/1987",
+      "project_id": "1700335",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700335_BM/AKTA A671.pdf"
+    },
+    {
+      "date": "13/09/1988",
+      "project_id": "1727829",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727829_BM/Akta A711(1).pdf"
+    },
+    {
+      "date": "07/01/1998",
+      "project_id": "2259450",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259450_BM/AKTA 165- CETAKAN 1998 (BM).pdf"
+    },
+    {
+      "date": "07/04/2001",
+      "project_id": "2259454",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/01/2006",
+      "project_id": "15839",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 165.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 165.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727829_BM/Akta A711(1).pdf"
 }

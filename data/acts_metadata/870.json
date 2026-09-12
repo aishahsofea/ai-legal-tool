@@ -54,5 +54,28 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 3
+  "subsidiary_total": 3,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODcwJmxhbmc9Qk0mZGF0ZT0wMS0wOC0yMDI1I3RpbWVsaW5lfDg4MDVmMjljYzFhZGM4ZjMyOGQ1NGZjMDliODU5NjVmMWJiZmY3OGI5OTNkYTNiNmVlNjA2NWFkZGRkZTcwZDk%3D",
+  "timeline_bm": [
+    {
+      "date": "02/08/2025",
+      "project_id": "2995040",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2995040_BM/Akta 870 AKTA PEMERANGKAPAN, PENGGUNAAN DAN PENYIMPANAN KARBON 2025.pdf"
+    },
+    {
+      "date": "02/10/2025",
+      "project_id": "3100047",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3100047/PUB355_2025.pdf"
+    },
+    {
+      "date": "03/10/2025",
+      "project_id": "3100038",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3100038/PUA 346 (2025).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

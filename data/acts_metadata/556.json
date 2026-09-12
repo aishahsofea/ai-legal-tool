@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTU2Jmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDA3I3RpbWVsaW5lfGY1NzEzMzg0MDQzNTI1ZTdiN2QyZTk0MmQ4YjRiMjg5NjY2ZjdkYzdkYjRmMThlMDNhMWUzYmVhZThlOWRiYzQ%3D",
+  "timeline_bm": [
+    {
+      "date": "31/08/2007",
+      "project_id": "568",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/11/2007",
+      "project_id": "1700548",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/556 dimansuhkan oleh Akta 679.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

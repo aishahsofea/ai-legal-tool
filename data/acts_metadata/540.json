@@ -38,5 +38,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 540.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/174_BI/ACT 162.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTQwJmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDIzI3RpbWVsaW5lfDMyODUwOWIzMGUzYzdmYWZkNzMyOWVjZDIyNDVjNjFlNTMxNjEyZmQ0NGE1MjMyYjU5ZmFmMzI0MzhmMjljNmE%3D",
+  "timeline_bm": [
+    {
+      "date": "05/09/1975",
+      "project_id": "174",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/174_BM/AKTA 162.pdf"
+    },
+    {
+      "date": "23/07/1988",
+      "project_id": "1702450",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/AKTA 47 TAHUN 1965.pdf"
+    },
+    {
+      "date": "04/01/2023",
+      "project_id": "1800704",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Terjemahan Akta 540.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/174_BM/AKTA 162.pdf"
 }

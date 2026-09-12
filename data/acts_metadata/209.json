@@ -1,13 +1,251 @@
 {
   "act_number": "209",
   "act_type": "updated",
-  "title_en": "FEES ACT 1951",
-  "title_bm": "AKTA FI 1951",
-  "scraped_at": "2026-05-05T03:55:34.411818+00:00",
-  "stub": true,
-  "timeline": [],
-  "latest_reprint_pdf": "",
-  "latest_amendment_pdf": "",
+  "scraped_at": "2026-09-12T16:49:15.902650+00:00",
+  "detail_url": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjA5Jmxhbmc9QkkmZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfGM3NmM5YzJiNDI4ZjIzODlkZDZhMTBkNjQxMDcyNDIyMzQ3YjQ5OGNhZjQ1MDMyYjMyNmFkODYxY2IzNTk1NDI%3D",
+  "timeline": [
+    {
+      "date": "14/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "05/11/1966",
+      "project_id": "3180721",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3180721_BI/PU 405 1966.pdf"
+    },
+    {
+      "date": "29/10/1978",
+      "project_id": "221",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/ori Act 209.pdf"
+    },
+    {
+      "date": "19/11/1978",
+      "project_id": "1727581",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/revised act 209.pdf"
+    },
+    {
+      "date": "06/01/2001",
+      "project_id": "2258313",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258313_BI/Act 209 reprint 2001.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "16016",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 209.pdf"
+    },
+    {
+      "date": "15/06/2021",
+      "project_id": "1702503",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1702503/PUA258.pdf"
+    },
+    {
+      "date": "25/11/2021",
+      "project_id": "1715042",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1715042/PUA422.pdf"
+    },
+    {
+      "date": "16/01/2022",
+      "project_id": "1719948",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1719948/PUA 4.pdf"
+    },
+    {
+      "date": "11/03/2022",
+      "project_id": "1724611",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1724611/PUA 39.pdf"
+    },
+    {
+      "date": "28/05/2022",
+      "project_id": "1731753",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1731753/P.U. (A) 158_2022 (Perintah Fi (Pendaftaran Syarikat dengan Kementerian Kewangan) (Pindaan) 2022).pdf"
+    },
+    {
+      "date": "29/05/2022",
+      "project_id": "1731753",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1731753/P.U. (A) 158_2022 (Perintah Fi (Pendaftaran Syarikat dengan Kementerian Kewangan) (Pindaan) 2022).pdf"
+    },
+    {
+      "date": "11/09/2022",
+      "project_id": "1741709",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1741709/PUA272_2022.pdf"
+    },
+    {
+      "date": "13/10/2022",
+      "project_id": "1744563",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1744563/P.U (A) 304_2022 (PERINTAH FI (AGENSI ANGKASA MALAYSIA) 2022).pdf"
+    },
+    {
+      "date": "16/01/2023",
+      "project_id": "1754920",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1754920/P.U. (A) 1_2023 Perintah Fi (Pendaftaran Syarikat MOF)(Pindaan) 2023.pdf"
+    },
+    {
+      "date": "17/01/2023",
+      "project_id": "1754920",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1754920/P.U. (A) 1_2023 Perintah Fi (Pendaftaran Syarikat MOF)(Pindaan) 2023.pdf"
+    },
+    {
+      "date": "18/08/2023",
+      "project_id": "1840909",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1840909/PUA 231 (2023).pdf"
+    },
+    {
+      "date": "27/08/2024",
+      "project_id": "2274983",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2274983/PUA211_2024.pdf"
+    },
+    {
+      "date": "12/01/2025",
+      "project_id": "2583414",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2583414/PUA 450_2024.pdf"
+    },
+    {
+      "date": "10/05/2026",
+      "project_id": "3461387",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3461387/PUA 176_2026.pdf"
+    },
+    {
+      "date": "24/06/2026",
+      "project_id": "3538529",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3538529/PUA 208_2026.pdf"
+    },
+    {
+      "date": "04/07/2026",
+      "project_id": "3546972",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3546972/PUA 218 (2026).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 209.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3180721_BI/PU 405 1966.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjA5Jmxhbmc9Qk0mZGF0ZT0yNi0xMC0xOTc4I3RpbWVsaW5lfGU1NmIzNmUwOTU4ODI1YjUzZWM2Njg1OWUxMWZiMjdjNzcwYmJhOTc0YzNhZTU1NjI0NDMwZjJhMDgzOGM1YmQ%3D",
+  "timeline_bm": [
+    {
+      "date": "27/10/1978",
+      "project_id": "221",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "10/06/2021",
+      "project_id": "1702503",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1702503/PUA258.pdf"
+    },
+    {
+      "date": "20/11/2021",
+      "project_id": "1715042",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1715042/PUA422.pdf"
+    },
+    {
+      "date": "11/01/2022",
+      "project_id": "1719948",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1719948/PUA 4.pdf"
+    },
+    {
+      "date": "06/03/2022",
+      "project_id": "1724611",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1724611/PUA 39.pdf"
+    },
+    {
+      "date": "23/05/2022",
+      "project_id": "1731753",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1731753/P.U. (A) 158_2022 (Perintah Fi (Pendaftaran Syarikat dengan Kementerian Kewangan) (Pindaan) 2022).pdf"
+    },
+    {
+      "date": "24/05/2022",
+      "project_id": "1731753",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1731753/P.U. (A) 158_2022 (Perintah Fi (Pendaftaran Syarikat dengan Kementerian Kewangan) (Pindaan) 2022).pdf"
+    },
+    {
+      "date": "06/09/2022",
+      "project_id": "1741709",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1741709/PUA272_2022.pdf"
+    },
+    {
+      "date": "08/10/2022",
+      "project_id": "1744563",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1744563/P.U (A) 304_2022 (PERINTAH FI (AGENSI ANGKASA MALAYSIA) 2022).pdf"
+    },
+    {
+      "date": "11/01/2023",
+      "project_id": "1754920",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1754920/P.U. (A) 1_2023 Perintah Fi (Pendaftaran Syarikat MOF)(Pindaan) 2023.pdf"
+    },
+    {
+      "date": "12/01/2023",
+      "project_id": "1754920",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1754920/P.U. (A) 1_2023 Perintah Fi (Pendaftaran Syarikat MOF)(Pindaan) 2023.pdf"
+    },
+    {
+      "date": "13/08/2023",
+      "project_id": "1840909",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1840909/PUA 231 (2023).pdf"
+    },
+    {
+      "date": "22/08/2024",
+      "project_id": "2274983",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2274983/PUA211_2024.pdf"
+    },
+    {
+      "date": "07/01/2025",
+      "project_id": "2583414",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2583414/PUA 450_2024.pdf"
+    },
+    {
+      "date": "05/05/2026",
+      "project_id": "3461387",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3461387/PUA 176_2026.pdf"
+    },
+    {
+      "date": "19/06/2026",
+      "project_id": "3538529",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3538529/PUA 208_2026.pdf"
+    },
+    {
+      "date": "29/06/2026",
+      "project_id": "3546972",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3546972/PUA 218 (2026).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

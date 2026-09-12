@@ -306,5 +306,148 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 9
+  "subsidiary_total": 9,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjY1Jmxhbmc9Qk0mZGF0ZT0wMS0wOC0yMDIzI3RpbWVsaW5lfDI1MTkyNGFjZDE1ZDQ4MTNiYWJjMjlkZDQ3YTBiYzVmNDMwM2NhYWQ4MWMzY2U0N2UxN2JlYTE4MTUzZTM0OTk%3D",
+  "timeline_bm": [
+    {
+      "date": "14/11/1958",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/1971",
+      "project_id": "1728227",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728227/02. P.U. (B) 324-1970.pdf"
+    },
+    {
+      "date": "03/10/1971",
+      "project_id": "1728113",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728113_BM/07. A91 BM.pdf"
+    },
+    {
+      "date": "01/11/1976",
+      "project_id": "1728114",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728114_BM/08. A360 KERJA 1976 PINDAAN.pdf"
+    },
+    {
+      "date": "19/08/1980",
+      "project_id": "1728115",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728115_BM/09. A497 KERJA 1980 PINDAAN.pdf"
+    },
+    {
+      "date": "06/01/1985",
+      "project_id": "1728116",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728116_BM/10. A610 BM.pdf"
+    },
+    {
+      "date": "16/02/1989",
+      "project_id": "1728117",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728117_BM/11. A716 BM.pdf"
+    },
+    {
+      "date": "09/10/1995",
+      "project_id": "1728354",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728354/12. PU (A) 326 y1955.pdf"
+    },
+    {
+      "date": "10/07/1998",
+      "project_id": "1728118",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728118_BM/13. A1026 BM.pdf"
+    },
+    {
+      "date": "10/09/2000",
+      "project_id": "1728119",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728119_BM/14. A1085 BM.pdf"
+    },
+    {
+      "date": "12/11/2000",
+      "project_id": "1728355",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728355/15. P.U. (A) 400 [] 2000_unlocked.pdf"
+    },
+    {
+      "date": "23/07/2002",
+      "project_id": "1728356",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728356/P.U.(A) 279 2002_unlocked.pdf"
+    },
+    {
+      "date": "26/09/2002",
+      "project_id": "1728357",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728357/17. P.U.(A) 380 2002_unlocked (1).pdf"
+    },
+    {
+      "date": "23/02/2012",
+      "project_id": "850",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/850_BM/18. A1419 KERJA 2012 PINDAAN_unlocked.pdf"
+    },
+    {
+      "date": "14/04/2012",
+      "project_id": "1988",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1988/19. P.U.(A) 88 2012_unlocked.pdf"
+    },
+    {
+      "date": "26/05/2022",
+      "project_id": "1731234",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1731234_BM/A1651 BM.pdf"
+    },
+    {
+      "date": "01/09/2022",
+      "project_id": "1740274",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1740274/PUA 262.pdf"
+    },
+    {
+      "date": "17/09/2022",
+      "project_id": "1741704",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1741704/P.U. (A) 273_2022 PERINTAH KERJA (PINDAAN JADUAL PERTAMA) (PINDAAN) 2022.pdf"
+    },
+    {
+      "date": "18/09/2022",
+      "project_id": "1741704",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1741704/P.U. (A) 273_2022 PERINTAH KERJA (PINDAAN JADUAL PERTAMA) (PINDAAN) 2022.pdf"
+    },
+    {
+      "date": "18/09/2023",
+      "project_id": "1851892",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1851892/P.U. (A) 257_2023.pdf"
+    },
+    {
+      "date": "19/09/2023",
+      "project_id": "1851892",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1851892/P.U. (A) 257_2023.pdf"
+    },
+    {
+      "date": "22/08/2024",
+      "project_id": "2243640",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2243640/PUA 201.pdf"
+    },
+    {
+      "date": "22/05/2025",
+      "project_id": "2837031",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2837031/PUA 137 (2025).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1731234_BM/A1651 BM.pdf"
 }

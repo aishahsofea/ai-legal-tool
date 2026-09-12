@@ -2,22 +2,30 @@
 Step 1.2 — Scrape act-detail pages and subsidiary legislation.
 
 For each act in acts_index.json (updated + revised types by default):
-  1. GET act-detail.php?act={number}&lang=BI  → parse timeline (primary)
-  2. GET act-detail.php?act={number}&lang=BM  → parse timeline (secondary, if BI succeeded)
-  3. POST json-subsid-2024.php?act={number}   → subsidiary legislation
+  1. GET the Step 1-captured signed link for lang=EN → parse timeline
+  2. GET the Step 1-captured signed link for lang=BM → parse timeline
+  3. POST json-subsid-2024.php?act={number}          → subsidiary legislation
 
-AGC publishes both language versions for most Acts. The primary fields
-(detail_url, timeline, latest_reprint_pdf, latest_amendment_pdf) keep their
-existing meaning — lang=BI, or lang=BM as a fallback when BI is entirely
-unavailable — so a currently-registered document's language never moves.
-A genuine second version lands in the parallel *_bm fields instead.
+Since issue #64, act-detail.php no longer accepts a plain ?act=&lang=
+query — every request goes through a signed processFile.php link that
+Step 1 captured from the listing's title_link field. The listing already
+says which languages exist for an Act, so EN and BM are fetched
+independently and symmetrically: no more probing lang=BI first and falling
+back to lang=BM only when it's entirely unavailable.
+
+The primary fields (detail_url, timeline, latest_reprint_pdf,
+latest_amendment_pdf) keep their existing meaning — English, or Malay when
+English has no version at all for this Act — so a currently-registered
+document's language never moves. A genuine second version lands in the
+parallel *_bm fields instead.
 
 Writes one file per act: data/acts_metadata/{act_number}.json
 
 Resumable: skips acts whose output file already exists and already has the
 *_bm fields. An existing file scraped before this variant existed gets its
 missing lang=BM side backfilled in place, without re-fetching the primary
-side (never risks moving an already-registered document's language).
+side (never risks moving an already-registered document's language). A stub
+left by an earlier failed scrape is retried, not skipped.
 The HTTP cache (requests-cache) handles skipping already-fetched pages.
 """
 import json
@@ -37,6 +45,7 @@ from scraper.config import (
     INDEX_FILE,
     METADATA_DIR,
 )
+from scraper.crypto import DecryptionError, decrypt_envelope, fetch_response_key
 from scraper.parsers.detail_parser import parse_timeline, is_detail_page, find_latest_reprint, find_latest_amendment
 from scraper.parsers.subsid_parser import parse_subsid_records
 
@@ -77,7 +86,13 @@ def _safe_get(session, url: str, timeout: int = 120) -> tuple[requests.Response 
     return None, False
 
 
-def _safe_post(session, url: str, payload: dict) -> dict | None:
+def _safe_post(session, url: str, payload: dict, key_hex: str) -> dict | None:
+    """POST and decrypt the response envelope.
+
+    A decryption failure propagates (not caught here) — same rule as Step 1:
+    a subsidiary-legislation page that fails to decrypt is a failure, never
+    an empty result.
+    """
     for attempt, wait in enumerate([0] + RETRY_DELAYS):
         if wait:
             logger.warning("Retrying POST %s after %ss", url, wait)
@@ -85,7 +100,7 @@ def _safe_post(session, url: str, payload: dict) -> dict | None:
         try:
             resp = session.post(url, data=payload, timeout=120)
             if resp.status_code == 200:
-                return resp.json()
+                return decrypt_envelope(resp.json(), key_hex)
             if resp.status_code == 404:
                 return None
             if resp.status_code in (429, 503):
@@ -112,7 +127,7 @@ def _build_dt_payload(draw: int, start: int) -> dict:
     }
 
 
-def fetch_subsidiary(session, act_number: str) -> list[dict]:
+def fetch_subsidiary(session, act_number: str, key_hex: str) -> list[dict]:
     url = f"{SUBSID_URL}?act={act_number}"
     all_records: list[dict] = []
     start = 0
@@ -120,7 +135,7 @@ def fetch_subsidiary(session, act_number: str) -> list[dict]:
 
     while True:
         payload = _build_dt_payload(draw=draw, start=start)
-        data = _safe_post(session, url, payload)
+        data = _safe_post(session, url, payload, key_hex)
 
         if data is None:
             break
@@ -142,103 +157,130 @@ def fetch_subsidiary(session, act_number: str) -> list[dict]:
     return parse_subsid_records(all_records)
 
 
-def _fetch_html(session, url: str, timeout: int) -> tuple[str | None, bool]:
-    """GET url, returning only a genuine detail-page render.
+def _fetch_signed(session, url: str, timeout: int) -> str | None:
+    """GET a Step 1-captured signed detail link, returning only a genuine
+    detail-page render.
 
-    A 200 whose body isn't an actual detail page — AGC's 15-byte "Invalid
-    request" rejection, for instance — comes back as (None, False), exactly
-    like a timeout: it's indistinguishable from a blocked request, so callers
-    must not read a real conclusion (like "no BM version") out of it.
+    Existence is decided by whether Step 1 captured a link at all (from the
+    listing's title_link field), never by what this fetch returns — a token
+    can go stale (issue #64), and AGC's 15-byte "Invalid request" rejection
+    is indistinguishable from a blocked request. So any failure here —
+    timeout, connection error, non-200, or a 200 that isn't a real detail
+    page — is transient: callers must retry on a later run, never read it
+    as "this Act has no such language".
     """
-    resp, definitely_absent = _safe_get(session, url, timeout=timeout)
+    resp, _ = _safe_get(session, url, timeout=timeout)
     if resp is None:
-        return None, definitely_absent
+        return None
     if not is_detail_page(resp.text):
         logger.warning("Response for %s is not a detail page — treating as a transient failure", url)
-        return None, False
-    return resp.text, definitely_absent
+        return None
+    return resp.text
 
 
-def _fetch_secondary(session, act_number: str, timeout: int) -> tuple[str, list[dict]] | None:
-    """Fetch the lang=BM detail page.
-
-    Returns (url, timeline) on success, ("", []) when AGC confirms (404) no BM
-    version exists, or None when the fetch failed for an unrelated reason —
-    timeout, connection error, non-404 HTTP, or a 200 that isn't a real
-    detail page. Callers must not cache that None as "no BM version": the
-    act needs to be retried on a later run.
+def scrape_act(
+    session,
+    act_number: str,
+    act_type: str,
+    key_hex: str,
+    timeout: int = 120,
+    html: str | None = None,
+    link_en: str = "",
+    link_bm: str = "",
+) -> dict | None:
     """
-    url = f"{DETAIL_URL}?act={act_number}&lang=BM"
-    html, definitely_absent = _fetch_html(session, url, timeout)
-    if html is None:
-        return ("", []) if definitely_absent else None
-    timeline = parse_timeline(html)
-    if not timeline:
-        return "", []
-    return url, timeline
+    Scrape one act from its Step 1-captured signed detail links.
 
+    link_en / link_bm are the processFile.php links Step 1 pulled from the
+    listing's title_link field, or "" when that language has no detail page
+    for this Act at all — the listing is the source of truth for which
+    languages exist, so unlike before this doesn't probe lang=BI then fall
+    back to lang=BM. Both languages are fetched independently.
 
-def scrape_act(session, act_number: str, act_type: str, timeout: int = 120, html: str | None = None) -> dict | None:
-    """
-    Scrape one act. If html is provided, skip the HTTP fetch and parse that directly
-    (used for offline/manual recovery — no secondary fetch is attempted in that case).
-    Otherwise tries lang=BI first, falls back to lang=BM, then — only when lang=BI
-    succeeded — also fetches lang=BM as a second, independent document.
+    If html is provided, skip HTTP entirely and parse it as the English
+    detail page (offline/manual recovery — no secondary fetch is attempted).
     """
     offline = html is not None
-    used_bm_fallback = False
     if offline:
-        url = f"{DETAIL_URL}?act={act_number}&lang=BI"
+        en_url = f"{DETAIL_URL}?act={act_number}&lang=BI"
+        en_html = html
         logger.info("[%s] Parsing from provided HTML", act_number)
     else:
-        url = f"{DETAIL_URL}?act={act_number}&lang=BI"
-        html, _ = _fetch_html(session, url, timeout)
-        if html is None:
-            logger.warning("[%s] lang=BI failed, trying lang=BM", act_number)
-            url = f"{DETAIL_URL}?act={act_number}&lang=BM"
-            html, _ = _fetch_html(session, url, timeout)
-            used_bm_fallback = True
-        if html is None:
-            return None
+        en_url = link_en
+        en_html = _fetch_signed(session, link_en, timeout) if link_en else None
+        if link_en:
+            time.sleep(REQUEST_DELAY)
 
-    timeline = parse_timeline(html)
-    if not timeline:
-        debug_path = Path(METADATA_DIR) / f"{act_number}_debug.html"
-        debug_path.write_text(html, encoding="utf-8")
-        logger.warning("[%s] No timeline entries found — raw HTML saved to %s for inspection", act_number, debug_path)
-
-    time.sleep(REQUEST_DELAY)
-
-    secondary_url, secondary_timeline, secondary_pending = "", [], False
-    if not offline and not used_bm_fallback:
-        secondary_result = _fetch_secondary(session, act_number, timeout)
-        if secondary_result is None:
-            secondary_pending = True
-        else:
-            secondary_url, secondary_timeline = secondary_result
+    bm_url = link_bm if not offline else ""
+    bm_html = None
+    if not offline and link_bm:
+        bm_html = _fetch_signed(session, link_bm, timeout)
         time.sleep(REQUEST_DELAY)
 
-    subsidiary = fetch_subsidiary(session, act_number)
+    en_exists = offline or bool(link_en)
+    bm_exists = (not offline) and bool(link_bm)
+
+    if en_exists:
+        if en_html is None:
+            # English has a link per the listing but this fetch failed —
+            # transient. Never fall back to Malay as if this Act were
+            # Malay-only: that would move a registered document's language.
+            return None
+        primary_url, primary_timeline = en_url, parse_timeline(en_html)
+    elif bm_exists:
+        if bm_html is None:
+            return None
+        primary_url, primary_timeline = bm_url, parse_timeline(bm_html)
+    else:
+        logger.warning("[%s] No detail link for either language in the listing", act_number)
+        return None
+
+    if not primary_timeline:
+        debug_html = en_html if en_exists else bm_html
+        debug_path = Path(METADATA_DIR) / f"{act_number}_debug.html"
+        debug_path.write_text(debug_html, encoding="utf-8")
+        logger.warning("[%s] No timeline entries found — raw HTML saved to %s for inspection", act_number, debug_path)
+
+    subsidiary = fetch_subsidiary(session, act_number, key_hex)
 
     result = {
         "act_number":           act_number,
         "act_type":             act_type,
         "scraped_at":           datetime.now(timezone.utc).isoformat(),
-        "detail_url":           url,
-        "timeline":             timeline,
-        "latest_reprint_pdf":   find_latest_reprint(timeline),
-        "latest_amendment_pdf": find_latest_amendment(timeline),
+        "detail_url":           primary_url,
+        "timeline":             primary_timeline,
+        "latest_reprint_pdf":   find_latest_reprint(primary_timeline),
+        "latest_amendment_pdf": find_latest_amendment(primary_timeline),
         "subsidiary_legislation": subsidiary,
         "subsidiary_total":     len(subsidiary),
     }
-    # Omit the *_bm fields entirely on a transient secondary-fetch failure, rather
-    # than writing them empty, so _needs_bm_backfill retries this Act next run
-    # instead of mistaking "fetch failed" for "confirmed no BM version".
-    if not secondary_pending:
-        result["detail_url_bm"] = secondary_url
-        result["timeline_bm"] = secondary_timeline
-        result["latest_reprint_pdf_bm"] = find_latest_reprint(secondary_timeline)
-        result["latest_amendment_pdf_bm"] = find_latest_amendment(secondary_timeline)
+
+    if en_exists and bm_exists and bm_html is not None:
+        bm_timeline = parse_timeline(bm_html)
+        # Stamped separately from scraped_at because the Malay side is often
+        # fetched in a later run than the primary — Step 3 files each document
+        # under its own language's scrape date (#71).
+        result["scraped_at_bm"] = result["scraped_at"]
+        result["detail_url_bm"] = bm_url
+        result["timeline_bm"] = bm_timeline
+        result["latest_reprint_pdf_bm"] = find_latest_reprint(bm_timeline)
+        result["latest_amendment_pdf_bm"] = find_latest_amendment(bm_timeline)
+    elif en_exists and bm_exists:
+        # bm_exists but the fetch failed transiently — omit the *_bm fields
+        # entirely so _needs_bm_backfill retries this Act next run.
+        pass
+    else:
+        # Either there's no separate Malay document for this Act (English
+        # exists and Malay doesn't), or Malay was itself the primary
+        # (English has no version at all) — either way there's no second
+        # document. Confirmed-absent empty fields now, rather than leaving
+        # them unset, so _needs_bm_backfill doesn't re-attempt this Act for
+        # nothing on every future run.
+        result["detail_url_bm"] = ""
+        result["timeline_bm"] = []
+        result["latest_reprint_pdf_bm"] = ""
+        result["latest_amendment_pdf_bm"] = ""
+
     return result
 
 
@@ -246,7 +288,40 @@ def _needs_bm_backfill(existing: dict) -> bool:
     return not existing.get("stub") and "detail_url_bm" not in existing
 
 
-def backfill_bm_variant(session, act_number: str, existing: dict, timeout: int = 120) -> tuple[dict | None, bool]:
+def _index_predates_signed_links(acts: list[dict]) -> bool:
+    """True when acts_index.json was written before Step 1 captured signed links.
+
+    An empty title_link_bm means "AGC's listing has no Malay detail page" and
+    is recorded as confirmed absent. A *missing* key means the index says
+    nothing at all. Conflating the two would stamp every Act confirmed-absent
+    without issuing a request, so Step 2 refuses to run on an old index
+    instead.
+    """
+    return any("title_link_en" not in act and "title_link_bm" not in act for act in acts)
+
+
+def _scrape_act_refreshing_key(session, key_hex: str, act: dict, **kwargs) -> tuple[dict | None, str]:
+    """scrape_act, retried once with a freshly scraped key on DecryptionError.
+
+    AGC rotates SEARCH_RESPONSE_KEY without notice and a full sweep runs for
+    hours on one key, so a mid-run rotation would otherwise abort every
+    remaining Act. Returns the key actually used, so the caller keeps the new
+    one. A second failure still propagates — that is a real break, not a
+    rotation.
+    """
+    args = (session, act["act_number"], act["act_type"])
+    links = {"link_en": act.get("title_link_en", ""), "link_bm": act.get("title_link_bm", "")}
+    try:
+        return scrape_act(*args, key_hex, **links, **kwargs), key_hex
+    except DecryptionError as exc:
+        logger.warning("[%s] Decryption failed (%s) — refetching the response key", act["act_number"], exc)
+        key_hex = fetch_response_key(session)
+        return scrape_act(*args, key_hex, **links, **kwargs), key_hex
+
+
+def backfill_bm_variant(
+    session, act_number: str, existing: dict, link_bm: str = "", timeout: int = 120
+) -> tuple[dict | None, bool]:
     """Add the lang=BM fields to an Act scraped before they existed.
 
     Never re-fetches or touches the existing primary fields (detail_url,
@@ -254,14 +329,18 @@ def backfill_bm_variant(session, act_number: str, existing: dict, timeout: int =
     fields are added, so an already-registered document's language can't
     move.
 
-    Returns (merged_metadata, made_request). made_request is False only when
-    the primary itself was already the lang=BM fallback (the BM-only Acts) —
-    there is no separate second version to find, so no request is made at
-    all. merged_metadata is None when a request was made but failed
-    transiently; the caller must not persist that as "no BM version" — retry
-    on a later run instead.
+    link_bm is the current listing's signed Malay link for this Act (empty
+    when the listing has none). An empty link_bm is only authoritative on an
+    index that carries the title_link_* keys at all — callers check that with
+    _index_predates_signed_links first. Returns (merged_metadata, made_request).
+    made_request is False when there is no separate Malay version to fetch
+    at all — either the primary itself was already the lang=BM fallback (the
+    pre-#64 BM-only shape), or the current listing carries no Malay link.
+    merged_metadata is None when a request was made but failed transiently;
+    the caller must not persist that as "no BM version" — retry later.
     """
-    if "lang=bm" in str(existing.get("detail_url", "")).lower():
+    was_bm_fallback = "lang=bm" in str(existing.get("detail_url", "")).lower()
+    if was_bm_fallback or not link_bm:
         merged = dict(existing)
         merged["detail_url_bm"] = ""
         merged["timeline_bm"] = []
@@ -269,15 +348,16 @@ def backfill_bm_variant(session, act_number: str, existing: dict, timeout: int =
         merged["latest_amendment_pdf_bm"] = ""
         return merged, False
 
-    secondary_result = _fetch_secondary(session, act_number, timeout)
-    if secondary_result is None:
+    bm_html = _fetch_signed(session, link_bm, timeout)
+    if bm_html is None:
         return None, True
-    secondary_url, secondary_timeline = secondary_result
+    bm_timeline = parse_timeline(bm_html)
     merged = dict(existing)
-    merged["detail_url_bm"] = secondary_url
-    merged["timeline_bm"] = secondary_timeline
-    merged["latest_reprint_pdf_bm"] = find_latest_reprint(secondary_timeline)
-    merged["latest_amendment_pdf_bm"] = find_latest_amendment(secondary_timeline)
+    merged["scraped_at_bm"] = datetime.now(timezone.utc).isoformat()
+    merged["detail_url_bm"] = link_bm
+    merged["timeline_bm"] = bm_timeline
+    merged["latest_reprint_pdf_bm"] = find_latest_reprint(bm_timeline)
+    merged["latest_amendment_pdf_bm"] = find_latest_amendment(bm_timeline)
     return merged, True
 
 
@@ -294,12 +374,20 @@ def run_step2(detail_types: list[str] | None = None) -> None:
 
     index = json.loads(index_path.read_text(encoding="utf-8"))
     acts = [a for a in index["acts"] if a["act_type"] in detail_types]
+    if _index_predates_signed_links(acts):
+        logger.error(
+            "acts_index.json carries no title_link_en/title_link_bm — it was written "
+            "before issue #64. Re-run step 1 first; running on it would record every "
+            "Act as having no Malay version without fetching anything."
+        )
+        return
     logger.info("Step 2: %d acts to process (types: %s)", len(acts), detail_types)
 
     out_dir = Path(METADATA_DIR)
     out_dir.mkdir(parents=True, exist_ok=True)
 
     session = build_session()
+    key_hex = fetch_response_key(session)
 
     done = 0
     skipped = 0
@@ -308,55 +396,79 @@ def run_step2(detail_types: list[str] | None = None) -> None:
 
     try:
         for i, act in enumerate(acts, 1):
-            act_number = act["act_number"]
-            out_file = out_dir / f"{act_number}.json"
+            try:
+                act_number = act["act_number"]
+                out_file = out_dir / f"{act_number}.json"
 
-            if out_file.exists():
-                try:
-                    existing = json.loads(out_file.read_text(encoding="utf-8"))
-                except (OSError, json.JSONDecodeError) as exc:
-                    logger.warning("[%d/%d] Act %s — corrupt metadata file (%s), re-scraping", i, len(acts), act_number, exc)
-                else:
-                    if not _needs_bm_backfill(existing):
-                        skipped += 1
-                        continue
-                    logger.info("[%d/%d] Act %s — backfilling lang=BM", i, len(acts), act_number)
-                    result, made_request = backfill_bm_variant(session, act_number, existing)
-                    if result is None:
-                        logger.warning("[%d/%d] Act %s — lang=BM fetch failed, will retry next run", i, len(acts), act_number)
-                        failed += 1
+                if out_file.exists():
+                    try:
+                        existing = json.loads(out_file.read_text(encoding="utf-8"))
+                    except (OSError, json.JSONDecodeError) as exc:
+                        logger.warning("[%d/%d] Act %s — corrupt metadata file (%s), re-scraping", i, len(acts), act_number, exc)
                     else:
-                        out_file.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
-                        backfilled += 1
-                    # Pace only when a request was actually made — backfill_bm_variant
-                    # skips the request entirely for BM-primary Acts.
-                    if made_request:
-                        time.sleep(REQUEST_DELAY)
-                    continue
+                        if existing.get("stub"):
+                            # A stub is a failed scrape, not a result — the signed
+                            # token may just have gone stale mid-sweep. Fall through
+                            # and retry instead of leaving it for a manual
+                            # `run.py --act`.
+                            logger.info("[%d/%d] Act %s — retrying previous stub", i, len(acts), act_number)
+                        elif not _needs_bm_backfill(existing):
+                            skipped += 1
+                            continue
+                        else:
+                            logger.info("[%d/%d] Act %s — backfilling lang=BM", i, len(acts), act_number)
+                            result, made_request = backfill_bm_variant(
+                                session, act_number, existing, link_bm=act.get("title_link_bm", "")
+                            )
+                            if result is None:
+                                logger.warning("[%d/%d] Act %s — lang=BM fetch failed, will retry next run", i, len(acts), act_number)
+                                failed += 1
+                            else:
+                                out_file.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
+                                backfilled += 1
+                            # Pace only when a request was actually made — backfill_bm_variant
+                            # skips the request entirely for BM-primary Acts.
+                            if made_request:
+                                time.sleep(REQUEST_DELAY)
+                            continue
 
-            logger.info("[%d/%d] Scraping act %s — %s", i, len(acts), act_number, act.get("title_en", ""))
+                logger.info("[%d/%d] Scraping act %s — %s", i, len(acts), act_number, act.get("title_en", ""))
 
-            result = scrape_act(session, act_number, act["act_type"])
-            if result is None:
-                logger.warning("Failed to scrape act %s — writing stub so PDF download can proceed", act_number)
-                result = {
-                    "act_number": act_number,
-                    "act_type":   act["act_type"],
-                    "title_en":   act.get("title_en", ""),
-                    "title_bm":   act.get("title_bm", ""),
-                    "scraped_at": datetime.now(timezone.utc).isoformat(),
-                    "stub":       True,
-                    "timeline":             [],
-                    "latest_reprint_pdf":   "",
-                    "latest_amendment_pdf": "",
-                    "subsidiary_legislation": [],
-                    "subsidiary_total":     0,
-                }
+                result, key_hex = _scrape_act_refreshing_key(session, key_hex, act)
+                if result is None:
+                    logger.warning("Failed to scrape act %s — writing stub so PDF download can proceed", act_number)
+                    result = {
+                        "act_number": act_number,
+                        "act_type":   act["act_type"],
+                        "title_en":   act.get("title_en", ""),
+                        "title_bm":   act.get("title_bm", ""),
+                        "scraped_at": datetime.now(timezone.utc).isoformat(),
+                        "stub":       True,
+                        "timeline":             [],
+                        "latest_reprint_pdf":   "",
+                        "latest_amendment_pdf": "",
+                        "subsidiary_legislation": [],
+                        "subsidiary_total":     0,
+                    }
+                    failed += 1
+
+                out_file.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
+                done += 1
+                time.sleep(REQUEST_DELAY)
+            except OSError as exc:
+                # One Act must not abort the sweep, the same rule every other
+                # per-act failure here follows. An act_number carrying a path
+                # separator ("49/1965") makes every metadata path for it
+                # unwritable, so not even a stub can be written — see #70.
+                # requests' own errors subclass OSError, so a stray network or
+                # non-JSON response that escapes the retry helpers lands here
+                # too, and costs one Act instead of the rest of the run.
+                logger.error(
+                    "[%d/%d] Act %s — unrecoverable I/O error (%s), skipping",
+                    i, len(acts), act_number, exc,
+                )
                 failed += 1
-
-            out_file.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
-            done += 1
-            time.sleep(REQUEST_DELAY)
+                continue
 
     except KeyboardInterrupt:
         logger.info("Interrupted. Progress: done=%d skipped=%d backfilled=%d failed=%d", done, skipped, backfilled, failed)
@@ -391,7 +503,9 @@ def list_stubs() -> None:
 def run_single_act(act_number: str, html_path: str | None = None) -> None:
     """
     Manually re-scrape one act with a longer timeout (5 minutes).
-    Deletes the existing stub file first so it gets replaced with real data.
+    An existing stub is left in place until a successful scrape overwrites it,
+    so a failed attempt can't drop the Act out of the metadata dir (and out of
+    the stub list) entirely.
 
     If html_path is given, parse that file instead of making an HTTP request —
     useful for acts whose page loads in a browser but times out in the scraper.
@@ -408,6 +522,13 @@ def run_single_act(act_number: str, html_path: str | None = None) -> None:
     if act is None:
         logger.error("Act %s not found in acts_index.json", act_number)
         return
+    if html_path is None and _index_predates_signed_links([act]):
+        logger.error(
+            "Act %s has no title_link_en/title_link_bm — acts_index.json predates "
+            "issue #64 and carries no signed detail link to fetch. Re-run step 1 first.",
+            act_number,
+        )
+        return
 
     out_file = Path(METADATA_DIR) / f"{act_number}.json"
     if out_file.exists():
@@ -415,7 +536,6 @@ def run_single_act(act_number: str, html_path: str | None = None) -> None:
         if not existing.get("stub"):
             logger.info("Act %s already has complete data — delete the file manually to force re-scrape", act_number)
             return
-        out_file.unlink()
 
     html = None
     if html_path:
@@ -425,7 +545,8 @@ def run_single_act(act_number: str, html_path: str | None = None) -> None:
         logger.info("Act %s — fetching with 300s timeout...", act_number)
 
     session = build_session()
-    result = scrape_act(session, act_number, act["act_type"], timeout=300, html=html)
+    key_hex = fetch_response_key(session)
+    result, _ = _scrape_act_refreshing_key(session, key_hex, act, timeout=300, html=html)
 
     if result is None:
         logger.error(

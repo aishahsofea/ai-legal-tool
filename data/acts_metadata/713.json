@@ -363,5 +363,94 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 30
+  "subsidiary_total": 30,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzEzJmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDI0I3RpbWVsaW5lfGNmYzQ5YjliNTM2YjEyMjNjODFjYWQxMTQ5ZGNlMTZhOTM0MTk1MjIyOTU2MGQ2NDU1YzU1M2EwMGMxMWJlZDE%3D",
+  "timeline_bm": [
+    {
+      "date": "11/06/2010",
+      "project_id": "725",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 713 ori.pdf"
+    },
+    {
+      "date": "03/03/2016",
+      "project_id": "16445",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Draf Akta 713 (PPUU 16 03 2016)(1).pdf"
+    },
+    {
+      "date": "29/10/2021",
+      "project_id": "1713317",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1713317/PUB 515.pdf"
+    },
+    {
+      "date": "30/07/2022",
+      "project_id": "1738115",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1738115/PUB 332 (2022).pdf"
+    },
+    {
+      "date": "22/11/2022",
+      "project_id": "1750540",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1750540/P.U. (B) 559_2022 (PELANTIKAN DAN PEMBATALAN PELANTIKAN ANGGOTA SURUHANJAYA PERSAINGAN).pdf"
+    },
+    {
+      "date": "05/06/2023",
+      "project_id": "1821906",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1821906/P.U. (B) 171_2023.pdf"
+    },
+    {
+      "date": "28/03/2024",
+      "project_id": "2072239",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2072239/PUB 97 (2024).pdf"
+    },
+    {
+      "date": "12/07/2024",
+      "project_id": "2194768",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2194768/PUB 245_2024.pdf"
+    },
+    {
+      "date": "24/08/2024",
+      "project_id": "2177620",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2177620_BM/Akta 713 (Muktamad - Dalam Talian).pdf"
+    },
+    {
+      "date": "11/11/2024",
+      "project_id": "1878738",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1878738_BM/WJW240906 Akta 713.pdf"
+    },
+    {
+      "date": "24/12/2024",
+      "project_id": "2564090",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2564090/PUB 505 (2024).pdf"
+    },
+    {
+      "date": "28/04/2025",
+      "project_id": "2817626",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2817626/PUB 143 (2025).pdf"
+    },
+    {
+      "date": "13/08/2025",
+      "project_id": "2999899",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2999899/PUB 294.pdf"
+    },
+    {
+      "date": "06/02/2026",
+      "project_id": "3326397",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3326397/PUB 26_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1878738_BM/WJW240906 Akta 713.pdf",
+  "latest_amendment_pdf_bm": ""
 }
