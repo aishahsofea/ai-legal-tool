@@ -105,9 +105,11 @@ python run.py --step 4   # extract section-level chunks (~5 min)
 python run.py --step 5   # embed + ingest into pgvector (~5 min, ~$0.15)
 ```
 
-Steps 2 and 3 request and register both the `lang=BI` and `lang=BM` version of each Act. A full rescrape that picks up the second language roughly doubles step 2, which is still serial. Step 3 fetches concurrently, so the extra downloads cost it far less. An Act with only one version costs the same as before. Steps 4-5 grow with the number of BM extractions you shadow-ingest.
+Steps 2 and 3 request and register both the English and Malay version of each Act. A full rescrape that picks up the second language roughly doubles step 2, which is still serial. Step 3 fetches concurrently, so the extra downloads cost it far less. An Act with only one version costs the same as before. Steps 4-5 grow with the number of BM extractions you shadow-ingest.
 
-`DOWNLOAD_CONCURRENCY` (default 8) sets how many PDFs step 3 fetches at once. It changes nothing else. Steps 1 and 2 still sleep `REQUEST_DELAY` between requests: they hit `act-detail.php` behind a WAF. Step 3 reads static files from `lom.agc.gov.my/ilims/upload/`. A `429` or `503` from any worker halves the concurrency for the rest of the run, and it does not climb back.
+`DOWNLOAD_CONCURRENCY` (default 8) sets how many PDFs step 3 fetches at once. It changes nothing else. Steps 1 and 2 still sleep `REQUEST_DELAY` between requests: they hit AGC's WAF-fronted endpoints. Step 3 reads static files from `lom.agc.gov.my/ilims/upload/`. A `429` or `503` from any worker halves the concurrency for the rest of the run, and it does not climb back.
+
+Since issue #64, AGC's listing and detail-page endpoints are encrypted and signed. See [docs/data-pipeline.md](docs/data-pipeline.md) (Steps 1-2) for how the scraper handles it.
 
 ```bash
 DOWNLOAD_CONCURRENCY=4 python run.py --step 3
