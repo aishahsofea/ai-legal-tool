@@ -49,6 +49,20 @@ def _extract_pdf_url(raw: str) -> str:
     return f"{BASE_URL}/{decoded.lstrip('../')}"
 
 
+def is_detail_page(html: str) -> bool:
+    """True when html is a real AGC page render, not a bare rejection body.
+
+    AGC wraps every templated page — including act-detail.php — in a shared
+    `<div id="wrapper">`. A blocked/rejected request (e.g. the 15-byte
+    "Invalid request" AGC returns with HTTP 200 for a malformed act-detail
+    request) carries none of that markup, so this is the positive signal
+    that separates "AGC served us a detail page" from "AGC served us
+    nothing we can interpret" — distinct from an empty timeline, which is a
+    real detail page that genuinely lists no entries.
+    """
+    return BeautifulSoup(html, "lxml").find(id="wrapper") is not None
+
+
 def parse_timeline(html: str) -> list[dict]:
     """
     Parse timeline entries from act-detail page HTML.

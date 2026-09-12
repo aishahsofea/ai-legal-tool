@@ -13,11 +13,21 @@ def _detail_html(date: str, log_type: str, pdf_name: str) -> str:
         f"outputaktap/1_BI/{pdf_name}&embedded=true"
     )
     return f"""
-    <html><body>
+    <html><body><div id="wrapper">
     <a data-date="{date}" data-project-id="1" data-log-type="{log_type}"></a>
     <li data-date="{date}"><iframe data-src="{pdf_src}"></iframe></li>
-    </body></html>
+    </div></body></html>
     """
+
+
+def _empty_detail_html() -> str:
+    """A genuine detail page (carries the site wrapper) that lists nothing."""
+    return '<html><body><div id="wrapper"><div class="timeline-empty"></div></div></body></html>'
+
+
+# AGC's real response for a rejected/malformed act-detail request: HTTP 200,
+# 15-byte body, no HTML at all — see issue #63.
+_REJECTED = "Invalid request"
 
 
 class _FakeResponse:
@@ -235,6 +245,54 @@ def test_scrape_act_secondary_transient_failure_is_not_cached_as_absent():
 
     assert result["latest_reprint_pdf"].endswith("ACT6-EN.pdf")
     assert "detail_url_bm" not in result
+
+
+def test_scrape_act_bm_rejection_body_is_not_cached_as_absent(caplog):
+    """AGC answering with HTTP 200 + 'Invalid request' must not be read as
+    'confirmed no BM version' — that would permanently block retry."""
+    session = _FakeSession({
+        _bi_url("9"): _detail_html("01/01/2020", "REPRINT ONLINE", "ACT9-EN.pdf"),
+        _bm_url("9"): _REJECTED,
+    })
+
+    with caplog.at_level("WARNING"):
+        result = step2_detail.scrape_act(session, "9", "updated")
+
+    assert result["latest_reprint_pdf"].endswith("ACT9-EN.pdf")
+    assert "detail_url_bm" not in result
+    assert any("not a detail page" in r.message for r in caplog.records)
+
+
+def test_scrape_act_primary_rejection_body_is_not_cached_as_absent(caplog):
+    """Same fault on the primary path: a rejected lang=BI response must not
+    be parsed as 'this Act has an empty timeline'."""
+    session = _FakeSession({
+        _bi_url("10"): _REJECTED,
+        _bm_url("10"): None,
+    })
+
+    with caplog.at_level("WARNING"):
+        result = step2_detail.scrape_act(session, "10", "updated")
+
+    assert result is None
+    assert any("not a detail page" in r.message for r in caplog.records)
+
+
+def test_scrape_act_genuinely_empty_bm_page_still_recorded_absent():
+    """A real detail page (carries the site wrapper) with no timeline entries
+    is a genuine finding, distinct from a rejected/blocked response."""
+    session = _FakeSession({
+        _bi_url("11"): _detail_html("01/01/2020", "REPRINT ONLINE", "ACT11-EN.pdf"),
+        _bm_url("11"): _empty_detail_html(),
+    })
+
+    result = step2_detail.scrape_act(session, "11", "updated")
+
+    # Recorded as confirmed absent (key present, empty) — unlike the rejected
+    # case above, where "detail_url_bm" is omitted entirely for later retry.
+    assert "detail_url_bm" in result
+    assert result["detail_url_bm"] == ""
+    assert result["timeline_bm"] == []
 
 
 def test_run_step2_backfill_retries_after_transient_bm_failure(tmp_path, monkeypatch):

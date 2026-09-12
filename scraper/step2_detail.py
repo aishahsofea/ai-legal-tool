@@ -37,7 +37,7 @@ from scraper.config import (
     INDEX_FILE,
     METADATA_DIR,
 )
-from scraper.parsers.detail_parser import parse_timeline, find_latest_reprint, find_latest_amendment
+from scraper.parsers.detail_parser import parse_timeline, is_detail_page, find_latest_reprint, find_latest_amendment
 from scraper.parsers.subsid_parser import parse_subsid_records
 
 logger = logging.getLogger(__name__)
@@ -143,8 +143,20 @@ def fetch_subsidiary(session, act_number: str) -> list[dict]:
 
 
 def _fetch_html(session, url: str, timeout: int) -> tuple[str | None, bool]:
+    """GET url, returning only a genuine detail-page render.
+
+    A 200 whose body isn't an actual detail page — AGC's 15-byte "Invalid
+    request" rejection, for instance — comes back as (None, False), exactly
+    like a timeout: it's indistinguishable from a blocked request, so callers
+    must not read a real conclusion (like "no BM version") out of it.
+    """
     resp, definitely_absent = _safe_get(session, url, timeout=timeout)
-    return (resp.text if resp is not None else None), definitely_absent
+    if resp is None:
+        return None, definitely_absent
+    if not is_detail_page(resp.text):
+        logger.warning("Response for %s is not a detail page — treating as a transient failure", url)
+        return None, False
+    return resp.text, definitely_absent
 
 
 def _fetch_secondary(session, act_number: str, timeout: int) -> tuple[str, list[dict]] | None:
@@ -152,8 +164,9 @@ def _fetch_secondary(session, act_number: str, timeout: int) -> tuple[str, list[
 
     Returns (url, timeline) on success, ("", []) when AGC confirms (404) no BM
     version exists, or None when the fetch failed for an unrelated reason —
-    timeout, connection error, non-404 HTTP. Callers must not cache that None
-    as "no BM version": the act needs to be retried on a later run.
+    timeout, connection error, non-404 HTTP, or a 200 that isn't a real
+    detail page. Callers must not cache that None as "no BM version": the
+    act needs to be retried on a later run.
     """
     url = f"{DETAIL_URL}?act={act_number}&lang=BM"
     html, definitely_absent = _fetch_html(session, url, timeout)
