@@ -33,22 +33,39 @@ _IGNORED_PARAMS = [
 ]
 
 
-def _retry_adapter() -> HTTPAdapter:
+_DEFAULT_FORCELIST = [429, 500, 502, 503, 504]
+
+# The AGC asset host answers a missing file with 500 and an HTML body rather
+# than 404 (/robots.txt does the same), so retrying a 500 there buys nothing.
+# _download_pdf reads Content-Type to tell a missing file from a real fault.
+_DOWNLOAD_FORCELIST = [429, 502, 503, 504]
+
+
+def _retry_adapter(*, read: int | bool = False, status_forcelist: list[int] | None = None) -> HTTPAdapter:
+    """read defaults to False so the cached session used by steps 1 and 2 keeps
+    the behaviour it has always had. Only the download path opts in.
+    """
     retry = Retry(
         total=3,
         backoff_factor=2.0,
-        status_forcelist=[429, 500, 502, 503, 504],
+        status_forcelist=status_forcelist or _DEFAULT_FORCELIST,
         allowed_methods=["GET", "POST"],
         raise_on_status=False,
-        read=False,
+        read=read,
     )
     return HTTPAdapter(max_retries=retry)
 
 
 def build_download_session() -> requests.Session:
-    """Plain (uncached) session for binary downloads — avoids storing PDFs in SQLite."""
+    """Plain (uncached) session for binary downloads — avoids storing PDFs in SQLite.
+
+    Not thread-safe. Step 3 builds one of these per pool worker rather than
+    sharing one, so the default pool_maxsize of 10 is ample for each.
+    """
     session = requests.Session()
-    adapter = _retry_adapter()
+    # read=1 rather than the full budget: the retry loop in _download_pdf owns
+    # the schedule, and stacking both layers would multiply out to 5N attempts.
+    adapter = _retry_adapter(read=1, status_forcelist=_DOWNLOAD_FORCELIST)
     session.mount("https://", adapter)
     session.mount("http://", adapter)
     session.headers.update({

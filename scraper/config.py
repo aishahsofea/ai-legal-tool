@@ -1,3 +1,5 @@
+import os
+
 BASE_URL = "https://lom.agc.gov.my"
 
 # DataTables JSON endpoints — one per act type
@@ -17,6 +19,12 @@ HOMEPAGE_URL  = BASE_URL
 REQUEST_DELAY  = 1.5   # seconds between requests
 RETRY_DELAYS   = [5, 15, 30, 60]  # successive retry waits in seconds
 FETCH_PAGE_SIZE = 100  # DataTables records per page
+
+# Step 3 fetches static files from lom.agc.gov.my/ilims/upload/, not the
+# WAF-fronted act-detail.php that REQUEST_DELAY exists for, so it runs
+# concurrently instead of sleeping. 8 is a floor the host answered without
+# throttling, not a measured ceiling — the 429/503 backoff finds the ceiling.
+DOWNLOAD_CONCURRENCY = int(os.getenv("DOWNLOAD_CONCURRENCY", "8"))
 
 # Output paths
 DATA_DIR         = "data"

@@ -100,12 +100,20 @@ All steps are idempotent. Step 3 re-observes authoritative PDF bytes to catch sa
 ```bash
 python run.py --step 1   # scrape Act listing pages (~1 min)
 python run.py --step 2   # scrape Act detail pages (~45 min)
-python run.py --step 3   # download PDFs (~18 min)
+python run.py --step 3   # download PDFs (~2 min)
 python run.py --step 4   # extract section-level chunks (~5 min)
 python run.py --step 5   # embed + ingest into pgvector (~5 min, ~$0.15)
 ```
 
-Steps 2 and 3 request and register both the `lang=BI` and `lang=BM` version of each Act. A full rescrape that picks up the second language roughly doubles the timings above; an Act with only one version costs the same as before. Steps 4-5 grow with however many BM extractions you choose to shadow-ingest.
+Steps 2 and 3 request and register both the `lang=BI` and `lang=BM` version of each Act. A full rescrape that picks up the second language roughly doubles step 2, which is still serial. Step 3 fetches concurrently, so the extra downloads cost it far less. An Act with only one version costs the same as before. Steps 4-5 grow with the number of BM extractions you shadow-ingest.
+
+`DOWNLOAD_CONCURRENCY` (default 8) sets how many PDFs step 3 fetches at once. It changes nothing else. Steps 1 and 2 still sleep `REQUEST_DELAY` between requests: they hit `act-detail.php` behind a WAF. Step 3 reads static files from `lom.agc.gov.my/ilims/upload/`. A `429` or `503` from any worker halves the concurrency for the rest of the run, and it does not climb back.
+
+```bash
+DOWNLOAD_CONCURRENCY=4 python run.py --step 3
+```
+
+`lom.agc.gov.my` answers a missing file with `500` rather than `404`. So step 3 reads a `5xx` with an HTML body as a file that is not there, and does not retry it. A read timeout is retried on the 5/15/30/60 second schedule. Every failure lands in `data/pdfs/download_report.json` with its reason.
 
 See [docs/data-pipeline.md](docs/data-pipeline.md) for what each step does and the JSON it produces.
 
