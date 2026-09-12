@@ -48,6 +48,19 @@ def source_language(metadata: dict, source_url: str) -> str:
     return "en"
 
 
+def scraped_at_for(metadata: dict, language: str) -> str:
+    """When this language's side of the Act was scraped.
+
+    Step 2 stamps ``scraped_at`` when it scrapes an Act's primary document and
+    ``scraped_at_bm`` when it fetches the Malay one, which is often a later run
+    entirely. Without this, a Malay document backfilled onto an Act scraped
+    months earlier is filed under the English scrape's date. Falls back to the
+    act-level stamp, which is correct for the primary and is all that metadata
+    written before #71 carries.
+    """
+    return str(metadata.get(f"scraped_at_{language}") or metadata.get("scraped_at", ""))
+
+
 def _timeline_for(metadata: dict, source_url: str, key: str = "timeline") -> tuple[str, str]:
     for event in metadata.get(key, []):
         if str(event.get("pdf_url", "")) == source_url:
@@ -202,14 +215,14 @@ def generate_manifest(
             source_url=source_url,
             timeline_date=timeline_date,
             timeline_type=timeline_type,
-            metadata_scraped_at=str(metadata.get("scraped_at", "")),
+            metadata_scraped_at=scraped_at_for(metadata, language),
             lifecycle_status=str(existing.get("lifecycle_status", "registered")),
             document_kind="reprint",
             detail_url=fallback_url,
             local_path=relative,
         )
         documents[identity] = document.to_dict()
-        observed_at = str(metadata.get("scraped_at", ""))
+        observed_at = scraped_at_for(metadata, language)
         if observed_at:
             observation = {
                 "document_id": identity,

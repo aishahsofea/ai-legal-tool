@@ -570,3 +570,41 @@ def test_run_step2_skips_an_act_whose_number_breaks_its_path(tmp_path, monkeypat
     # The Act behind the broken one still gets scraped.
     saved = json.loads((metadata_dir / "15.json").read_text(encoding="utf-8"))
     assert saved["latest_reprint_pdf"].endswith("ACT15-EN.pdf")
+
+
+def test_backfill_stamps_when_the_malay_side_was_actually_fetched():
+    """The primary's scraped_at stays put, so the Malay document needs its own
+    stamp or Step 3 files it under the English scrape's date (#71)."""
+    existing = {
+        "act_number": "16",
+        "detail_url": _en_link("16"),
+        "scraped_at": "2026-05-07T02:28:40+00:00",
+        "timeline": [],
+        "latest_reprint_pdf": "https://old/ACT16.pdf",
+        "latest_amendment_pdf": "",
+    }
+    session = _FakeSession({_bm_link("16"): _detail_html("01/01/2019", "REPRINT ONLINE", "AKTA16.pdf")})
+
+    result, _ = step2_detail.backfill_bm_variant(session, "16", existing, link_bm=_bm_link("16"))
+
+    assert result["scraped_at"] == existing["scraped_at"]
+    assert result["scraped_at_bm"] > existing["scraped_at"]
+
+
+def test_scrape_act_stamps_the_malay_side_when_it_fetches_both():
+    session = _FakeSession({
+        _en_link("17"): _detail_html("01/01/2020", "REPRINT ONLINE", "ACT17-EN.pdf"),
+        _bm_link("17"): _detail_html("01/01/2020", "REPRINT ONLINE", "ACT17-BM.pdf"),
+    })
+
+    result = _scrape(session, "17", link_en=_en_link("17"), link_bm=_bm_link("17"))
+
+    assert result["scraped_at_bm"] == result["scraped_at"]
+
+
+def test_scrape_act_leaves_no_malay_stamp_when_there_is_no_malay_document():
+    session = _FakeSession({_en_link("18"): _detail_html("01/01/2020", "REPRINT ONLINE", "ACT18-EN.pdf")})
+
+    result = _scrape(session, "18", link_en=_en_link("18"), link_bm="")
+
+    assert "scraped_at_bm" not in result

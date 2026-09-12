@@ -257,6 +257,10 @@ def scrape_act(
 
     if en_exists and bm_exists and bm_html is not None:
         bm_timeline = parse_timeline(bm_html)
+        # Stamped separately from scraped_at because the Malay side is often
+        # fetched in a later run than the primary — Step 3 files each document
+        # under its own language's scrape date (#71).
+        result["scraped_at_bm"] = result["scraped_at"]
         result["detail_url_bm"] = bm_url
         result["timeline_bm"] = bm_timeline
         result["latest_reprint_pdf_bm"] = find_latest_reprint(bm_timeline)
@@ -349,6 +353,7 @@ def backfill_bm_variant(
         return None, True
     bm_timeline = parse_timeline(bm_html)
     merged = dict(existing)
+    merged["scraped_at_bm"] = datetime.now(timezone.utc).isoformat()
     merged["detail_url_bm"] = link_bm
     merged["timeline_bm"] = bm_timeline
     merged["latest_reprint_pdf_bm"] = find_latest_reprint(bm_timeline)
