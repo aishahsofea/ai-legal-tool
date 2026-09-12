@@ -105,5 +105,58 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 6
+  "subsidiary_total": 6,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODcyJmxhbmc9Qk0mZGF0ZT0zMS0xMi0yMDI1I3RpbWVsaW5lfDhmNTQwNmU4ODhjZWI5YzcwZmZkZTc3OWEyMDQ4YWM2NzliZjk4YTU4ZTQ5N2ViYWIxMDQ2ZGZjNmNjYzcxM2I%3D",
+  "timeline_bm": [
+    {
+      "date": "01/01/2026",
+      "project_id": "3272166",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3272166_BM/Akta 872 - AKTA PEKERJA GIG 2025.pdf"
+    },
+    {
+      "date": "01/04/2026",
+      "project_id": "3434493",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3434493/PUB122_2026.pdf"
+    },
+    {
+      "date": "02/04/2026",
+      "project_id": "3434451",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3434451/PUA143_2026.pdf"
+    },
+    {
+      "date": "03/04/2026",
+      "project_id": "3434389",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3434389/PUA144_2026.pdf"
+    },
+    {
+      "date": "04/04/2026",
+      "project_id": "3434400",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3434400/PUA145_2026.pdf"
+    },
+    {
+      "date": "05/04/2026",
+      "project_id": "3434365",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3434365/PUA146_2026.pdf"
+    },
+    {
+      "date": "07/04/2026",
+      "project_id": "3435789",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3435789/PUB 124_2026.pdf"
+    },
+    {
+      "date": "19/09/2026",
+      "project_id": "3707193",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3707193/PUB 333_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

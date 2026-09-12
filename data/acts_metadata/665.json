@@ -99,5 +99,46 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 6
+  "subsidiary_total": 6,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjY1Jmxhbmc9Qk0mZGF0ZT0wMS0xMC0yMDIzI3RpbWVsaW5lfGY2ZjM2MDJhYTUyMzNlNjQ3M2MyNjViMjdhNWM1YTRjMDFjMWM2NzIxMTMyMTdkNjFiYzA3MWY2ZTg2OGZlYzU%3D",
+  "timeline_bm": [
+    {
+      "date": "20/07/2007",
+      "project_id": "677",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/677_BM/Akta665(bm).pdf"
+    },
+    {
+      "date": "03/11/2012",
+      "project_id": "15800",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 665.pdf"
+    },
+    {
+      "date": "10/01/2015",
+      "project_id": "901",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/901_BM/Akta A1470.pdf"
+    },
+    {
+      "date": "05/05/2016",
+      "project_id": "16449",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta Suruhanjaya Koperasi Malaysia 2007 [Akta 665].pdf"
+    },
+    {
+      "date": "16/08/2023",
+      "project_id": "1845390",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1845390_BM/A1694 BM.pdf"
+    },
+    {
+      "date": "07/10/2023",
+      "project_id": "1864998",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1864998_BM/AKTA 665 SEBAGAIMANA 1 OKTOBER 2023 (CETAKAN SEMULA VERSI DALAM TALIAN).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1864998_BM/AKTA 665 SEBAGAIMANA 1 OKTOBER 2023 (CETAKAN SEMULA VERSI DALAM TALIAN).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1845390_BM/A1694 BM.pdf"
 }

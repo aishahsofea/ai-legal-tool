@@ -86,5 +86,82 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712784_BI/ACT A324.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzkmbGFuZz1CTSZkYXRlPTMxLTEyLTIwMTEjdGltZWxpbmV8OWQ3NTMwMzgwNTRiZmIyNWMwY2UwYmVhMWQwMmQyMjM5YTZjOWZjOTI0NmM5MTQ0MjU2MDUzYjVjODdiZjVhYw%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "17/09/1963",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "18/09/1963",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "19/09/1963",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "20/09/1963",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "21/09/1963",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "02/12/1964",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/12/1964",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "02/06/1972",
+      "project_id": "1709481",
+      "log_type": "REVISED",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "20/01/1976",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "12/01/2006",
+      "project_id": "2256983",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "12/01/2012",
+      "project_id": "1734886",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 79 (Mansuh).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
 }

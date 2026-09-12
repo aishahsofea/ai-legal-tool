@@ -38,5 +38,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 490 - Malaysia External Trade Development Corporation Act 1992.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDkwJmxhbmc9Qk0mZGF0ZT0wMS0wOC0yMDIwI3RpbWVsaW5lfGM1OTI4MDY1OTgwMTRhZDlmY2Y5NzljY2E3YzU2NThjZTBlMzU4YWE0Mjc1NWU4NWE5ZmRiN2MwMjMyOGNiNTU%3D",
+  "timeline_bm": [
+    {
+      "date": "17/07/1992",
+      "project_id": "502",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/502_BM/AKTA 490.pdf"
+    },
+    {
+      "date": "18/02/1995",
+      "project_id": "1712812",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712812_BM/AKTA A916.pdf"
+    },
+    {
+      "date": "04/08/2020",
+      "project_id": "1712821",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 490 Ogos 2020.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 490 Ogos 2020.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712812_BM/AKTA A916.pdf"
 }

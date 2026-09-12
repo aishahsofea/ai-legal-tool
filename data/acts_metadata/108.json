@@ -32,5 +32,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3473245_BI/AKTA 108- CETAKAN 2006 (BI).pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTA4Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfDJkMTRkOGQ5ZDhjZTYwYzJmNzBmYTdmYmM1NTUxNGYxM2I0NjdlN2E0NTdhMjVmM2QzNTRkNTJhZTllZTEyMmE%3D",
+  "timeline_bm": [
+    {
+      "date": "22/06/1973",
+      "project_id": "120",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/10/1994",
+      "project_id": "3473112",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3473112_BM/AKTA 108- CETAKAN 1994 (BM).pdf"
+    },
+    {
+      "date": "01/03/2000",
+      "project_id": "3473116",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3473116_BM/AKTA 108 - CETAKAN 2000 (BM).pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "3473121",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3473121_BM/3. AKTA 108- CETAKAN 2006 (BM).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3473121_BM/3. AKTA 108- CETAKAN 2006 (BM).pdf",
+  "latest_amendment_pdf_bm": ""
 }

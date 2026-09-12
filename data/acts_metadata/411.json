@@ -56,5 +56,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 411.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BI/ACT A996.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDExJmxhbmc9Qk0mZGF0ZT0wMy0xMC0yMDI0I3RpbWVsaW5lfDEyZjA3ZjkxNWI3M2ExMTAzYzdlMjZiYTZkYjJmMDIzMjE3Y2Y5MDE4MWViNWE0ZjNjNDEwMmY1YmYwMGY5ZGY%3D",
+  "timeline_bm": [
+    {
+      "date": "08/12/1989",
+      "project_id": "423",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 411 Disemak 1989.pdf"
+    },
+    {
+      "date": "26/07/1997",
+      "project_id": "1728006",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BM/AKTA A996.pdf"
+    },
+    {
+      "date": "04/08/2013",
+      "project_id": "16610",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 411 (11.3.2015).pdf"
+    },
+    {
+      "date": "07/10/2024",
+      "project_id": "2022117",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/terjemahan/2022117_BM/AKTA 411- AKTA PINJAMAN (BANK ANTARABANGSA) 1958 (TERJEMAHAN- 2024).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 411 (11.3.2015).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BM/AKTA A996.pdf"
 }

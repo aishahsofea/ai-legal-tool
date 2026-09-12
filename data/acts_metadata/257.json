@@ -117,5 +117,100 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjU3Jmxhbmc9Qk0mZGF0ZT0xNS0wMy0yMDE1I3RpbWVsaW5lfDFmYzg4NTE1OTVlNTUyMzJkMzRjZTJhODdjZDUyODg1Y2MzMDNhMmY3MzM5YWFmNzc4ZWFkY2ZhZjRiYjI3NGU%3D",
+  "timeline_bm": [
+    {
+      "date": "26/06/1953",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/05/1956",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "02/03/1958",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "20/03/1964",
+      "project_id": "103",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/09/1972",
+      "project_id": "3222124",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3222124/PUA 266 1972.pdf"
+    },
+    {
+      "date": "04/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "08/11/1981",
+      "project_id": "2260296",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2260296_BM/Salinan warta Akta 257.pdf"
+    },
+    {
+      "date": "11/12/1981",
+      "project_id": "269",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "23/10/1982",
+      "project_id": "3180571",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3180571/P.U.(A) 306.pdf"
+    },
+    {
+      "date": "26/02/1984",
+      "project_id": "16147",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 257 - Akta Pengangkatan 1952.pdf"
+    },
+    {
+      "date": "01/06/1987",
+      "project_id": "1700335",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700335_BM/AKTA A671.pdf"
+    },
+    {
+      "date": "05/08/1997",
+      "project_id": "1728006",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BM/AKTA A996.pdf"
+    },
+    {
+      "date": "28/02/2001",
+      "project_id": "3180549",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3180549_BM/A1098y2001bm_unlocked.pdf"
+    },
+    {
+      "date": "15/01/2006",
+      "project_id": "15277",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 257.pdf"
+    },
+    {
+      "date": "30/03/2015",
+      "project_id": "16147",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 257 - Akta Pengangkatan 1952.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 257 - Akta Pengangkatan 1952.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3180549_BM/A1098y2001bm_unlocked.pdf"
 }

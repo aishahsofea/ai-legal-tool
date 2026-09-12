@@ -96,5 +96,64 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjIxJmxhbmc9Qk0mZGF0ZT0wMS0wNi0yMDE1I3RpbWVsaW5lfDFmODMxODBhNzdmNzEwZWI5YjdjYTU2MTE0ZTVkYjZmMDM3NGY0NTljMzJiNWU0ZDU3YTEyOThmZTU5ODFiYzU%3D",
+  "timeline_bm": [
+    {
+      "date": "14/11/1958",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/1971",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "01/04/1973",
+      "project_id": "1727894",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727894_BM/Akta A188 - Akta Pertahanan Awam (Pindaan) 1973 (1).pdf"
+    },
+    {
+      "date": "02/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "29/05/1979",
+      "project_id": "1727584",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 221 (revised 1979).pdf"
+    },
+    {
+      "date": "30/05/1979",
+      "project_id": "233",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "08/05/2015",
+      "project_id": "2259396",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/06/2015",
+      "project_id": "2253337",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": ""
+    },
+    {
+      "date": "10/09/2016",
+      "project_id": "944",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20160808_A1513_BM_Akta A1513.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20160808_A1513_BM_Akta A1513.pdf"
 }

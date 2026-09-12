@@ -38,5 +38,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 379 - Degrees and Diplomas Act 1962 (Revised 1989).pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Mzc5Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfGJkY2ViZGE2YzE3NTc2YjUxM2NmYzM5M2MyNzRlMjJhYzliOGVmYjAzMzJhZjVjNDJhZTZmMTFhYWYxNTc5Nzc%3D",
+  "timeline_bm": [
+    {
+      "date": "08/03/1991",
+      "project_id": "16308",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 379 - Akta Ijazah dan Diploma 1962.pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16308",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 379 - Akta Ijazah dan Diploma 1962.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 379 - Akta Ijazah dan Diploma 1962.pdf",
+  "latest_amendment_pdf_bm": ""
 }

@@ -14,5 +14,28 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzAyJmxhbmc9Qk0mZGF0ZT0wMS0wOS0yMDE5I3RpbWVsaW5lfGRkNDhkNDNiZjJhZmYyZWU3NjFkNDdmYTI0NDU4NTg0OTAwOTYzMWM3YWQxNzM0MzUxZWIxMWY1NjgxNzNmNDg%3D",
+  "timeline_bm": [
+    {
+      "date": "15/01/2010",
+      "project_id": "714",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/714_BM/AKTA 702.pdf"
+    },
+    {
+      "date": "03/09/2019",
+      "project_id": "3667672",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3667672_BM/AKTA 702 - REPRINT 2019.pdf"
+    },
+    {
+      "date": "03/01/2020",
+      "project_id": "1696015",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1696015_BM/Akta 823.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3667672_BM/AKTA 702 - REPRINT 2019.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1696015_BM/Akta 823.pdf"
 }

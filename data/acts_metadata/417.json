@@ -38,5 +38,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 417 - Malaysian Combined Cadet Force Act 1967 (Revised 1.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDE3Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfGZiMDgxMGI1YmI1YzI4M2ExM2E1MGI2OWY1MjQ4ZjJlMDVmZDMwOWUwMTY1ZDkzYjA1ZTI0N2FmMzNiMzhmMGE%3D",
+  "timeline_bm": [
+    {
+      "date": "22/12/1989",
+      "project_id": "429",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "30/12/1989",
+      "project_id": "1727637",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727637_BM/AKTA 417 REVISED 1989.pdf"
+    },
+    {
+      "date": "01/07/1990",
+      "project_id": "16618",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 417 - Akta Pasukan Kadet Bersatu Malaysia 1967.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16618",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 417 - Akta Pasukan Kadet Bersatu Malaysia 1967.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 417 - Akta Pasukan Kadet Bersatu Malaysia 1967.pdf",
+  "latest_amendment_pdf_bm": ""
 }

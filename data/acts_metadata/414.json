@@ -96,5 +96,64 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 3
+  "subsidiary_total": 3,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDE0Jmxhbmc9Qk0mZGF0ZT0wMS0wMy0yMDE4I3RpbWVsaW5lfGI5NGVmZjFiZTEwNDA2YzljZWY1MDQ5ZmI2MmMxMGQwMDA1MmU2YTg0YzdjNTZkZWVjNWVlNjlkMzVlMmM0Mjk%3D",
+  "timeline_bm": [
+    {
+      "date": "29/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "20/02/1982",
+      "project_id": "3358055",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3358055/PUB 74 1982.pdf"
+    },
+    {
+      "date": "24/12/1989",
+      "project_id": "426",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "12/11/1990",
+      "project_id": "16615",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/AKTA 414 - Akta Lambang dan Nama (Mencegah Penggunaan Tak Wajar) 1963.pdf"
+    },
+    {
+      "date": "07/11/1995",
+      "project_id": "3358060",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3358060/PUB 501 1995.pdf"
+    },
+    {
+      "date": "07/12/2011",
+      "project_id": "16615",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/AKTA 414 - Akta Lambang dan Nama (Mencegah Penggunaan Tak Wajar) 1963.pdf"
+    },
+    {
+      "date": "07/11/2012",
+      "project_id": "2517",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2517/04. P.U. (B) 360 2012-PEMBERITAHUAN DI BAWAH SEKSYEN 7.pdf"
+    },
+    {
+      "date": "03/02/2017",
+      "project_id": "956",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/956_BM/Akta A1525_unlocked.pdf"
+    },
+    {
+      "date": "10/03/2018",
+      "project_id": "2970709",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/terjemahan/2970709_BM/Akta 414 (Terjemahan).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/AKTA 414 - Akta Lambang dan Nama (Mencegah Penggunaan Tak Wajar) 1963.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/956_BM/Akta A1525_unlocked.pdf"
 }

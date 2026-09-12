@@ -1,13 +1,143 @@
 {
   "act_number": "207",
   "act_type": "updated",
-  "title_en": "*EXPLOSIVES ACT 1957",
-  "title_bm": "AKTA BAHAN LETUPAN 1957",
-  "scraped_at": "2026-05-05T09:43:13.612666+00:00",
-  "stub": true,
-  "timeline": [],
-  "latest_reprint_pdf": "",
-  "latest_amendment_pdf": "",
+  "scraped_at": "2026-09-12T16:49:25.493784+00:00",
+  "detail_url": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjA3Jmxhbmc9QkkmZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfGU4ZWFmZTQ3OTVkMDM5NWM2ZTM0NWIyMjk3MGM0MWY2MjYxODU1MzQ4MWQwNTBhNjA0OGI0ODJlMGNlN2Q1ZDY%3D",
+  "timeline": [
+    {
+      "date": "09/08/1957",
+      "project_id": "219",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/219_BI/ORD 40 1957_compressed.pdf"
+    },
+    {
+      "date": "16/02/1961",
+      "project_id": "3157097",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3157097_BI/L.N. 44 1961.pdf"
+    },
+    {
+      "date": "01/09/1967",
+      "project_id": "3157223",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3157223_BI/ACT 41 1967.pdf"
+    },
+    {
+      "date": "19/08/1974",
+      "project_id": "1727880",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727880_BI/Act A267.pdf"
+    },
+    {
+      "date": "03/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf"
+    },
+    {
+      "date": "07/09/1977",
+      "project_id": "3139427",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3139427/013. P.U.A 260 1977.pdf"
+    },
+    {
+      "date": "22/11/1978",
+      "project_id": "2263505",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2263505_BI/Act 207 revised 1978.pdf"
+    },
+    {
+      "date": "09/01/2001",
+      "project_id": "2258305",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258305_BI/Act 207 reprint 2001.pdf"
+    },
+    {
+      "date": "10/01/2006",
+      "project_id": "15946",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 207.pdf"
+    },
+    {
+      "date": "09/09/2007",
+      "project_id": "1739510",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1308 - Explosive (Amendment) Act 2007.pdf"
+    },
+    {
+      "date": "12/12/2011",
+      "project_id": "16634",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 207 - Explosives Act 1957.pdf"
+    },
+    {
+      "date": "03/02/2025",
+      "project_id": "2651999",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2651999/PUB41_2025.pdf"
+    },
+    {
+      "date": "27/02/2025",
+      "project_id": "3157097",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3157097_BI/L.N. 44 1961.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 207 - Explosives Act 1957.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3157097_BI/L.N. 44 1961.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjA3Jmxhbmc9Qk0mZGF0ZT0xNS0xMS0xOTc4I3RpbWVsaW5lfDg4OTA1NzlmNzgwODdiOTVmZjU5YzdiNmYyNGYyMjdlZDQ2OGZmOTQ4MzVjNmNkMzNlZTMwZjdhMDQ4YjQwZTg%3D",
+  "timeline_bm": [
+    {
+      "date": "16/02/1961",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "31/08/1967",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "18/08/1974",
+      "project_id": "1727880",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727880_BM/Akta A267 - Akta Bahan Letupan (Pindaan) 1974.pdf"
+    },
+    {
+      "date": "02/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "06/09/1977",
+      "project_id": "3139427",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3139427/013. P.U.A 260 1977.pdf"
+    },
+    {
+      "date": "01/11/1978",
+      "project_id": "219",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Salinan Warta Akta Bahan Letupan 1957 [Akta 207].pdf"
+    },
+    {
+      "date": "22/11/1978",
+      "project_id": "2260290",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2260290_BM/Salinan Warta Akta Bahan Letupan 1957 [Akta 207] -Revised 1978.pdf"
+    },
+    {
+      "date": "30/01/2025",
+      "project_id": "2651999",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2651999/PUB41_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3139427/013. P.U.A 260 1977.pdf"
 }

@@ -66,5 +66,34 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjU0Jmxhbmc9Qk0mZGF0ZT0wMS0wNS0yMDEzI3RpbWVsaW5lfGRlM2Y2OTJiOTQ0ODg0NzNmYWY0NDc1YWZlMWNmZmRhZWVhYTgxZGQ2NzI1ODE5OTJjNmYwODZmYTcxZmJkMzI%3D",
+  "timeline_bm": [
+    {
+      "date": "30/10/1981",
+      "project_id": "2260293",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2260293_BM/DISEMAK 254 BM.pdf"
+    },
+    {
+      "date": "23/04/1982",
+      "project_id": "3190636",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3190636/P.U. (A) 109-1982.pdf"
+    },
+    {
+      "date": "04/05/2013",
+      "project_id": "16144",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 254 - Akta Had Masa 1953.pdf"
+    },
+    {
+      "date": "08/05/2018",
+      "project_id": "1076",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1076_BM/AktaA1566 BM 2018_unlocked.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 254 - Akta Had Masa 1953.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1076_BM/AktaA1566 BM 2018_unlocked.pdf"
 }

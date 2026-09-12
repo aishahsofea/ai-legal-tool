@@ -44,5 +44,46 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 170.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTcwJmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfDM5NGIzOTM1MjI3NzdiZWViZjlhYTI1ZDAzYjk1ZDkyYWU5MzYwNGQwMjhjMTM1YjQ5OTBmMzRkMDJkZTEzNGI%3D",
+  "timeline_bm": [
+    {
+      "date": "26/03/1976",
+      "project_id": "182",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/182_BM/AKTA 170-WARTA ASAL (BM).pdf"
+    },
+    {
+      "date": "03/10/1998",
+      "project_id": "2259442",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259442_BM/AKTA 170- CETAKAN 1998(BM).pdf"
+    },
+    {
+      "date": "03/04/2001",
+      "project_id": "2259443",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259443_BM/AKTA 170-CETAKAN 2001(BM).pdf"
+    },
+    {
+      "date": "15/07/2002",
+      "project_id": "3623575",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3623575/AKTA 170- PU. A 281-2002.pdf"
+    },
+    {
+      "date": "28/06/2003",
+      "project_id": "3623584",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3623584/AKTA 170- PU(A) 225-2003.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15852",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 170.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 170.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3623584/AKTA 170- PU(A) 225-2003.pdf"
 }

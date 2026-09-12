@@ -56,5 +56,46 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 249 lulus TP dan semakan Kementerian(online).pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20171003_A1541_BI_A1541 BI.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjQ5Jmxhbmc9Qk0mZGF0ZT0wMS0xMC0yMDE4I3RpbWVsaW5lfGRjYjE0YjkzNmYwZTQ0MTFlODg5MzUxNTc1ZGI2YTIxNDBmOWM2MDA3MWZhNTFjZmFjMzIwNDAzNzEyOGMyYTc%3D",
+  "timeline_bm": [
+    {
+      "date": "29/05/1981",
+      "project_id": "261",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Salinan warta Akta 249.pdf"
+    },
+    {
+      "date": "03/11/1987",
+      "project_id": "490",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BM/AKTA 478.pdf"
+    },
+    {
+      "date": "29/09/1996",
+      "project_id": "3193212",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3193212_BM/Akta A969.pdf"
+    },
+    {
+      "date": "05/09/2015",
+      "project_id": "2259386",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259386_BM/Cetakan Semula  2015-Akta 249.pdf"
+    },
+    {
+      "date": "20/11/2017",
+      "project_id": "972",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20171003_A1541_BM_A1541 BM.pdf"
+    },
+    {
+      "date": "07/10/2018",
+      "project_id": "1727356",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/AKTA 249 (REPRINT 2018).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/AKTA 249 (REPRINT 2018).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20171003_A1541_BM_A1541 BM.pdf"
 }

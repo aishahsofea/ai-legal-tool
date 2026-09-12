@@ -50,5 +50,22 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/340_BI/ACT 328.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDM0Jmxhbmc9Qk0mZGF0ZT0wMS0xMS0xOTk3I3RpbWVsaW5lfGIxODQ2NmQxMTE0Yzc5ZmQyMjY2NTk5YjVmZDdjNjViN2Q2ZGU3YzdhNmE4ZjJlNWQwMzI1ODkzY2I3ZmIwZGY%3D",
+  "timeline_bm": [
+    {
+      "date": "30/03/1990",
+      "project_id": "446",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/11/1997",
+      "project_id": "1727273",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 434 Dimansuhkan.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

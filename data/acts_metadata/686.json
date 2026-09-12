@@ -123,5 +123,76 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 8
+  "subsidiary_total": 8,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Njg2Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDIxI3RpbWVsaW5lfGQwOGVjMDA3NmI3ZjY3MTZhMGY1NDJkZDEyYTg5NzJiMzAyMjViODI2ZWRlMWVlNTVkNWUxMDVjOGZmZDFkMWY%3D",
+  "timeline_bm": [
+    {
+      "date": "15/02/2008",
+      "project_id": "698",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/698_BM/Akta 686_unlocked.pdf"
+    },
+    {
+      "date": "03/08/2014",
+      "project_id": "16206",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 686 - 9 7 2014.pdf"
+    },
+    {
+      "date": "04/10/2018",
+      "project_id": "3692681",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3692681_BM/Akta 686 (REPRINT 2018).pdf"
+    },
+    {
+      "date": "05/11/2019",
+      "project_id": "1698625",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1698625/01. P.U. (A) 294-2019_unlocked.pdf"
+    },
+    {
+      "date": "06/11/2019",
+      "project_id": "1699337",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1699337/02. P.U. (A) 295-2019_unlocked.pdf"
+    },
+    {
+      "date": "07/11/2019",
+      "project_id": "1699207",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1699207/03. P.U. (A) 296-2019_unlocked.pdf"
+    },
+    {
+      "date": "08/11/2019",
+      "project_id": "1698732",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1698732/04. P.U. (A) 297-2019_unlocked.pdf"
+    },
+    {
+      "date": "13/10/2021",
+      "project_id": "1710745",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1710745/PUA380_2021.pdf"
+    },
+    {
+      "date": "14/10/2021",
+      "project_id": "1710744",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1710744/PUA 379.pdf"
+    },
+    {
+      "date": "11/12/2021",
+      "project_id": "1712039",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712039_BM/Akta 686- Draf Muktamad.pdf"
+    },
+    {
+      "date": "28/11/2025",
+      "project_id": "3182803",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3182803/PUA411_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712039_BM/Akta 686- Draf Muktamad.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1698732/04. P.U. (A) 297-2019_unlocked.pdf"
 }

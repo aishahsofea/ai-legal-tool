@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2843895_BI/Act A1762- BERNAMA (AMENDMENT) ACT 2025.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzgwJmxhbmc9Qk0mZGF0ZT0xNi0wOS0yMDE2I3RpbWVsaW5lfDY0YjlkYzc4YzY3OWY3ZTIxZTJkYzQxNzBjMzhhZDc5NzVjMDllYTYwY2NmZjJkNjYxMDY2NDdiODQ3NmQyZjQ%3D",
+  "timeline_bm": [
+    {
+      "date": "02/09/2016",
+      "project_id": "15720",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 780.pdf"
+    },
+    {
+      "date": "16/05/2025",
+      "project_id": "2843895",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2843895_BM/Akta A1762- AKTA BERNAMA (PINDAAN) 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2843895_BM/Akta A1762- AKTA BERNAMA (PINDAAN) 2025.pdf"
 }

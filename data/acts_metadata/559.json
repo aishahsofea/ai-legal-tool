@@ -48,5 +48,34 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTU5Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDEzI3RpbWVsaW5lfDA0YTY3NjQwODllZmVhZTFkZjk5MGI1MzA3MmE1YThjMjczMDRiM2U5YTA3N2NiOTQ3ZjM4NGJjMDBkZWU4N2Q%3D",
+  "timeline_bm": [
+    {
+      "date": "01/04/1997",
+      "project_id": "571",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/571_BM/AKTA 559 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "22/06/2002",
+      "project_id": "3518815",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3518815/P.U. (A) 251-2002.pdf"
+    },
+    {
+      "date": "04/01/2013",
+      "project_id": "16277",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 559 - Akta Kesalahan Jenayah Syariah (Wilayah-Wilayah Persekutuan) 1997.pdf"
+    },
+    {
+      "date": "26/03/2022",
+      "project_id": "1725648",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1725648/PUB171.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 559 - Akta Kesalahan Jenayah Syariah (Wilayah-Wilayah Persekutuan) 1997.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3518815/P.U. (A) 251-2002.pdf"
 }

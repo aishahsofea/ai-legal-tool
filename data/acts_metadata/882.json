@@ -1,0 +1,29 @@
+{
+  "act_number": "882",
+  "act_type": "updated",
+  "scraped_at": "2026-09-12T16:30:32.410461+00:00",
+  "detail_url": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODgyJmxhbmc9QkkmZGF0ZT0yNi0wNS0yMDI2I3RpbWVsaW5lfDdlNjc1YjIwYzczZGI2YWFjMGZjNzE4ODU1NDkzYWE2MWUyZGZhNjY0ZjBmZTYwOWExODUyNTc4NDAyMjQ1ZDk%3D",
+  "timeline": [
+    {
+      "date": "27/05/2026",
+      "project_id": "3522709",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3522709_BI/Act 882 - GOVERNMENT PROCUREMENT ACT 2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODgyJmxhbmc9Qk0mZGF0ZT0yNi0wNS0yMDI2I3RpbWVsaW5lfDY5NGM2OWM0OGFlMmZiNTZlMDdiYzkyOTlkOTVkNzM0YjQ2NjhmZmY4NTY3NTY2YWY4YTJiZjg2YjJlOWU1MTY%3D",
+  "timeline_bm": [
+    {
+      "date": "27/05/2026",
+      "project_id": "3522709",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3522709_BM/Akta 882 - AKTA PEROLEHAN KERAJAAN 2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
+}

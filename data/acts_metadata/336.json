@@ -140,5 +140,64 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 336.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BI/ACT A996.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzM2Jmxhbmc9Qk0mZGF0ZT0zMS0xMC0xOTg3I3RpbWVsaW5lfGMwNmJjZGE1MTVhYzBlZDY1NWM3YzFkNjE3ZDRmNGNiMjQ5NzU0ZmE3NmUzZWQ4ODRlMzExOGZiMDE1ZjYzZDI%3D",
+  "timeline_bm": [
+    {
+      "date": "10/07/1970",
+      "project_id": "1728262",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728262/11. P.U (A) 235-1970.pdf"
+    },
+    {
+      "date": "01/05/1971",
+      "project_id": "1728004",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728004_BM/12. A44 BM.pdf"
+    },
+    {
+      "date": "01/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "14/01/1976",
+      "project_id": "1712784",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712784_BM/AKTA A324.pdf"
+    },
+    {
+      "date": "01/09/1976",
+      "project_id": "1006123",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1006123_BM/Akta A354.pdf"
+    },
+    {
+      "date": "16/03/1977",
+      "project_id": "195",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/195_BM/Akta 183 (Asal) Bm.pdf"
+    },
+    {
+      "date": "27/02/1983",
+      "project_id": "1728005",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728005_BM/Akta A551.pdf"
+    },
+    {
+      "date": "08/11/1987",
+      "project_id": "1727600",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 336 (Disemak 1987).pdf"
+    },
+    {
+      "date": "02/08/1997",
+      "project_id": "1728006",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BM/AKTA A996.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BM/AKTA A996.pdf"
 }

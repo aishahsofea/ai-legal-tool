@@ -32,5 +32,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 325 - Kedah and Penang (Alteration of Boundary) Act 1985.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzI1Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfDg0OTliNGEyYTc5MmU2NWViYWZlZjY2MWY3OWEwM2NiN2JmMDA3ZmUzZmE5YTdmMjNmYmIyYzVlNDJhOGVhZTQ%3D",
+  "timeline_bm": [
+    {
+      "date": "10/01/1985",
+      "project_id": "337",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/337_BM/Salinan Warta Akta Kedah dan Penang (Pengubahan Sempadan) 1985 [Akta 325].pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16182",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 325 - Akta Kedah dan Pulau Pinang (Pengubahan Sempadan).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 325 - Akta Kedah dan Pulau Pinang (Pengubahan Sempadan).pdf",
+  "latest_amendment_pdf_bm": ""
 }

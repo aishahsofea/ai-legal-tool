@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 600-Reprint 2006.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjAwJmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfDc1ZTdlY2RkMjY1MmQ2MGNkMzEzMWRkNzk3ZmZmZjcxNmUyZTY2NTM1ODk2ODE1MmVjOTFlZWI0NmRjYjU0ZjM%3D",
+  "timeline_bm": [
+    {
+      "date": "16/06/2000",
+      "project_id": "612",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/612_BM/AKTA 600 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/01/2006",
+      "project_id": "1727501",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 600--Cetakan semula 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 600--Cetakan semula 2006.pdf",
+  "latest_amendment_pdf_bm": ""
 }

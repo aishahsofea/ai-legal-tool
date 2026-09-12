@@ -80,5 +80,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 429 - Counterfeit Coin Act 1957.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3430562_BI/ACT 5 OF 1966.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDI5Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDEzI3RpbWVsaW5lfGJkOTkzZmE2MTYzZTM1MWNmMGRiYjM2ODM0NDE0N2RlM2NiNjk4YWUwYjM2MmY1ODA2NzY2ODlkOGE0Mjk1YTI%3D",
+  "timeline_bm": [
+    {
+      "date": "30/03/1990",
+      "project_id": "441",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "21/04/1990",
+      "project_id": "16638",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 429 - Akta Syiling Lancungan 1957.pdf"
+    },
+    {
+      "date": "04/01/2013",
+      "project_id": "16638",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 429 - Akta Syiling Lancungan 1957.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 429 - Akta Syiling Lancungan 1957.pdf",
+  "latest_amendment_pdf_bm": ""
 }

@@ -219,5 +219,58 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 18
+  "subsidiary_total": 18,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjcyJmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDE3I3RpbWVsaW5lfGRmNmYxYjk2MmY5ZTRmN2YyNDBhYzRiZDJmOTE3NTllN2RmZjcyZTE4NzZhNzhhYWI2YWZmNzFkMWQ1NjgyMzY%3D",
+  "timeline_bm": [
+    {
+      "date": "31/08/2007",
+      "project_id": "684",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/684_BM/Akta 672 BM_unlocked.pdf"
+    },
+    {
+      "date": "10/10/2007",
+      "project_id": "1709497",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/Okt 2007  Pindaan Akta 672 PU B 358-359.pdf"
+    },
+    {
+      "date": "29/08/2011",
+      "project_id": "1709498",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pub_490 2011.pdf"
+    },
+    {
+      "date": "05/08/2016",
+      "project_id": "16562",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 672 - salinan bersih TP.pdf"
+    },
+    {
+      "date": "06/11/2017",
+      "project_id": "2257089",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257089_BM/Akta 672 Reprint 2017_unlocked.pdf"
+    },
+    {
+      "date": "31/08/2025",
+      "project_id": "3042511",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3042511/PUA 268_2025.pdf"
+    },
+    {
+      "date": "19/11/2025",
+      "project_id": "3175996",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3175996_BM/Akta A1771 - AKTA PENGURUSAN SISA PEPEJAL DAN PEMBERSIHAN AWAM (PINDAAN) 2025.pdf"
+    },
+    {
+      "date": "08/01/2026",
+      "project_id": "3276753",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3276753/PUA470_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257089_BM/Akta 672 Reprint 2017_unlocked.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3175996_BM/Akta A1771 - AKTA PENGURUSAN SISA PEPEJAL DAN PEMBERSIHAN AWAM (PINDAAN) 2025.pdf"
 }

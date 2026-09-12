@@ -54,5 +54,28 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 3
+  "subsidiary_total": 3,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjY4Jmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDE0I3RpbWVsaW5lfGMyNzNjZWM0N2M1MTNmZTQ1ZGZjMzMzNzhiYjIwMjY4Mzg0MDExNTkyMzM0ZjhhNzJlZTk3NTNmODUwOTc3MjY%3D",
+  "timeline_bm": [
+    {
+      "date": "27/07/2007",
+      "project_id": "680",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Salinan Warta - Akta 668.pdf"
+    },
+    {
+      "date": "03/11/2014",
+      "project_id": "15841",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 668.pdf"
+    },
+    {
+      "date": "15/02/2026",
+      "project_id": "3364661",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3364661/PUA86_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 668.pdf",
+  "latest_amendment_pdf_bm": ""
 }

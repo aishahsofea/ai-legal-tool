@@ -78,5 +78,58 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 3
+  "subsidiary_total": 3,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjEwJmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfGM1YjNjMjMxYzdjMDFjMzg4ODk3ZTc2OTc2OTQ2YTgyYzUxMzdmNTMwMzdkOGFkNTAyMGEyOTQ2MWZkNzdhMTI%3D",
+  "timeline_bm": [
+    {
+      "date": "02/03/2001",
+      "project_id": "622",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/622_BM/act610y2001bm_unlocked.pdf"
+    },
+    {
+      "date": "02/04/2002",
+      "project_id": "2257194",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257194_BM/Akta 610 Reprint 2002.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15611",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15611_BM/Akta 610 Reprint 2006.pdf"
+    },
+    {
+      "date": "15/02/2010",
+      "project_id": "3514095",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3514095_BM/A1371y2010bm_unlocked.pdf"
+    },
+    {
+      "date": "06/12/2011",
+      "project_id": "16338",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 610 - Akta Suruhanjaya Tenaga 2001.pdf"
+    },
+    {
+      "date": "10/01/2023",
+      "project_id": "1756006",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1756006/PUA4.pdf"
+    },
+    {
+      "date": "03/01/2024",
+      "project_id": "1941987",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1941987/PUA 395.pdf"
+    },
+    {
+      "date": "26/11/2025",
+      "project_id": "3181488",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3181488_BM/Akta A1776 - AKTA SURUHANJAYA TENAGA (PINDAAN) 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 610 - Akta Suruhanjaya Tenaga 2001.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3181488_BM/Akta A1776 - AKTA SURUHANJAYA TENAGA (PINDAAN) 2025.pdf"
 }

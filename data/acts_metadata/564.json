@@ -26,5 +26,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 564 Reprint 2006.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTY0Jmxhbmc9Qk0mZGF0ZT0wMS0wNy0yMDE5I3RpbWVsaW5lfGI1MTVkYTNmMmQ4ZDkxMGVhNzJjMjI5NzZkMDYxNWZjOWU2ODI3NzhjNzJmNmI0NDgxMjY1ZTNhMzYwYTc3YjQ%3D",
+  "timeline_bm": [
+    {
+      "date": "01/07/1997",
+      "project_id": "576",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/576_BM/AKTA 564 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/07/2019",
+      "project_id": "1700520",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 564 - Cetakan Semula Online 2019.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 564 - Cetakan Semula Online 2019.pdf",
+  "latest_amendment_pdf_bm": ""
 }

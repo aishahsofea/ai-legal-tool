@@ -120,5 +120,88 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 5
+  "subsidiary_total": 5,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjA1Jmxhbmc9Qk0mZGF0ZT0yMi0xMC0yMDIxI3RpbWVsaW5lfGQzYThhNzc0ZjQxODE4ZDI4NjhlNWYzNTVmOGE3YzBkZmVhZTU3YWZjNDM3NTBhZjE0YzEyM2EzOWM1YjU0NDU%3D",
+  "timeline_bm": [
+    {
+      "date": "01/09/2000",
+      "project_id": "617",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/617_BM/Akta 605.pdf"
+    },
+    {
+      "date": "07/04/2001",
+      "project_id": "3496125",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3496125/01. P.U. (A) 96-2001_unlocked.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15600",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15600_BM/Akta 605 Reprint 2006.pdf"
+    },
+    {
+      "date": "01/01/2008",
+      "project_id": "3496152",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3496152/02. P.U. (A) 434-2007_unlocked.pdf"
+    },
+    {
+      "date": "13/05/2008",
+      "project_id": "3496167",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3496167/03. P.U. (A) 146 2008_unlocked.pdf"
+    },
+    {
+      "date": "14/05/2008",
+      "project_id": "3496167",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3496167/03. P.U. (A) 146 2008_unlocked.pdf"
+    },
+    {
+      "date": "08/01/2012",
+      "project_id": "1792",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1792/pua_20111230_P.U.(A) 436_2011.pdf"
+    },
+    {
+      "date": "31/05/2015",
+      "project_id": "4862",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/4862/pua_20150522_P.U. (A) 94_2015.pdf"
+    },
+    {
+      "date": "01/11/2015",
+      "project_id": "5208",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/5208/06. P.U. (A) 253-2-15_unlocked.pdf"
+    },
+    {
+      "date": "11/12/2015",
+      "project_id": "16520",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 605 - TP 7.12.2015.pdf"
+    },
+    {
+      "date": "12/02/2020",
+      "project_id": "1699304",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1699304/07. P.U. (A) 34-2020_unlocked.pdf"
+    },
+    {
+      "date": "02/11/2021",
+      "project_id": "1712663",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1712663/PUA 406.pdf"
+    },
+    {
+      "date": "04/11/2021",
+      "project_id": "1713111",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1713111_BM/161121_Akta 605_muktamad.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1713111_BM/161121_Akta 605_muktamad.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1699304/07. P.U. (A) 34-2020_unlocked.pdf"
 }

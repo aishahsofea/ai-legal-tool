@@ -80,5 +80,46 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 530 - Nov 2018 Reprint.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712758_BI/007 - ACT A1176.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTMwJmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDE4I3RpbWVsaW5lfGRjMzA3NzU0MmM4MjllMzEyNGRmMjBmZGNkMThkODgzMDAyZDU4ZTJkYzcxNjUwNWQ2ZTFjMzQ2YzgwZTY0OGI%3D",
+  "timeline_bm": [
+    {
+      "date": "29/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "30/05/1981",
+      "project_id": "3440007",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3440007_BM/003 - AKTA A521.pdf"
+    },
+    {
+      "date": "16/05/1982",
+      "project_id": "3440040",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3440040_BM/004 - AKTA A541.pdf"
+    },
+    {
+      "date": "19/07/1993",
+      "project_id": "3440074",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3440074_BM/005 - AKTA A853.pdf"
+    },
+    {
+      "date": "06/08/1996",
+      "project_id": "3440096",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3440096_BM/006 - AKTA A950.pdf"
+    },
+    {
+      "date": "01/01/2003",
+      "project_id": "1712758",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712758_BM/007 - AKTA A1176.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712758_BM/007 - AKTA A1176.pdf"
 }

@@ -50,5 +50,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 387.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3098677_BI/ACT A587.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Mzg3Jmxhbmc9Qk0mZGF0ZT0wMS0xMC0yMDEzI3RpbWVsaW5lfGJiZmQzNmQ5MWViOTVkZjJmMzk5OGE0NzUxMTczYmEzZGZjZTAwMTI4NTY4NDFiOGM2YTE3NGZhYTY5YWQ0NWU%3D",
+  "timeline_bm": [
+    {
+      "date": "26/03/1985",
+      "project_id": "3098677",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3098677_BM/Akta A587.pdf"
+    },
+    {
+      "date": "03/10/2013",
+      "project_id": "16311",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 387.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 387.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3098677_BM/Akta A587.pdf"
 }

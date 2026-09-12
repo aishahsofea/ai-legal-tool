@@ -177,5 +177,106 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 8
+  "subsidiary_total": 8,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTY0Jmxhbmc9Qk0mZGF0ZT0xNS0xMi0yMDE4I3RpbWVsaW5lfDM4ZmU5MDNkMjg3NmU5NDY0ZGY0ZWY0MjcwODQ2MTM3MWM1OGM0ZWY1NDAzNGVlOTBkOGQ2YzQxNWFlMTdiZTE%3D",
+  "timeline_bm": [
+    {
+      "date": "30/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "13/03/1976",
+      "project_id": "176",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/176_BM/AKTA 164.pdf"
+    },
+    {
+      "date": "03/04/1976",
+      "project_id": "1727735",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727735_BM/AKTA A327.pdf"
+    },
+    {
+      "date": "05/01/1981",
+      "project_id": "2259461",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259461_BM/CETAKAN 1981(BM).pdf"
+    },
+    {
+      "date": "06/06/1981",
+      "project_id": "104",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 92 - reprint 2006.pdf"
+    },
+    {
+      "date": "07/03/1982",
+      "project_id": "1739498",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta A498.pdf"
+    },
+    {
+      "date": "23/05/1986",
+      "project_id": "1727827",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta A650.pdf"
+    },
+    {
+      "date": "09/01/1997",
+      "project_id": "2259459",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259459_BM/CETAKAN 1997 (BM).pdf"
+    },
+    {
+      "date": "10/01/2006",
+      "project_id": "15837",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 164 reprint 2006.pdf"
+    },
+    {
+      "date": "11/10/2015",
+      "project_id": "16599",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 164 -(5.10.2015).pdf"
+    },
+    {
+      "date": "28/10/2017",
+      "project_id": "977",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20171017_A1546_BM_Akta A1546 BM.pdf"
+    },
+    {
+      "date": "27/12/2018",
+      "project_id": "1908313",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1908313_BM/Akta 164 (dalam talian 2026).pdf"
+    },
+    {
+      "date": "27/06/2023",
+      "project_id": "1826133",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1826133/PUB 202 (2023).pdf"
+    },
+    {
+      "date": "28/06/2023",
+      "project_id": "1826130",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1826130/PUB201.pdf"
+    },
+    {
+      "date": "09/04/2025",
+      "project_id": "2786509",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2786509/PUB125_2025.pdf"
+    },
+    {
+      "date": "10/04/2025",
+      "project_id": "2786606",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2786606/PUB 126.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1908313_BM/Akta 164 (dalam talian 2026).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20171017_A1546_BM_Akta A1546 BM.pdf"
 }

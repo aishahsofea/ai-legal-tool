@@ -129,5 +129,70 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzU3Jmxhbmc9Qk0mZGF0ZT0wMS0xMC0yMDE0I3RpbWVsaW5lfDYwODNiZTBjMjFhODNkOTU0ZjMxYjgyYjM4MDRiNWJlODA1NzdhMTMzMzM4MDM5ODcyMDc4NzYzMGQyYTQzNmI%3D",
+  "timeline_bm": [
+    {
+      "date": "10/01/1976",
+      "project_id": "1712784",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712784_BM/AKTA A324.pdf"
+    },
+    {
+      "date": "24/01/1976",
+      "project_id": "1727735",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727735_BM/AKTA A327.pdf"
+    },
+    {
+      "date": "16/10/1978",
+      "project_id": "1728266",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728266/P.U. (A) 294-1978.pdf"
+    },
+    {
+      "date": "24/07/1984",
+      "project_id": "1728267",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728267/P.U. (A) 252-1984.pdf"
+    },
+    {
+      "date": "29/11/1988",
+      "project_id": "1702438",
+      "log_type": "TRANSLATE",
+      "pdf_url": ""
+    },
+    {
+      "date": "16/03/1989",
+      "project_id": "1728268",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728268/P.U. (B) 131-1989.pdf"
+    },
+    {
+      "date": "06/02/1992",
+      "project_id": "1728269",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728269/P.U. (A) 23-1992.pdf"
+    },
+    {
+      "date": "10/07/2014",
+      "project_id": "894",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20140701_1463_BM_WJW002640 BM.pdf"
+    },
+    {
+      "date": "10/10/2014",
+      "project_id": "1727545",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/22. Akta 357 - Cetakan semula dalam talian 2014.pdf"
+    },
+    {
+      "date": "30/09/2024",
+      "project_id": "2364467",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2364467/PUA_248.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/22. Akta 357 - Cetakan semula dalam talian 2014.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20140701_1463_BM_WJW002640 BM.pdf"
 }

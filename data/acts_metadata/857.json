@@ -14,5 +14,16 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODU3Jmxhbmc9Qk0mZGF0ZT0xMC0xMC0yMDI0I3RpbWVsaW5lfGY0NzBmYjM5Mjg5OGVhOGY4YWRmYzc3MjgxMGIxMWRiZmI1ODk4MmYzMzY2NDRlZGIyMDhjYzIwYjZlYzY5OTk%3D",
+  "timeline_bm": [
+    {
+      "date": "11/10/2024",
+      "project_id": "3293403",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/terjemahan/3293403_BM/AKTA 857 (PDF) 13082026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

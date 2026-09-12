@@ -57,5 +57,46 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzA3Jmxhbmc9Qk0mZGF0ZT0wMS0wNy0yMDIzI3RpbWVsaW5lfGFhMDJjYWYxOWQ0MWNjMmQxNzAyNGY2ZDQyMmYzY2JjM2MxNTUzMmI5MTAwNzUyZGQyNmY3YmVmYjUyZmVlYjU%3D",
+  "timeline_bm": [
+    {
+      "date": "12/02/2010",
+      "project_id": "719",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 707 ori.pdf"
+    },
+    {
+      "date": "03/10/2015",
+      "project_id": "16388",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 707 23_10_2015.pdf"
+    },
+    {
+      "date": "17/12/2022",
+      "project_id": "1753078",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1753078/PUA 376 (2022).pdf"
+    },
+    {
+      "date": "05/07/2023",
+      "project_id": "1726088",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1726088_BM/Akta 707- Cetakan Semula 2023.pdf"
+    },
+    {
+      "date": "27/04/2025",
+      "project_id": "2813222",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2813222_BM/A1759 BM - AKTA PERKONGSIAN TERHAD DAN PERKONGSIAN LIABILITI TERHAD LABUAN (PINDAAN) 2025.pdf"
+    },
+    {
+      "date": "06/07/2026",
+      "project_id": "3583690",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3583690/PUA 239 (2026).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1726088_BM/Akta 707- Cetakan Semula 2023.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2813222_BM/A1759 BM - AKTA PERKONGSIAN TERHAD DAN PERKONGSIAN LIABILITI TERHAD LABUAN (PINDAAN) 2025.pdf"
 }

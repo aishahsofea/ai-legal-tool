@@ -14,5 +14,16 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzEwJmxhbmc9Qk0mZGF0ZT0wNS0wMS0xOTg5I3RpbWVsaW5lfGM5OTM2YjJkMmJiNjk3YzVmN2MyMWQ3NGQ5OWNlMWExMTBhYWYxY2ZiNGJiMDkxYzAwMTFmMDY1NGU3ZThkZjU%3D",
+  "timeline_bm": [
+    {
+      "date": "06/01/1989",
+      "project_id": "1727284",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727284_BM/AKTA 310 REPEALED BY AKTA 364.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

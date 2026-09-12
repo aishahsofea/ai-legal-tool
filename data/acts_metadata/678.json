@@ -69,5 +69,46 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 4
+  "subsidiary_total": 4,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Njc4Jmxhbmc9Qk0mZGF0ZT0wMS0wNS0yMDE5I3RpbWVsaW5lfDdhM2M2ZTM0MjUyZGVlNDMxYjg2ODQ5YjNmNzYzZWVkNGFiN2E2ZjYxYTNlZDVjZjFiMzU4ODdjMGNlNGEyZGQ%3D",
+  "timeline_bm": [
+    {
+      "date": "31/08/2007",
+      "project_id": "690",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/690_BM/Akta 678_unlocked.pdf"
+    },
+    {
+      "date": "03/05/2015",
+      "project_id": "16568",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 678 1_5_2015.pdf"
+    },
+    {
+      "date": "04/11/2017",
+      "project_id": "15730",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15730_BM/Akta 678 Reprint 2017_unlocked.pdf"
+    },
+    {
+      "date": "20/02/2019",
+      "project_id": "1697194",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1697194/P.U. (A) 36-2019_unlocked.pdf"
+    },
+    {
+      "date": "05/03/2019",
+      "project_id": "1696608",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1696608/P.U. (A) 58-2019_unlocked.pdf"
+    },
+    {
+      "date": "07/05/2019",
+      "project_id": "1709458",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Mei 2019  Cetakan Semula Dalam Talian Akta 678.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Mei 2019  Cetakan Semula Dalam Talian Akta 678.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1696608/P.U. (A) 58-2019_unlocked.pdf"
 }

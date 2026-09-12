@@ -237,5 +237,112 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 14
+  "subsidiary_total": 14,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTkwJmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDIzI3RpbWVsaW5lfGRmODQxYTVlNGRkNDc1ZWIyMjU4ZDU1Y2JhMWI1ZDMyODUyYTBiODA3NmFmMGZjOWFlOWRiYjBlYmRhNmRjNjc%3D",
+  "timeline_bm": [
+    {
+      "date": "01/01/1999",
+      "project_id": "602",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/602_BM/AKTA 590.pdf"
+    },
+    {
+      "date": "03/01/2002",
+      "project_id": "1700396",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "2998347",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2998347_BM/Akta 590 (Reprint 1 Jan 2006).pdf"
+    },
+    {
+      "date": "24/09/2012",
+      "project_id": "873",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20120920_1442_BM_JW003036 BM A1442.pdf"
+    },
+    {
+      "date": "06/01/2013",
+      "project_id": "16330",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 590 - Akta Francais 1998.pdf"
+    },
+    {
+      "date": "12/03/2020",
+      "project_id": "760461",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/760461_BM/WJW014870 BM.pdf"
+    },
+    {
+      "date": "04/05/2022",
+      "project_id": "1730800",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1730800/PUA 136 (2022).pdf"
+    },
+    {
+      "date": "05/05/2022",
+      "project_id": "1730799",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1730799/PUA135.pdf"
+    },
+    {
+      "date": "06/05/2022",
+      "project_id": "1730801",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1730801/PUA137.pdf"
+    },
+    {
+      "date": "07/05/2022",
+      "project_id": "1730797",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1730797/PUA139.pdf"
+    },
+    {
+      "date": "08/05/2022",
+      "project_id": "1730798",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1730798/PUA 138 (2022).pdf"
+    },
+    {
+      "date": "10/05/2022",
+      "project_id": "1731388",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1731388_BM/Akta 590 - Akta Francais 1998 (Muktamad).pdf"
+    },
+    {
+      "date": "14/11/2023",
+      "project_id": "1901970",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1901970_BM/BERSIH MUKTAMAD AKTA 590 (ONLINE).pdf"
+    },
+    {
+      "date": "15/11/2023",
+      "project_id": "1902061",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT_ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1902061_BM/P.U. (A) 424_1999 - Muktamad.pdf"
+    },
+    {
+      "date": "16/11/2023",
+      "project_id": "1902022",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT_ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1902022_BM/P.U. (A) 422_1999 (BM) DRAF MUKTAMAD SBGMANA 1 NOV 2023(CETAKAN SEMULA DALAM TALIAN).pdf"
+    },
+    {
+      "date": "28/03/2025",
+      "project_id": "2741872",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2741872/PUA 78_2025.pdf"
+    },
+    {
+      "date": "15/05/2026",
+      "project_id": "3486741",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3486741/PUB 160 (2026).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1901970_BM/BERSIH MUKTAMAD AKTA 590 (ONLINE).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/760461_BM/WJW014870 BM.pdf"
 }

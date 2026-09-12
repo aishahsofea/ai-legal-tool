@@ -648,5 +648,166 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 53
+  "subsidiary_total": 53,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjY3Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfDcxOGZmNzM0ZDE4NjJkZDIzMzA3MmUwYzY5YjZlODI4ZGI1YTQ4ZTJlNjAzYTRlY2VlZDhlZjZlNTk0ZjU1NjU%3D",
+  "timeline_bm": [
+    {
+      "date": "19/03/1982",
+      "project_id": "279",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/279_BM/Salinan Warta Akta 267.pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16422",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 267 - Akta (Perancangan) Wilayah Persekutuan 1982.pdf"
+    },
+    {
+      "date": "10/05/2021",
+      "project_id": "1701204",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1701204/PUB 258.pdf"
+    },
+    {
+      "date": "11/05/2021",
+      "project_id": "1701202",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1701202/PUA 221.pdf"
+    },
+    {
+      "date": "15/05/2021",
+      "project_id": "1701208",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1701208/PUB260.pdf"
+    },
+    {
+      "date": "09/08/2021",
+      "project_id": "1706093",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1706093/PUA326.pdf"
+    },
+    {
+      "date": "10/08/2021",
+      "project_id": "1706090",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1706090/PUB407.pdf"
+    },
+    {
+      "date": "09/03/2022",
+      "project_id": "1724606",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1724606/PUA 40_2022.pdf"
+    },
+    {
+      "date": "10/03/2022",
+      "project_id": "1724605",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1724605/PUB 132_2022.pdf"
+    },
+    {
+      "date": "07/08/2023",
+      "project_id": "1841514",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1841514/PUB 295.pdf"
+    },
+    {
+      "date": "08/08/2023",
+      "project_id": "1841722",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1841722/PUB 297.pdf"
+    },
+    {
+      "date": "30/10/2023",
+      "project_id": "1871836",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1871836/PUA 314.pdf"
+    },
+    {
+      "date": "31/10/2023",
+      "project_id": "1871829",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1871829/PUB 462.pdf"
+    },
+    {
+      "date": "02/11/2023",
+      "project_id": "1872228",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1872228/PUB469_2023.pdf"
+    },
+    {
+      "date": "03/11/2023",
+      "project_id": "1872219",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1872219/PAU318_2023.pdf"
+    },
+    {
+      "date": "15/02/2024",
+      "project_id": "1997991",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1997991/PUB 43 (2024).pdf"
+    },
+    {
+      "date": "16/02/2024",
+      "project_id": "1997983",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1997983/PUA 22 (2024).pdf"
+    },
+    {
+      "date": "18/03/2024",
+      "project_id": "2041869",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2041869/PUB 70.pdf"
+    },
+    {
+      "date": "15/04/2024",
+      "project_id": "2079916",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2079916/PUB 119 (2024).pdf"
+    },
+    {
+      "date": "21/08/2024",
+      "project_id": "2209704",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2209704/PUB 296 (2024).pdf"
+    },
+    {
+      "date": "18/06/2025",
+      "project_id": "2891949",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2891949/P.U. (A) 166_2025.pdf"
+    },
+    {
+      "date": "19/06/2025",
+      "project_id": "2891935",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2891935/PUB 206 (2025).pdf"
+    },
+    {
+      "date": "03/07/2025",
+      "project_id": "2909836",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2909836/PUA 175 (2025).pdf"
+    },
+    {
+      "date": "07/07/2025",
+      "project_id": "2916823",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2916823/PUA 179_2025 .pdf"
+    },
+    {
+      "date": "06/01/2026",
+      "project_id": "3250311",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3250311/PUB447_2025.pdf"
+    },
+    {
+      "date": "29/08/2026",
+      "project_id": "3636761",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3636761/PUB 273.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 267 - Akta (Perancangan) Wilayah Persekutuan 1982.pdf",
+  "latest_amendment_pdf_bm": ""
 }

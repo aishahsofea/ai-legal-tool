@@ -912,5 +912,172 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 81
+  "subsidiary_total": 81,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTAyJmxhbmc9Qk0mZGF0ZT0wMS0wNC0yMDE1I3RpbWVsaW5lfGMyMmQ2Njg2YTM3MzRiNjQzZjgxNjM3ODNiNThlMTkxMWVhY2ZmMGJiZGU0MDIwODk0OWIzNmQ4MWZlMDgwNzU%3D",
+  "timeline_bm": [
+    {
+      "date": "05/02/1993",
+      "project_id": "514",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/514_BM/AKTA 502.pdf"
+    },
+    {
+      "date": "12/11/1995",
+      "project_id": "2999368",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2999368_BM/AKTA A928.pdf"
+    },
+    {
+      "date": "16/09/1996",
+      "project_id": "3000315",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3000315_BM/AKTA A963.pdf"
+    },
+    {
+      "date": "02/10/2001",
+      "project_id": "2993586",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2993586_BM/A1128 BM.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "2257221",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257221_BM/502 CETAKAN SEMULA 2006.pdf"
+    },
+    {
+      "date": "07/01/2008",
+      "project_id": "2993245",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2993245_BM/BM A1297.pdf"
+    },
+    {
+      "date": "08/04/2015",
+      "project_id": "16697",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 502 - Akta Koperasi 1993.pdf"
+    },
+    {
+      "date": "09/04/2021",
+      "project_id": "1696027",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1696027_BM/A1634.pdf"
+    },
+    {
+      "date": "16/07/2021",
+      "project_id": "1704076",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1704076/PUA299.pdf"
+    },
+    {
+      "date": "05/09/2022",
+      "project_id": "1739914",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1739914/P.U. (A) 271_2022 (PERATURAN-PERATURAN KOPERASI (MAJLIS PERUNDINGAN KOPERASI KEBANGSAAN (PINDAAN) 2022).pdf"
+    },
+    {
+      "date": "25/09/2022",
+      "project_id": "1743022",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1743022/PUA 295 (2022).pdf"
+    },
+    {
+      "date": "12/11/2022",
+      "project_id": "1747594",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1747594/PUA353_2022.pdf"
+    },
+    {
+      "date": "20/02/2023",
+      "project_id": "1775764",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1775764/PUB 39 (2023).pdf"
+    },
+    {
+      "date": "23/02/2023",
+      "project_id": "1779103",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1779103/PUA 34.pdf"
+    },
+    {
+      "date": "04/03/2023",
+      "project_id": "1784724",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1784724/PUB 57.pdf"
+    },
+    {
+      "date": "12/04/2023",
+      "project_id": "1800850",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1800850/PUA74_2023.pdf"
+    },
+    {
+      "date": "20/04/2023",
+      "project_id": "1804647",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1804647/PUA107.pdf"
+    },
+    {
+      "date": "03/07/2023",
+      "project_id": "1800703",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/WJW23 0598 BM - PU (A) 130y2010.pdf"
+    },
+    {
+      "date": "17/07/2023",
+      "project_id": "1830530",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1830530/PUB 225 (2023).pdf"
+    },
+    {
+      "date": "02/08/2023",
+      "project_id": "1835872",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1835872/PUA 211 (2023).pdf"
+    },
+    {
+      "date": "03/08/2023",
+      "project_id": "1835864",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1835864/PUA 210 (2023).pdf"
+    },
+    {
+      "date": "26/08/2023",
+      "project_id": "1844058",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1844058/P.U. (B) 323_2023.pdf"
+    },
+    {
+      "date": "14/01/2024",
+      "project_id": "1940042",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1940042/PUB570_2023.pdf"
+    },
+    {
+      "date": "27/01/2024",
+      "project_id": "1952064",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1952064/PUA 1 (2024).pdf"
+    },
+    {
+      "date": "21/07/2024",
+      "project_id": "2182206",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2182206/PUA 170 (2024).pdf"
+    },
+    {
+      "date": "11/02/2025",
+      "project_id": "2638263",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2638263/PUA 20 (2025).pdf"
+    },
+    {
+      "date": "13/02/2025",
+      "project_id": "2763713",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT_ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2763713_BM/Muktamad P.U. (A) 130 2010 (Dalam talian).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 502 - Akta Koperasi 1993.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1696027_BM/A1634.pdf"
 }

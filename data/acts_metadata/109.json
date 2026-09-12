@@ -159,5 +159,76 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 8
+  "subsidiary_total": 8,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTA5Jmxhbmc9Qk0mZGF0ZT0wMS0wNC0yMDEyI3RpbWVsaW5lfGVhZWQ4MTc0YTI4MGRmZmFhYjc1ZDdhNzk4YzczZDY0YTUxMWFiZWYwNGY0ZWI3MjFmODgwZjA2Y2Q4Mjg5MmI%3D",
+  "timeline_bm": [
+    {
+      "date": "15/03/1974",
+      "project_id": "1712776",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712776_BM/AKTA 109- A247(BM).pdf"
+    },
+    {
+      "date": "30/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "12/02/1989",
+      "project_id": "1712778",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712778_BM/AKTA A721 (BM).pdf"
+    },
+    {
+      "date": "08/02/1993",
+      "project_id": "514",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/514_BM/AKTA 502.pdf"
+    },
+    {
+      "date": "06/10/1994",
+      "project_id": "2259617",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259617_BM/AKTA 109 -CETAKAN 1994 (BM).pdf"
+    },
+    {
+      "date": "06/03/2000",
+      "project_id": "2259615",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259615_BM/AKTA 109 - CETAKAN 2000 (BM).pdf"
+    },
+    {
+      "date": "29/08/2002",
+      "project_id": "3490823",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3490823/PU(A) 343-2002.pdf"
+    },
+    {
+      "date": "09/01/2006",
+      "project_id": "15481",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 109.pdf"
+    },
+    {
+      "date": "28/07/2007",
+      "project_id": "1712779",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712779_BM/07. Akta A1295_repaired.pdf"
+    },
+    {
+      "date": "11/04/2012",
+      "project_id": "16298",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 109 - Akta Pertubuhan Peladang 1973.pdf"
+    },
+    {
+      "date": "24/03/2025",
+      "project_id": "2761252",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2761252/PUA 81_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 109 - Akta Pertubuhan Peladang 1973.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712779_BM/07. Akta A1295_repaired.pdf"
 }

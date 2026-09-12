@@ -56,5 +56,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 494.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDk0Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfDc5MzVhN2JiODFhM2Q1MDYzMGYyNDI0MWM5MDBmOGM0ZmMwNDdhZjVlMmI0N2JmMTIxYjkyNzVhNTIyMjQ2NzY%3D",
+  "timeline_bm": [
+    {
+      "date": "25/10/1991",
+      "project_id": "3136097",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3136097/PUA 376 1991 (1).pdf"
+    },
+    {
+      "date": "26/10/1991",
+      "project_id": "3137035",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3137035/PUA 377 1991 (1).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3137035/PUA 377 1991 (1).pdf"
 }

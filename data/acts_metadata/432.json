@@ -32,5 +32,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 432.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDMyJmxhbmc9Qk0mZGF0ZT0yOC0xMS0yMDIzI3RpbWVsaW5lfDUyNWI3ZDQ2NDkwNTk2MzhiOTI3N2IzYmVlYTRiODYwZTliOTIwMDUxZTU1MTJiMDU0NDU2YWUzYzNiMGY2ODE%3D",
+  "timeline_bm": [
+    {
+      "date": "30/03/1990",
+      "project_id": "444",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "30/11/2023",
+      "project_id": "1857712",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/terjemahan/1857712_BM/AKTA ANGKATAN PELAWAT 1960 [AKTA 432].pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

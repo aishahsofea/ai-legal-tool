@@ -108,5 +108,52 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 5
+  "subsidiary_total": 5,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzEyJmxhbmc9Qk0mZGF0ZT0yMi0wMy0yMDEzI3RpbWVsaW5lfGQwNjZiODM2MzQ5MDA0NDZkMjZmNDgwMDY2MmNjMjE4ZWRjMDZjMjgxYTNhN2Q4MzhmYmE4N2Y1MWUwOTFjZjI%3D",
+  "timeline_bm": [
+    {
+      "date": "01/01/1985",
+      "project_id": "324",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/AKTA 312 (WARTA IBU).pdf"
+    },
+    {
+      "date": "03/01/1985",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/05/1988",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/10/1989",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/01/2004",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/08/2007",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "29/03/2013",
+      "project_id": "1727285",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/AKTA 759 (MENGGANTIKAN AKTA 312).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

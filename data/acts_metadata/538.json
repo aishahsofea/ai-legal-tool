@@ -32,5 +32,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 538 - Town Planners Act 1995.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTM4Jmxhbmc9Qk0mZGF0ZT0wMS0wMy0yMDExI3RpbWVsaW5lfDUzMzUxNDIwMWI4ZWJmM2Q1YzRhOGU4ZDM4N2ViNDAxYTViNmExYzM0NzlkYTFkMjU1Yjk3ZTM2YjU0NDc1ZWQ%3D",
+  "timeline_bm": [
+    {
+      "date": "03/11/1995",
+      "project_id": "550",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/550_BM/AKTA 538 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/03/2011",
+      "project_id": "16195",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 538 - Akta Perancang Bandar 1995.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 538 - Akta Perancang Bandar 1995.pdf",
+  "latest_amendment_pdf_bm": ""
 }

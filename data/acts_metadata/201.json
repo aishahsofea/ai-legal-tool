@@ -111,5 +111,94 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjAxJmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfDNiZDNiZDYxOGZiNGExMDNmOTM5ZGY5ZTA4NTljNWVkZjBjMmNmZmUwYmIyZDc2ZjlkYzg1NGUyODliY2Q3YjU%3D",
+  "timeline_bm": [
+    {
+      "date": "16/08/1950",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "01/01/1953",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/12/1957",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "31/03/1961",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/08/1965",
+      "project_id": "1727872",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727872_BM/Akta 44 1965.pdf"
+    },
+    {
+      "date": "12/04/1967",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "08/03/1972",
+      "project_id": "77",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/77_BM/AKTA 65 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "06/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "24/02/1978",
+      "project_id": "2260286",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2260286_BM/Akta 201 Revised 1978.pdf"
+    },
+    {
+      "date": "24/12/1978",
+      "project_id": "15938",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 201.pdf"
+    },
+    {
+      "date": "04/11/1991",
+      "project_id": "3136097",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3136097/PUA 376 1991 (1).pdf"
+    },
+    {
+      "date": "05/11/1991",
+      "project_id": "3137035",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3137035/PUA 377 1991 (1).pdf"
+    },
+    {
+      "date": "13/05/2001",
+      "project_id": "1727346",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 201 Cetakan Semula 2001.pdf"
+    },
+    {
+      "date": "15/01/2006",
+      "project_id": "15938",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 201.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 201.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3137035/PUA 377 1991 (1).pdf"
 }

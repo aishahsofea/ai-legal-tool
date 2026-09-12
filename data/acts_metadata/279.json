@@ -38,5 +38,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 279 - Perbadanan Pembekalan Letrik Sarawak Act 1983.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BI/ACT 478.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Mjc5Jmxhbmc9Qk0mZGF0ZT0wMS0wOS0yMDEyI3RpbWVsaW5lfGExMWUxNzBkYjQ0NGU3NDA0YTE1NzlkZTQ1Njg2NTJhMWNmNmZhOTNjNzAwMTVmZGQ1YWRlZDJhNzUyMDhiNGQ%3D",
+  "timeline_bm": [
+    {
+      "date": "11/03/1983",
+      "project_id": "291",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/291_BM/AKTA 279.pdf"
+    },
+    {
+      "date": "03/02/1992",
+      "project_id": "490",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BM/AKTA 478.pdf"
+    },
+    {
+      "date": "04/09/2012",
+      "project_id": "16596",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 279 - Akta Perbadanan Pembekalan Letrik Sarawak 1983.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 279 - Akta Perbadanan Pembekalan Letrik Sarawak 1983.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BM/AKTA 478.pdf"
 }

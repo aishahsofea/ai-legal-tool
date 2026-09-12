@@ -14,5 +14,28 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODc3Jmxhbmc9Qk0mZGF0ZT0zMC0wMS0yMDI2I3RpbWVsaW5lfDM0YzU5NDZlZjQzYjdkOTYyMTEyYTBmODE5Y2FkZWFiNzY1MzkyMjY0ZDQ3YjE2MWM5NDQyNmMxMmQ5OTVlNDc%3D",
+  "timeline_bm": [
+    {
+      "date": "31/01/2026",
+      "project_id": "3340871",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3340871_BM/Akta 877.pdf"
+    },
+    {
+      "date": "29/08/2026",
+      "project_id": "3680061",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3680061/PUB 311_2026.pdf"
+    },
+    {
+      "date": "30/08/2026",
+      "project_id": "3673862",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3673862/PUA 299_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

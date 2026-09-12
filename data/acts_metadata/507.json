@@ -42,5 +42,22 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTA3Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfGU5OWMzNzA4YzQxYWJkZmY1NDk4YWNlZTExMmE2MTI3Zjc1NGI5OTQ4ZDViMTRkMDI5ZmJkNzUwZTg0NzBhY2U%3D",
+  "timeline_bm": [
+    {
+      "date": "17/09/1993",
+      "project_id": "519",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/519_BM/AKTA 507 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16711",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 507 - Akta Rumah Penyembelihan (Penswastaan) 1993.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 507 - Akta Rumah Penyembelihan (Penswastaan) 1993.pdf",
+  "latest_amendment_pdf_bm": ""
 }

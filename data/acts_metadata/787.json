@@ -96,5 +96,52 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 5
+  "subsidiary_total": 5,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Nzg3Jmxhbmc9Qk0mZGF0ZT0yNi0wNi0yMDI0I3RpbWVsaW5lfDBlMDc2MWVkODUyMzk3MDExNTFmNzZjNGUxZGViMTg3ZmY2M2QxNmUzMjhiZTM3NDQzMGE1YTA5ZDM3ZTRlOWI%3D",
+  "timeline_bm": [
+    {
+      "date": "11/02/2017",
+      "project_id": "799",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/aktaBM_20170210_WJW008109BM.pdf"
+    },
+    {
+      "date": "21/10/2018",
+      "project_id": "1698323",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20181019_P.U. (A) 267.pdf"
+    },
+    {
+      "date": "12/01/2019",
+      "project_id": "1696518",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20190109_pua9.pdf"
+    },
+    {
+      "date": "01/08/2020",
+      "project_id": "1697739",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20200728_PUA215.pdf"
+    },
+    {
+      "date": "06/09/2020",
+      "project_id": "1680352",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1680352_BM/Akta 787- Muktamad.pdf"
+    },
+    {
+      "date": "01/07/2024",
+      "project_id": "2174377",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2174377/PUA_169.pdf"
+    },
+    {
+      "date": "03/07/2024",
+      "project_id": "2423872",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2423872_BM/Akta 787 (Dalam Talian 2025).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2423872_BM/Akta 787 (Dalam Talian 2025).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20200728_PUA215.pdf"
 }

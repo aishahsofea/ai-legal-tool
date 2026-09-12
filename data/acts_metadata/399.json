@@ -552,5 +552,142 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 19
+  "subsidiary_total": 19,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Mzk5Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDIwI3RpbWVsaW5lfDNkMjMxMjg5M2I4MWM2MTI2YjU4NzBlMTE4OWY4MDdjM2JjMWNjZDRkMTZmMTM3Y2ZhYWUyODRhMDY2YTkzMTg%3D",
+  "timeline_bm": [
+    {
+      "date": "03/11/1967",
+      "project_id": "3576605",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3576605_BI/P.U. 506-1967.pdf"
+    },
+    {
+      "date": "03/01/1971",
+      "project_id": "1728227",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728227/02. P.U. (B) 324-1970.pdf"
+    },
+    {
+      "date": "28/06/1971",
+      "project_id": "1728228",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728228/PUA 209 1971.pdf"
+    },
+    {
+      "date": "01/11/1971",
+      "project_id": "3486431",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3486431/41. P.U. (A) 402 - 1971.pdf"
+    },
+    {
+      "date": "02/11/1971",
+      "project_id": "3486453",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3486453/40. P.U. (A) 380 - 1971.pdf"
+    },
+    {
+      "date": "17/11/1971",
+      "project_id": "3486392",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3486392/42. P.U. (A) 417 - 1971.pdf"
+    },
+    {
+      "date": "12/05/1972",
+      "project_id": "3486045",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3486045/43. P.U. (A) 120 - 1972.pdf"
+    },
+    {
+      "date": "09/09/1972",
+      "project_id": "3222124",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3222124/PUA 266 1972.pdf"
+    },
+    {
+      "date": "31/12/1972",
+      "project_id": "1728274",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728274/45. PU. (B) 504 1972.pdf"
+    },
+    {
+      "date": "09/04/1973",
+      "project_id": "3485954",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3485954/46. P.U. (A) 83 1973.pdf"
+    },
+    {
+      "date": "04/12/1973",
+      "project_id": "3485920",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3485920/48. PU A 316-317 1973.pdf"
+    },
+    {
+      "date": "05/12/1973",
+      "project_id": "3485939",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3485939/47. PU A 316-317 1973 - Copy.pdf"
+    },
+    {
+      "date": "29/07/1976",
+      "project_id": "3485874",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3485874/49. PU (B) 350 1976.pdf"
+    },
+    {
+      "date": "30/09/1977",
+      "project_id": "3485856",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3485856/50. PU (B) 574-1977.pdf"
+    },
+    {
+      "date": "17/01/1982",
+      "project_id": "3485815",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3485815/51. PU (B) 2 1982.pdf"
+    },
+    {
+      "date": "27/02/1982",
+      "project_id": "3164633",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3164633/P.U. (B) 57-1982.pdf"
+    },
+    {
+      "date": "30/08/1988",
+      "project_id": "3485754",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3485754/53. PU (B) 462 1988.pdf"
+    },
+    {
+      "date": "17/10/1989",
+      "project_id": "3516541",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3516541/P.U (B) 478-1989.pdf"
+    },
+    {
+      "date": "14/12/1994",
+      "project_id": "3485708",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3485708/55. PU (B) 539 1994.pdf"
+    },
+    {
+      "date": "08/03/2005",
+      "project_id": "3165246",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3165246/P.U. (B) 127-2005 (1).pdf"
+    },
+    {
+      "date": "12/01/2024",
+      "project_id": "1939801",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1939801/PUB 569.pdf"
+    },
+    {
+      "date": "13/03/2024",
+      "project_id": "2027437",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2027437/P.U. (B) 58_2024.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3165246/P.U. (B) 127-2005 (1).pdf"
 }

@@ -1,13 +1,197 @@
 {
   "act_number": "208",
   "act_type": "updated",
-  "title_en": "*TRUSTEE ACT 1949",
-  "title_bm": "*AKTA PEMEGANG AMANAH 1949",
-  "scraped_at": "2026-05-05T07:41:33.416853+00:00",
-  "stub": true,
-  "timeline": [],
-  "latest_reprint_pdf": "",
-  "latest_amendment_pdf": "",
+  "scraped_at": "2026-09-12T16:49:20.716741+00:00",
+  "detail_url": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjA4Jmxhbmc9QkkmZGF0ZT0wMS0wMy0yMDE2I3RpbWVsaW5lfDA1N2I3NzcyYTU1Mzc1YzZmMjc5MzhkMTQ1YjczZTZkMjg2ZmUyNDg0NTgzMDQ4OTc3YTdhNmFkMmExMmUwNDc%3D",
+  "timeline": [
+    {
+      "date": "14/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf"
+    },
+    {
+      "date": "01/07/1965",
+      "project_id": "3266723",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3266723_BI/ACT NO 36 1965.pdf"
+    },
+    {
+      "date": "02/05/1971",
+      "project_id": "1727881",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727881_BI/03. Act A42.pdf"
+    },
+    {
+      "date": "19/08/1974",
+      "project_id": "1727883",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727883_BI/04. Act 263.pdf"
+    },
+    {
+      "date": "04/03/1975",
+      "project_id": "1727882",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727882_BI/05. Act A284.pdf"
+    },
+    {
+      "date": "01/11/1978",
+      "project_id": "220",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "02/11/1978",
+      "project_id": "1727580",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727580_BI/Act 208 revised 1978.pdf"
+    },
+    {
+      "date": "09/01/2001",
+      "project_id": "2258306",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258306_BI/ACT 208 REPRINT 2001.pdf"
+    },
+    {
+      "date": "15/02/2003",
+      "project_id": "3149098",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3149098/pua017y2003 (1)_unlocked.pdf"
+    },
+    {
+      "date": "11/01/2006",
+      "project_id": "15947",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 208.pdf"
+    },
+    {
+      "date": "12/03/2016",
+      "project_id": "16511",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act  208 - 31.3.2016.pdf"
+    },
+    {
+      "date": "01/03/2025",
+      "project_id": "2694506",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2694506_BI/Act A1745 BI- TRUSTEE (AMENDMENT) ACT 2025.pdf"
+    },
+    {
+      "date": "04/03/2025",
+      "project_id": "2706853",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2706853/PUA 64.pdf"
+    },
+    {
+      "date": "05/03/2025",
+      "project_id": "2706786",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2706786/PUA66_2025.pdf"
+    },
+    {
+      "date": "06/03/2025",
+      "project_id": "2706865",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2706865/PUA 65_2025.pdf"
+    },
+    {
+      "date": "07/03/2025",
+      "project_id": "2706788",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2706788/PUA 63_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act  208 - 31.3.2016.pdf",
+  "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2694506_BI/Act A1745 BI- TRUSTEE (AMENDMENT) ACT 2025.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjA4Jmxhbmc9Qk0mZGF0ZT0wMS0wMy0yMDE2I3RpbWVsaW5lfDBmZjNjNjA0ZTU0NmJkNjkzMGRlYjdkN2U3YzM4ZDgwY2NkZWNjNzljY2YxOGY4YzU1MGU3ZDY2MDJjODE0MjY%3D",
+  "timeline_bm": [
+    {
+      "date": "14/11/1958",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "02/07/1965",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "02/05/1971",
+      "project_id": "1727881",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727881_BM/Akta A42.pdf"
+    },
+    {
+      "date": "19/08/1974",
+      "project_id": "1727883",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727883_BM/Akta A263.pdf"
+    },
+    {
+      "date": "04/03/1975",
+      "project_id": "1727882",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727882_BM/Akta A284.pdf"
+    },
+    {
+      "date": "01/11/1978",
+      "project_id": "220",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Salinan Warta Akta 208.pdf"
+    },
+    {
+      "date": "22/11/1978",
+      "project_id": "2260291",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2260291_BM/Salinan Warta Akta 208.pdf"
+    },
+    {
+      "date": "14/02/2003",
+      "project_id": "3149098",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3149098/pua017y2003 (1)_unlocked.pdf"
+    },
+    {
+      "date": "10/03/2016",
+      "project_id": "16512",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/16512_BM/001 - Akta 208 - 31.3.2016.pdf"
+    },
+    {
+      "date": "27/02/2025",
+      "project_id": "2694506",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2694506_BM/Akta A1745- AKTA PEMEGANG AMANAH (PINDAAN) 2025.pdf"
+    },
+    {
+      "date": "02/03/2025",
+      "project_id": "2706853",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2706853/PUA 64.pdf"
+    },
+    {
+      "date": "03/03/2025",
+      "project_id": "2706786",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2706786/PUA66_2025.pdf"
+    },
+    {
+      "date": "04/03/2025",
+      "project_id": "2706865",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2706865/PUA 65_2025.pdf"
+    },
+    {
+      "date": "05/03/2025",
+      "project_id": "2706788",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2706788/PUA 63_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/16512_BM/001 - Akta 208 - 31.3.2016.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2694506_BM/Akta A1745- AKTA PEMEGANG AMANAH (PINDAAN) 2025.pdf"
 }

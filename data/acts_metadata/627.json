@@ -42,5 +42,34 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjI3Jmxhbmc9Qk0mZGF0ZT0yMi0wMy0yMDEzI3RpbWVsaW5lfDhiMDJkYzA0NDlmYzhmNzExZjg1YzdhYmY4MTA3MjNmNjY4ZGQzZjVlMTVmMTEzZjE2ZTVjNDBjMmYyMmNiZjQ%3D",
+  "timeline_bm": [
+    {
+      "date": "08/08/2003",
+      "project_id": "639",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/2004",
+      "project_id": "2257146",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "1712491",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/AKTA 627 (REPRINT 2006).pdf"
+    },
+    {
+      "date": "26/03/2013",
+      "project_id": "1700553",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Dimansuhkan Akta 758.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/AKTA 627 (REPRINT 2006).pdf",
+  "latest_amendment_pdf_bm": ""
 }

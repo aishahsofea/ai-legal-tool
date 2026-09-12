@@ -32,5 +32,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 477 - Import Duties (Validation) Act 1992.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDc3Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfDY3Njk1MmRlNWZmNDA4Yjk1MDRkOWZkMTc5NWQwMTA3ZjY2NjI2ZjA4OWJiM2NkNmU4ZmYxNDhiOWUxYzg4ZTM%3D",
+  "timeline_bm": [
+    {
+      "date": "21/02/1992",
+      "project_id": "489",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/489_BM/AKTA 477.pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16676",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 477 - Akta Duti Import (Pengesahan) 1992.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 477 - Akta Duti Import (Pengesahan) 1992.pdf",
+  "latest_amendment_pdf_bm": ""
 }

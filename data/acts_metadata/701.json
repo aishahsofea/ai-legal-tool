@@ -225,5 +225,76 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 18
+  "subsidiary_total": 18,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzAxJmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDIwI3RpbWVsaW5lfGUyYjIxNzgyOTEzNjMwNTM1ODYzZTQyZTYwZThjODE0OTkwZjQ5YmQxNmYyODNhNTY5MDY1YjJhZjNkOTIzNTA%3D",
+  "timeline_bm": [
+    {
+      "date": "04/09/2009",
+      "project_id": "713",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 701.pdf"
+    },
+    {
+      "date": "24/01/2013",
+      "project_id": "879",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20130122_A1448_BM_JW000084 A1448 (BM).pdf"
+    },
+    {
+      "date": "04/04/2017",
+      "project_id": "16217",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 701 - 17.3.2017.pdf"
+    },
+    {
+      "date": "05/09/2019",
+      "project_id": "3667496",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3667496_BM/Akta 701 (Cetakan Semula 2019).pdf"
+    },
+    {
+      "date": "04/03/2020",
+      "project_id": "759538",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/759538_BM/WJW014847 BM.pdf"
+    },
+    {
+      "date": "05/10/2020",
+      "project_id": "1696540",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pub_20200929_PUB480.pdf"
+    },
+    {
+      "date": "06/10/2020",
+      "project_id": "1697209",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pub_20200929_PUB479.pdf"
+    },
+    {
+      "date": "09/10/2020",
+      "project_id": "759538",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/759538_BM/WJW014847 BM.pdf"
+    },
+    {
+      "date": "10/11/2020",
+      "project_id": "1683920",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1683920_BM/DRAF KEDUA AKTA 701 (final)(KU) (1).pdf"
+    },
+    {
+      "date": "21/12/2023",
+      "project_id": "1923856",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1923856/PUA 377 (2023).pdf"
+    },
+    {
+      "date": "02/02/2025",
+      "project_id": "2650648",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2650648/PUA29_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1683920_BM/DRAF KEDUA AKTA 701 (final)(KU) (1).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pub_20200929_PUB479.pdf"
 }

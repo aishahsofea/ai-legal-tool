@@ -48,5 +48,22 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTk1Jmxhbmc9Qk0mZGF0ZT0xNS0wOS0yMDExI3RpbWVsaW5lfDU1ZTAwNTA5NWU2YmEwZmVhMDY3ZmM0ZjZiZGNmN2JlMWE4NGM0ZGNjMjIwY2VjYjM0NmUxYjUyODBmNWJkM2Q%3D",
+  "timeline_bm": [
+    {
+      "date": "18/11/1977",
+      "project_id": "207",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "17/09/2011",
+      "project_id": "1709482",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 195 Dimansuhkan.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

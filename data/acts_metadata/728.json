@@ -84,5 +84,22 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 7
+  "subsidiary_total": 7,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzI4Jmxhbmc9Qk0mZGF0ZT0wMS0wOS0yMDE2I3RpbWVsaW5lfDJlYTFmMDQ4ZWZkZDQwZGZmZmJhN2RmZjFjOWExYjA2YjdmY2VjMzEwOWM5OTdhMjViYjQ0MjRhN2U5ZmZiMGQ%3D",
+  "timeline_bm": [
+    {
+      "date": "19/08/2011",
+      "project_id": "740",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20110818_728_BM_AKTA 728 (BM).pdf"
+    },
+    {
+      "date": "03/09/2016",
+      "project_id": "16410",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 728 (25.08.2015).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 728 (25.08.2015).pdf",
+  "latest_amendment_pdf_bm": ""
 }

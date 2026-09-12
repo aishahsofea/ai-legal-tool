@@ -50,5 +50,52 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDQ0Jmxhbmc9Qk0mZGF0ZT0xMS0wMi0yMDEwI3RpbWVsaW5lfDY5MWIxODNmMjIwYTVjZmNmMTExNzY4M2UwYmQ2NGE1ZjMzMzI4N2E2YzQwYjhhMTdmZmYyMDM4MWQ5OTVjYmQ%3D",
+  "timeline_bm": [
+    {
+      "date": "31/08/1990",
+      "project_id": "456",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "17/02/1996",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/09/1997",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/01/2001",
+      "project_id": "2257246",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "20/08/2001",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/09/2004",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "18/02/2010",
+      "project_id": "",
+      "log_type": "REPEALED",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

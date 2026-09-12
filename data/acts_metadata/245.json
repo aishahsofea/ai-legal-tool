@@ -32,5 +32,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 245 - State Grants (Maintenance of Local Authorities) Ac.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjQ1Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfGVlZmExOTdlYTU4YmFiMTI4YTYxODUzNjY4N2M4MTQyM2RlZmJlM2M3YWUzYTE2MmE1M2MxYjVhODkzNzA0M2E%3D",
+  "timeline_bm": [
+    {
+      "date": "20/02/1981",
+      "project_id": "257",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/257_BM/AKTA 245 (1).pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16769",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 245 - Akta Pemberian kepada Negeri (Penyelenggaraan Pih.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 245 - Akta Pemberian kepada Negeri (Penyelenggaraan Pih.pdf",
+  "latest_amendment_pdf_bm": ""
 }

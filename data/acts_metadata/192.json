@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTkyJmxhbmc9Qk0mZGF0ZT0xMi0wMi0xOTc4I3RpbWVsaW5lfDM4M2QyNGNjZTY1Nzk1MTE4YmFiMDBmY2ZkYWIxODZhZTZjYjZlMjJhZTQ2NGY3YWFlMTcyM2ZlMjU5ZGJmZWE%3D",
+  "timeline_bm": [
+    {
+      "date": "10/11/1977",
+      "project_id": "204",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "14/02/1978",
+      "project_id": "1727282",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727282_BM/Akta 192 (Mansuh).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

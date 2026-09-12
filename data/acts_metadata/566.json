@@ -66,5 +66,40 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 3
+  "subsidiary_total": 3,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTY2Jmxhbmc9Qk0mZGF0ZT0wMS0wNC0yMDEzI3RpbWVsaW5lfDc4NmM4NmMyYWUzYmRlZjY1ZThmMjhjNTM1YzRiYzhjMDg2OGRlOWJmYTQ4ZjVhMTU0MzM5ODZjZjk3NWJkZjg%3D",
+  "timeline_bm": [
+    {
+      "date": "01/07/1997",
+      "project_id": "578",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/578_BM/AKTA 566 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "17/06/2000",
+      "project_id": "3581411",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3581411_BM/AKTA A1079.pdf"
+    },
+    {
+      "date": "22/07/2007",
+      "project_id": "3572977",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3572977_BM/AKTA A1296.pdf"
+    },
+    {
+      "date": "05/04/2013",
+      "project_id": "16285",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 566 - Akta Perbadanan Tabung Pendidikan Tinggi Nasional 1997.pdf"
+    },
+    {
+      "date": "12/07/2023",
+      "project_id": "1832158",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1832158/PUA 206 (2023).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 566 - Akta Perbadanan Tabung Pendidikan Tinggi Nasional 1997.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3572977_BM/AKTA A1296.pdf"
 }

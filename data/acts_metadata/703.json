@@ -36,5 +36,34 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzAzJmxhbmc9Qk0mZGF0ZT0wMS0wOS0yMDE5I3RpbWVsaW5lfGFlNjg2NzY5YTllYWZjNTRkYTc5NjliNjZmMjZhYWY3NmE2YTg1ODk1M2UyNjIzM2FiMzM0N2MxNjk2ZmFlNGE%3D",
+  "timeline_bm": [
+    {
+      "date": "15/01/2010",
+      "project_id": "715",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Salinan Warta - Akta 703.pdf"
+    },
+    {
+      "date": "06/03/2010",
+      "project_id": "1709489",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/P.U. (B) 96-2010 (Tarikh Kuat Kuasa Akta 703).pdf"
+    },
+    {
+      "date": "04/08/2015",
+      "project_id": "16488",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/005 - Akta 703 28_7_2015.pdf"
+    },
+    {
+      "date": "05/09/2019",
+      "project_id": "3667712",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3667712_BM/AKTA 703 - REPRINT 2019.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3667712_BM/AKTA 703 - REPRINT 2019.pdf",
+  "latest_amendment_pdf_bm": ""
 }

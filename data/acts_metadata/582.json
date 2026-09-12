@@ -207,5 +207,40 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 18
+  "subsidiary_total": 18,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTgyJmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfGQ0NDJkYzEyZTIxZDg1ZmEzYmQ4NWY4MjBmMTU0MDJlYzNhZDhmZWRlNWQyM2M0NTFiNDVlZTI3N2U0NTA2ZDY%3D",
+  "timeline_bm": [
+    {
+      "date": "10/07/1998",
+      "project_id": "594",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/594_BM/AKTA 582 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/07/2004",
+      "project_id": "1700319",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700319_BM/AKTA A1222.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "1700375",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 582 (Cetakan Semula 2011).pdf"
+    },
+    {
+      "date": "04/10/2024",
+      "project_id": "2384687",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2384687/PUB384_2024.pdf"
+    },
+    {
+      "date": "13/08/2025",
+      "project_id": "3014862",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3014862/P.U. (B) 302_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 582 (Cetakan Semula 2011).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700319_BM/AKTA A1222.pdf"
 }

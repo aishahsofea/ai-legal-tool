@@ -39,5 +39,22 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzI0Jmxhbmc9Qk0mZGF0ZT0xNS0wNi0yMDE1I3RpbWVsaW5lfDM2YzgzZGUzMjZkOWE2Njg2MjUwNTNiMjNhYTg5MjA1OTA0ZDU1ODM2MTA4NGY0ZGFhMDczMzZkZjc3NDUxMDU%3D",
+  "timeline_bm": [
+    {
+      "date": "28/01/2011",
+      "project_id": "736",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 724 - Salinan Asal.pdf"
+    },
+    {
+      "date": "17/06/2015",
+      "project_id": "16404",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/16404_BM/001 - Akta 724 - 16.6.2015.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/16404_BM/001 - Akta 724 - 16.6.2015.pdf",
+  "latest_amendment_pdf_bm": ""
 }

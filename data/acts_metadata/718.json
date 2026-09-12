@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/7. Act 718 - 22.12.2016.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzE4Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDE2I3RpbWVsaW5lfGQ1NGE4MGRlZGVmZDFiOWU3OWNlYWVjYjdlYjk4YTUwZjdiMzYyNzkwOGJmZjIwMzcwYmMzMDY0NGMzNTEwNjQ%3D",
+  "timeline_bm": [
+    {
+      "date": "31/12/2010",
+      "project_id": "730",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta718 ori.pdf"
+    },
+    {
+      "date": "03/12/2016",
+      "project_id": "16396",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/8. Akta 718 -22.12.2016.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/8. Akta 718 -22.12.2016.pdf",
+  "latest_amendment_pdf_bm": ""
 }

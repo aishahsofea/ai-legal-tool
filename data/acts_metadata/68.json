@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjgmbGFuZz1CTSZkYXRlPTMwLTA2LTE5OTcjdGltZWxpbmV8YjIzMjdkM2Y0Mzc5ZDBlY2Y3YWI2MzU2MmFkYmYzNzI4N2ExOTRmZjQ2ZTk4ZDQwMzU5NGNiZTJjYTVhZTMxMA%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "31/03/1972",
+      "project_id": "80",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/AKTA 68 BM REPEAL.pdf"
+    },
+    {
+      "date": "02/07/1997",
+      "project_id": "1727249",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/AKTA 68 B M REPEAL.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

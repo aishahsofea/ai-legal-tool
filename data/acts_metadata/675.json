@@ -36,5 +36,28 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Njc1Jmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDE3I3RpbWVsaW5lfGE0MjEwMGNkNmU5M2Q4ODhiZWIyMDZjYzAxMTRhMzFiNjE5ZmMwMTVhMjM0MWEzMTkyYjg5MGVkMmY0MDljM2E%3D",
+  "timeline_bm": [
+    {
+      "date": "31/08/2007",
+      "project_id": "687",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/687_BM/Akta 675 BM_unlocked.pdf"
+    },
+    {
+      "date": "03/07/2013",
+      "project_id": "16361",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 675 - Akta Sistem Pengukuran Kebangsaan 2007.pdf"
+    },
+    {
+      "date": "04/11/2017",
+      "project_id": "15850",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15850_BM/Akta 675 Reprint 2017.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15850_BM/Akta 675 Reprint 2017.pdf",
+  "latest_amendment_pdf_bm": ""
 }

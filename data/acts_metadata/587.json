@@ -44,5 +44,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 587 - Pengurusan Danaharta Nasional Berhad Act 1998.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3098677_BI/ACT A587.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTg3Jmxhbmc9Qk0mZGF0ZT0wMS0wMi0yMDEzI3RpbWVsaW5lfDU2MmVjNjYzZTVjZDI4OTlmMmFhZDFlM2Y1ZWFiMzI1YmRhNjEyMDU1YjhjMTVmYWMzZTc4YmFhNGI2MmU3ZjA%3D",
+  "timeline_bm": [
+    {
+      "date": "02/09/1998",
+      "project_id": "599",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/599_BM/AKTA 587 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "02/09/2000",
+      "project_id": "1700301",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700301_BM/AKTA A1087.pdf"
+    },
+    {
+      "date": "04/02/2013",
+      "project_id": "16328",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 587 - Pengurusan Danaharta Nasional Berhad Act 1998.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 587 - Pengurusan Danaharta Nasional Berhad Act 1998.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700301_BM/AKTA A1087.pdf"
 }

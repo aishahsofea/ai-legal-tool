@@ -26,5 +26,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 714 1_07_2015.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzE0Jmxhbmc9Qk0mZGF0ZT0xMy0xMi0yMDE4I3RpbWVsaW5lfDA3MGQzZmZkMTAzMTZiNTUwYjVhMGQ3M2FjYTgyNTE4NDBjYzgxZmU3ZmMwOWU1M2JlYWY0MDczYzAyNzYwMjU%3D",
+  "timeline_bm": [
+    {
+      "date": "02/06/2010",
+      "project_id": "726",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta714 asal.pdf"
+    },
+    {
+      "date": "03/07/2015",
+      "project_id": "16490",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 714 1_07_2015.pdf"
+    },
+    {
+      "date": "16/12/2018",
+      "project_id": "1695975",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1695975_BM/WJW240906 Akta 714 (Dimansuh oleh Akta 811).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 714 1_07_2015.pdf",
+  "latest_amendment_pdf_bm": ""
 }
