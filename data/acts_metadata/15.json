@@ -78,5 +78,70 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTUmbGFuZz1CTSZkYXRlPTAxLTAxLTIwMDYjdGltZWxpbmV8MWMwOTAwZDZjODE4NTk1OWVjYzIwYzkxM2JkMDM5YmVkMWE5ODQ0MGM3YWQ3NDI0OGE0NjM1MjY4MjA0MjgwMg%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "02/01/1948",
+      "project_id": "27",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/27_BM/AKTA 15 - DISEMAK.pdf"
+    },
+    {
+      "date": "15/11/1958",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "31/05/1964",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "24/11/1969",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "14/04/1970",
+      "project_id": "15910",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 15.pdf"
+    },
+    {
+      "date": "16/08/1970",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "09/01/1992",
+      "project_id": "1700459",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "10/01/1999",
+      "project_id": "2255515",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2255515_BM/Cetakan semula 1999.pdf"
+    },
+    {
+      "date": "11/01/2006",
+      "project_id": "15910",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 15.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 15.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
 }

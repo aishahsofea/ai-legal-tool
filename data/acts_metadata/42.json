@@ -74,5 +74,76 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 42.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDImbGFuZz1CTSZkYXRlPTAxLTAxLTIwMDYjdGltZWxpbmV8NTNlZTgzZDNlMmIxZWFlNzI2M2IxYTBhYzVlMTM1YTdjOGQxOTFjOGQ5YWFjM2RkNjAzYzUwMDY1NzFiZTkwYg%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "03/09/1971",
+      "project_id": "54",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/AKTA 42 WARTA BM.pdf"
+    },
+    {
+      "date": "05/09/1971",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/09/1971",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "02/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "06/01/1978",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/07/1980",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "08/01/1993",
+      "project_id": "2256327",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/01/1999",
+      "project_id": "2256322",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "10/09/2004",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "11/01/2006",
+      "project_id": "15315",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 42.pdf"
+    },
+    {
+      "date": "12/01/2006",
+      "project_id": "1727276",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 42 Pemansuhan.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 42.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
 }

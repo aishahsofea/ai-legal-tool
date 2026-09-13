@@ -44,5 +44,46 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDcmbGFuZz1CTSZkYXRlPTAxLTA3LTE5OTQjdGltZWxpbmV8NjdkNDhiYmFjMDJhODJkYmE1YTU2M2JjMmE5M2EyNzFjYTNiZWMzMDhiZmQ3YWJjZjczNzNlYmVkZDQ3ZWRjOQ%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "03/09/1971",
+      "project_id": "59",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/AKTA 47 WARTA BM.pdf"
+    },
+    {
+      "date": "03/03/1974",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/06/1976",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "19/07/1986",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/08/1990",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/07/1994",
+      "project_id": "1727246",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 47 Pemansuhan.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

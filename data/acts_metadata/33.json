@@ -54,5 +54,52 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzMmbGFuZz1CTSZkYXRlPTAxLTAxLTIwMDYjdGltZWxpbmV8NGMwZDQwYjQwOTA3ZWExZjc2NTlhNDg5MzdmNDNmYjNlY2I3MDBkZTJiOWY3MjE2ZDI5OTc4ODA3Yjk1YjYyOA%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "02/05/1971",
+      "project_id": "1712924",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/PU (A) 95-71.pdf"
+    },
+    {
+      "date": "26/06/1971",
+      "project_id": "16076",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 33.pdf"
+    },
+    {
+      "date": "27/06/1971",
+      "project_id": "45",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "28/06/1971",
+      "project_id": "1727554",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727554_BM/AKTA 33 - REVISED 1971.pdf"
+    },
+    {
+      "date": "06/03/1993",
+      "project_id": "2256257",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2256257_BM/AKTA 33 - REPRINT 1993.pdf"
+    },
+    {
+      "date": "06/09/1999",
+      "project_id": "15368",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 33 Reprint 99 BM.pdf"
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "16076",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 33.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 33.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/PU (A) 95-71.pdf"
 }
