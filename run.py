@@ -104,7 +104,7 @@ def main() -> None:
         if args.step in ("3", "all"):
             print("  Step 3: would download PDFs to data/pdfs/en/")
         if args.step in ("4", "all"):
-            print("  Step 4: would extract section chunks to data/chunks/en/")
+            print("  Step 4: would extract section chunks to data/corpus/extractions/")
         if args.step in ("5", "all"):
             print("  Step 5: would embed chunks and ingest into pgvector")
         return
