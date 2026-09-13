@@ -86,5 +86,76 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2289889_BI/Act 370 (Online 2025).docx.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2138123_BI/Act A1708.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzcwJmxhbmc9Qk0mZGF0ZT0wMS0wOC0yMDI0I3RpbWVsaW5lfGVlMzBiZTA5NGEwOTA5OGJjM2ExODEwNDhlM2UwNDlmOTM5NzcxZDI1ODgxMWIyYzc4ODkxZDNlNTUwY2U3M2M%3D",
+  "timeline_bm": [
+    {
+      "date": "23/08/1974",
+      "project_id": "158",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/158_BM/AKTA 146.pdf"
+    },
+    {
+      "date": "31/05/1975",
+      "project_id": "1728062",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728062_BM/02. A303 WANG TIDAK DITUNTUT 1975 PINDAAN_repaired.pdf"
+    },
+    {
+      "date": "01/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "26/01/1976",
+      "project_id": "1728063",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728063_BM/03. A325 WANG TIDAK DITUNTUT 1976 PINDAAN_repaired_repaired.pdf"
+    },
+    {
+      "date": "14/02/1989",
+      "project_id": "1728064",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728064_BM/04. A722 WANG TIDAK DITUNTUT 1989 PINDAAN_repaired.pdf"
+    },
+    {
+      "date": "16/08/1989",
+      "project_id": "1727624",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727624_BM/Akta 370 -Revised 1989.pdf"
+    },
+    {
+      "date": "08/03/1990",
+      "project_id": "1702440",
+      "log_type": "TRANSLATE",
+      "pdf_url": ""
+    },
+    {
+      "date": "09/01/2003",
+      "project_id": "1728065",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta A1161.pdf"
+    },
+    {
+      "date": "16/11/2023",
+      "project_id": "1736518",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/terjemahan/1736518_BM/AKTA 370.pdf"
+    },
+    {
+      "date": "03/06/2024",
+      "project_id": "2138123",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2138123_BM/Akta A1708.pdf"
+    },
+    {
+      "date": "12/08/2024",
+      "project_id": "3013263",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/terjemahan/3013263_BM/AKTA 370 08092026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2138123_BM/Akta A1708.pdf"
 }

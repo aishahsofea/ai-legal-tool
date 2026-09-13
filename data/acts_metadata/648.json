@@ -50,5 +50,16 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 648.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjQ4Jmxhbmc9Qk0mZGF0ZT0zMC0wMy0yMDA2I3RpbWVsaW5lfGNhYWY3Y2M3ZTU5YzkxZjIyNzk1MzEwNjUyZjliZWY3ZTFkODg5MzczZDg2ZWM3Y2VhNzQ1MjY3MGVjYzhmYjM%3D",
+  "timeline_bm": [
+    {
+      "date": "02/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
 }

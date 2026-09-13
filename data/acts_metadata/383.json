@@ -50,5 +50,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 383.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3436040_BI/L.N. 329-1963.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzgzJmxhbmc9Qk0mZGF0ZT0wMS0wNC0yMDEzI3RpbWVsaW5lfGQxNGY1ODBmYzY1OWQzZTNiZGUwNzNhMDcwZDU5ZWI5ODkwYTg2YjM4YWJmY2ZjODE4OTVmNjRmN2FjZjk1ZDU%3D",
+  "timeline_bm": [
+    {
+      "date": "22/09/1989",
+      "project_id": "2253990",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2253990_BM/Akta 383 Disemak.pdf"
+    },
+    {
+      "date": "17/02/1990",
+      "project_id": "16310",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 383 - Akta Pihak-Pihak Berkuasa Awam (Kawalan Kuasa-Kuasa Meminjam) 1961.pdf"
+    },
+    {
+      "date": "04/04/2013",
+      "project_id": "16310",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 383 - Akta Pihak-Pihak Berkuasa Awam (Kawalan Kuasa-Kuasa Meminjam) 1961.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 383 - Akta Pihak-Pihak Berkuasa Awam (Kawalan Kuasa-Kuasa Meminjam) 1961.pdf",
+  "latest_amendment_pdf_bm": ""
 }

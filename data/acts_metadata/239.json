@@ -177,5 +177,118 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 6
+  "subsidiary_total": 6,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjM5Jmxhbmc9Qk0mZGF0ZT0xNS0xMC0yMDI0I3RpbWVsaW5lfDAyYTM3MmI4OTFkMGFiZTY1YjdmODY2YzhkNjFjYTA4Y2QwZmUzZTUzMGJiMjM1ZGNlYWZkZDkyMmZhYzRhZWE%3D",
+  "timeline_bm": [
+    {
+      "date": "08/08/1980",
+      "project_id": "251",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/251_BM/warta AKTA 239.pdf"
+    },
+    {
+      "date": "17/12/1983",
+      "project_id": "3020680",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3020680_BM/AKTA A568(BM).pdf"
+    },
+    {
+      "date": "02/06/1985",
+      "project_id": "3677310",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3677310_BM/AKTA A619(1).pdf"
+    },
+    {
+      "date": "19/05/1986",
+      "project_id": "3677383",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3677383_BM/AKTA A645.pdf"
+    },
+    {
+      "date": "16/04/1991",
+      "project_id": "3677429",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3677429_BM/AKTA A794(1).pdf"
+    },
+    {
+      "date": "22/07/1992",
+      "project_id": "3677445",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3677445_BM/AKTA A824(1).pdf"
+    },
+    {
+      "date": "15/09/1994",
+      "project_id": "3678871",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3678871_BM/AKTA A904(1).pdf"
+    },
+    {
+      "date": "07/02/1997",
+      "project_id": "3678908",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3678908_BM/AKTA A986(1).pdf"
+    },
+    {
+      "date": "08/09/1997",
+      "project_id": "3679248",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3679248_BM/AKTA A1006(BM).pdf"
+    },
+    {
+      "date": "07/10/2001",
+      "project_id": "3678933",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3678933_BM/A1125y2001bm(1)_repaired.pdf"
+    },
+    {
+      "date": "19/08/2002",
+      "project_id": "3679326",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3679326_BM/A1172y2002bm_repaired.pdf"
+    },
+    {
+      "date": "01/07/2008",
+      "project_id": "3679356",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3679356_BM/Akta A1336(BM).pdf"
+    },
+    {
+      "date": "21/01/2009",
+      "project_id": "3679388",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3679388_BM/AKTA A1344(BM).pdf"
+    },
+    {
+      "date": "15/01/2010",
+      "project_id": "2970657",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2970657_BM/AKTA 239 REPRINT 2010.pdf"
+    },
+    {
+      "date": "16/12/2011",
+      "project_id": "16763",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 239 - Akta Pencen Pihak Berkuasa Berkanun dan Tempatan.pdf"
+    },
+    {
+      "date": "17/01/2012",
+      "project_id": "841",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20111231_A1410_BM_JW001644 (Akta A1410).pdf"
+    },
+    {
+      "date": "01/11/2024",
+      "project_id": "2149622",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2149622_BM/MUKTAMAD AKTA 239 (15.10.2024).pdf"
+    },
+    {
+      "date": "02/11/2024",
+      "project_id": "2149662",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT_ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2149662_BM/P.U. (A) 134_1990 (Dalam talian 2024).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2149622_BM/MUKTAMAD AKTA 239 (15.10.2024).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20111231_A1410_BM_JW001644 (Akta A1410).pdf"
 }

@@ -26,5 +26,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 687 (REPRINT 2018).pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Njg3Jmxhbmc9Qk0mZGF0ZT0wMS0xMC0yMDE4I3RpbWVsaW5lfDMzY2FhOWZiNTAxY2MzZTRiY2U1OWRkMTYyMWMxYWFhYTNlNWMzNGY1N2IwYzRmOTlhODE4OGYyMGQ5ODBhZDc%3D",
+  "timeline_bm": [
+    {
+      "date": "15/02/2008",
+      "project_id": "699",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/699_BM/Akta 687_unlocked.pdf"
+    },
+    {
+      "date": "03/01/2014",
+      "project_id": "16208",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 687 - 7 1 2014.pdf"
+    },
+    {
+      "date": "04/10/2018",
+      "project_id": "3683153",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3683153_BM/Akta 687 (REPRINT 2018).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3683153_BM/Akta 687 (REPRINT 2018).pdf",
+  "latest_amendment_pdf_bm": ""
 }

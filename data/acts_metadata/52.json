@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTImbGFuZz1CTSZkYXRlPTAxLTA0LTE5ODkjdGltZWxpbmV8YmQzZDhkOTVkZDA5NjY4MGExZmNkNzcxOWM1MTRjMjQ1M2RlYzhmMjk0MmIyMTQ0ODJhOGYwYTQyZDk2ZTE1Mg%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "01/10/1971",
+      "project_id": "64",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/64_BM/Akta 52 (PEMANSUHAN).pdf"
+    },
+    {
+      "date": "03/04/1989",
+      "project_id": "64",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/64_BM/Akta 52 (PEMANSUHAN).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

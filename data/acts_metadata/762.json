@@ -462,5 +462,40 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 47
+  "subsidiary_total": 47,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzYyJmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDE4I3RpbWVsaW5lfGEzNzNkMGM0NjkzNWRmMGFjNjQwYWFmNmZiZDc4N2RhZDhmZDg0ZmI1NWY2YTFiZDA3YjgzNzc2YzA2YjhlYTI%3D",
+  "timeline_bm": [
+    {
+      "date": "20/06/2014",
+      "project_id": "774",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20140619_762_BM_AKTA 762.pdf"
+    },
+    {
+      "date": "03/01/2016",
+      "project_id": "785",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/785_BM/AKTA 773.pdf"
+    },
+    {
+      "date": "04/01/2017",
+      "project_id": "797",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/797_BM/AKTA 785.pdf"
+    },
+    {
+      "date": "05/06/2017",
+      "project_id": "16421",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 762 - kelulusan TP.pdf"
+    },
+    {
+      "date": "06/01/2018",
+      "project_id": "1708076",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/762 BM-Dimansuhkan.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 762 - kelulusan TP.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/797_BM/AKTA 785.pdf"
 }

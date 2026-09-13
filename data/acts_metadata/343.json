@@ -180,5 +180,52 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 13
+  "subsidiary_total": 13,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzQzJmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDEzI3RpbWVsaW5lfDRiZWYzMTFmZTZhMDU1NzRiY2UwODZlZWNlYTgzNTZkN2UyZWU3ZDk5MjY1NWYyMDVlNmJiODcxY2MwYTQ5OGU%3D",
+  "timeline_bm": [
+    {
+      "date": "09/09/1988",
+      "project_id": "355",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/355_BM/AKTA 343.pdf"
+    },
+    {
+      "date": "22/02/1992",
+      "project_id": "490",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BM/AKTA 478.pdf"
+    },
+    {
+      "date": "04/09/2011",
+      "project_id": "1728142",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728142_BM/AKTA A1103.pdf"
+    },
+    {
+      "date": "05/01/2013",
+      "project_id": "16250",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 343 - Akta Lembaga Koko Malaysia (Pemerbadanan) 1988.pdf"
+    },
+    {
+      "date": "07/06/2021",
+      "project_id": "1702337",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1702337/PUB321_2021.pdf"
+    },
+    {
+      "date": "05/12/2021",
+      "project_id": "1716037",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1716037/PUB611.pdf"
+    },
+    {
+      "date": "17/11/2023",
+      "project_id": "1883958",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/PUB 495.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 343 - Akta Lembaga Koko Malaysia (Pemerbadanan) 1988.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728142_BM/AKTA A1103.pdf"
 }

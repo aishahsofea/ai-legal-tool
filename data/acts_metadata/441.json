@@ -144,5 +144,106 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 5
+  "subsidiary_total": 5,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDQxJmxhbmc9Qk0mZGF0ZT0xMC0wNi0yMDIyI3RpbWVsaW5lfDM4MjMyMjJjMDAyYjA2YWZiZmE3NzY1NzBjMTlhNmZjZGMxZmI5ZjY0NTc4ODZkOTViZDZkZTcyOWRlNjliMTk%3D",
+  "timeline_bm": [
+    {
+      "date": "31/08/1990",
+      "project_id": "453",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/453_BM/Akta 441 -Salinan Warta Asal.pdf"
+    },
+    {
+      "date": "22/02/1992",
+      "project_id": "3439782",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3439782_BM/Akta A817_1992.pdf"
+    },
+    {
+      "date": "17/02/1996",
+      "project_id": "3440091",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3440091/ilovepdf_merged (3).pdf"
+    },
+    {
+      "date": "10/03/1997",
+      "project_id": "3439834",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3439834_BM/Akta A988_1997.pdf"
+    },
+    {
+      "date": "05/09/2000",
+      "project_id": "3439902",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3439902_BM/Akta A1090_2000.pdf"
+    },
+    {
+      "date": "07/01/2001",
+      "project_id": "2257251",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "15961",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 441.pdf"
+    },
+    {
+      "date": "19/02/2010",
+      "project_id": "3439943",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3439943_BM/Akta A1367_2010_unlocked.pdf"
+    },
+    {
+      "date": "01/07/2012",
+      "project_id": "859",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/859_BM/06. Akta A1428_2012_unlocked.pdf"
+    },
+    {
+      "date": "11/09/2012",
+      "project_id": "16650",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 441 - Akta Syarikat Labuan 1990.pdf"
+    },
+    {
+      "date": "20/06/2022",
+      "project_id": "1733748",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1733748_BM/Akta A1653.pdf"
+    },
+    {
+      "date": "22/06/2022",
+      "project_id": "1734157",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1734157_BM/100622_Akta 441_muktamad.pdf"
+    },
+    {
+      "date": "10/11/2022",
+      "project_id": "1747484",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1747484/PUA346.pdf"
+    },
+    {
+      "date": "12/01/2023",
+      "project_id": "1754667",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1754667/PUA401_2022.pdf"
+    },
+    {
+      "date": "07/05/2025",
+      "project_id": "2813155",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2813155_BM/A1756 BM - AKTA SYARIKAT LABUAN (PINDAAN) 2025.pdf"
+    },
+    {
+      "date": "16/07/2026",
+      "project_id": "3583818",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3583818/PUA 241 (2026).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1734157_BM/100622_Akta 441_muktamad.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2813155_BM/A1756 BM - AKTA SYARIKAT LABUAN (PINDAAN) 2025.pdf"
 }

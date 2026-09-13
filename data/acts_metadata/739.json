@@ -30,5 +30,22 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzM5Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDIwI3RpbWVsaW5lfGFiMWY1ZmJjOTZlMGQ0YWRlZGIwM2VjNzkxZTkwY2E3ZTQ4MWNmMmI1YjE5ZDk3ZmJjZjMyYzgwZTc0NzU2ZDY%3D",
+  "timeline_bm": [
+    {
+      "date": "10/02/2012",
+      "project_id": "751",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20120209_739_BM_JW001760 BM Akta 739(BM).pdf"
+    },
+    {
+      "date": "03/01/2020",
+      "project_id": "1700537",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 739-CetakanSemula-Jan2020.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 739-CetakanSemula-Jan2020.pdf",
+  "latest_amendment_pdf_bm": ""
 }

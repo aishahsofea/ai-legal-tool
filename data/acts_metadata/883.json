@@ -1,0 +1,29 @@
+{
+  "act_number": "883",
+  "act_type": "updated",
+  "scraped_at": "2026-09-12T16:30:27.670767+00:00",
+  "detail_url": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODgzJmxhbmc9QkkmZGF0ZT0xNS0wNi0yMDI2I3RpbWVsaW5lfGNmZmQxYmU0YzQ0ZDAzMWMzMTM5YmZkYmZjNTk1MDhhMWYzZTAwM2RmOTE5NTk1YjYzMDY2M2VjYTNkN2FhZjQ%3D",
+  "timeline": [
+    {
+      "date": "16/06/2026",
+      "project_id": "3552389",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3552389_BI/RECORDS (DISPOSAL) (SARAWAK) ACT 1955 (Revised-2026).pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODgzJmxhbmc9Qk0mZGF0ZT0xNS0wNi0yMDI2I3RpbWVsaW5lfDllYjM1OWY1Y2ExZjQ1ZmM2ZDYxNDBkYzQyYzFiZWNkZDdhNjVjMDA1YmVjZjA4ZTY1ZDFmNmMzMTRlZTZmN2I%3D",
+  "timeline_bm": [
+    {
+      "date": "16/06/2026",
+      "project_id": "3552389",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3552389_BM/AKTA REKOD (PELUPUSAN) (SARAWAK) 1955 (Disemak-2026).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
+}

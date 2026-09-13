@@ -57,5 +57,46 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Njc5Jmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDE3I3RpbWVsaW5lfGM5MDJkYmU4ODU2NmYxM2E5MjBjZDY5OTcwMGE4NzZiMjMzZWMyZmJiMjYxMDBhOWViMjRhOWUzYTY0MTJlYjY%3D",
+  "timeline_bm": [
+    {
+      "date": "31/08/2007",
+      "project_id": "691",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/691_BM/Akta 679_unlocked.pdf"
+    },
+    {
+      "date": "03/10/2014",
+      "project_id": "16570",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 679 vesi dlm talian 1_10_2014.pdf"
+    },
+    {
+      "date": "01/08/2015",
+      "project_id": "5808",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/5808/P.U. (A) 155-2016_unlocked.pdf"
+    },
+    {
+      "date": "05/11/2017",
+      "project_id": "15861",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15861_BM/Akta 679 BM Reprint 2017_unlocked.pdf"
+    },
+    {
+      "date": "15/09/2025",
+      "project_id": "3068913",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3068913/PUB 332 (2025).pdf"
+    },
+    {
+      "date": "16/09/2025",
+      "project_id": "3069046",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3069046/PUB 333 (2025).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15861_BM/Akta 679 BM Reprint 2017_unlocked.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/5808/P.U. (A) 155-2016_unlocked.pdf"
 }

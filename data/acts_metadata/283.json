@@ -663,5 +663,58 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 66
+  "subsidiary_total": 66,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjgzJmxhbmc9Qk0mZGF0ZT0wMS0wOS0yMDEyI3RpbWVsaW5lfGZiNmNkNWFlYzI0MjY5YWFiMGEyMTA4Y2Y0NjA3MzY3NGI3MTQyZTViNDNhYjk3ZjhiYzIzNDRjN2RlZTIzZGQ%3D",
+  "timeline_bm": [
+    {
+      "date": "15/04/1983",
+      "project_id": "295",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 283 Asal.pdf"
+    },
+    {
+      "date": "03/09/1998",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/09/2012",
+      "project_id": "16154",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 283 - Online version.pdf"
+    },
+    {
+      "date": "02/08/2022",
+      "project_id": "1738396",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1738396/PUB339.pdf"
+    },
+    {
+      "date": "02/09/2024",
+      "project_id": "2316452",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2316452/P.U. (B) 340_2024.pdf"
+    },
+    {
+      "date": "23/10/2024",
+      "project_id": "2430624",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2430624_BM/Akta A1726.pdf"
+    },
+    {
+      "date": "28/08/2025",
+      "project_id": "3037403",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3037403/PUA 263 (2025).pdf"
+    },
+    {
+      "date": "29/08/2025",
+      "project_id": "3037394",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3037394/PUA 264 (2025).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 283 - Online version.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2430624_BM/Akta A1726.pdf"
 }

@@ -183,5 +183,94 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 10
+  "subsidiary_total": 10,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDkmbGFuZz1CTSZkYXRlPTAxLTAyLTIwMTMjdGltZWxpbmV8MjZjMWQxMzA1NzY4ZDRiZTdlMGE1NTMxZDRlY2VjMDM5ZjVjMTcxMjUxMjY3Mzg2ZjU5MTJkYTViOTU3OTJhMQ%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "01/10/1971",
+      "project_id": "61",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/61_BM/AKTA 49 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "23/06/1973",
+      "project_id": "1727677",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727677_BM/AKTA A201.pdf"
+    },
+    {
+      "date": "19/08/1974",
+      "project_id": "1727662",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727662_BM/AKTA A261.pdf"
+    },
+    {
+      "date": "21/03/1977",
+      "project_id": "1727678",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727678_BM/AKTA A376.pdf"
+    },
+    {
+      "date": "27/02/1990",
+      "project_id": "1727679",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727679_BM/AKTA A764.pdf"
+    },
+    {
+      "date": "07/03/1993",
+      "project_id": "1712989",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712989_BM/AKTA 49 - REPRINT 1993.pdf"
+    },
+    {
+      "date": "15/07/1999",
+      "project_id": "1727680",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727680_BM/AKTA A1051.pdf"
+    },
+    {
+      "date": "08/09/1999",
+      "project_id": "1727302",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727302_BM/AKTA 49 - REPRINT 1999.pdf"
+    },
+    {
+      "date": "10/01/2006",
+      "project_id": "1712990",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 49 (Cetakan Semula 2006).pdf"
+    },
+    {
+      "date": "19/02/2012",
+      "project_id": "847",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/847_BM/AKTA A1416.pdf"
+    },
+    {
+      "date": "12/10/2012",
+      "project_id": "16241",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 49 - Akta Lembaga Kemajuan Ikan Malaysia 1971.pdf"
+    },
+    {
+      "date": "13/02/2013",
+      "project_id": "15378",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 49  - Akta Lembaga Kemajuan Ikan Malaysia 1971 (Cetakan Semula 2013).pdf"
+    },
+    {
+      "date": "11/05/2026",
+      "project_id": "3485500",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3485500/PUA 178 (2026).pdf"
+    },
+    {
+      "date": "14/05/2026",
+      "project_id": "3491185",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3491185/P.U. (A) 182_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 49  - Akta Lembaga Kemajuan Ikan Malaysia 1971 (Cetakan Semula 2013).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/847_BM/AKTA A1416.pdf"
 }

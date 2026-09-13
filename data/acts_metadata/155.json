@@ -738,5 +738,190 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 45
+  "subsidiary_total": 45,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTU1Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfDk0OGI4N2U1NmU1YWQ4Y2I3NzhmODk5NWUxNzllNzhmNGNhNzU5NmZmNjVjMTg1NzFlMjA1MzdlNmExNmUxMTk%3D",
+  "timeline_bm": [
+    {
+      "date": "04/06/2021",
+      "project_id": "1702350",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1702350/PUA255.pdf"
+    },
+    {
+      "date": "14/07/2021",
+      "project_id": "1704459",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1704459/PUB 359.pdf"
+    },
+    {
+      "date": "11/11/2021",
+      "project_id": "1713879",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1713879/PUB550.pdf"
+    },
+    {
+      "date": "12/11/2021",
+      "project_id": "1713873",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1713873/PUB551.pdf"
+    },
+    {
+      "date": "20/03/2022",
+      "project_id": "1725704",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1725704/PUA56.pdf"
+    },
+    {
+      "date": "23/03/2022",
+      "project_id": "1725879",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1725879/PUA 60.pdf"
+    },
+    {
+      "date": "16/03/2023",
+      "project_id": "1795176",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1795176/P.U. (B) 98_2023 (PENETAPAN AKTA IMIGRESEN - CORRIGENDUM).pdf"
+    },
+    {
+      "date": "22/07/2023",
+      "project_id": "1836763",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1836763/PUB264_2023.pdf"
+    },
+    {
+      "date": "01/01/2025",
+      "project_id": "2584967",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2584967/PUB518_2024.pdf"
+    },
+    {
+      "date": "19/05/2025",
+      "project_id": "2856142",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2856142/PUA 150 (2025).pdf"
+    },
+    {
+      "date": "02/10/2025",
+      "project_id": "3083212",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3083212/PUB  338_2025.pdf"
+    },
+    {
+      "date": "03/10/2025",
+      "project_id": "3083215",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3083215/PUA 337_2025.pdf"
+    },
+    {
+      "date": "13/10/2025",
+      "project_id": "3101239",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3101239/PUA344_2025.pdf"
+    },
+    {
+      "date": "12/01/2026",
+      "project_id": "3274092",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3274092/PUB 478 (2025).pdf"
+    },
+    {
+      "date": "13/01/2026",
+      "project_id": "3274089",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3274089/PUB 477 (2025).pdf"
+    },
+    {
+      "date": "15/01/2026",
+      "project_id": "3274093",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3274093/PUB 481 (2025).pdf"
+    },
+    {
+      "date": "30/03/2026",
+      "project_id": "3403595",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3403595_BM/Akta A1790 - AKTA IMIGRESEN (PINDAAN) 2026.pdf"
+    },
+    {
+      "date": "13/04/2026",
+      "project_id": "3413741",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3413741/PUA 137_2026.pdf"
+    },
+    {
+      "date": "14/04/2026",
+      "project_id": "3428997",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3428997/PUA 136_2026.pdf"
+    },
+    {
+      "date": "15/04/2026",
+      "project_id": "3428996",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3428996/PUA 135_2026.pdf"
+    },
+    {
+      "date": "16/04/2026",
+      "project_id": "3413749",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3413749/PUA 138_2026.pdf"
+    },
+    {
+      "date": "17/04/2026",
+      "project_id": "3411181",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3411181/PUA 139_2026.pdf"
+    },
+    {
+      "date": "18/04/2026",
+      "project_id": "3411147",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3411147/PUA 140_2026.pdf"
+    },
+    {
+      "date": "27/04/2026",
+      "project_id": "3439079",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3439079/P.U. (A) 155_2026.pdf"
+    },
+    {
+      "date": "28/04/2026",
+      "project_id": "3439076",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3439076/PUA 156 (2026).pdf"
+    },
+    {
+      "date": "29/04/2026",
+      "project_id": "3440947",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3440947/P.U. (A) 158_2026.pdf"
+    },
+    {
+      "date": "30/04/2026",
+      "project_id": "3440946",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3440946/PUA 157 (2026).pdf"
+    },
+    {
+      "date": "04/06/2026",
+      "project_id": "3500181",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3500181/PUA183_2026.pdf"
+    },
+    {
+      "date": "23/06/2026",
+      "project_id": "3528827",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3528827/PUA 201_2026.pdf"
+    },
+    {
+      "date": "03/07/2026",
+      "project_id": "3538540",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3538540/PUA 207 (2026).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3403595_BM/Akta A1790 - AKTA IMIGRESEN (PINDAAN) 2026.pdf"
 }

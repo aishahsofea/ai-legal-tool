@@ -48,5 +48,22 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 3
+  "subsidiary_total": 3,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzY2Jmxhbmc9Qk0mZGF0ZT0wNi0wMy0yMDE1I3RpbWVsaW5lfDZlN2NmN2Q1ODg1OWE5MWY0ODc4YzM0NTQ4Y2RjZWQ2MWM2ZTNiOGFkYzljZjQ2ZTc3ZDg4NmUwYWE4OWU1MmM%3D",
+  "timeline_bm": [
+    {
+      "date": "07/03/2015",
+      "project_id": "778",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20150306_766_AKTA PENGHASILAN BERSIH PERJANJIAN KEWANGAN 2015 (BM).pdf"
+    },
+    {
+      "date": "13/12/2023",
+      "project_id": "1923632",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1923632/PUA374_2023.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

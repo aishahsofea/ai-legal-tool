@@ -32,5 +32,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 484 - Loans (International Fund for Agricultural Develop.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDg0Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfDVjMjliMGRlYTk3MTk3NmY1MmNiYjRkNzkzMmQwNDAzYjkxZDZhMWMzNjc1N2Q2MTM5Zjk1ZjMxMGI5NTVhYzQ%3D",
+  "timeline_bm": [
+    {
+      "date": "21/02/1992",
+      "project_id": "496",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/496_BM/AKTA 484.pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16682",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 484 - Akta Pinjaman (Tabung Antarabangsa bagi Pembangun.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 484 - Akta Pinjaman (Tabung Antarabangsa bagi Pembangun.pdf",
+  "latest_amendment_pdf_bm": ""
 }

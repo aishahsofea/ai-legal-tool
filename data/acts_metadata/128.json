@@ -54,5 +54,46 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTI4Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfDU2M2ExNDcxMDkwZjJjMTY3ODI3ZmU5YTlmZWI5ZTMxMjkwMGYxMmQyMGYwYjM4YTUyMGIyYmNlM2YxZTkzYjQ%3D",
+  "timeline_bm": [
+    {
+      "date": "15/03/1974",
+      "project_id": "140",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/140_BM/AKTA 128 (ORI) BM.pdf"
+    },
+    {
+      "date": "31/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "21/12/1980",
+      "project_id": "1712494",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1712494/008 - P.U. (A) 357-1980.pdf"
+    },
+    {
+      "date": "05/01/1995",
+      "project_id": "2259613",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259613_BM/AKTA 128 CETAKAN 1 -1995 (BM).pdf"
+    },
+    {
+      "date": "05/05/2000",
+      "project_id": "2259612",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259612_BM/AKTA 128 CETAKAN 2-2000 (BM).pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15502",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 128.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 128.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1712494/008 - P.U. (A) 357-1980.pdf"
 }

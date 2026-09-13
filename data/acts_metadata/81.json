@@ -90,5 +90,64 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 3
+  "subsidiary_total": 3,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODEmbGFuZz1CTSZkYXRlPTAxLTAxLTIwMDYjdGltZWxpbmV8NWI5MGY1MGI4YTBjMWE5YzQyNWFiYjY3ODZlYjc3OTgzOTkzNmYyMWVhNTc3MjdhZWVmYzFiOWM1ZTgwMWNkYw%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "14/07/1972",
+      "project_id": "93",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/93_BM/AKTA 81 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "30/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "12/01/1976",
+      "project_id": "1712784",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712784_BM/AKTA A324.pdf"
+    },
+    {
+      "date": "05/05/1994",
+      "project_id": "2256998",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2256998_BM/AKTA 81 - REPRINT 1994.pdf"
+    },
+    {
+      "date": "05/09/1999",
+      "project_id": "3260094",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3260094_BM/AKTA 81 - REPRINT 1999.pdf"
+    },
+    {
+      "date": "31/12/2003",
+      "project_id": "1727738",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727738_BM/AKTA A1209.pdf"
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "1727446",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 81 (Reprint 2006).pdf"
+    },
+    {
+      "date": "09/11/2025",
+      "project_id": "3147007",
+      "log_type": "SUBSIDIARY_LEGISLATION_REPRINT_ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3147007_BM/P.U. (A) 58_2018 (Dalam talian 2025).pdf"
+    },
+    {
+      "date": "15/03/2026",
+      "project_id": "3403536",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3403536/PUB 80.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 81 (Reprint 2006).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727738_BM/AKTA A1209.pdf"
 }

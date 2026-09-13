@@ -32,5 +32,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2258390_BI/Act 274-reprint 2006.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Mjc0Jmxhbmc9Qk0mZGF0ZT0wMS0xMC0yMDIwI3RpbWVsaW5lfDEyNTg3NThmNWFiYWFkZDQxNTkzNDVlYjY1NWRmNWU5ZDhjMjY1MDIzYTI1YTUyZGYyOTEyNjQzYjQxOTk1Yzg%3D",
+  "timeline_bm": [
+    {
+      "date": "30/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "02/01/1983",
+      "project_id": "286",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/286_BM/Akta 274-warta 1 (1).pdf"
+    },
+    {
+      "date": "04/10/2020",
+      "project_id": "1676037",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1676037_BM/Akta 274-versi dalam talian sebagaimana pada 1 Oktober 2020.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1676037_BM/Akta 274-versi dalam talian sebagaimana pada 1 Oktober 2020.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
 }

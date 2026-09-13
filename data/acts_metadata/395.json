@@ -38,5 +38,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 395 - Assignment of Revenue (Export Duty on Iron Ore) Ac.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Mzk1Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfGFhOTQ1NzkyZWFlZTZjZGZjN2Q1NTA2YTg3NGUyNDAzODI0MGM4M2FhOWFiYTIxZDQyY2I5MGJiNTRlNjEwMDA%3D",
+  "timeline_bm": [
+    {
+      "date": "27/04/1990",
+      "project_id": "",
+      "log_type": "TRANSLATE",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16589",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 395.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 395.pdf",
+  "latest_amendment_pdf_bm": ""
 }

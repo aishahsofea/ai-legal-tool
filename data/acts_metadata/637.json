@@ -129,5 +129,58 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjM3Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfGEyYWIxYTk5YjYwMTY5NDY2MmZkZmJlYWNkMzcyNzhiMzdiZDJiNjgyYmYxNWJhNGMzOTVlOTIyMjQ4NmU0OGU%3D",
+  "timeline_bm": [
+    {
+      "date": "02/04/1972",
+      "project_id": "3563217",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3563217_BM/06. Akta A106.pdf"
+    },
+    {
+      "date": "30/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "08/03/1976",
+      "project_id": "3563056",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3563056_BM/8. Akta A343.pdf"
+    },
+    {
+      "date": "05/02/1980",
+      "project_id": "3347134",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3347134_BM/AKTA A477.pdf"
+    },
+    {
+      "date": "27/02/1990",
+      "project_id": "1700336",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700336_BM/10. Akta A748.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "1700313",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700313_BM/11. A1257y2005bm_unlocked.pdf"
+    },
+    {
+      "date": "04/01/2023",
+      "project_id": "1754478",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1754478/PUA399.pdf"
+    },
+    {
+      "date": "23/03/2023",
+      "project_id": "1797859",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1797859/PUA 69.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700313_BM/11. A1257y2005bm_unlocked.pdf"
 }

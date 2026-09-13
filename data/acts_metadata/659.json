@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 659.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjU5Jmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDEyI3RpbWVsaW5lfGUxYWZjYmU2MWQ5MDI0MWVmYjFmN2VkMGNlMWViODE2OWI5ODEwZTI5MjlhMTkxMWNjMDc5YTBhMWQyZDVmMzk%3D",
+  "timeline_bm": [
+    {
+      "date": "01/09/2006",
+      "project_id": "671",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/671_BM/Akta 659 BM_unlocked.pdf"
+    },
+    {
+      "date": "03/11/2012",
+      "project_id": "1700452",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700452_BM/Akta 659 Reprint 2012.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700452_BM/Akta 659 Reprint 2012.pdf",
+  "latest_amendment_pdf_bm": ""
 }

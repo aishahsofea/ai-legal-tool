@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 643.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjQzJmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfGVmNjdiYjIyYjU0OWE5NjAxYmIyNjUxMzMxZmIyOWU1MzI0ZjcwODg0MzdlNmI0YjZhMWRiODcwYWQ1MDAxZmY%3D",
+  "timeline_bm": [
+    {
+      "date": "02/09/2005",
+      "project_id": "655",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/655_BM/Akta 643 y2005 BM_unlocked.pdf"
+    },
+    {
+      "date": "03/01/2006",
+      "project_id": "15673",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15673_BM/Akta 643 Reprint 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15673_BM/Akta 643 Reprint 2006.pdf",
+  "latest_amendment_pdf_bm": ""
 }

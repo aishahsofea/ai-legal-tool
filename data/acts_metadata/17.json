@@ -162,5 +162,40 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 13
+  "subsidiary_total": 13,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTcmbGFuZz1CTSZkYXRlPTAxLTAxLTIwMTMjdGltZWxpbmV8MTA3MDc2OWQwNjIwNDExOTg1NDNiYTZhN2QyYWY4Nzk5NTczZDY2MGMxYTI2YjFjMjViMjk0OWQyNWRjZjk1MA%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "02/01/1953",
+      "project_id": "29",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/08/1992",
+      "project_id": "2255552",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/09/1999",
+      "project_id": "2256490",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "2256494",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/01/2013",
+      "project_id": "1700569",
+      "log_type": "REPEALED",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

@@ -2,10 +2,13 @@
 
 from __future__ import annotations
 
+import base64
+import binascii
 import json
 from dataclasses import asdict
 from pathlib import Path
 from typing import Any
+from urllib.parse import parse_qs, urlparse
 
 import fitz
 
@@ -36,16 +39,59 @@ def _title_map(index_path: Path) -> dict[str, dict[str, str]]:
     return result
 
 
+def _signed_link_language(detail_url: str) -> str:
+    """Read the language back out of AGC's signed detail link, or "" if absent.
+
+    Since issue #64 a detail_url is ``processFile.php?isDirect=1&token=<base64>``
+    and the base64 holds the original ``act-detail.php?...&lang=BM`` URL. The
+    plain ``lang=`` marker the check below looks for is therefore gone from
+    every freshly scraped Act, leaving ``/MY/`` in the PDF path as the only
+    remaining signal — and 19 Malay reprints in the corpus sit under
+    ``outputaktap/`` with no such marker at all. Decoding the token is reading
+    a public envelope, not the AES secret; ``_token_lang`` in
+    ``scraper/parsers/index_parser.py`` does the same thing on the listing side.
+    """
+    token = parse_qs(urlparse(detail_url).query).get("token", [""])[0]
+    if not token:
+        return ""
+    try:
+        decoded = base64.b64decode(token + "=" * (-len(token) % 4)).decode("utf-8", "ignore")
+    except (binascii.Error, ValueError):
+        return ""
+    if "lang=BM" in decoded:
+        return "bm"
+    if "lang=BI" in decoded:
+        return "en"
+    return ""
+
+
 def source_language(metadata: dict, source_url: str) -> str:
     """Derive source language from AGC's own URL/detail markers.
 
     This deliberately does not use the local directory name. BM-only PDFs were
     historically stored under ``pdfs/en`` and must remain BM sources.
     """
-    marker = f"{metadata.get('detail_url', '')} {source_url}".lower()
+    detail_url = str(metadata.get("detail_url", ""))
+    signed = _signed_link_language(detail_url)
+    if signed:
+        return signed
+    marker = f"{detail_url} {source_url}".lower()
     if "lang=bm" in marker or "/my/" in marker or "_bm/" in marker:
         return "bm"
     return "en"
+
+
+def scraped_at_for(metadata: dict, language: str) -> str:
+    """When this language's side of the Act was scraped.
+
+    Step 2 stamps ``scraped_at`` when it scrapes an Act's primary document and
+    ``scraped_at_bm`` when it fetches the Malay one, which is often a later run
+    entirely. Without this, a Malay document backfilled onto an Act scraped
+    months earlier is filed under the English scrape's date. Falls back to the
+    act-level stamp, which is correct for the primary and is all that metadata
+    written before #71 carries.
+    """
+    return str(metadata.get(f"scraped_at_{language}") or metadata.get("scraped_at", ""))
 
 
 def _timeline_for(metadata: dict, source_url: str, key: str = "timeline") -> tuple[str, str]:
@@ -202,14 +248,14 @@ def generate_manifest(
             source_url=source_url,
             timeline_date=timeline_date,
             timeline_type=timeline_type,
-            metadata_scraped_at=str(metadata.get("scraped_at", "")),
+            metadata_scraped_at=scraped_at_for(metadata, language),
             lifecycle_status=str(existing.get("lifecycle_status", "registered")),
             document_kind="reprint",
             detail_url=fallback_url,
             local_path=relative,
         )
         documents[identity] = document.to_dict()
-        observed_at = str(metadata.get("scraped_at", ""))
+        observed_at = scraped_at_for(metadata, language)
         if observed_at:
             observation = {
                 "document_id": identity,

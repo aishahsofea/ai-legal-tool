@@ -26,5 +26,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 323.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzIzJmxhbmc9Qk0mZGF0ZT0wMS0wNi0yMDIwI3RpbWVsaW5lfGUzNTQ5OGM1OTYwYTJhNTBlMDQ1N2E2ZGNlNDQ3MmNlZmZlNGY4YjQ3MWY0NDI4NGYyOTcwOWYxYjdhYTdlNDk%3D",
+  "timeline_bm": [
+    {
+      "date": "02/09/1986",
+      "project_id": "335",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/335_BM/Warta Akta 323.pdf"
+    },
+    {
+      "date": "03/06/2020",
+      "project_id": "1675000",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1675000_BM/Akta 323 (Muktamad).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1675000_BM/Akta 323 (Muktamad).pdf",
+  "latest_amendment_pdf_bm": ""
 }

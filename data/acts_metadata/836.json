@@ -60,5 +60,34 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 3
+  "subsidiary_total": 3,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODM2Jmxhbmc9Qk0mZGF0ZT0xNi0wMy0yMDIyI3RpbWVsaW5lfGRmNTVkODNjYmM1MTk3Y2VmNWQ4ZWExMWU5OTEzNjc1NzBiYjU0YWE2MzEzZjlhNDc3MjBhMGFkZTRlYTUwNzk%3D",
+  "timeline_bm": [
+    {
+      "date": "17/03/2022",
+      "project_id": "1726100",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1726100_BM/Akta 836.pdf"
+    },
+    {
+      "date": "20/03/2022",
+      "project_id": "1726096",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1726096/P.U. (B) 169_2022 (Geografi).pdf"
+    },
+    {
+      "date": "21/03/2022",
+      "project_id": "1726101",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1726101/P.U. (A) 65_2022 (Geografi).pdf"
+    },
+    {
+      "date": "18/04/2026",
+      "project_id": "3461000",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3461000/PUA 168 (2026).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

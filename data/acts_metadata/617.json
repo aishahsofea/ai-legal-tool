@@ -38,5 +38,40 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1680816_BI/Act 617 (REPRINT 2020).pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20180110_A1560_BI_Act A1560.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjE3Jmxhbmc9Qk0mZGF0ZT0wMS0xMC0yMDIwI3RpbWVsaW5lfDBlN2E0NjY4MDdhYmY5NzBmMjA2YmNlNGIxOWJlNmY4NzlkMTY1YzA1NjVjMzYzODQ1N2M3YWQzZmUxNjFhZDg%3D",
+  "timeline_bm": [
+    {
+      "date": "25/01/2002",
+      "project_id": "629",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/629_BM/001. Salinan Warta - Akta 617 -  2002_unlocked.pdf"
+    },
+    {
+      "date": "02/05/2004",
+      "project_id": "2257176",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257176_BM/Akta 617 Reprint 2004.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15625",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15625_BM/Akta 617 Reprint 2006.pdf"
+    },
+    {
+      "date": "14/01/2018",
+      "project_id": "991",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/991_BM/001. Akta A1560 - 2018_unlocked.pdf"
+    },
+    {
+      "date": "06/10/2020",
+      "project_id": "1680816",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1680816_BM/Akta 617 (CETAKAN SEMULA 2020).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1680816_BM/Akta 617 (CETAKAN SEMULA 2020).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/991_BM/001. Akta A1560 - 2018_unlocked.pdf"
 }

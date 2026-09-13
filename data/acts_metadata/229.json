@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjI5Jmxhbmc9Qk0mZGF0ZT0wMS0wMy0xOTg2I3RpbWVsaW5lfGM0NTE0ZGNjYTliNzcyODUzNDZjODdmOTBkNGY0NWNmMTY4ZjZmZmVlYzZlZTkzNzlmYTMzZGE4OTFlZWZhZTM%3D",
+  "timeline_bm": [
+    {
+      "date": "13/06/1980",
+      "project_id": "241",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/03/1986",
+      "project_id": "1742062",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1742062_BM/Akta 229-dimansuhkan oleh Akta 324.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

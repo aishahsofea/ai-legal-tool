@@ -32,5 +32,40 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/ACT 693 (TP 20 02 18).pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/ACT 742.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjkzJmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDE4I3RpbWVsaW5lfGM1NGU3ODRhZGUxODA0NDgwZGE4NzQ1MTI4ODUyMWZkZWI4MGE1MDc5Mzc5ZjVmZmU3OWViMGQ5N2M3YzhhOWQ%3D",
+  "timeline_bm": [
+    {
+      "date": "09/01/2009",
+      "project_id": "705",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/705_BM/Akta693_unlocked.pdf"
+    },
+    {
+      "date": "29/01/2011",
+      "project_id": "731",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/731_BM/AKTA 719.pdf"
+    },
+    {
+      "date": "04/12/2012",
+      "project_id": "742",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/742_BM/AKTA 742_unlocked.pdf"
+    },
+    {
+      "date": "05/02/2018",
+      "project_id": "16374",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/AKTA 693 (TP 20 02 18).pdf"
+    },
+    {
+      "date": "06/11/2018",
+      "project_id": "3686497",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3686497_BM/Akta 693 (REPRINT 2018).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3686497_BM/Akta 693 (REPRINT 2018).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/742_BM/AKTA 742_unlocked.pdf"
 }

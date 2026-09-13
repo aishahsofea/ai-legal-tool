@@ -44,5 +44,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 282 - Lembaga Kemajuan Wilayah Pulau Pinang Act 1983.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727909_BI/ACT A970.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjgyJmxhbmc9Qk0mZGF0ZT0wMS0wMi0yMDEzI3RpbWVsaW5lfDg4YjNkNzM3OGYwMDg1M2FjZDFjYWY5Yjk2M2VhZjUxNzEwMjgzYjg0NzUwY2I3YTVlNDcyNjBkMmFhNzI3ZGE%3D",
+  "timeline_bm": [
+    {
+      "date": "11/03/1983",
+      "project_id": "294",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/294_BM/AKTA 282 Asal (1).pdf"
+    },
+    {
+      "date": "23/02/1992",
+      "project_id": "490",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BM/AKTA 478.pdf"
+    },
+    {
+      "date": "29/09/1996",
+      "project_id": "1727909",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727909_BM/AKTA A970.pdf"
+    },
+    {
+      "date": "05/02/2013",
+      "project_id": "16152",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 281 - Akta Makanan 1983.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 281 - Akta Makanan 1983.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727909_BM/AKTA A970.pdf"
 }

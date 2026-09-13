@@ -32,5 +32,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1715588_BI/Act 830 DRAF MUKTAMAD 01122021.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1714923_BI/A1635 BI.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODMwJmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDIxI3RpbWVsaW5lfGNmMmJkMWZjY2RjOGEyMTY1NmYzZGRhZTQwYjRkOGRkMGQ1ZDBjNWUwMmMyODM4ZGQ5N2ExNzUxNDZjMTZhYmY%3D",
+  "timeline_bm": [
+    {
+      "date": "27/10/2020",
+      "project_id": "1684840",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1684840_BM/WJW000000 Akta 830.pdf"
+    },
+    {
+      "date": "03/07/2021",
+      "project_id": "1690141",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1690141_BM/Akta 830_22.7.2021.pdf"
+    },
+    {
+      "date": "20/11/2021",
+      "project_id": "1714923",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1714923_BM/A1635 BM.pdf"
+    },
+    {
+      "date": "05/12/2021",
+      "project_id": "1715588",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1715588_BM/Akta 830 DRAF MUKTAMAD 01122021.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1715588_BM/Akta 830 DRAF MUKTAMAD 01122021.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1714923_BM/A1635 BM.pdf"
 }

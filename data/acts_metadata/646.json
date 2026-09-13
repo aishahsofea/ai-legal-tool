@@ -56,5 +56,64 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/002a - Act 646 - (TP 20.3.2018)- 1 march 3018.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2459432_BI/Act A1737.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjQ2Jmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDE4I3RpbWVsaW5lfDc3OTlmMDAyNjMyOTY1YjJmNjg2N2I5YTI3MTgxYTQ1OWFlM2NkZGU4ZGIzODJmZjBmYmE5MjliOWU1ZDYzZDA%3D",
+  "timeline_bm": [
+    {
+      "date": "01/01/2006",
+      "project_id": "658",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/658_BM/Akta 646 BM_unlocked.pdf"
+    },
+    {
+      "date": "03/06/2006",
+      "project_id": "3595757",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3595757_BM/Akta 646  reprint 2006 BM.pdf"
+    },
+    {
+      "date": "05/06/2011",
+      "project_id": "826",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/826_BM/Akta A1395.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16347",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/001a - Akta 646 - Akta Timbang Tara 2005- versi atas talian.pdf"
+    },
+    {
+      "date": "15/01/2018",
+      "project_id": "994",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/994_BM/02. Akta A1563_unlocked.pdf"
+    },
+    {
+      "date": "07/03/2018",
+      "project_id": "16348",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/002a - Akta 646 - versi atas talian 1 mac 2018.pdf"
+    },
+    {
+      "date": "11/05/2018",
+      "project_id": "1079",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1079_BM/03. Akta A1569_unlocked.pdf"
+    },
+    {
+      "date": "09/11/2018",
+      "project_id": "1700446",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700446_BM/Akta 646 (REPRINT 2018).pdf"
+    },
+    {
+      "date": "10/11/2024",
+      "project_id": "2459432",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2459432_BM/Akta A1737.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700446_BM/Akta 646 (REPRINT 2018).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2459432_BM/Akta A1737.pdf"
 }

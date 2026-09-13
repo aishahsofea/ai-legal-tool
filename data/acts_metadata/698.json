@@ -153,5 +153,76 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 10
+  "subsidiary_total": 10,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Njk4Jmxhbmc9Qk0mZGF0ZT0wMS0wOS0yMDE5I3RpbWVsaW5lfGM1ZTE0Y2E2Nzc2YTM1NzQ3MDQ2ODAxMDk5MTkxYjBjYWY0YTI1N2VkZjZiZTQxOGVjYmM0ZWZjMTRjMWExMDA%3D",
+  "timeline_bm": [
+    {
+      "date": "04/09/2009",
+      "project_id": "710",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/710_BM/Akta 698 BM 2009_unlocked.pdf"
+    },
+    {
+      "date": "03/07/2014",
+      "project_id": "16215",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 698 - Akta Makanan Haiwan 2009.pdf"
+    },
+    {
+      "date": "04/09/2019",
+      "project_id": "3687651",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3687651_BM/Akta 698 (Cetakan Semula 2019).pdf"
+    },
+    {
+      "date": "06/03/2023",
+      "project_id": "1733323",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1733323/PUA57.pdf"
+    },
+    {
+      "date": "07/03/2023",
+      "project_id": "1733323",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1733323/PUA57.pdf"
+    },
+    {
+      "date": "11/12/2023",
+      "project_id": "1915243",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1915243/PUA 370.pdf"
+    },
+    {
+      "date": "23/12/2025",
+      "project_id": "3255570",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3255570/PUA434_2025.pdf"
+    },
+    {
+      "date": "06/02/2026",
+      "project_id": "3339593",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3339593/P.U. (A) 42_2026.pdf"
+    },
+    {
+      "date": "07/02/2026",
+      "project_id": "3339593",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3339593/P.U. (A) 42_2026.pdf"
+    },
+    {
+      "date": "13/06/2026",
+      "project_id": "3538545",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3538545/PUA 210_2026.pdf"
+    },
+    {
+      "date": "14/06/2026",
+      "project_id": "3538545",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3538545/PUA 210_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3687651_BM/Akta 698 (Cetakan Semula 2019).pdf",
+  "latest_amendment_pdf_bm": ""
 }

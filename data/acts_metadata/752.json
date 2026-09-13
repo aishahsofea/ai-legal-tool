@@ -57,5 +57,40 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzUyJmxhbmc9Qk0mZGF0ZT0wMS0wNy0yMDI0I3RpbWVsaW5lfDQ5NDUwNWI5ZThhM2FmNTAwZGQzZTljZTdkZGJjYWVmYmYxYjQ2NjQ0MmU2ZWIzYjE5ZTIyYmE3YThiZDlmNDE%3D",
+  "timeline_bm": [
+    {
+      "date": "26/06/2012",
+      "project_id": "764",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20120625_752_BM_JW002564 Akta 752 BM.pdf"
+    },
+    {
+      "date": "20/09/2013",
+      "project_id": "3403",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3403/pua_20130918_P.U. (A) 291 - PERINTAH PASUKAN SUKARELAWAN MALAYSIA (PINDAAN JADUAL) 2013 (2).pdf"
+    },
+    {
+      "date": "04/02/2014",
+      "project_id": "16416",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 752.pdf"
+    },
+    {
+      "date": "25/06/2024",
+      "project_id": "2172635",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2172635/PUA 165.pdf"
+    },
+    {
+      "date": "06/07/2024",
+      "project_id": "3334284",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3334284_BM/Akta 752 (Dalam talian 2026).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3334284_BM/Akta 752 (Dalam talian 2026).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3403/pua_20130918_P.U. (A) 291 - PERINTAH PASUKAN SUKARELAWAN MALAYSIA (PINDAAN JADUAL) 2013 (2).pdf"
 }

@@ -135,5 +135,34 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 8
+  "subsidiary_total": 8,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzQ4Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDE0I3RpbWVsaW5lfDMyOWFmMTI5NDBhZGNmOGI2M2QzZTZhMTU2MTRjZjk3MjExNmJhMzg1ZDNmZGJmNTc0NDZjZDQwNWI2YjdkNzg%3D",
+  "timeline_bm": [
+    {
+      "date": "30/05/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "01/10/1988",
+      "project_id": "2260271",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2260271_BM/348 DISEMAK.pdf"
+    },
+    {
+      "date": "31/12/1988",
+      "project_id": "3207696",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3207696/03. P.U. A 470-1988.pdf"
+    },
+    {
+      "date": "05/01/2014",
+      "project_id": "16259",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 348-6 1 2014.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 348-6 1 2014.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3207696/03. P.U. A 470-1988.pdf"
 }

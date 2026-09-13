@@ -231,5 +231,112 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 14
+  "subsidiary_total": 14,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODE0Jmxhbmc9Qk0mZGF0ZT0wNS0xMC0yMDI0I3RpbWVsaW5lfDFjYzNiNzYzMzEwZjhkY2YyM2VhMDdhNTg2NTU2YmU0NWRiZTI0OTBhMmM0ZTQ4NjE5ZTRlZTA2MzA0YTAwZTA%3D",
+  "timeline_bm": [
+    {
+      "date": "30/11/2019",
+      "project_id": "753475",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/753475_BM/WJW014437 BM.pdf"
+    },
+    {
+      "date": "11/06/2022",
+      "project_id": "1733924",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1733924/PUB285.pdf"
+    },
+    {
+      "date": "15/10/2022",
+      "project_id": "1745733",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1745733/PUB 483 (2022).pdf"
+    },
+    {
+      "date": "07/11/2022",
+      "project_id": "1747754",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1747754/PUA 360.pdf"
+    },
+    {
+      "date": "31/01/2023",
+      "project_id": "1769860",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1769860/PUA30_2022.pdf"
+    },
+    {
+      "date": "20/03/2023",
+      "project_id": "1794594",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1794594/PUA66.pdf"
+    },
+    {
+      "date": "21/03/2023",
+      "project_id": "1794590",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1794590/PUA67.pdf"
+    },
+    {
+      "date": "04/10/2023",
+      "project_id": "1860801",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1860801/PUA 284.pdf"
+    },
+    {
+      "date": "24/11/2023",
+      "project_id": "1886707",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1886707/PUA 353.pdf"
+    },
+    {
+      "date": "25/11/2023",
+      "project_id": "1886707",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1886707/PUA 353.pdf"
+    },
+    {
+      "date": "07/04/2024",
+      "project_id": "2076697",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2076697/PUB120_2024.pdf"
+    },
+    {
+      "date": "06/07/2024",
+      "project_id": "2167540",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2167540/PUA 167_2024.pdf"
+    },
+    {
+      "date": "25/08/2024",
+      "project_id": "2272745",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2272745/PUA212_2024.pdf"
+    },
+    {
+      "date": "10/10/2024",
+      "project_id": "2350924",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2350924/PUA 255_2024.pdf"
+    },
+    {
+      "date": "19/10/2024",
+      "project_id": "2361603",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2361603/PUA_285.pdf"
+    },
+    {
+      "date": "21/10/2024",
+      "project_id": "3242711",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3242711_BM/Akta 814 (Dalam talian 2026).pdf"
+    },
+    {
+      "date": "16/11/2024",
+      "project_id": "2461845",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2461845/PUA 324 (2024).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3242711_BM/Akta 814 (Dalam talian 2026).pdf",
+  "latest_amendment_pdf_bm": ""
 }

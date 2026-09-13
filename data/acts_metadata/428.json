@@ -54,5 +54,34 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDI4Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDEzI3RpbWVsaW5lfGM1NWE1Mzc5MTI4YTI3ODE4NzY2NTEzNTM1MDBhYTU3MDJjODNlZjYwNTk4Y2JhYjUzMjIwYmNjNDRhNmFhYTU%3D",
+  "timeline_bm": [
+    {
+      "date": "30/03/1990",
+      "project_id": "440",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "31/03/1990",
+      "project_id": "3392407",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3392407_BM/AKTA 428 REVISED 1990.pdf"
+    },
+    {
+      "date": "13/05/1990",
+      "project_id": "16636",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 428 - Akta Perbadanan Kewangan Antarabangsa 1957.pdf"
+    },
+    {
+      "date": "05/01/2013",
+      "project_id": "16636",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 428 - Akta Perbadanan Kewangan Antarabangsa 1957.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 428 - Akta Perbadanan Kewangan Antarabangsa 1957.pdf",
+  "latest_amendment_pdf_bm": ""
 }

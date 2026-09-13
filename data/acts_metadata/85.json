@@ -168,5 +168,88 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 9
+  "subsidiary_total": 9,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODUmbGFuZz1CTSZkYXRlPTAxLTExLTIwMTYjdGltZWxpbmV8YmE5ZGE0ZGI3NTM5NjA3MTFmNWZmZDkwNDhhZjY0MDQyOWVlN2RlZDVhYjkyMTMxMzhlMjMyYmRiMThiOGZiYQ%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "01/10/1972",
+      "project_id": "97",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/97_BM/AKTA 85 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "01/05/1975",
+      "project_id": "1727740",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727740_BM/AKTA A292.pdf"
+    },
+    {
+      "date": "03/06/1976",
+      "project_id": "1727741",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727741_BM/AKTA A349.pdf"
+    },
+    {
+      "date": "19/02/1979",
+      "project_id": "1727742",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727742_BM/AKTA A448.pdf"
+    },
+    {
+      "date": "06/05/1994",
+      "project_id": "2257009",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257009_BM/AKTA 85 - REPRINT 1994.pdf"
+    },
+    {
+      "date": "02/10/1996",
+      "project_id": "1727743",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727743_BM/AKTA A965.pdf"
+    },
+    {
+      "date": "07/05/1999",
+      "project_id": "2257008",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257008_BM/AKTA 85 - REPRINT 1999.pdf"
+    },
+    {
+      "date": "02/07/2004",
+      "project_id": "1712944",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1712944/P.U. (A) 206-2004.pdf"
+    },
+    {
+      "date": "10/01/2006",
+      "project_id": "1727304",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727304_BM/AKTA 85 - REPRINT 2006.pdf"
+    },
+    {
+      "date": "24/01/2010",
+      "project_id": "999",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/999_BM/AKTA A1363.pdf"
+    },
+    {
+      "date": "12/12/2011",
+      "project_id": "16272",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 85 - Akta Pihak Berkuasa Kemajuan Pekebun Kecil Perusah.pdf"
+    },
+    {
+      "date": "13/11/2016",
+      "project_id": "3519027",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3519027_BM/AKTA 85 - REPRINT 2016.pdf"
+    },
+    {
+      "date": "03/09/2024",
+      "project_id": "2299872",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2299872/PUB 329.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3519027_BM/AKTA 85 - REPRINT 2016.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/999_BM/AKTA A1363.pdf"
 }

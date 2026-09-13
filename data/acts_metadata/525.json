@@ -102,5 +102,28 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 7
+  "subsidiary_total": 7,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTI1Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDEzI3RpbWVsaW5lfDhiOTRmNTZiZmVlMTY4MTNhMmM3MWJmNGViY2IyMTAzZTE1OWRhMGNhYTk1ODFhNDUyZWFlZGFlNTQ1MmFkYWQ%3D",
+  "timeline_bm": [
+    {
+      "date": "09/09/1994",
+      "project_id": "537",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/537_BM/AKTA 525 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "26/01/2008",
+      "project_id": "1712499",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712499_BM/AKTA A1327.pdf"
+    },
+    {
+      "date": "04/01/2013",
+      "project_id": "16726",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 525 - Akta Pembangunan Mineral 1994.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 525 - Akta Pembangunan Mineral 1994.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712499_BM/AKTA A1327.pdf"
 }

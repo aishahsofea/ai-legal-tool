@@ -44,5 +44,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 373.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1006135_BI/ACT A885.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzczJmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfGI3ZTc3N2QxMGUxNDIwZWY1ZmQzMjExZTM4NTcxNGQxMzg3MjZkNzdmMDg2ZmYwYWExYzljNmVjZGFmMjU1NWI%3D",
+  "timeline_bm": [
+    {
+      "date": "01/09/1989",
+      "project_id": "15518",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15518_BM/Akta 373 Reprint 2006.pdf"
+    },
+    {
+      "date": "25/06/1994",
+      "project_id": "1006135",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1006135_BM/A885 PERLEMBAGAAN 1994 PINDAAN 1.pdf"
+    },
+    {
+      "date": "03/05/2004",
+      "project_id": "2257260",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257260_BM/Akta 373 Reprint 2004.pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "15518",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15518_BM/Akta 373 Reprint 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15518_BM/Akta 373 Reprint 2006.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1006135_BM/A885 PERLEMBAGAAN 1994 PINDAAN 1.pdf"
 }

@@ -26,5 +26,16 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 544.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTQ0Jmxhbmc9Qk0mZGF0ZT0wMS0wMi0xOTk2I3RpbWVsaW5lfGJmYTg5NDBlYzMzNjE0NjRiYThlYmFmMGJjMTQ1Yjg5ZTFhOTZmNmZlMzY3Mjk2OWY4MTk3MGZlMmFlNzFhM2I%3D",
+  "timeline_bm": [
+    {
+      "date": "02/02/1996",
+      "project_id": "556",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/556_BM/AKTA 544.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

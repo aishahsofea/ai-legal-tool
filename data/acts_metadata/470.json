@@ -32,5 +32,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 470 - Social and Welfare Services Lotteries Board (Disso.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDcwJmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfDVlNDczZmJjOWJlYjhmMzBlN2RjMGE3YTk3ZWVmZmY3Yjk4MTU3OGQ5NjYwMWI3OGNlYjBiNzhmMDkxZGI1MjA%3D",
+  "timeline_bm": [
+    {
+      "date": "25/09/1991",
+      "project_id": "482",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/482_BM/AKTA 470.pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16671",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 470 - Akta Lembaga Loteri Perkhidmatan Masyarakat dan K.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 470 - Akta Lembaga Loteri Perkhidmatan Masyarakat dan K.pdf",
+  "latest_amendment_pdf_bm": ""
 }

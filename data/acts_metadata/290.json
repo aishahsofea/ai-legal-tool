@@ -93,5 +93,64 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjkwJmxhbmc9Qk0mZGF0ZT0wMS0wNS0yMDEzI3RpbWVsaW5lfGU2MDliMDFhMjM0ZTM5YjU0ZmQ4YWMxODI1YmJjMjE5Zjk0ZWY3ZjIyOTZkZDY2Y2FkMGQxYzQ1NTA0MDdmYmU%3D",
+  "timeline_bm": [
+    {
+      "date": "24/09/1971",
+      "project_id": "1727923",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727923_BM/AKTA A84.pdf"
+    },
+    {
+      "date": "06/12/1975",
+      "project_id": "1728251",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728251/PUA 400 1975.pdf"
+    },
+    {
+      "date": "29/02/1976",
+      "project_id": "1727924",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727924_BM/AKTA A333.pdf"
+    },
+    {
+      "date": "03/03/1980",
+      "project_id": "1727925",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727925_BM/AKTA A481.pdf"
+    },
+    {
+      "date": "20/05/1980",
+      "project_id": "1728252",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728252/PUA 134 1980.pdf"
+    },
+    {
+      "date": "03/08/1983",
+      "project_id": "2260277",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2260277_BM/AKTA 290 REVISED 1983.pdf"
+    },
+    {
+      "date": "06/09/1984",
+      "project_id": "16530",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/001 - Akta 290 (11.03.2015).pdf"
+    },
+    {
+      "date": "07/09/1990",
+      "project_id": "1727926",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727926_BM/CamScanner 24-11-2025 09.54.pdf"
+    },
+    {
+      "date": "10/05/2013",
+      "project_id": "16530",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/001 - Akta 290 (11.03.2015).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/001 - Akta 290 (11.03.2015).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727926_BM/CamScanner 24-11-2025 09.54.pdf"
 }

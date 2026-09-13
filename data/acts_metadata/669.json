@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 669.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjY5Jmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDE0I3RpbWVsaW5lfDU2YTQ5NWU5YTU4MGNjYzk1N2E2MmIxNmQyZDM4YWY4NjU3NTIwMmM0YjkzMDY4YjNmY2FlYjgxN2Q5ODVhMzk%3D",
+  "timeline_bm": [
+    {
+      "date": "27/07/2007",
+      "project_id": "681",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/681_BM/Akta 669 BM_unlocked.pdf"
+    },
+    {
+      "date": "03/11/2014",
+      "project_id": "15843",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15843_BM/Akta 669 Reprint 2014.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15843_BM/Akta 669 Reprint 2014.pdf",
+  "latest_amendment_pdf_bm": ""
 }

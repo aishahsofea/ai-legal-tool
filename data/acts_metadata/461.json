@@ -129,5 +129,70 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 6
+  "subsidiary_total": 6,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDYxJmxhbmc9Qk0mZGF0ZT0wMS0wNC0yMDEzI3RpbWVsaW5lfDU3N2IyNmU2MTY3ZTQ3OGRiMDU2MzcwMjEwZjQyNTk2MzI4MTFiZDUzMWEyNmNhYTJkZDVjZTc2Njc3Y2RhNmU%3D",
+  "timeline_bm": [
+    {
+      "date": "01/01/1971",
+      "project_id": "1728227",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728227/02. P.U. (B) 324-1970.pdf"
+    },
+    {
+      "date": "20/07/1991",
+      "project_id": "473",
+      "log_type": "REVISED",
+      "pdf_url": ""
+    },
+    {
+      "date": "21/07/1991",
+      "project_id": "3548251",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3548251_BM/ACT 461 REVISED 1991.pdf"
+    },
+    {
+      "date": "18/09/2012",
+      "project_id": "2393",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2393/P.U. (A) 293_2012.pdf"
+    },
+    {
+      "date": "19/09/2012",
+      "project_id": "2392",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2392/P.U. (A) 291_2012.pdf"
+    },
+    {
+      "date": "20/09/2012",
+      "project_id": "2394",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2394/P.U. (A) 292_2012.pdf"
+    },
+    {
+      "date": "08/04/2013",
+      "project_id": "16367",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 461 - Akta Kehadiran Wajib Pesalah-Pesalah 1954.pdf"
+    },
+    {
+      "date": "23/04/2021",
+      "project_id": "1697237",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1697237/pua_20210415_PUA173.pdf"
+    },
+    {
+      "date": "14/09/2022",
+      "project_id": "1741974",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1741974_BM/Akta A1660.pdf"
+    },
+    {
+      "date": "07/11/2025",
+      "project_id": "3144199",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3144199_BM/Akta A1768 - AKTA KEHADIRAN WAJIB PESALAH-PESALAH (PINDAAN) 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 461 - Akta Kehadiran Wajib Pesalah-Pesalah 1954.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3144199_BM/Akta A1768 - AKTA KEHADIRAN WAJIB PESALAH-PESALAH (PINDAAN) 2025.pdf"
 }

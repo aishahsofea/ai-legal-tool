@@ -96,5 +96,46 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 5
+  "subsidiary_total": 5,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjE1Jmxhbmc9Qk0mZGF0ZT0wMS0wMi0yMDE0I3RpbWVsaW5lfDY3OGI0YmNiYzUzOWFkMmU4MjYwN2UzYjFmZTY3ZjIwMGE0ZTg4MDBiZmIzODdlMGE0YzI2N2FiMzgyYzU4YTA%3D",
+  "timeline_bm": [
+    {
+      "date": "28/09/2001",
+      "project_id": "627",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/act615y2001bm-Asal.pdf"
+    },
+    {
+      "date": "03/02/2014",
+      "project_id": "16533",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 615 (30.9.2016).pdf"
+    },
+    {
+      "date": "14/08/2023",
+      "project_id": "1845387",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1845387_BM/A1693 BM.pdf"
+    },
+    {
+      "date": "13/09/2025",
+      "project_id": "3067651",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3067651/PUB 331 (2025).pdf"
+    },
+    {
+      "date": "28/04/2026",
+      "project_id": "3478158",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3478158/PUB 153.pdf"
+    },
+    {
+      "date": "03/09/2026",
+      "project_id": "3684028",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3684028/PUB 319_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 615 (30.9.2016).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1845387_BM/A1693 BM.pdf"
 }

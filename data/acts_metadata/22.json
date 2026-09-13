@@ -44,5 +44,46 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15973_BI/ACT 22 - REPRINT 2006.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/249_BI/ACT 237.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjImbGFuZz1CTSZkYXRlPTAxLTAxLTIwMDYjdGltZWxpbmV8M2M5MTNmYTYxOWQwMDcxNDY0MWE3MWUyZjk1Y2U3MTQ5YjliOWY0YzNlYTkwNjc2ZWI0Y2M0MDlkZjcxNzFhYw%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "30/04/1971",
+      "project_id": "34",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/34_BM/AKTA 22 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "30/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "10/08/1980",
+      "project_id": "249",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/249_BM/AKTA 237.pdf"
+    },
+    {
+      "date": "05/08/1992",
+      "project_id": "1712878",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712878_BM/AKTA 22 - REPRINT 1992.pdf"
+    },
+    {
+      "date": "05/09/1999",
+      "project_id": "1727291",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727291_BM/AKTA 22 - REPRINT 1999.pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15977",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15977_BM/AKTA 22 - REPRINT 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15977_BM/AKTA 22 - REPRINT 2006.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/249_BM/AKTA 237.pdf"
 }

@@ -54,5 +54,40 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTM5Jmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDIxI3RpbWVsaW5lfDA5MzkwYTA3ZWExMjY0Yzk3ZTEwMTI2YjE3NTRhYjQ1MWJiZjVjYTllNTUxOGUwNTkyNjQ3MTAyNzkwYzUwMzM%3D",
+  "timeline_bm": [
+    {
+      "date": "03/11/1995",
+      "project_id": "551",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/551_BM/AKTA 539 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/01/2009",
+      "project_id": "15360",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta_539.pdf"
+    },
+    {
+      "date": "30/08/2009",
+      "project_id": "3394678",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3394678_BM/AKTA A1358.pdf"
+    },
+    {
+      "date": "05/07/2013",
+      "project_id": "16539",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 539 - 22.07.2013.pdf"
+    },
+    {
+      "date": "06/11/2021",
+      "project_id": "1695291",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1695291_BM/WJW211085 Akta 539_1 Nov 2021.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1695291_BM/WJW211085 Akta 539_1 Nov 2021.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3394678_BM/AKTA A1358.pdf"
 }

@@ -26,5 +26,16 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 497.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDk3Jmxhbmc9Qk0mZGF0ZT0wNC0wMi0xOTkzI3RpbWVsaW5lfDgwMmFlOWEzNzQ0NmFmMDljYWE1OTJiYjIyYmU0NjJkYTU2M2RjYTQ5OWYxNTFkYjE4N2FkZjE1NzU4M2E1ZjM%3D",
+  "timeline_bm": [
+    {
+      "date": "05/02/1993",
+      "project_id": "509",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/AKTA 497 thn 1993.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

@@ -26,5 +26,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 604.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjA0Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfGUwYTU3ODRkN2UzMWQwYjlhNjUxODQ0MzQ2OGQ1OTFiMzRlMGNkN2ZhM2FhYzQzZTYyZGFhYmQzNzI2YjA0YzY%3D",
+  "timeline_bm": [
+    {
+      "date": "01/09/2000",
+      "project_id": "616",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/616_BM/Akta 604.pdf"
+    },
+    {
+      "date": "03/01/2006",
+      "project_id": "15598",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15598_BM/Act 604 Reprint 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15598_BM/Act 604 Reprint 2006.pdf",
+  "latest_amendment_pdf_bm": ""
 }

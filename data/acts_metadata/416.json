@@ -38,5 +38,46 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 416.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BI/ACT A996.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDE2Jmxhbmc9Qk0mZGF0ZT0wMS0wMy0yMDEzI3RpbWVsaW5lfDk1Y2E2ZTA0OGZjOTEzYmRiYTE1NDQxOTQyZDcxZGI1ZWNhZWI0MWY2ZjAzZTAxMTcxYmYzY2QxNWI5YjY2MWM%3D",
+  "timeline_bm": [
+    {
+      "date": "29/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "23/12/1989",
+      "project_id": "428",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "24/12/1989",
+      "project_id": "3388902",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3388902_BM/AKTA 416 REVISED 1989.pdf"
+    },
+    {
+      "date": "28/05/1990",
+      "project_id": "16364",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 416 - Akta Tol (Jalan Raya dan Jambatan) 1965.pdf"
+    },
+    {
+      "date": "29/07/1997",
+      "project_id": "1728006",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BM/AKTA A996.pdf"
+    },
+    {
+      "date": "07/03/2013",
+      "project_id": "16364",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 416 - Akta Tol (Jalan Raya dan Jambatan) 1965.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 416 - Akta Tol (Jalan Raya dan Jambatan) 1965.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728006_BM/AKTA A996.pdf"
 }

@@ -84,5 +84,22 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjA0Jmxhbmc9Qk0mZGF0ZT0xMy0wNC0xOTc4I3RpbWVsaW5lfGJjYzg3YjZhZTg2ZWU5OGM2NDNjM2NiNzRjYjEwNjU4NGE0NTQ3YjkwYjM2OGFkMjkwNzIzMTYzMjEzMmFlNTQ%3D",
+  "timeline_bm": [
+    {
+      "date": "14/04/1978",
+      "project_id": "216",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "21/03/1998",
+      "project_id": "1742041",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1742041_BM/Akta A1012.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1742041_BM/Akta A1012.pdf"
 }

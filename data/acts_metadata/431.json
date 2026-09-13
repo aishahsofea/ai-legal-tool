@@ -38,5 +38,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 431 - International Development Association Act 1960.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDMxJmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfDI4NDI1ZDY1N2NiOGUzNzE1NjYzZjNjMzdhMzUxZTM5ODA3MGI4MDg4YmNiNThiYTQ3NjYyMjE5ZWRkY2MzYzE%3D",
+  "timeline_bm": [
+    {
+      "date": "30/03/1990",
+      "project_id": "443",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "02/03/1991",
+      "project_id": "16642",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 431 - Akta Persatuan Pembangunan Antarabangsa 1960.pdf"
+    },
+    {
+      "date": "04/12/2011",
+      "project_id": "16642",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 431 - Akta Persatuan Pembangunan Antarabangsa 1960.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 431 - Akta Persatuan Pembangunan Antarabangsa 1960.pdf",
+  "latest_amendment_pdf_bm": ""
 }

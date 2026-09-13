@@ -171,5 +171,94 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 10
+  "subsidiary_total": 10,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTU1Jmxhbmc9Qk0mZGF0ZT0wMS0wNC0yMDE5I3RpbWVsaW5lfGYwMjRlODI5MGIyOTQyYTQ1ODViMzg5N2YyODFkZjQ2Njg4ZTYyOWJkZWE4NzY4ODYzYjcyZjkyNzFhYjFjNGE%3D",
+  "timeline_bm": [
+    {
+      "date": "27/09/1996",
+      "project_id": "567",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/567_BM/AKTA 555 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "16/08/2003",
+      "project_id": "1728147",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728147_BM/001 - AKTA A1202.pdf"
+    },
+    {
+      "date": "04/01/2009",
+      "project_id": "15417",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta_555.pdf"
+    },
+    {
+      "date": "04/05/2009",
+      "project_id": "1700325",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700325_BM/002 - AKTA A1352.pdf"
+    },
+    {
+      "date": "27/06/2012",
+      "project_id": "865",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/865_BM/003 - AKTA A1434.pdf"
+    },
+    {
+      "date": "07/11/2012",
+      "project_id": "1700517",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 555 CS 2012.pdf"
+    },
+    {
+      "date": "31/07/2014",
+      "project_id": "896",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/896_BM/004 - AKTA A1465.pdf"
+    },
+    {
+      "date": "09/12/2015",
+      "project_id": "16270",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 555 - Akta Institusi Pendidikan Tinggi Swasta 1996 (Sebagaimana pada 1 Disember 2015).pdf"
+    },
+    {
+      "date": "11/06/2017",
+      "project_id": "966",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/966_BM/005 - AKTA A1535.pdf"
+    },
+    {
+      "date": "11/12/2017",
+      "project_id": "1700518",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 555 BM -(13 12 2017).pdf"
+    },
+    {
+      "date": "29/01/2019",
+      "project_id": "1695985",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1695985_BM/006 - AKTA A1583.pdf"
+    },
+    {
+      "date": "13/04/2019",
+      "project_id": "1700519",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700519_BM/004 - Akta 555 (Dlm talian 2019) s.15.pdf"
+    },
+    {
+      "date": "23/06/2022",
+      "project_id": "1733989",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1733989/PUA 207.pdf"
+    },
+    {
+      "date": "20/11/2025",
+      "project_id": "3179599",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3179599/PUA406_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700519_BM/004 - Akta 555 (Dlm talian 2019) s.15.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1695985_BM/006 - AKTA A1583.pdf"
 }

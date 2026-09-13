@@ -44,5 +44,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 351.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3347527_BI/Act A1066 BI.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzUxJmxhbmc9Qk0mZGF0ZT0yMy0wMy0xOTYxI3RpbWVsaW5lfDM1ZDc3MmYxODY0ZDVkYmVkMTk2ZmRhNGZlYWM1MTc5NTI3MTQ2YWFmZjZkODAzZDE2NDQ4ZmM3YzEzZWY4MDk%3D",
+  "timeline_bm": [
+    {
+      "date": "24/03/1961",
+      "project_id": "363",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/363_BM/Warta Asal Act 351 Ord 13-1961 BM.pdf"
+    },
+    {
+      "date": "30/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "05/09/1999",
+      "project_id": "3347527",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3347527_BM/Akta A1066 BM.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3347527_BM/Akta A1066 BM.pdf"
 }

@@ -44,5 +44,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 560 - Syariah Criminal Procedure (Federal Territories) Act 1997.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTYwJmxhbmc9Qk0mZGF0ZT0wMS0wMy0yMDEzI3RpbWVsaW5lfDI1NGQ5MGIwMDAzZDBhYmI1OWVlZjc1OTNhMDRjMjQ5ZTc0MjI3NWY0NzIyMmE1MTZhZjAzNDUyOGM3YTEyNjY%3D",
+  "timeline_bm": [
+    {
+      "date": "01/04/1997",
+      "project_id": "572",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/572_BM/AKTA 560 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "22/06/2002",
+      "project_id": "3518891",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3518891/P.U. (A) 248-2002.pdf"
+    },
+    {
+      "date": "04/09/2005",
+      "project_id": "3518914",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3518914_BM/AKTA A1252.pdf"
+    },
+    {
+      "date": "05/03/2013",
+      "project_id": "16279",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 560 - Akta Prosedur Jenayah Syariah (Wilayah-Wilayah Persekutuan) 1997.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 560 - Akta Prosedur Jenayah Syariah (Wilayah-Wilayah Persekutuan) 1997.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3518914_BM/AKTA A1252.pdf"
 }

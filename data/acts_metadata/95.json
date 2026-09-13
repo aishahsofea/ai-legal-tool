@@ -56,5 +56,58 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15446_BI/ACT 95 - REPRINT 2006.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727638_BI/ACT A885.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9OTUmbGFuZz1CTSZkYXRlPTAxLTAxLTIwMDYjdGltZWxpbmV8N2UxZDNhNGRmNzNiODA3OTVlNWUxZDQ5YmM4ZDkyMWMzMzFhM2MwODg0MDZjNGI5MGFmYzU4YjIwNzJkOGVlNQ%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "08/11/1969",
+      "project_id": "1728207",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728207/P.U. (A) 467-1969.pdf"
+    },
+    {
+      "date": "14/10/1972",
+      "project_id": "1727562",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727562_BM/AKTA 95 - REVISED 1972.pdf"
+    },
+    {
+      "date": "22/10/1972",
+      "project_id": "1702412",
+      "log_type": "TRANSLATE",
+      "pdf_url": ""
+    },
+    {
+      "date": "01/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "28/06/1994",
+      "project_id": "1727638",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727638_BM/AKTA A885.pdf"
+    },
+    {
+      "date": "07/08/1994",
+      "project_id": "1727309",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727309_BM/AKTA 95 - REPRINT 1994.pdf"
+    },
+    {
+      "date": "07/10/1999",
+      "project_id": "2257049",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257049_BM/AKTA 95 - REPRINT 1999.pdf"
+    },
+    {
+      "date": "09/01/2006",
+      "project_id": "15446",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15446_BM/AKTA 95 - REPRINT 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15446_BM/AKTA 95 - REPRINT 2006.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727638_BM/AKTA A885.pdf"
 }

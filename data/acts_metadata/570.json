@@ -32,5 +32,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 570 - National Land Rehabilitation and Consolidation Aut.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTcwJmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfDQwYmExMTdmMzYyZTA5N2Q4NTRkMDg3NDIzMDIxZjY4NWY3MWE0OTBhNTRmMDFkMmYyYTYzYTdhOTgzOTllNDM%3D",
+  "timeline_bm": [
+    {
+      "date": "01/07/1997",
+      "project_id": "582",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/582_BM/AKTA 570 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16316",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 570 - Akta Lembaga Pemulihan dan Penyatuan Tanah Negara.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 570 - Akta Lembaga Pemulihan dan Penyatuan Tanah Negara.pdf",
+  "latest_amendment_pdf_bm": ""
 }

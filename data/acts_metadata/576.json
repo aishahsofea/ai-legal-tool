@@ -153,5 +153,88 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 6
+  "subsidiary_total": 6,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTc2Jmxhbmc9Qk0mZGF0ZT0xMC0wMy0yMDIzI3RpbWVsaW5lfGE5MDJjNzBlMDI3OTdjOGUxNjAxMGFkMzNlOTBmZDk2YmZjYjAwOGY2OGRlZjg2MWYwN2IxMDQyN2ZmZTRiNzU%3D",
+  "timeline_bm": [
+    {
+      "date": "26/09/1997",
+      "project_id": "588",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/588_BM/AKTA 576 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "02/05/1998",
+      "project_id": "3600571",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3600571/001 - P.U. (A) 170-1998.pdf"
+    },
+    {
+      "date": "28/05/2000",
+      "project_id": "3600578",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3600578/002 - P.U. (A) 177-2000.pdf"
+    },
+    {
+      "date": "16/08/2004",
+      "project_id": "3600585",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3600585/003 - P.U. (A) 279-2004.pdf"
+    },
+    {
+      "date": "06/04/2013",
+      "project_id": "16324",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 576.pdf"
+    },
+    {
+      "date": "17/06/2018",
+      "project_id": "1695963",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1695963_BM/004 - AKTA A1570.pdf"
+    },
+    {
+      "date": "11/01/2019",
+      "project_id": "1700485",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700485_BM/002a Act 576 - Draf diluluskan oleh TP.pdf"
+    },
+    {
+      "date": "18/03/2022",
+      "project_id": "1724026",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1724026/PUA54.pdf"
+    },
+    {
+      "date": "19/03/2022",
+      "project_id": "1725499",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1725499/PUA 53 (2022).pdf"
+    },
+    {
+      "date": "19/03/2023",
+      "project_id": "1793884",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1793884/P.U. (A) 61_2023 (Perintah Pembangunan Sukan (Pindaan Jadual Kedua) 2023).pdf"
+    },
+    {
+      "date": "20/03/2023",
+      "project_id": "1793885",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1793885/P.U. (A) 62_2023 (Perintah Pembangunan Sukan (Pindaan Jadual Ketiga) 2023).pdf"
+    },
+    {
+      "date": "21/03/2023",
+      "project_id": "1793880",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1793880/PUA60_2023.pdf"
+    },
+    {
+      "date": "23/03/2023",
+      "project_id": "2409243",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2409243_BM/AKTA 576 -Dalam Talian 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2409243_BM/AKTA 576 -Dalam Talian 2025.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1695963_BM/004 - AKTA A1570.pdf"
 }

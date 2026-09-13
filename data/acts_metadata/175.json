@@ -54,5 +54,46 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTc1Jmxhbmc9Qk0mZGF0ZT0yNy0xMi0yMDE5I3RpbWVsaW5lfDJjMTgxMjhkNzY4YmY3ZDZiZGM4MDNhYThhMDBhZjU3MjMyMTNlMWYwODg0N2Y0MjU1NDhkMDk3YjMyODFhNGQ%3D",
+  "timeline_bm": [
+    {
+      "date": "02/12/1997",
+      "project_id": "1727837",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta A881.pdf"
+    },
+    {
+      "date": "03/03/2001",
+      "project_id": "2259427",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/08/2001",
+      "project_id": "1727838",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta A1078.pdf"
+    },
+    {
+      "date": "07/03/2003",
+      "project_id": "1727839",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta A1138.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "15871",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 175.pdf"
+    },
+    {
+      "date": "02/01/2020",
+      "project_id": "187",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 175 original.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 175.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta A1138.pdf"
 }

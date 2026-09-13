@@ -234,5 +234,124 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 13
+  "subsidiary_total": 13,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTcyJmxhbmc9Qk0mZGF0ZT0wMS0wNi0yMDIxI3RpbWVsaW5lfDllYWNkNWMwNTcwZTgxOTBhOTM3ZWU3MjBlMzgyMmRmNzRmNWE5M2E3NTFjZTljOWNjMTQ2MWZjMmYyZGNhODM%3D",
+  "timeline_bm": [
+    {
+      "date": "26/03/1976",
+      "project_id": "184",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/184_BM/Akta 172 BM.pdf"
+    },
+    {
+      "date": "18/09/1993",
+      "project_id": "3631341",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3631341_BM/AKTA 172- A866(BM)(2).pdf"
+    },
+    {
+      "date": "12/11/1995",
+      "project_id": "3631359",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3631359_BM/AKTA 172- A933(BM).pdf"
+    },
+    {
+      "date": "05/10/1998",
+      "project_id": "2259434",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259434_BM/AKTA 172- CETAKAN 1998(BM).pdf"
+    },
+    {
+      "date": "05/10/2001",
+      "project_id": "2259435",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259435_BM/Cetakan semula 2001.pdf"
+    },
+    {
+      "date": "07/11/2001",
+      "project_id": "1712849",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta A1129.pdf"
+    },
+    {
+      "date": "08/04/2005",
+      "project_id": "2259436",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259436_BM/AKTA 172- CETAKAN 2005(BM).pdf"
+    },
+    {
+      "date": "09/01/2006",
+      "project_id": "2259437",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259437_BM/AKTA 172- CETAKAN 2006 (BM).pdf"
+    },
+    {
+      "date": "14/02/2009",
+      "project_id": "3631587",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3631587/AKTA 172- PU(B) 45-2009.pdf"
+    },
+    {
+      "date": "10/01/2011",
+      "project_id": "3631615",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3631615/AKTA 172- PU.(A) 442-2010.pdf"
+    },
+    {
+      "date": "12/09/2011",
+      "project_id": "1712848",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta A1313.pdf"
+    },
+    {
+      "date": "13/06/2014",
+      "project_id": "16546",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 172.pdf"
+    },
+    {
+      "date": "29/01/2017",
+      "project_id": "953",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/953_BM/AktaA1522BM.pdf"
+    },
+    {
+      "date": "15/06/2021",
+      "project_id": "1684325",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1684325_BM/AKTA 172 MUKTAMAD SEBAGAIMANA 1 JUN 2021.pdf"
+    },
+    {
+      "date": "21/12/2021",
+      "project_id": "1716735",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1716735/PUB 623 (2021) - Reupload.pdf"
+    },
+    {
+      "date": "22/12/2021",
+      "project_id": "1716732",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1716732/PUB 622 (2021).pdf"
+    },
+    {
+      "date": "08/04/2022",
+      "project_id": "1726061",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1726061/PUB 172.pdf"
+    },
+    {
+      "date": "16/07/2024",
+      "project_id": "2185590",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2185590/PUA 178.pdf"
+    },
+    {
+      "date": "07/05/2025",
+      "project_id": "2822585",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2822585/PUB 152_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1684325_BM/AKTA 172 MUKTAMAD SEBAGAIMANA 1 JUN 2021.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/953_BM/AktaA1522BM.pdf"
 }

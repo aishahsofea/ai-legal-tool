@@ -86,5 +86,82 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 104 (reprint 2006).pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20171003_A1540_BI_A1540 BI.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTA0Jmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDE4I3RpbWVsaW5lfDdiNzlmNzc4YWZhYWJhYWZmMGY4N2JkMjVmNDI2YmNiYjA4YTNiZWZlNmE5NTYzNTJmY2YxMmM0MDJiMDljZDQ%3D",
+  "timeline_bm": [
+    {
+      "date": "13/04/1973",
+      "project_id": "116",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 104 (salinan warta).pdf"
+    },
+    {
+      "date": "15/06/1974",
+      "project_id": "3466966",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3466966_BM/001. Akta A255.pdf"
+    },
+    {
+      "date": "01/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "19/02/1979",
+      "project_id": "1739492",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1739492_BM/003. Akta A445.pdf"
+    },
+    {
+      "date": "02/06/1981",
+      "project_id": "1734883",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1734883_BM/AKTA A520.pdf"
+    },
+    {
+      "date": "27/02/1992",
+      "project_id": "490",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BM/AKTA 478.pdf"
+    },
+    {
+      "date": "08/10/1994",
+      "project_id": "2259620",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259620_BM/AKTA 104 - CETAKAN 1 - 1994(BM).pdf"
+    },
+    {
+      "date": "05/10/1996",
+      "project_id": "1728076",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta A967.pdf"
+    },
+    {
+      "date": "10/01/2000",
+      "project_id": "1727728",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 104 (cetakan semula 1999).pdf"
+    },
+    {
+      "date": "11/01/2006",
+      "project_id": "15463",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 104 (cetakan semula 2006).pdf"
+    },
+    {
+      "date": "14/10/2017",
+      "project_id": "971",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/971_BM/007. Akta A1540.pdf"
+    },
+    {
+      "date": "13/11/2018",
+      "project_id": "1727315",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727315_BM/Akta 104 (cetakan 2018).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727315_BM/Akta 104 (cetakan 2018).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/971_BM/007. Akta A1540.pdf"
 }

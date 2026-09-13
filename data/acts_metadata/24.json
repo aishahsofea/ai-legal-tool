@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjQmbGFuZz1CTSZkYXRlPTA1LTA5LTE5OTEjdGltZWxpbmV8Yjc3YTZmNWQzNGMyMWI2ZmNmMDcyYjZjMjZjN2IyMzYxZTFkMWZkMzFlZmYxMmMyNTRhYjgxOGRlYzczNTY2MQ%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "30/04/1971",
+      "project_id": "36",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/36_BM/03. 24 BM.pdf"
+    },
+    {
+      "date": "07/09/1991",
+      "project_id": "1712877",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 24-mansuh.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

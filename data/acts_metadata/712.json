@@ -114,5 +114,58 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 7
+  "subsidiary_total": 7,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzEyJmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDI0I3RpbWVsaW5lfGExZjI4YzlkN2I5YTAxYWJmOWIzMmFhOTJmMGIzNzFkNjkzMmVkZGNhN2UwM2YzODI2N2Q4YTQyYjU5NmJlYmI%3D",
+  "timeline_bm": [
+    {
+      "date": "11/06/2010",
+      "project_id": "724",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 712 ori.pdf"
+    },
+    {
+      "date": "02/01/2014",
+      "project_id": "3612",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20131231_P.U. (A) 384-PERINTAH PERSAINGAN (PINDAAN JADUAL PERTAMA) 2013.pdf"
+    },
+    {
+      "date": "04/02/2016",
+      "project_id": "5499",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20160229_P.U. (A) 44 - PERINTAH PERSAINGAN (PINDAAN JADUAL PERTAMA) 2016-FINAL.pdf"
+    },
+    {
+      "date": "19/08/2016",
+      "project_id": "16219",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta Persaingan 2010 sebagaimana 15 Ogos 2016.pdf"
+    },
+    {
+      "date": "06/04/2024",
+      "project_id": "2077383",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2077383/PUA 95.pdf"
+    },
+    {
+      "date": "07/09/2024",
+      "project_id": "2208164",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2208164_BM/Akta 712_online 1 Sept. 2024-muktamad (5.9.2024).pdf"
+    },
+    {
+      "date": "08/11/2024",
+      "project_id": "1878737",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1878737_BM/WJW240906 Akta 712.pdf"
+    },
+    {
+      "date": "04/07/2026",
+      "project_id": "3578300",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3578300/PUA 230 (2026).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1878737_BM/WJW240906 Akta 712.pdf",
+  "latest_amendment_pdf_bm": ""
 }

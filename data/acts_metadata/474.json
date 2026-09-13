@@ -126,5 +126,34 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDc0Jmxhbmc9Qk0mZGF0ZT0yNi0wOS0xOTkxI3RpbWVsaW5lfDk2YzRjYmY4MGJmZmVmZmFlZGM5YTliZmM3ODVlNTFlNmQ2N2YyYmQ1NmUxOWUzOWVlYWY3OGVlMjY0NmEwNTA%3D",
+  "timeline_bm": [
+    {
+      "date": "17/09/1971",
+      "project_id": "3603938",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3603938_BM/AKTA A72.pdf"
+    },
+    {
+      "date": "25/02/1978",
+      "project_id": "3617858",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3617858_BM/AKTA A425.pdf"
+    },
+    {
+      "date": "29/09/1991",
+      "project_id": "486",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "24/02/1992",
+      "project_id": "3617874",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3617874_BM/ACT A818.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3617874_BM/ACT A818.pdf"
 }

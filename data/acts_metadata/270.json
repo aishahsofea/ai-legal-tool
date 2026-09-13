@@ -78,5 +78,58 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjcwJmxhbmc9Qk0mZGF0ZT0wMS0wOS0yMDEyI3RpbWVsaW5lfDQ1ZWExMjY2NDExYWQzOTYwMDk4MGQ0OTQ3NDQwOTZkNGNkMWI1ZGUyYWMxNjVmNzMzOWM4MzY0YmZmN2NlZWU%3D",
+  "timeline_bm": [
+    {
+      "date": "14/05/1982",
+      "project_id": "282",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/282_BM/AKTA 270.pdf"
+    },
+    {
+      "date": "29/07/1995",
+      "project_id": "1728244",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728244/PUA 267 1995.pdf"
+    },
+    {
+      "date": "04/07/2002",
+      "project_id": "1728245",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728245/02. P.U.(A) 266 2002_unlocked.pdf"
+    },
+    {
+      "date": "04/08/2003",
+      "project_id": "1728246",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728246/03. P.U. (A) 282 2003_unlocked.pdf"
+    },
+    {
+      "date": "19/08/2003",
+      "project_id": "1728247",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728247/05. P.U. (A) 306 2003_unlocked.pdf"
+    },
+    {
+      "date": "20/08/2003",
+      "project_id": "1727899",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727899_BM/04. Akta A1200_unlocked.pdf"
+    },
+    {
+      "date": "18/01/2011",
+      "project_id": "1617",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20111024_DRAF PERINTAH ISTANA NEGARA (ELAUN-ELAUN DIRAJA)(PINDAAN JADUAL PERTAMA) 2011E-FORMAT.pdf"
+    },
+    {
+      "date": "09/09/2012",
+      "project_id": "16475",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 270 - Akta Istana Negara (Elaun-Elaun Diraja) 1982.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 270 - Akta Istana Negara (Elaun-Elaun Diraja) 1982.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20111024_DRAF PERINTAH ISTANA NEGARA (ELAUN-ELAUN DIRAJA)(PINDAAN JADUAL PERTAMA) 2011E-FORMAT.pdf"
 }

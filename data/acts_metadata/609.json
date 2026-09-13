@@ -42,5 +42,34 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjA5Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfGY2YzRjN2MyYzAyMWFkMGI4YjFiYjMyMmQyMTE2MTgxY2JkZGJlYzQ5ZjhiNDFiZjhlZWNhMGMxM2YxNmVkMWE%3D",
+  "timeline_bm": [
+    {
+      "date": "02/03/2001",
+      "project_id": "621",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/621_BM/akta 609.pdf"
+    },
+    {
+      "date": "02/04/2002",
+      "project_id": "2257196",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257196_BM/Akta 609 Reprint 2002.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15609",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15609_BM/Akta 609 Reprint 2006.pdf"
+    },
+    {
+      "date": "07/07/2024",
+      "project_id": "2192235",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2192235/PUB 242.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15609_BM/Akta 609 Reprint 2006.pdf",
+  "latest_amendment_pdf_bm": ""
 }

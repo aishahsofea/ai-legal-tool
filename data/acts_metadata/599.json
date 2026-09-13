@@ -195,5 +195,106 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 14
+  "subsidiary_total": 14,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTk5Jmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDIxI3RpbWVsaW5lfGRkNTk1NzI1MDc4MmRiNDA5YzdiOTRmMjM5OTE5ZGIyMTE2Y2Y5MjE2ZDJjYzEyMmNjN2YwZWU2Zjc0OGZmZDM%3D",
+  "timeline_bm": [
+    {
+      "date": "10/09/1999",
+      "project_id": "611",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/611_BM/AKTA 599 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "16/08/2003",
+      "project_id": "3681452",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3681452_BM/001 - AKTA A1199.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "1727500",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727500_BM/AKTA 599 - REPRINT 2006.pdf"
+    },
+    {
+      "date": "23/07/2007",
+      "project_id": "3681472",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3681472_BM/002 - AKTA A1298.pdf"
+    },
+    {
+      "date": "05/10/2010",
+      "project_id": "3681500",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3681500_BM/003 - AKTA A1381.pdf"
+    },
+    {
+      "date": "07/02/2013",
+      "project_id": "15587",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15587_BM/AKTA 599 - REPRINT 2013.pdf"
+    },
+    {
+      "date": "03/09/2015",
+      "project_id": "929",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/929_BM/004 - AKTA A1498.pdf"
+    },
+    {
+      "date": "09/09/2016",
+      "project_id": "16336",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 599 - 29.08.2016.pdf"
+    },
+    {
+      "date": "27/05/2017",
+      "project_id": "964",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/964_BM/005 - AKTA A1533.pdf"
+    },
+    {
+      "date": "19/08/2019",
+      "project_id": "17724",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/17724_BM/Akta A1598.pdf"
+    },
+    {
+      "date": "12/11/2019",
+      "project_id": "1727552",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 599 - sebagaimana pada 1 Nov 2019.pdf"
+    },
+    {
+      "date": "04/11/2020",
+      "project_id": "1684650",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1684650_BM/Akta 829.pdf"
+    },
+    {
+      "date": "14/11/2021",
+      "project_id": "1690994",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1690994_BM/011121_Akta 599_muktamad.pdf"
+    },
+    {
+      "date": "29/04/2022",
+      "project_id": "1729629",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1729629/P.U. (A) 113_2022 (Perlindungan Pengguna).pdf"
+    },
+    {
+      "date": "07/07/2022",
+      "project_id": "1735276",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1735276/PUA 211.pdf"
+    },
+    {
+      "date": "09/01/2025",
+      "project_id": "2587477",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2587477/PUA 449 (2024).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1690994_BM/011121_Akta 599_muktamad.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1684650_BM/Akta 829.pdf"
 }

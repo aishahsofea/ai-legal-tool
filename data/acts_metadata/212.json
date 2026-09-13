@@ -207,5 +207,82 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 8
+  "subsidiary_total": 8,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjEyJmxhbmc9Qk0mZGF0ZT0wMS0wNS0yMDE5I3RpbWVsaW5lfDIwNzI1YjI5NDg1MWE3MDY5ODIwMjA0ZTM5N2ZjZjE2YzNmN2NhNWI3YjVjYjA4ZjVkODEyNzBhNTc1YjUyMTE%3D",
+  "timeline_bm": [
+    {
+      "date": "30/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "28/02/1976",
+      "project_id": "1727885",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727885_BM/04. A332 SEWA BELI 1976 PINDAAN_repaired_repaired.pdf"
+    },
+    {
+      "date": "04/08/1980",
+      "project_id": "3166488",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3166488/05. P.U. A 221 [] 80_repaired_repaired_repaired.pdf"
+    },
+    {
+      "date": "05/05/1983",
+      "project_id": "3166446",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3166446/06. P.U. A 149 [] 83 SEWA BELI_repaired_repaired_repaired.pdf"
+    },
+    {
+      "date": "25/02/1992",
+      "project_id": "1742040",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1742040_BM/07. A813 BM.pdf"
+    },
+    {
+      "date": "06/01/2005",
+      "project_id": "1727886",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727886_BM/08. A1234 SEWA-BELI 2004 PINDAAN_unlocked.pdf"
+    },
+    {
+      "date": "21/04/2005",
+      "project_id": "3165487",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3165487/09. P.U.(A) 163 [] 2005_unlocked.pdf"
+    },
+    {
+      "date": "08/10/2010",
+      "project_id": "1727887",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727887_BM/10. A1384y2010bm_unlocked.pdf"
+    },
+    {
+      "date": "27/09/2019",
+      "project_id": "1695989",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20190118_A1587_BM_BM.pdf"
+    },
+    {
+      "date": "22/07/2024",
+      "project_id": "2209235",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2209235/PUA 190_2024.pdf"
+    },
+    {
+      "date": "10/02/2026",
+      "project_id": "3340880",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3340880_BM/Akta A1783.pdf"
+    },
+    {
+      "date": "27/04/2026",
+      "project_id": "3464777",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3464777/P.U. (A) 171_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3340880_BM/Akta A1783.pdf"
 }

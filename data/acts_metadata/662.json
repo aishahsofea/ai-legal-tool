@@ -32,5 +32,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 662 - 12.11.2015.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjYyJmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDE1I3RpbWVsaW5lfDI1NThiNGM2NjU2ZDZiYTY3ODE0NDY2MjJlNzg2ZWQ1Y2ViYzYzMzdkMmUxZjBiYzU4NzY3NDBiNDAzOTk1MjM%3D",
+  "timeline_bm": [
+    {
+      "date": "14/02/2007",
+      "project_id": "674",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/674_BM/Akta 662 BM_unlocked.pdf"
+    },
+    {
+      "date": "03/11/2012",
+      "project_id": "1700457",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700457_BM/Akta 662 Reprint 2012_unlocked.pdf"
+    },
+    {
+      "date": "24/10/2015",
+      "project_id": "927",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/927_BM/Act A1496 BM_unlocked.pdf"
+    },
+    {
+      "date": "05/12/2015",
+      "project_id": "16506",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 662 - 12.11.2015.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 662 - 12.11.2015.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/927_BM/Act A1496 BM_unlocked.pdf"
 }

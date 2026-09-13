@@ -588,5 +588,112 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 53
+  "subsidiary_total": 53,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzQ5Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDEzI3RpbWVsaW5lfDg2NDc3OGRiMTA0NmU5MmE1MDRhNDhhMGQ3Y2U5NWI4MGM3MzViZDc2OGQ2ZTEwOGJhNjRmNWFmMzY3MDhlYWU%3D",
+  "timeline_bm": [
+    {
+      "date": "28/08/1957",
+      "project_id": "361",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/361_BM/NO. 44 OF 1957 (ACT 349 - ASAL).pdf"
+    },
+    {
+      "date": "15/11/1958",
+      "project_id": "1727787",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "21/12/1965",
+      "project_id": "3100356",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "01/10/1967",
+      "project_id": "3100358",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3100358_BM/L.N. 495-1967.pdf"
+    },
+    {
+      "date": "20/12/1983",
+      "project_id": "3100096",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3100096_BM/AKTA A570.pdf"
+    },
+    {
+      "date": "02/11/1988",
+      "project_id": "2260270",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2260270_BM/AKTA 349 - SEMAKAN 1988.pdf"
+    },
+    {
+      "date": "08/12/2013",
+      "project_id": "16260",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": ""
+    },
+    {
+      "date": "30/09/2021",
+      "project_id": "1710403",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1710403/PUB 476 (2021).pdf"
+    },
+    {
+      "date": "09/02/2022",
+      "project_id": "1722113",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1722113/PUB 76_2022.pdf"
+    },
+    {
+      "date": "26/01/2023",
+      "project_id": "1763720",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1763720/P.U. (B) 16_2023 (Penetapan dan Pembatalan di bawah seksyen 5(1)(b).pdf"
+    },
+    {
+      "date": "08/07/2023",
+      "project_id": "1829777",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1829777/PUB 224 (2023).pdf"
+    },
+    {
+      "date": "24/07/2023",
+      "project_id": "1835418",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1835418/PUB 255 (2023).pdf"
+    },
+    {
+      "date": "17/08/2023",
+      "project_id": "1843870",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1843870/P.U. (B) 322_2023.pdf"
+    },
+    {
+      "date": "16/04/2024",
+      "project_id": "2085999",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2085999/P.U. (B) 126_2024.pdf"
+    },
+    {
+      "date": "16/10/2024",
+      "project_id": "2388211",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2388211/PUB 393_2024.pdf"
+    },
+    {
+      "date": "04/02/2026",
+      "project_id": "3312605",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3312605/PUB20_2026.pdf"
+    },
+    {
+      "date": "14/09/2026",
+      "project_id": "3682761",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3682761/PUB 315_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3100096_BM/AKTA A570.pdf"
 }

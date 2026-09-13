@@ -192,5 +192,130 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 9
+  "subsidiary_total": 9,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTMzJmxhbmc9Qk0mZGF0ZT0zMS0xMi0yMDE5I3RpbWVsaW5lfDI5OGJjZWE2MzMzNDRkYTFmMGM1ZGQyOTZlMTk4YjM0M2ZmZWY5M2VkOGNhMzEzM2I4MjBhNzcxZjQ5MGExZWY%3D",
+  "timeline_bm": [
+    {
+      "date": "14/06/1974",
+      "project_id": "145",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/145_BM/WARTA AKTA 133.pdf"
+    },
+    {
+      "date": "30/08/1975",
+      "project_id": "3009247",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3009247_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "12/01/1976",
+      "project_id": "1712784",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712784_BM/AKTA A324.pdf"
+    },
+    {
+      "date": "06/03/1978",
+      "project_id": "3009314",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3009314_BM/AKTA A435.pdf"
+    },
+    {
+      "date": "21/09/1993",
+      "project_id": "3009350",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3009350_BM/AKTA A867.pdf"
+    },
+    {
+      "date": "14/09/1994",
+      "project_id": "3009378",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3009378_BM/AKTA A903.pdf"
+    },
+    {
+      "date": "08/01/1997",
+      "project_id": "2259581",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259581_BM/AKTA 133 - CETAKAN SEMULA 1997.pdf"
+    },
+    {
+      "date": "09/01/2000",
+      "project_id": "2259580",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "10/01/2006",
+      "project_id": "2259578",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259578_BM/AKTA 133 - CETAKAN SEMULA 2006.pdf"
+    },
+    {
+      "date": "25/02/2007",
+      "project_id": "3009432",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3009432_BM/AKTA A1286.pdf"
+    },
+    {
+      "date": "10/09/2007",
+      "project_id": "3009597",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3009597_BM/AKTA A1312.pdf"
+    },
+    {
+      "date": "14/12/2010",
+      "project_id": "3009493",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3009493/P.U. (A) 394-2010.pdf"
+    },
+    {
+      "date": "14/06/2014",
+      "project_id": "16544",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 133.pdf"
+    },
+    {
+      "date": "08/02/2019",
+      "project_id": "1695990",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1695990_BM/AKTA A1588.pdf"
+    },
+    {
+      "date": "15/01/2020",
+      "project_id": "1727520",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 133 (2019).pdf"
+    },
+    {
+      "date": "05/04/2025",
+      "project_id": "2772930",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2772930/PUA 85.pdf"
+    },
+    {
+      "date": "29/11/2025",
+      "project_id": "3175993",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3175993_BM/Akta A1773 - AKTA JALAN, PARIT DAN BANGUNAN (PINDAAN) 2025.pdf"
+    },
+    {
+      "date": "17/07/2026",
+      "project_id": "3580842",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3580842/PUA 235_2026.pdf"
+    },
+    {
+      "date": "18/07/2026",
+      "project_id": "3580848",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3580848/PUA 236_2026.pdf"
+    },
+    {
+      "date": "19/07/2026",
+      "project_id": "3580841",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3580841/PUA 237_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 133 (2019).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3175993_BM/Akta A1773 - AKTA JALAN, PARIT DAN BANGUNAN (PINDAAN) 2025.pdf"
 }

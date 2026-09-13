@@ -195,5 +195,112 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjYyJmxhbmc9Qk0mZGF0ZT0yMS0wMS0xOTgyI3RpbWVsaW5lfGQyYjJhMDI2MjUwNTk0M2FhMDExZThhMDMwOTg0ZThmZTMxOTkxODVmNjM3ZWUyNzY1OGFlYTA2MWUzODU4OWI%3D",
+  "timeline_bm": [
+    {
+      "date": "10/10/1969",
+      "project_id": "1728351",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728351/P.U. (A) 408 69 1_repaired.pdf"
+    },
+    {
+      "date": "11/10/1969",
+      "project_id": "1728353",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728353/08. P.U. A 34 1971_repaired_repaired.pdf"
+    },
+    {
+      "date": "21/06/1970",
+      "project_id": "1728352",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728352/07. P.U. A 202 1970.pdf"
+    },
+    {
+      "date": "04/10/1971",
+      "project_id": "1728100",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728100_BM/09. A90 BM_repaired.pdf"
+    },
+    {
+      "date": "05/06/1973",
+      "project_id": "1728101",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728101_BM/10. A198 BM_repaired.pdf"
+    },
+    {
+      "date": "03/09/1975",
+      "project_id": "3009247",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3009247_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "05/06/1980",
+      "project_id": "1728102",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728102_BM/12. A483 BM.pdf"
+    },
+    {
+      "date": "07/06/1980",
+      "project_id": "1728349",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728349/13. P.U. A 330 1980_repaired_repaired_repaired_repaired_repaired.pdf"
+    },
+    {
+      "date": "30/01/1982",
+      "project_id": "274",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "26/07/1984",
+      "project_id": "1728350",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728350/P.U.(A) 274 84.pdf"
+    },
+    {
+      "date": "20/02/1989",
+      "project_id": "1728103",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728103_BM/15. A717 BM.pdf"
+    },
+    {
+      "date": "16/05/1989",
+      "project_id": "1728104",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728104_BM/16. A732 BM.pdf"
+    },
+    {
+      "date": "24/04/1991",
+      "project_id": "1728105",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728105_BM/17. A798 BM.pdf"
+    },
+    {
+      "date": "11/01/2008",
+      "project_id": "1728106",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728106_BM/18. A1324 KESATUAN SEKERJA 2007_unlocked_repaired.pdf"
+    },
+    {
+      "date": "27/01/2024",
+      "project_id": "1966781",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1966781_BM/WJW240034 BM.pdf"
+    },
+    {
+      "date": "29/09/2024",
+      "project_id": "2350621",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2350621/PUA240_2024.pdf"
+    },
+    {
+      "date": "27/01/2025",
+      "project_id": "2618305",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2618305/P.U. (A) 9_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1966781_BM/WJW240034 BM.pdf"
 }

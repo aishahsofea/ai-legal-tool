@@ -50,5 +50,46 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 389.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2899249_BI/Act A1765 - TUNKU ABDUL RAHMAN FOUNDATION FUND (AMENDMENT) ACT 2025.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Mzg5Jmxhbmc9Qk0mZGF0ZT0xOS0wNC0xOTkwI3RpbWVsaW5lfGViM2UyNWFiMWRhNWI2Y2I5ZWVmNDcwMmJkNzNhNjU4OTJjN2UwZjkxOTk1YzUyMDM3ZmNlNjYyZDQ4YWUyNjU%3D",
+  "timeline_bm": [
+    {
+      "date": "29/07/1966",
+      "project_id": "401",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/401_BM/No. 43 Tahun 1966 BM.pdf"
+    },
+    {
+      "date": "21/10/1989",
+      "project_id": "2253988",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2253988_BM/Akta 389 Disemak.pdf"
+    },
+    {
+      "date": "22/04/1990",
+      "project_id": "1702444",
+      "log_type": "TRANSLATE",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/1999",
+      "project_id": "3446575",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3446575_BM/Akta A1045_unlocked.pdf"
+    },
+    {
+      "date": "19/09/2006",
+      "project_id": "3446437",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3446437_BM/Akta 1272_unlocked.pdf"
+    },
+    {
+      "date": "12/06/2025",
+      "project_id": "2899249",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2899249_BM/Akta A1765 - AKTA KUMPULAN WANG YAYASAN TUNKU ABDUL RAHMAN (PINDAAN) 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2899249_BM/Akta A1765 - AKTA KUMPULAN WANG YAYASAN TUNKU ABDUL RAHMAN (PINDAAN) 2025.pdf"
 }

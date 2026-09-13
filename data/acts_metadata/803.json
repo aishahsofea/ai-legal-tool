@@ -24,5 +24,16 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODAzJmxhbmc9Qk0mZGF0ZT0xMS0wNC0yMDE4I3RpbWVsaW5lfDdkNjBiNWM1NDU0ZWRjNGI4YzI2YTRmNDhkMDc3MzIyYjg2YzI3OGE5ZmVjZWRmZDU1OWY5MGU5YWM1YjhmYWI%3D",
+  "timeline_bm": [
+    {
+      "date": "12/04/2018",
+      "project_id": "1075",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20180411_803_BM_WJW010830 BM.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

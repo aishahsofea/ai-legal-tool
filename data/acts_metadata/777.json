@@ -312,5 +312,94 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 25
+  "subsidiary_total": 25,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Nzc3Jmxhbmc9Qk0mZGF0ZT0wMS0wOC0yMDIyI3RpbWVsaW5lfDQ2YmZkMGQ1NGE5ZmFkMDIzYThiOWJiNGE4MjYwNjg5YTJkNDI3YWNjOTcxMDBjOTM1MDE4NGRiODEwNWZlYzY%3D",
+  "timeline_bm": [
+    {
+      "date": "16/09/2016",
+      "project_id": "789",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/aktaBM_20160915_AktaSyarikat2016Akta777.pdf"
+    },
+    {
+      "date": "03/11/2018",
+      "project_id": "1709475",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 777 (REPRINT 2018) – TEKS BM.pdf"
+    },
+    {
+      "date": "04/01/2020",
+      "project_id": "716301",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/716301_BM/AKTA SYARIKAT (PINDAAN) 2019.pdf"
+    },
+    {
+      "date": "22/08/2021",
+      "project_id": "1707678",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1707678/PUA 339.pdf"
+    },
+    {
+      "date": "20/07/2022",
+      "project_id": "1736653",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1736653/PUA 231.pdf"
+    },
+    {
+      "date": "07/08/2022",
+      "project_id": "1738979",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1738979_BM/Akta 777- Draf Muktamad (1.8.2022).pdf"
+    },
+    {
+      "date": "09/02/2024",
+      "project_id": "1997997",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1997997_BM/A1701 BM.pdf"
+    },
+    {
+      "date": "04/12/2024",
+      "project_id": "2522413",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2522413/PUA 356_2024.pdf"
+    },
+    {
+      "date": "05/12/2024",
+      "project_id": "2522413",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2522413/PUA 356_2024.pdf"
+    },
+    {
+      "date": "19/01/2025",
+      "project_id": "2619775",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2619775/PUA 7 (2025).pdf"
+    },
+    {
+      "date": "21/01/2025",
+      "project_id": "2622436",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2622436/PUA 8_2025.pdf"
+    },
+    {
+      "date": "26/07/2025",
+      "project_id": "2965223",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2965223/PUA 211 (2025).pdf"
+    },
+    {
+      "date": "27/07/2025",
+      "project_id": "2966093",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2966093/PUA 213(2025).pdf"
+    },
+    {
+      "date": "11/09/2026",
+      "project_id": "3682060",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3682060/PUA 305_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1738979_BM/Akta 777- Draf Muktamad (1.8.2022).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1997997_BM/A1701 BM.pdf"
 }

@@ -234,5 +234,88 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 15
+  "subsidiary_total": 15,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzE3Jmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDE5I3RpbWVsaW5lfGQ3YjM1MWU0OWJmYjlhM2IyNjRmNmM2NmEyMmE3MjllNzdjMjg1Yzc3MThlYTc0YjM5ZTE1NjkyZDg2ZDU4N2U%3D",
+  "timeline_bm": [
+    {
+      "date": "31/05/1985",
+      "project_id": "329",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/329_BM/317 BM.pdf"
+    },
+    {
+      "date": "17/07/1993",
+      "project_id": "1727961",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727961_BM/01. A854 BM.pdf"
+    },
+    {
+      "date": "12/02/2012",
+      "project_id": "844",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/844_BM/02. Akta A1413bm_unlocked.pdf"
+    },
+    {
+      "date": "05/11/2012",
+      "project_id": "16743",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 317 - Akta Perikanan 1985.pdf"
+    },
+    {
+      "date": "14/08/2019",
+      "project_id": "1696003",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1696003_BM/03. Akta A1601 BM_unlocked.pdf"
+    },
+    {
+      "date": "07/11/2019",
+      "project_id": "1727537",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 317 - ONLINE VERSION 2019.pdf"
+    },
+    {
+      "date": "24/11/2022",
+      "project_id": "1750491",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1750491/P.U. (A) 368_2022 (Perintah Penubuhan Taman Laut Malaysia (Pindaan) 2022).pdf"
+    },
+    {
+      "date": "11/04/2023",
+      "project_id": "1804817",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1804817/PUA 108.pdf"
+    },
+    {
+      "date": "01/12/2023",
+      "project_id": "1900624",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1900624/PUA359_2023.pdf"
+    },
+    {
+      "date": "10/05/2024",
+      "project_id": "2112662",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2112662/PUA 116.pdf"
+    },
+    {
+      "date": "20/05/2024",
+      "project_id": "2123193",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2123193/PUA122.pdf"
+    },
+    {
+      "date": "02/02/2025",
+      "project_id": "2648602",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2648602/P.U. (A) 27_2025.pdf"
+    },
+    {
+      "date": "13/01/2026",
+      "project_id": "3272145",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3272145_BM/A1780 - AKTA PERIKANAN (PINDAAN) 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 317 - ONLINE VERSION 2019.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3272145_BM/A1780 - AKTA PERIKANAN (PINDAAN) 2025.pdf"
 }

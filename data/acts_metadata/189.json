@@ -62,5 +62,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 189 - Second-Hand Dealers Act 1946.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/No. 29 of 1961.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTg5Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDEzI3RpbWVsaW5lfDk2M2I5MmRmMzNjYmNkZjA2ZmRmZTQ4NDdiNmE3Y2NhNWJjYTZkNzBjM2RmNjJkNTU3NjQ5ZWExNGRkZDM4NDI%3D",
+  "timeline_bm": [
+    {
+      "date": "02/10/1977",
+      "project_id": "2260265",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2260265_BM/AKTA 189- SEMAKAN (BM).pdf"
+    },
+    {
+      "date": "03/01/2013",
+      "project_id": "16630",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 189 - Akta Peniaga Sekenhend 1946.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 189 - Akta Peniaga Sekenhend 1946.pdf",
+  "latest_amendment_pdf_bm": ""
 }

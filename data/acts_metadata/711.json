@@ -38,5 +38,40 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2136449_BI/Act 711 FINAL.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3181496_BI/Act A1777 - WHISTLEBLOWER PROTECTION (AMENDMENT) 2025.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzExJmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDI0I3RpbWVsaW5lfGQ2YmJlODk0ZmE4MTQ2MWIxOTlmNTFiMTg3ODAzY2I1MjdlYTI4ZjRkZGE1YzlmYzYxMjk3ZDFiZWM3Zjk3M2I%3D",
+  "timeline_bm": [
+    {
+      "date": "11/06/2010",
+      "project_id": "723",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 711 ori.pdf"
+    },
+    {
+      "date": "02/09/2016",
+      "project_id": "16390",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/6. Akta 711 - 30.10.2016.pdf"
+    },
+    {
+      "date": "04/05/2024",
+      "project_id": "2136449",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2136449_BM/Akta 711 MUKTAMAD.pdf"
+    },
+    {
+      "date": "05/11/2024",
+      "project_id": "1878732",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1878732_BM/WJW240906 Akta 711.pdf"
+    },
+    {
+      "date": "23/11/2025",
+      "project_id": "3181496",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3181496_BM/Akta A1777 - AKTA PERLINDUNGAN PEMBERI MAKLUMAT (PINDAAN) 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1878732_BM/WJW240906 Akta 711.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3181496_BM/Akta A1777 - AKTA PERLINDUNGAN PEMBERI MAKLUMAT (PINDAAN) 2025.pdf"
 }

@@ -32,5 +32,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 153.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTUzJmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfDA1ZGEwMzNkODA2YmZhOTNmN2FjN2EwYWI1MmI5YTE3NmJiNTM4NWI0ODFiYzY5YjMwZjA2NTg4MGY1MDQzZGE%3D",
+  "timeline_bm": [
+    {
+      "date": "22/02/1975",
+      "project_id": "165",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/165_BM/AKTA 153 - WARTA ASAL (BM).pdf"
+    },
+    {
+      "date": "03/07/1997",
+      "project_id": "2259477",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259477_BM/AKTA 153 - CETAKAN 1997 (BM).pdf"
+    },
+    {
+      "date": "03/04/2001",
+      "project_id": "2259476",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259476_BM/AKTA 153 - CETAKAN 2001 (BM).pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "15819",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 153.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 153.pdf",
+  "latest_amendment_pdf_bm": ""
 }

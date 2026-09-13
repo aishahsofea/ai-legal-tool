@@ -32,5 +32,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 448 - Electricity Supply (Successor Company) Act 1990.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDQ4Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfDM5OTAzODI0ZGRkZjA3NDM1OGNmZmZjY2FmN2M0NzQ2MDlkMDgzYzcxZDE5NzY5NjZiZGJjNTUzNjc5YzMyYjE%3D",
+  "timeline_bm": [
+    {
+      "date": "31/08/1990",
+      "project_id": "460",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/460_BM/AKTA 448.pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16656",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 448 - Akta Bekalan Elektrik (Syarikat Pengganti) 1990.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 448 - Akta Bekalan Elektrik (Syarikat Pengganti) 1990.pdf",
+  "latest_amendment_pdf_bm": ""
 }

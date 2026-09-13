@@ -39,5 +39,22 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzQwJmxhbmc9Qk0mZGF0ZT0wMS0wNC0yMDIwI3RpbWVsaW5lfDNhNzVjNTMyNmNiY2NhOWZjMTZmZmQ2MjAwNzE0NjNkMTcwOTZkOWY1Yjg4Y2ZhZDBlNTk1NGQ5YzMxNWVlNTc%3D",
+  "timeline_bm": [
+    {
+      "date": "10/02/2012",
+      "project_id": "752",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20120209_740_BM_JW001760 BM Akta 740(BM).pdf"
+    },
+    {
+      "date": "03/04/2020",
+      "project_id": "1674701",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1674701_BM/Akta 740 -Draf Bersih.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1674701_BM/Akta 740 -Draf Bersih.pdf",
+  "latest_amendment_pdf_bm": ""
 }

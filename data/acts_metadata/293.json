@@ -32,5 +32,16 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 293 REPRINT 2006.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjkzJmxhbmc9Qk0mZGF0ZT0yOS0xMi0xOTgzI3RpbWVsaW5lfDNmMWZiOWQzZDljMzYzMWFiZGQ4Mzk5YzY2N2VjY2IyYjUwODcxMDVlNThkNTRkZmI5N2ExOGY0MDU5MDQ4ODQ%3D",
+  "timeline_bm": [
+    {
+      "date": "30/12/1983",
+      "project_id": "305",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/305_BM/AKTA 293.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

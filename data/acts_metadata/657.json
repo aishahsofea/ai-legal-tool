@@ -333,5 +333,28 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 34
+  "subsidiary_total": 34,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjU3Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDEzI3RpbWVsaW5lfGExOTQ1NWZhNmZjZGJhYjBmYTlkOTMwNTUwZjhhZjU2ZGY4NDgyMDk3N2RhNjViZGFmNTgzNmYwODVlODg5NzE%3D",
+  "timeline_bm": [
+    {
+      "date": "01/09/2006",
+      "project_id": "669",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/669_BM/Akta 657 BM_unlocked.pdf"
+    },
+    {
+      "date": "03/11/2012",
+      "project_id": "1700450",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 657 - Akta Pelindung 2006 (Cetakan Semula) Nov 2012.pdf"
+    },
+    {
+      "date": "04/12/2013",
+      "project_id": "16535",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 657 (13.6.2015).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 657 (13.6.2015).pdf",
+  "latest_amendment_pdf_bm": ""
 }

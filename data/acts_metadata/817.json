@@ -14,5 +14,28 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODE3Jmxhbmc9Qk0mZGF0ZT0xOC0wOS0yMDIzI3RpbWVsaW5lfGQ0YWQ1NDI0MmNkY2YzNTZjZGEwYTgwZjUzZDA4YzQ5YmM0OTM1YWEyZDUxOWZkZTM0NDhiZTQ4M2U1MDc0NzQ%3D",
+  "timeline_bm": [
+    {
+      "date": "28/12/2019",
+      "project_id": "1696005",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20191227_817_BM.pdf"
+    },
+    {
+      "date": "24/02/2021",
+      "project_id": "1698115",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pub_20210105_P.U. (B) 2.pdf"
+    },
+    {
+      "date": "21/09/2023",
+      "project_id": "1745042",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/terjemahan/1745042_BM/PDF-AKTA 817- AKTA THE LADY SUPERIOR OF THE SOCIETY OF SAINT MAUR (PEMERBADANAN) 1955.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

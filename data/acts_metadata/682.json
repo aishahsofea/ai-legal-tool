@@ -38,5 +38,40 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 682 - University Of Malaya Act 1961.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjgyJmxhbmc9Qk0mZGF0ZT0xMi0xMC0yMDIzI3RpbWVsaW5lfDE3MDhhZDMzMjM3YTliMmRlZWYwZDcwZGZmMjhmNTI2NTZiMWQ0OTZhYTM0ZWIzMWYyNDNhNmI2Y2Q0N2U3M2U%3D",
+  "timeline_bm": [
+    {
+      "date": "02/01/1972",
+      "project_id": "3691920",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3691920/01. P.U. (A) 104-1972.pdf"
+    },
+    {
+      "date": "27/03/1978",
+      "project_id": "3691947",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3691947/02. P.U. (A) 110-1978.pdf"
+    },
+    {
+      "date": "04/03/1997",
+      "project_id": "3691974",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3691974/03. P.U. (A) 107-1997.pdf"
+    },
+    {
+      "date": "07/07/2008",
+      "project_id": "3691986",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3691986/04. P.U. (A) 237-2008_unlocked.pdf"
+    },
+    {
+      "date": "17/10/2023",
+      "project_id": "1757533",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/terjemahan/1757533_BM/AKTA 682.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3691986/04. P.U. (A) 237-2008_unlocked.pdf"
 }

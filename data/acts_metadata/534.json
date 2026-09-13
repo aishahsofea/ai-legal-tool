@@ -32,5 +32,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 534 - Malayan Railway Provident Fund (Dissolution) Act 1995.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTM0Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfDQzZjIyOGE5YzI4MTE0YTk0YTM4Zjg2OTE1YzNhMWFhMGZiOTdjZjNmMGMzNzlhZTI0ZTU3Y2Q1YWRhM2I4YTI%3D",
+  "timeline_bm": [
+    {
+      "date": "17/02/1995",
+      "project_id": "546",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/546_BM/AKTA 534 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16173",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 534 - Akta Kumpulan Wang Simpanan Keretapi Tanah Melayu (Pembubaran) 1995.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 534 - Akta Kumpulan Wang Simpanan Keretapi Tanah Melayu (Pembubaran) 1995.pdf",
+  "latest_amendment_pdf_bm": ""
 }

@@ -222,5 +222,64 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 17
+  "subsidiary_total": 17,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTkwJmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfGY2YzIxZmFhMDAwNDJhMzBlOTBmNDY3MjEzZmNkZjk1OWRjZjU3Y2ZiZjhkMDMxYTZiNTczMWE1OGUwMzkxYTc%3D",
+  "timeline_bm": [
+    {
+      "date": "31/12/1971",
+      "project_id": "71",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/71_BM/AKTA 59 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/02/1974",
+      "project_id": "1728231",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728231/P.U. (A) 42 of 1974(1).pdf"
+    },
+    {
+      "date": "04/02/1974",
+      "project_id": "997",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/997_BM/Akta A206(BM).pdf"
+    },
+    {
+      "date": "03/10/1977",
+      "project_id": "1727571",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727571_BM/Akta 190 Revised 1977(1).pdf"
+    },
+    {
+      "date": "01/08/1978",
+      "project_id": "15923",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 190.pdf"
+    },
+    {
+      "date": "28/02/1982",
+      "project_id": "1727855",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727855_BM/Akta A535 (BM).pdf"
+    },
+    {
+      "date": "07/05/2001",
+      "project_id": "1727338",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 190 Reprint 2001.pdf"
+    },
+    {
+      "date": "09/01/2006",
+      "project_id": "15923",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 190.pdf"
+    },
+    {
+      "date": "04/12/2024",
+      "project_id": "2519896",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2519896/PUB_457.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 190.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727855_BM/Akta A535 (BM).pdf"
 }

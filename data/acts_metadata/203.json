@@ -72,5 +72,64 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjAzJmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDE4I3RpbWVsaW5lfDA2ODUzOWM4Y2RhNGFlM2U0MjhmYjg4ODQ5ZTY3ZTU3MjM4MTZjYzQ5NWMxZjQ0ZjBmYTJjZTMyMWZmZGFjYzQ%3D",
+  "timeline_bm": [
+    {
+      "date": "03/03/1978",
+      "project_id": "215",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Salinan warta Akta 203.pdf"
+    },
+    {
+      "date": "30/05/1981",
+      "project_id": "1734883",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1734883_BM/AKTA A520.pdf"
+    },
+    {
+      "date": "24/02/1992",
+      "project_id": "490",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BM/AKTA 478.pdf"
+    },
+    {
+      "date": "30/09/1996",
+      "project_id": "1727876",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/003. Akta A968.pdf"
+    },
+    {
+      "date": "06/04/2001",
+      "project_id": "2259406",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259406_BM/Akta 203 Reprint 2001.pdf"
+    },
+    {
+      "date": "06/08/2003",
+      "project_id": "3129816",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3129816/004. P.U.(A) 285 thn 2003_unlocked.pdf"
+    },
+    {
+      "date": "08/01/2006",
+      "project_id": "15942",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 203.pdf"
+    },
+    {
+      "date": "11/10/2017",
+      "project_id": "974",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20171003_A1543_BM_A1543 BM.pdf"
+    },
+    {
+      "date": "10/11/2018",
+      "project_id": "1727348",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 203-cetakan semula 2018.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 203-cetakan semula 2018.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20171003_A1543_BM_A1543 BM.pdf"
 }

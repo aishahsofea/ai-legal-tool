@@ -87,5 +87,52 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 4
+  "subsidiary_total": 4,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTY3Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfDcxNzQ2M2E4ZTBhMmMwMTE0MzUzMzdjNWUyN2I4NmY3NGQyY2JhZWVjNjA5ZWY2MWUwNmQxNzE5NmFlYTVkNDc%3D",
+  "timeline_bm": [
+    {
+      "date": "30/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "13/03/1976",
+      "project_id": "179",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/179_BM/AKTA 167- WARTA ASAL (BM).pdf"
+    },
+    {
+      "date": "09/09/1984",
+      "project_id": "1727836",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727836_BM/AKTA 167- A599(BM).pdf"
+    },
+    {
+      "date": "05/01/1998",
+      "project_id": "2259446",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259446_BM/AKTA 167- CETAKAN 1998(BM).pdf"
+    },
+    {
+      "date": "05/04/2001",
+      "project_id": "1727327",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727327_BM/AKTA 167- CETAKAN 2001 (BM).pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15845",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 167.pdf"
+    },
+    {
+      "date": "18/12/2025",
+      "project_id": "3248972",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/PUB 445_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 167.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727836_BM/AKTA 167- A599(BM).pdf"
 }

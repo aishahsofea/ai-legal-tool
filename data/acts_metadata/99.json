@@ -62,5 +62,64 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 99 - (Reprint 2006)(BI).pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728212/004 - P.U. (A) 34-2004.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9OTkmbGFuZz1CTSZkYXRlPTAxLTAxLTIwMDYjdGltZWxpbmV8ZDBlNTEyN2E3ZGE0ZDA1YTBkODU5ZjQwZGFiM2YwZWJkYTUzMjU0YjA1ODVlODE3MGFiYjFkODQwNTIxOTFjZA%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "02/12/1972",
+      "project_id": "1728209",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728209/001 - P.U. (A) 297-1972.pdf"
+    },
+    {
+      "date": "09/12/1972",
+      "project_id": "1727565",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727565_BM/AKTA 99 - REVISED 1972.pdf"
+    },
+    {
+      "date": "12/11/1978",
+      "project_id": "1702415",
+      "log_type": "TRANSLATE",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/03/1994",
+      "project_id": "1728210",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728210/002 - P.U. (A) 73-1994.pdf"
+    },
+    {
+      "date": "06/08/1994",
+      "project_id": "15453",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15453_BM/AKTA 99 - REPRINT 1994.pdf"
+    },
+    {
+      "date": "06/03/2000",
+      "project_id": "2259634",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259634_BM/AKTA 99 - REPRINT 2000.pdf"
+    },
+    {
+      "date": "06/04/2000",
+      "project_id": "1728211",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728211/003 - P.U. (A) 122-2000.pdf"
+    },
+    {
+      "date": "30/01/2004",
+      "project_id": "1728212",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728212/004 - P.U. (A) 34-2004.pdf"
+    },
+    {
+      "date": "10/01/2006",
+      "project_id": "1727312",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 99 - (Reprint 2006)(BM).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 99 - (Reprint 2006)(BM).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728212/004 - P.U. (A) 34-2004.pdf"
 }

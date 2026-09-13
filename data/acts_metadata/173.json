@@ -56,5 +56,52 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1703097_BI/Act 173 Final 1.11.2021.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act A1073.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTczJmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDIxI3RpbWVsaW5lfDc4NmI2MzVlYmJjYzg3MDk2N2E0M2NlOTY1NmRiOTMxNmQ2NThjNjFmODEwOGJlNWJjYTA0MmRkMTJiMjdmNGM%3D",
+  "timeline_bm": [
+    {
+      "date": "01/06/1976",
+      "project_id": "185",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/185_BM/AKTA 173- WARTA ASAL (BM).pdf"
+    },
+    {
+      "date": "17/05/1986",
+      "project_id": "3632696",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3632696_BM/AKTA 173-A652(BM).pdf"
+    },
+    {
+      "date": "29/09/1996",
+      "project_id": "1712851",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712851_BM/Akta A964(1).pdf"
+    },
+    {
+      "date": "05/01/1998",
+      "project_id": "2259431",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259431_BM/AKTA 173- CETAKAN 1998(BM).pdf"
+    },
+    {
+      "date": "23/05/2000",
+      "project_id": "1712852",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712852_BM/Akta A1073(1).pdf"
+    },
+    {
+      "date": "07/01/2009",
+      "project_id": "1712853",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 173-Reprint 2009.pdf"
+    },
+    {
+      "date": "08/11/2021",
+      "project_id": "1703097",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1703097_BM/Akta 173 Muktamad 1.11.2021.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1703097_BM/Akta 173 Muktamad 1.11.2021.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712852_BM/Akta A1073(1).pdf"
 }

@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjIzJmxhbmc9Qk0mZGF0ZT0xMy0wNS0xOTgyI3RpbWVsaW5lfDkxOGU5OTk3YzA4NDFhZjliYzc1ZWZmNTNjMDA3ZDQwNDY2ZDNlNTk1M2UzMzA5Y2FiODI1MGU5NmQ2Y2NiNDg%3D",
+  "timeline_bm": [
+    {
+      "date": "24/08/1979",
+      "project_id": "235",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 223- Asal.pdf"
+    },
+    {
+      "date": "15/05/1982",
+      "project_id": "1742046",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1742046_BM/Akta 223- dimansuhkan oleh Akta 270.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

@@ -14,5 +14,16 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Nzk0Jmxhbmc9Qk0mZGF0ZT0wMi0xMC0yMDE3I3RpbWVsaW5lfDc1ZTdmYWQ5YTUxYmMyMjE2M2UxMmIwMDc1NGFkYzJhMTBkZTg2YTA2NDA2YzBiMjEwMTk3NTE0OTYwZWMzMGM%3D",
+  "timeline_bm": [
+    {
+      "date": "03/10/2017",
+      "project_id": "15744",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 794.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

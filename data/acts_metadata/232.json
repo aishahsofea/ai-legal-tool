@@ -80,5 +80,22 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjMyJmxhbmc9Qk0mZGF0ZT0wMS0wMy0xOTkyI3RpbWVsaW5lfDlkYzA1ZTZjZDNmNmZlMjg3NjJlOWMxNjE4NjRmMjY5ZTMzZGNkNDI3ZTVlNzg5OTMxMDhkZWQ4ZjdmYzI1MjY%3D",
+  "timeline_bm": [
+    {
+      "date": "27/06/1980",
+      "project_id": "244",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/03/1992",
+      "project_id": "1742065",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 232- dimansuhkan oleh Akta 468.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

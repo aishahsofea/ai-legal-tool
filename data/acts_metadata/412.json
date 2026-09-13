@@ -32,5 +32,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 412.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDEyJmxhbmc9Qk0mZGF0ZT0wNi0wMi0yMDI0I3RpbWVsaW5lfGFhMGVhM2I4MDRmOWM4ZmQ1NjNlOGI4MDk4MDQxY2Y5MDhmNzJiNDhlYmM0NDU0NmFlZjYxNjZlZjQxZTU1NTY%3D",
+  "timeline_bm": [
+    {
+      "date": "22/12/1989",
+      "project_id": "424",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "08/02/2024",
+      "project_id": "1962512",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/terjemahan/1962512_BM/AKTA 412- AKTA  JAMINAN PINJAMAN 1963 (TERJEMAHAN) -  (1).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

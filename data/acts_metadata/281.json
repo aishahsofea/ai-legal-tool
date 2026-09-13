@@ -654,5 +654,130 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 59
+  "subsidiary_total": 59,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjgxJmxhbmc9Qk0mZGF0ZT0wMS0xMC0yMDI0I3RpbWVsaW5lfGI2MTYxZDFmOTY3ZDZmYmU3MmQwNWU1MDY2NjhlNzVjMDZlMTRlNmMwNzI4YTZmNDgzYjk4Y2QwOGZkYzBiM2Q%3D",
+  "timeline_bm": [
+    {
+      "date": "11/03/1983",
+      "project_id": "293",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/293_BM/07. Akta 281.pdf"
+    },
+    {
+      "date": "29/09/2001",
+      "project_id": "1727907",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727907_BM/A1117 makanan 2001_unlocked.pdf"
+    },
+    {
+      "date": "18/03/2005",
+      "project_id": "1727367",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 281 Cetakan Semula 2005.pdf"
+    },
+    {
+      "date": "03/07/2006",
+      "project_id": "1727908",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727908_BM/ActA1266y2006bm_unlocked.pdf"
+    },
+    {
+      "date": "06/04/2012",
+      "project_id": "16150",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/16150_BM/Akta 281 - Akta Makanan 1983.pdf"
+    },
+    {
+      "date": "01/01/2024",
+      "project_id": "1942097",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1942097/PUA391_2023.pdf"
+    },
+    {
+      "date": "09/02/2024",
+      "project_id": "1998014",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1998014_BM/A1702 BM.pdf"
+    },
+    {
+      "date": "08/10/2024",
+      "project_id": "2383974",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2383974/PUB 387 (2024).pdf"
+    },
+    {
+      "date": "09/10/2024",
+      "project_id": "2382807",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2382807/PUA 256.pdf"
+    },
+    {
+      "date": "11/10/2024",
+      "project_id": "2849945",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2849945_BM/Akta 281 (Dalam talian 2026).pdf"
+    },
+    {
+      "date": "03/12/2024",
+      "project_id": "2497223",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2497223/P.U. (A) 351_2024.pdf"
+    },
+    {
+      "date": "03/02/2025",
+      "project_id": "2650339",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2650339/PUA 30.pdf"
+    },
+    {
+      "date": "13/03/2025",
+      "project_id": "2724217",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2724217/P.U. (A) 71_2025.pdf"
+    },
+    {
+      "date": "10/09/2025",
+      "project_id": "3037177",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3037177/PUA 275 (2025).pdf"
+    },
+    {
+      "date": "15/10/2025",
+      "project_id": "3100091",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3100091/PUA 345 (2025).pdf"
+    },
+    {
+      "date": "15/02/2026",
+      "project_id": "3322132",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3322132/PUA 48_2026.pdf"
+    },
+    {
+      "date": "29/06/2026",
+      "project_id": "3552511",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3552511/PUA 221_2026.pdf"
+    },
+    {
+      "date": "10/07/2026",
+      "project_id": "3550634",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3550634/PUA 227 (2026).pdf"
+    },
+    {
+      "date": "14/09/2026",
+      "project_id": "3678744",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3678744/PUA 298 (2026).pdf"
+    },
+    {
+      "date": "23/09/2026",
+      "project_id": "3691070",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3691070/PUA 314_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2849945_BM/Akta 281 (Dalam talian 2026).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1998014_BM/A1702 BM.pdf"
 }

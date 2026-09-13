@@ -14,5 +14,16 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzYwJmxhbmc9Qk0mZGF0ZT0xMC0wMS0yMDE0I3RpbWVsaW5lfDNjNDA4MjAyNmIzYTMzNDNmNWM4NjI4Y2NhOWI1MzgyNzZiOGM4ZDBjNGQyNTFiNDVhOTU0MmY4ZjM1ZDhhYWE%3D",
+  "timeline_bm": [
+    {
+      "date": "11/01/2014",
+      "project_id": "772",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20140110_AKTA 760-BM.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

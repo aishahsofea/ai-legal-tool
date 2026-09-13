@@ -26,5 +26,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1677661_BI/ACT 751 (Muktamad).pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3387066_BI/Act A1789 - RUKUN TETANGGA (AMENDMENT) ACT 2026.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzUxJmxhbmc9Qk0mZGF0ZT0wMS0wOC0yMDIwI3RpbWVsaW5lfDllNGQzYjgwYjA3MmQ2OTc1OGFmYTIzMTk5N2EwZTI1NmFkYTAzMTAzZGQwYWY0MWUzMzkwYzA2NmY3NmUwMTY%3D",
+  "timeline_bm": [
+    {
+      "date": "23/06/2012",
+      "project_id": "763",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20120622_751_BM_Akta 751 BM.pdf"
+    },
+    {
+      "date": "03/08/2020",
+      "project_id": "1677661",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1677661_BM/AKTA 751 (Muktamad).pdf"
+    },
+    {
+      "date": "08/03/2026",
+      "project_id": "3387066",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3387066_BM/Akta A1789 - AKTA RUKUN TETANGGA (PINDAAN) 2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1677661_BM/AKTA 751 (Muktamad).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3387066_BM/Akta A1789 - AKTA RUKUN TETANGGA (PINDAAN) 2026.pdf"
 }

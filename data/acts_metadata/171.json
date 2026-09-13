@@ -306,5 +306,100 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 23
+  "subsidiary_total": 23,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTcxJmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDEyI3RpbWVsaW5lfDVkZGU4M2I0YmFlYTc0YWJmNzc4NTY0OGE3ZmIxZTYwMjdhYjhjNTgwMzI0YTkwNGNhYjNjNzBjYjZmY2MwOTE%3D",
+  "timeline_bm": [
+    {
+      "date": "30/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "27/03/1976",
+      "project_id": "183",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/183_BM/171 KERAJAAN TEMPATAN 1976_repaired_repaired.pdf"
+    },
+    {
+      "date": "05/03/1978",
+      "project_id": "3164357",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3164357_BM/02. A436 KERAJAAN TEMPATAN 1978 PINDAAN_repaired.pdf"
+    },
+    {
+      "date": "16/05/1983",
+      "project_id": "3164483",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3164483_BM/03. A564 KERAJAAN TEMPATAN 1983 PINDAAN_repaired_repaired.pdf"
+    },
+    {
+      "date": "06/01/1989",
+      "project_id": "353",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/353_BM/Akta 341 BM (NEW).pdf"
+    },
+    {
+      "date": "18/09/1991",
+      "project_id": "3164451",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3164451_BM/05. A806 KERAJAAN TEMPATAN 1991 PINDAAN_repaired.pdf"
+    },
+    {
+      "date": "23/09/1993",
+      "project_id": "3164395",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3164395_BM/06. A865 KERAJAAN TEMPATAN 1993 PINDAAN_repaired.pdf"
+    },
+    {
+      "date": "09/10/1998",
+      "project_id": "2259438",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259438_BM/171 KERAJAAN TEMPATAN 1976 CETAKAN SEMULA 1998.pdf"
+    },
+    {
+      "date": "09/04/2001",
+      "project_id": "2259440",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259440_BM/171 KERAJAAN TEMPATAN 1976 CETAKAN SEMULA 2001.pdf"
+    },
+    {
+      "date": "11/01/2006",
+      "project_id": "15858",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 171.pdf"
+    },
+    {
+      "date": "12/09/2011",
+      "project_id": "3164277",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3164277_BM/07. Akta A1311.pdf"
+    },
+    {
+      "date": "13/12/2012",
+      "project_id": "16603",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 171 - Akta Kerajaan Tempatan 1976.pdf"
+    },
+    {
+      "date": "29/11/2023",
+      "project_id": "1885062",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1885062/P.U. (B) 504_2023.pdf"
+    },
+    {
+      "date": "14/05/2025",
+      "project_id": "2841940",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2841940/PUA 142.pdf"
+    },
+    {
+      "date": "27/11/2025",
+      "project_id": "3175994",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3175994_BM/Akta A1772 - AKTA KERAJAAN TEMPATAN (PINDAAN) 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 171 - Akta Kerajaan Tempatan 1976.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3175994_BM/Akta A1772 - AKTA KERAJAAN TEMPATAN (PINDAAN) 2025.pdf"
 }

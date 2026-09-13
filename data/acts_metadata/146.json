@@ -56,5 +56,58 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 146 - Bank Simpanan Nasional Act 1974.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTQ2Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfDFlZGFhMWRmOTViMzk1NWQ4NzAzMmI4MjAzZTIwMTg2YzhmMzBhYjMyNDM2YzEyYTUxMmI2OTFlNDg0OGFhODk%3D",
+  "timeline_bm": [
+    {
+      "date": "23/08/1974",
+      "project_id": "158",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/158_BM/AKTA 146.pdf"
+    },
+    {
+      "date": "31/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "12/06/1977",
+      "project_id": "1727811",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727811_BM/AKTA 146- A397(BM).pdf"
+    },
+    {
+      "date": "05/07/1997",
+      "project_id": "2259500",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259500_BM/AKTA 146 - CETAKAN 1997 (BM).pdf"
+    },
+    {
+      "date": "05/04/2001",
+      "project_id": "2259499",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259499_BM/AKTA 146 - CETAKAN 2001 (BM).pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15809",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 146.pdf"
+    },
+    {
+      "date": "03/02/2011",
+      "project_id": "3532888",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3532888_BM/AKTA 146- A1389(BM).pdf"
+    },
+    {
+      "date": "09/12/2011",
+      "project_id": "16598",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 146 - Akta Bank Simpanan Nasional 1974.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 146 - Akta Bank Simpanan Nasional 1974.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3532888_BM/AKTA 146- A1389(BM).pdf"
 }

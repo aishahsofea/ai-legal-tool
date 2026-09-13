@@ -56,5 +56,58 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 28 - Kootu Funds Prohibition Act 1971.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/828_BI/ACT A1397.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjgmbGFuZz1CTSZkYXRlPTAxLTA2LTIwMTQjdGltZWxpbmV8YjljNDhkOTFjYzczZDMwNGU2ZmUzOWQzODJiNzg0YzYyZDJhNDIyODU3MDdjZTdiZmViNmQ5YTg0MTRiYWFjNA%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "30/04/1971",
+      "project_id": "40",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/40_BM/AKTA 28 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "30/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "04/03/1993",
+      "project_id": "1712882",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 28-Reprint 1993.pdf"
+    },
+    {
+      "date": "04/09/1999",
+      "project_id": "1727295",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 28-Reprint 1999.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "2256253",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2256253_BM/AKTA 28 - REPRINT 2006.pdf"
+    },
+    {
+      "date": "27/07/2011",
+      "project_id": "828",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/828_BM/AKTA A1397.pdf"
+    },
+    {
+      "date": "08/12/2011",
+      "project_id": "16745",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 28 - Akta Larangan Kumpulan Wang Kutu 1971.pdf"
+    },
+    {
+      "date": "09/06/2014",
+      "project_id": "16031",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 28-Reprint 2014.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 28-Reprint 2014.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/828_BM/AKTA A1397.pdf"
 }

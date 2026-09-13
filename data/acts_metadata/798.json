@@ -14,5 +14,16 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Nzk4Jmxhbmc9Qk0mZGF0ZT0yNC0xMS0yMDIzI3RpbWVsaW5lfDMxN2RjMDk4YjYyYmMzMTI0MDJiZTY4YjI0YjUzMjExODk3NDc0NmMxMTJjNDQ3MzkzY2U4NjY5ZTFkOWYzYTM%3D",
+  "timeline_bm": [
+    {
+      "date": "25/11/2023",
+      "project_id": "1805007",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/terjemahan/1805007_BM/AKTA PIHAK BERKUASA TEMPATAN (SYARAT PERKHIDMATAN) 1964 [AKTA 798] .pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

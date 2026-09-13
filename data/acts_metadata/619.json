@@ -26,5 +26,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 619.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjE5Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfDAxYjkzN2Y2ZWY4NjdhNjAxZDg0N2VmNzYzZjU3MjE2YTAzZDhjYjM4YmMwYWY3NDAwM2M4MjA5ODAzY2UwYWY%3D",
+  "timeline_bm": [
+    {
+      "date": "08/02/2002",
+      "project_id": "631",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/631_BM/Akta 619 BM_unlocked.pdf"
+    },
+    {
+      "date": "02/05/2004",
+      "project_id": "2257169",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257169_BM/Akta 619 Reprint 2004.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15629",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15629_BM/Akta 619  Reprint 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15629_BM/Akta 619  Reprint 2006.pdf",
+  "latest_amendment_pdf_bm": ""
 }

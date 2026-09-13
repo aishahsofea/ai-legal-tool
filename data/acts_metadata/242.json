@@ -96,5 +96,64 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 3
+  "subsidiary_total": 3,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjQyJmxhbmc9Qk0mZGF0ZT0wMS0wOC0yMDE4I3RpbWVsaW5lfDY2NjUyZTliZjkwZTY1NzllY2JjZjI5YzkwYmNiOTlkYWEwYmM2NmFmNWY0ZjYwYzA5OTE0YzVlMDNiNDRlMDk%3D",
+  "timeline_bm": [
+    {
+      "date": "06/02/1981",
+      "project_id": "254",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/254_BM/AKTA 242.pdf"
+    },
+    {
+      "date": "08/09/1984",
+      "project_id": "3190699",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3190699_BM/AKTA A598.pdf"
+    },
+    {
+      "date": "02/02/1997",
+      "project_id": "3190749",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3190749_BM/AKTA A980.pdf"
+    },
+    {
+      "date": "12/07/1999",
+      "project_id": "3208976",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3208976_BM/03. AKTA A1056.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "1727455",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 242-Cetakan semula 1 Januari 2006.pdf"
+    },
+    {
+      "date": "25/08/2011",
+      "project_id": "835",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20110818_A1404_BM_A1404 BM.pdf"
+    },
+    {
+      "date": "08/08/2016",
+      "project_id": "16465",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 242 - diluluskan TPPUU (24-08-2016).pdf"
+    },
+    {
+      "date": "10/01/2018",
+      "project_id": "981",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20171017_A1550_BM_Akta A1550 BM.pdf"
+    },
+    {
+      "date": "10/08/2018",
+      "project_id": "1727528",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 242 (cetakan semula 1 Ogos 2018).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 242 (cetakan semula 1 Ogos 2018).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20171017_A1550_BM_Akta A1550 BM.pdf"
 }

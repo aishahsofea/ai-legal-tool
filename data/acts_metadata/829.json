@@ -108,5 +108,46 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 7
+  "subsidiary_total": 7,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODI5Jmxhbmc9Qk0mZGF0ZT0xNS0wMS0yMDIyI3RpbWVsaW5lfDBhMmI4M2JmMjBiNzFkOWQ4MTI2MjBhOTQzNDY2ZTRiZDFmZWM5NDY3ZGFlY2FmZGI1NDc3NTEyZDExNTU1Y2U%3D",
+  "timeline_bm": [
+    {
+      "date": "24/10/2020",
+      "project_id": "1684650",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1684650_BM/Akta 829.pdf"
+    },
+    {
+      "date": "02/07/2021",
+      "project_id": "1703375",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1703375/PUA287.pdf"
+    },
+    {
+      "date": "05/12/2021",
+      "project_id": "1716498",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1716498/PUA 437.pdf"
+    },
+    {
+      "date": "01/01/2022",
+      "project_id": "1718806",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1718806/PUA 485 (2021).pdf"
+    },
+    {
+      "date": "18/01/2022",
+      "project_id": "1720504",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1720504_BM/Akta A1641.pdf"
+    },
+    {
+      "date": "21/01/2022",
+      "project_id": "1720930",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1720930_BM/Akta 829 -Muktamad.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1720930_BM/Akta 829 -Muktamad.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1720504_BM/Akta A1641.pdf"
 }

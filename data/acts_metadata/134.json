@@ -74,5 +74,46 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 134.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BI/ACT 160.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTM0Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfGJkMWM2MDYxODBlZDQyMzcxZWMzNDIyNzA1MTAyMDg3NGNlOGZjODgyNmE2MGJhYzJlYjZlYmI3ZDZmNjE2MDg%3D",
+  "timeline_bm": [
+    {
+      "date": "01/01/1971",
+      "project_id": "1728227",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728227/02. P.U. (B) 324-1970.pdf"
+    },
+    {
+      "date": "03/07/1974",
+      "project_id": "2260260",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2260260_BM/AKTA 134 SEMAKAN -1975 (BM).pdf"
+    },
+    {
+      "date": "01/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "05/07/1997",
+      "project_id": "2259575",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259575_BM/AKTA 134- CETAKAN 1997(BM).pdf"
+    },
+    {
+      "date": "06/06/2000",
+      "project_id": "2259573",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2259573_BM/AKTA 134 CETAKAN 2 - 2000 (BM).pdf"
+    },
+    {
+      "date": "07/01/2006",
+      "project_id": "15688",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 134.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 134.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
 }

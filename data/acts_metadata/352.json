@@ -72,5 +72,58 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzUyJmxhbmc9Qk0mZGF0ZT0wOC0wMS0yMDEzI3RpbWVsaW5lfDg1MDVmZjViODVlZTA3Mjg1ZjljNGRiYjYxOTA5NzY2YzRlMmFhODNiY2MxMTMzOTMwNTYwYWUzYmUxYWUxZWM%3D",
+  "timeline_bm": [
+    {
+      "date": "29/04/1966",
+      "project_id": "364",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/364_BM/NO. 42 OF 1966 BM.pdf"
+    },
+    {
+      "date": "24/01/1976",
+      "project_id": "1727735",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727735_BM/AKTA A327.pdf"
+    },
+    {
+      "date": "31/10/1976",
+      "project_id": "1728145",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta A363.pdf"
+    },
+    {
+      "date": "02/07/1984",
+      "project_id": "3348670",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3348670_BM/03. AKTA A592 BM.pdf"
+    },
+    {
+      "date": "01/11/1988",
+      "project_id": "3348686",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3348686_BM/Akta 352 DISEMAK.pdf"
+    },
+    {
+      "date": "10/07/1991",
+      "project_id": "1702437",
+      "log_type": "TRANSLATE",
+      "pdf_url": ""
+    },
+    {
+      "date": "15/02/2007",
+      "project_id": "1728144",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/A1280BI (1).pdf"
+    },
+    {
+      "date": "16/01/2013",
+      "project_id": "1727544",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/REPRINT 2013 BM.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/REPRINT 2013 BM.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/A1280BI (1).pdf"
 }

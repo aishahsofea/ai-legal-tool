@@ -60,5 +60,52 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzYmbGFuZz1CTSZkYXRlPTAxLTAxLTIwMTgjdGltZWxpbmV8YjAwZGZjN2JkMDQxYWRlOTVlNzdhZjcwNmMzMmMzMTA4ZmE2YjExYjZiNmMyOTg1ZmMzZDFjZTVmMTc5ZTQyYw%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "03/09/1971",
+      "project_id": "48",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/48_BM/AKTA 36 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/03/1993",
+      "project_id": "2256495",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2256495_BM/AKTA 36 - REPRINT 1993.pdf"
+    },
+    {
+      "date": "02/02/1997",
+      "project_id": "1727657",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727657_BM/AKTA A983.pdf"
+    },
+    {
+      "date": "04/09/1999",
+      "project_id": "1712933",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712933_BM/AKTA 36 - REPRINT 1999.pdf"
+    },
+    {
+      "date": "06/01/2006",
+      "project_id": "15273",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 36.pdf"
+    },
+    {
+      "date": "07/01/2018",
+      "project_id": "1727513",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 36 Reprint Online Version 2018 BM.pdf"
+    },
+    {
+      "date": "12/12/2018",
+      "project_id": "1698597",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1698597/P.U. (A) 312-2018.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 36 Reprint Online Version 2018 BM.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1698597/P.U. (A) 312-2018.pdf"
 }

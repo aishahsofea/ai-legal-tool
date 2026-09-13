@@ -86,5 +86,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 473.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDczJmxhbmc9Qk0mZGF0ZT0xMi0wOS0xOTkxI3RpbWVsaW5lfGRkZTNhNzhjMGU1ZTAyYjU4ZTk0OTk1MjM2MTI5YTI4NTM2MGQ3ODE1NDA1MDQ5ZTU0Y2ZiZjRiOGVkMWUzNDI%3D",
+  "timeline_bm": [
+    {
+      "date": "11/08/1970",
+      "project_id": "1728261",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728261/P.U(A)282 1970.pdf"
+    },
+    {
+      "date": "12/02/1971",
+      "project_id": "3617687",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3617687/PUA 41 1971.pdf"
+    },
+    {
+      "date": "02/05/1971",
+      "project_id": "3603909",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3603909_BM/AKTA A55.pdf"
+    },
+    {
+      "date": "16/09/1991",
+      "project_id": "485",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3603909_BM/AKTA A55.pdf"
 }

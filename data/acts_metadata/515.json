@@ -44,5 +44,40 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 515 - Merchant Shipping (Oil Pollution) Act 1994.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/825_BI/ACT A1394.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTE1Jmxhbmc9Qk0mZGF0ZT0wMS0wNi0yMDE1I3RpbWVsaW5lfDMwNTEwYjdkYjU1ZTlhZWE3NzJlZDMwMTBlNzU5M2IzMGRlMzYzODg2YzliZGY4ZDYwNjJhZGQzMzE5OGYxNGI%3D",
+  "timeline_bm": [
+    {
+      "date": "25/02/1994",
+      "project_id": "527",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/527_BM/AKTA 515 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/09/2005",
+      "project_id": "3379867",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3379867_BM/AKTA A1248.pdf"
+    },
+    {
+      "date": "04/01/2010",
+      "project_id": "2257219",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/06/2011",
+      "project_id": "825",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/825_BM/AKTA A1394.pdf"
+    },
+    {
+      "date": "06/06/2015",
+      "project_id": "16719",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 515 - Akta Perkapalan Saudagar (Pencemaran Minyak) 1994.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 515 - Akta Perkapalan Saudagar (Pencemaran Minyak) 1994.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/825_BM/AKTA A1394.pdf"
 }

@@ -14,5 +14,16 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODc5Jmxhbmc9Qk0mZGF0ZT0yNS0wMy0yMDI2I3RpbWVsaW5lfDAwNjllNWQyZWZlNWVmM2FiNzg2NWQ4Y2VlMjU1OWE4YmY1YjZhYWQwODI5NzI0NDU3OTg5NzViMTM2MDZhMzQ%3D",
+  "timeline_bm": [
+    {
+      "date": "26/03/2026",
+      "project_id": "3424868",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3424868_BM/Akta 879 BM cover depan.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

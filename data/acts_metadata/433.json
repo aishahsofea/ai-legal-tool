@@ -56,5 +56,22 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDMzJmxhbmc9Qk0mZGF0ZT0wMS0wMy0yMDExI3RpbWVsaW5lfGFlZjlmMzU4MjUzNjUwN2ExOGNmZWI3YzkzYzQ0OTQzYzFjZjQ4NTIyMzY2Mjc2NTYxZGZiY2MxODA1MDIyM2Y%3D",
+  "timeline_bm": [
+    {
+      "date": "30/03/1990",
+      "project_id": "445",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/03/2011",
+      "project_id": "1727272",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 433 Mansuh.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

@@ -45,5 +45,40 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODczJmxhbmc9Qk0mZGF0ZT0zMS0xMi0yMDI1I3RpbWVsaW5lfGYyYmU3M2U5YTE0ZGUxMWMxNjQ2Y2U5ZmE0ZTU3MDZlNmU1MDJkODQyNjFmNTc3MDAwYTcyNjhmZjllZGYzNGU%3D",
+  "timeline_bm": [
+    {
+      "date": "01/01/2026",
+      "project_id": "3272203",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3272203_BM/Akta 873 - AKTA KREDIT PENGGUNA 2025.pdf"
+    },
+    {
+      "date": "01/03/2026",
+      "project_id": "3389760",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3389760/PUA 110 (2026).pdf"
+    },
+    {
+      "date": "02/03/2026",
+      "project_id": "3389767",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3389767/PUB 74 (2026).pdf"
+    },
+    {
+      "date": "07/06/2026",
+      "project_id": "3539038",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3539038/PUA 209 (2026).pdf"
+    },
+    {
+      "date": "04/07/2026",
+      "project_id": "3576868",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3576868/PUA 234_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

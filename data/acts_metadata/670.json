@@ -189,5 +189,82 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 12
+  "subsidiary_total": 12,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjcwJmxhbmc9Qk0mZGF0ZT0zMC0wOS0yMDI1I3RpbWVsaW5lfGIxNzNlYjJiZDYyNTA3NDRlODZlYTJlYWQ3YjhmMmIyZDJjODlmMzcyNWNkM2FkYTMxODM1MmU2NTkzMDZlNGM%3D",
+  "timeline_bm": [
+    {
+      "date": "27/07/2007",
+      "project_id": "682",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Julai 2007 Asal Akta 670.pdf"
+    },
+    {
+      "date": "02/10/2010",
+      "project_id": "1709461",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Sep 2010  Pindaan Akta 670.pdf"
+    },
+    {
+      "date": "04/11/2014",
+      "project_id": "15712",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 670.pdf"
+    },
+    {
+      "date": "22/11/2015",
+      "project_id": "931",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20151102_1500_BM_WJW005504 BM.pdf"
+    },
+    {
+      "date": "30/01/2022",
+      "project_id": "1721503",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1721503_BM/Akta A1644.pdf"
+    },
+    {
+      "date": "28/02/2022",
+      "project_id": "1724636",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1724636_BM/Akta 670 - Muktamad.pdf"
+    },
+    {
+      "date": "07/10/2025",
+      "project_id": "3337270",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3337270_BM/Akta 670 (Dalam talian 2025).pdf"
+    },
+    {
+      "date": "08/10/2025",
+      "project_id": "2785023",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2785023_BM/WJW250742 Akta 670.pdf"
+    },
+    {
+      "date": "19/11/2025",
+      "project_id": "3184698",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3184698/PUA 407_2025.pdf"
+    },
+    {
+      "date": "20/11/2025",
+      "project_id": "3184698",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3184698/PUA 407_2025.pdf"
+    },
+    {
+      "date": "23/01/2026",
+      "project_id": "3300587",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3300587/PUA11_2026.pdf"
+    },
+    {
+      "date": "24/01/2026",
+      "project_id": "3300587",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3300587/PUA11_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2785023_BM/WJW250742 Akta 670.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1721503_BM/Akta A1644.pdf"
 }

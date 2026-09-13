@@ -51,5 +51,34 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Njk5Jmxhbmc9Qk0mZGF0ZT0wMS0wOS0yMDE5I3RpbWVsaW5lfDVhN2M1MTZhZDJkNDg2OGU4ODk1YWJmNTdkOThhN2MyM2ViNDg3Mjg2NDAwMjlkYTViZTZiOGE4YzdlYmMzOGM%3D",
+  "timeline_bm": [
+    {
+      "date": "04/09/2009",
+      "project_id": "711",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/711_BM/Akta 699 BM 2009_unlocked.pdf"
+    },
+    {
+      "date": "18/08/2012",
+      "project_id": "2343",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pub_20120816_P.U. (B) 271-penetapan kuat kuasa DNA 2009.pdf"
+    },
+    {
+      "date": "04/08/2015",
+      "project_id": "16496",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 699 9_7_2015.pdf"
+    },
+    {
+      "date": "05/09/2019",
+      "project_id": "3687694",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3687694_BM/Akta 699 (Cetakan Semula 2019).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3687694_BM/Akta 699 (Cetakan Semula 2019).pdf",
+  "latest_amendment_pdf_bm": ""
 }

@@ -171,5 +171,52 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 4
+  "subsidiary_total": 4,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzY3Jmxhbmc9Qk0mZGF0ZT0wMS0wNy0yMDE0I3RpbWVsaW5lfGM5Mjc3ODA5ZDk1YWNiYjlmNGI1NzUwMTJjNTJmMzRhODA5YzlhOGQwZTMxOGFiZTU2NDg4ODEzZTY1OTkxZTU%3D",
+  "timeline_bm": [
+    {
+      "date": "26/10/1973",
+      "project_id": "1728333",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728333/10. P.U. (A) 297-1973.pdf"
+    },
+    {
+      "date": "26/03/1977",
+      "project_id": "1728334",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728334/11. P.U. (A) 65-1977.pdf"
+    },
+    {
+      "date": "11/09/1988",
+      "project_id": "3400478",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3400478/13. P.U. (B) 432-1988.pdf"
+    },
+    {
+      "date": "13/09/1988",
+      "project_id": "1728051",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1728051_BM/Akta A712.pdf"
+    },
+    {
+      "date": "20/02/1990",
+      "project_id": "3400356",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3400356/P.U. (B) 93-1990.pdf"
+    },
+    {
+      "date": "28/10/1992",
+      "project_id": "1728337",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728337/10. P.U. (A) 380-381 1992.pdf"
+    },
+    {
+      "date": "27/07/2011",
+      "project_id": "1334",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1334/P.U. (B) 366-2011_unlocked.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1334/P.U. (B) 366-2011_unlocked.pdf"
 }

@@ -48,5 +48,28 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDY1Jmxhbmc9Qk0mZGF0ZT0wOS0wMi0yMDEyI3RpbWVsaW5lfDc5NWMxYWM5ZWFjNGQxNjdlYzZkYjNmZWJlYjdiMGViZmY3N2VmNDA0MTU0MTU0MGY5ZDhhYTYxMzFmMzkxMTU%3D",
+  "timeline_bm": [
+    {
+      "date": "13/09/1991",
+      "project_id": "477",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Salinan Warta Akta Perkhidmatan Pos 1991 [Akta 465].pdf"
+    },
+    {
+      "date": "03/11/2001",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "12/02/2012",
+      "project_id": "1709484",
+      "log_type": "REPEALED",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

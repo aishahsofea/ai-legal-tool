@@ -32,5 +32,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 567 - Lembaga Kemajuan Wilayah Jengka (Dissolution) Act.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTY3Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfGVkZmRlOWI1ZDk3ZDQ1NGM3Y2Y1NDNlYWU3Y2IwNzkxM2UyMTAzMDQ3NDBmNjQ0OGMyMmNkYTM2ZjM4ZWQyN2Y%3D",
+  "timeline_bm": [
+    {
+      "date": "01/07/1997",
+      "project_id": "579",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/579_BM/AKTA 567 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16287",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 567 - Akta Lembaga Kemajuan Wilayah Jengka (Pembubaran).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 567 - Akta Lembaga Kemajuan Wilayah Jengka (Pembubaran).pdf",
+  "latest_amendment_pdf_bm": ""
 }

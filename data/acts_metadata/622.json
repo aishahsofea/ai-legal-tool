@@ -26,5 +26,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 622.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjIyJmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfGI4ZjRhOTExZWNkMTQzY2EzYzZiNWExODI0ZDcxMWNlMzJhNzJmNDU0ZTA0Yzk1ODU4OTE4Nzk0ODAwOTY4NTQ%3D",
+  "timeline_bm": [
+    {
+      "date": "02/08/2002",
+      "project_id": "634",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/634_BM/Akta 622 BM_unlocked.pdf"
+    },
+    {
+      "date": "02/05/2004",
+      "project_id": "2257159",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257159_BM/Akta 622 reprint 2004.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15635",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15635_BM/Akta 622 Reprint 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15635_BM/Akta 622 Reprint 2006.pdf",
+  "latest_amendment_pdf_bm": ""
 }

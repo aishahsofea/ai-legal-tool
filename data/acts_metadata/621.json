@@ -504,5 +504,94 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 47
+  "subsidiary_total": 47,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjIxJmxhbmc9Qk0mZGF0ZT0wMS0wOS0yMDI0I3RpbWVsaW5lfDc3MzM4ODMyMTJkMDMzZGU4N2Q0MDUxODUyZmJlYmUzNTY4OTNhZmEwZTE0ZTg2OTU4Nzk0M2VjZjMyYWM2NTA%3D",
+  "timeline_bm": [
+    {
+      "date": "31/05/2002",
+      "project_id": "633",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/633_BM/BANTUAN BERSAMA DALAM PERKARA JENAYAH 2002.pdf"
+    },
+    {
+      "date": "02/05/2004",
+      "project_id": "2257164",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257164_BM/reprint 621 bantuan bersama dalam perkara jenayah 2004.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15633",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 621.pdf"
+    },
+    {
+      "date": "20/11/2021",
+      "project_id": "1714891",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1714891/PUA 420.pdf"
+    },
+    {
+      "date": "24/07/2022",
+      "project_id": "1737527",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1737527/PUA236.pdf"
+    },
+    {
+      "date": "13/04/2023",
+      "project_id": "1807111",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1807111/PUA 113.pdf"
+    },
+    {
+      "date": "30/05/2023",
+      "project_id": "1819542",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1819542/PUB 167.pdf"
+    },
+    {
+      "date": "16/11/2023",
+      "project_id": "1883942",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/PUA339_2023.pdf"
+    },
+    {
+      "date": "02/06/2024",
+      "project_id": "2138134",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2138134_BM/Akta A1709.pdf"
+    },
+    {
+      "date": "11/09/2024",
+      "project_id": "2850011",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2850011_BM/Akta 621 (Dalam talian 2026).pdf"
+    },
+    {
+      "date": "20/12/2024",
+      "project_id": "2551854",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2551854/PUA378_2024.pdf"
+    },
+    {
+      "date": "23/03/2026",
+      "project_id": "3410921",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3410921/PUB 91 (2026).pdf"
+    },
+    {
+      "date": "16/07/2026",
+      "project_id": "3589602",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3589602/PUB 230.pdf"
+    },
+    {
+      "date": "28/08/2026",
+      "project_id": "3658945",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3658945/PUB298_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2850011_BM/Akta 621 (Dalam talian 2026).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2138134_BM/Akta A1709.pdf"
 }

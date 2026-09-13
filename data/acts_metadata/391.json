@@ -38,5 +38,40 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 391.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/71_BI/ACT 59 - WARTA ASAL.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzkxJmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDEzI3RpbWVsaW5lfDIwMmQ0NTYyZjE5NjI4YjdkMDJjNDQ1NjEzYWQ2OWUyMjFmYWJhMjBhOWEyY2ZmODBhYzZiYmIzMjY1MTFiNjU%3D",
+  "timeline_bm": [
+    {
+      "date": "01/10/1965",
+      "project_id": "403",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/403_BM/78 of 1965 BM.pdf"
+    },
+    {
+      "date": "03/02/1972",
+      "project_id": "71",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/71_BM/AKTA 59 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "22/10/1989",
+      "project_id": "2253987",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2253987_BM/Akta 391 Disemak.pdf"
+    },
+    {
+      "date": "05/03/1990",
+      "project_id": "",
+      "log_type": "TRANSLATE",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/11/2013",
+      "project_id": "16365",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 391 - Akta Perumahan Persekutuan 1965.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 391 - Akta Perumahan Persekutuan 1965.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/71_BM/AKTA 59 - WARTA ASAL.pdf"
 }

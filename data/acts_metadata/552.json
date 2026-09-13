@@ -69,5 +69,40 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTUyJmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDEzI3RpbWVsaW5lfGQ0YTQ1ZDUyOGU1MTdhY2NlODEyM2JiZDNkMzYwZDBlMWQ4YjE2ZGQ2MDdiOGI5ZDRlNGI1ZDk1NWY0NzBiZTU%3D",
+  "timeline_bm": [
+    {
+      "date": "27/09/1996",
+      "project_id": "564",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/564_BM/AKTA 552 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "17/06/2000",
+      "project_id": "3505092",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3505092_BM/AKTA A1077.pdf"
+    },
+    {
+      "date": "27/01/2002",
+      "project_id": "3510792",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3510792_BM/AKTA A1140.pdf"
+    },
+    {
+      "date": "05/01/2013",
+      "project_id": "16266",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 552 - Akta Reka Bentuk Perindustrian 1996.pdf"
+    },
+    {
+      "date": "27/01/2013",
+      "project_id": "880",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/880_BM/AKTA A1449.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 552 - Akta Reka Bentuk Perindustrian 1996.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/880_BM/AKTA A1449.pdf"
 }

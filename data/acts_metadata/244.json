@@ -141,5 +141,70 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 8
+  "subsidiary_total": 8,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjQ0Jmxhbmc9Qk0mZGF0ZT0wMS0wOC0yMDEzI3RpbWVsaW5lfGE4N2YyZTU2NTA3YTJiOGVjNzQyMzJkZTAzMGYyZjM0NTg3MzRjNDAyZGNlMWExMzVjMDk2YTBkMTg4YTMxYzM%3D",
+  "timeline_bm": [
+    {
+      "date": "20/02/1981",
+      "project_id": "256",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/256_BM/244 PERBADANAN KEMAJUAN FILEM NASIONAL MALAYSIA 1981_repaired.pdf"
+    },
+    {
+      "date": "30/06/1984",
+      "project_id": "3158876",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3158876_BM/A589 PERBADANAN KEMAJUAN FILEM NASIONAL MALAYSIA 1984 PINDAAN_repaired.pdf"
+    },
+    {
+      "date": "03/08/2001",
+      "project_id": "1727457",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "1727457",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "06/04/2013",
+      "project_id": "882",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20130207_A1451_BM_WJW000134 Akta A1451 BM.pdf"
+    },
+    {
+      "date": "07/08/2013",
+      "project_id": "16767",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 244 - Akta Perbadanan Kemajuan Filem Nasional Malaysia 1981.pdf"
+    },
+    {
+      "date": "13/12/2021",
+      "project_id": "1715671",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1715671/PUB629.pdf"
+    },
+    {
+      "date": "22/12/2023",
+      "project_id": "1927309",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1927309/PUB 555 (2023).pdf"
+    },
+    {
+      "date": "13/02/2026",
+      "project_id": "3335370",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3335370/PUB 46 (2026).pdf"
+    },
+    {
+      "date": "05/03/2026",
+      "project_id": "3366500",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3366500_BM/Akta A1787- Akta Perbadanan Kemajuan Filem Nasional Malaysia (Pindaan) 2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 244 - Akta Perbadanan Kemajuan Filem Nasional Malaysia 1981.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3366500_BM/Akta A1787- Akta Perbadanan Kemajuan Filem Nasional Malaysia (Pindaan) 2026.pdf"
 }

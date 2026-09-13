@@ -32,5 +32,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2367737_BI/Act 654 (Online 2025).pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1946986_BI/A1699 BI.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjU0Jmxhbmc9Qk0mZGF0ZT0wMS0wMi0yMDI0I3RpbWVsaW5lfDE3YWYxZDI4NjFmMmY5OGQ1ODhiNjc4NGM5YmI4ZDI4MjNmNzUzZjI2NDNhM2RkZTNmMmU0MTM3YmNiMzNhZmE%3D",
+  "timeline_bm": [
+    {
+      "date": "21/07/2006",
+      "project_id": "666",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/666_BM/AKTA 654 WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/08/2006",
+      "project_id": "1700448",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700448_BM/Akta 654 Reprint 2006.pdf"
+    },
+    {
+      "date": "01/01/2024",
+      "project_id": "1946986",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1946986_BM/A1699 BM.pdf"
+    },
+    {
+      "date": "05/02/2024",
+      "project_id": "2367737",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2367737_BM/Akta 654 (Dalam Talian 2025).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2367737_BM/Akta 654 (Dalam Talian 2025).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1946986_BM/A1699 BM.pdf"
 }

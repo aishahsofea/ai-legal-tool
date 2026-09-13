@@ -108,5 +108,28 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 3
+  "subsidiary_total": 3,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzU5Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfGFjNDBhM2Y5NDU3ZDQ4YTc0ZGE4ZjUzOWY0M2M3ZTAyYWY5YTRlN2YzNTE0MjgzOGE3NWY3NTU0NmFlZjIxYWY%3D",
+  "timeline_bm": [
+    {
+      "date": "28/08/1976",
+      "project_id": "1006123",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1006123_BM/Akta A354.pdf"
+    },
+    {
+      "date": "20/12/1980",
+      "project_id": "1712494",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1712494/008 - P.U. (A) 357-1980.pdf"
+    },
+    {
+      "date": "04/09/1989",
+      "project_id": "3381313",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3381313/08. P.U. (A) 252-253.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3381313/08. P.U. (A) 252-253.pdf"
 }

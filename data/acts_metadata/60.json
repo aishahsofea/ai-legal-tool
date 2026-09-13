@@ -60,5 +60,58 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjAmbGFuZz1CTSZkYXRlPTAxLTAxLTIwMDYjdGltZWxpbmV8Njg5M2FjMDVlNmI5YjY3M2QzZmNiYTM5MWZiNDBkZTEzZjFiMTIzNjYxNzRjMmFkY2Y0YzljZmE1NTViMzgzNg%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "10/03/1961",
+      "project_id": "72",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/72_BM/AKTA 60 - REVISED 1971.pdf"
+    },
+    {
+      "date": "04/12/1971",
+      "project_id": "3202075",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3202075/P.U. (A) 435-1971.pdf"
+    },
+    {
+      "date": "02/01/1972",
+      "project_id": "1734598",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1734598_BM/AKTA 60 - REVISED 1971.pdf"
+    },
+    {
+      "date": "07/05/1973",
+      "project_id": "1702452",
+      "log_type": "TRANSLATE",
+      "pdf_url": ""
+    },
+    {
+      "date": "16/03/1976",
+      "project_id": "176",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/176_BM/AKTA 164.pdf"
+    },
+    {
+      "date": "07/03/1993",
+      "project_id": "1734599",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/reprint 1993 (AKTA 60).pdf"
+    },
+    {
+      "date": "08/01/2001",
+      "project_id": "1734828",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1734828_BM/AKTA 60 - REPRINT 1999.pdf"
+    },
+    {
+      "date": "09/01/2006",
+      "project_id": "1734830",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/reprint 2006 (Akta 60).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/reprint 2006 (Akta 60).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/176_BM/AKTA 164.pdf"
 }

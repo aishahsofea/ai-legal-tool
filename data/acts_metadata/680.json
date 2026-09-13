@@ -26,5 +26,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 680 - Electronic Government Activities Act 2007.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjgwJmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDE3I3RpbWVsaW5lfGFhZTRiNWVlOTgyYzkxOTI0OGM2Yjg1YWIyODI5YjZjYjljNGNhZDUxOGIxZTNlMTZkZTI1MWM3MmFlMGY1ZmM%3D",
+  "timeline_bm": [
+    {
+      "date": "31/08/2007",
+      "project_id": "692",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/692_BM/Akta 680_unlocked.pdf"
+    },
+    {
+      "date": "03/04/2013",
+      "project_id": "16572",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 680 - Akta Aktiviti Kerajaan Elektronik 2007.pdf"
+    },
+    {
+      "date": "04/11/2017",
+      "project_id": "15863",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15863_BM/Akta 680 BM Reprint 2017_unlocked.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15863_BM/Akta 680 BM Reprint 2017_unlocked.pdf",
+  "latest_amendment_pdf_bm": ""
 }

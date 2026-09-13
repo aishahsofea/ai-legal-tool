@@ -32,5 +32,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 184.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTg0Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfGMyN2IwYTViYThjMjRlMjYyMjMyN2MyOGM2OWZhNDVkZmU0NDA4ODVhMGQxNWUyMDgxYTM1NjkzNjFhYjI1Y2Q%3D",
+  "timeline_bm": [
+    {
+      "date": "10/06/1977",
+      "project_id": "196",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/196_BM/AKTA 184.pdf"
+    },
+    {
+      "date": "03/01/1998",
+      "project_id": "2259426",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/05/2001",
+      "project_id": "1727333",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 184 Reprint 2001.pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "15913",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 184.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 184.pdf",
+  "latest_amendment_pdf_bm": ""
 }

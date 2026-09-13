@@ -1,0 +1,41 @@
+{
+  "act_number": "884",
+  "act_type": "updated",
+  "scraped_at": "2026-09-12T16:30:22.889926+00:00",
+  "detail_url": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODg0Jmxhbmc9QkkmZGF0ZT0yNi0wNi0yMDI2I3RpbWVsaW5lfGY0NTVhN2NhYjgxNTc2ZTdhOTZmN2IyMTQ5NmE5MmVhMTdjZjI2NjA5MWQyMzdjZDRlOGZmOGFkNmI4OGQwNTA%3D",
+  "timeline": [
+    {
+      "date": "27/06/2026",
+      "project_id": "3563475",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3563475_BI/Act 884 - JOHOR BAHRU-SINGAPORE RAPID TRANSIT SYSTEM LINK ACT 2026.pdf"
+    },
+    {
+      "date": "30/08/2026",
+      "project_id": "3674457",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3674457/PUB316_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf": "",
+  "latest_amendment_pdf": "",
+  "subsidiary_legislation": [],
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODg0Jmxhbmc9Qk0mZGF0ZT0yNi0wNi0yMDI2I3RpbWVsaW5lfDg4MTI4MDA0MTg1NDBjYzJkYzBmZjgxMDUyYmM2MjgxYTI2ZmQ5NWViMjNmZTA0MDkwOGNiMTAwYjQxMDQ0NDk%3D",
+  "timeline_bm": [
+    {
+      "date": "27/06/2026",
+      "project_id": "3563475",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3563475_BM/Akta 884 - AKTA RAPID TRANSIT SYSTEM LINK JOHOR BAHRU-SINGAPURA 2026.pdf"
+    },
+    {
+      "date": "30/08/2026",
+      "project_id": "3674457",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3674457/PUB316_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
+}

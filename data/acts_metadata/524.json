@@ -32,5 +32,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 524 - Academy of Sciences Malaysia Act 1994.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTI0Jmxhbmc9Qk0mZGF0ZT0wMS0xMC0yMDEzI3RpbWVsaW5lfDVlNTI1MjUwYmI0NzlmZTgzOTNiM2I4NWIwZWVjMzMxZjczMWEwODdlNjBjZGEzZGEzNDQwYWI3YjRiZWUyZmI%3D",
+  "timeline_bm": [
+    {
+      "date": "09/09/1994",
+      "project_id": "536",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/536_BM/AKTA 524 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/10/2013",
+      "project_id": "16715",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 524 - Akta Akademi Sains Malaysia 1994.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 524 - Akta Akademi Sains Malaysia 1994.pdf",
+  "latest_amendment_pdf_bm": ""
 }

@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 639.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjM5Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfGU1YTY1NGI0NTE1ZDVkZjU1ZTBhMWMzZDdmZjE3Zjg2MzdiNDNkOTU0YzlhODIzMTkxZTQ4NzY5YzEwZGE3OTc%3D",
+  "timeline_bm": [
+    {
+      "date": "31/12/2004",
+      "project_id": "651",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/651_BM/AKTA 639.pdf"
+    },
+    {
+      "date": "03/01/2006",
+      "project_id": "15666",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15666_BM/Akta 639 Reprint 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15666_BM/Akta 639 Reprint 2006.pdf",
+  "latest_amendment_pdf_bm": ""
 }

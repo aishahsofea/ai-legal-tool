@@ -150,5 +150,52 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 11
+  "subsidiary_total": 11,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzM3Jmxhbmc9Qk0mZGF0ZT0wMS0wMy0yMDE3I3RpbWVsaW5lfDE3NGYwZDg0ZDJmYWM1NjQ3NWFhYjk3ZDljMzhhMDM1NDNiMWRiNDJhMzgwYjI1MTVhNjJlZTFiMTY2ZGY1MGE%3D",
+  "timeline_bm": [
+    {
+      "date": "10/02/2012",
+      "project_id": "749",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20120209_737_BM_JW001759 Akta 737(BM).pdf"
+    },
+    {
+      "date": "03/03/2017",
+      "project_id": "1700535",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 737 - Cetakan Semula Mac 2017.pdf"
+    },
+    {
+      "date": "02/02/2024",
+      "project_id": "1997618",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1997618/P.U. (A) 24_2024.pdf"
+    },
+    {
+      "date": "09/03/2024",
+      "project_id": "2048452",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2048452/P.U. (A) 78_2024.pdf"
+    },
+    {
+      "date": "16/09/2025",
+      "project_id": "3071230",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3071230/PUA 330_2025.pdf"
+    },
+    {
+      "date": "17/09/2025",
+      "project_id": "3071230",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3071230/PUA 330_2025.pdf"
+    },
+    {
+      "date": "19/01/2026",
+      "project_id": "3295927",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3295927/PUA10_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 737 - Cetakan Semula Mac 2017.pdf",
+  "latest_amendment_pdf_bm": ""
 }

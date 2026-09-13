@@ -32,5 +32,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 481.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDgxJmxhbmc9Qk0mZGF0ZT0wMS0wNC0yMDEzI3RpbWVsaW5lfDQ1MGFhZGNiZWYxZDM2MmMxNTZjMWMyZmJhNzM2NWU4ZjY0ODRjMmYyZDc2MTkxODkxZDA3Mzk3NjVlNWJhY2E%3D",
+  "timeline_bm": [
+    {
+      "date": "21/02/1992",
+      "project_id": "493",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/493_BM/AKTA 481.pdf"
+    },
+    {
+      "date": "03/05/2010",
+      "project_id": "16007",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 481.pdf"
+    },
+    {
+      "date": "04/04/2013",
+      "project_id": "16369",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 481 - Akta Lembaga Penggalakan Pelancongan Malaysia 1992.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 481 - Akta Lembaga Penggalakan Pelancongan Malaysia 1992.pdf",
+  "latest_amendment_pdf_bm": ""
 }

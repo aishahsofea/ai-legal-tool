@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTY1Jmxhbmc9Qk0mZGF0ZT0xMS0wMi0yMDEwI3RpbWVsaW5lfDIzMGRlMTNhZTBmMjNmNDM0YTI2ODdjMzQwNjFlZWI2YmNiYTNiOTBhY2JhNjQ5NTBlNTdjYzA5NjA2NGViYjU%3D",
+  "timeline_bm": [
+    {
+      "date": "12/02/2010",
+      "project_id": "577",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "13/02/2010",
+      "project_id": "1700549",
+      "log_type": "REPEALED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 565 BM Dimansuhkan oleh Akta 707.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

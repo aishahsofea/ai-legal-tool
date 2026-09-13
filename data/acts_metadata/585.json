@@ -63,5 +63,40 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTg1Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfDY2MTRlZTQwNjg0OThiNjVhYzc2YjIwZTU0ZDJiNjU1NmE5ZGQ4ZGVlYzMxZDBjM2RiMzJlMzNkZGZmNDMzZDI%3D",
+  "timeline_bm": [
+    {
+      "date": "28/08/1998",
+      "project_id": "597",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/597_BM/AKTA 585 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "22/06/2002",
+      "project_id": "3640693",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3640693/P.U. (A) 252-2002.pdf"
+    },
+    {
+      "date": "04/09/2005",
+      "project_id": "3640718",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3640718_BM/AKTA A1251.pdf"
+    },
+    {
+      "date": "05/01/2006",
+      "project_id": "2139295",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2139295_BM/AKTA 585 (Mengandungi segala pindaan hingga 1 Januari 2006 )-VERSI DALAM TALIAN.pdf"
+    },
+    {
+      "date": "25/02/2025",
+      "project_id": "2687066",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2687066_BM/A1747-BM- AKTA TATACARA MAL MAHKAMAH SYARIAH (WILAYAH-WILAYAH PERSEKUTUAN) (PINDAAN) 2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2139295_BM/AKTA 585 (Mengandungi segala pindaan hingga 1 Januari 2006 )-VERSI DALAM TALIAN.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2687066_BM/A1747-BM- AKTA TATACARA MAL MAHKAMAH SYARIAH (WILAYAH-WILAYAH PERSEKUTUAN) (PINDAAN) 2025.pdf"
 }

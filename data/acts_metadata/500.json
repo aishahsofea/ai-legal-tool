@@ -78,5 +78,46 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 3
+  "subsidiary_total": 3,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTAwJmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDEzI3RpbWVsaW5lfDRmZWNhNTRjYjNhNDdkNWU3MWE3ODY2YmRlM2JiZDljZjQwOTIxMWM3YjBjYjAwNzM4MDdjZTc1ZjZiZWRiYTA%3D",
+  "timeline_bm": [
+    {
+      "date": "05/02/1993",
+      "project_id": "512",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/2006",
+      "project_id": "2257223",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/03/2011",
+      "project_id": "1712796",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/Pub 91 tahun 20111.pdf"
+    },
+    {
+      "date": "05/12/2011",
+      "project_id": "16691",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 500 - Akta Jualan Langsung dan Skim Anti-Piramid 1993.pdf"
+    },
+    {
+      "date": "06/01/2013",
+      "project_id": "16039",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 500 - Akta Jualan Langsung dan Skim Anti-Piramid 1993 (Cetakan Semula 2013).pdf"
+    },
+    {
+      "date": "18/07/2024",
+      "project_id": "2209319",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2209319/PUA 188_2024.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 500 - Akta Jualan Langsung dan Skim Anti-Piramid 1993 (Cetakan Semula 2013).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/Pub 91 tahun 20111.pdf"
 }

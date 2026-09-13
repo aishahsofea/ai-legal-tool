@@ -126,5 +126,64 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTQxJmxhbmc9Qk0mZGF0ZT0xNS0xMS0yMDI1I3RpbWVsaW5lfGFlODBmMzQ1Y2NjMTVmNjIxMjY5Y2UxNWE3OWNlMDhlNDFlNmFmNTUxZGFiNWQwNDFkODAzYzhiNDNmMzhjYmI%3D",
+  "timeline_bm": [
+    {
+      "date": "01/06/1973",
+      "project_id": "3023972",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3023972_BM/Akta A200 1973.pdf"
+    },
+    {
+      "date": "30/08/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "20/03/1977",
+      "project_id": "3028498",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3028498_BM/Akta A375.pdf"
+    },
+    {
+      "date": "26/02/1990",
+      "project_id": "3182744",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3182744_BM/Akta 141- A759(BM).pdf"
+    },
+    {
+      "date": "13/07/1999",
+      "project_id": "3190753",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3190753_BM/AKTA 141- A1049(BM).pdf"
+    },
+    {
+      "date": "06/01/2005",
+      "project_id": "3692942",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3692942_BM/AKTA 141- A1235(BM).pdf"
+    },
+    {
+      "date": "16/02/2012",
+      "project_id": "848",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/848_BM/A1417_BM 20120209_(pindaan 2012).pdf"
+    },
+    {
+      "date": "14/09/2022",
+      "project_id": "1741982",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1741982_BM/Akta A1665.pdf"
+    },
+    {
+      "date": "24/07/2024",
+      "project_id": "2212849",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2212849/PUA_195.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1741982_BM/Akta A1665.pdf"
 }

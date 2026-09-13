@@ -92,5 +92,58 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1690020_BI/15022021_Act 489_Muktamad.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/490_BI/ACT 478.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDg5Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDIxI3RpbWVsaW5lfDViZDdkOTM5YzY2ZmI4YTgyNDQwZDk3M2E2ZjJhZmU2Zjg4MWM1N2U1OGIzMjY1NTY5ZmNjNmU5OTA1MGI2NmM%3D",
+  "timeline_bm": [
+    {
+      "date": "01/03/1966",
+      "project_id": "501",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/501_BM/AKTA NO 20 1966.pdf"
+    },
+    {
+      "date": "29/03/1969",
+      "project_id": "1712808",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712808_BM/001-Akta A19.pdf"
+    },
+    {
+      "date": "06/04/1972",
+      "project_id": "1712811",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712811_BM/AKTA A119.pdf"
+    },
+    {
+      "date": "03/09/1973",
+      "project_id": "1712809",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712809_BM/003-Akta A210.pdf"
+    },
+    {
+      "date": "03/06/1975",
+      "project_id": "1712810",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1712810_BM/AKTA A302.pdf"
+    },
+    {
+      "date": "06/06/1976",
+      "project_id": "3632507",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3632507_BM/AKTA A348.pdf"
+    },
+    {
+      "date": "02/01/2003",
+      "project_id": "3632540",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3632540_BM/007-Akta A1178.pdf"
+    },
+    {
+      "date": "09/12/2021",
+      "project_id": "2825824",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2825824_BM/No. 20 tahun 1966 BM Reprint 2021.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2825824_BM/No. 20 tahun 1966 BM Reprint 2021.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3632540_BM/007-Akta A1178.pdf"
 }

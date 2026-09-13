@@ -19,6 +19,7 @@ from scraper.config import (
     RETRY_DELAYS,
     INDEX_FILE,
 )
+from scraper.crypto import decrypt_envelope, fetch_response_key
 from scraper.parsers.index_parser import parse_record
 
 logger = logging.getLogger(__name__)
@@ -36,8 +37,14 @@ def _build_payload(draw: int, start: int, length: int = FETCH_PAGE_SIZE) -> dict
     }
 
 
-def _fetch_page(session, url: str, payload: dict) -> dict | None:
-    """POST one DataTables page. Returns parsed JSON or None on unrecoverable error."""
+def _fetch_page(session, url: str, payload: dict, key_hex: str) -> dict | None:
+    """POST one DataTables page, decrypt its envelope. Returns the decrypted
+    JSON or None on unrecoverable HTTP error.
+
+    A decryption failure (DecryptionError) is deliberately NOT caught here —
+    it propagates out and aborts the run, since a listing that fails to
+    decrypt is a failure, never zero records.
+    """
     for attempt, wait in enumerate([0] + RETRY_DELAYS):
         if wait:
             logger.warning("Retrying %s after %ss (attempt %d)", url, wait, attempt)
@@ -45,7 +52,7 @@ def _fetch_page(session, url: str, payload: dict) -> dict | None:
         try:
             resp = session.post(url, data=payload, timeout=30)
             if resp.status_code == 200:
-                return resp.json()
+                return decrypt_envelope(resp.json(), key_hex)
             if resp.status_code == 404:
                 logger.error("404 for %s — skipping", url)
                 return None
@@ -56,7 +63,7 @@ def _fetch_page(session, url: str, payload: dict) -> dict | None:
     return None
 
 
-def fetch_all_records(session, act_type: str) -> list[dict]:
+def fetch_all_records(session, act_type: str, key_hex: str) -> list[dict]:
     """Fetch every record for one act type via paginated POST calls."""
     url = LISTING_ENDPOINTS[act_type]
     records = []
@@ -66,7 +73,7 @@ def fetch_all_records(session, act_type: str) -> list[dict]:
 
     while True:
         payload = _build_payload(draw=draw, start=start)
-        data = _fetch_page(session, url, payload)
+        data = _fetch_page(session, url, payload, key_hex)
 
         if data is None:
             logger.error("[%s] Failed to fetch page start=%d — stopping", act_type, start)
@@ -114,12 +121,14 @@ def run_step1(types: list[str] | None = None) -> None:
     except Exception as exc:
         logger.warning("Homepage warmup failed: %s", exc)
 
+    key_hex = fetch_response_key(session)
+
     all_acts: list[dict] = []
     totals: dict[str, int] = {}
 
     for act_type in types:
         logger.info("=== Fetching type: %s ===", act_type)
-        records = fetch_all_records(session, act_type)
+        records = fetch_all_records(session, act_type, key_hex)
         totals[act_type] = len(records)
         all_acts.extend(records)
         logger.info("[%s] Done — %d records", act_type, len(records))

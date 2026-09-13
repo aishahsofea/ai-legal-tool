@@ -288,5 +288,136 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 17
+  "subsidiary_total": 17,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzM0Jmxhbmc9Qk0mZGF0ZT0xMC0wNy0yMDI1I3RpbWVsaW5lfDMwYWNhZTk0NmEwZDJhZTE4ZTEwOGU4YzkwY2Y0NGE1ZjgwOWM2Yjg1Y2E3NDU0NzkwMjNhYjg1ODJlNGJhY2Q%3D",
+  "timeline_bm": [
+    {
+      "date": "25/09/1987",
+      "project_id": "346",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/346_BM/Akta 334.pdf"
+    },
+    {
+      "date": "10/09/1988",
+      "project_id": "1727990",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727990_BM/01. A708 BM.pdf"
+    },
+    {
+      "date": "06/03/1994",
+      "project_id": "1727982",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727982_BM/AKTA A878.pdf"
+    },
+    {
+      "date": "05/07/1998",
+      "project_id": "1727991",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727991_BM/03. A1024 BM.pdf"
+    },
+    {
+      "date": "06/01/2010",
+      "project_id": "1727404",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727404_BM/Akta 334 reprint 2010.pdf"
+    },
+    {
+      "date": "26/06/2010",
+      "project_id": "1727992",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727992_BM/05. A1376 BM_unlocked.pdf"
+    },
+    {
+      "date": "25/11/2010",
+      "project_id": "3326695",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3326695/04. P.U. (B) 509-2010_unlocked.pdf"
+    },
+    {
+      "date": "09/12/2011",
+      "project_id": "16234",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 334 - Akta Lembaga Pelesenan Kenderaan Perdagangan 1987.pdf"
+    },
+    {
+      "date": "09/12/2017",
+      "project_id": "984",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/984_BM/06. A1553 BM_unlocked.pdf"
+    },
+    {
+      "date": "24/09/2021",
+      "project_id": "1709893",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1709893/PUB466.pdf"
+    },
+    {
+      "date": "20/06/2022",
+      "project_id": "1733421",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1733421/PUA205.pdf"
+    },
+    {
+      "date": "24/08/2022",
+      "project_id": "1740151",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1740151/PUB367_2022.pdf"
+    },
+    {
+      "date": "29/03/2023",
+      "project_id": "1798208",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1798208/P.U. (B) 101_2023 (Pelantikan dan Pembatalan Pelantikan Pegawai LPKP).pdf"
+    },
+    {
+      "date": "30/06/2023",
+      "project_id": "1826836",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1826836_BM/Akta A1686 BM.pdf"
+    },
+    {
+      "date": "30/10/2023",
+      "project_id": "1871781",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1871781_BM/Akta 334 Muktamad.pdf"
+    },
+    {
+      "date": "06/12/2023",
+      "project_id": "1896540",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1896540/PUA 358.pdf"
+    },
+    {
+      "date": "04/04/2024",
+      "project_id": "2063431",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2063431/P.U. (B) 86_2024.pdf"
+    },
+    {
+      "date": "27/07/2025",
+      "project_id": "2951598",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2951598_BM/AKTA LEMBAGA PELESENAN KENDERAAN PERDAGANGAN (PINDAAN) 2025.pdf"
+    },
+    {
+      "date": "29/07/2025",
+      "project_id": "3677515",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3677515_BM/Akta 334 sebagaimana 2025.pdf"
+    },
+    {
+      "date": "19/08/2025",
+      "project_id": "2997373",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2997373/PUB 287_2025.pdf"
+    },
+    {
+      "date": "04/05/2026",
+      "project_id": "3458815",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3458815/PUB 135_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3677515_BM/Akta 334 sebagaimana 2025.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2951598_BM/AKTA LEMBAGA PELESENAN KENDERAAN PERDAGANGAN (PINDAAN) 2025.pdf"
 }

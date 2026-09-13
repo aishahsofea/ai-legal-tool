@@ -129,5 +129,28 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 10
+  "subsidiary_total": 10,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTMyJmxhbmc9Qk0mZGF0ZT0wMS0wOS0yMDEwI3RpbWVsaW5lfDM3ZjhkOGQxMTlmOWE5YTUzYjgxMjQzNDQ0MWMwNzM2ZTgxM2MwMDE2NGI3YWM5OGRhM2IyMzQwYTc3OGYwZGY%3D",
+  "timeline_bm": [
+    {
+      "date": "17/02/1995",
+      "project_id": "544",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/544_BM/AKTA 532 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/09/2010",
+      "project_id": "15296",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 532 - Akta Perbadanan Amanah Raya 1995 (Cetakan Semula 2013).pdf"
+    },
+    {
+      "date": "26/05/2024",
+      "project_id": "2138600",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2138600/PUB 182 (2024).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 532 - Akta Perbadanan Amanah Raya 1995 (Cetakan Semula 2013).pdf",
+  "latest_amendment_pdf_bm": ""
 }

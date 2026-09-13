@@ -20,5 +20,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 653.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjUzJmxhbmc9Qk0mZGF0ZT0zMS0wOC0yMDA2I3RpbWVsaW5lfGIzODQwMzk2YzFiOTM0ZjhjYzk5NTI5ZmUyMTI4M2E0MTJlYmU3YWZjYjE2YzU3ZDhhMzk1ODc1MmM2ZWRlM2M%3D",
+  "timeline_bm": [
+    {
+      "date": "30/06/2006",
+      "project_id": "665",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/665_BM/Akta 653 BM_unlocked.pdf"
+    },
+    {
+      "date": "02/09/2006",
+      "project_id": "15773",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15773_BM/Akta 653 Reprint 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15773_BM/Akta 653 Reprint 2006.pdf",
+  "latest_amendment_pdf_bm": ""
 }

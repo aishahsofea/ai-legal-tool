@@ -78,5 +78,28 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 3
+  "subsidiary_total": 3,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Mzc1Jmxhbmc9Qk0mZGF0ZT0wMS0wMy0yMDEzI3RpbWVsaW5lfDhlNTZlZjM5NGI5ZmE0MzExNmIzN2NjYjNhMTNkMThhOTA5ZGY3ZWJmMmU1NTNhY2E4MjM2NTZlYjc4OWFlMmY%3D",
+  "timeline_bm": [
+    {
+      "date": "06/09/1991",
+      "project_id": "16304",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 375 - Akta Menteri Kewangan (Pemerbadanan) 1957.pdf"
+    },
+    {
+      "date": "03/03/2013",
+      "project_id": "16304",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 375 - Akta Menteri Kewangan (Pemerbadanan) 1957.pdf"
+    },
+    {
+      "date": "20/06/2021",
+      "project_id": "1702862",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1702862/PUB 338.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 375 - Akta Menteri Kewangan (Pemerbadanan) 1957.pdf",
+  "latest_amendment_pdf_bm": ""
 }

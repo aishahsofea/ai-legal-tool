@@ -60,5 +60,34 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 3
+  "subsidiary_total": 3,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzQ3Jmxhbmc9Qk0mZGF0ZT0wMS0wOC0yMDE1I3RpbWVsaW5lfDc4OTk5MDc1MTkwZDZiZWNmZDdmNzFkYTYyMTFiNTI4ZmYyY2EwN2RiNDdiZGNmMWI1NTM0N2U4NmI3ODdiMmI%3D",
+  "timeline_bm": [
+    {
+      "date": "23/06/2012",
+      "project_id": "759",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20120622_747_BM_Akta 747 BM.pdf"
+    },
+    {
+      "date": "17/06/2015",
+      "project_id": "918",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20150604_A1487_BM_Akta A1487.pdf"
+    },
+    {
+      "date": "04/08/2015",
+      "project_id": "16430",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 747 -  TPPUU).pdf"
+    },
+    {
+      "date": "05/11/2024",
+      "project_id": "2459430",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2459430_BM/Akta A1736.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 747 -  TPPUU).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2459430_BM/Akta A1736.pdf"
 }

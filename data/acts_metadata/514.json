@@ -198,5 +198,76 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 13
+  "subsidiary_total": 13,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTE0Jmxhbmc9Qk0mZGF0ZT0wMS0wNi0yMDI0I3RpbWVsaW5lfDhmNmNiYTBkNGJmZGY2MTlmOTFiMWYzNDE1NzA5ZDQ2MjAyODgzMmMxMTRiNmJkNmEyNzNhMzE5NjU2ZWUzYzQ%3D",
+  "timeline_bm": [
+    {
+      "date": "25/02/1994",
+      "project_id": "526",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/526_BM/AKTA 514 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/12/2013",
+      "project_id": "16370",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 514 - Akta Keselamatan dan Kesihatan Pekerjaan 1994.pdf"
+    },
+    {
+      "date": "19/03/2022",
+      "project_id": "1725651",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1725651_BM/A1648 BM.pdf"
+    },
+    {
+      "date": "06/04/2024",
+      "project_id": "2086442",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2086442/PUA 100 (REUPLOAD).pdf"
+    },
+    {
+      "date": "07/04/2024",
+      "project_id": "2086441",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2086441/PUA 99.pdf"
+    },
+    {
+      "date": "06/06/2024",
+      "project_id": "2147114",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2147114/P.U. (A) 146_2024.pdf"
+    },
+    {
+      "date": "07/06/2024",
+      "project_id": "2147117",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2147117/P.U. (A) 147_2024.pdf"
+    },
+    {
+      "date": "09/06/2024",
+      "project_id": "2417052",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2417052_BM/Akta 514 - Muktamad (1.6.2024).pdf"
+    },
+    {
+      "date": "20/10/2024",
+      "project_id": "2413119",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2413119/PUA 292_2024.pdf"
+    },
+    {
+      "date": "30/01/2025",
+      "project_id": "2645657",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2645657/PUA 25_2025.pdf"
+    },
+    {
+      "date": "24/11/2025",
+      "project_id": "3193361",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3193361/PUB 399_2025.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2417052_BM/Akta 514 - Muktamad (1.6.2024).pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1725651_BM/A1648 BM.pdf"
 }

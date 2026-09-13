@@ -24,7 +24,6 @@ import fitz  # PyMuPDF
 from scraper.config import (
     INDEX_FILE,
     PDF_EN_DIR,
-    CHUNKS_EN_DIR,
     EXTRACT_REPORT,
     CORPUS_MANIFEST,
     CORPUS_ASSET_DIR,

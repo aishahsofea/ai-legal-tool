@@ -39,5 +39,22 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzI3Jmxhbmc9Qk0mZGF0ZT0wMS0wNi0yMDE1I3RpbWVsaW5lfDkzMmQ3NjJhYTQ2MzRiOTZiODFlMjFkNWNjNjZiZjcwMzUxNjBjMTc0MDQ1NWRlYTJiMjI1ODJkYTNmZmUyZTc%3D",
+  "timeline_bm": [
+    {
+      "date": "03/06/2011",
+      "project_id": "739",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20110602_727_BM_Akta Juruanalisis Makanan 2011.pdf"
+    },
+    {
+      "date": "03/06/2015",
+      "project_id": "16408",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 727  3.06.2015.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 727  3.06.2015.pdf",
+  "latest_amendment_pdf_bm": ""
 }

@@ -288,5 +288,28 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 29
+  "subsidiary_total": 29,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzUzJmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDE2I3RpbWVsaW5lfGIwMzE3ZDIzM2U2MzdhMGVkYjk2YzNhODFiNTM2Y2RlY2Q4MTI1MGI2NTk3NzQ3ZjAyMWUwYTM2NTA0Y2E2ZmE%3D",
+  "timeline_bm": [
+    {
+      "date": "17/08/2012",
+      "project_id": "765",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20120816_AKTA 753_BM_JW002810 BM-AKTA UMUR PERSARAAN MINIMUM 2012.pdf"
+    },
+    {
+      "date": "02/10/2016",
+      "project_id": "6048",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20160930_P.U.(A) 249.pdf"
+    },
+    {
+      "date": "04/11/2016",
+      "project_id": "16418",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 753-7.11.2016.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 753-7.11.2016.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/pua_20160930_P.U.(A) 249.pdf"
 }

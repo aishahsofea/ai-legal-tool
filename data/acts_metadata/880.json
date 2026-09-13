@@ -30,5 +30,22 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODgwJmxhbmc9Qk0mZGF0ZT0zMS0wMy0yMDI2I3RpbWVsaW5lfDBhZjMyOGVlNDliN2I3NmRkOGFjNGM0N2RlNGU3Yjk5ZjNhOTBlMDViMjJhYmQ5ODMwODNjYWYzMGRiZTAwOTA%3D",
+  "timeline_bm": [
+    {
+      "date": "01/04/2026",
+      "project_id": "3435918",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3435918/PUB 123_2026.pdf"
+    },
+    {
+      "date": "02/04/2026",
+      "project_id": "3435539",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3435539_BM/Akta 880 - AKTA PEMBERIAN MENGIKUT BILANGAN ORANG 2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

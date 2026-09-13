@@ -285,5 +285,58 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 24
+  "subsidiary_total": 24,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTUxJmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfGViMjQ0Y2M1YTZjODA5OTE5MTVkNGFiNTI1ZjQ0N2FhNThlMTkzNDU2Y2MwZjcwNzA4YzMwNDRlYmRlOTMzNzE%3D",
+  "timeline_bm": [
+    {
+      "date": "13/09/1996",
+      "project_id": "563",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/563_BM/AKTA 551 - WARTA ASAL.pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16264",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 551 - Akta Lembaga Getah Malaysia (Perbadanan) 1996.pdf"
+    },
+    {
+      "date": "30/05/2021",
+      "project_id": "1702074",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1702074/PUB 306.pdf"
+    },
+    {
+      "date": "16/04/2022",
+      "project_id": "1729326",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1729326/PUB197.pdf"
+    },
+    {
+      "date": "28/05/2023",
+      "project_id": "1819547",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1819547/PUA 155.pdf"
+    },
+    {
+      "date": "07/04/2024",
+      "project_id": "2077394",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2077394/PUA 96 (2024).pdf"
+    },
+    {
+      "date": "01/10/2024",
+      "project_id": "2371544",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2371544/PUB378_2024.pdf"
+    },
+    {
+      "date": "08/10/2024",
+      "project_id": "2384710",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2384710/PUB 383.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 551 - Akta Lembaga Getah Malaysia (Perbadanan) 1996.pdf",
+  "latest_amendment_pdf_bm": ""
 }

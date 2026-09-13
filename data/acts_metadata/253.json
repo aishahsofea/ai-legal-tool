@@ -84,5 +84,70 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjUzJmxhbmc9Qk0mZGF0ZT0wMS0xMC0yMDE0I3RpbWVsaW5lfDU1MmU3OWU4NzBhY2ZhNzI3MTFkY2Y3Y2M3NzVhYzc3ZjFhY2FmM2VkN2ZiYzRmODkwOTBjYTFmY2U2NTc3ODM%3D",
+  "timeline_bm": [
+    {
+      "date": "28/08/1957",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/06/1958",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "16/11/1958",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "20/03/1964",
+      "project_id": "103",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "01/09/1976",
+      "project_id": "1006123",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1006123_BM/Akta A354.pdf"
+    },
+    {
+      "date": "07/09/1981",
+      "project_id": "1742115",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 253 Semakan.pdf"
+    },
+    {
+      "date": "20/05/1982",
+      "project_id": "3193089",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3193089/06. P.U. A 133-1982.pdf"
+    },
+    {
+      "date": "09/01/2001",
+      "project_id": "1727463",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "10/01/2006",
+      "project_id": "1727463",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "11/10/2014",
+      "project_id": "16143",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 253-Akta Pendaftaran Pengangkatan 1952.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 253-Akta Pendaftaran Pengangkatan 1952.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3193089/06. P.U. A 133-1982.pdf"
 }

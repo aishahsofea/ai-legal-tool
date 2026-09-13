@@ -32,5 +32,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 340 - Dangerous Drugs (Forfeiture of Property) Act 1988.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzQwJmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfDQwZTkzMTliYzEwMTE2MzMxMTg4YThmZDFjZWI1NDA1Y2U3NDAyZDNmMDgwMmY2ZWM2MDI5MjM2NDc0N2E1NjY%3D",
+  "timeline_bm": [
+    {
+      "date": "10/06/1988",
+      "project_id": "352",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/352_BM/Akta 340 ASAL 1988 (BARU).pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16242",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 340 - Akta Dadah Berbahaya (Pelucuthakan Harta) 1988.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 340 - Akta Dadah Berbahaya (Pelucuthakan Harta) 1988.pdf",
+  "latest_amendment_pdf_bm": ""
 }

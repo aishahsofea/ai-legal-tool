@@ -38,5 +38,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Jan 2015  Reprint  Online Act 681.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjgxJmxhbmc9Qk0mZGF0ZT0wMS0xMS0yMDE3I3RpbWVsaW5lfGRkYWRjMDQ5ODk1YTI0NTEzM2NhYTk5MjAzYWE2MjU2N2NiYTU4Njk0MjhiM2EzYTMyYjA2YmEzYmJiZDQ5ZWQ%3D",
+  "timeline_bm": [
+    {
+      "date": "16/06/1970",
+      "project_id": "3691576",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3691576/12. P.U. (A) 184-1970.pdf"
+    },
+    {
+      "date": "03/03/1972",
+      "project_id": "3691538",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3691538_BM/13. Akta A96.pdf"
+    },
+    {
+      "date": "09/12/2007",
+      "project_id": "3691514",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3691514/14. P.U. (A) 236-2008_unlocked.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3691514/14. P.U. (A) 236-2008_unlocked.pdf"
 }

@@ -14,5 +14,16 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODU1Jmxhbmc9Qk0mZGF0ZT0yOS0wNy0yMDI0I3RpbWVsaW5lfDU5N2YwM2MxMjU0MTBlOGU5MTdmNjBlNmY2MzIwNzk5ODRlYmMxYTk2MTNmOWUyNmU3ZGI2OWFmZDIxYTZjOWE%3D",
+  "timeline_bm": [
+    {
+      "date": "30/07/2024",
+      "project_id": "2241197",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2241197_BM/Akta 855 BM cover depan.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

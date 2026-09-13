@@ -42,5 +42,28 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 1
+  "subsidiary_total": 1,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjAyJmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfGM4MzgwMzc4NzhkMTk1NGNjNTMxY2U5MWYyM2JkMGQzOGY1MzJjNTk4ODc3MTdiYTgyMDRlMDA3NmQ5ODM0NDI%3D",
+  "timeline_bm": [
+    {
+      "date": "16/06/2000",
+      "project_id": "614",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/614_BM/Akta 602.pdf"
+    },
+    {
+      "date": "26/01/2002",
+      "project_id": "3490798",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3490798_BM/Akta A1141 BM_unlocked.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "1727503",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727503_BM/Akta 602-Cetakan Semula 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727503_BM/Akta 602-Cetakan Semula 2006.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3490798_BM/Akta A1141 BM_unlocked.pdf"
 }

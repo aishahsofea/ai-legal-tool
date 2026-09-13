@@ -32,5 +32,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 305 - National Defence Fund (Dissolution and Transfer) A.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MzA1Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfDM2ZjZhNWUxZGQ0MTZmMGQ2ZWI3MzFkMDA2NWFkMmJjMTI0OGM3MzhhNDk5MzdmOTRiMjEwYWRmOWViMTM4NDQ%3D",
+  "timeline_bm": [
+    {
+      "date": "29/06/1984",
+      "project_id": "317",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/317_BM/305 BM.pdf"
+    },
+    {
+      "date": "03/12/2011",
+      "project_id": "16705",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 305 - Akta Tabung Pertahanan Negara (Pembubaran dan Pem.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 305 - Akta Tabung Pertahanan Negara (Pembubaran dan Pem.pdf",
+  "latest_amendment_pdf_bm": ""
 }

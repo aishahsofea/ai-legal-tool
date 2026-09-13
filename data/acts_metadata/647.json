@@ -144,5 +144,76 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 5
+  "subsidiary_total": 5,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjQ3Jmxhbmc9Qk0mZGF0ZT0wMS0wOC0yMDEzI3RpbWVsaW5lfGQxNjE3N2FkNzMyMDY2NTI4YWI4ZWUxMjAxMDAwOGUwZmRhODUyNGU2YTI1ZmRjOTI3MjRlOTc5Nzg3MWZkN2Y%3D",
+  "timeline_bm": [
+    {
+      "date": "02/04/1972",
+      "project_id": "3617984",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3617984_BM/06. Akta A107.pdf"
+    },
+    {
+      "date": "03/06/1975",
+      "project_id": "659",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/06/1975",
+      "project_id": "159",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/159_BM/AKTA 147 -WARTA ASAL (BM).pdf"
+    },
+    {
+      "date": "02/09/1975",
+      "project_id": "172",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/172_BM/AKTA 160.pdf"
+    },
+    {
+      "date": "09/09/1975",
+      "project_id": "3617882",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3617882_BM/09. Akta A321.pdf"
+    },
+    {
+      "date": "22/03/2006",
+      "project_id": "2253963",
+      "log_type": "REVISED",
+      "pdf_url": ""
+    },
+    {
+      "date": "02/11/2006",
+      "project_id": "3616865",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3616865/10. P.U. (A) 391-2006_unlocked.pdf"
+    },
+    {
+      "date": "09/08/2013",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "10/08/2013",
+      "project_id": "1709500",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": ""
+    },
+    {
+      "date": "30/08/2013",
+      "project_id": "883",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/883_BM/11. Akta A 1452_unlocked.pdf"
+    },
+    {
+      "date": "29/05/2026",
+      "project_id": "3518879",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3518879/PUA 191 (2026).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/883_BM/11. Akta A 1452_unlocked.pdf"
 }

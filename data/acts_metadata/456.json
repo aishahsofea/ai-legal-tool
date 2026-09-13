@@ -32,5 +32,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 456.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDU2Jmxhbmc9Qk0mZGF0ZT0yOS0xMS0yMDI0I3RpbWVsaW5lfDQ5ZGRlNmQ2NGY4NjEzODkzYzY0MTM1NzIxODNhNTNkNzk4OGE1MWNiZjdmMTFhZWVkZTlkYzQyYWRjMDQ1Mjg%3D",
+  "timeline_bm": [
+    {
+      "date": "12/04/1991",
+      "project_id": "468",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "01/12/2024",
+      "project_id": "2409492",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/terjemahan/2409492_BM/AKTA PANDU PUTERI 1953 (AKTA 456)- TERJEMAHAN.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

@@ -68,5 +68,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3089539_BI/Act 437 (Online 2025).pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1695991_BI/ACT A1589.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDM3Jmxhbmc9Qk0mZGF0ZT0wMS0xMC0yMDI1I3RpbWVsaW5lfDVmNGIxYmQwM2I1MGE2NjRjMGVkY2UzZjg1Y2UyMGQ3YThmZjIxZWEyZDMxODlkOTExMmVhZTQ4NGFhMDNjNzM%3D",
+  "timeline_bm": [
+    {
+      "date": "30/03/1990",
+      "project_id": "449",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/449_BM/AKTA NO 35 TAHUN 1968 - ASAL.pdf"
+    },
+    {
+      "date": "03/01/2017",
+      "project_id": "1727485",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 437 Reprint 2017.pdf"
+    },
+    {
+      "date": "04/06/2019",
+      "project_id": "1727549",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 437 Reprint Versi Atas Talian 2019.pdf"
+    },
+    {
+      "date": "05/10/2025",
+      "project_id": "3089539",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3089539_BM/No. 35 tahun 1968 (Dalam Talian 2025).pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3089539_BM/No. 35 tahun 1968 (Dalam Talian 2025).pdf",
+  "latest_amendment_pdf_bm": ""
 }

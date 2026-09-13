@@ -309,5 +309,76 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 26
+  "subsidiary_total": 26,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjI4Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfDA0YjVlM2M0OGExMWRkY2Y0NWM2NjZmNWY0YjJlZDhmZmJhNWE3NmUyNjc3NmM0MTZhOWRlZjAxNjkwNTBkN2E%3D",
+  "timeline_bm": [
+    {
+      "date": "08/08/2003",
+      "project_id": "640",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/640_BM/act628y2003bm_unlocked.pdf"
+    },
+    {
+      "date": "02/05/2004",
+      "project_id": "2257140",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257140_BM/Akta 628 Reprint 2004.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15645",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15645_BM/Akta 628 Reprint 2006.pdf"
+    },
+    {
+      "date": "31/08/2009",
+      "project_id": "1700339",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700339_BM/A1354y2009bm_unlocked.pdf"
+    },
+    {
+      "date": "06/11/2009",
+      "project_id": "1712488",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/P.U.(B) 468 of 2009.pdf"
+    },
+    {
+      "date": "07/12/2011",
+      "project_id": "16345",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 628 - Akta Latihan Khidmat Negara 2003.pdf"
+    },
+    {
+      "date": "24/04/2025",
+      "project_id": "2820799",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2820799/PUA 126.pdf"
+    },
+    {
+      "date": "26/04/2025",
+      "project_id": "2819507",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/2819507/PUA 129_2025.pdf"
+    },
+    {
+      "date": "18/02/2026",
+      "project_id": "3351586",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3351586/PUA 61 (2026).pdf"
+    },
+    {
+      "date": "19/02/2026",
+      "project_id": "3357804",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3357804/P.U. (A) 62_2026.pdf"
+    },
+    {
+      "date": "07/03/2026",
+      "project_id": "3379666",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3379666/PUB 65_2026.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 628 - Akta Latihan Khidmat Negara 2003.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/P.U.(B) 468 of 2009.pdf"
 }

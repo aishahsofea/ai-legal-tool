@@ -26,5 +26,16 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 557.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTU3Jmxhbmc9Qk0mZGF0ZT0wNi0wMy0xOTk3I3RpbWVsaW5lfDk2Zjg2NzVlODg0MGVlOTQyZDg0NjdlMTNiYTQxNzhhMTRjZTdkZjRjZWZkMGY2YmI2ODA1MjAyZDc5ZjhjMjE%3D",
+  "timeline_bm": [
+    {
+      "date": "07/03/1997",
+      "project_id": "569",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/569_BM/AKTA 557.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

@@ -93,5 +93,76 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MTQmbGFuZz1CTSZkYXRlPTAxLTAxLTIwMDYjdGltZWxpbmV8OTI2MzU2MDFkMTkwY2RjOTEzZGVmYjM5NjgzMTA4NjRmNzQwYWVjMTdlZGEyYWYwM2MyNGQ0NzhhZTQ5ODA1YQ%3D%3D",
+  "timeline_bm": [
+    {
+      "date": "02/01/1950",
+      "project_id": "26",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/01/1956",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "26/04/1957",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "17/11/1958",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/11/1969",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    },
+    {
+      "date": "07/11/1969",
+      "project_id": "3150834",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3150834_BM/AKTA 14 - REVISED 1969.pdf"
+    },
+    {
+      "date": "05/06/1980",
+      "project_id": "3150778",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3150778_BM/AKTA A486.pdf"
+    },
+    {
+      "date": "31/05/1985",
+      "project_id": "3150789",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3150789/P.U. (A) 218-1985.pdf"
+    },
+    {
+      "date": "10/08/1992",
+      "project_id": "1700458",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1700458_BM/AKTA 14 - REPRINT 1992.pdf"
+    },
+    {
+      "date": "10/09/1999",
+      "project_id": "2255513",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2255513_BM/AKTA 14 - REPRINT 1999.pdf"
+    },
+    {
+      "date": "12/01/2006",
+      "project_id": "15899",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 14.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 14.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/3150789/P.U. (A) 218-1985.pdf"
 }

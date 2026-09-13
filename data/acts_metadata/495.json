@@ -62,5 +62,22 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 495.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727787_BI/L.N. 332-1958.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDk1Jmxhbmc9Qk0mZGF0ZT0wOC0wMi0xOTkyI3RpbWVsaW5lfDA1MjA1YmJiMzg3NDJlMmIxNjgyZGI4MTVlYTE2MTY1ZDU5NmVjZTJiOWM1YWM1NjY3OTBkOWU3M2I4NGFhY2M%3D",
+  "timeline_bm": [
+    {
+      "date": "09/02/1992",
+      "project_id": "507",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "03/09/1992",
+      "project_id": "",
+      "log_type": "AMENDMENTS",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

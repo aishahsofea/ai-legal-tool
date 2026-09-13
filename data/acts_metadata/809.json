@@ -45,5 +45,28 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 2
+  "subsidiary_total": 2,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9ODA5Jmxhbmc9Qk0mZGF0ZT0xMi0xMS0yMDE4I3RpbWVsaW5lfDk0ZGY1ODM3NGNiMTNiMjlhY2MyYjRkNjRkMDg0YjljNTU5MGNiZWI1NjIzZjdhNmE5NWYxMmY3NjQ0Y2M3ZTk%3D",
+  "timeline_bm": [
+    {
+      "date": "13/11/2018",
+      "project_id": "1695972",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/20181112_809_BM_Warta - Akta Pertaruhan Wang Terkumpul 1967 [Akta 809].pdf"
+    },
+    {
+      "date": "17/07/2021",
+      "project_id": "1704611",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1704611/P.U. (A) 309_2021.pdf"
+    },
+    {
+      "date": "18/07/2021",
+      "project_id": "1704613",
+      "log_type": "SUBSIDIARY_LEGISLATION",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1704613/P.U. (A) 310_2021.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

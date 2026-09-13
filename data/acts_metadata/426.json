@@ -44,5 +44,34 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 426 - Government Trustee Securities Act 1957.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3430410_BI/ACT 22 OF 1963.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NDI2Jmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDEzI3RpbWVsaW5lfDA4ZGI3M2I5ZmFiYzQ2OWY1NzlmZTAzMjg5ODU2MDkwMGNjZmY5N2UxMmMxYmM2Mzc4ZDZmNDU4YTQ4YTY2YTQ%3D",
+  "timeline_bm": [
+    {
+      "date": "30/03/1990",
+      "project_id": "438",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "31/03/1990",
+      "project_id": "3391852",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3391852_BM/AKTA 426 REVISED 1990.pdf"
+    },
+    {
+      "date": "07/04/1991",
+      "project_id": "16624",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 426 - Akta Sekuriti Pemegang Amanah Kerajaan 1957.pdf"
+    },
+    {
+      "date": "05/01/2013",
+      "project_id": "16624",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 426 - Akta Sekuriti Pemegang Amanah Kerajaan 1957.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 426 - Akta Sekuriti Pemegang Amanah Kerajaan 1957.pdf",
+  "latest_amendment_pdf_bm": ""
 }

@@ -14,5 +14,22 @@
   "latest_reprint_pdf": "",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NzU1Jmxhbmc9Qk0mZGF0ZT0xMC0wMS0yMDEzI3RpbWVsaW5lfDdiNGRjYWFkNDUzZGNhYjJlMzYxZTU1YjIyNjdlNTQxY2RkZGM3NTNkNzUzYzIyZjEwZTYwNzE0ZmEzZjhlMWI%3D",
+  "timeline_bm": [
+    {
+      "date": "11/01/2013",
+      "project_id": "767",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/767_BM/AKTA 755.pdf"
+    },
+    {
+      "date": "31/12/2017",
+      "project_id": "813",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/813_BM/AKTA 801.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/813_BM/AKTA 801.pdf"
 }

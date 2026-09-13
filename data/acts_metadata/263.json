@@ -50,5 +50,46 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 263.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728238/PUA 274 1992.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjYzJmxhbmc9Qk0mZGF0ZT0yOS0xMS0yMDI0I3RpbWVsaW5lfGJkMTU3ZmE5YTY1ZTA2MGUyZjRlYjIzY2FmYTRmNTdmOGNlODkwZTY3ZWY0NTgzMzk2MjJiMTY4M2I4NDg0ZGM%3D",
+  "timeline_bm": [
+    {
+      "date": "22/01/1982",
+      "project_id": "275",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    },
+    {
+      "date": "23/01/1982",
+      "project_id": "3223151",
+      "log_type": "REVISED",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3223151_BM/AKTA 263 REVISED 1981.pdf"
+    },
+    {
+      "date": "04/03/1982",
+      "project_id": "176",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/176_BM/AKTA 164.pdf"
+    },
+    {
+      "date": "27/07/1992",
+      "project_id": "1728237",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728237/PUA 271 1992.pdf"
+    },
+    {
+      "date": "28/07/1992",
+      "project_id": "1728238",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728238/PUA 274 1992.pdf"
+    },
+    {
+      "date": "05/12/2024",
+      "project_id": "2190093",
+      "log_type": "TRANSLATE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/terjemahan/2190093_BM/AKTA 263.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/1728238/PUA 274 1992.pdf"
 }

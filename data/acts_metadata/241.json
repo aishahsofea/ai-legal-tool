@@ -26,5 +26,28 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 241.pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9MjQxJmxhbmc9Qk0mZGF0ZT0wMS0wMS0yMDA2I3RpbWVsaW5lfDAzNzQ4Y2UyYWI4OGQ1MDRjZmZlODllMjJmOWEzMzEzYTdkNzdiMzBlNTdiZDRkNzIwNWQyOTk5ZjUxODBlOWE%3D",
+  "timeline_bm": [
+    {
+      "date": "16/01/1981",
+      "project_id": "253",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/253_BM/AKTA 241.pdf"
+    },
+    {
+      "date": "02/06/2001",
+      "project_id": "2259391",
+      "log_type": "REPRINT",
+      "pdf_url": ""
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "3190678",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3190678_BM/AKTA 241 REPRINT 2006.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3190678_BM/AKTA 241 REPRINT 2006.pdf",
+  "latest_amendment_pdf_bm": ""
 }

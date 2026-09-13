@@ -44,5 +44,46 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 597 - Human Rights Commission of Malaysia Act 1999.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2177741_BI/Act A1714.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTk3Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfGVjMmU4YzBjYTRmZWNiYjJiM2UxNWQxMjU5MDYyMmEzMGQxYjI1YzNiYTdkZWFjZjFhNmVhYmE1MTE0MTViOGM%3D",
+  "timeline_bm": [
+    {
+      "date": "10/09/1999",
+      "project_id": "609",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/609_BM/SURUHANJAYA HAK ASASI MANUSIA MALAYSIA 1999_compressed.pdf"
+    },
+    {
+      "date": "03/01/2001",
+      "project_id": "1727499",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1727499_BM/AKTA 597 HAK ASASI MANUSIA REPRINT 2006.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "3099685",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3099685_BM/AKTA 597 HAK ASASI MANUSIA REPRINT 2006_unlocked.pdf"
+    },
+    {
+      "date": "21/02/2009",
+      "project_id": "1740972",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/A1353BMy2009.pdf"
+    },
+    {
+      "date": "06/12/2011",
+      "project_id": "16334",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 597 - Akta Suruhanjaya Hak Asasi Manusia Malaysia 1999.pdf"
+    },
+    {
+      "date": "03/07/2024",
+      "project_id": "2177741",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2177741_BM/Akta A1714.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 597 - Akta Suruhanjaya Hak Asasi Manusia Malaysia 1999.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2177741_BM/Akta A1714.pdf"
 }

@@ -72,5 +72,52 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 3
+  "subsidiary_total": 3,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjE0Jmxhbmc9Qk0mZGF0ZT0wMS0wMy0yMDE4I3RpbWVsaW5lfDkwM2NhZGU5YmQxYTY3MGU5YTlhNWEwNzM4YTliNGY1M2E1M2M5MzVkYWZlZjUwM2Y3MzI0NWUxZTA0MWYyMDc%3D",
+  "timeline_bm": [
+    {
+      "date": "28/09/2001",
+      "project_id": "626",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/626_BM/Warta Akta 614_unlocked (1).pdf"
+    },
+    {
+      "date": "02/04/2002",
+      "project_id": "2257182",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257182_BM/Akta 614  Reprint 2002.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15619",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15619_BM/Akta 614 Reprint 2006.pdf"
+    },
+    {
+      "date": "22/01/2007",
+      "project_id": "7442",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputp/7442/P.U. (A) 13-2018_unlocked.pdf"
+    },
+    {
+      "date": "10/01/2015",
+      "project_id": "909",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/909_BM/Akta A1478_unlocked (1).pdf"
+    },
+    {
+      "date": "07/05/2017",
+      "project_id": "16502",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Draf Muktamad Akta 614.pdf"
+    },
+    {
+      "date": "08/03/2018",
+      "project_id": "1727553",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 614 (5_12_2018)-Cetakan Semula Versi Online Mac 2018.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 614 (5_12_2018)-Cetakan Semula Versi Online Mac 2018.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/909_BM/Akta A1478_unlocked (1).pdf"
 }

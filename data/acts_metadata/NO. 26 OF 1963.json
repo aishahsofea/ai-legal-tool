@@ -38,5 +38,9 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1819441_BI/Malaysia Act 1963_FINAL_ONLINE_as at 30.10.23 241023.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Malaysia Act (Amendment) Act 1965 [No. 54 of 1965].pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9Tk8uIDI2IE9GIDE5NjMmc3RhdHVzPW9sZCZsYW5nPUJNJmRhdGU9MzAtMTAtMjAyMyN0aW1lbGluZXxjNzQzNTMzZTliNjVlNDg3ZjE5ZDgyZTEyMDZmM2ExYzA2NjI2ZWNiZGE2ODVlZTZlZGJhMzg0MjkyYjljNGNi",
+  "timeline_bm": [],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

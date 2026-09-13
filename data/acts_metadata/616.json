@@ -38,5 +38,40 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 616 - Panglima Gagah Berani (Remembrance Allowance) Act .pdf",
   "latest_amendment_pdf": "",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NjE2Jmxhbmc9Qk0mZGF0ZT0wMS0xMi0yMDExI3RpbWVsaW5lfGM3MmM5Y2U5MmVmMThiNTI4MzdhYTYzNmI5MDJiMzc3NTMxZDc0MDVmMTVmYjc3OWQ5Y2IzZGMzM2RmNTM2MTc%3D",
+  "timeline_bm": [
+    {
+      "date": "28/12/2001",
+      "project_id": "628",
+      "log_type": "ORIGINAL",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/628_BM/Act 616 BM_unlocked.pdf"
+    },
+    {
+      "date": "02/05/2004",
+      "project_id": "2257177",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2257177_BM/Akta 616 Reprint 2004.pdf"
+    },
+    {
+      "date": "04/01/2006",
+      "project_id": "15623",
+      "log_type": "REPRINT",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/15623_BM/Akta 616 Reprint 2006.pdf"
+    },
+    {
+      "date": "05/07/2009",
+      "project_id": "3522531",
+      "log_type": "AMENDMENTS",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3522531_BM/A1360y2009bm_unlocked (1).pdf"
+    },
+    {
+      "date": "06/12/2011",
+      "project_id": "16342",
+      "log_type": "REPRINT ONLINE",
+      "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 616 - Akta Panglima Gagah Berani   (Elaun Kenangan) 200.pdf"
+    }
+  ],
+  "latest_reprint_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 616 - Akta Panglima Gagah Berani   (Elaun Kenangan) 200.pdf",
+  "latest_amendment_pdf_bm": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3522531_BM/A1360y2009bm_unlocked (1).pdf"
 }

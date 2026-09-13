@@ -336,5 +336,9 @@
       "pdf_url": ""
     }
   ],
-  "subsidiary_total": 33
+  "subsidiary_total": 33,
+  "detail_url_bm": "",
+  "timeline_bm": [],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }

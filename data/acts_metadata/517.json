@@ -38,5 +38,16 @@
   "latest_reprint_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/16078_BI/ACT 517 - REPRINT 2006.pdf",
   "latest_amendment_pdf": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/3402967_BI/ORD. NO. 46 OF 1955.pdf",
   "subsidiary_legislation": [],
-  "subsidiary_total": 0
+  "subsidiary_total": 0,
+  "detail_url_bm": "https://lom.agc.gov.my/processFile.php?isDirect=1&token=aHR0cHM6Ly9sb20uYWdjLmdvdi5teS9hY3QtZGV0YWlsLnBocD9hY3Q9NTE3Jmxhbmc9Qk0mZGF0ZT0zMS0wMy0xOTk0I3RpbWVsaW5lfDc1ZDY4ZTcwY2U4YmJmMWE1YTJiNDFlYTM4ZmQ3YmY4MGY3MDM4ZGYzNTUyZjcxMDU5MmFhMWIyNDc3OGQ1OGY%3D",
+  "timeline_bm": [
+    {
+      "date": "01/04/1994",
+      "project_id": "529",
+      "log_type": "ORIGINAL",
+      "pdf_url": ""
+    }
+  ],
+  "latest_reprint_pdf_bm": "",
+  "latest_amendment_pdf_bm": ""
 }
