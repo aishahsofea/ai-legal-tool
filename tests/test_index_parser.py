@@ -68,3 +68,13 @@ def test_parse_revised_record_includes_title_links():
 
     assert result["title_link_bm"].startswith("https://lom.agc.gov.my/processFile.php")
     assert result["title_link_en"].startswith("https://lom.agc.gov.my/processFile.php")
+
+
+def test_parse_title_link_html_handles_absolute_and_root_relative_hrefs():
+    """AGC serves a bare `processFile.php?...` href today, but an absolute or
+    root-relative one must resolve to the same URL, not a doubled-up path."""
+    inner = "https://lom.agc.gov.my/act-detail.php?act=884&lang=BM&date=26-06-2026#timeline"
+    relative = _signed_href(inner)
+    for href in (relative, f"/{relative}", f"https://lom.agc.gov.my/{relative}"):
+        bm, _ = parse_title_link_html(f'<a href="{href}">Tajuk BM</a>')
+        assert bm == f"https://lom.agc.gov.my/{relative}"

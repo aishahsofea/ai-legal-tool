@@ -256,3 +256,56 @@ def test_scraped_at_for_falls_back_to_the_act_level_stamp():
     assert scraped_at_for(metadata, "bm") == "2026-05-07T02:28:40+00:00"
     assert scraped_at_for(metadata, "en") == "2026-05-07T02:28:40+00:00"
     assert scraped_at_for({}, "bm") == ""
+
+
+def _signed(inner: str) -> str:
+    """A processFile.php link of the shape AGC serves since issue #64."""
+    import base64
+
+    token = base64.b64encode(f"{inner}|{'a' * 64}".encode("utf-8")).decode("ascii")
+    return f"https://lom.agc.gov.my/processFile.php?isDirect=1&token={token}"
+
+
+def test_source_language_reads_the_language_out_of_a_signed_detail_link():
+    """Since #64 detail_url carries no plain lang= marker, so the pre-#64 check
+    matches nothing and every re-scraped Malay Act would fall through to "en"
+    unless the token is decoded."""
+    from corpus.manifest import source_language
+
+    metadata = {"detail_url": _signed("https://lom.agc.gov.my/act-detail.php?act=144&lang=BM&date=01-01-2020")}
+    # A Malay reprint whose PDF path carries no /MY/ or _bm/ marker — 19 of
+    # these are in the corpus, so the URL alone cannot classify them.
+    unmarked = "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Akta 580.pdf"
+
+    assert source_language(metadata, unmarked) == "bm"
+
+
+def test_source_language_reads_english_out_of_a_signed_detail_link():
+    from corpus.manifest import source_language
+
+    metadata = {"detail_url": _signed("https://lom.agc.gov.my/act-detail.php?act=100&lang=BI&date=01-01-2020")}
+
+    assert source_language(metadata, "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/Act 100.pdf") == "en"
+
+
+def test_source_language_still_reads_the_pre_64_url_markers():
+    """Metadata already on disk carries plain act-detail.php URLs, and its
+    documents must keep the language they were registered under."""
+    from corpus.manifest import source_language
+
+    legacy = {"detail_url": "https://lom.agc.gov.my/act-detail.php?act=144&lang=BM"}
+    assert source_language(legacy, "https://lom.agc.gov.my/x/Akta 144.pdf") == "bm"
+    assert source_language({}, "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 152.pdf") == "bm"
+    assert source_language({}, "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/Act 152.pdf") == "en"
+
+
+def test_source_language_ignores_an_undecodable_token():
+    """A token that is not base64, or carries no lang marker, must fall through
+    to the URL markers rather than throwing."""
+    from corpus.manifest import source_language
+
+    assert source_language({"detail_url": "https://lom.agc.gov.my/processFile.php?token=!!!"}, "") == "en"
+    assert source_language(
+        {"detail_url": _signed("https://lom.agc.gov.my/act-detail.php?act=1")},
+        "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 1.pdf",
+    ) == "bm"

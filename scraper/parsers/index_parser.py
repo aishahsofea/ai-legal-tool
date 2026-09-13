@@ -4,7 +4,7 @@ canonical shape: {act_number, act_type, title_bm, title_en, ...extras}.
 """
 import base64
 import binascii
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import urljoin, urlparse, parse_qs
 
 from bs4 import BeautifulSoup
 
@@ -78,9 +78,9 @@ def parse_title_link_html(html: str) -> tuple[str, str]:
             continue
         lang = _token_lang(href)
         if lang == "BM":
-            bm = f"{BASE_URL}/{href}"
+            bm = urljoin(f"{BASE_URL}/", href)
         elif lang == "BI":
-            bi = f"{BASE_URL}/{href}"
+            bi = urljoin(f"{BASE_URL}/", href)
     return bm, bi
 
 

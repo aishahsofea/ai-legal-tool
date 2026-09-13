@@ -150,13 +150,20 @@ def test_scrape_act_bm_only_act_does_not_fetch_english():
 
 
 def test_scrape_act_offline_html_override_skips_secondary_fetch():
+    """`--html` recovery parses the English page and issues no request at all.
+
+    It therefore learns nothing about the Malay side, so it must leave the *_bm
+    fields unset — writing them empty would read as confirmed absent and retire
+    the Act from backfill for good.
+    """
     session = _FakeSession({_bm_link("3"): "should never be requested"})
     html = _detail_html("01/01/2020", "REPRINT ONLINE", "ACT3-EN.pdf")
 
     result = _scrape(session, "3", html=html, link_bm=_bm_link("3"))
 
     assert result["latest_reprint_pdf"].endswith("ACT3-EN.pdf")
-    assert result["detail_url_bm"] == ""
+    assert "detail_url_bm" not in result
+    assert step2_detail._needs_bm_backfill(result) is True
     assert session.requested == []
 
 
@@ -608,3 +615,58 @@ def test_scrape_act_leaves_no_malay_stamp_when_there_is_no_malay_document():
     result = _scrape(session, "18", link_en=_en_link("18"), link_bm="")
 
     assert "scraped_at_bm" not in result
+
+
+def test_backfill_is_owed_to_a_malay_document_recorded_without_its_own_date():
+    """The #71 fix only reaches Acts already on disk if they come back round.
+
+    Every Malay document scraped before the stamp existed has detail_url_bm and
+    no scraped_at_bm, so a gate keyed on detail_url_bm alone would skip all 879
+    of them forever and leave them filed under the English scrape's date.
+    """
+    assert step2_detail._needs_bm_backfill({
+        "detail_url_bm": _bm_link("19"),
+        "timeline_bm": [{"date": "01/01/2019"}],
+    }) is True
+
+
+def test_backfill_not_owed_once_the_malay_side_carries_its_own_date():
+    assert step2_detail._needs_bm_backfill({
+        "detail_url_bm": _bm_link("19"),
+        "scraped_at_bm": "2026-05-07T02:28:40+00:00",
+    }) is False
+
+
+def test_backfill_not_owed_when_the_act_has_no_malay_document():
+    """Present-and-empty *_bm fields are a confirmed absence, not a gap —
+    there is no document to date, so the Act must not be re-attempted."""
+    assert step2_detail._needs_bm_backfill({"detail_url_bm": "", "timeline_bm": []}) is False
+
+
+def test_backfill_keeps_a_malay_document_the_listing_no_longer_links():
+    """201 Acts have a fetched Malay document whose listing link is now gone.
+
+    A link that disappeared is not evidence the document never existed, so the
+    record survives. It gets the act-level date — the date Step 3 already fell
+    back to — so the Act stops asking to be backfilled every run.
+    """
+    existing = {
+        "act_number": "20",
+        "detail_url": _en_link("20"),
+        "scraped_at": "2026-05-07T02:28:40+00:00",
+        "latest_reprint_pdf": "https://old/ACT20.pdf",
+        "detail_url_bm": _bm_link("20"),
+        "timeline_bm": [{"date": "01/01/2019", "log_type": "REPRINT ONLINE", "pdf_url": "https://old/AKTA20.pdf"}],
+        "latest_reprint_pdf_bm": "https://old/AKTA20.pdf",
+    }
+    session = _FakeSession({})
+
+    result, made_request = step2_detail.backfill_bm_variant(session, "20", existing, link_bm="")
+
+    assert made_request is False
+    assert session.requested == []
+    assert result["detail_url_bm"] == existing["detail_url_bm"]
+    assert result["timeline_bm"] == existing["timeline_bm"]
+    assert result["latest_reprint_pdf_bm"] == existing["latest_reprint_pdf_bm"]
+    assert result["scraped_at_bm"] == existing["scraped_at"]
+    assert step2_detail._needs_bm_backfill(result) is False

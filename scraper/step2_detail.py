@@ -255,7 +255,14 @@ def scrape_act(
         "subsidiary_total":     len(subsidiary),
     }
 
-    if en_exists and bm_exists and bm_html is not None:
+    if offline:
+        # `--html` recovery parses the English page only and never goes near
+        # the Malay side, so this run learned nothing about it. Leave the *_bm
+        # fields unset rather than empty: an empty record reads as confirmed
+        # absent and would retire the Act from _needs_bm_backfill for good,
+        # losing a Malay document the listing may well still offer.
+        pass
+    elif en_exists and bm_exists and bm_html is not None:
         bm_timeline = parse_timeline(bm_html)
         # Stamped separately from scraped_at because the Malay side is often
         # fetched in a later run than the primary — Step 3 files each document
@@ -285,7 +292,21 @@ def scrape_act(
 
 
 def _needs_bm_backfill(existing: dict) -> bool:
-    return not existing.get("stub") and "detail_url_bm" not in existing
+    """True when Step 2 still owes this already-scraped Act a Malay fetch.
+
+    Two cases. The *_bm fields were never written at all. Or they were written
+    before #71, so the Malay document carries no scrape date of its own and
+    Step 3 files it under the English side's date instead. Nothing recorded the
+    real one, so re-fetching is the only way to learn it — hence the second
+    check, without which the #71 fix would never reach a single Act already on
+    disk. An Act whose *_bm fields are present and empty has no Malay document
+    to date, so it is done either way.
+    """
+    if existing.get("stub"):
+        return False
+    if "detail_url_bm" not in existing:
+        return True
+    return bool(existing.get("detail_url_bm")) and "scraped_at_bm" not in existing
 
 
 def _index_predates_signed_links(acts: list[dict]) -> bool:
@@ -322,7 +343,7 @@ def _scrape_act_refreshing_key(session, key_hex: str, act: dict, **kwargs) -> tu
 def backfill_bm_variant(
     session, act_number: str, existing: dict, link_bm: str = "", timeout: int = 120
 ) -> tuple[dict | None, bool]:
-    """Add the lang=BM fields to an Act scraped before they existed.
+    """Add or re-date the lang=BM fields of an already-scraped Act.
 
     Never re-fetches or touches the existing primary fields (detail_url,
     timeline, latest_reprint_pdf, latest_amendment_pdf) — only the *_bm
@@ -333,15 +354,26 @@ def backfill_bm_variant(
     when the listing has none). An empty link_bm is only authoritative on an
     index that carries the title_link_* keys at all — callers check that with
     _index_predates_signed_links first. Returns (merged_metadata, made_request).
-    made_request is False when there is no separate Malay version to fetch
-    at all — either the primary itself was already the lang=BM fallback (the
-    pre-#64 BM-only shape), or the current listing carries no Malay link.
+    made_request is False when there is nothing to fetch — the primary itself
+    was already the lang=BM fallback (the pre-#64 BM-only shape), or the
+    current listing carries no Malay link. In that last case an existing Malay
+    document is kept, never blanked.
     merged_metadata is None when a request was made but failed transiently;
     the caller must not persist that as "no BM version" — retry later.
     """
     was_bm_fallback = "lang=bm" in str(existing.get("detail_url", "")).lower()
     if was_bm_fallback or not link_bm:
         merged = dict(existing)
+        if merged.get("detail_url_bm"):
+            # An earlier run already fetched a Malay document for this Act, but
+            # the current listing offers no link to fetch it again — true for
+            # 201 Acts today. A link that disappeared is not evidence the
+            # document never existed, so keep it. Its own scrape date is
+            # unrecoverable; stamp the act-level one, which is the date Step 3
+            # would have fallen back to anyway, so the Act stops asking to be
+            # backfilled on every future run.
+            merged.setdefault("scraped_at_bm", str(existing.get("scraped_at", "")))
+            return merged, False
         merged["detail_url_bm"] = ""
         merged["timeline_bm"] = []
         merged["latest_reprint_pdf_bm"] = ""
