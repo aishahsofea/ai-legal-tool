@@ -127,3 +127,45 @@ Also tried: Gemini 2.5 Flash (would be ~15× cheaper) — hit free-tier 5 RPM ca
 
 Root cause was framing, not control flow: the field was named/described as **citation** style and the extractor instructions listed only "Citation / formatting style preferences", so gpt-4.1-mini didn't classify "give me bullets" / "be brief" as citation style, and the "when in doubt, do not store it" guard tipped it toward skipping. Fix (prompt/description only): widened the `citation_style` field description to cover response format/length/structure, made the extractor's formatting bullet explicit and exemplified, and added one line clarifying that a direct instruction about answer presentation IS a durable preference worth storing. Confidentiality block and the "when in doubt" guard left intact. Repro now populates `citation_style` across phrasings ("brief and concise", "use bullet points", "state the section number first") and recall surfaces it on a fresh thread. Kept the field name `citation_style` — recall renders it generically and a rename would ripple into stored data + tests.
 
+
+**2026-09-14** — Ran the Nemotron-on-Nebius compatibility matrix for issue #59. The factory change works. The tier split documented alongside it does not, and the reason turned out to be the opposite of the first reading.
+
+Nebius serves eight Nemotron variants; an API key exposes four of them serverless. Their ids are not their Hugging Face repo names — `nvidia/nemotron-3-super-120b-a12b` is lowercase, which the first draft of `CONTRIBUTING.md` guessed wrong.
+
+Everything non-structured passes on every tier: plain completion, `.stream()`, `.ainvoke()`, and `bind_tools` — the retrieval agent picked `search_statutes` unprompted. An unknown model id returns a clean 404, so a typo fails loudly.
+
+Structured output splits the models, and quantization predicts the split better than size does:
+
+| Model | Quantization | `with_structured_output`, real router prompt, 5 queries |
+|---|---|---|
+| Nemotron-3.5-Lightning (30B) | BF16 | 5/5 |
+| Nemotron-3-Ultra-550b-a55b | FP4 | 5/5 |
+| NVIDIA-Nemotron-3-Nano-30B-A3B | FP8 | 4/5 |
+| nemotron-3-super-120b-a12b | FP4 | 0/5 |
+
+The first reading of this was that Nebius accepts `response_format: json_schema` and does not enforce it. That is wrong: Lightning and Ultra honour it, nested `_GroundingOutput` included. It is per-model. Super is simply broken on it — it returns 200 and hands back YAML (`standalone_query: "..."`), 0/5, every schema.
+
+Nano's failure is different and intermittent: handed a json_schema it sometimes reasons past the 8192-token ceiling and raises `LengthFinishReasonError`, where the same prompt unstructured finishes in 114 tokens. `max_tokens=2048` does not bound it — the endpoint still reports 8192. Longer prompts trigger it more: the grounding check's ~2000-token prompt hit it on Lightning too, with `reasoning_tokens=8192`.
+
+`method="function_calling"` is rejected outright with a 422 on every model: LangChain sends `parallel_tool_calls` and Nebius's body parser refuses the extra field. Plain `bind_tools` sends no such field, which is why tool binding works and function-calling structured output does not.
+
+Smoke evals, all seven nodes on Lightning, judge on the usual Claude Haiku:
+
+| Assertion | Result |
+|---|---|
+| Judge | 7/8 = 87.5% |
+| citation_existence | 6/6 = 100% |
+| expected_section | 3/5 = 60% |
+| section_recall | 1/1 = 100% |
+| uuid_leakage | 10/10 = 100% |
+| ai_refusal | 8/8 = 100% |
+
+Above the 80% judge gate. One case lost its grounding check to the token ceiling and failed open exactly as designed — the turn completed and the judge passed it, with the skip recorded in the log. That is the fail-open rule earning its place. It also means grounding verification is silently intermittent on this provider — a real degradation, not a clean pass.
+
+That gate turned out not to be sufficient evidence. Run end to end through the API and the browser, a statute-lookup query on all-Lightning fell back to `FINAL_FAILURE_RESPONSE`. Retrieval was correct — Act 56 s.90A was the top hit, and the prose named the section. But `citation_refs` came back empty, so `citation_validator` blocked the answer. Three runs each on the same query: Ultra populated citations 3/3, Lightning 1/3, Nano 1/3 with two token runaways. This is the failure Haiku showed on 2026-05-16, and a judge pass rate cannot see it, because it averages over cases and the smoke set happened not to hit it.
+
+So the worked example in `CONTRIBUTING.md` now splits the tiers — Lightning for router, contextualize, conversational and memory extraction; Ultra for synthesiser, grounding check and the retrieval agent. A live turn on that split produced a real answer with zero violations and a receipt-backed citation. The smoke table above was measured on all-Lightning and does not cover it.
+
+Two things only the end-to-end run could find. One was the citation gap above. The second was a rendering bug in #61. The PROCESS panel's model rows reused a grid whose first column is 24px, sized for a two-digit step number. A node name overran it into the model id and rendered as overlapping text. Every `getByText` assertion passed, because jsdom computes no layout. Both were obvious within one turn of actually using the thing.
+
+The error shaping added in #59 named the node and the model on every failure except `LengthFinishReasonError`, which openai raises from its own parser with no status code — the classifier missed it and it propagated raw. Added by class name, with `ContentFilterFinishReasonError` alongside.

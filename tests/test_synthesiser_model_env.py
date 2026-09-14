@@ -12,13 +12,19 @@ from agent.nodes import synthesiser
 
 class SynthesiserModelEnvTests(unittest.TestCase):
     def test_synthesiser_defaults_to_gpt_4_1(self):
+        # Empty rather than absent: reloading the node re-runs load_dotenv(),
+        # which would restore a developer's real .env values over a cleared
+        # environment. load_dotenv never overwrites a var that is already set,
+        # so "" survives the reload and reads as unset.
         env = {k: v for k, v in os.environ.items() if k != "SYNTHESISER_MODEL"}
+        env["CHAT_BASE_URL"] = ""
+        env["CHAT_API_KEY"] = ""
         with patch.dict(os.environ, env, clear=True):
             with patch.object(llm_factory, "ChatOpenAI") as mock_openai:
                 with patch.object(llm_factory, "ChatAnthropic") as mock_anthropic:
                     mock_openai.return_value.with_structured_output.return_value = MagicMock()
                     importlib.reload(synthesiser)
-                    mock_openai.assert_called_once_with(model="gpt-4.1", temperature=0)
+                    mock_openai.assert_called_once_with(model="gpt-4.1", temperature=0, base_url=None)
                     mock_anthropic.assert_not_called()
 
     def test_synthesiser_uses_anthropic_for_claude_model(self):
@@ -31,12 +37,12 @@ class SynthesiserModelEnvTests(unittest.TestCase):
                     mock_openai.assert_not_called()
 
     def test_synthesiser_uses_openai_for_gpt_model(self):
-        with patch.dict(os.environ, {"SYNTHESISER_MODEL": "gpt-4o"}):
+        with patch.dict(os.environ, {"SYNTHESISER_MODEL": "gpt-4o", "CHAT_BASE_URL": "", "CHAT_API_KEY": ""}):
             with patch.object(llm_factory, "ChatOpenAI") as mock_openai:
                 with patch.object(llm_factory, "ChatAnthropic") as mock_anthropic:
                     mock_openai.return_value.with_structured_output.return_value = MagicMock()
                     importlib.reload(synthesiser)
-                    mock_openai.assert_called_once_with(model="gpt-4o", temperature=0)
+                    mock_openai.assert_called_once_with(model="gpt-4o", temperature=0, base_url=None)
                     mock_anthropic.assert_not_called()
 
     @classmethod

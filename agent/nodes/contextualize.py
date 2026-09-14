@@ -20,7 +20,7 @@ import os
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
-from agent.llm_factory import make_llm, system_content
+from agent.llm_factory import make_llm, structured_llm, system_content
 from agent.query_policy import trim_history
 from agent.state import AgentState
 
@@ -29,14 +29,14 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 
 _MODEL = os.getenv("CONTEXTUALIZER_MODEL", "gpt-4.1-mini")
-_llm = make_llm(_MODEL)
+_llm = make_llm(_MODEL, node="contextualize")
 
 
 class _ContextualizeOutput(BaseModel):
     standalone_query: str
 
 
-_structured_llm = _llm.with_structured_output(_ContextualizeOutput)
+_structured_llm = structured_llm(_llm, _ContextualizeOutput, node="contextualize", model_name=_MODEL)
 
 _SYSTEM = """You rewrite a follow-up question from a Malaysian legal research chat \
 into a self-contained search query.

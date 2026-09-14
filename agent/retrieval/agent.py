@@ -122,7 +122,7 @@ class ReferenceRetrievalState(RetrievalState):
 def _build_retrieval_agent(follow_enabled: bool):
     """maxsize=2 so the two flag variants never share a compiled agent — a leaked
     tool list would bind follow_references while the flag is off."""
-    model = make_llm(os.getenv("RETRIEVAL_AGENT_MODEL", "gpt-4.1"))
+    model = make_llm(os.getenv("RETRIEVAL_AGENT_MODEL", "gpt-4.1"), node="retrieval_agent")
     tools = [search_statutes, lookup_section]
     system_prompt = _SYSTEM
     state_schema = RetrievalState

@@ -8,7 +8,7 @@ For anything client-specific, it hands off to a human lawyer.
 
 **Stack:** LangGraph · FastAPI (Railway) · Next.js (Vercel) · Postgres + pgvector (Supabase) · OpenAI `text-embedding-3-small` · GPT-4.1
 
-Provider-agnostic: `agent/llm_factory.py` for chat models, `agent/embeddings.py` for embeddings. Claude and Gemini are swappable in; Claude runs the eval judge. The `text-embedding-3-small` and GPT-4.1 defaults are both env-overridable — see [model overrides](CONTRIBUTING.md#model-overrides).
+Provider-agnostic: `agent/llm_factory.py` for chat models, `agent/embeddings.py` for embeddings. Claude and Gemini are swappable in; Claude runs the eval judge. The `text-embedding-3-small` and GPT-4.1 defaults are env-overridable, and `CHAT_BASE_URL` points chat models at any OpenAI-compatible endpoint. Open-weights models on a hosted provider are a config change — see [model overrides](CONTRIBUTING.md#model-overrides).
 
 ## Highlights
 

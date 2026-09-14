@@ -416,6 +416,57 @@ Each of the router, contextualize, conversational, synthesiser, and grounding-ch
 | `RETRIEVAL_AGENT_MODEL` | agentic retriever ReAct agent (`AGENTIC_RETRIEVAL` on) | `gpt-4.1` |
 | `MEMORY_EXTRACT_MODEL` | Semantic Memory extractor (background write path) | `gpt-4.1-mini` |
 
+#### Pointing the chat models at another provider
+
+`CHAT_BASE_URL` sends the OpenAI-shaped client to any OpenAI-compatible endpoint — the chat-side twin of `EMBEDDING_BASE_URL`. Leave it unset and the client talks to `api.openai.com`. `claude-*` and `gemini-*` still route to Anthropic and Google, so they ignore it.
+
+`CHAT_API_KEY` authenticates those calls. Keep it separate from `OPENAI_API_KEY` — `agent/embeddings.py` uses `OPENAI_API_KEY` too, and `EMBEDDING_BASE_URL` moves on its own. One shared key would send your chat provider's key to `api.openai.com` on every embedding call and 401 the whole retriever. Leave `CHAT_API_KEY` unset and chat falls back to `OPENAI_API_KEY`.
+
+| Env var | Drives | Default |
+|---|---|---|
+| `CHAT_BASE_URL` | every chat model that is not `claude-*` or `gemini-*` (optional) | unset |
+| `CHAT_API_KEY` | auth for those same chat models (optional) | falls back to `OPENAI_API_KEY` |
+
+Worked example — the whole graph on open-weights Nemotron served by Nebius, measured 2026-09-14:
+
+```bash
+CHAT_BASE_URL=https://api.studio.nebius.com/v1/
+CHAT_API_KEY=<your Nebius key>
+# OPENAI_API_KEY stays your OpenAI key — the corpus embeddings still need it
+
+ROUTER_MODEL=nvidia/Nemotron-3_5-Lightning
+CONTEXTUALIZER_MODEL=nvidia/Nemotron-3_5-Lightning
+CONVERSATIONAL_MODEL=nvidia/Nemotron-3_5-Lightning
+MEMORY_EXTRACT_MODEL=nvidia/Nemotron-3_5-Lightning
+
+SYNTHESISER_MODEL=nvidia/Nemotron-3-Ultra-550b-a55b
+GROUNDING_MODEL=nvidia/Nemotron-3-Ultra-550b-a55b
+RETRIEVAL_AGENT_MODEL=nvidia/Nemotron-3-Ultra-550b-a55b
+```
+
+Copy the model id from the provider's own model list. Nebius ids are not the Hugging Face repo names, and the string has to match exactly.
+
+Pick the model by how it handles structured output, not by size. Router, contextualize, synthesiser, and grounding check all call `with_structured_output`, and a served open-weights model may accept that request and ignore it. Measured against the real router prompt, five queries each:
+
+| Model | Quantization | Passed |
+|---|---|---|
+| `nvidia/Nemotron-3_5-Lightning` | BF16 | 5/5 |
+| `nvidia/Nemotron-3-Ultra-550b-a55b` | FP4 | 5/5 |
+| `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B` | FP8 | 4/5 |
+| `nvidia/nemotron-3-super-120b-a12b` | FP4 | 0/5 |
+
+Super returns YAML where JSON was required. Quantization tracks this better than parameter count: a 4-bit build loses format adherence before it loses reasoning.
+
+Passing that check is not enough for the synthesiser, which has to fill `citation_refs` as well as write prose. A model can get the prose right and leave the field empty. `citation_validator` then blocks the answer, and the turn falls back to `FINAL_FAILURE_RESPONSE`. On one statute-lookup query, three runs each: Ultra populated citations 3/3, Lightning 1/3, Nano 1/3. That is why the example splits the tiers rather than running one model everywhere. A judge pass rate averages over cases, so it cannot see this.
+
+The smoke eval table in `docs/build-log.md` was measured with all seven nodes on Lightning, not on the split above. It passes the gate, but the citation measurement above says not to read that as clearing a Lightning synthesiser.
+
+Two provider limits worth knowing. `method="function_calling"` fails with a 422 on every Nemotron — LangChain sends `parallel_tool_calls` and Nebius refuses the extra field. Plain `bind_tools` sends no such field and works, so the retrieval agent is fine. And a reasoning model handed a `json_schema` can generate to the 8192-token ceiling without the request failing; `max_tokens` does not bound it. Longer prompts make it likelier — the grounding check's ~2000-token prompt hits it occasionally even on Lightning. That node fails open, so the turn survives and the log records the skip.
+
+When structured output fails the factory raises `StructuredOutputError` naming the node and the model. Contextualize and grounding check fail open, so that log line is the only place you will see which one broke. Rate limits, auth failures, and timeouts pass through unwrapped. They are not schema failures, and upstream retry logic needs their own shape.
+
+Every node records the model it bound onto the LangSmith run as `model_<node>` (`agent/query_lifecycle.py`), so a run split across two providers can be read back afterwards.
+
 Embedding models resolve through their own factory, `agent/embeddings.py`, separate from the chat-model factory above. Embeddings need one shared vector space, not provider routing.
 
 `CORPUS_EMBEDDING_MODEL` moves the whole statute corpus at once:

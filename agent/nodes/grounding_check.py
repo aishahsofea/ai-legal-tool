@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel, Field, field_validator
 
 from agent.citation_keys import canonicalize_citation_key
-from agent.llm_factory import make_llm, system_content
+from agent.llm_factory import make_llm, structured_llm, system_content
 from agent.state import AgentState
 from citation_receipts.locator import contains_normalized_sequence, normalized_tokens
 
@@ -24,7 +24,7 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 
 _MODEL = os.getenv("GROUNDING_MODEL", "claude-sonnet-4-6")
-_llm = make_llm(_MODEL)
+_llm = make_llm(_MODEL, node="grounding_check")
 
 
 class _GroundingClaim(BaseModel):
@@ -56,7 +56,7 @@ class _GroundingOutput(BaseModel):
         return value
 
 
-_grounding_llm = _llm.with_structured_output(_GroundingOutput)
+_grounding_llm = structured_llm(_llm, _GroundingOutput, node="grounding_check", model_name=_MODEL)
 
 _SYSTEM = """You are a strict grounding verifier for Malaysian statute research answers.
 
