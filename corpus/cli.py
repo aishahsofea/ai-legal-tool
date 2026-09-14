@@ -242,20 +242,34 @@ def _rollout(args: argparse.Namespace) -> int:
     return 0 if args.dry_run or result["status"] == "complete" else 2
 
 
-def _upload(args: argparse.Namespace) -> int:
-    registry = CorpusRegistry(
-        _path(args.manifest), asset_root=_path(args.pdf_root), sidecar_root=_path(args.sidecar_root)
-    )
+def _upload_objects(
+    registry: CorpusRegistry, scope: str
+) -> tuple[list[tuple[Path, str, str, str]], list[str]]:
+    """Select the objects `scope` puts online, and the errors that block them.
+
+    Scope names match `validate` so an operator can verify exactly what was
+    pushed. "registry" is not offered here: it is the byte-less scope, and an
+    upload with no bytes is nothing.
+    """
+    documents = list(registry.documents.values())
+    extraction_ids = set(registry.extraction_runs)
+    if scope == "active":
+        active = list(registry.active_documents.values())
+        document_ids = {item.document_id for item in active}
+        documents = [item for item in documents if item.document_id in document_ids]
+        extraction_ids = {item.extraction_id for item in active}
+
     objects: list[tuple[Path, str, str, str]] = []
     errors: list[str] = []
-    for document in registry.documents.values():
+    for document in documents:
         try:
             path = registry.validate(document)
         except Exception as exc:
             errors.append(f"{document.document_id}: {exc}")
             continue
         objects.append((path, document.asset_key, "application/pdf", document.sha256))
-    for run in registry.extraction_runs.values():
+    for identity in sorted(extraction_ids):
+        run = registry.extraction_runs[identity]
         if run.status != "ready" or run.coordinate_sidecar is None:
             continue
         try:
@@ -264,11 +278,19 @@ def _upload(args: argparse.Namespace) -> int:
             errors.append(f"{run.extraction_id}: {exc}")
             continue
         objects.append((path, run.coordinate_sidecar.asset_key, "application/gzip", run.coordinate_sidecar.sha256))
+    return objects, errors
+
+
+def _upload(args: argparse.Namespace) -> int:
+    registry = CorpusRegistry(
+        _path(args.manifest), asset_root=_path(args.pdf_root), sidecar_root=_path(args.sidecar_root)
+    )
+    objects, errors = _upload_objects(registry, args.scope)
     if errors:
-        _print({"status": "blocked", "errors": errors})
+        _print({"status": "blocked", "scope": args.scope, "errors": errors})
         return 1
     if args.dry_run:
-        _print({"status": "dry_run", "bucket": args.bucket, "endpoint_url": args.endpoint_url, "object_count": len(objects), "total_bytes": sum(path.stat().st_size for path, *_ in objects)})
+        _print({"status": "dry_run", "scope": args.scope, "bucket": args.bucket, "endpoint_url": args.endpoint_url, "object_count": len(objects), "total_bytes": sum(path.stat().st_size for path, *_ in objects)})
         return 0
     try:
         import boto3  # type: ignore[import-not-found]
@@ -284,7 +306,7 @@ def _upload(args: argparse.Namespace) -> int:
                 "Metadata": {"sha256": digest},
             },
         )
-    _print({"status": "uploaded", "bucket": args.bucket, "object_count": len(objects)})
+    _print({"status": "uploaded", "scope": args.scope, "bucket": args.bucket, "object_count": len(objects)})
     return 0
 
 
@@ -407,6 +429,7 @@ def build_parser() -> argparse.ArgumentParser:
     command.add_argument("--sidecar-root", default="data/corpus/sidecars")
     command.add_argument("--bucket", required=True)
     command.add_argument("--endpoint-url", default=os.getenv("CORPUS_S3_ENDPOINT_URL", ""))
+    command.add_argument("--scope", choices=["active", "full"], default="full")
     command.add_argument("--dry-run", action="store_true")
     command.set_defaults(func=_upload)
     return parser

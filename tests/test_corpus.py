@@ -442,3 +442,61 @@ def test_table_of_contents_copy_of_a_heading_is_not_a_division_boundary(tmp_path
     # The copy on page 1 is the table of contents; the division starts on page 3.
     assert by_key[("body", "1")]["page_start"] == 2
     assert by_key[("FIRST SCHEDULE", "1")]["page_start"] == 3
+
+
+def test_upload_scope_active_skips_documents_whose_bytes_are_not_local(tmp_path: Path):
+    """#57: 1,114 of the 1,124 registered documents have no bytes in git, so a
+    full-scope upload is blocked by documents the first push was never meant to
+    carry. --scope active has to carry the reachable set on its own."""
+    from corpus.cli import _upload_objects
+
+    asset_root = tmp_path / "assets"
+    sidecar_root = tmp_path / "sidecars"
+    asset_root.mkdir()
+    documents = []
+    for act in ("41", "42"):
+        path = asset_root / f"{act}.pdf"
+        _pdf(path, [
+            f"Act {act} short title",
+            f"1. Section one of Act {act} carries enough legal fixture text",
+            "for the extractor to clear its text-layer threshold on this page.",
+        ])
+        digest = sha256_file(path)
+        documents.append(CorpusDocument(
+            document_id(act, "en", digest), act, f"ACT {act}", "en", asset_key(digest), digest,
+            path.stat().st_size, 1, f"https://example.test/{act}.pdf", "", "REPRINT",
+            "2026-01-01T00:00:00Z", local_path=path.name,
+        ))
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256",
+        "documents": [item.to_dict() for item in documents],
+        "extraction_runs": [], "active_documents": [], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=sidecar_root)
+    manifest, _report = extract_manifest(
+        registry,
+        extraction_root=tmp_path / "extractions",
+        sidecar_root=sidecar_root,
+        activate_ready=True,
+    )
+    # Only Act 41 is activated, and Act 42's bytes then leave the working tree
+    # the way an untracked en/<act>.pdf is absent from the deployed container.
+    manifest["active_documents"] = [
+        item for item in manifest["active_documents"] if item["act_number"] == "41"
+    ]
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    (asset_root / "42.pdf").unlink()
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=sidecar_root)
+
+    active_objects, active_errors = _upload_objects(registry, "active")
+    assert active_errors == []
+    assert [key for _path, key, *_ in active_objects] == [
+        documents[0].asset_key,
+        registry.extraction_runs[
+            registry.active_documents[("41", "en")].extraction_id
+        ].coordinate_sidecar.asset_key,
+    ]
+
+    _full_objects, full_errors = _upload_objects(registry, "full")
+    assert any(documents[1].document_id in error for error in full_errors)

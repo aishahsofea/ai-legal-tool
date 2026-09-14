@@ -256,12 +256,12 @@ python3 -m corpus activate --document-id <document-id> \
 python3 -m corpus rollback --act-number 574 --language en --dry-run
 python3 -m corpus upload --pdf-root /path/to/data/pdfs \
   --sidecar-root /path/to/full/sidecars --bucket <r2-bucket> \
-  --endpoint-url https://<account>.r2.cloudflarestorage.com --dry-run
+  --endpoint-url https://<account>.r2.cloudflarestorage.com --scope active --dry-run
 python3 -m corpus validate --cdn-base-url https://statutes.example.com \
   --scope full --deep --format json
 ```
 
-The CLI loads the repository `.env` — no need to manually export `DATABASE_URL`. Preview `rollout` before its first run against a database; live execution performs embedding calls and changes active retrieval mappings. Live upload uses optional `boto3`, not an application dependency. Configure R2 bucket retention/object-lock policy and custom-domain CORS outside this repository: allow `GET`, `HEAD`, `OPTIONS`; allow request headers `Range`, `If-None-Match`; expose `ETag`, `Accept-Ranges`, `Content-Range`, `Content-Length`.
+The CLI loads the repository `.env` — no need to manually export `DATABASE_URL`. Preview `rollout` before its first run against a database; live execution performs embedding calls and changes active retrieval mappings. Live upload uses optional `boto3`, not an application dependency. `upload --scope active` uploads the documents an [Active Corpus Mapping](CONTEXT.md#language) points at, plus their ready sidecars; `--scope full`, the default, uploads every registered document and every ready sidecar. A run fails whole if any one object in its scope fails `validate`, so push `active` first: it is the only set the deployed app can request, and it does not block on registered documents whose bytes are absent. Move to `full` once every registered document has local bytes. Configure R2 bucket retention/object-lock policy and custom-domain CORS outside this repository: allow `GET`, `HEAD`, `OPTIONS`; allow request headers `Range`, `If-None-Match`; expose `ETag`, `Accept-Ranges`, `Content-Range`, `Content-Length`.
 
 Run all automated checks from the repository root and frontend respectively:
 
