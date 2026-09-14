@@ -6,7 +6,7 @@ import json
 import os
 import re
 import tempfile
-from dataclasses import replace
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -222,6 +222,152 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
     return list(deduplicated.values())
 
 
+# A line repeated in the same page-relative band on a good fraction of a
+# document's pages is running furniture (page headers, footers, running
+# titles), not content — a header survives at the same offset for a whole
+# document, where an isolated centred heading like Act 512's "ARTICLE 20"
+# never repeats. The 25% floor is high enough that one schedule's heading,
+# which only recurs across its own run of pages, cannot trip it.
+FURNITURE_BAND_FRACTION = 0.08
+FURNITURE_MIN_PAGES = 3
+FURNITURE_MIN_PAGE_FRACTION = 0.25
+
+
+@dataclass(frozen=True)
+class ExtractionAccounting:
+    """Where a document's characters went, independent of what `_extract_chunks` kept.
+
+    Every line `_line_records` sees lands in exactly one bucket: `assigned`
+    (inside a chunk that survived dedup), `classified` (a recognised
+    header/footer, or a section candidate the length floor or dedup
+    dropped), or `unassigned` — the mystery this issue exists to surface.
+    """
+
+    pdf_chars: int
+    assigned_chars: int
+    classified_chars: int
+    unassigned_chars: int
+
+    def to_dict(self) -> dict[str, int]:
+        return {
+            "pdf_chars": self.pdf_chars,
+            "assigned_chars": self.assigned_chars,
+            "classified_chars": self.classified_chars,
+            "unassigned_chars": self.unassigned_chars,
+        }
+
+
+def _line_records(pdf: fitz.Document) -> list[tuple[int, float, str]]:
+    """Every non-blank text line as (page_number, vertical position 0..1, stripped text).
+
+    Reads `page.get_text("dict")`, the block form with bounding boxes that
+    `_extract_chunks` does not use, in a second read-only pass over the same
+    PDF — so nothing here can change what `_extract_chunks` returns.
+    """
+    records: list[tuple[int, float, str]] = []
+    for page_number, page in enumerate(pdf, 1):
+        height = page.rect.height or 1.0
+        for block in page.get_text("dict")["blocks"]:
+            for line in block.get("lines", []):
+                stripped = "".join(span["text"] for span in line["spans"]).strip()
+                if not stripped:
+                    continue
+                top, bottom = line["bbox"][1], line["bbox"][3]
+                records.append((page_number, (top + bottom) / 2 / height, stripped))
+    return records
+
+
+def _furniture_lines(records: list[tuple[int, float, str]], page_count: int) -> set[str]:
+    """Text repeating near the top or bottom of enough pages to be running furniture."""
+    band_pages: dict[str, set[int]] = {}
+    for page_number, position, text in records:
+        if FURNITURE_BAND_FRACTION < position < 1 - FURNITURE_BAND_FRACTION:
+            continue
+        band_pages.setdefault(text, set()).add(page_number)
+    threshold = max(FURNITURE_MIN_PAGES, int(page_count * FURNITURE_MIN_PAGE_FRACTION))
+    return {text for text, pages in band_pages.items() if len(pages) >= threshold}
+
+
+def _candidate_eligible(chars: int, lines: int) -> bool:
+    """Mirrors `_extract_chunks.flush`'s `"\\n".join(...)` length floor without building the string."""
+    return chars + max(0, lines - 1) >= MIN_CONTENT_CHARS
+
+
+def _extraction_accounting(pdf: fitz.Document, document: CorpusDocument) -> ExtractionAccounting:
+    """Label every text line chunk/furniture/unassigned, mirroring `_extract_chunks`'s control flow.
+
+    Follows the same section pattern, division boundaries, MIN_CONTENT_CHARS
+    floor, and last-wins dedup by (division, section_number), so a
+    candidate's fate here matches its fate there — but it never calls
+    `_extract_chunks` or touches its output. This is independent
+    measurement: a bug here cannot change a chunk. A candidate that loses
+    the length floor or the dedup is table-of-contents-shaped noise by the
+    same reasoning `MIN_CONTENT_CHARS` and last-wins already encode, so both
+    land in `classified`, alongside recognised header/footer furniture.
+    """
+    records = _line_records(pdf)
+    furniture = _furniture_lines(records, pdf.page_count)
+    boundaries = _division_boundaries(pdf)
+
+    candidates: list[tuple[tuple[str, str], int, bool]] = []
+    current_key: tuple[str, str] | None = None
+    current_chars = 0
+    current_lines = 0
+    current_division = BODY_DIVISION
+    pdf_chars = 0
+    unassigned_chars = 0
+    classified_chars = 0
+
+    for page_number, _position, text in records:
+        pdf_chars += len(text)
+        headings = boundaries.get(page_number, frozenset())
+        if text in headings:
+            if current_key is not None:
+                candidates.append((current_key, current_chars, _candidate_eligible(current_chars, current_lines)))
+            current_key, current_chars, current_lines = None, 0, 0
+            current_division = text
+            unassigned_chars += len(text)
+            continue
+        match = _SECTION_RE.match(text)
+        if match:
+            if current_key is not None:
+                candidates.append((current_key, current_chars, _candidate_eligible(current_chars, current_lines)))
+            current_key = (current_division, match.group(1))
+            current_chars = len(text)
+            current_lines = 1
+            continue
+        if current_key is not None:
+            current_chars += len(text)
+            current_lines += 1
+            continue
+        if text in furniture:
+            classified_chars += len(text)
+        else:
+            unassigned_chars += len(text)
+    if current_key is not None:
+        candidates.append((current_key, current_chars, _candidate_eligible(current_chars, current_lines)))
+
+    winners: dict[tuple[str, str], int] = {}
+    for key, chars, eligible in candidates:
+        if not eligible:
+            classified_chars += chars
+            continue
+        if key in winners:
+            classified_chars += winners[key]
+        winners[key] = chars
+    assigned_chars = sum(winners.values())
+
+    assert pdf_chars == assigned_chars + classified_chars + unassigned_chars, (
+        f"extraction accounting lost characters for {document.document_id}"
+    )
+    return ExtractionAccounting(
+        pdf_chars=pdf_chars,
+        assigned_chars=assigned_chars,
+        classified_chars=classified_chars,
+        unassigned_chars=unassigned_chars,
+    )
+
+
 def extract_document(
     registry: CorpusRegistry,
     document: CorpusDocument,
@@ -350,6 +496,8 @@ def extract_manifest(
             continue
         runs[run.extraction_id] = run
         documents[identity] = replace(document, lifecycle_status="extracted")
+        with fitz.open(registry.local_path(document)) as pdf:
+            accounting = _extraction_accounting(pdf, document)
         if activate_ready:
             key = (document.act_number, document.language)
             previous = active.get(key)
@@ -369,6 +517,7 @@ def extract_manifest(
             "sidecar_sha256": run.coordinate_sidecar.sha256 if run.coordinate_sidecar else "",
             "bundle": bundle_path.name,
             "status": "ready",
+            **accounting.to_dict(),
         })
 
     manifest = {
@@ -382,10 +531,17 @@ def extract_manifest(
         "aliases": dict(sorted(registry.aliases.items())),
         "source_observations": list(registry.source_observations),
     }
+    ready_results = [item for item in results if item["status"] == "ready"]
     report = {
         "schema_version": 1,
         "ready": sum(item["status"] == "ready" for item in results),
         "blocked": sum(item["status"] == "blocked" for item in results),
         "documents": results,
+        "totals": {
+            "pdf_chars": sum(item["pdf_chars"] for item in ready_results),
+            "assigned_chars": sum(item["assigned_chars"] for item in ready_results),
+            "classified_chars": sum(item["classified_chars"] for item in ready_results),
+            "unassigned_chars": sum(item["unassigned_chars"] for item in ready_results),
+        },
     }
     return manifest, report

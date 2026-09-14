@@ -6,7 +6,13 @@ import fitz
 import pytest
 
 from citation_receipts.locator import locate_evidence
-from corpus.extraction import _DIVISION_RE, _is_heading_case, extract_document, extract_manifest
+from corpus.extraction import (
+    _DIVISION_RE,
+    _extraction_accounting,
+    _is_heading_case,
+    extract_document,
+    extract_manifest,
+)
 from corpus.identity import asset_key, document_id, sha256_file
 from corpus.manifest import generate_manifest
 from corpus.models import CorpusDocument
@@ -249,6 +255,24 @@ def test_checked_in_coverage_accounts_for_every_source_pdf():
     assert {"144", "152", "194", "220", "228", "230"} <= bm_acts
 
 
+# #74: the corpus-wide retention `data/chunks/extract_report.json` measured
+# when per-document character accounting first landed (assigned_chars /
+# pdf_chars over all ready documents). A drop below this means an extraction
+# change is silently losing more text than it used to keep — investigate
+# before merging, don't just lower the number.
+RECORDED_RETENTION_BASELINE = 0.8755
+
+
+def test_corpus_wide_retention_has_not_regressed_below_its_recorded_baseline():
+    root = Path(__file__).resolve().parents[1]
+    report = json.loads((root / "data" / "chunks" / "extract_report.json").read_text(encoding="utf-8"))
+    totals = report["totals"]
+    retention = totals["assigned_chars"] / totals["pdf_chars"]
+    assert retention >= RECORDED_RETENTION_BASELINE, (
+        f"corpus-wide retention {retention:.4f} fell below the recorded baseline {RECORDED_RETENTION_BASELINE}"
+    )
+
+
 def test_scraped_at_for_files_each_language_under_its_own_scrape_date():
     """A Malay document backfilled onto an Act scraped months earlier must not
     inherit the English scrape's date (#71)."""
@@ -442,6 +466,47 @@ def test_table_of_contents_copy_of_a_heading_is_not_a_division_boundary(tmp_path
     # The copy on page 1 is the table of contents; the division starts on page 3.
     assert by_key[("body", "1")]["page_start"] == 2
     assert by_key[("FIRST SCHEDULE", "1")]["page_start"] == 3
+
+
+def test_text_before_the_first_heading_is_unassigned_not_vanished(tmp_path: Path):
+    """#74: `_extract_chunks` drops any line seen before `current_num` is first
+    set — today silently. `_extraction_accounting` must count those characters
+    as `unassigned` rather than lose them, while agreeing with the real chunk
+    output that they never make it into a chunk."""
+    asset_root = tmp_path / "assets"
+    asset_root.mkdir()
+    pdf_path = asset_root / "preamble.pdf"
+    preamble = "This preamble sentence sits above any numbered section and today's extractor drops it."
+    _pdf(pdf_path, [
+        preamble,
+        "A second preamble line, also before any heading, equally unrecognised today.",
+        "1. Real section text long enough to clear the minimum content floor for this fixture.",
+    ])
+    digest = sha256_file(pdf_path)
+    document = CorpusDocument(
+        document_id("96", "en", digest), "96", "PREAMBLE FIXTURE ACT", "en", asset_key(digest),
+        digest, pdf_path.stat().st_size, 1, "https://example.test/96.pdf", "", "REPRINT",
+        "2026-01-01T00:00:00Z", local_path=pdf_path.name,
+    )
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256", "documents": [document.to_dict()],
+        "extraction_runs": [], "active_documents": [], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=tmp_path / "sidecars")
+    _run, bundle_path = extract_document(
+        registry, document, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
+    )
+    chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+    assert all(preamble not in chunk["content"] for chunk in chunks)
+
+    with fitz.open(pdf_path) as pdf:
+        accounting = _extraction_accounting(pdf, document)
+
+    assert accounting.unassigned_chars >= len(preamble)
+    assert accounting.pdf_chars == (
+        accounting.assigned_chars + accounting.classified_chars + accounting.unassigned_chars
+    )
 
 
 def test_upload_scope_active_skips_documents_whose_bytes_are_not_local(tmp_path: Path):
