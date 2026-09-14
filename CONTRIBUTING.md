@@ -263,6 +263,15 @@ python3 -m corpus validate --cdn-base-url https://statutes.example.com \
 
 The CLI loads the repository `.env` — no need to manually export `DATABASE_URL`. Preview `rollout` before its first run against a database; live execution performs embedding calls and changes active retrieval mappings. Live upload uses optional `boto3`, not an application dependency. `upload --scope active` uploads the documents an [Active Corpus Mapping](CONTEXT.md#language) points at, plus their ready sidecars; `--scope full`, the default, uploads every registered document and every ready sidecar. A run fails whole if any one object in its scope fails `validate`, so push `active` first: it is the only set the deployed app can request, and it does not block on registered documents whose bytes are absent. Move to `full` once every registered document has local bytes. Configure R2 bucket retention/object-lock policy and custom-domain CORS outside this repository: allow `GET`, `HEAD`, `OPTIONS`; allow request headers `Range`, `If-None-Match`; expose `ETag`, `Accept-Ranges`, `Content-Range`, `Content-Length`.
 
+The API logs one `receipt_coverage` line at boot:
+
+```
+receipt_coverage registered=1124 registered_local=5/1124 active=5 active_local=5/5 \
+  active_cdn=not probed active_reachable=5/5 mode=auto cdn=unset
+```
+
+The deployed image carries `data/pdfs/manifest.json` but only the PDFs git tracks, so `registered_local` is the number worth reading: every document outside it answers 503 the moment it is activated. `registered_local` and `active_local` are size checks against the manifest, not hashes — they say bytes shipped, not that bytes are intact. With `CORPUS_CDN_BASE_URL` set, `active_cdn` counts active documents whose object passed one `HEAD`; that probe stops after 5 seconds total, 2 seconds per request, and `active_cdn` then reports only what it reached. It cannot fail the boot.
+
 Run all automated checks from the repository root and frontend respectively:
 
 ```bash
