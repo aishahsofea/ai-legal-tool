@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { cancelQuery, streamQuery, streamResume, type Citation, type QueryEvent } from "@/lib/queryTransport";
+import { cancelQuery, streamQuery, streamResume, type Citation, type NodeRun, type QueryEvent } from "@/lib/queryTransport";
 
-export { type Citation, type Message } from "@/lib/queryTransport";
+export { type Citation, type Message, type NodeRun } from "@/lib/queryTransport";
 
 export interface QueryState {
   status: string;
   response: string;
   citations: Citation[];
+  // Kept structured rather than folded into `status`: the PROCESS panel counts
+  // status steps in its collapsed header, and model rows must not change that count.
+  nodeRuns: NodeRun[];
   isLoading: boolean;
   error: string | null;
   // Set when the graph pauses to ask a clarifying question (ADR 0015). While non-null,
@@ -18,6 +21,7 @@ const IDLE: QueryState = {
   status: "",
   response: "",
   citations: [],
+  nodeRuns: [],
   isLoading: false,
   error: null,
   pendingQuestion: null,
@@ -53,6 +57,11 @@ export function useQuery() {
             // `status` lets it flow into statusHistory like any other step, so the
             // panel shows the agent's search actions without a schema change.
             setState((s) => ({ ...s, status: event.summary || event.name }));
+          } else if (event.type === "node") {
+            setState((s) => ({
+              ...s,
+              nodeRuns: [...s.nodeRuns, { name: event.name, model: event.model, duration_ms: event.duration_ms }],
+            }));
           } else if (event.type === "response") {
             setState((s) => ({ ...s, response: event.content, citations: event.citations, status: "" }));
           } else if (event.type === "interrupt") {

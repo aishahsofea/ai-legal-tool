@@ -21,7 +21,8 @@ from typing_extensions import Annotated
 from langchain.agents import AgentState as _ReactAgentState
 from langchain.agents import create_agent
 
-from agent.llm_factory import make_llm
+from agent.llm_factory import make_llm, node_models
+from agent.node_events import node_model_event
 from agent.retrieval.reference_graph import (
     FollowOnceGuard,
     RetrievalReferenceContext,
@@ -181,21 +182,26 @@ def run_retrieval_agent(query: str, feedback: str = "", config=None) -> dict:
     except Exception:
         parent_writer = None
 
-    if parent_writer is None:
-        if context is None:
-            final_state = agent.invoke(agent_input, invoke_config)
+    # One event for the whole ReAct loop, not per internal call: the panel's
+    # question is whether the retrieval agent ran and on what, and the individual
+    # tool calls already have their own rows. node_models() rather than the env
+    # var, so this reports what _build_retrieval_agent actually bound.
+    with node_model_event("retrieval_agent", node_models().get("retrieval_agent", "")):
+        if parent_writer is None:
+            if context is None:
+                final_state = agent.invoke(agent_input, invoke_config)
+            else:
+                final_state = agent.invoke(agent_input, invoke_config, context=context)
         else:
-            final_state = agent.invoke(agent_input, invoke_config, context=context)
-    else:
-        final_state = {}
-        stream_kwargs = {"stream_mode": ["custom", "values"]}
-        if context is not None:
-            stream_kwargs["context"] = context
-        for mode, chunk in agent.stream(agent_input, invoke_config, **stream_kwargs):
-            if mode == "custom":
-                parent_writer(chunk)
-            else:  # "values" emits full snapshots, so the last one is final
-                final_state = chunk
+            final_state = {}
+            stream_kwargs = {"stream_mode": ["custom", "values"]}
+            if context is not None:
+                stream_kwargs["context"] = context
+            for mode, chunk in agent.stream(agent_input, invoke_config, **stream_kwargs):
+                if mode == "custom":
+                    parent_writer(chunk)
+                else:  # "values" emits full snapshots, so the last one is final
+                    final_state = chunk
 
     result = {
         "chunks": final_state.get("retrieved_chunks", []),

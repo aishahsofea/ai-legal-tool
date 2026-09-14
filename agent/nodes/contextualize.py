@@ -21,6 +21,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel
 
 from agent.llm_factory import make_llm, structured_llm, system_content
+from agent.node_events import node_model_event
 from agent.query_policy import trim_history
 from agent.state import AgentState
 
@@ -71,7 +72,8 @@ def contextualize_node(state: AgentState) -> dict:
     if not history:
         return {"standalone_query": ""}
     try:
-        result: _ContextualizeOutput = _structured_llm.invoke(_build_messages(history, state))
+        with node_model_event("contextualize", _MODEL):
+            result: _ContextualizeOutput = _structured_llm.invoke(_build_messages(history, state))
         return _result(result)
     except Exception:
         # Fail open: the retriever falls back to the raw query.
@@ -84,7 +86,8 @@ async def acontextualize_node(state: AgentState) -> dict:
     if not history:
         return {"standalone_query": ""}
     try:
-        result: _ContextualizeOutput = await _structured_llm.ainvoke(_build_messages(history, state))
+        with node_model_event("contextualize", _MODEL):
+            result: _ContextualizeOutput = await _structured_llm.ainvoke(_build_messages(history, state))
         return _result(result)
     except Exception:
         logger.warning("contextualize_node failed; falling back to raw query", exc_info=True)

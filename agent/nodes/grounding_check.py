@@ -16,6 +16,7 @@ from pydantic import BaseModel, Field, field_validator
 
 from agent.citation_keys import canonicalize_citation_key
 from agent.llm_factory import make_llm, structured_llm, system_content
+from agent.node_events import node_model_event
 from agent.state import AgentState
 from citation_receipts.locator import contains_normalized_sequence, normalized_tokens
 
@@ -230,7 +231,8 @@ def grounding_check_node(state: AgentState) -> dict:
         return {"violations": violations}
 
     try:
-        result: _GroundingOutput = _grounding_llm.invoke(_messages(answer, sources))
+        with node_model_event("grounding_check", _MODEL):
+            result: _GroundingOutput = _grounding_llm.invoke(_messages(answer, sources))
     except Exception:
         # The judge malfunctioning is not evidence that the answer is ungrounded.
         # Fail open: citation validation already guaranteed structural integrity, so
@@ -251,7 +253,8 @@ async def agrounding_check_node(state: AgentState) -> dict:
         return {"violations": violations}
 
     try:
-        result: _GroundingOutput = await _grounding_llm.ainvoke(_messages(answer, sources))
+        with node_model_event("grounding_check", _MODEL):
+            result: _GroundingOutput = await _grounding_llm.ainvoke(_messages(answer, sources))
     except Exception:
         logger.warning("grounding_check_node failed; skipping grounding verification", exc_info=True)
         return {"violations": violations}

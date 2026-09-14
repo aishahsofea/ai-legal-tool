@@ -11,6 +11,9 @@ SSE event types:
   { "type": "status",    "message": "..." }          — progress update (router/retriever/synthesiser)
   { "type": "tool_call", "name": "...",
     "summary": "..." }                                — a retrieval tool fired (agentic retrieval)
+  { "type": "node",      "name": "...", "model": "...",
+    "duration_ms": 0 }                                — a node finished a model call; one per call,
+                                                        in execution order (PROCESS panel)
   { "type": "response",  "content": "...",
     "citations": [...], "violations": [...] }        — final answer
   { "type": "interrupt", "question": "...",
