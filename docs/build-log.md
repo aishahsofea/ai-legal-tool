@@ -127,3 +127,23 @@ Also tried: Gemini 2.5 Flash (would be ~15× cheaper) — hit free-tier 5 RPM ca
 
 Root cause was framing, not control flow: the field was named/described as **citation** style and the extractor instructions listed only "Citation / formatting style preferences", so gpt-4.1-mini didn't classify "give me bullets" / "be brief" as citation style, and the "when in doubt, do not store it" guard tipped it toward skipping. Fix (prompt/description only): widened the `citation_style` field description to cover response format/length/structure, made the extractor's formatting bullet explicit and exemplified, and added one line clarifying that a direct instruction about answer presentation IS a durable preference worth storing. Confidentiality block and the "when in doubt" guard left intact. Repro now populates `citation_style` across phrasings ("brief and concise", "use bullet points", "state the section number first") and recall surfaces it on a fresh thread. Kept the field name `citation_style` — recall renders it generically and a rename would ripple into stored data + tests.
 
+
+**2026-09-14** — Ran the Nemotron-on-Nebius compatibility matrix for issue #59. The factory change works; the tier split documented alongside it does not, and the reason is worth recording because it is the exact failure mode #43 predicted for ILMU.
+
+Exact ids as Nebius serves them: `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B` and `nvidia/nemotron-3-super-120b-a12b`. The Super id is lowercase and does not match its Hugging Face repo name, which is what the first draft of `CONTRIBUTING.md` guessed.
+
+What passes on both tiers: plain completion, `.stream()`, `.ainvoke()`, and `bind_tools` — the retrieval agent picked `search_statutes` unprompted on both. An unknown model id returns a clean 404, so a typo fails loudly.
+
+Structured output is where it breaks, in three distinct ways:
+
+1. **Super ignores `response_format: json_schema`.** It accepts the request, returns 200, and hands back YAML-ish text (`standalone_query: "..."`). 0/5 across repeats — consistent, not flaky. Every one of the four schemas fails this way.
+
+2. **Nano runs away under `json_schema` with the real router prompt.** The same prompt without structured output completes in 114-206 tokens. With it, generation runs to the 8192-token ceiling every time and raises `LengthFinishReasonError`. `max_tokens=2048` is ignored on that path — the endpoint still reports 8192 completion tokens. A shorter toy prompt does not trigger it, so this only showed up against the production prompt.
+
+3. **`method="function_calling"` is rejected outright** with a 422: LangChain sends `parallel_tool_calls`, and Nebius's body parser refuses the extra field. Plain `bind_tools` sends no such field, which is why tool binding works and function-calling structured output does not.
+
+`method="json_mode"` plus an explicit JSON shape in the prompt fixes Nano: 3/3 on the real router prompt, 5/5 on contextualize. It does not fix Super, which emits a reasoning preamble before the JSON and fails the parser 3/3. So there is no single configuration today that runs the four structured nodes on Super.
+
+The error shaping added in #59 did its job. Every one of these surfaced as `StructuredOutputError` naming the node and the model, except `LengthFinishReasonError` — openai raises that from its own parser with no status code, so the classifier missed it and it escaped unwrapped. Added it by class name, along with `ContentFilterFinishReasonError`.
+
+No eval table yet. The all-Nemotron smoke run aborted on the router before producing one, and the fix is prompt work on four nodes rather than configuration, which is its own issue. Recording the matrix here so the next attempt starts from what was measured rather than re-running it.

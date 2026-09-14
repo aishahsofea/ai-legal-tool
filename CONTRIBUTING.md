@@ -439,9 +439,9 @@ CONTEXTUALIZER_MODEL=nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B
 CONVERSATIONAL_MODEL=nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B
 MEMORY_EXTRACT_MODEL=nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B
 
-SYNTHESISER_MODEL=nvidia/NVIDIA-Nemotron-3-Super-120B-A12B
-GROUNDING_MODEL=nvidia/NVIDIA-Nemotron-3-Super-120B-A12B
-RETRIEVAL_AGENT_MODEL=nvidia/NVIDIA-Nemotron-3-Super-120B-A12B
+SYNTHESISER_MODEL=nvidia/nemotron-3-super-120b-a12b
+GROUNDING_MODEL=nvidia/nemotron-3-super-120b-a12b
+RETRIEVAL_AGENT_MODEL=nvidia/nemotron-3-super-120b-a12b
 ```
 
 Copy the model id from the provider's own model list. Nebius appends a quantization suffix to some of them, and the string has to match exactly.

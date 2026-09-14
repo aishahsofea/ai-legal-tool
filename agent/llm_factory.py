@@ -64,8 +64,18 @@ class StructuredOutputError(RuntimeError):
 _SCHEMA_ERRORS = (ValidationError, OutputParserException, json.JSONDecodeError)
 
 
+# openai raises these from its own schema parser, not the transport, so they carry
+# no status code. Matched by name to keep the openai import out of this file.
+# LengthFinishReasonError is the one a served open-weights model hits in practice:
+# handed a json_schema it can generate until it hits the token ceiling, and the
+# request never fails — it just never produces the object.
+_SCHEMA_ERROR_NAMES = {"LengthFinishReasonError", "ContentFilterFinishReasonError"}
+
+
 def _is_schema_failure(exc: BaseException) -> bool:
     if isinstance(exc, _SCHEMA_ERRORS):
+        return True
+    if type(exc).__name__ in _SCHEMA_ERROR_NAMES:
         return True
     # openai.BadRequestError / UnprocessableEntityError — a provider rejecting the
     # response_format payload outright. Matched by status so this file needs no

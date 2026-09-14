@@ -152,6 +152,26 @@ class StructuredOutputErrorTests(unittest.TestCase):
         with self.assertRaises(llm_factory.StructuredOutputError):
             wrapped.invoke("x")
 
+    def test_length_limit_is_wrapped(self):
+        """openai raises this from its own parser with no status code. A reasoning
+        model handed a json_schema can generate to the token ceiling without the
+        request ever failing, which is a schema failure however it is spelled."""
+        class LengthFinishReasonError(Exception):
+            pass
+
+        wrapped = self._wrapped(LengthFinishReasonError("length limit reached"))
+        with self.assertRaises(llm_factory.StructuredOutputError) as ctx:
+            wrapped.invoke("x")
+        self.assertIn("synthesiser", str(ctx.exception))
+
+    def test_content_filter_finish_is_wrapped(self):
+        class ContentFilterFinishReasonError(Exception):
+            pass
+
+        wrapped = self._wrapped(ContentFilterFinishReasonError("filtered"))
+        with self.assertRaises(llm_factory.StructuredOutputError):
+            wrapped.invoke("x")
+
     def test_transient_error_passes_through(self):
         """A 429 is not a schema failure; upstream retry logic needs its own shape."""
         wrapped = self._wrapped(_Boom(429))
