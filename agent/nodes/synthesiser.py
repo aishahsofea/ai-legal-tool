@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel
 
 from agent.citation_keys import canonicalize_citation_key
-from agent.llm_factory import make_llm, system_content
+from agent.llm_factory import make_llm, structured_llm, system_content
 from agent.query_policy import (
     _DISCLAIMER_BM,
     _DISCLAIMER_EN,
@@ -30,7 +30,7 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 
 _MODEL = os.getenv("SYNTHESISER_MODEL", "gpt-4.1")
-_llm = make_llm(_MODEL)
+_llm = make_llm(_MODEL, node="synthesiser")
 
 
 class _CitationRef(BaseModel):
@@ -43,7 +43,7 @@ class _SynthesiserOutput(BaseModel):
     citation_refs: list[_CitationRef]  # Claude only names sections; URLs come from retrieved chunks
 
 
-_structured_llm = _llm.with_structured_output(_SynthesiserOutput)
+_structured_llm = structured_llm(_llm, _SynthesiserOutput, node="synthesiser", model_name=_MODEL)
 
 _SYSTEM_TEMPLATE = """You are a Malaysian legal research assistant. Your role is to answer research questions about Malaysian legislation by citing the relevant statute sections.
 

@@ -11,7 +11,7 @@ from typing import Literal
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
-from agent.llm_factory import make_llm, system_content
+from agent.llm_factory import make_llm, structured_llm, system_content
 from agent.query_policy import trim_history
 from agent.state import AgentState
 
@@ -24,7 +24,7 @@ _ESCALATION_PATTERNS = re.compile(
 )
 
 _MODEL = os.getenv("ROUTER_MODEL", "gpt-4.1")
-_llm = make_llm(_MODEL)
+_llm = make_llm(_MODEL, node="router")
 
 
 class _RouterOutput(BaseModel):
@@ -36,7 +36,7 @@ class _RouterOutput(BaseModel):
     clarifying_question: str = ""
 
 
-_structured_llm = _llm.with_structured_output(_RouterOutput)
+_structured_llm = structured_llm(_llm, _RouterOutput, node="router", model_name=_MODEL)
 
 _SYSTEM = """You classify legal research queries from Malaysian law practitioners.
 

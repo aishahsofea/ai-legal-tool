@@ -73,7 +73,7 @@ def _manager(store: BaseStore):
         from langmem import create_memory_store_manager
 
         mgr = create_memory_store_manager(
-            make_llm(_model_name()),
+            make_llm(_model_name(), node="memory_extract"),
             schemas=[PractitionerProfile, RecurringTopic],
             instructions=_EXTRACTION_INSTRUCTIONS,
             enable_inserts=True,   # collection strategy; over-update accepted (ADR 0010)

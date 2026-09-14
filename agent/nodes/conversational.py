@@ -39,7 +39,7 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 
 _MODEL = os.getenv("CONVERSATIONAL_MODEL", "gpt-4.1-mini")
-_llm = make_llm(_MODEL, temperature=0.7)
+_llm = make_llm(_MODEL, temperature=0.7, node="conversational")
 
 _LANGUAGE_PERSONA = {
     "en": "Reply in English.",

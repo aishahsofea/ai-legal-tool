@@ -170,6 +170,19 @@ class ConfigTests(unittest.TestCase):
     def test_no_callbacks_key_without_collector(self):
         self.assertNotIn("callbacks", _config("t1", "u1"))
 
+    def test_per_node_model_on_metadata(self):
+        from agent.llm_factory import node_models
+        cfg = _config("t1", "u1")
+        models = node_models()
+        self.assertIn("router", models)
+        for node, name in models.items():
+            self.assertEqual(cfg["metadata"][f"model_{node}"], name)
+
+    def test_model_keys_do_not_displace_flag_metadata(self):
+        cfg = _config("t1", "u1")
+        for key in ("agentic_retrieval", "follow_references", "semantic_recall", "semantic_extract"):
+            self.assertIn(key, cfg["metadata"])
+
 
 if __name__ == "__main__":
     unittest.main()

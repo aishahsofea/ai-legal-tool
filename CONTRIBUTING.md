@@ -416,6 +416,36 @@ Each of the router, contextualize, conversational, synthesiser, and grounding-ch
 | `RETRIEVAL_AGENT_MODEL` | agentic retriever ReAct agent (`AGENTIC_RETRIEVAL` on) | `gpt-4.1` |
 | `MEMORY_EXTRACT_MODEL` | Semantic Memory extractor (background write path) | `gpt-4.1-mini` |
 
+#### Pointing the chat models at another provider
+
+`CHAT_BASE_URL` sends the OpenAI-shaped client to any OpenAI-compatible endpoint — the chat-side twin of `EMBEDDING_BASE_URL`. Leave it unset and the client talks to `api.openai.com`. `claude-*` and `gemini-*` still route to Anthropic and Google, so they ignore it. Auth rides on `OPENAI_API_KEY`, so set that to the other provider's key.
+
+| Env var | Drives | Default |
+|---|---|---|
+| `CHAT_BASE_URL` | every chat model that is not `claude-*` or `gemini-*` (optional) | unset |
+
+Worked example — the whole graph on open-weights Nemotron served by Nebius. Nemotron's tiers match the graph's own split between cheap classification and expensive reasoning. Nano takes classification, small talk, and fact extraction; Super takes synthesis, grounding, and tool selection:
+
+```bash
+CHAT_BASE_URL=https://api.studio.nebius.com/v1/
+OPENAI_API_KEY=<your Nebius key>
+
+ROUTER_MODEL=nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B
+CONTEXTUALIZER_MODEL=nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B
+CONVERSATIONAL_MODEL=nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B
+MEMORY_EXTRACT_MODEL=nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B
+
+SYNTHESISER_MODEL=nvidia/NVIDIA-Nemotron-3-Super-120B-A12B
+GROUNDING_MODEL=nvidia/NVIDIA-Nemotron-3-Super-120B-A12B
+RETRIEVAL_AGENT_MODEL=nvidia/NVIDIA-Nemotron-3-Super-120B-A12B
+```
+
+Copy the model id from the provider's own model list. Nebius appends a quantization suffix to some of them, and the string has to match exactly.
+
+Structured output is where OpenAI-compatible stops being OpenAI-identical. Router, contextualize, synthesiser, and grounding check all call `with_structured_output`; a provider can accept the request and still hand back prose. When that happens the factory raises `StructuredOutputError` naming the node and the model. Contextualize and grounding check fail open, so that log line is the only place you will see which one broke. Rate limits, auth failures, and timeouts pass through unwrapped. They are not schema failures, and upstream retry logic needs their own shape.
+
+Every node records the model it bound onto the LangSmith run as `model_<node>` (`agent/query_lifecycle.py`), so a run split across two providers can be read back afterwards.
+
 Embedding models resolve through their own factory, `agent/embeddings.py`, separate from the chat-model factory above. Embeddings need one shared vector space, not provider routing.
 
 `CORPUS_EMBEDDING_MODEL` moves the whole statute corpus at once:

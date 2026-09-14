@@ -18,7 +18,7 @@ class RouterModelEnvTests(unittest.TestCase):
                 with patch.object(llm_factory, "ChatAnthropic") as mock_anthropic:
                     mock_openai.return_value.with_structured_output.return_value = MagicMock()
                     importlib.reload(router)
-                    mock_openai.assert_called_once_with(model="gpt-4.1", temperature=0)
+                    mock_openai.assert_called_once_with(model="gpt-4.1", temperature=0, base_url=None)
                     mock_anthropic.assert_not_called()
 
     def test_router_uses_anthropic_for_claude_model(self):
@@ -31,12 +31,12 @@ class RouterModelEnvTests(unittest.TestCase):
                     mock_openai.assert_not_called()
 
     def test_router_uses_openai_for_gpt_model(self):
-        with patch.dict(os.environ, {"ROUTER_MODEL": "gpt-4o"}):
+        with patch.dict(os.environ, {"ROUTER_MODEL": "gpt-4o", "CHAT_BASE_URL": ""}):
             with patch.object(llm_factory, "ChatOpenAI") as mock_openai:
                 with patch.object(llm_factory, "ChatAnthropic") as mock_anthropic:
                     mock_openai.return_value.with_structured_output.return_value = MagicMock()
                     importlib.reload(router)
-                    mock_openai.assert_called_once_with(model="gpt-4o", temperature=0)
+                    mock_openai.assert_called_once_with(model="gpt-4o", temperature=0, base_url=None)
                     mock_anthropic.assert_not_called()
 
     @classmethod
