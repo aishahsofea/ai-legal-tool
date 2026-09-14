@@ -83,6 +83,17 @@ describe("PROCESS panel model rows", () => {
     expect(screen.getByText("2 STEPS")).toBeTruthy();
   });
 
+  it("does not lay model rows out on the step-number grid", () => {
+    // chamber-grid-reason reserves 24px for a two-digit step number. A node name
+    // overruns that into the model id — which renders as overlapping text and
+    // which jsdom cannot catch, since it computes no layout. Assert the class is
+    // absent rather than trusting getByText to notice.
+    const { container } = renderPanel({ nodeRuns: RUNS });
+    const modelRow = screen.getByText(RUNS[1].model).closest("li");
+    expect(modelRow?.className).not.toContain("chamber-grid-reason");
+    expect(container.querySelectorAll("li.chamber-grid-reason")).toHaveLength(0);
+  });
+
   it("hides the rows while the panel is collapsed", () => {
     renderPanel({ nodeRuns: RUNS, reasoningOpen: false });
     expect(screen.queryByText("MODELS")).toBeNull();

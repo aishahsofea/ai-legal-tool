@@ -132,13 +132,16 @@ function ReasoningTrace({ steps, nodeRuns, open, toggle }: { steps: string[]; no
           <li className="pb-2">
             <Mono className="text-(--text-subtle)">MODELS</Mono>
           </li>
+          {/* Stacked, not chamber-grid-reason: that grid's first column is 24px,
+              sized for a two-digit step number. A node name ("grounding_check")
+              overruns it straight into the model id. */}
           {nodeRuns.map((run, index) => (
-            <li key={`${run.name}-${index}`} className="chamber-grid-reason grid gap-2 border-b border-dotted border-(--line-soft) py-3 last:border-b-0">
-              <span className="font-mono text-[10px] uppercase tracking-wide text-(--accent)">{run.name}</span>
-              <span className="flex flex-wrap items-baseline gap-2 text-xs leading-4 text-(--text-muted)">
+            <li key={`${run.name}-${index}`} className="border-b border-dotted border-(--line-soft) py-3 last:border-b-0">
+              <div className="font-mono text-[10px] uppercase tracking-wide text-(--accent)">{run.name}</div>
+              <div className="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-xs leading-4 text-(--text-muted)">
                 <span className="break-all">{run.model}</span>
                 <span className="text-(--text-subtle)">{formatDuration(run.duration_ms)}</span>
-              </span>
+              </div>
             </li>
           ))}
         </ol>
