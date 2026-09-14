@@ -67,6 +67,7 @@ The primary fields (`detail_url`, `timeline`, `latest_reprint_pdf`, `latest_amen
 - An Act whose scrape failed is written as a stub and retried on the next run. A failed manual re-scrape leaves the stub in place rather than deleting it
 - If AGC rotates the decryption key mid-sweep, Step 2 scrapes the new key and retries that Act instead of aborting the rest
 - By default scrapes `updated` and `revised` acts only — the only types with stable numeric IDs, full detail pages, and signed links from Step 1
+- An Act number is free text. The index carries `406 (Revised)`, `NO. 26 OF 1963`, and three numbers containing a `/`. A `/` cannot go in a filename, so it is written as `%2F`: `49/1965` is stored as `49%2F1965.json`. Only `/`, `\`, and `%` itself are escaped, so no other file is renamed. `scraper/act_paths.py` owns the mapping, and every path built from an Act number goes through it. That includes the citation validator, which decides whether a cited Act exists by looking for its file
 
 ### Step 3 — Download and register immutable reprints
 
@@ -129,6 +130,8 @@ Embeds each shadow bundle with the corpus embedding model, then atomically inges
 ```
 
 ### `data/acts_metadata/{act_number}.json`
+
+The filename percent-escapes the Act number, as Step 2 describes. `act_number` inside the file is always the number AGC publishes.
 
 ```json
 {

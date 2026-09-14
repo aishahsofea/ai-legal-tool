@@ -14,6 +14,7 @@ import fitz
 
 from corpus.identity import asset_key, document_id, sha256_file
 from corpus.models import ActiveDocument, CorpusDocument, ExtractionRun
+from scraper.act_paths import act_number_from_stem, metadata_path
 
 SCANNED_THRESHOLD = 100
 
@@ -200,8 +201,11 @@ def generate_manifest(
 
     for path in pdf_files:
         relative = path.relative_to(pdf_root).as_posix()
-        act_number = path.stem
-        metadata = _json(metadata_root / f"{act_number}.json", {}) or {}
+        # The stem is the Act number as a filename, so it can carry the #70
+        # escape. Decode before the number is used as an identity, and re-derive
+        # the metadata filename through the same mapping Step 2 wrote it under.
+        act_number = act_number_from_stem(path.stem)
+        metadata = _json(metadata_path(metadata_root, act_number), {}) or {}
         fallback_url = str(metadata.get("detail_url", ""))
         source_url = str(metadata.get("latest_reprint_pdf", ""))
         if not metadata:

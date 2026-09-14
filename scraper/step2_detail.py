@@ -19,7 +19,9 @@ English has no version at all for this Act — so a currently-registered
 document's language never moves. A genuine second version lands in the
 parallel *_bm fields instead.
 
-Writes one file per act: data/acts_metadata/{act_number}.json
+Writes one file per act: data/acts_metadata/{act_number}.json, with the
+filename escaped by scraper.act_paths for the few Act numbers that carry a
+path separator.
 
 Resumable: skips acts whose output file already exists and already has the
 *_bm fields. An existing file scraped before this variant existed gets its
@@ -45,6 +47,7 @@ from scraper.config import (
     INDEX_FILE,
     METADATA_DIR,
 )
+from scraper.act_paths import act_number_from_stem, metadata_path
 from scraper.crypto import DecryptionError, decrypt_envelope, fetch_response_key
 from scraper.parsers.detail_parser import parse_timeline, is_detail_page, find_latest_reprint, find_latest_amendment
 from scraper.parsers.subsid_parser import parse_subsid_records
@@ -237,7 +240,7 @@ def scrape_act(
 
     if not primary_timeline:
         debug_html = en_html if en_exists else bm_html
-        debug_path = Path(METADATA_DIR) / f"{act_number}_debug.html"
+        debug_path = metadata_path(METADATA_DIR, act_number, "_debug.html")
         debug_path.write_text(debug_html, encoding="utf-8")
         logger.warning("[%s] No timeline entries found — raw HTML saved to %s for inspection", act_number, debug_path)
 
@@ -430,7 +433,7 @@ def run_step2(detail_types: list[str] | None = None) -> None:
         for i, act in enumerate(acts, 1):
             try:
                 act_number = act["act_number"]
-                out_file = out_dir / f"{act_number}.json"
+                out_file = metadata_path(out_dir, act_number)
 
                 if out_file.exists():
                     try:
@@ -509,7 +512,7 @@ def run_step2(detail_types: list[str] | None = None) -> None:
     logger.info("Step 2 complete. done=%d skipped=%d backfilled=%d failed=%d", done, skipped, backfilled, failed)
 
     # Print stub list at the end so the user knows what needs manual re-scraping
-    stubs = [f.stem for f in Path(METADATA_DIR).glob("*.json")
+    stubs = [act_number_from_stem(f.stem) for f in Path(METADATA_DIR).glob("*.json")
              if json.loads(f.read_text()).get("stub")]
     if stubs:
         logger.info("Stubs needing manual re-scrape (%d): %s", len(stubs), ", ".join(sorted(stubs, key=lambda x: int(x) if x.isdigit() else x)))
@@ -521,7 +524,7 @@ def list_stubs() -> None:
     for f in sorted(Path(METADATA_DIR).glob("*.json")):
         data = json.loads(f.read_text(encoding="utf-8"))
         if data.get("stub"):
-            stubs.append((f.stem, data.get("title_en", "")))
+            stubs.append((act_number_from_stem(f.stem), data.get("title_en", "")))
 
     if not stubs:
         print("No stubs found — all acts scraped successfully.")
@@ -562,7 +565,7 @@ def run_single_act(act_number: str, html_path: str | None = None) -> None:
         )
         return
 
-    out_file = Path(METADATA_DIR) / f"{act_number}.json"
+    out_file = metadata_path(METADATA_DIR, act_number)
     if out_file.exists():
         existing = json.loads(out_file.read_text(encoding="utf-8"))
         if not existing.get("stub"):
