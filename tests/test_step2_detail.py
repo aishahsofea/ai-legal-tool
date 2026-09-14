@@ -551,9 +551,9 @@ def test_run_single_act_refuses_an_index_written_before_signed_links(tmp_path, m
     assert session.requested == []
 
 
-def test_run_step2_skips_an_act_whose_number_breaks_its_path(tmp_path, monkeypatch, caplog):
-    """An act_number with a path separator makes every metadata path for it
-    unwritable. That must cost one Act, not the rest of the sweep (#70)."""
+def test_run_step2_writes_an_act_whose_number_carries_a_separator(tmp_path, monkeypatch):
+    """'49/1965' has to land in a file, and the Act number inside it stays the
+    number AGC publishes — only the filename is escaped (#70)."""
     _index_file(tmp_path, monkeypatch, [
         {"act_number": "49/1965", "act_type": "updated",
          "title_link_en": _en_link("49-1965"), "title_link_bm": ""},
@@ -569,14 +569,141 @@ def test_run_step2_skips_an_act_whose_number_breaks_its_path(tmp_path, monkeypat
     monkeypatch.setattr("scraper.session.build_session", lambda: session)
     monkeypatch.setattr(step2_detail, "fetch_response_key", lambda s: FAKE_RESPONSE_KEY)
 
+    step2_detail.run_step2()
+
+    assert not (metadata_dir / "49").exists()
+    saved = json.loads((metadata_dir / "49%2F1965.json").read_text(encoding="utf-8"))
+    assert saved["act_number"] == "49/1965"
+    assert saved["latest_reprint_pdf"].endswith("ACT49-EN.pdf")
+    # The Act behind it is untouched by the escape.
+    assert json.loads((metadata_dir / "15.json").read_text(encoding="utf-8"))["act_number"] == "15"
+
+
+def test_run_step2_debug_dump_for_a_separator_act_lands_beside_its_metadata(tmp_path, monkeypatch):
+    """The empty-timeline dump is what crashed first, because it is written one
+    line before the metadata file. It uses the same escaped stem (#70)."""
+    _index_file(tmp_path, monkeypatch, [
+        {"act_number": "31/1961", "act_type": "updated",
+         "title_link_en": _en_link("31-1961"), "title_link_bm": ""},
+    ])
+    metadata_dir = _metadata_dir_for(tmp_path, monkeypatch)
+
+    session = _FakeSession({_en_link("31-1961"): _empty_detail_html()})
+    monkeypatch.setattr("scraper.session.build_session", lambda: session)
+    monkeypatch.setattr(step2_detail, "fetch_response_key", lambda s: FAKE_RESPONSE_KEY)
+
+    step2_detail.run_step2()
+
+    assert (metadata_dir / "31%2F1961_debug.html").exists()
+    assert json.loads((metadata_dir / "31%2F1961.json").read_text(encoding="utf-8"))["timeline"] == []
+    assert not (metadata_dir / "31").exists()
+
+
+def test_run_step2_unwritable_act_still_costs_only_one_act(tmp_path, monkeypatch, caplog):
+    """The per-act OSError guard is what keeps a full disk, or any other path
+    that cannot be written, from ending the sweep."""
+    _index_file(tmp_path, monkeypatch, [
+        {"act_number": "16", "act_type": "updated",
+         "title_link_en": _en_link("16"), "title_link_bm": ""},
+        {"act_number": "17", "act_type": "updated",
+         "title_link_en": _en_link("17"), "title_link_bm": ""},
+    ])
+    metadata_dir = _metadata_dir_for(tmp_path, monkeypatch)
+
+    session = _FakeSession({
+        _en_link("16"): _detail_html("01/01/2021", "REPRINT ONLINE", "ACT16-EN.pdf"),
+        _en_link("17"): _detail_html("01/01/2021", "REPRINT ONLINE", "ACT17-EN.pdf"),
+    })
+    monkeypatch.setattr("scraper.session.build_session", lambda: session)
+    monkeypatch.setattr(step2_detail, "fetch_response_key", lambda s: FAKE_RESPONSE_KEY)
+
+    real_write_text = Path.write_text
+
+    def _write_text(self, *args, **kwargs):
+        if self.name == "16.json":
+            raise OSError("No space left on device")
+        return real_write_text(self, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "write_text", _write_text)
+
     with caplog.at_level("ERROR"):
         step2_detail.run_step2()
 
-    assert "49/1965" in caplog.text
-    assert not (metadata_dir / "49").exists()
-    # The Act behind the broken one still gets scraped.
-    saved = json.loads((metadata_dir / "15.json").read_text(encoding="utf-8"))
-    assert saved["latest_reprint_pdf"].endswith("ACT15-EN.pdf")
+    assert "Act 16" in caplog.text
+    assert not (metadata_dir / "16.json").exists()
+    saved = json.loads((metadata_dir / "17.json").read_text(encoding="utf-8"))
+    assert saved["latest_reprint_pdf"].endswith("ACT17-EN.pdf")
+
+
+def test_run_single_act_reaches_the_file_step2_wrote_for_a_separator_act(tmp_path, monkeypatch):
+    """A stub written by the sweep must be the same file `run.py --act` picks
+    up, or the Act can never be re-scraped (#70)."""
+    _index_file(tmp_path, monkeypatch, [
+        {"act_number": "26/1947", "act_type": "updated",
+         "title_link_en": _en_link("26-1947"), "title_link_bm": ""},
+    ])
+    metadata_dir = _metadata_dir_for(tmp_path, monkeypatch)
+    (metadata_dir / "26%2F1947.json").write_text(
+        json.dumps({"act_number": "26/1947", "stub": True}), encoding="utf-8"
+    )
+
+    session = _FakeSession({_en_link("26-1947"): _detail_html("01/01/2021", "REPRINT ONLINE", "ACT26-EN.pdf")})
+    monkeypatch.setattr("scraper.session.build_session", lambda: session)
+    monkeypatch.setattr(step2_detail, "fetch_response_key", lambda s: FAKE_RESPONSE_KEY)
+
+    step2_detail.run_single_act("26/1947")
+
+    saved = json.loads((metadata_dir / "26%2F1947.json").read_text(encoding="utf-8"))
+    assert saved.get("stub") is not True
+    assert saved["latest_reprint_pdf"].endswith("ACT26-EN.pdf")
+
+
+def test_a_separator_act_is_known_to_the_citation_validator(tmp_path, monkeypatch):
+    """End to end: an index record for '49/1965', through Step 2's write, to the
+    citation lookup that decides whether a cited Act exists.
+
+    These two derive their path independently. If they ever disagree, every
+    citation of this Act is reported as referencing an unknown Act — a confident
+    wrong answer, which is worse than the crash this replaced (#70).
+    """
+    from agent.nodes import citation_validator
+
+    _index_file(tmp_path, monkeypatch, [
+        {"act_number": "49/1965", "act_type": "updated",
+         "title_link_en": _en_link("49-1965"), "title_link_bm": ""},
+    ])
+    metadata_dir = _metadata_dir_for(tmp_path, monkeypatch)
+
+    session = _FakeSession({_en_link("49-1965"): _detail_html("01/01/2021", "REPRINT ONLINE", "ACT49-EN.pdf")})
+    monkeypatch.setattr("scraper.session.build_session", lambda: session)
+    monkeypatch.setattr(step2_detail, "fetch_response_key", lambda s: FAKE_RESPONSE_KEY)
+
+    step2_detail.run_step2()
+
+    monkeypatch.setattr(citation_validator, "METADATA_DIR", metadata_dir)
+    chunk = {"act_number": "49/1965", "section_number": "3", "content": "3. ..."}
+    result = citation_validator.citation_validator_node({
+        "retrieved_chunks": [chunk],
+        "citations": [{"act_number": "49/1965", "section_number": "3"}],
+        "draft_response": "Section 3 of Act 49/1965 applies.",
+        "violations": [],
+    })
+
+    assert result["violations"] == []
+
+
+def test_list_stubs_prints_the_published_act_number(tmp_path, monkeypatch, capsys):
+    """The printed line is a `run.py --act` command, and that flag takes the Act
+    number AGC publishes — not the escaped filename it is stored under."""
+    metadata_dir = _metadata_dir_for(tmp_path, monkeypatch)
+    (metadata_dir / "49%2F1965.json").write_text(
+        json.dumps({"act_number": "49/1965", "stub": True, "title_en": "FEDERAL AGRICULTURAL MARKETING AUTHORITY ACT 1965"}),
+        encoding="utf-8",
+    )
+
+    step2_detail.list_stubs()
+
+    assert "run.py --act 49/1965" in capsys.readouterr().out
 
 
 def test_backfill_stamps_when_the_malay_side_was_actually_fetched():

@@ -1,5 +1,10 @@
+import json
+import tempfile
 import unittest
+from pathlib import Path
+from unittest import mock
 
+from agent.nodes import citation_validator
 from agent.nodes.citation_validator import citation_validator_node
 from agent.nodes.supervisor import supervisor_node
 
@@ -104,6 +109,43 @@ class CitationValidatorTests(unittest.TestCase):
         result = citation_validator_node(state)
 
         self.assertEqual(result["violations"], [])
+
+    def test_act_number_with_a_separator_is_not_reported_unknown(self):
+        """Step 2 stores '49/1965' under an escaped filename, so the lookup has
+        to escape the cited number the same way (#70)."""
+        with tempfile.TemporaryDirectory() as tmp:
+            metadata_dir = Path(tmp)
+            (metadata_dir / "49%2F1965.json").write_text(
+                json.dumps({"act_number": "49/1965"}), encoding="utf-8"
+            )
+            chunk = {"act_number": "49/1965", "section_number": "3", "content": "3. ..."}
+            state = {
+                "retrieved_chunks": [chunk],
+                "citations": [{"act_number": "49/1965", "section_number": "3"}],
+                "draft_response": "Section 3 of Act 49/1965 applies.",
+                "violations": [],
+            }
+
+            with mock.patch.object(citation_validator, "METADATA_DIR", metadata_dir):
+                result = citation_validator_node(state)
+
+        self.assertEqual(result["violations"], [])
+
+    def test_act_with_no_metadata_file_is_reported_unknown(self):
+        """The escape must not turn the unknown-Act check into a no-op."""
+        with tempfile.TemporaryDirectory() as tmp:
+            chunk = {"act_number": "49/1965", "section_number": "3", "content": "3. ..."}
+            state = {
+                "retrieved_chunks": [chunk],
+                "citations": [{"act_number": "49/1965", "section_number": "3"}],
+                "draft_response": "Section 3 of Act 49/1965 applies.",
+                "violations": [],
+            }
+
+            with mock.patch.object(citation_validator, "METADATA_DIR", Path(tmp)):
+                result = citation_validator_node(state)
+
+        self.assertIn("Citation references unknown Act 49/1965.", result["violations"])
 
     def test_supervisor_preserves_existing_citation_violations(self):
         state = {

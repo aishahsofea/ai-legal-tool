@@ -12,13 +12,16 @@ from pathlib import Path
 
 from agent.citation_keys import canonicalize_citation_key
 from agent.state import AgentState
+from scraper.act_paths import metadata_path
 
 METADATA_DIR = Path("data/acts_metadata")
 
 def _metadata_exists(act_number: str) -> bool:
     if not act_number or act_number == "FC":
         return True
-    return (METADATA_DIR / f"{act_number}.json").exists()
+    # Step 2 escapes an Act number that cannot be a filename, so the lookup has
+    # to escape the cited number the same way or the Act reads as unknown (#70).
+    return metadata_path(METADATA_DIR, act_number).exists()
 
 
 def citation_validator_node(state: AgentState) -> dict:
