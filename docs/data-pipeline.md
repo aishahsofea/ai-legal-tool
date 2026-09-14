@@ -88,7 +88,8 @@ Validates each registered PDF, extracts section-level text with PyMuPDF, writes 
 - ~700 PDFs, a few minutes (CPU-bound)
 - Scanned PDFs (< 100 chars/page average) and zero-chunk results are explicit blockers
 - Section boundaries detected by Malaysian Act numbering regex (`1.`, `32A.`, `90A.` etc.)
-- Each chunk carries `document_id`, `extraction_id`, `content_sha256`, `page_start`, `page_end`, Act/title/section/content/language
+- [Division](../CONTEXT.md#language) boundaries detected from centred headings (`FIRST SCHEDULE`, `JADUAL PERTAMA`, `LIST OF AMENDMENTS`), so a schedule paragraph never overwrites the body section it shares a number with
+- Each chunk carries `document_id`, `extraction_id`, `content_sha256`, `page_start`, `page_end`, `division`, Act/title/section/content/language
 - The extraction run records extractor/version/configuration hash, chunk-set hash/count, sidecar identity/status
 - Report: `data/chunks/extract_report.json`
 
@@ -156,6 +157,7 @@ Embeds each shadow bundle with the corpus embedding model, then atomically inges
     "act_number": "56",
     "act_title": "EVIDENCE ACT 1950",
     "section_number": "32A",
+    "division": "body",
     "content": "32A.  Admissibility of statements...",
     "page_number": 47,
     "page_start": 47,

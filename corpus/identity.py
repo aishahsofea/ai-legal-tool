@@ -94,6 +94,7 @@ def chunk_set_hash(chunks: Iterable[Mapping[str, object]]) -> str:
         {
             "act_number": str(chunk.get("act_number", "")),
             "section_number": str(chunk.get("section_number", "")),
+            "division": str(chunk.get("division", "body")),
             "content_sha256": str(chunk.get("content_sha256") or content_hash(chunk.get("content"))),
             "page_number": chunk.get("page_number"),
             "page_end": chunk.get("page_end") or chunk.get("page_number"),

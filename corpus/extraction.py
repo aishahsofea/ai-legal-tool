@@ -24,16 +24,50 @@ from corpus.registry import CorpusRegistry
 from corpus.sidecars import SIDECAR_FORMAT, write_sidecar
 
 EXTRACTOR = "malaysian-act-sections-pymupdf"
-EXTRACTOR_VERSION = "2.0.0"
+EXTRACTOR_VERSION = "2.1.0"
 SECTION_PATTERN = r"^(\d{1,3}[A-Z]{0,2})\.\s+\S"
+# Headings that end one run of numbering and start another: the schedules at the
+# back of an Act restart at 1, and so do the entries in its list of amendments.
+# Anchored at both ends so a body line that merely mentions a schedule is not a
+# boundary; "SCHEDULE OF FEES" is missed for the same reason, which leaves that
+# Act exactly where it is today rather than splitting it in the wrong place.
+DIVISION_PATTERN = (
+    r"^(?:(?:[A-Z][A-Z\- ]{0,40}\s{1,4})?SCHEDULE(?:\s{1,4}[A-Z0-9]{1,3})?"
+    r"|JADUAL(?:\s{1,4}[A-Z0-9][A-Z0-9\- ]{0,24})?"
+    r"|LISTS?\s{1,4}OF\s{1,4}AMENDMENTS"
+    r"|SENARAI\s{1,4}PINDAAN)$"
+)
+# A heading is centred and a sentence is not, which is what separates
+# "FIRST SCHEDULE" from "as specified in the First Schedule." Measured on Act 777:
+# the headings sit within 0.005 of the page width of centre, the running prose at
+# 0.13 and beyond. Centring does not separate a real heading from the copy in the
+# table of contents — Act 512 centres both — `_division_boundaries` does that.
+DIVISION_CENTRE_TOLERANCE = 0.05
+DIVISION_HEADING_MAX_CHARS = 60
+# Act 588 prints its heading as "Schedule" where Act 777 prints "FIRST SCHEDULE",
+# so the pattern is matched against the uppercased line. Requiring every word to
+# start uppercase is what keeps prose out: "in the Schedule" is not a heading.
+DIVISION_HEADING_CASE = "every-word-starts-uppercase"
+# AGC marks a heading that carries a footnote with a leading asterisk, the same
+# way it marks Act titles ("*COMPANIES ACT 2016"). Act 177 prints
+# "*FIRST SCHEDULE". The asterisk is not part of the heading.
+DIVISION_HEADING_MARKERS = "*"
+BODY_DIVISION = "body"
 SCANNED_THRESHOLD = 100
 MIN_CONTENT_CHARS = 80
 _SECTION_RE = re.compile(SECTION_PATTERN)
+_DIVISION_RE = re.compile(DIVISION_PATTERN)
 EXTRACTOR_CONFIG = {
     "section_pattern": SECTION_PATTERN,
+    "division_pattern": DIVISION_PATTERN,
+    "division_centre_tolerance": DIVISION_CENTRE_TOLERANCE,
+    "division_heading_max_chars": DIVISION_HEADING_MAX_CHARS,
+    "division_heading_case": DIVISION_HEADING_CASE,
+    "division_heading_markers": DIVISION_HEADING_MARKERS,
     "scanned_threshold": SCANNED_THRESHOLD,
     "min_content_chars": MIN_CONTENT_CHARS,
-    "deduplication": "last-section-number-wins",
+    "division_boundary": "last-run-per-heading-dropping-a-leading-division-longer-than-the-body",
+    "deduplication": "last-section-number-wins-within-division",
     "page_numbering": "physical-1-based",
 }
 CONFIGURATION_HASH = sha256_json(EXTRACTOR_CONFIG)
@@ -43,11 +77,86 @@ def _is_scanned(pdf: fitz.Document) -> bool:
     return sum(len(page.get_text()) for page in pdf) / max(pdf.page_count, 1) < SCANNED_THRESHOLD
 
 
+def _is_heading_case(text: str) -> bool:
+    words = text.split()
+    return bool(words) and all(word[0].isupper() or word[0].isdigit() for word in words)
+
+
+def _division_headings(page: fitz.Page) -> set[str]:
+    """Division headings printed on this page, as the plain text layer spells them.
+
+    Matching on the text rather than the position lets the caller keep walking
+    `page.get_text()` lines, so two schedules that start on the same page land in
+    the order they are printed and the chunk text itself does not change.
+    """
+    width = page.rect.width or 1.0
+    headings: set[str] = set()
+    for block in page.get_text("dict")["blocks"]:
+        for line in block.get("lines", []):
+            heading = "".join(span["text"] for span in line["spans"]).strip()
+            candidate = heading.lstrip(DIVISION_HEADING_MARKERS).strip()
+            if (
+                len(candidate) > DIVISION_HEADING_MAX_CHARS
+                or not _is_heading_case(candidate)
+                or not _DIVISION_RE.match(candidate.upper())
+            ):
+                continue
+            left, _, right, _ = line["bbox"]
+            if abs((left + right) / 2 - width / 2) / width <= DIVISION_CENTRE_TOLERANCE:
+                headings.add(heading)
+    return headings
+
+
+def _last_run_start(pages: list[int]) -> int:
+    """First page of the final consecutive run in an ascending page list."""
+    start = pages[-1]
+    for page in reversed(pages[:-1]):
+        if start - page > 1:
+            break
+        start = page
+    return start
+
+
+def _division_boundaries(pdf: fitz.Document) -> dict[int, set[str]]:
+    """Where each division starts, keyed by page.
+
+    A heading is printed twice: once in the table of contents at the front, once
+    over the division itself at the back, and both are centred — Act 512 sets the
+    two copies at the same offset. The later copy is the real one, the same
+    reasoning that makes last-wins right for section numbers. A heading repeated
+    across consecutive pages is a running head, so the run counts once, from its
+    first page.
+    """
+    occurrences: dict[str, list[int]] = {}
+    for page_number, page in enumerate(pdf, 1):
+        for heading in _division_headings(page):
+            occurrences.setdefault(heading, []).append(page_number)
+    boundaries: dict[int, set[str]] = {}
+    for heading, pages in occurrences.items():
+        boundaries.setdefault(_last_run_start(pages), set()).add(heading)
+
+    # Act 593 prints "FIRST SCHEDULE" in its table of contents and never again,
+    # so last-wins leaves a boundary on page 24 of 369 that would file the whole
+    # body under a schedule. Schedules are back matter: a division that runs
+    # longer than the body it leaves behind is a table-of-contents copy. Dropping
+    # it returns that Act to the single undivided run of numbering it has today,
+    # which is the safe direction to be wrong in.
+    while boundaries:
+        ordered = sorted(boundaries)
+        first = ordered[0]
+        end = ordered[1] if len(ordered) > 1 else pdf.page_count + 1
+        if end - first <= first - 1:
+            break
+        del boundaries[first]
+    return boundaries
+
+
 def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[str, Any]]:
     raw: list[dict[str, Any]] = []
     current_num: str | None = None
     current_page = 1
     current_lines: list[str] = []
+    current_division = BODY_DIVISION
     previous_line = ""
 
     def flush(page_end: int) -> None:
@@ -60,6 +169,7 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
             "act_number": document.act_number,
             "act_title": document.act_title,
             "section_number": current_num,
+            "division": current_division,
             "content": content,
             "content_sha256": content_hash(content),
             "page_number": current_page,
@@ -69,9 +179,20 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
             "document_id": document.document_id,
         })
 
+    boundaries = _division_boundaries(pdf)
     for page_number, page in enumerate(pdf, 1):
+        headings = boundaries.get(page_number, frozenset())
         for line in page.get_text().split("\n"):
             stripped = line.strip()
+            if stripped in headings:
+                flush(page_number)
+                current_division = stripped
+                # The heading itself and any preamble under it belong to no
+                # numbered paragraph, so nothing accumulates until the next one.
+                current_num = None
+                current_lines = []
+                previous_line = stripped
+                continue
             match = _SECTION_RE.match(stripped)
             if match:
                 flush(page_number)
@@ -92,9 +213,12 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
             previous_line = stripped
     flush(pdf.page_count)
 
-    deduplicated: dict[str, dict[str, Any]] = {}
+    # Last occurrence still wins, because the table of contents copy of a section
+    # is printed before the body copy. Keying on the division as well stops a
+    # schedule paragraph 1, printed after the body, from taking section 1 with it.
+    deduplicated: dict[tuple[str, str], dict[str, Any]] = {}
     for chunk in raw:
-        deduplicated[chunk["section_number"]] = chunk
+        deduplicated[(chunk["division"], chunk["section_number"])] = chunk
     return list(deduplicated.values())
 
 

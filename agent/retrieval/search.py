@@ -141,19 +141,46 @@ def _has_provenance_schema(cur) -> bool:
     return bool(row and row["available"])
 
 
-def _select_columns(provenance: bool) -> str:
+def _has_division_column(cur) -> bool:
+    """Return whether `chunks.division` exists on this database.
+
+    Same reason as `_has_provenance_schema`: the column arrives with the corpus
+    migration, and retrieval has to keep answering on a database that has not run
+    it yet rather than waiting for a flag day.
+    """
+    cur.execute(
+        """
+        SELECT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_schema = 'public' AND table_name = 'chunks'
+            AND column_name = 'division'
+        ) AS available
+        """
+    )
+    row = cur.fetchone()
+    return bool(row and row["available"])
+
+
+def _select_columns(provenance: bool, division: bool = False) -> str:
+    # Rows ingested before the column existed are body sections, because the
+    # extractor that wrote them kept only one chunk per section number.
+    division_column = (
+        f"COALESCE({'c.' if provenance else ''}division, 'body') AS division"
+        if division
+        else "'body'::text AS division"
+    )
     if not provenance:
         return (
             "act_number, act_title, section_number, content, page_number, language, "
             "NULL::text AS document_id, NULL::text AS extraction_id, "
             "NULL::text AS content_sha256, page_number AS page_start, "
-            "page_number AS page_end, NULL::text AS source_url"
+            f"page_number AS page_end, NULL::text AS source_url, {division_column}"
         )
     return (
         "c.act_number, c.act_title, c.section_number, c.content, c.page_number, c.language, "
         "c.document_id, c.extraction_id, c.content_sha256, "
         "COALESCE(c.page_start, c.page_number) AS page_start, "
-        "COALESCE(c.page_end, c.page_number) AS page_end, d.source_url"
+        f"COALESCE(c.page_end, c.page_number) AS page_end, d.source_url, {division_column}"
     )
 
 
@@ -210,6 +237,7 @@ def semantic_search(
             cur.execute("SET ivfflat.probes = 10;")
             mode = _retrieval_mode()
             provenance = _has_provenance_schema(cur)
+            division = _has_division_column(cur)
             if mode == "verified" and not provenance:
                 return []
             prefix = "c." if provenance else ""
@@ -226,7 +254,7 @@ def semantic_search(
             where = f"WHERE {' AND '.join(combined_filters)}" if combined_filters else ""
             cur.execute(
                 f"""
-                SELECT {_select_columns(provenance)},
+                SELECT {_select_columns(provenance, division)},
                        1 - ({prefix}embedding <=> %s::vector) AS similarity
                 FROM chunks {prefix.rstrip('.')}
                 {joins}
@@ -272,6 +300,7 @@ def exact_section_lookup(
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             mode = _retrieval_mode()
             provenance = _has_provenance_schema(cur)
+            division = _has_division_column(cur)
             if mode == "verified" and not provenance:
                 return []
             if document_id and (not provenance or mode == "legacy"):
@@ -289,9 +318,16 @@ def exact_section_lookup(
                 identity_filter = "AND c.document_id = %s AND c.extraction_id = %s"
                 identity_params = [document_id, extraction_id]
             prefix = "c." if provenance else ""
+            # A schedule paragraph carries the same number as a body section, so
+            # an unqualified "section 1" has to resolve to the body one.
+            body_first = (
+                f"CASE WHEN COALESCE({prefix}division, 'body') = 'body' THEN 0 ELSE 1 END,"
+                if division
+                else ""
+            )
             cur.execute(
                 f"""
-                SELECT {_select_columns(provenance)},
+                SELECT {_select_columns(provenance, division)},
                        1.0 AS similarity
                 FROM chunks {prefix.rstrip('.')}
                 {joins}
@@ -300,6 +336,7 @@ def exact_section_lookup(
                   {provenance_filter}
                   {identity_filter}
                 ORDER BY
+                  {body_first}
                   CASE WHEN {prefix}act_number = %s THEN 0 ELSE 1 END,
                   CASE WHEN {prefix}language = 'en' THEN 0 ELSE 1 END
                 LIMIT %s
