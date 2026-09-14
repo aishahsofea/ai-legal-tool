@@ -36,10 +36,12 @@ class QueryResult(TypedDict):
 
 
 class QueryEvent(TypedDict, total=False):
-    type: Literal["status", "tool_call", "response", "interrupt", "error", "done"]
+    type: Literal["status", "tool_call", "node", "response", "interrupt", "error", "done"]
     message: str
-    name: str        # tool_call: which retrieval tool fired
+    name: str        # tool_call: which retrieval tool fired / node: which node ran
     summary: str     # tool_call: human-readable description of the call
+    model: str       # node: the model that node called
+    duration_ms: int # node: wall time of that call
     content: str
     citations: list[Citation]
     violations: list[str]

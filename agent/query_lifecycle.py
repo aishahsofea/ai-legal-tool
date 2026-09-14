@@ -187,12 +187,20 @@ async def _drive_query_stream(
         graph_input, config, stream_mode=["updates", "custom"]
     ):
         if mode == "custom":
-            tool_call = chunk.get("tool_call") if isinstance(chunk, dict) else None
-            if tool_call:
+            if not isinstance(chunk, dict):
+                continue
+            if tool_call := chunk.get("tool_call"):
                 yield {
                     "type": "tool_call",
                     "name": tool_call.get("name", ""),
                     "summary": tool_call.get("summary", ""),
+                }
+            elif node_event := chunk.get("node_event"):
+                yield {
+                    "type": "node",
+                    "name": node_event.get("node", ""),
+                    "model": node_event.get("model", ""),
+                    "duration_ms": node_event.get("duration_ms", 0),
                 }
             continue
 

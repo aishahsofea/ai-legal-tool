@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel
 
 from agent.llm_factory import make_llm, structured_llm, system_content
+from agent.node_events import node_model_event
 from agent.query_policy import trim_history
 from agent.state import AgentState
 
@@ -104,12 +105,14 @@ def _result(result: _RouterOutput) -> dict:
 def router_node(state: AgentState) -> dict:
     if (short := _escalation_shortcut(state)) is not None:
         return short
-    result: _RouterOutput = _structured_llm.invoke(_build_messages(state))
+    with node_model_event("router", _MODEL):
+        result: _RouterOutput = _structured_llm.invoke(_build_messages(state))
     return _result(result)
 
 
 async def arouter_node(state: AgentState) -> dict:
     if (short := _escalation_shortcut(state)) is not None:
         return short
-    result: _RouterOutput = await _structured_llm.ainvoke(_build_messages(state))
+    with node_model_event("router", _MODEL):
+        result: _RouterOutput = await _structured_llm.ainvoke(_build_messages(state))
     return _result(result)

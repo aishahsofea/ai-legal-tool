@@ -87,6 +87,7 @@ curl -N -X POST http://localhost:8000/query \
 data: {"type": "status",    "message": "Classifying query..."}
 data: {"type": "tool_call", "name": "search_statutes", "summary": "Searching statutes: “…”"}
 data: {"type": "status",    "message": "Searching Malaysian Acts..."}
+data: {"type": "node",      "name": "router", "model": "gpt-4.1", "duration_ms": 412}
 data: {"type": "status",    "message": "Drafting response..."}
 data: {"type": "status",    "message": "Checking policy compliance..."}
 data: {"type": "response",  "content": "...", "citations": [...], "violations": []}
@@ -95,6 +96,7 @@ data: {"type": "done"}
 
 - **`response`** carries `content`, `violations`, and `citations` — each with `act_number`, `act_title`, `section_number`, `pdf_url` (the official AGC fallback), and `page_number`. A provenance-backed citation also has `receipt: { document_id, extraction_id, evidence: [{ claim, quote }] }`; legacy/unavailable rows omit it.
 - **`tool_call`** (`name`, `summary`) fires only on the agentic-retrieval path, once per retrieval tool call; the frontend renders these in the collapsible PROCESS panel.
+- **`node`** (`name`, `model`, `duration_ms`) fires once per model call, in execution order. A retry emits a second synthesiser row, and a node that short-circuits before its model emits none. The PROCESS panel lists them under MODELS, so a run split across providers says which model answered where. Never carries prompt text, user content, or token counts.
 - **`status`** tracks the phase and reflects short-circuits: `"Resolving follow-up..."`, `"Refining response..."` (a retry), `"Escalating to human lawyer..."`, or `"Responding..."` (conversational).
 - **`interrupt`** (`question`, `interrupt_id`) fires when the graph pauses to ask the user a clarifying question (see below). The stream ends there — no `response` follows until you resume.
 

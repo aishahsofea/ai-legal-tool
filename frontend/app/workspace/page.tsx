@@ -94,6 +94,7 @@ function WorkspaceInner() {
     activeThread,
     messages,
     statusHistory,
+    nodeRuns,
     citedCountLabel,
     input,
     reasoningOpen,
@@ -186,6 +187,7 @@ function WorkspaceInner() {
                         reasoningOpen={reasoningOpen}
                         onToggleReasoning={() => setReasoningOpen((open) => !open)}
                         statusHistory={statusHistory}
+                        nodeRuns={nodeRuns}
                         onOpenReceipt={openReceipt}
                       />
                     ) : (

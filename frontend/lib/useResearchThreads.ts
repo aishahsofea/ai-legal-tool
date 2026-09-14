@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/set-state-in-effect -- stream events arrive through hook state and are committed into thread history here. */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useQuery, type Citation } from "@/lib/useQuery";
+import { useQuery, type Citation, type NodeRun } from "@/lib/useQuery";
 import type { Message as ThreadMessage, ThreadSummary } from "@/components/conversation";
 
 type ResearchThread = ThreadSummary & {
   messages: ThreadMessage[];
   citations: Citation[];
   statusHistory: string[];
+  nodeRuns: NodeRun[];
 };
 
 function nowLabel(date = new Date()) {
@@ -60,7 +61,7 @@ export function useResearchThreads() {
   const [reasoningOpen, setReasoningOpen] = useState(false);
   const [activeSourceIndex, setActiveSourceIndex] = useState(0);
   const lastStatusRef = useRef<string | null>(null);
-  const { submit, resume, cancel, status, response, citations, isLoading, error, pendingQuestion } = useQuery();
+  const { submit, resume, cancel, status, response, citations, nodeRuns, isLoading, error, pendingQuestion } = useQuery();
 
   const activeThread = useMemo(
     () => threads.find((thread) => thread.id === activeThreadId) ?? null,
@@ -69,6 +70,7 @@ export function useResearchThreads() {
 
   const messages = activeThread?.messages ?? [];
   const statusHistory = activeThread?.statusHistory ?? [];
+  const threadNodeRuns = activeThread?.nodeRuns ?? [];
   const sources = activeThread?.citations ?? [];
   const activeSource = sources[activeSourceIndex] ?? null;
   const assistantMessage = [...messages].reverse().find((message) => message.role === "assistant") ?? null;
@@ -134,6 +136,7 @@ export function useResearchThreads() {
                 messages: nextMessages,
                 citations: [],
                 statusHistory: [],
+                nodeRuns: [],
               },
               ...prev,
             ],
@@ -144,7 +147,7 @@ export function useResearchThreads() {
         return syncActiveFlags(
           prev.map((thread) =>
             thread.id === targetThreadId
-              ? { ...thread, title, meta: "Loading…", messages: nextMessages, statusHistory: [] }
+              ? { ...thread, title, meta: "Loading…", messages: nextMessages, statusHistory: [], nodeRuns: [] }
               : thread,
           ),
           targetThreadId,
@@ -199,7 +202,7 @@ export function useResearchThreads() {
     setThreads((prev) =>
       prev.map((t) =>
         t.id === activeThreadId
-          ? { ...t, messages: remaining, meta: summarizeSources(t.citations), statusHistory: [] }
+          ? { ...t, messages: remaining, meta: summarizeSources(t.citations), statusHistory: [], nodeRuns: [] }
           : t,
       ),
     );
@@ -218,6 +221,18 @@ export function useResearchThreads() {
       ),
     );
   }, [pendingThreadId, status]);
+
+  // Mirrors the statusHistory effect, but keyed on length rather than a last-value
+  // ref: two identical rows are legitimate (a retry runs the synthesiser twice on
+  // the same model), so this must not dedupe the way consecutive statuses do.
+  useEffect(() => {
+    if (!pendingThreadId || nodeRuns.length === 0) return;
+    setThreads((prev) =>
+      prev.map((thread) =>
+        thread.id === pendingThreadId ? { ...thread, nodeRuns } : thread,
+      ),
+    );
+  }, [pendingThreadId, nodeRuns]);
 
   useEffect(() => {
     if (!response || !pendingThreadId) return;
@@ -288,6 +303,7 @@ export function useResearchThreads() {
     activeThread,
     messages,
     statusHistory,
+    nodeRuns: threadNodeRuns,
     sources,
     activeSource,
     activeSourceIndex,

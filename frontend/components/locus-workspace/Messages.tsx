@@ -6,7 +6,7 @@ import { createMarkdownComponents } from "./markdown";
 import { formatSourceTitle, scopedId, sourceMapId, sourceRefId } from "./citationRefs";
 import { rehypeCitationLinks } from "./rehypeCitationLinks";
 import type { Message } from "./types";
-import type { Citation } from "@/lib/useQuery";
+import type { Citation, NodeRun } from "@/lib/useQuery";
 
 const SOURCE_MAP_VISIBLE_LIMIT = 6;
 
@@ -103,7 +103,11 @@ function InlineSources({ citations, messageId, onOpenReceipt }: { citations: Non
   );
 }
 
-function ReasoningTrace({ steps, open, toggle }: { steps: string[]; open: boolean; toggle: () => void }) {
+function formatDuration(ms: number) {
+  return ms < 1000 ? `${ms}ms` : `${(ms / 1000).toFixed(1)}s`;
+}
+
+function ReasoningTrace({ steps, nodeRuns, open, toggle }: { steps: string[]; nodeRuns: NodeRun[]; open: boolean; toggle: () => void }) {
   return (
     <div className="chamber-max-content overflow-hidden rounded-lg border border-(--line) bg-(--surface)">
       <button type="button" onClick={toggle} className="chamber-hover-soft flex min-h-10 w-full cursor-pointer items-center gap-2 px-4 py-2 text-left text-(--text-muted) transition-colors duration-200 active:opacity-80">
@@ -121,6 +125,27 @@ function ReasoningTrace({ steps, open, toggle }: { steps: string[]; open: boolea
           ))}
         </ol>
       )}
+      {/* Below the steps, and counted separately: the collapsed header reports
+          STEPS, and model rows must not inflate that number. */}
+      {open && nodeRuns.length > 0 && (
+        <ol className="border-t border-(--line-soft) px-4 py-2">
+          <li className="pb-2">
+            <Mono className="text-(--text-subtle)">MODELS</Mono>
+          </li>
+          {/* Stacked, not chamber-grid-reason: that grid's first column is 24px,
+              sized for a two-digit step number. A node name ("grounding_check")
+              overruns it straight into the model id. */}
+          {nodeRuns.map((run, index) => (
+            <li key={`${run.name}-${index}`} className="border-b border-dotted border-(--line-soft) py-3 last:border-b-0">
+              <div className="font-mono text-[10px] uppercase tracking-wide text-(--accent)">{run.name}</div>
+              <div className="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-xs leading-4 text-(--text-muted)">
+                <span className="break-all">{run.model}</span>
+                <span className="text-(--text-subtle)">{formatDuration(run.duration_ms)}</span>
+              </div>
+            </li>
+          ))}
+        </ol>
+      )}
     </div>
   );
 }
@@ -134,6 +159,7 @@ export function AssistantMessage({
   reasoningOpen,
   onToggleReasoning,
   statusHistory,
+  nodeRuns,
   onOpenReceipt,
 }: {
   message: Message;
@@ -144,6 +170,7 @@ export function AssistantMessage({
   reasoningOpen: boolean;
   onToggleReasoning: () => void;
   statusHistory: string[];
+  nodeRuns: NodeRun[];
   onOpenReceipt: OpenReceipt;
 }) {
   return (
@@ -156,8 +183,8 @@ export function AssistantMessage({
         </span>
       </div>
 
-      {!(isLoading && isTail) && statusHistory.length > 0 && (
-        <ReasoningTrace steps={statusHistory} open={reasoningOpen} toggle={onToggleReasoning} />
+      {!(isLoading && isTail) && (statusHistory.length > 0 || nodeRuns.length > 0) && (
+        <ReasoningTrace steps={statusHistory} nodeRuns={nodeRuns} open={reasoningOpen} toggle={onToggleReasoning} />
       )}
 
       {message.citations && message.citations.length > 0 && <InlineSourceSummary citations={message.citations} messageId={message.id} />}

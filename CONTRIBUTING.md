@@ -465,7 +465,7 @@ Two provider limits worth knowing. `method="function_calling"` fails with a 422 
 
 When structured output fails the factory raises `StructuredOutputError` naming the node and the model. Contextualize and grounding check fail open, so that log line is the only place you will see which one broke. Rate limits, auth failures, and timeouts pass through unwrapped. They are not schema failures, and upstream retry logic needs their own shape.
 
-Every node records the model it bound onto the LangSmith run as `model_<node>` (`agent/query_lifecycle.py`), so a run split across two providers can be read back afterwards.
+Every node records the model it bound onto the LangSmith run as `model_<node>` (`agent/query_lifecycle.py`), so a run split across two providers can be read back afterwards. The turn also streams a [`node` event](README.md#api) per model call, so the PROCESS panel names the model without anyone opening a trace.
 
 Embedding models resolve through their own factory, `agent/embeddings.py`, separate from the chat-model factory above. Embeddings need one shared vector space, not provider routing.
 

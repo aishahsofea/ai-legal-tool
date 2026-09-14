@@ -94,6 +94,7 @@ describe("Citation Receipt integration", () => {
           reasoningOpen={false}
           onToggleReasoning={() => {}}
           statusHistory={[]}
+          nodeRuns={[]}
           onOpenReceipt={(citation) => setSelected(citation)}
         />
         {selected && <CitationReceiptViewer citation={selected} onClose={() => setSelected(null)} />}
@@ -117,6 +118,7 @@ describe("Citation Receipt integration", () => {
       reasoningOpen={false}
       onToggleReasoning={() => {}}
       statusHistory={[]}
+          nodeRuns={[]}
       onOpenReceipt={openReceipt}
     />);
 
@@ -136,6 +138,7 @@ describe("Citation Receipt integration", () => {
       reasoningOpen={false}
       onToggleReasoning={() => {}}
       statusHistory={[]}
+          nodeRuns={[]}
       onOpenReceipt={openReceipt}
     />);
     const proseLink = screen.getByRole("link", { name: "Section 90A" });
@@ -157,6 +160,7 @@ describe("Citation Receipt integration", () => {
       reasoningOpen={false}
       onToggleReasoning={() => {}}
       statusHistory={[]}
+          nodeRuns={[]}
       onOpenReceipt={vi.fn()}
     />);
 

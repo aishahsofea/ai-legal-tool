@@ -26,6 +26,7 @@ import os
 from dotenv import load_dotenv
 
 from agent.llm_factory import make_llm, system_content
+from agent.node_events import node_model_event
 from agent.query_policy import (
     CONVERSATIONAL_FALLBACK_RESPONSE,
     memory_soft_context_rule,
@@ -93,7 +94,8 @@ def _finalise(result) -> dict:
 
 def conversational_node(state: AgentState) -> dict:
     try:
-        result = _llm.invoke(_build_messages(state))
+        with node_model_event("conversational", _MODEL):
+            result = _llm.invoke(_build_messages(state))
         return _finalise(result)
     except Exception:
         # Fail closed: a warm static greeting, never a raw error.
@@ -103,7 +105,8 @@ def conversational_node(state: AgentState) -> dict:
 
 async def aconversational_node(state: AgentState) -> dict:
     try:
-        result = await _llm.ainvoke(_build_messages(state))
+        with node_model_event("conversational", _MODEL):
+            result = await _llm.ainvoke(_build_messages(state))
         return _finalise(result)
     except Exception:
         logger.warning("conversational_node failed; using static fallback", exc_info=True)

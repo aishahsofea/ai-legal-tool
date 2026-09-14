@@ -25,9 +25,18 @@ export interface Citation {
   receipt?: CitationReceipt;
 }
 
+// One model call a node made this turn. The PROCESS panel renders these so a
+// mixed-provider run can be read without opening LangSmith.
+export interface NodeRun {
+  name: string;
+  model: string;
+  duration_ms: number;
+}
+
 export type QueryEvent =
   | { type: "status"; message: string }
   | { type: "tool_call"; name: string; summary: string }
+  | { type: "node"; name: string; model: string; duration_ms: number }
   | { type: "response"; content: string; citations: Citation[]; violations: string[] }
   | { type: "interrupt"; question: string; interrupt_id: string }
   | { type: "error"; message: string }
@@ -74,6 +83,15 @@ function decodeQueryEvent(raw: string): QueryEvent | null {
       type: "tool_call",
       name: typeof event.name === "string" ? event.name : "",
       summary: typeof event.summary === "string" ? event.summary : "",
+    };
+  }
+
+  if (event.type === "node") {
+    return {
+      type: "node",
+      name: typeof event.name === "string" ? event.name : "",
+      model: typeof event.model === "string" ? event.model : "",
+      duration_ms: typeof event.duration_ms === "number" ? event.duration_ms : 0,
     };
   }
 

@@ -14,6 +14,7 @@ from pydantic import BaseModel
 
 from agent.citation_keys import canonicalize_citation_key
 from agent.llm_factory import make_llm, structured_llm, system_content
+from agent.node_events import node_model_event
 from agent.query_policy import (
     _DISCLAIMER_BM,
     _DISCLAIMER_EN,
@@ -200,10 +201,12 @@ def _finalise(result: _SynthesiserOutput, state: AgentState) -> dict:
 
 
 def synthesiser_node(state: AgentState) -> dict:
-    result: _SynthesiserOutput = _structured_llm.invoke(_build_messages(state))
+    with node_model_event("synthesiser", _MODEL):
+        result: _SynthesiserOutput = _structured_llm.invoke(_build_messages(state))
     return _finalise(result, state)
 
 
 async def asynthesiser_node(state: AgentState) -> dict:
-    result: _SynthesiserOutput = await _structured_llm.ainvoke(_build_messages(state))
+    with node_model_event("synthesiser", _MODEL):
+        result: _SynthesiserOutput = await _structured_llm.ainvoke(_build_messages(state))
     return _finalise(result, state)
