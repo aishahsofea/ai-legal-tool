@@ -500,3 +500,110 @@ def test_upload_scope_active_skips_documents_whose_bytes_are_not_local(tmp_path:
 
     _full_objects, full_errors = _upload_objects(registry, "full")
     assert any(documents[1].document_id in error for error in full_errors)
+
+
+def test_receipt_coverage_counts_documents_whose_bytes_shipped(tmp_path: Path):
+    """#57: a container carries the manifest but only a handful of the PDFs it
+    describes, and the gap is invisible until a receipt returns 503. The boot
+    line has to separate registered from reachable."""
+    from corpus.coverage import receipt_coverage
+
+    asset_root = tmp_path / "assets"
+    sidecar_root = tmp_path / "sidecars"
+    asset_root.mkdir()
+    documents = []
+    for act in ("41", "42"):
+        path = asset_root / f"{act}.pdf"
+        _pdf(path, [
+            f"Act {act} short title",
+            f"1. Section one of Act {act} carries enough legal fixture text",
+            "for the extractor to clear its text-layer threshold on this page.",
+        ])
+        digest = sha256_file(path)
+        documents.append(CorpusDocument(
+            document_id(act, "en", digest), act, f"ACT {act}", "en", asset_key(digest), digest,
+            path.stat().st_size, 1, f"https://example.test/{act}.pdf", "", "REPRINT",
+            "2026-01-01T00:00:00Z", local_path=path.name,
+        ))
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256",
+        "documents": [item.to_dict() for item in documents],
+        "extraction_runs": [], "active_documents": [], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=sidecar_root)
+    manifest, _report = extract_manifest(
+        registry,
+        extraction_root=tmp_path / "extractions",
+        sidecar_root=sidecar_root,
+        activate_ready=True,
+    )
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=sidecar_root)
+
+    full = receipt_coverage(registry, delivery_mode="auto")
+    assert (full.registered, full.registered_local) == (2, 2)
+    assert (full.active, full.active_local, full.active_reachable) == (2, 2, 2)
+    assert full.probed == 0 and "cdn=unset" in full.line()
+
+    (asset_root / "42.pdf").unlink()
+    thin = receipt_coverage(registry, delivery_mode="auto")
+    assert (thin.registered, thin.registered_local) == (2, 1)
+    assert (thin.active, thin.active_local, thin.active_reachable) == (2, 1, 1)
+    assert "registered_local=1/2" in thin.line()
+
+
+def test_receipt_coverage_counts_a_document_the_cdn_carries(tmp_path: Path, monkeypatch):
+    """An uploaded document is reachable even with no local bytes, which is the
+    whole point of the R2 fallback — the boot line has to say so."""
+    from corpus import coverage as coverage_module
+
+    asset_root = tmp_path / "assets"
+    asset_root.mkdir()
+    path = asset_root / "43.pdf"
+    _pdf(path, [
+        "Act 43 short title",
+        "1. Section one of Act 43 carries enough legal fixture text",
+        "for the extractor to clear its text-layer threshold on this page.",
+    ])
+    digest = sha256_file(path)
+    document = CorpusDocument(
+        document_id("43", "en", digest), "43", "ACT 43", "en", asset_key(digest), digest,
+        path.stat().st_size, 1, "https://example.test/43.pdf", "", "REPRINT",
+        "2026-01-01T00:00:00Z", local_path=path.name,
+    )
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256", "documents": [document.to_dict()],
+        "extraction_runs": [], "active_documents": [], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=tmp_path / "sidecars")
+    manifest, _report = extract_manifest(
+        registry,
+        extraction_root=tmp_path / "extractions",
+        sidecar_root=tmp_path / "sidecars",
+        activate_ready=True,
+    )
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=tmp_path / "sidecars")
+    path.unlink()
+
+    class _Response:
+        headers = {
+            "Content-Length": str(document.byte_size),
+            "X-Amz-Meta-Sha256": document.sha256,
+            "ETag": '"fixture"',
+            "Content-Type": "application/pdf",
+        }
+
+        def raise_for_status(self) -> None:
+            return None
+
+    monkeypatch.setattr("corpus.storage.requests.head", lambda *a, **k: _Response())
+
+    result = coverage_module.receipt_coverage(
+        registry, delivery_mode="auto", cdn_base_url="https://statutes.example.test"
+    )
+    assert (result.registered_local, result.active_local) == (0, 0)
+    assert (result.probed, result.active_remote, result.active_reachable) == (1, 1, 1)
+    assert "active_cdn=1/1" in result.line()

@@ -37,6 +37,7 @@ Endpoints:
 """
 import json
 import logging
+import os
 import asyncio
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
@@ -83,10 +84,33 @@ class _AgentRuntime:
             await context.__aexit__(None, None, None)
 
 
+def _report_receipt_coverage() -> None:
+    """Say on the first line how much of the registry this deployment can serve.
+
+    A container ships the manifest but not most of the bytes it describes, so a
+    deployment can look healthy and still answer 503 for everything that was
+    never uploaded. One line at boot beats discovering that one request at a
+    time. It must never stop the app from starting.
+    """
+    try:
+        from citation_receipts.registry import get_receipt_registry
+        from citation_receipts.service import delivery_mode
+        from corpus.coverage import log_receipt_coverage
+
+        log_receipt_coverage(
+            get_receipt_registry(),
+            delivery_mode=delivery_mode(),
+            cdn_base_url=os.getenv("CORPUS_CDN_BASE_URL", "").strip(),
+        )
+    except Exception:
+        logger.exception("receipt_coverage unavailable")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     runtime = _AgentRuntime()
     app.state.agent_runtime = runtime
+    _report_receipt_coverage()
     try:
         yield
     finally:
