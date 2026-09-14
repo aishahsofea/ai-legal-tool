@@ -6,6 +6,7 @@ from agent.nodes.grounding_check import (
     _GroundingOutput,
     _collect_cited_sources,
     _finalise,
+    empty_grounding_metrics,
     grounding_check_node,
 )
 
@@ -273,6 +274,78 @@ class GroundingCheckTests(unittest.TestCase):
             "claim": "A document produced by a computer shall be admissible as evidence.",
             "quote": "A document produced by a computer shall be admissible as evidence",
         }])
+
+
+class GroundingMetricsTests(unittest.TestCase):
+    """A fail-open nobody can count is indistinguishable from a check that never ran."""
+
+    def _state(self, **overrides):
+        state = {
+            "draft_response": "Section 90A of the Evidence Act 1950 applies.",
+            "retrieved_chunks": [RETRIEVED_90A],
+            "citations": [CITATION_90A],
+            "violations": [],
+            "grounding_metrics": empty_grounding_metrics(),
+        }
+        state.update(overrides)
+        return state
+
+    def _verdict(self):
+        return _GroundingOutput(claims=[_GroundingClaim(
+            claim="Section 90A applies.",
+            cited_act_number="56",
+            cited_section_number="90A",
+            support="supported",
+            reason="Direct support.",
+        )])
+
+    def test_completed_check_counts_as_checked(self):
+        with patch("agent.nodes.grounding_check._grounding_llm") as grounding_llm:
+            grounding_llm.invoke.return_value = self._verdict()
+            result = grounding_check_node(self._state())
+
+        self.assertEqual(result["grounding_metrics"], {"checked": 1, "skipped": 0})
+
+    def test_fail_open_counts_as_skipped(self):
+        with patch("agent.nodes.grounding_check._grounding_llm") as grounding_llm:
+            grounding_llm.invoke.side_effect = RuntimeError("judge unavailable")
+            result = grounding_check_node(self._state())
+
+        self.assertEqual(result["violations"], [])
+        self.assertEqual(result["grounding_metrics"], {"checked": 0, "skipped": 1})
+
+    def test_counts_accumulate_across_a_retry(self):
+        """The turn's total is what says how often verification actually happened,
+        and the retry loop runs this node a second time on the same turn."""
+        state = self._state(grounding_metrics={"checked": 0, "skipped": 1})
+
+        with patch("agent.nodes.grounding_check._grounding_llm") as grounding_llm:
+            grounding_llm.invoke.return_value = self._verdict()
+            result = grounding_check_node(state)
+
+        self.assertEqual(result["grounding_metrics"], {"checked": 1, "skipped": 1})
+
+    def test_short_circuit_counts_neither(self):
+        """No judge call was attempted, so neither a check nor a skip happened."""
+        prior = grounding_check_node(self._state(violations=["Citation error."]))
+        no_sources = grounding_check_node(self._state(citations=[], retrieved_chunks=[]))
+
+        self.assertNotIn("grounding_metrics", prior)
+        self.assertNotIn("grounding_metrics", no_sources)
+
+    async def _arun(self, state):
+        from agent.nodes.grounding_check import agrounding_check_node
+        return await agrounding_check_node(state)
+
+    def test_async_twin_counts_the_same(self):
+        import asyncio
+        from unittest.mock import AsyncMock
+
+        with patch("agent.nodes.grounding_check._grounding_llm") as grounding_llm:
+            grounding_llm.ainvoke = AsyncMock(side_effect=RuntimeError("judge unavailable"))
+            result = asyncio.run(self._arun(self._state()))
+
+        self.assertEqual(result["grounding_metrics"], {"checked": 0, "skipped": 1})
 
 
 if __name__ == "__main__":

@@ -9,6 +9,7 @@ Inspects the model name to select the correct LangChain provider:
 from __future__ import annotations
 
 import json
+import logging
 import os
 
 from dotenv import load_dotenv
@@ -19,6 +20,8 @@ from langchain_openai import ChatOpenAI
 from pydantic import ValidationError
 
 load_dotenv()
+
+logger = logging.getLogger(__name__)
 
 # Filled in as each node builds its model. query_lifecycle stamps this onto the
 # LangSmith run, because a mixed-provider turn is unreadable afterwards without it.
@@ -83,9 +86,36 @@ def _is_schema_failure(exc: BaseException) -> bool:
     return getattr(exc, "status_code", None) in (400, 422)
 
 
+# Appended to the messages on the json_mode retry. LangChain's json_mode sends
+# `response_format={"type": "json_object"}` and nothing else, so the shape has to
+# travel in the prompt; OpenAI-compatible endpoints also require the word "json"
+# to appear in the messages before they accept that response_format at all.
+_JSON_MODE_INSTRUCTION = (
+    "Return one JSON object and nothing else — no prose, no markdown fence. "
+    "It must validate against this JSON Schema:\n{schema}"
+)
+
+
+def _json_mode_available(model_name: str) -> bool:
+    # Anthropic and Google have no json_object response format. Their own
+    # structured-output paths do not trip the failure this retry exists for.
+    return not model_name.startswith(("claude-", "gemini-"))
+
+
+def _schema_prompt(schema) -> str | None:
+    dump = getattr(schema, "model_json_schema", None)
+    if dump is None:
+        return None
+    try:
+        return json.dumps(dump(), ensure_ascii=False)
+    except Exception:
+        return None
+
+
 class _StructuredLLM:
     """with_structured_output, wrapped so a provider that cannot honour the schema
-    names the node and the model instead of raising a bare schema error.
+    retries once without it, then names the node and the model instead of raising
+    a bare schema error.
 
     OpenAI-compatible is not OpenAI-identical: an OpenAI-shaped endpoint can accept
     the request and still hand back prose. contextualize and grounding_check fail
@@ -93,12 +123,24 @@ class _StructuredLLM:
     which node broke and which model broke it. Transient failures — rate limits,
     auth, timeouts — pass through untouched so upstream retry logic still sees
     their own shape.
+
+    The retry drops to `method="json_mode"` because the `json_schema` request is
+    itself what provokes the failure on a served reasoning model: handed a schema
+    it can reason to the token ceiling and never emit the object (issue #85).
+    json_mode asks for a plain JSON object and carries the shape in the prompt,
+    which does not set that off.
     """
 
-    def __init__(self, runnable, node: str, model_name: str):
-        self._runnable = runnable
+    def __init__(self, llm, schema, node: str, model_name: str):
+        self._runnable = llm.with_structured_output(schema)
         self._node = node
         self._model_name = model_name
+        self._schema_text = _schema_prompt(schema)
+        self._fallback = (
+            llm.with_structured_output(schema, method="json_mode")
+            if _json_mode_available(model_name) and self._schema_text
+            else None
+        )
 
     def _wrap(self, exc: Exception):
         return StructuredOutputError(
@@ -106,28 +148,65 @@ class _StructuredLLM:
             f"its schema ({type(exc).__name__}: {exc})"
         )
 
+    def _retry_args(self, args: tuple) -> list | None:
+        """The same call with the schema moved into the prompt, or None when this
+        call shape cannot be rewritten."""
+        if self._fallback is None or not args:
+            return None
+        messages = args[0]
+        if not isinstance(messages, list) or not all(isinstance(m, dict) for m in messages):
+            return None
+        instruction = _JSON_MODE_INSTRUCTION.format(schema=self._schema_text)
+        return [*messages, {"role": "user", "content": instruction}]
+
+    def _log_retry(self, exc: Exception) -> None:
+        logger.warning(
+            "%s: model %r failed json_schema (%s); retrying in json_mode",
+            self._node,
+            self._model_name,
+            type(exc).__name__,
+        )
+
     def invoke(self, *args, **kwargs):
         try:
             return self._runnable.invoke(*args, **kwargs)
         except Exception as exc:
-            if _is_schema_failure(exc):
+            if not _is_schema_failure(exc):
+                raise
+            retry_args = self._retry_args(args)
+            if retry_args is None:
                 raise self._wrap(exc) from exc
-            raise
+            self._log_retry(exc)
+            try:
+                return self._fallback.invoke(retry_args, **kwargs)
+            except Exception as retry_exc:
+                if _is_schema_failure(retry_exc):
+                    raise self._wrap(retry_exc) from retry_exc
+                raise
 
     async def ainvoke(self, *args, **kwargs):
         try:
             return await self._runnable.ainvoke(*args, **kwargs)
         except Exception as exc:
-            if _is_schema_failure(exc):
+            if not _is_schema_failure(exc):
+                raise
+            retry_args = self._retry_args(args)
+            if retry_args is None:
                 raise self._wrap(exc) from exc
-            raise
+            self._log_retry(exc)
+            try:
+                return await self._fallback.ainvoke(retry_args, **kwargs)
+            except Exception as retry_exc:
+                if _is_schema_failure(retry_exc):
+                    raise self._wrap(retry_exc) from retry_exc
+                raise
 
     def __getattr__(self, name):
         return getattr(self._runnable, name)
 
 
 def structured_llm(llm, schema, *, node: str, model_name: str):
-    return _StructuredLLM(llm.with_structured_output(schema), node, model_name)
+    return _StructuredLLM(llm, schema, node, model_name)
 
 
 def system_content(text: str, model_name: str):

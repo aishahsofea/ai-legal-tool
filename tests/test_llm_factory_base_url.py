@@ -202,5 +202,91 @@ class StructuredOutputErrorTests(unittest.TestCase):
         self.assertEqual(wrapped.some_runnable_method(), "delegated")
 
 
+class LengthFinishReasonError(Exception):
+    """Matched by name in the factory. openai raises it from its own parser, so it
+    carries no status code — a reasoning model handed a json_schema generated to
+    the token ceiling and never produced the object."""
+
+
+class JsonModeFallbackTests(unittest.TestCase):
+    """The json_schema request is what provokes the runaway, so the retry drops it."""
+
+    MESSAGES = [{"role": "system", "content": "judge"}, {"role": "user", "content": "{}"}]
+
+    def _llm(self, primary_error, *, result=None, fallback_error=None):
+        primary, fallback = Mock(), Mock()
+        primary.invoke.side_effect = primary_error
+        primary.ainvoke = AsyncMock(side_effect=primary_error)
+        if fallback_error is not None:
+            fallback.invoke.side_effect = fallback_error
+            fallback.ainvoke = AsyncMock(side_effect=fallback_error)
+        else:
+            fallback.invoke.return_value = result
+            fallback.ainvoke = AsyncMock(return_value=result)
+        llm = Mock()
+        llm.with_structured_output.side_effect = (
+            lambda schema, **kwargs: fallback if kwargs.get("method") == "json_mode" else primary
+        )
+        return llm, primary, fallback
+
+    def _wrapped(self, llm, model_name="nemotron-lightning"):
+        return llm_factory.structured_llm(
+            llm, _Schema, node="grounding_check", model_name=model_name
+        )
+
+    def test_length_failure_retries_in_json_mode(self):
+        llm, _, fallback = self._llm(
+            LengthFinishReasonError("8192"), result=_Schema(answer="ok")
+        )
+        self.assertEqual(self._wrapped(llm).invoke(self.MESSAGES).answer, "ok")
+
+        retried = fallback.invoke.call_args.args[0]
+        self.assertEqual(retried[:2], self.MESSAGES)
+        self.assertIn("JSON Schema", retried[-1]["content"])
+        self.assertIn("answer", retried[-1]["content"])
+
+    def test_async_path_retries_too(self):
+        import asyncio
+        llm, _, fallback = self._llm(
+            LengthFinishReasonError("8192"), result=_Schema(answer="ok")
+        )
+        result = asyncio.run(self._wrapped(llm).ainvoke(self.MESSAGES))
+        self.assertEqual(result.answer, "ok")
+        fallback.ainvoke.assert_awaited_once()
+
+    def test_retry_failure_still_names_node_and_model(self):
+        llm, _, _ = self._llm(
+            LengthFinishReasonError("8192"),
+            fallback_error=OutputParserException("still not json"),
+        )
+        with self.assertRaises(llm_factory.StructuredOutputError) as ctx:
+            self._wrapped(llm).invoke(self.MESSAGES)
+        self.assertIn("grounding_check", str(ctx.exception))
+        self.assertIn("nemotron-lightning", str(ctx.exception))
+
+    def test_transient_failure_does_not_retry(self):
+        llm, _, fallback = self._llm(_Boom(429))
+        with self.assertRaises(_Boom):
+            self._wrapped(llm).invoke(self.MESSAGES)
+        fallback.invoke.assert_not_called()
+
+    def test_anthropic_builds_no_fallback(self):
+        """Anthropic has no json_object response format, and its structured-output
+        path does not trip the failure this retry exists for."""
+        llm, _, fallback = self._llm(LengthFinishReasonError("8192"))
+        with self.assertRaises(llm_factory.StructuredOutputError):
+            self._wrapped(llm, model_name="claude-sonnet-4-6").invoke(self.MESSAGES)
+        fallback.invoke.assert_not_called()
+        self.assertEqual(llm.with_structured_output.call_count, 1)
+
+    def test_non_message_input_is_not_rewritten(self):
+        """The schema has to travel in the prompt, so a call this wrapper cannot
+        rewrite falls back to the original error rather than retrying blind."""
+        llm, _, fallback = self._llm(LengthFinishReasonError("8192"))
+        with self.assertRaises(llm_factory.StructuredOutputError):
+            self._wrapped(llm).invoke("a bare string")
+        fallback.invoke.assert_not_called()
+
+
 if __name__ == "__main__":
     unittest.main()

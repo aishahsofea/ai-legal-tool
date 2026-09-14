@@ -59,6 +59,21 @@ class _GroundingOutput(BaseModel):
 
 _grounding_llm = structured_llm(_llm, _GroundingOutput, node="grounding_check", model_name=_MODEL)
 
+
+def empty_grounding_metrics() -> dict[str, int]:
+    return {"checked": 0, "skipped": 0}
+
+
+def _metrics(state: AgentState, *, checked: int = 0, skipped: int = 0) -> dict[str, int]:
+    """Accumulate, never overwrite: a retry runs this node again on the same turn,
+    and the turn's total is what says how often verification actually happened."""
+    current = state.get("grounding_metrics") or {}
+    return {
+        "checked": int(current.get("checked", 0)) + checked,
+        "skipped": int(current.get("skipped", 0)) + skipped,
+    }
+
+
 _SYSTEM = """You are a strict grounding verifier for Malaysian statute research answers.
 
 Task:
@@ -215,6 +230,7 @@ def _finalise(result: _GroundingOutput, state: AgentState, violations: list[str]
         "violations": violations,
         "evidence_violations": evidence_violations,
         "citations": citations,
+        "grounding_metrics": _metrics(state, checked=1),
     }
 
 
@@ -237,8 +253,10 @@ def grounding_check_node(state: AgentState) -> dict:
         # The judge malfunctioning is not evidence that the answer is ungrounded.
         # Fail open: citation validation already guaranteed structural integrity, so
         # a transient extraction error should not discard an otherwise valid answer.
+        # The counter is what keeps this honest — a fail-open nobody can count is
+        # indistinguishable from a check that never ran (issue #85).
         logger.warning("grounding_check_node failed; skipping grounding verification", exc_info=True)
-        return {"violations": violations}
+        return {"violations": violations, "grounding_metrics": _metrics(state, skipped=1)}
     return _finalise(result, state, violations)
 
 
@@ -257,5 +275,5 @@ async def agrounding_check_node(state: AgentState) -> dict:
             result: _GroundingOutput = await _grounding_llm.ainvoke(_messages(answer, sources))
     except Exception:
         logger.warning("grounding_check_node failed; skipping grounding verification", exc_info=True)
-        return {"violations": violations}
+        return {"violations": violations, "grounding_metrics": _metrics(state, skipped=1)}
     return _finalise(result, state, violations)

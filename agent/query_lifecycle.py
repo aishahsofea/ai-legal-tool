@@ -162,6 +162,8 @@ def run_query(query: str, thread_id: str, user_id: str | None = None) -> QueryRe
     }
     if state.get("reference_trace"):
         result["reference_trace"] = state["reference_trace"]
+    if isinstance(state.get("grounding_metrics"), dict):
+        result["grounding_metrics"] = state["grounding_metrics"]
     return result
 
 

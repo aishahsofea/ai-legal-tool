@@ -47,12 +47,20 @@ def build_feedback(state: dict[str, Any]) -> dict[str, Any]:
         if isinstance(state.get("reference_metrics"), dict)
         else {}
     )
+    grounding_metrics = (
+        state.get("grounding_metrics")
+        if isinstance(state.get("grounding_metrics"), dict)
+        else {}
+    )
 
-    def reference_metric(name: str) -> float:
+    def _counter(source: dict, name: str) -> float:
         try:
-            return float(reference_metrics.get(name, 0))
+            return float(source.get(name, 0))
         except (TypeError, ValueError):
             return 0.0
+
+    def reference_metric(name: str) -> float:
+        return _counter(reference_metrics, name)
 
     return {
         "passed": 0.0 if violations else 1.0,
@@ -73,6 +81,10 @@ def build_feedback(state: dict[str, Any]) -> dict[str, Any]:
         "reference_targets_failed": reference_metric("targets_failed"),
         "reference_boundary_targets": reference_metric("boundary_targets"),
         "reference_fail_open": reference_metric("fail_open"),
+        # A grounding check that failed open leaves no violation and no evidence, so
+        # nothing else in this dict moves when verification is skipped (issue #85).
+        "grounding_checked": _counter(grounding_metrics, "checked"),
+        "grounding_skipped": _counter(grounding_metrics, "skipped"),
         # Categorical — posted as a feedback `value`, not a `score`.
         "query_type": query_type,
     }
