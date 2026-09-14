@@ -427,26 +427,29 @@ Each of the router, contextualize, conversational, synthesiser, and grounding-ch
 | `CHAT_BASE_URL` | every chat model that is not `claude-*` or `gemini-*` (optional) | unset |
 | `CHAT_API_KEY` | auth for those same chat models (optional) | falls back to `OPENAI_API_KEY` |
 
-Worked example — the whole graph on open-weights Nemotron served by Nebius. Nemotron's tiers match the graph's own split between cheap classification and expensive reasoning. Nano takes classification, small talk, and fact extraction; Super takes synthesis, grounding, and tool selection:
+Worked example — the whole graph on open-weights Nemotron served by Nebius. Measured 2026-09-14; smoke evals pass the 80% judge gate on this configuration:
 
 ```bash
 CHAT_BASE_URL=https://api.studio.nebius.com/v1/
 CHAT_API_KEY=<your Nebius key>
 # OPENAI_API_KEY stays your OpenAI key — the corpus embeddings still need it
 
-ROUTER_MODEL=nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B
-CONTEXTUALIZER_MODEL=nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B
-CONVERSATIONAL_MODEL=nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B
-MEMORY_EXTRACT_MODEL=nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B
-
-SYNTHESISER_MODEL=nvidia/nemotron-3-super-120b-a12b
-GROUNDING_MODEL=nvidia/nemotron-3-super-120b-a12b
-RETRIEVAL_AGENT_MODEL=nvidia/nemotron-3-super-120b-a12b
+ROUTER_MODEL=nvidia/Nemotron-3_5-Lightning
+CONTEXTUALIZER_MODEL=nvidia/Nemotron-3_5-Lightning
+CONVERSATIONAL_MODEL=nvidia/Nemotron-3_5-Lightning
+MEMORY_EXTRACT_MODEL=nvidia/Nemotron-3_5-Lightning
+SYNTHESISER_MODEL=nvidia/Nemotron-3_5-Lightning
+GROUNDING_MODEL=nvidia/Nemotron-3_5-Lightning
+RETRIEVAL_AGENT_MODEL=nvidia/Nemotron-3_5-Lightning
 ```
 
-Copy the model id from the provider's own model list. Nebius appends a quantization suffix to some of them, and the string has to match exactly.
+Copy the model id from the provider's own model list. Nebius ids are not the Hugging Face repo names, and the string has to match exactly.
 
-Structured output is where OpenAI-compatible stops being OpenAI-identical. Router, contextualize, synthesiser, and grounding check all call `with_structured_output`; a provider can accept the request and still hand back prose. When that happens the factory raises `StructuredOutputError` naming the node and the model. Contextualize and grounding check fail open, so that log line is the only place you will see which one broke. Rate limits, auth failures, and timeouts pass through unwrapped. They are not schema failures, and upstream retry logic needs their own shape.
+Pick the model by how it handles structured output, not by size. Router, contextualize, synthesiser, and grounding check all call `with_structured_output`, and a served open-weights model may accept that request and ignore it. Measured against the real router prompt, five queries each: `Nemotron-3_5-Lightning` (BF16) 5/5, `Nemotron-3-Ultra-550b-a55b` (FP4) 5/5, `NVIDIA-Nemotron-3-Nano-30B-A3B` (FP8) 4/5, `nemotron-3-super-120b-a12b` (FP4) 0/5. Super returns YAML where JSON was required. Quantization tracks this better than parameter count: a 4-bit build loses format adherence before it loses reasoning.
+
+Two provider limits worth knowing. `method="function_calling"` fails with a 422 on every Nemotron — LangChain sends `parallel_tool_calls` and Nebius refuses the extra field. Plain `bind_tools` sends no such field and works, so the retrieval agent is fine. And a reasoning model handed a `json_schema` can generate to the 8192-token ceiling without the request failing; `max_tokens` does not bound it. Longer prompts make it likelier — the grounding check's ~2000-token prompt hits it occasionally even on Lightning. That node fails open, so the turn survives and the log records the skip.
+
+When structured output fails the factory raises `StructuredOutputError` naming the node and the model. Contextualize and grounding check fail open, so that log line is the only place you will see which one broke. Rate limits, auth failures, and timeouts pass through unwrapped. They are not schema failures, and upstream retry logic needs their own shape.
 
 Every node records the model it bound onto the LangSmith run as `model_<node>` (`agent/query_lifecycle.py`), so a run split across two providers can be read back afterwards.
 
