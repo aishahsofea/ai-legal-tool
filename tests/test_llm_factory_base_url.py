@@ -48,6 +48,39 @@ class ChatBaseUrlTests(unittest.TestCase):
             llm_factory.make_llm("gemini-1.5-pro")
             self.assertNotIn("base_url", mock.call_args.kwargs)
 
+    def test_api_key_omitted_when_unset(self):
+        """Omitted, not None — ChatOpenAI must resolve OPENAI_API_KEY itself."""
+        with patch.dict(os.environ, {}, clear=False), patch.object(llm_factory, "ChatOpenAI") as mock:
+            os.environ.pop("CHAT_API_KEY", None)
+            llm_factory.make_llm("gpt-4.1")
+            self.assertNotIn("api_key", mock.call_args.kwargs)
+
+    def test_empty_api_key_omitted(self):
+        with patch.dict(os.environ, {"CHAT_API_KEY": ""}), patch.object(llm_factory, "ChatOpenAI") as mock:
+            llm_factory.make_llm("gpt-4.1")
+            self.assertNotIn("api_key", mock.call_args.kwargs)
+
+    def test_api_key_forwarded(self):
+        with patch.dict(os.environ, {"CHAT_API_KEY": "nebius-key"}), \
+             patch.object(llm_factory, "ChatOpenAI") as mock:
+            llm_factory.make_llm("nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B")
+            self.assertEqual(mock.call_args.kwargs["api_key"], "nebius-key")
+
+    def test_api_key_ignored_by_anthropic(self):
+        with patch.dict(os.environ, {"CHAT_API_KEY": "nebius-key"}), \
+             patch.object(llm_factory, "ChatAnthropic") as mock:
+            llm_factory.make_llm("claude-sonnet-4-6")
+            self.assertNotIn("api_key", mock.call_args.kwargs)
+
+    def test_embedding_client_unaffected_by_chat_key(self):
+        """The whole point of a separate var: embeddings keep OPENAI_API_KEY."""
+        from agent import embeddings
+        with patch.dict(os.environ, {"CHAT_API_KEY": "nebius-key", "CHAT_BASE_URL": "https://example.invalid/v1/"}), \
+             patch.object(embeddings, "OpenAI") as mock:
+            embeddings.embedding_client()
+            self.assertNotIn("api_key", mock.call_args.kwargs)
+            self.assertIsNone(mock.call_args.kwargs["base_url"])
+
     def test_prompt_caching_stays_anthropic_only(self):
         nemotron = llm_factory.system_content("prompt", "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B")
         self.assertEqual(nemotron, "prompt")

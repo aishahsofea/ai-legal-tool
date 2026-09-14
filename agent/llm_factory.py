@@ -35,11 +35,19 @@ def make_llm(model_name: str, temperature: float = 0, node: str | None = None):
     # CHAT_BASE_URL aims the OpenAI-shaped client at any OpenAI-compatible
     # provider — the chat-side twin of EMBEDDING_BASE_URL. Unset keeps
     # api.openai.com, so an unconfigured deployment behaves exactly as before.
-    # Auth still rides on OPENAI_API_KEY; point that at the other provider's key.
+    kwargs = {}
+    # CHAT_API_KEY has to be separate from OPENAI_API_KEY: agent/embeddings.py
+    # authenticates with OPENAI_API_KEY too, and EMBEDDING_BASE_URL moves
+    # independently. Overloading one key would send the chat provider's key to
+    # api.openai.com on every embedding call. Omitted when unset so ChatOpenAI
+    # resolves OPENAI_API_KEY itself, exactly as it did before.
+    if chat_key := os.getenv("CHAT_API_KEY"):
+        kwargs["api_key"] = chat_key
     return ChatOpenAI(
         model=model_name,
         temperature=temperature,
         base_url=os.getenv("CHAT_BASE_URL") or None,
+        **kwargs,
     )
 
 

@@ -418,17 +418,21 @@ Each of the router, contextualize, conversational, synthesiser, and grounding-ch
 
 #### Pointing the chat models at another provider
 
-`CHAT_BASE_URL` sends the OpenAI-shaped client to any OpenAI-compatible endpoint — the chat-side twin of `EMBEDDING_BASE_URL`. Leave it unset and the client talks to `api.openai.com`. `claude-*` and `gemini-*` still route to Anthropic and Google, so they ignore it. Auth rides on `OPENAI_API_KEY`, so set that to the other provider's key.
+`CHAT_BASE_URL` sends the OpenAI-shaped client to any OpenAI-compatible endpoint — the chat-side twin of `EMBEDDING_BASE_URL`. Leave it unset and the client talks to `api.openai.com`. `claude-*` and `gemini-*` still route to Anthropic and Google, so they ignore it.
+
+`CHAT_API_KEY` authenticates those calls. Keep it separate from `OPENAI_API_KEY` — `agent/embeddings.py` uses `OPENAI_API_KEY` too, and `EMBEDDING_BASE_URL` moves on its own. One shared key would send your chat provider's key to `api.openai.com` on every embedding call and 401 the whole retriever. Leave `CHAT_API_KEY` unset and chat falls back to `OPENAI_API_KEY`.
 
 | Env var | Drives | Default |
 |---|---|---|
 | `CHAT_BASE_URL` | every chat model that is not `claude-*` or `gemini-*` (optional) | unset |
+| `CHAT_API_KEY` | auth for those same chat models (optional) | falls back to `OPENAI_API_KEY` |
 
 Worked example — the whole graph on open-weights Nemotron served by Nebius. Nemotron's tiers match the graph's own split between cheap classification and expensive reasoning. Nano takes classification, small talk, and fact extraction; Super takes synthesis, grounding, and tool selection:
 
 ```bash
 CHAT_BASE_URL=https://api.studio.nebius.com/v1/
-OPENAI_API_KEY=<your Nebius key>
+CHAT_API_KEY=<your Nebius key>
+# OPENAI_API_KEY stays your OpenAI key — the corpus embeddings still need it
 
 ROUTER_MODEL=nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B
 CONTEXTUALIZER_MODEL=nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B
