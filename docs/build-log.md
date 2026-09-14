@@ -160,6 +160,12 @@ Smoke evals, all seven nodes on Lightning, judge on the usual Claude Haiku:
 | uuid_leakage | 10/10 = 100% |
 | ai_refusal | 8/8 = 100% |
 
-Above the 80% judge gate. One case lost its grounding check to the token ceiling and failed open exactly as designed — the turn completed and the judge passed it, with the skip recorded in the log. That is the fail-open rule earning its place, but it does mean grounding verification is silently intermittent on this provider, which is a real degradation rather than a clean pass.
+Above the 80% judge gate. One case lost its grounding check to the token ceiling and failed open exactly as designed — the turn completed and the judge passed it, with the skip recorded in the log. That is the fail-open rule earning its place. It also means grounding verification is silently intermittent on this provider — a real degradation, not a clean pass.
+
+That gate turned out not to be sufficient evidence. Run end to end through the API and the browser, a statute-lookup query on all-Lightning fell back to `FINAL_FAILURE_RESPONSE`. Retrieval was correct — Act 56 s.90A was the top hit, and the prose named the section. But `citation_refs` came back empty, so `citation_validator` blocked the answer. Three runs each on the same query: Ultra populated citations 3/3, Lightning 1/3, Nano 1/3 with two token runaways. This is the failure Haiku showed on 2026-05-16, and a judge pass rate cannot see it, because it averages over cases and the smoke set happened not to hit it.
+
+So the worked example in `CONTRIBUTING.md` now splits the tiers — Lightning for router, contextualize, conversational and memory extraction; Ultra for synthesiser, grounding check and the retrieval agent. A live turn on that split produced a real answer with zero violations and a receipt-backed citation. The smoke table above was measured on all-Lightning and does not cover it.
+
+Two things only the end-to-end run could find. One was the citation gap above. The second was a rendering bug in #61. The PROCESS panel's model rows reused a grid whose first column is 24px, sized for a two-digit step number. A node name overran it into the model id and rendered as overlapping text. Every `getByText` assertion passed, because jsdom computes no layout. Both were obvious within one turn of actually using the thing.
 
 The error shaping added in #59 named the node and the model on every failure except `LengthFinishReasonError`, which openai raises from its own parser with no status code — the classifier missed it and it propagated raw. Added by class name, with `ContentFilterFinishReasonError` alongside.

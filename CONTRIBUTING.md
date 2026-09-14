@@ -427,7 +427,7 @@ Each of the router, contextualize, conversational, synthesiser, and grounding-ch
 | `CHAT_BASE_URL` | every chat model that is not `claude-*` or `gemini-*` (optional) | unset |
 | `CHAT_API_KEY` | auth for those same chat models (optional) | falls back to `OPENAI_API_KEY` |
 
-Worked example — the whole graph on open-weights Nemotron served by Nebius. Measured 2026-09-14; smoke evals pass the 80% judge gate on this configuration:
+Worked example — the whole graph on open-weights Nemotron served by Nebius, measured 2026-09-14:
 
 ```bash
 CHAT_BASE_URL=https://api.studio.nebius.com/v1/
@@ -438,14 +438,28 @@ ROUTER_MODEL=nvidia/Nemotron-3_5-Lightning
 CONTEXTUALIZER_MODEL=nvidia/Nemotron-3_5-Lightning
 CONVERSATIONAL_MODEL=nvidia/Nemotron-3_5-Lightning
 MEMORY_EXTRACT_MODEL=nvidia/Nemotron-3_5-Lightning
-SYNTHESISER_MODEL=nvidia/Nemotron-3_5-Lightning
-GROUNDING_MODEL=nvidia/Nemotron-3_5-Lightning
-RETRIEVAL_AGENT_MODEL=nvidia/Nemotron-3_5-Lightning
+
+SYNTHESISER_MODEL=nvidia/Nemotron-3-Ultra-550b-a55b
+GROUNDING_MODEL=nvidia/Nemotron-3-Ultra-550b-a55b
+RETRIEVAL_AGENT_MODEL=nvidia/Nemotron-3-Ultra-550b-a55b
 ```
 
 Copy the model id from the provider's own model list. Nebius ids are not the Hugging Face repo names, and the string has to match exactly.
 
-Pick the model by how it handles structured output, not by size. Router, contextualize, synthesiser, and grounding check all call `with_structured_output`, and a served open-weights model may accept that request and ignore it. Measured against the real router prompt, five queries each: `Nemotron-3_5-Lightning` (BF16) 5/5, `Nemotron-3-Ultra-550b-a55b` (FP4) 5/5, `NVIDIA-Nemotron-3-Nano-30B-A3B` (FP8) 4/5, `nemotron-3-super-120b-a12b` (FP4) 0/5. Super returns YAML where JSON was required. Quantization tracks this better than parameter count: a 4-bit build loses format adherence before it loses reasoning.
+Pick the model by how it handles structured output, not by size. Router, contextualize, synthesiser, and grounding check all call `with_structured_output`, and a served open-weights model may accept that request and ignore it. Measured against the real router prompt, five queries each:
+
+| Model | Quantization | Passed |
+|---|---|---|
+| `nvidia/Nemotron-3_5-Lightning` | BF16 | 5/5 |
+| `nvidia/Nemotron-3-Ultra-550b-a55b` | FP4 | 5/5 |
+| `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B` | FP8 | 4/5 |
+| `nvidia/nemotron-3-super-120b-a12b` | FP4 | 0/5 |
+
+Super returns YAML where JSON was required. Quantization tracks this better than parameter count: a 4-bit build loses format adherence before it loses reasoning.
+
+Passing that check is not enough for the synthesiser, which has to fill `citation_refs` as well as write prose. A model can get the prose right and leave the field empty. `citation_validator` then blocks the answer, and the turn falls back to `FINAL_FAILURE_RESPONSE`. On one statute-lookup query, three runs each: Ultra populated citations 3/3, Lightning 1/3, Nano 1/3. That is why the example splits the tiers rather than running one model everywhere. A judge pass rate averages over cases, so it cannot see this.
+
+The smoke eval table in `docs/build-log.md` was measured with all seven nodes on Lightning, not on the split above. It passes the gate, but the citation measurement above says not to read that as clearing a Lightning synthesiser.
 
 Two provider limits worth knowing. `method="function_calling"` fails with a 422 on every Nemotron — LangChain sends `parallel_tool_calls` and Nebius refuses the extra field. Plain `bind_tools` sends no such field and works, so the retrieval agent is fine. And a reasoning model handed a `json_schema` can generate to the 8192-token ceiling without the request failing; `max_tokens` does not bound it. Longer prompts make it likelier — the grounding check's ~2000-token prompt hits it occasionally even on Lightning. That node fails open, so the turn survives and the log records the skip.
 
