@@ -37,6 +37,10 @@ _Avoid_: latest PDF, remote PDF, Official Source Link
 **Extraction Run**:
 A deterministic extraction of one **Receipt Document**, identified by document identity, extractor/version, and configuration hash. Owns a chunk-set hash and a hash-verified word-coordinate sidecar. Retrieval chunks carry its `document_id`, `extraction_id`, content hash, page bounds.
 
+**Division**:
+One run of numbering inside an Act. The body is one division; each schedule at the back is another, and so is the list of amendments. Schedules restart at paragraph 1, so a section number only identifies a chunk together with its division. Every chunk carries one, `body` or the heading as the Act prints it.
+_Avoid_: part, chapter (those subdivide the body and share its numbering)
+
 **Active Corpus Mapping**:
 The reversible pointer from one `(Act, language)` pair to a ready **Receipt Document** and **Extraction Run**. New bytes get registered and shadow-ingested before this pointer moves; the prior mapping stays in activation history for rollback.
 

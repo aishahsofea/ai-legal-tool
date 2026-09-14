@@ -119,4 +119,10 @@ CREATE INDEX IF NOT EXISTS chunks_document_section_idx
     ON chunks (document_id, section_number)
     WHERE document_id IS NOT NULL;
 
+-- Which run of numbering a chunk belongs to: 'body', or the division heading as
+-- the Act prints it ('FIRST SCHEDULE', 'LIST OF AMENDMENTS'). Schedules restart
+-- at 1, so a section number alone no longer identifies a chunk. NULL on rows
+-- ingested before this column existed; read those as body.
+ALTER TABLE chunks ADD COLUMN IF NOT EXISTS division TEXT;
+
 COMMIT;

@@ -159,7 +159,7 @@ def ingest_extraction(
             chunk["section_number"], chunk["content"], chunk["page_start"],
             chunk["language"], embedding, document.document_id,
             run.extraction_id, chunk["content_sha256"], chunk["page_start"],
-            chunk["page_end"], ordinal,
+            chunk["page_end"], ordinal, chunk.get("division", "body"),
         )
         for ordinal, (chunk, embedding) in enumerate(zip(chunks, embeddings))
     ]
@@ -174,11 +174,11 @@ def ingest_extraction(
                 INSERT INTO chunks (
                     act_number, act_title, section_number, content, page_number,
                     language, embedding, document_id, extraction_id,
-                    content_sha256, page_start, page_end, chunk_ordinal
+                    content_sha256, page_start, page_end, chunk_ordinal, division
                 ) VALUES %s
                 """,
                 records,
-                template="(%s,%s,%s,%s,%s,%s,%s::vector,%s,%s,%s,%s,%s,%s)",
+                template="(%s,%s,%s,%s,%s,%s,%s::vector,%s,%s,%s,%s,%s,%s,%s)",
             )
             cursor.execute(
                 "SELECT COUNT(*) FROM chunks WHERE extraction_id = %s",

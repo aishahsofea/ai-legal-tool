@@ -85,6 +85,8 @@ NEXT_PUBLIC_EVALS=1
 
 The normal corpus rollout command applies the additive migration automatically, after local assets pass verification. The migration creates immutable document/source/extraction tables, active and historical mappings, and nullable provenance columns on legacy `chunks` — it never infers provenance for existing rows. `python3 -m corpus migrate` stays available for database-only maintenance.
 
+`chunks.division` is one of those nullable columns — see [division](CONTEXT.md#language). It is `NULL` on rows ingested before the column existed; retrieval reads those as body sections. An exact section lookup returns body sections ahead of schedule paragraphs that carry the same number.
+
 ### 4. Build the knowledge base (one-time, ~1 hour)
 
 ```bash
@@ -94,6 +96,8 @@ python3 -m corpus rollout
 ```
 
 `corpus rollout` is the normal receipt setup and upgrade path — idempotent and resumable. Missing extraction assets get generated, the schema and registry get applied, only absent exact extractions are embedded and ingested, only successful verified runs get activated. A failure for one document is reported without activating it or blocking the rest. Embedding requests default to a US$1 hard cap per invocation; `--max-embedding-cost-usd` sets a different ceiling. Oversized chunks embed as token-bounded segments, pooled back to their single immutable chunk identity. `--document-id` limits a rollout; `--no-activate` prepares/ingests without switching retrieval.
+
+Extractor 2.1.0 splits an Act into divisions, so every extraction identity changed. Step 4 re-extracts all 1079 documents rather than resuming, and step 5 re-embeds them. Budget for both before upgrading.
 
 All steps are idempotent. Step 3 re-observes authoritative PDF bytes to catch same-URL replacements; content/extraction identities prevent duplicate downstream work. Run steps individually if needed:
 

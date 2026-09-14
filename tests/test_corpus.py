@@ -6,7 +6,7 @@ import fitz
 import pytest
 
 from citation_receipts.locator import locate_evidence
-from corpus.extraction import extract_document, extract_manifest
+from corpus.extraction import _DIVISION_RE, _is_heading_case, extract_document, extract_manifest
 from corpus.identity import asset_key, document_id, sha256_file
 from corpus.manifest import generate_manifest
 from corpus.models import CorpusDocument
@@ -19,6 +19,23 @@ def _pdf(path: Path, lines: list[str] | None = None) -> None:
     page = document.new_page(width=400, height=500)
     for index, line in enumerate(lines or []):
         page.insert_text((40, 60 + index * 20), line)
+    document.save(path)
+    document.close()
+
+
+def _divided_pdf(path: Path, pages: list[list[tuple[str, bool]]]) -> None:
+    """Write a PDF whose lines are left-aligned unless the tuple asks for centring.
+
+    The extractor tells a real division heading from the table-of-contents copy of
+    it by how close to the page centre it sits, so the fixture has to place text,
+    not just write it.
+    """
+    document = fitz.open()
+    for lines in pages:
+        page = document.new_page(width=400, height=500)
+        for index, (line, centred) in enumerate(lines):
+            left = (400 - fitz.get_text_length(line, fontsize=11)) / 2 if centred else 40
+            page.insert_text((left, 60 + index * 20), line, fontsize=11)
     document.save(path)
     document.close()
 
@@ -309,3 +326,119 @@ def test_source_language_ignores_an_undecodable_token():
         {"detail_url": _signed("https://lom.agc.gov.my/act-detail.php?act=1")},
         "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/MY/Akta 1.pdf",
     ) == "bm"
+
+
+@pytest.mark.parametrize("heading", [
+    "FIRST SCHEDULE", "THIRTEENTH SCHEDULE", "SCHEDULE", "SCHEDULE 4A", "SCHEDULE A",
+    "Schedule", "JADUAL", "JADUAL PERTAMA", "Jadual Kedua", "LIST OF AMENDMENTS",
+    "LISTS OF AMENDMENTS", "SENARAI PINDAAN",
+])
+def test_division_headings_recognised(heading: str):
+    assert _DIVISION_RE.match(heading.upper())
+
+
+@pytest.mark.parametrize("line", [
+    "SCHEDULE OF FEES", "ARRANGEMENT OF SECTIONS", "PART I", "LAWS OF MALAYSIA",
+    # A long all-caps line: the pattern has to reject this quickly rather than
+    # backtrack over it, because every centred line of every page is tested.
+    "SET OUT IN THE SCHEDULE TO THIS ACT AND NOT ELSEWHERE",
+])
+def test_lines_that_are_not_division_headings(line: str):
+    assert not _DIVISION_RE.match(line.upper())
+
+
+@pytest.mark.parametrize("line", [
+    "in the First Schedule", "as specified in the First Schedule.",
+    "of First Schedule) Order",
+])
+def test_prose_mentioning_a_schedule_is_not_heading_case(line: str):
+    # The pattern matches these once uppercased; the case rule is what rejects them.
+    assert not _is_heading_case(line)
+
+
+def test_schedule_paragraph_does_not_overwrite_the_body_section_it_collides_with(tmp_path: Path):
+    asset_root = tmp_path / "assets"
+    asset_root.mkdir()
+    pdf_path = asset_root / "divided.pdf"
+    _divided_pdf(pdf_path, [
+        [
+            ("Short title and commencement", False),
+            ("1. This Act may be cited as the Divided Fixture Act 2026 and comes", False),
+            ("into operation on a date the Minister appoints by notification.", False),
+            ("2. In this Act, unless the context otherwise requires, the words below", False),
+            ("carry the meanings given to them in this section of the fixture.", False),
+        ],
+        [
+            ("FIRST SCHEDULE", True),
+            ("1. The liquidator may, with the authority of the Court, carry on the", False),
+            ("business of the company so far as is necessary for winding it up.", False),
+        ],
+    ])
+    digest = sha256_file(pdf_path)
+    document = CorpusDocument(
+        document_id("98", "en", digest), "98", "DIVIDED FIXTURE ACT", "en", asset_key(digest),
+        digest, pdf_path.stat().st_size, 2, "https://example.test/98.pdf", "", "REPRINT",
+        "2026-01-01T00:00:00Z", local_path=pdf_path.name,
+    )
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256", "documents": [document.to_dict()],
+        "extraction_runs": [], "active_documents": [], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=tmp_path / "sidecars")
+    _run, bundle_path = extract_document(
+        registry, document,
+        extraction_root=tmp_path / "extractions",
+        sidecar_root=tmp_path / "sidecars",
+    )
+    chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+
+    assert ("body", "1") in by_key and ("FIRST SCHEDULE", "1") in by_key
+    assert "may be cited as" in by_key[("body", "1")]["content"]
+    assert "liquidator" in by_key[("FIRST SCHEDULE", "1")]["content"]
+    assert by_key[("body", "2")]["division"] == "body"
+    # The heading is a boundary, not content: it belongs to neither paragraph.
+    assert "FIRST SCHEDULE" not in by_key[("body", "2")]["content"]
+
+
+def test_table_of_contents_copy_of_a_heading_is_not_a_division_boundary(tmp_path: Path):
+    asset_root = tmp_path / "assets"
+    asset_root.mkdir()
+    pdf_path = asset_root / "contents.pdf"
+    _divided_pdf(pdf_path, [
+        [("ARRANGEMENT OF SECTIONS", True), ("FIRST SCHEDULE", True)],
+        [
+            ("Short title and commencement", False),
+            ("1. This Act may be cited as the Contents Fixture Act 2026 and comes", False),
+            ("into operation on a date the Minister appoints by notification.", False),
+        ],
+        [
+            ("FIRST SCHEDULE", True),
+            ("1. The liquidator may, with the authority of the Court, carry on the", False),
+            ("business of the company so far as is necessary for winding it up.", False),
+        ],
+    ])
+    digest = sha256_file(pdf_path)
+    document = CorpusDocument(
+        document_id("97", "en", digest), "97", "CONTENTS FIXTURE ACT", "en", asset_key(digest),
+        digest, pdf_path.stat().st_size, 3, "https://example.test/97.pdf", "", "REPRINT",
+        "2026-01-01T00:00:00Z", local_path=pdf_path.name,
+    )
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256", "documents": [document.to_dict()],
+        "extraction_runs": [], "active_documents": [], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=tmp_path / "sidecars")
+    _run, bundle_path = extract_document(
+        registry, document,
+        extraction_root=tmp_path / "extractions",
+        sidecar_root=tmp_path / "sidecars",
+    )
+    chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+
+    # The copy on page 1 is the table of contents; the division starts on page 3.
+    assert by_key[("body", "1")]["page_start"] == 2
+    assert by_key[("FIRST SCHEDULE", "1")]["page_start"] == 3
