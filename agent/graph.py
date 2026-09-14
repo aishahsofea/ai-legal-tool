@@ -20,7 +20,11 @@ from agent.nodes.citation_validator import citation_validator_node
 from agent.nodes.clarify import clarify_node
 from agent.nodes.contextualize import acontextualize_node, contextualize_node
 from agent.nodes.conversational import aconversational_node, conversational_node
-from agent.nodes.grounding_check import agrounding_check_node, grounding_check_node
+from agent.nodes.grounding_check import (
+    agrounding_check_node,
+    empty_grounding_metrics,
+    grounding_check_node,
+)
 from agent.nodes.recall import arecall_node, recall_node
 from agent.nodes.router import arouter_node, router_node
 from agent.nodes.retriever import agentic_retriever_node, retriever_node
@@ -120,6 +124,7 @@ def _start_turn(state: AgentState) -> dict:
         "tool_trace": [],
         "reference_trace": [],
         "reference_metrics": empty_reference_metrics(disabled=not follow_references_enabled()),
+        "grounding_metrics": empty_grounding_metrics(),
         "final_response": "",
         "retry_count": 0,
         "clarifying_question": "",

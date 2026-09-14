@@ -72,6 +72,8 @@ def _run_full_agent(query: str, history: list[dict[str, Any]] | None = None) -> 
     }
     if result.get("reference_trace"):
         state["reference_trace"] = result["reference_trace"]
+    if result.get("grounding_metrics"):
+        state["grounding_metrics"] = result["grounding_metrics"]
     return state
 
 
@@ -121,6 +123,8 @@ def _compact_state(state: dict[str, Any]) -> dict[str, Any]:
     }
     if state.get("reference_trace"):
         compact["reference_trace"] = state["reference_trace"]
+    if state.get("grounding_metrics"):
+        compact["grounding_metrics"] = state["grounding_metrics"]
     return compact
 
 
@@ -368,6 +372,28 @@ def _persisted_result(result: dict[str, Any]) -> dict[str, Any]:
     return persisted
 
 
+def _grounding_summary(results: list[dict[str, Any]]) -> dict[str, Any]:
+    """Completed vs failed-open grounding checks across the run.
+
+    grounding_check fails open on any judge error, so a skip leaves no violation
+    and no failed assertion — the pass rate above cannot see it. Counting it here
+    is the only run-level signal that verification did not happen (issue #85).
+    Zero on --mode raw/baseline, which never reach the node.
+    """
+    checked = skipped = 0
+    for result in results:
+        metrics = result.get("agent", {}).get("grounding_metrics")
+        if not isinstance(metrics, dict):
+            continue
+        checked += int(metrics.get("checked", 0))
+        skipped += int(metrics.get("skipped", 0))
+    return {
+        "checked": checked,
+        "skipped": skipped,
+        "skip_rate": _rate(skipped, checked + skipped),
+    }
+
+
 def _build_report(mode: str, results: list[dict[str, Any]]) -> dict[str, Any]:
     l1_applicable = {name: 0 for name in _ASSERTION_NAMES}
     l1_passed = {name: 0 for name in _ASSERTION_NAMES}
@@ -411,6 +437,7 @@ def _build_report(mode: str, results: list[dict[str, Any]]) -> dict[str, Any]:
         "judge_passed": judge_passed,
         "judge_total": judge_total,
         "judge_pass_rate": _rate(judge_passed, judge_total),
+        "grounding": _grounding_summary(results),
         "by_scenario": aggregate_scenarios(serialize_case_result(result) for result in results),
     }
 
@@ -575,6 +602,20 @@ def main() -> int:
     for name, stats in l1.items():
         print(f"  {name}: {stats['passed']}/{stats['total']} = {stats['rate']:.1%}")
     print(f"\nJudge: {summary['judge_passed']}/{summary['judge_total']} = {summary['judge_pass_rate']:.1%}")
+    grounding = summary["grounding"]
+    attempted = grounding["checked"] + grounding["skipped"]
+    print(
+        f"Grounding: {grounding['checked']}/{attempted} verified, "
+        f"{grounding['skipped']} failed open = {grounding['skip_rate']:.1%} skipped"
+    )
+    if grounding["skipped"]:
+        # Not a gate. A skipped check is a weaker guarantee, not a wrong answer, and
+        # failing the suite on it would block a run whose answers are all fine.
+        print(
+            f"WARNING: {grounding['skipped']} grounding check(s) failed open — those "
+            "turns shipped unverified. Check the GROUNDING_MODEL entry in "
+            "CONTRIBUTING.md#model-overrides."
+        )
     print(f"Results written to: {args.output}")
 
     citation_existence_rate = l1["citation_existence"]["rate"]
