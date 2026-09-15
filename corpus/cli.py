@@ -55,6 +55,7 @@ def _generate(args: argparse.Namespace) -> int:
         index_path=_path(args.index),
         chunks_root=_path(args.chunks_root) if args.chunks_root else None,
         existing_manifest=_path(args.existing_manifest) if args.existing_manifest else None,
+        extract_report=_path(args.extract_report) if args.extract_report else None,
     )
     dump_json(_path(args.output), manifest)
     dump_json(_path(args.report), report)
@@ -320,6 +321,7 @@ def build_parser() -> argparse.ArgumentParser:
     command.add_argument("--index", default="data/acts_index.json")
     command.add_argument("--chunks-root", default="data/chunks/en")
     command.add_argument("--existing-manifest")
+    command.add_argument("--extract-report", default="data/chunks/extract_report.json")
     command.add_argument("--output", default="data/pdfs/manifest.json")
     command.add_argument("--report", default="data/corpus/coverage.json")
     command.set_defaults(func=_generate)

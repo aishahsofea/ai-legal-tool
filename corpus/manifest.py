@@ -123,6 +123,7 @@ def _coverage_row(
     fallback_url: str,
     requires_redownload: bool = False,
     requires_reextraction: bool = False,
+    unassigned_chars: int | None = None,
 ) -> dict[str, Any]:
     return {
         "pdf": path.as_posix(),
@@ -136,6 +137,13 @@ def _coverage_row(
         "requires_redownload": requires_redownload,
         "requires_reextraction": requires_reextraction,
         "fallback_url": fallback_url,
+        "unassigned_chars": unassigned_chars,
+        "unassigned_remediation": (
+            f"{unassigned_chars} extracted characters could not be attributed to a chunk, "
+            "header/footer, or table of contents; inspect the extraction bundle before "
+            "trusting this document's coverage."
+            if unassigned_chars else ""
+        ),
     }
 
 
@@ -146,13 +154,27 @@ def generate_manifest(
     index_path: Path,
     chunks_root: Path | None = None,
     existing_manifest: Path | None = None,
+    extract_report: Path | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
-    """Discover actual bytes and return deterministic manifest + coverage report."""
+    """Discover actual bytes and return deterministic manifest + coverage report.
+
+    `extract_report` is `extract_manifest`'s own report (see `corpus/extraction.py`)
+    — its per-document character accounting is read, not recomputed, so a
+    document already extracted is not re-parsed here just to report it.
+    """
     pdf_root = Path(pdf_root).resolve()
     metadata_root = Path(metadata_root).resolve()
     titles = _title_map(index_path)
     previous = _json(existing_manifest, {}) if existing_manifest else {}
     previous = previous if isinstance(previous, dict) else {}
+    extract_report_documents = (
+        (_json(extract_report, {}) or {}).get("documents", []) if extract_report else []
+    )
+    accounting_by_document = {
+        item["document_id"]: item
+        for item in extract_report_documents
+        if isinstance(item, dict) and item.get("document_id") and "unassigned_chars" in item
+    }
 
     previous_documents = {
         item.get("document_id"): item
@@ -312,6 +334,7 @@ def generate_manifest(
             path=Path(relative), document=document, status=status, reason=reason,
             remediation=remediation, effort=effort, fallback_url=fallback_url or source_url,
             requires_reextraction=status not in {"enabled", "ready"},
+            unassigned_chars=accounting_by_document.get(identity, {}).get("unassigned_chars"),
         ))
 
     # Historical v2 documents remain addressable forever even when no longer current.
