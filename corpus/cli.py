@@ -24,7 +24,7 @@ from corpus.db import (
     register_source_observation,
     rollback,
 )
-from corpus.extraction import extract_manifest
+from corpus.extraction import diff_extraction_manifests, extract_manifest
 from corpus.manifest import dump_json, generate_manifest
 from corpus.registry import CorpusRegistry
 from corpus.rollout import rollout_corpus
@@ -108,6 +108,31 @@ def _shadow(args: argparse.Namespace) -> int:
     dump_json(_path(args.report), report)
     _print({"ready": report["ready"], "blocked": report["blocked"], "report": _path(args.report).as_posix()})
     return 0 if not report["blocked"] else 2
+
+
+def _diff_extractions(args: argparse.Namespace) -> int:
+    old_manifest = json.loads(_path(args.old_manifest).read_text(encoding="utf-8"))
+    new_manifest = json.loads(_path(args.new_manifest).read_text(encoding="utf-8"))
+    diffs = diff_extraction_manifests(
+        old_manifest,
+        new_manifest,
+        old_extraction_root=_path(args.old_extraction_root),
+        new_extraction_root=_path(args.new_extraction_root),
+        document_ids=args.document_id or None,
+    )
+    if args.format == "json":
+        _print(diffs)
+        return 0
+    changed = {document_id: diff for document_id, diff in diffs.items() if diff["added"] or diff["removed"] or diff["changed"]}
+    print(f"{len(changed)} of {len(diffs)} compared documents changed")
+    for document_id, diff in sorted(changed.items()):
+        print(f"- {document_id}: +{len(diff['added'])} -{len(diff['removed'])} ~{len(diff['changed'])}")
+        for entry in diff["changed"]:
+            print(
+                f"    changed ({entry['division']!r}, {entry['section_number']!r}): "
+                f"{entry['old_chars']} -> {entry['new_chars']} chars"
+            )
+    return 0
 
 
 def _migrate(args: argparse.Namespace) -> int:
@@ -346,6 +371,17 @@ def build_parser() -> argparse.ArgumentParser:
     command.add_argument("--output")
     command.add_argument("--report", default="data/corpus/shadow-extraction-report.json")
     command.set_defaults(func=_shadow)
+
+    command = sub.add_parser(
+        "diff-extractions", help="per-document chunk-set diff between two extraction generations"
+    )
+    command.add_argument("--old-manifest", required=True)
+    command.add_argument("--old-extraction-root", required=True)
+    command.add_argument("--new-manifest", default="data/pdfs/manifest.json")
+    command.add_argument("--new-extraction-root", default="data/corpus/extractions")
+    command.add_argument("--document-id", action="append")
+    command.add_argument("--format", choices=["text", "json"], default="text")
+    command.set_defaults(func=_diff_extractions)
 
     command = sub.add_parser("migrate", help="apply the additive provenance schema migration")
     command.add_argument("--database-url")

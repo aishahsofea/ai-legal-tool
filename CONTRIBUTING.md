@@ -246,6 +246,8 @@ python3 -m corpus generate-manifest \
   --pdf-root /path/to/data/pdfs \
   --existing-manifest data/pdfs/manifest.json
 python3 -m corpus shadow-extract --pdf-root /path/to/data/pdfs
+python3 -m corpus diff-extractions --old-manifest /path/to/old/manifest.json \
+  --old-extraction-root /path/to/old/extractions --new-extraction-root data/corpus/extractions
 python3 -m corpus validate --pdf-root /path/to/data/pdfs \
   --sidecar-root data/corpus/sidecars --scope full --deep --format json
 python3 -m corpus register --dry-run
@@ -260,6 +262,8 @@ python3 -m corpus upload --pdf-root /path/to/data/pdfs \
 python3 -m corpus validate --cdn-base-url https://statutes.example.com \
   --scope full --deep --format json
 ```
+
+`diff-extractions` compares two `shadow-extract` runs chunk by chunk, per document, keyed by `(division, section_number)`: which sections were added, removed, or changed content. Point `--old-manifest`/`--old-extraction-root` at a manifest and extraction directory saved before an extractor change. It reads the current ones as `--new-*` by default. This is how to check what a `SECTION_PATTERN` or `DIVISION_PATTERN` edit actually changed, before trusting it corpus-wide.
 
 The CLI loads the repository `.env` — no need to manually export `DATABASE_URL`. Preview `rollout` before its first run against a database; live execution performs embedding calls and changes active retrieval mappings. Live upload uses optional `boto3`, not an application dependency. `upload --scope active` uploads the documents an [Active Corpus Mapping](CONTEXT.md#language) points at, plus their ready sidecars; `--scope full`, the default, uploads every registered document and every ready sidecar. A run fails whole if any one object in its scope fails `validate`, so push `active` first: it is the only set the deployed app can request, and it does not block on registered documents whose bytes are absent. Move to `full` once every registered document has local bytes. Configure R2 bucket retention/object-lock policy and custom-domain CORS outside this repository: allow `GET`, `HEAD`, `OPTIONS`; allow request headers `Range`, `If-None-Match`; expose `ETag`, `Accept-Ranges`, `Content-Range`, `Content-Length`.
 

@@ -8,12 +8,17 @@ import pytest
 from citation_receipts.locator import locate_evidence
 from corpus.extraction import (
     _DIVISION_RE,
+    _chunk_quality,
     _extraction_accounting,
     _is_heading_case,
+    _page_span_bucket,
+    chunk_looks_like_table_of_contents,
+    diff_chunk_sets,
+    diff_extraction_manifests,
     extract_document,
     extract_manifest,
 )
-from corpus.identity import asset_key, document_id, sha256_file
+from corpus.identity import asset_key, content_hash, document_id, sha256_file
 from corpus.manifest import generate_manifest
 from corpus.models import CorpusDocument
 from corpus.registry import CorpusDocumentIntegrityError, CorpusRegistry
@@ -276,6 +281,32 @@ def test_corpus_wide_retention_has_not_regressed_below_its_recorded_baseline():
     assert retention >= RECORDED_RETENTION_BASELINE, (
         f"corpus-wide retention {retention:.4f} fell below the recorded baseline {RECORDED_RETENTION_BASELINE}"
     )
+
+
+# #92: a `ready` document that is almost entirely one unnumbered blob chunk (#89)
+# reports success while holding almost nothing retrievable — Act 12 EN's only
+# chunk is its list of amendments, 1.3% of the document. Ceiling, not a target: it
+# must not grow silently. #94 is expected to lower it by fixing the #72 cohort,
+# not by loosening MIN_CONTENT_CHARS or the 50% floor below.
+RECORDED_LOW_YIELD_CEILING = 66
+
+
+def test_low_yield_ready_documents_have_not_grown_past_their_recorded_ceiling():
+    root = Path(__file__).resolve().parents[1]
+    report = json.loads((root / "data" / "chunks" / "extract_report.json").read_text(encoding="utf-8"))
+    low_yield = [
+        item for item in report["documents"]
+        if item["status"] == "ready"
+        and (item["chunk_count"] <= 2 or item["assigned_chars"] / item["pdf_chars"] < 0.5)
+    ]
+    low_yield_ids = {item["document_id"] for item in low_yield}
+    assert len(low_yield) <= RECORDED_LOW_YIELD_CEILING, (
+        f"{len(low_yield)} ready documents are low-yield (<=2 chunks or <50% assigned), "
+        f"above the recorded ceiling of {RECORDED_LOW_YIELD_CEILING}: {sorted(low_yield_ids)}"
+    )
+    # Names a known #72-cohort failure so the guard is provably firing, not just
+    # counting: Act 12 EN's whole chunk set is its amendments table.
+    assert "act-12-en-sha256-da86432a64cc867f8b064c3fedc8c80f21052c5266239c97b4201e266399aaa1" in low_yield_ids
 
 
 def test_scraped_at_for_files_each_language_under_its_own_scrape_date():
@@ -626,6 +657,225 @@ def test_text_before_the_first_heading_is_unassigned_not_vanished(tmp_path: Path
     assert accounting.pdf_chars == (
         accounting.assigned_chars + accounting.classified_chars + accounting.unassigned_chars
     )
+
+
+@pytest.mark.parametrize("pages,bucket", [
+    (1, "1"), (2, "2-5"), (5, "2-5"), (6, "6-20"), (20, "6-20"),
+    (21, "21-50"), (50, "21-50"), (51, "51+"), (200, "51+"),
+])
+def test_page_span_bucket_boundaries(pages: int, bucket: str):
+    assert _page_span_bucket(pages) == bucket
+
+
+def test_chunk_quality_reports_a_blob_chunks_division_and_page_span(tmp_path: Path):
+    """#92: a division's own content (#89) is legitimate but still worth naming
+    when it is the *only* thing a document holds — `_chunk_quality` reads the real
+    `_extract_chunks` output, so it sees exactly what a document's bundle carries."""
+    asset_root = tmp_path / "assets"
+    asset_root.mkdir()
+    pdf_path = asset_root / "blob_only.pdf"
+    _divided_pdf(pdf_path, [
+        [
+            ("Short title and commencement", False),
+            ("1. This Act may be cited as the Blob Fixture Act 2026 and comes into", False),
+            ("operation on a date the Minister appoints by notification in the Gazette.", False),
+        ],
+        [
+            ("SECOND SCHEDULE", True),
+            ("ARTICLE 1", False),
+            ("The High Contracting Parties undertake to respect and to ensure", False),
+            ("respect for the present Convention in all circumstances without any", False),
+        ],
+    ])
+    digest = sha256_file(pdf_path)
+    document = CorpusDocument(
+        document_id("97", "en", digest), "97", "BLOB FIXTURE ACT", "en", asset_key(digest),
+        digest, pdf_path.stat().st_size, 2, "https://example.test/97.pdf", "", "REPRINT",
+        "2026-01-01T00:00:00Z", local_path=pdf_path.name,
+    )
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256", "documents": [document.to_dict()],
+        "extraction_runs": [], "active_documents": [], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=tmp_path / "sidecars")
+    _run, bundle_path = extract_document(
+        registry, document,
+        extraction_root=tmp_path / "extractions",
+        sidecar_root=tmp_path / "sidecars",
+    )
+    chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+
+    quality = _chunk_quality(chunks)
+
+    assert len(quality["unnumbered_chunks"]) == 1
+    blob = quality["unnumbered_chunks"][0]
+    assert blob["division"] == "SECOND SCHEDULE"
+    assert blob["page_start"] == 2 and blob["page_end"] == 2
+    body_chunk = next(c for c in chunks if c["section_number"] == "1")
+    assert quality["max_chunk_chars"] >= len(body_chunk["content"])
+    assert quality["max_chunk_chars"] >= blob["chars"]
+
+
+def _synthetic_chunk(division: str, section_number: str, content: str, page: int = 1) -> dict:
+    return {
+        "division": division,
+        "section_number": section_number,
+        "content": content,
+        "content_sha256": content_hash(content),
+        "page_start": page,
+        "page_end": page,
+    }
+
+
+def test_diff_chunk_sets_reports_added_removed_and_changed():
+    old_chunks = [
+        _synthetic_chunk("body", "1", "Short title text."),
+        _synthetic_chunk("body", "2", "Interpretation text that stays the same."),
+        _synthetic_chunk("body", "3", "A section that gets removed in the new generation."),
+    ]
+    new_chunks = [
+        _synthetic_chunk("body", "1", "Short title text, reworded for the new generation."),
+        _synthetic_chunk("body", "2", "Interpretation text that stays the same."),
+        _synthetic_chunk("body", "4", "A brand new section the new generation adds."),
+    ]
+
+    diff = diff_chunk_sets(old_chunks, new_chunks)
+
+    assert diff["added"] == [{"division": "body", "section_number": "4"}]
+    assert diff["removed"] == [{"division": "body", "section_number": "3"}]
+    assert len(diff["changed"]) == 1
+    assert diff["changed"][0]["section_number"] == "1"
+    assert diff["changed"][0]["old_chars"] < diff["changed"][0]["new_chars"]
+    assert diff["unchanged_count"] == 1
+
+
+def test_diff_extraction_manifests_only_reports_documents_that_actually_changed(tmp_path: Path):
+    old_root, new_root = tmp_path / "old", tmp_path / "new"
+    old_root.mkdir()
+    new_root.mkdir()
+
+    def bundle(root: Path, extraction_id: str, chunks: list[dict]) -> None:
+        (root / f"{extraction_id}.chunks.json").write_text(json.dumps({"chunks": chunks}), encoding="utf-8")
+
+    bundle(old_root, "extraction-changed-old", [_synthetic_chunk("body", "1", "Original short title.")])
+    bundle(new_root, "extraction-changed-new", [_synthetic_chunk("body", "1", "Revised, longer short title.")])
+    stable = [_synthetic_chunk("body", "1", "Never touched.")]
+    bundle(old_root, "extraction-stable-old", stable)
+    bundle(new_root, "extraction-stable-new", stable)
+
+    def manifest(runs: list[tuple[str, str]]) -> dict:
+        return {"extraction_runs": [
+            {"document_id": doc_id, "extraction_id": extraction_id} for doc_id, extraction_id in runs
+        ]}
+
+    old_manifest = manifest([("doc-changed", "extraction-changed-old"), ("doc-stable", "extraction-stable-old")])
+    new_manifest = manifest([("doc-changed", "extraction-changed-new"), ("doc-stable", "extraction-stable-new")])
+
+    diffs = diff_extraction_manifests(
+        old_manifest, new_manifest, old_extraction_root=old_root, new_extraction_root=new_root,
+    )
+
+    assert set(diffs) == {"doc-changed", "doc-stable"}
+    assert diffs["doc-changed"]["changed"]
+    assert not diffs["doc-stable"]["added"]
+    assert not diffs["doc-stable"]["removed"]
+    assert not diffs["doc-stable"]["changed"]
+
+
+def test_toc_oracle_flags_the_real_arrangement_of_sections_banner():
+    # Verbatim page-3 text from Act 12 EN (data/pdfs/en/12.pdf), one of #72's
+    # cohort: PyMuPDF puts each item number on its own line, nothing after it.
+    toc_text = "\n".join([
+        "ARRANGEMENT OF SECTIONS",
+        "Section",
+        "1.",
+        "Short title",
+        "2.",
+        "Interpretation",
+        "3.",
+        "Authorization to ratify amendments of Articles of Agreement of the Fund",
+        "4.",
+        "Payments and receipts in connection with Special Drawing Account",
+    ])
+    assert chunk_looks_like_table_of_contents(toc_text)
+
+
+def test_toc_oracle_flags_a_bare_number_run_without_the_banner():
+    # The banner alone isn't universal (a handful of older Acts lack it) — a
+    # repeated run of bare "<n>." lines is table-of-contents-shaped on its own.
+    bare_run = "\n".join([
+        "1.", "Short title and commencement",
+        "2.", "Interpretation",
+        "3.", "Application",
+        "4.", "Savings",
+    ])
+    assert chunk_looks_like_table_of_contents(bare_run)
+
+
+def test_toc_oracle_does_not_flag_ordinary_body_or_schedule_prose():
+    body_text = (
+        "1. This Act may be cited as the Blob Fixture Act 2026 and comes into "
+        "operation on a date the Minister appoints by notification in the Gazette."
+    )
+    schedule_text = "\n".join([
+        "ARTICLE 1",
+        "The High Contracting Parties undertake to respect and to ensure respect",
+        "for the present Convention in all circumstances without any adverse",
+        "distinction founded on sex, race, nationality or religion.",
+        "ARTICLE 2",
+        "In addition to the provisions implemented in peace time, the present",
+        "Convention shall apply to all cases of declared war.",
+    ])
+    assert not chunk_looks_like_table_of_contents(body_text)
+    assert not chunk_looks_like_table_of_contents(schedule_text)
+
+
+def test_extract_manifest_report_carries_the_new_quality_metrics(tmp_path: Path):
+    """Integration: `extract_manifest` actually wires `_chunk_quality` and the TOC
+    oracle into its report, not just `_extraction_accounting`."""
+    asset_root = tmp_path / "assets"
+    asset_root.mkdir()
+    pdf_path = asset_root / "quality.pdf"
+    _divided_pdf(pdf_path, [
+        [
+            ("Short title and commencement", False),
+            ("1. This Act may be cited as the Quality Fixture Act 2026 and comes", False),
+            ("into operation on a date the Minister appoints by notification.", False),
+        ],
+        [
+            ("SECOND SCHEDULE", True),
+            ("ARTICLE 1", False),
+            ("The High Contracting Parties undertake to respect and to ensure", False),
+            ("respect for the present Convention in all circumstances without any", False),
+        ],
+    ])
+    digest = sha256_file(pdf_path)
+    document = CorpusDocument(
+        document_id("98", "en", digest), "98", "QUALITY FIXTURE ACT", "en", asset_key(digest),
+        digest, pdf_path.stat().st_size, 2, "https://example.test/98.pdf", "", "REPRINT",
+        "2026-01-01T00:00:00Z", local_path=pdf_path.name,
+    )
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256", "documents": [document.to_dict()],
+        "extraction_runs": [], "active_documents": [], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=tmp_path / "sidecars")
+
+    _manifest, report = extract_manifest(
+        registry, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
+    )
+
+    item = report["documents"][0]
+    assert item["status"] == "ready"
+    assert len(item["unnumbered_chunks"]) == 1
+    assert item["max_chunk_chars"] > 0
+    assert report["totals"]["unnumbered_chunk_count"] == 1
+    assert report["totals"]["unnumbered_chunk_chars"] == item["unnumbered_chunks"][0]["chars"]
+    assert sum(report["chunk_size_distribution"].values()) == item["chunk_count"]
+    assert report["toc_oracle"]["chunks_scanned"] == item["chunk_count"]
+    assert report["toc_oracle"]["flagged"] == []
 
 
 def test_upload_scope_active_skips_documents_whose_bytes_are_not_local(tmp_path: Path):
