@@ -260,7 +260,12 @@ def test_checked_in_coverage_accounts_for_every_source_pdf():
 # pdf_chars over all ready documents). A drop below this means an extraction
 # change is silently losing more text than it used to keep — investigate
 # before merging, don't just lower the number.
-RECORDED_RETENTION_BASELINE = 0.8755
+#
+# Raised 0.8755 -> 0.9252 by #89: `_extract_chunks` dropped a division's own
+# content whenever it never restarted numbering at "1." (schedules printed as
+# prose, or numbered "ARTICLE N"), which also rescued 20 documents that had
+# no chunks at all before.
+RECORDED_RETENTION_BASELINE = 0.9252
 
 
 def test_corpus_wide_retention_has_not_regressed_below_its_recorded_baseline():
@@ -466,6 +471,120 @@ def test_table_of_contents_copy_of_a_heading_is_not_a_division_boundary(tmp_path
     # The copy on page 1 is the table of contents; the division starts on page 3.
     assert by_key[("body", "1")]["page_start"] == 2
     assert by_key[("FIRST SCHEDULE", "1")]["page_start"] == 3
+
+
+def test_division_content_without_numbered_paragraphs_is_kept_not_dropped(tmp_path: Path):
+    """#89: a division heading reset `current_num` to `None`, which only a line
+    matching `SECTION_PATTERN` ever set again — so a schedule whose own text
+    never restarts at "1." lost every line between its heading and the next
+    boundary. Act 512's Second Schedule is a reprinted Geneva Convention
+    numbered "ARTICLE 1", not "1."; measured on the real corpus this pattern
+    hit 352 of 1079 documents, -1,453,785 chars, all silently unassigned."""
+    asset_root = tmp_path / "assets"
+    asset_root.mkdir()
+    pdf_path = asset_root / "prose_schedule.pdf"
+    _divided_pdf(pdf_path, [
+        [
+            ("Short title and commencement", False),
+            ("1. This Act may be cited as the Prose Schedule Fixture Act 2026 and", False),
+            ("comes into operation on a date the Minister appoints by notification.", False),
+        ],
+        [
+            ("SECOND SCHEDULE", True),
+            ("ARTICLE 1", False),
+            ("The High Contracting Parties undertake to respect and to ensure", False),
+            ("respect for the present Convention in all circumstances without any", False),
+            ("adverse distinction founded on sex, race, nationality or religion.", False),
+            ("ARTICLE 2", False),
+            ("In addition to the provisions implemented in peace time, the present", False),
+            ("Convention shall apply to all cases of declared war or of any other", False),
+            ("armed conflict arising between two or more of the High Contracting", False),
+            ("Parties, even if the state of war is not recognised by one of them.", False),
+        ],
+    ])
+    digest = sha256_file(pdf_path)
+    document = CorpusDocument(
+        document_id("95", "en", digest), "95", "PROSE SCHEDULE FIXTURE ACT", "en", asset_key(digest),
+        digest, pdf_path.stat().st_size, 2, "https://example.test/95.pdf", "", "REPRINT",
+        "2026-01-01T00:00:00Z", local_path=pdf_path.name,
+    )
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256", "documents": [document.to_dict()],
+        "extraction_runs": [], "active_documents": [], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=tmp_path / "sidecars")
+    _run, bundle_path = extract_document(
+        registry, document,
+        extraction_root=tmp_path / "extractions",
+        sidecar_root=tmp_path / "sidecars",
+    )
+    chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+
+    assert ("body", "1") in by_key
+    assert ("SECOND SCHEDULE", "") in by_key
+    schedule_content = by_key[("SECOND SCHEDULE", "")]["content"]
+    assert "High Contracting Parties" in schedule_content
+    assert "ARTICLE 2" in schedule_content
+    assert "declared war" in schedule_content
+
+    with fitz.open(pdf_path) as pdf:
+        accounting = _extraction_accounting(pdf, document)
+    assert accounting.pdf_chars == (
+        accounting.assigned_chars + accounting.classified_chars + accounting.unassigned_chars
+    )
+    assert accounting.assigned_chars >= len(schedule_content)
+    # Only the heading line itself is never content; nothing else under it
+    # should still be falling through to unassigned.
+    assert accounting.unassigned_chars < len("SECOND SCHEDULE") + 40
+
+
+def test_division_heading_with_nothing_under_it_produces_no_spurious_chunk(tmp_path: Path):
+    """A division whose run has no real content before the next boundary or EOF
+    must not emit an empty/near-empty chunk — MIN_CONTENT_CHARS has to keep
+    working now that `current_num` starts at `""` under a heading rather than
+    `None`."""
+    asset_root = tmp_path / "assets"
+    asset_root.mkdir()
+    pdf_path = asset_root / "empty_schedule.pdf"
+    _divided_pdf(pdf_path, [
+        [
+            ("Short title and commencement", False),
+            ("1. This Act may be cited as the Empty Schedule Fixture Act 2026 and", False),
+            ("comes into operation on a date the Minister appoints by notification.", False),
+        ],
+        [
+            ("Interpretation", False),
+            ("2. In this Act, unless the context otherwise requires, the words below", False),
+            ("carry the meanings given to them in this section of the fixture text.", False),
+        ],
+        [("THIRD SCHEDULE", True)],
+    ])
+    digest = sha256_file(pdf_path)
+    document = CorpusDocument(
+        document_id("94", "en", digest), "94", "EMPTY SCHEDULE FIXTURE ACT", "en", asset_key(digest),
+        digest, pdf_path.stat().st_size, 3, "https://example.test/94.pdf", "", "REPRINT",
+        "2026-01-01T00:00:00Z", local_path=pdf_path.name,
+    )
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256", "documents": [document.to_dict()],
+        "extraction_runs": [], "active_documents": [], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=tmp_path / "sidecars")
+    _run, bundle_path = extract_document(
+        registry, document,
+        extraction_root=tmp_path / "extractions",
+        sidecar_root=tmp_path / "sidecars",
+    )
+    chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+
+    assert ("body", "1") in by_key
+    assert ("body", "2") in by_key
+    assert ("THIRD SCHEDULE", "") not in by_key
+    assert len(chunks) == 2
 
 
 def test_text_before_the_first_heading_is_unassigned_not_vanished(tmp_path: Path):

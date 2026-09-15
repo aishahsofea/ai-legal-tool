@@ -24,7 +24,7 @@ from corpus.registry import CorpusRegistry
 from corpus.sidecars import SIDECAR_FORMAT, write_sidecar
 
 EXTRACTOR = "malaysian-act-sections-pymupdf"
-EXTRACTOR_VERSION = "2.1.0"
+EXTRACTOR_VERSION = "2.2.0"
 SECTION_PATTERN = r"^(\d{1,3}[A-Z]{0,2})\.\s+\S"
 # Headings that end one run of numbering and start another: the schedules at the
 # back of an Act restart at 1, and so do the entries in its list of amendments.
@@ -69,6 +69,7 @@ EXTRACTOR_CONFIG = {
     "division_boundary": "last-run-per-heading-dropping-a-leading-division-longer-than-the-body",
     "deduplication": "last-section-number-wins-within-division",
     "page_numbering": "physical-1-based",
+    "division_content": "kept-as-its-own-chunk-even-without-a-numbered-paragraph",
 }
 CONFIGURATION_HASH = sha256_json(EXTRACTOR_CONFIG)
 
@@ -160,7 +161,7 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
     previous_line = ""
 
     def flush(page_end: int) -> None:
-        if not current_num:
+        if current_num is None:
             return
         content = "\n".join(line for line in current_lines if line).strip()
         if len(content) < MIN_CONTENT_CHARS:
@@ -187,9 +188,16 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
             if stripped in headings:
                 flush(page_number)
                 current_division = stripped
-                # The heading itself and any preamble under it belong to no
-                # numbered paragraph, so nothing accumulates until the next one.
-                current_num = None
+                # A schedule's own text rarely restarts at "1." on the first line
+                # under its heading (Act 512's Second Schedule is a reprinted
+                # Geneva Convention numbered "ARTICLE 1"), so this can't wait for
+                # a numbered paragraph the way a fresh document waits for its
+                # first section. "" is not a real section number `_SECTION_RE`
+                # can ever produce, so it can't collide with one; flush() below
+                # drops it via MIN_CONTENT_CHARS if nothing follows before the
+                # next boundary.
+                current_num = ""
+                current_page = page_number
                 current_lines = []
                 previous_line = stripped
                 continue
@@ -303,7 +311,11 @@ def _extraction_accounting(pdf: fitz.Document, document: CorpusDocument) -> Extr
     measurement: a bug here cannot change a chunk. A candidate that loses
     the length floor or the dedup is table-of-contents-shaped noise by the
     same reasoning `MIN_CONTENT_CHARS` and last-wins already encode, so both
-    land in `classified`, alongside recognised header/footer furniture.
+    land in `classified`, alongside recognised header/footer furniture. A
+    division's own content is a candidate under key (division, "") from its
+    heading onward, exactly like `_extract_chunks`'s `current_num = ""`, so a
+    schedule with no numbered paragraphs is `assigned` rather than falling
+    through to `unassigned` the way only its heading line still does.
     """
     records = _line_records(pdf)
     furniture = _furniture_lines(records, pdf.page_count)
@@ -324,8 +336,8 @@ def _extraction_accounting(pdf: fitz.Document, document: CorpusDocument) -> Extr
         if text in headings:
             if current_key is not None:
                 candidates.append((current_key, current_chars, _candidate_eligible(current_chars, current_lines)))
-            current_key, current_chars, current_lines = None, 0, 0
             current_division = text
+            current_key, current_chars, current_lines = (current_division, ""), 0, 0
             unassigned_chars += len(text)
             continue
         match = _SECTION_RE.match(text)
