@@ -8,6 +8,7 @@ import pytest
 from citation_receipts.locator import locate_evidence
 from corpus.extraction import (
     _DIVISION_RE,
+    _ENACTING_FORMULA_RE,
     _chunk_quality,
     _extraction_accounting,
     _is_heading_case,
@@ -270,7 +271,24 @@ def test_checked_in_coverage_accounts_for_every_source_pdf():
 # content whenever it never restarted numbering at "1." (schedules printed as
 # prose, or numbered "ARTICLE N"), which also rescued 20 documents that had
 # no chunks at all before.
-RECORDED_RETENTION_BASELINE = 0.9252
+#
+# Lowered 0.9252 -> 0.9227 by #93. Expected, and not a loss of real content:
+# a table-of-contents row whose number and title land on one PDF line
+# matches SECTION_PATTERN exactly like a real heading (see #97), and before
+# a front-matter boundary existed to gate it, that row could start a chunk
+# which absorbed the rest of the table of contents and the front matter
+# ahead of the real section carrying that number — assigned_chars counted
+# all of it. #93 stops these from ever starting; the clearest single example
+# is Act 77 EN (Armed Forces Act, 201 pages), whose "1" chunk shrank from
+# 27,775 characters of table-of-contents rows and front matter to none, with
+# section 1 itself still unrecovered (a bare-line heading, #94's cohort).
+# `data/chunks/extract_report.json` was regenerated with `corpus
+# shadow-extract` against the local corpus (1,099 ready documents) and
+# diffed chunk-by-chunk against the prior checked-in report with
+# `diff_chunk_sets`: 86 documents changed, every change a pure removal (0
+# added, 165 removed, 0 changed) — no chunk's content changed shape, none
+# appeared that had not existed before.
+RECORDED_RETENTION_BASELINE = 0.9227
 
 
 def test_corpus_wide_retention_has_not_regressed_below_its_recorded_baseline():
@@ -657,6 +675,279 @@ def test_text_before_the_first_heading_is_unassigned_not_vanished(tmp_path: Path
     assert accounting.pdf_chars == (
         accounting.assigned_chars + accounting.classified_chars + accounting.unassigned_chars
     )
+
+
+@pytest.mark.parametrize("line", [
+    "ENACTED by the Parliament of Malaysia as follows:",
+    "BE IT ENACTED by the Seri Paduka Baginda Yang di-Pertuan",
+    # Act 187: no "Seri Paduka Baginda" at all.
+    "BE IT ENACTED by the Yang di-Pertuan Agong with the advice",
+    # Act 245 / Act 440: a recital preface, comma placement varies.
+    "NOW THEREFORE BE IT ENACTED by the Seri Paduka Baginda",
+    "NOW, THEREFORE, BE IT ENACTED by the Seri Paduka",
+    "NOW,THEREFORE,BE IT ENACTED by the Duli Yang Maha Mulia Seri",
+])
+def test_enacting_formula_recognised_in_english(line: str):
+    assert _ENACTING_FORMULA_RE["en"].match(line.upper())
+
+
+@pytest.mark.parametrize("line", [
+    "First enacted 1953 (Ordinance No. 22 of 1953)",  # metadata table, not the clause
+    "Section 4 of the principal Act is amended as follows:",  # a later amendment, not the opening
+    "An Act to provide for matters as follows",
+])
+def test_lines_that_are_not_the_english_enacting_formula(line: str):
+    assert not _ENACTING_FORMULA_RE["en"].match(line.upper())
+
+
+@pytest.mark.parametrize("line", [
+    "DIPERBUAT oleh Parlimen Malaysia seperti yang berikut:",
+    "MAKA INILAH DIPERBUAT UNDANG-UNDANG oleh Seri Paduka Baginda",
+    # Act 659: a recital preface, mid-line rather than its own line.
+    "MAKA, OLEH YANG DEMIKIAN, DIPERBUAT oleh Parlimen Malaysia seperti",
+])
+def test_enacting_formula_recognised_in_malay(line: str):
+    assert _ENACTING_FORMULA_RE["bm"].search(line.upper())
+
+
+@pytest.mark.parametrize("line", [
+    # Act 587's real failure mode: a section heading that wraps onto a line
+    # of its own ending in the bare word, no collocate on that line at all.
+    # "Benda ... akan diperbuat" ("things done in anticipation of this Act
+    # being enacted") is a transitional-provision heading, not the clause -
+    # matching the bare word here is what misread this document's first 68
+    # sections as front matter (see ENACTING_FORMULA_PATTERNS's comment).
+    "diperbuat",
+    "akan diperbuat",
+    "Pertama kali diperbuat",  # "First enacted" - the metadata table, not the clause
+])
+def test_bare_diperbuat_is_not_the_malay_enacting_formula(line: str):
+    assert not _ENACTING_FORMULA_RE["bm"].search(line.upper())
+
+
+def test_front_matter_and_table_of_contents_are_classified_not_unassigned(tmp_path: Path):
+    """#93: front matter and the table of contents, from page 1 to the enacting
+    formula, get a name instead of falling through to `unassigned` — #74 could
+    only prove that span was not silently vanishing; this proves it is
+    accounted for, not just present."""
+    asset_root = tmp_path / "assets"
+    asset_root.mkdir()
+    pdf_path = asset_root / "front_matter.pdf"
+    front_matter = "An Act to regulate fixture matters and for purposes connected therewith."
+    toc_line = "Short title and commencement"
+    _pdf(pdf_path, [
+        front_matter,
+        toc_line,
+        "ENACTED by the Parliament of Malaysia as follows:",
+        "1. This Act may be cited as the Front Matter Fixture Act 2026 and comes",
+        "into operation on a date the Minister appoints by notification.",
+    ])
+    digest = sha256_file(pdf_path)
+    document = CorpusDocument(
+        document_id("93", "en", digest), "93", "FRONT MATTER FIXTURE ACT", "en", asset_key(digest),
+        digest, pdf_path.stat().st_size, 1, "https://example.test/93.pdf", "", "REPRINT",
+        "2026-01-01T00:00:00Z", local_path=pdf_path.name,
+    )
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256", "documents": [document.to_dict()],
+        "extraction_runs": [], "active_documents": [], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=tmp_path / "sidecars")
+    _run, bundle_path = extract_document(
+        registry, document, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
+    )
+    chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+    assert all(front_matter not in chunk["content"] for chunk in chunks)
+    assert all(toc_line not in chunk["content"] for chunk in chunks)
+
+    with fitz.open(pdf_path) as pdf:
+        accounting = _extraction_accounting(pdf, document)
+    assert accounting.pdf_chars == (
+        accounting.assigned_chars + accounting.classified_chars + accounting.unassigned_chars
+    )
+    assert accounting.classified_chars >= len(front_matter) + len(toc_line)
+    assert accounting.unassigned_chars == 0
+
+
+def test_table_of_contents_row_before_the_formula_never_starts_a_chunk(tmp_path: Path):
+    """#93/#97: a table-of-contents row whose number and title land on one PDF
+    line matches SECTION_PATTERN exactly like a real heading — Act 602's real
+    "19B. Restoration of geographical indication removed from the Register"
+    TOC row is this shape. Before the enacting formula gave the extractor a
+    front-matter boundary, that row started a chunk which absorbed everything
+    printed after it — the rest of the table of contents, the front matter,
+    even real section 1 — up to whatever line happened to match next."""
+    asset_root = tmp_path / "assets"
+    asset_root.mkdir()
+    pdf_path = asset_root / "toc_collision.pdf"
+    _pdf(pdf_path, [
+        "An Act to regulate fixture matters and for purposes connected therewith.",
+        "9. Special provision for the fixture scenario under test",
+        "10.",
+        "Interpretation",
+        "ENACTED by the Parliament of Malaysia as follows:",
+        "1. This Act may be cited as the Collision Fixture Act 2026 and comes",
+        "into operation on a date the Minister appoints by notification.",
+    ])
+    digest = sha256_file(pdf_path)
+    document = CorpusDocument(
+        document_id("93", "en", digest), "93", "COLLISION FIXTURE ACT", "en", asset_key(digest),
+        digest, pdf_path.stat().st_size, 1, "https://example.test/93.pdf", "", "REPRINT",
+        "2026-01-01T00:00:00Z", local_path=pdf_path.name,
+    )
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256", "documents": [document.to_dict()],
+        "extraction_runs": [], "active_documents": [], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=tmp_path / "sidecars")
+    _run, bundle_path = extract_document(
+        registry, document, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
+    )
+    chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+
+    assert ("body", "9") not in by_key
+    assert ("body", "1") in by_key
+    assert "may be cited as" in by_key[("body", "1")]["content"]
+    assert "Special provision" not in by_key[("body", "1")]["content"]
+
+
+def test_an_enacting_formula_past_the_page_limit_does_not_gate_the_real_body(tmp_path: Path):
+    """Act 136 (Contracts Act 1950, 91 pages): its own enacting formula does
+    not match this pattern at all, but an APPENDIX on page 87 reprints an
+    amending Act's full text, complete with that Act's own "BE IT ENACTED".
+    Before `ENACTING_FORMULA_MAX_PAGE_FRACTION`, first-occurrence-wins took
+    that appendix as the boundary and read the entire real body - 68 real
+    sections - as front matter. This fixture reproduces the shape: a normal
+    section on page 2, 29 blank filler pages, then a line that would match
+    the pattern on a later page past the floor. The real section must survive
+    regardless of what a much later page contains."""
+    asset_root = tmp_path / "assets"
+    asset_root.mkdir()
+    pdf_path = asset_root / "late_match.pdf"
+    pages: list[list[tuple[str, bool]]] = [
+        [("An Act to regulate fixture matters and for purposes connected therewith.", False)],
+        [
+            ("1. This Act may be cited as the Late Match Fixture Act 2026 and comes", False),
+            ("into operation on a date the Minister appoints by notification.", False),
+        ],
+    ]
+    # Filler, so the appendix page below sits past the floor. Carries enough
+    # text that `_is_scanned`'s density check does not mistake this fixture
+    # for a scanned PDF - real filler pages, not blank ones.
+    filler = [
+        ("Filler prose to keep this fixture above the scanned-page density floor.", False),
+        ("A second filler line, for the same reason as the first one above it.", False),
+    ]
+    pages.extend([filler] * 29)
+    pages.append([("BE IT ENACTED by the Seri Paduka Baginda Yang di-Pertuan", False)])
+    _divided_pdf(pdf_path, pages)
+    digest = sha256_file(pdf_path)
+    document = CorpusDocument(
+        document_id("93", "en", digest), "93", "LATE MATCH FIXTURE ACT", "en", asset_key(digest),
+        digest, pdf_path.stat().st_size, len(pages), "https://example.test/93-late.pdf", "", "REPRINT",
+        "2026-01-01T00:00:00Z", local_path=pdf_path.name,
+    )
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256", "documents": [document.to_dict()],
+        "extraction_runs": [], "active_documents": [], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=tmp_path / "sidecars")
+    _run, bundle_path = extract_document(
+        registry, document, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
+    )
+    chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+
+    assert ("body", "1") in by_key
+    assert "may be cited as" in by_key[("body", "1")]["content"]
+
+
+def test_a_malay_execution_clause_does_not_gate_an_english_documents_front_matter(tmp_path: Path):
+    """Act 144 (en) reprints a Malay grant-form schedule whose execution clause
+    starts a line with "Diperbuat" — the same word the Malay enacting-formula
+    pattern anchors on. Matching per `document.language` keeps an "en"
+    document's front-matter scan from ever trying that pattern, so a line
+    like this deep in the body stays ordinary prose, not a false boundary
+    that would swallow the real section printed ahead of it."""
+    asset_root = tmp_path / "assets"
+    asset_root.mkdir()
+    pdf_path = asset_root / "diperbuat.pdf"
+    _pdf(pdf_path, [
+        "1. Real section text long enough to clear the minimum content floor for this fixture.",
+        "Diperbuat di Kuala Lumpur pada tarikh yang dinyatakan di atas.",
+    ])
+    digest = sha256_file(pdf_path)
+    document = CorpusDocument(
+        document_id("93", "en", digest), "93", "DIPERBUAT FIXTURE ACT", "en", asset_key(digest),
+        digest, pdf_path.stat().st_size, 1, "https://example.test/93.pdf", "", "REPRINT",
+        "2026-01-01T00:00:00Z", local_path=pdf_path.name,
+    )
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256", "documents": [document.to_dict()],
+        "extraction_runs": [], "active_documents": [], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=tmp_path / "sidecars")
+    _run, bundle_path = extract_document(
+        registry, document, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
+    )
+    chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+
+    assert ("body", "1") in by_key
+    assert "Real section text" in by_key[("body", "1")]["content"]
+
+
+def test_malay_clause_split_across_two_lines_still_finds_the_real_boundary(tmp_path: Path):
+    """Act 587: the real clause - "MAKA, OLEH YANG DEMIKIAN, INILAH DIPERBUAT
+    \\nUNDANG-UNDANG oleh ..." - splits its distinctive collocation across a
+    line break, and a heading 73 pages later ends "...akan \\ndiperbuat" with
+    nothing else on that line. A pattern that only checked one line at a time
+    skipped the real clause (neither line alone carries "diperbuat undang-
+    undang") and matched the bare word at the later heading instead, reading
+    the entire body up to that point - sections 1 through 68 - as front
+    matter. Real numbers: assigned_chars for that document fell from 117,556
+    to 11,238 before this was caught. This fixture reproduces the split and
+    checks the join across the line break recovers the boundary before any
+    real content is lost."""
+    asset_root = tmp_path / "assets"
+    asset_root.mkdir()
+    pdf_path = asset_root / "split_clause.pdf"
+    _pdf(pdf_path, [
+        "Suatu Akta bagi maksud fixture ujian.",
+        "MAKA INILAH DIPERBUAT",
+        "UNDANG-UNDANG oleh Seri Paduka Baginda Yang di-Pertuan Agong",
+        "1. Akta ini bolehlah dinamakan Akta Fixture 2026 dan hendaklah",
+        "berkuat kuasa pada tarikh yang ditetapkan oleh Menteri melalui Warta.",
+        "Benda yang dilakukan dengan menjangkakan Akta ini akan",
+        "diperbuat",
+    ])
+    digest = sha256_file(pdf_path)
+    document = CorpusDocument(
+        document_id("93", "bm", digest), "93", "AKTA FIXTURE UJIAN", "bm", asset_key(digest),
+        digest, pdf_path.stat().st_size, 1, "https://example.test/93-bm.pdf", "", "REPRINT",
+        "2026-01-01T00:00:00Z", local_path=pdf_path.name,
+    )
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256", "documents": [document.to_dict()],
+        "extraction_runs": [], "active_documents": [], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=tmp_path / "sidecars")
+    _run, bundle_path = extract_document(
+        registry, document, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
+    )
+    chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+
+    assert ("body", "1") in by_key
+    assert "Akta ini bolehlah dinamakan" in by_key[("body", "1")]["content"]
+    assert all("Suatu Akta bagi maksud fixture" not in chunk["content"] for chunk in chunks)
+    assert all("MAKA INILAH DIPERBUAT" not in chunk["content"] for chunk in chunks)
 
 
 @pytest.mark.parametrize("pages,bucket", [
