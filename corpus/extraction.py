@@ -380,6 +380,151 @@ def _extraction_accounting(pdf: fitz.Document, document: CorpusDocument) -> Extr
     )
 
 
+def _page_span_bucket(pages: int) -> str:
+    """Which page-span band a chunk falls in, so a single 50-page blob (Act 512's
+    schedules, kept whole by #89) shows up as an outlier instead of disappearing
+    into a retention percentage."""
+    if pages <= 1:
+        return "1"
+    if pages <= 5:
+        return "2-5"
+    if pages <= 20:
+        return "6-20"
+    if pages <= 50:
+        return "21-50"
+    return "51+"
+
+
+def _chunk_quality(chunks: list[dict[str, Any]]) -> dict[str, Any]:
+    """Per-document chunk shape: which chunks are unnumbered blobs, and how big
+    every chunk is.
+
+    Reads `_extract_chunks`'s real output — the opposite of `_extraction_accounting`,
+    which never touches it — so a blob that is a document's *entire* chunk set shows
+    up here even though #89 correctly kept it. A chunk is a blob when its
+    section_number is "", the same key `_extract_chunks` gives a division's own
+    content from its heading onward.
+    """
+    blobs: list[dict[str, Any]] = []
+    max_chars = 0
+    max_pages = 0
+    for chunk in chunks:
+        chars = len(chunk["content"])
+        pages = chunk["page_end"] - chunk["page_start"] + 1
+        max_chars = max(max_chars, chars)
+        max_pages = max(max_pages, pages)
+        if chunk["section_number"] == "":
+            blobs.append({
+                "division": chunk["division"],
+                "page_start": chunk["page_start"],
+                "page_end": chunk["page_end"],
+                "chars": chars,
+            })
+    return {
+        "unnumbered_chunks": blobs,
+        "max_chunk_chars": max_chars,
+        "max_chunk_pages": max_pages,
+    }
+
+
+def diff_chunk_sets(
+    old_chunks: Iterable[dict[str, Any]], new_chunks: Iterable[dict[str, Any]]
+) -> dict[str, Any]:
+    """What changed between two extraction generations of one document.
+
+    Keyed by (division, section_number) — the same identity `_extract_chunks`'s own
+    last-wins dedup already uses — so a real renumbering reads as one `changed`
+    entry instead of an unrelated add/remove pair.
+    """
+    old_by_key = {(c["division"], c["section_number"]): c for c in old_chunks}
+    new_by_key = {(c["division"], c["section_number"]): c for c in new_chunks}
+    added_keys = set(new_by_key) - set(old_by_key)
+    removed_keys = set(old_by_key) - set(new_by_key)
+    changed: list[dict[str, Any]] = []
+    for key in sorted(set(old_by_key) & set(new_by_key)):
+        old_chunk, new_chunk = old_by_key[key], new_by_key[key]
+        if old_chunk["content_sha256"] == new_chunk["content_sha256"]:
+            continue
+        changed.append({
+            "division": key[0],
+            "section_number": key[1],
+            "old_chars": len(old_chunk["content"]),
+            "new_chars": len(new_chunk["content"]),
+            "old_pages": [old_chunk["page_start"], old_chunk["page_end"]],
+            "new_pages": [new_chunk["page_start"], new_chunk["page_end"]],
+        })
+    return {
+        "added": [{"division": k[0], "section_number": k[1]} for k in sorted(added_keys)],
+        "removed": [{"division": k[0], "section_number": k[1]} for k in sorted(removed_keys)],
+        "changed": changed,
+        "unchanged_count": len(set(old_by_key) & set(new_by_key)) - len(changed),
+    }
+
+
+def diff_extraction_manifests(
+    old_manifest: dict[str, Any],
+    new_manifest: dict[str, Any],
+    *,
+    old_extraction_root: Path,
+    new_extraction_root: Path,
+    document_ids: Iterable[str] | None = None,
+) -> dict[str, dict[str, Any]]:
+    """`diff_chunk_sets` for every document two manifests have in common.
+
+    Reads each generation's bundle straight off disk by extraction_id, the same
+    `{extraction_root}/{extraction_id}.chunks.json` path `extract_document` writes,
+    so this works on any two `shadow-extract` runs, not just adjacent ones — the
+    per-document form #76 needs to adjudicate what #93/#94 actually change.
+    """
+    def bundles_by_document(manifest: dict[str, Any], extraction_root: Path) -> dict[str, Path]:
+        runs_by_document = {run["document_id"]: run["extraction_id"] for run in manifest["extraction_runs"]}
+        return {
+            document_id: Path(extraction_root) / f"{extraction_id}.chunks.json"
+            for document_id, extraction_id in runs_by_document.items()
+        }
+
+    old_bundles = bundles_by_document(old_manifest, old_extraction_root)
+    new_bundles = bundles_by_document(new_manifest, new_extraction_root)
+    selected = set(document_ids) if document_ids else (set(old_bundles) & set(new_bundles))
+
+    diffs: dict[str, dict[str, Any]] = {}
+    for document_id in sorted(selected):
+        old_path, new_path = old_bundles.get(document_id), new_bundles.get(document_id)
+        if old_path is None or new_path is None or not old_path.exists() or not new_path.exists():
+            continue
+        old_chunks = json.loads(old_path.read_text(encoding="utf-8"))["chunks"]
+        new_chunks = json.loads(new_path.read_text(encoding="utf-8"))["chunks"]
+        diffs[document_id] = diff_chunk_sets(old_chunks, new_chunks)
+    return diffs
+
+
+# The AGC template's table-of-contents banner — present on an early page of 236 of
+# a 250-document sample (94.4%). Not universal (a handful of short/older Acts lack
+# it), so `chunk_looks_like_table_of_contents` also falls back to line shape below.
+_TOC_HEADING_RE = re.compile(r"ARRANGEMENT OF (?:SECTIONS|CLAUSES)|SUSUNAN SEKSYEN")
+# A bare item number with nothing after it on the same line — the shape a table of
+# contents entry's number takes once PyMuPDF splits it from its title (#72).
+# SECTION_PATTERN already refuses this shape, so a real heading's own line is never
+# mistaken for one: `_extract_chunks` only ever keeps a numbered line with content on it.
+_TOC_ROW_RE = re.compile(r"^\d{1,3}[A-Z]{0,2}\.$")
+
+
+def chunk_looks_like_table_of_contents(content: str) -> bool:
+    """A checker, never extractor logic — `_extract_chunks` never calls this.
+
+    True if `content` is table-of-contents-shaped: the AGC banner, or enough bare
+    item-number lines in a row that it reads as a list of headings rather than a
+    section's own prose.
+    """
+    if _TOC_HEADING_RE.search(content.upper()):
+        return True
+    lines = [line.strip() for line in content.splitlines() if line.strip()]
+    if not lines:
+        return False
+    bare_number_lines = sum(1 for line in lines if _TOC_ROW_RE.match(line))
+    return bare_number_lines >= 3 and bare_number_lines >= len(lines) / 4
+
+
 def extract_document(
     registry: CorpusRegistry,
     document: CorpusDocument,
@@ -491,6 +636,9 @@ def extract_manifest(
     active = dict(registry.active_documents)
     documents = dict(registry.documents)
     results: list[dict[str, Any]] = []
+    chunk_size_distribution: dict[str, int] = {}
+    toc_chunks_scanned = 0
+    toc_flagged: list[dict[str, str]] = []
     for identity in sorted(selected):
         document = registry.get(identity)
         if document.document_kind != "reprint" or not document.act_title:
@@ -510,6 +658,19 @@ def extract_manifest(
         documents[identity] = replace(document, lifecycle_status="extracted")
         with fitz.open(registry.local_path(document)) as pdf:
             accounting = _extraction_accounting(pdf, document)
+        chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+        quality = _chunk_quality(chunks)
+        for chunk in chunks:
+            span = chunk["page_end"] - chunk["page_start"] + 1
+            bucket = _page_span_bucket(span)
+            chunk_size_distribution[bucket] = chunk_size_distribution.get(bucket, 0) + 1
+            toc_chunks_scanned += 1
+            if chunk_looks_like_table_of_contents(chunk["content"]):
+                toc_flagged.append({
+                    "document_id": identity,
+                    "division": chunk["division"],
+                    "section_number": chunk["section_number"],
+                })
         if activate_ready:
             key = (document.act_number, document.language)
             previous = active.get(key)
@@ -530,6 +691,7 @@ def extract_manifest(
             "bundle": bundle_path.name,
             "status": "ready",
             **accounting.to_dict(),
+            **quality,
         })
 
     manifest = {
@@ -554,6 +716,14 @@ def extract_manifest(
             "assigned_chars": sum(item["assigned_chars"] for item in ready_results),
             "classified_chars": sum(item["classified_chars"] for item in ready_results),
             "unassigned_chars": sum(item["unassigned_chars"] for item in ready_results),
+            "unnumbered_chunk_count": sum(len(item["unnumbered_chunks"]) for item in ready_results),
+            "unnumbered_chunk_chars": sum(
+                sum(blob["chars"] for blob in item["unnumbered_chunks"]) for item in ready_results
+            ),
+            "max_chunk_chars": max((item["max_chunk_chars"] for item in ready_results), default=0),
+            "max_chunk_pages": max((item["max_chunk_pages"] for item in ready_results), default=0),
         },
+        "chunk_size_distribution": chunk_size_distribution,
+        "toc_oracle": {"chunks_scanned": toc_chunks_scanned, "flagged": toc_flagged},
     }
     return manifest, report
