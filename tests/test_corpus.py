@@ -288,7 +288,26 @@ def test_checked_in_coverage_accounts_for_every_source_pdf():
 # `diff_chunk_sets`: 86 documents changed, every change a pure removal (0
 # added, 165 removed, 0 changed) — no chunk's content changed shape, none
 # appeared that had not existed before.
-RECORDED_RETENTION_BASELINE = 0.9227
+#
+# Raised 0.9227 -> 0.9235 by #94: a numbering scheme per division turns a
+# bare `<n>.` line, a schedule paragraph printed the same way, and
+# `ARTICLE n` into real chunks instead of one undifferentiated blob or, for
+# 15 of the #72 cohort's 22 documents, no chunk at all. Two real bugs found
+# by re-running against the full local corpus rather than trusting the unit
+# fixtures: the bare-line pattern must stay off for a document with no
+# detected enacting formula (Act 595 EN's own table of contents matches it
+# exactly, number then title, with no front-matter boundary to stop it), and
+# a schedule's own paragraph/article match must lose to a lower number
+# already seen unless it came from the pre-#94 inline pattern (Act 4's Fifth
+# Schedule restarts "1" for its Part II, which would otherwise overwrite
+# Part I's own "1" through last-wins dedup — measured at -30,475 characters
+# on that one document before the guard). The remaining 7 of the #72 cohort
+# are named exceptions, not silently dropped: Act 437 EN/BM are a genuine
+# one-page "superseded" stub with no body text at all, and Act 33/114/198/
+# 205/373 EN have no enacting formula AGC's current patterns recognise
+# (placeholder issue for the phrasing gap, blocked on finding more real
+# examples).
+RECORDED_RETENTION_BASELINE = 0.9234
 
 
 def test_corpus_wide_retention_has_not_regressed_below_its_recorded_baseline():
@@ -304,9 +323,16 @@ def test_corpus_wide_retention_has_not_regressed_below_its_recorded_baseline():
 # #92: a `ready` document that is almost entirely one unnumbered blob chunk (#89)
 # reports success while holding almost nothing retrievable — Act 12 EN's only
 # chunk is its list of amendments, 1.3% of the document. Ceiling, not a target: it
-# must not grow silently. #94 is expected to lower it by fixing the #72 cohort,
-# not by loosening MIN_CONTENT_CHARS or the 50% floor below.
-RECORDED_LOW_YIELD_CEILING = 66
+# must not grow silently.
+#
+# Lowered 66 -> 38 by #94, which fixed Act 12 EN itself along with 14 more of
+# the #72 cohort (each now produces one chunk per real section instead of one
+# blob or none). The 5 members of that cohort still low-yield here (Act 33,
+# 114, 198, 205, 373 EN) have no enacting formula #94's front-matter gate can
+# find, so the bare-line pattern correctly declines to guess at them rather
+# than risk reading their real table of contents as body text the way Act
+# 595 EN's does.
+RECORDED_LOW_YIELD_CEILING = 38
 
 
 def test_low_yield_ready_documents_have_not_grown_past_their_recorded_ceiling():
@@ -323,8 +349,10 @@ def test_low_yield_ready_documents_have_not_grown_past_their_recorded_ceiling():
         f"above the recorded ceiling of {RECORDED_LOW_YIELD_CEILING}: {sorted(low_yield_ids)}"
     )
     # Names a known #72-cohort failure so the guard is provably firing, not just
-    # counting: Act 12 EN's whole chunk set is its amendments table.
-    assert "act-12-en-sha256-da86432a64cc867f8b064c3fedc8c80f21052c5266239c97b4201e266399aaa1" in low_yield_ids
+    # counting: Act 33 EN has no detectable enacting formula, so #94's
+    # bare-line pattern stays off for it and its whole chunk set is still one
+    # 6.3%-of-the-document blob.
+    assert "act-33-en-sha256-7f62b6ce790ee848b027d357a1f25e20975c81c98ed17f53554c46ff20bcd459" in low_yield_ids
 
 
 def test_scraped_at_for_files_each_language_under_its_own_scrape_date():
@@ -526,9 +554,13 @@ def test_division_content_without_numbered_paragraphs_is_kept_not_dropped(tmp_pa
     """#89: a division heading reset `current_num` to `None`, which only a line
     matching `SECTION_PATTERN` ever set again — so a schedule whose own text
     never restarts at "1." lost every line between its heading and the next
-    boundary. Act 512's Second Schedule is a reprinted Geneva Convention
-    numbered "ARTICLE 1", not "1."; measured on the real corpus this pattern
-    hit 352 of 1079 documents, -1,453,785 chars, all silently unassigned."""
+    boundary. Act 485's Seventh Schedule reprints the UN Convention on
+    Privileges and Immunities, numbered "Article I", "Article II" — roman,
+    not arabic, and title case rather than upper. #94 gives a schedule its
+    own item scheme, but only for the tokens `_SECTION_RE`'s grammar can
+    represent (1-3 digits, optionally lettered); a roman-numeral instrument
+    like this one has no token to take, so it must still come through whole
+    rather than dropped or half-matched on "I"/"II" as if they were letters."""
     asset_root = tmp_path / "assets"
     asset_root.mkdir()
     pdf_path = asset_root / "prose_schedule.pdf"
@@ -540,11 +572,11 @@ def test_division_content_without_numbered_paragraphs_is_kept_not_dropped(tmp_pa
         ],
         [
             ("SECOND SCHEDULE", True),
-            ("ARTICLE 1", False),
+            ("Article I", False),
             ("The High Contracting Parties undertake to respect and to ensure", False),
             ("respect for the present Convention in all circumstances without any", False),
             ("adverse distinction founded on sex, race, nationality or religion.", False),
-            ("ARTICLE 2", False),
+            ("Article II", False),
             ("In addition to the provisions implemented in peace time, the present", False),
             ("Convention shall apply to all cases of declared war or of any other", False),
             ("armed conflict arising between two or more of the High Contracting", False),
@@ -575,7 +607,7 @@ def test_division_content_without_numbered_paragraphs_is_kept_not_dropped(tmp_pa
     assert ("SECOND SCHEDULE", "") in by_key
     schedule_content = by_key[("SECOND SCHEDULE", "")]["content"]
     assert "High Contracting Parties" in schedule_content
-    assert "ARTICLE 2" in schedule_content
+    assert "Article II" in schedule_content
     assert "declared war" in schedule_content
 
     with fitz.open(pdf_path) as pdf:
@@ -587,6 +619,115 @@ def test_division_content_without_numbered_paragraphs_is_kept_not_dropped(tmp_pa
     # Only the heading line itself is never content; nothing else under it
     # should still be falling through to unassigned.
     assert accounting.unassigned_chars < len("SECOND SCHEDULE") + 40
+
+
+def test_schedule_article_number_becomes_its_own_chunk(tmp_path: Path):
+    """#94: Act 512's Second Schedule reprints the Geneva Convention, numbered
+    "ARTICLE 1", "ARTICLE 2" - upper case, arabic. Unlike the roman-numeral
+    instrument above, this token fits `_SECTION_RE`'s grammar, so each
+    article becomes its own addressable chunk instead of one blob covering
+    the whole schedule."""
+    asset_root = tmp_path / "assets"
+    asset_root.mkdir()
+    pdf_path = asset_root / "article_schedule.pdf"
+    _divided_pdf(pdf_path, [
+        [
+            ("Short title and commencement", False),
+            ("1. This Act may be cited as the Article Schedule Fixture Act 2026 and", False),
+            ("comes into operation on a date the Minister appoints by notification.", False),
+        ],
+        [
+            ("SECOND SCHEDULE", True),
+            ("ARTICLE 1", False),
+            ("The High Contracting Parties undertake to respect and to ensure", False),
+            ("respect for the present Convention in all circumstances without any", False),
+            ("adverse distinction founded on sex, race, nationality or religion.", False),
+            ("ARTICLE 2", False),
+            ("In addition to the provisions implemented in peace time, the present", False),
+            ("Convention shall apply to all cases of declared war or of any other", False),
+            ("armed conflict arising between two or more of the High Contracting", False),
+            ("Parties, even if the state of war is not recognised by one of them.", False),
+        ],
+    ])
+    digest = sha256_file(pdf_path)
+    document = CorpusDocument(
+        document_id("99", "en", digest), "99", "ARTICLE SCHEDULE FIXTURE ACT", "en", asset_key(digest),
+        digest, pdf_path.stat().st_size, 2, "https://example.test/99.pdf", "", "REPRINT",
+        "2026-01-01T00:00:00Z", local_path=pdf_path.name,
+    )
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256", "documents": [document.to_dict()],
+        "extraction_runs": [], "active_documents": [], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=tmp_path / "sidecars")
+    _run, bundle_path = extract_document(
+        registry, document,
+        extraction_root=tmp_path / "extractions",
+        sidecar_root=tmp_path / "sidecars",
+    )
+    chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+
+    assert ("SECOND SCHEDULE", "") not in by_key
+    assert "respect for the present Convention" in by_key[("SECOND SCHEDULE", "1")]["content"]
+    assert "declared war" in by_key[("SECOND SCHEDULE", "2")]["content"]
+
+    with fitz.open(pdf_path) as pdf:
+        accounting = _extraction_accounting(pdf, document)
+    assert accounting.pdf_chars == (
+        accounting.assigned_chars + accounting.classified_chars + accounting.unassigned_chars
+    )
+
+
+def test_article_cross_reference_wrapped_onto_its_own_line_is_not_a_new_article(tmp_path: Path):
+    """#94: AGC's line wrap can split a running cross-reference like "as defined
+    in Article 13." into "...in Article" / "13.", measured 3 times across the
+    real Act 512. The real heading is upper case ("ARTICLE 13"); the wrapped
+    reference is title case ("Article 13.") and must not be mistaken for one,
+    or it would flush the article actually open and start a bogus one."""
+    asset_root = tmp_path / "assets"
+    asset_root.mkdir()
+    pdf_path = asset_root / "article_reference.pdf"
+    _divided_pdf(pdf_path, [
+        [
+            ("Short title and commencement", False),
+            ("1. This Act may be cited as the Article Reference Fixture Act 2026 and", False),
+            ("comes into operation on a date the Minister appoints by notification.", False),
+        ],
+        [
+            ("SECOND SCHEDULE", True),
+            ("ARTICLE 12", False),
+            ("Nationals of a neutral State are wider in application, as defined in", False),
+            ("Article 13.", False),
+            ("Persons protected by the Convention are entitled to respect in all", False),
+            ("circumstances for their persons, their honour and their family rights.", False),
+        ],
+    ])
+    digest = sha256_file(pdf_path)
+    document = CorpusDocument(
+        document_id("100", "en", digest), "100", "ARTICLE REFERENCE FIXTURE ACT", "en", asset_key(digest),
+        digest, pdf_path.stat().st_size, 2, "https://example.test/100.pdf", "", "REPRINT",
+        "2026-01-01T00:00:00Z", local_path=pdf_path.name,
+    )
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256", "documents": [document.to_dict()],
+        "extraction_runs": [], "active_documents": [], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=tmp_path / "sidecars")
+    _run, bundle_path = extract_document(
+        registry, document,
+        extraction_root=tmp_path / "extractions",
+        sidecar_root=tmp_path / "sidecars",
+    )
+    chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+
+    assert ("SECOND SCHEDULE", "13") not in by_key
+    article_12 = by_key[("SECOND SCHEDULE", "12")]["content"]
+    assert "Article 13." in article_12
+    assert "family rights" in article_12
 
 
 def test_division_heading_with_nothing_under_it_produces_no_spurious_chunk(tmp_path: Path):
@@ -634,6 +775,229 @@ def test_division_heading_with_nothing_under_it_produces_no_spurious_chunk(tmp_p
     assert ("body", "2") in by_key
     assert ("THIRD SCHEDULE", "") not in by_key
     assert len(chunks) == 2
+
+
+def _fixture_document(
+    tmp_path: Path, name: str, act_number: str, pages: list[list[tuple[str, bool]]]
+) -> tuple[CorpusRegistry, CorpusDocument]:
+    asset_root = tmp_path / "assets"
+    asset_root.mkdir(exist_ok=True)
+    pdf_path = asset_root / f"{name}.pdf"
+    _divided_pdf(pdf_path, pages)
+    digest = sha256_file(pdf_path)
+    document = CorpusDocument(
+        document_id(act_number, "en", digest), act_number, f"{name.upper()} FIXTURE ACT", "en",
+        asset_key(digest), digest, pdf_path.stat().st_size, len(pages),
+        f"https://example.test/{act_number}.pdf", "", "REPRINT",
+        "2026-01-01T00:00:00Z", local_path=pdf_path.name,
+    )
+    manifest_path = tmp_path / f"{name}-manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256", "documents": [document.to_dict()],
+        "extraction_runs": [], "active_documents": [], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=tmp_path / f"{name}-sidecars")
+    return registry, document
+
+
+def test_body_section_split_across_a_bare_number_line_is_still_recognised(tmp_path: Path):
+    """#72: 22 real documents print a section's number alone on its own line -
+    its title on the line above, its text starting on the line after -
+    which `SECTION_PATTERN`'s one-line "number, dot, text" shape never
+    matches, so these Acts produced zero chunks. This is Act 12/22/66 EN's
+    real layout. Needs a real enacting formula: the pattern only fires once
+    front matter has a confirmed end (#93's guard, added after Act 595
+    showed what happens without one)."""
+    registry, document = _fixture_document(tmp_path, "split_heading", "101", [[
+        ("BE IT ENACTED by the Parliament of Malaysia as follows:", False),
+        ("Short title", False),
+        ("1.", False),
+        ("This Act may be cited as the Split Heading Fixture Act 2026.", False),
+        ("Interpretation", False),
+        ("2.", False),
+        ("In this Act, unless the context otherwise requires, the words below", False),
+        ("carry the meanings given to them in this section of the fixture.", False),
+    ]])
+    _run, bundle_path = extract_document(
+        registry, document, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
+    )
+    chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+
+    assert "Short title" in by_key[("body", "1")]["content"]
+    assert "may be cited as" in by_key[("body", "1")]["content"]
+    assert "context otherwise requires" in by_key[("body", "2")]["content"]
+
+
+def test_bare_number_line_after_long_prose_does_not_split_the_section(tmp_path: Path):
+    """The discriminator #72 needs is order, not shape: a bare number only
+    starts a new section when the line above it reads as a title, not when
+    it is a `(a)`-style continuation of the section's own prose. Otherwise a
+    stray enumeration mark inside a section's own text would be split into
+    a bogus new section."""
+    registry, document = _fixture_document(tmp_path, "enumeration", "102", [[
+        ("BE IT ENACTED by the Parliament of Malaysia as follows:", False),
+        ("Short title", False),
+        ("1.", False),
+        ("This Act may be cited as the Enumeration Fixture Act 2026.", False),
+        ("(a) matters relating to contributions payable under this Act; and", False),
+        ("5.", False),
+        ("the rate of contribution payable by an employer under this Act.", False),
+    ]])
+    _run, bundle_path = extract_document(
+        registry, document, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
+    )
+    chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+
+    assert ("body", "5") not in by_key
+    assert "the rate of contribution" in by_key[("body", "1")]["content"]
+
+
+def test_schedule_paragraph_split_across_its_own_line_becomes_its_own_chunk(tmp_path: Path):
+    """#94: some schedules number their own paragraphs the same split-line way
+    the body's #72 cohort does - Act 4's Fifth Schedule prints "4." /
+    "Barium" / the disease description, not "4. Barium ...". A schedule has
+    no title line above each paragraph the way the body does, so this is
+    recognised unconditionally rather than gated on the line above."""
+    registry, document = _fixture_document(tmp_path, "schedule_item", "103", [
+        [("Short title", False), ("1. This Act may be cited as the Schedule Item Fixture Act 2026.", False)],
+        [
+            ("FIRST SCHEDULE", True),
+            ("Occupation", False),
+            ("1.", False),
+            ("Fitters and turners engaged wholly or mainly upon the maintenance or", False),
+            ("repair of machinery.", False),
+            ("2.", False),
+            ("Persons who in the course of their employment are subject to excessive", False),
+            ("heat or humidity or to rapid variations of temperature.", False),
+        ],
+    ])
+    _run, bundle_path = extract_document(
+        registry, document, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
+    )
+    chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+
+    assert ("FIRST SCHEDULE", "") not in by_key
+    assert "maintenance" in by_key[("FIRST SCHEDULE", "1")]["content"]
+    assert "excessive" in by_key[("FIRST SCHEDULE", "2")]["content"]
+
+
+def test_schedule_bare_item_after_a_reference_word_is_not_a_new_item(tmp_path: Path):
+    """#94: a schedule's bare-dot numbering carries the same line-wrap risk as
+    `ARTICLE n` - Act 148's Montreal Protocol schedule measured this exact
+    shape: "...laid down in paragraph" / "1.". A schedule has no title line
+    to gate a bare item the way the body does, so this checks whether the
+    line above ends in a reference noun instead."""
+    registry, document = _fixture_document(tmp_path, "reference_tail", "104", [
+        [("Short title", False), ("1. This Act may be cited as the Reference Tail Fixture Act 2026.", False)],
+        [
+            ("FIRST SCHEDULE", True),
+            ("2.", False),
+            ("The rules in this Schedule are the ones laid down in paragraph", False),
+            ("1.", False),
+            ("of this Schedule and to no other carriage.", False),
+        ],
+    ])
+    _run, bundle_path = extract_document(
+        registry, document, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
+    )
+    chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+
+    assert ("FIRST SCHEDULE", "1") not in by_key
+    assert "of this Schedule and to no other carriage" in by_key[("FIRST SCHEDULE", "2")]["content"]
+
+
+def test_list_of_amendments_never_produces_a_numbered_item(tmp_path: Path):
+    """#94: "nothing in it is an item" for the amendments division - even a
+    row that looks like a bare numbered line must not split the table into
+    per-row chunks."""
+    registry, document = _fixture_document(tmp_path, "amendments_only", "105", [
+        [("Short title", False), ("1. This Act may be cited as the Amendments Fixture Act 2026.", False)],
+        [
+            ("LIST OF AMENDMENTS", True),
+            ("Amending law", False),
+            ("184.", False),
+            ("Act to amend the principal enactment and other related matters connected with it.", False),
+            ("In force from 1 January 2020 by order of the Minister published in the Gazette.", False),
+        ],
+    ])
+    _run, bundle_path = extract_document(
+        registry, document, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
+    )
+    chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+
+    assert ("LIST OF AMENDMENTS", "184") not in by_key
+    assert ("LIST OF AMENDMENTS", "") in by_key
+    assert "In force from 1 January 2020" in by_key[("LIST OF AMENDMENTS", "")]["content"]
+
+
+def test_body_bare_line_disabled_without_a_detected_enacting_formula(tmp_path: Path):
+    """#94: Act 595 has no detectable enacting formula (a "WHEREAS" recital,
+    not "BE IT ENACTED"), so its real table of contents - number first,
+    title second - is read as body text with no front-matter boundary to
+    stop it. Every row there looks exactly like a real split heading to the
+    bare-line pattern, so the pattern must stay off for a document with no
+    confirmed front-matter boundary rather than risk exactly the false
+    matches #72 measured corpus-wide."""
+    registry, document = _fixture_document(tmp_path, "no_formula_toc", "106", [[
+        ("Section", False),
+        ("1.", False),
+        ("Short title and commencement", False),
+        ("2.", False),
+        ("Interpretation", False),
+        ("3.", False),
+        ("Application", False),
+        ("Application", False),
+        ("3. This Act applies throughout Malaysia and comes into force on a date", False),
+        ("appointed by the Minister by notification in the Gazette.", False),
+    ]])
+    _run, bundle_path = extract_document(
+        registry, document, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
+    )
+    chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+
+    assert ("body", "1") not in by_key
+    assert ("body", "2") not in by_key
+    assert len(chunks) == 1
+    assert "This Act applies throughout Malaysia" in by_key[("body", "3")]["content"]
+
+
+def test_schedule_part_restart_does_not_collide_with_its_earlier_numbering(tmp_path: Path):
+    """#94: Act 4's Fifth Schedule restarts its own paragraph numbering at
+    "1." for Part II after Part I already reached a higher number -
+    measured to silently discard 69,588 real characters via last-wins dedup
+    the moment a schedule's paragraphs became individually addressable. The
+    restart is rejected instead of colliding: its content folds into
+    whatever chunk is already open, so Part I's real "1" survives rather
+    than being overwritten by Part II's."""
+    registry, document = _fixture_document(tmp_path, "part_restart", "107", [
+        [("Short title", False), ("1. This Act may be cited as the Part Restart Fixture Act 2026.", False)],
+        [
+            ("FIRST SCHEDULE", True),
+            ("PART I", False),
+            ("1.", False),
+            ("Aluminium exposure during welding of aluminium metal in reduction plants and cans.", False),
+            ("2.", False),
+            ("Antimony exposure during use as a flame retardant for plastics and paint.", False),
+            ("PART II", False),
+            ("1.", False),
+            ("Acetic acid exposure during use in photographic development and dyes.", False),
+        ],
+    ])
+    _run, bundle_path = extract_document(
+        registry, document, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
+    )
+    chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+
+    assert "Aluminium" in by_key[("FIRST SCHEDULE", "1")]["content"]
+    assert "Antimony" in by_key[("FIRST SCHEDULE", "2")]["content"]
+    assert "Acetic acid" in by_key[("FIRST SCHEDULE", "2")]["content"]
 
 
 def test_text_before_the_first_heading_is_unassigned_not_vanished(tmp_path: Path):
@@ -973,7 +1337,6 @@ def test_chunk_quality_reports_a_blob_chunks_division_and_page_span(tmp_path: Pa
         ],
         [
             ("SECOND SCHEDULE", True),
-            ("ARTICLE 1", False),
             ("The High Contracting Parties undertake to respect and to ensure", False),
             ("respect for the present Convention in all circumstances without any", False),
         ],
@@ -1136,7 +1499,6 @@ def test_extract_manifest_report_carries_the_new_quality_metrics(tmp_path: Path)
         ],
         [
             ("SECOND SCHEDULE", True),
-            ("ARTICLE 1", False),
             ("The High Contracting Parties undertake to respect and to ensure", False),
             ("respect for the present Convention in all circumstances without any", False),
         ],
