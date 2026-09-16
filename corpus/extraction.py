@@ -24,7 +24,7 @@ from corpus.registry import CorpusRegistry
 from corpus.sidecars import SIDECAR_FORMAT, write_sidecar
 
 EXTRACTOR = "malaysian-act-sections-pymupdf"
-EXTRACTOR_VERSION = "2.5.0"
+EXTRACTOR_VERSION = "2.6.0"
 SECTION_PATTERN = r"^(\d{1,3}[A-Z]{0,2})\.\s+\S"
 # A number AGC prints alone on its own line: its title on the line above, its
 # text starting on the line after (#72's cohort - 22 documents whose
@@ -97,6 +97,25 @@ FRONT_MATTER_DIVISION = "front matter"
 # never this clause - `None` from `_enacting_formula_start` is that
 # document's real, unmarked state, not a gap in the pattern.
 #
+# A third phrasing drops "BE" and never names the actor: "NOW,
+# THEREFORE, IT IS ENACTED by the Parliament of Malaysia as follows" (Act
+# 595), "...IT IS HEREBY ENACTED by the Yang di-Pertuan Agong with the
+# advice and consent of Parliament as follows" (Act 373 - a different actor
+# again, so the actor still goes unmatched, same reasoning as above), and
+# "...pursuant to Article 149 of the Federal Constitution IT IS ENACTED by
+# the Parliament of Malaysia as follows" (Act 747, where a whole clause sits
+# between "NOW, THEREFORE," and "IT IS ENACTED"). That last shape is why
+# this alternative alone carries no leading `^`: Act 747's own physical line
+# reads "Constitution IT IS ENACTED by the Parliament of Malaysia as", so
+# anchoring at the line start would miss it. Checked against every local
+# English document, "IT IS (HEREBY )?ENACTED BY" finds 12 (Act 297, 373,
+# 595, 622, 636, 641, 659, 660, 686, 712, 720, 747) and changes none of the
+# others' already-detected line - see tests/test_corpus.py's enacting-formula
+# fixtures. Act 33/114/198/205 were never part of this gap: their AGC
+# reprints carry no enacting clause of any kind (verified by reading each
+# one's front matter directly, not inferred from title) - the same
+# legitimate `None` as the pre-Merdeka Ordinances above.
+#
 # Matched per `document.language`, not combined into one pattern the way
 # `DIVISION_PATTERN` combines English and Malay, because a schedule can
 # carry the *other* language's prose as its own content - Act 144 (en)
@@ -118,13 +137,17 @@ FRONT_MATTER_DIVISION = "front matter"
 # over the clause on that document, reading its first 68 sections as front
 # matter. Requiring the collocate rules out the heading; checking each line
 # joined with its predecessor is what still finds a clause AGC has split
-# across two lines. The join is a no-op for "en": `^` inside
-# `pattern.search(f"{previous} {line}")` can only match at that string's
-# start, which happens only when `previous` is empty.
+# across two lines. The join is a no-op for "en"'s first two alternatives:
+# `^` inside `pattern.search(f"{previous} {line}")` can only match at that
+# string's start, which happens only when `previous` is empty. The third
+# alternative carries no `^`, so the join is live for it too in principle -
+# it has simply never been the one to find a match: every local "IT IS
+# ENACTED BY" sits on one physical line already.
 ENACTING_FORMULA_PATTERNS = {
     "en": (
         r"^(?:NOW\s*,?\s*THEREFORE\s*,?\s*)?BE\s+IT\s+ENACTED\b"
         r"|^ENACTED\s+BY\s+THE\s+PARLIAMENT\s+OF\s+MALAYSIA\b"
+        r"|IT\s+IS\s+(?:HEREBY\s+)?ENACTED\s+BY\b"
     ),
     "bm": (
         r"DIPERBUAT(?:KAN)?\s+UNDANG-UNDANG\b"
@@ -319,9 +342,10 @@ def _enacting_formula_start(pdf: fitz.Document, language: str) -> tuple[int, str
 
     Tries each line against the pattern alone and, since a "bm" clause can
     split its distinctive collocation across a line break (see
-    `ENACTING_FORMULA_PATTERNS`), joined with the line before it too - inert
-    for "en", whose pattern is anchored at `^` and so can only match a joined
-    string when there was no line before it.
+    `ENACTING_FORMULA_PATTERNS`), joined with the line before it too - a
+    no-op for two of "en"'s three alternatives, `^`-anchored so they can only
+    match a joined string when there was no line before it (see the comment
+    above `ENACTING_FORMULA_PATTERNS` for the third).
 
     None when `language` has no pattern to try; when this Act's AGC reprint
     carries no enacting clause at all (common in pre-Merdeka Ordinances); and
