@@ -18,11 +18,13 @@ def case_section_pairs(case: dict[str, Any]) -> list[tuple[str, str]]:
     go unseeded and unchecked.
     """
     pairs: list[tuple[str, str]] = []
-    scalar = _normalized_pair(case.get("expected_act_number"), case.get("expected_section"))
+    scalar = _normalized_pair(
+        case.get("expected_act_number"), case.get("expected_section"), case.get("expected_path")
+    )
     if scalar:
         pairs.append(scalar)
     for entry in case.get("expected_sections") or []:
-        pair = _normalized_pair(entry.get("act_number"), entry.get("section_number"))
+        pair = _normalized_pair(entry.get("act_number"), entry.get("section_number"), entry.get("path"))
         if pair and pair not in pairs:
             pairs.append(pair)
     return pairs

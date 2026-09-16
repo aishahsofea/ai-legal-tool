@@ -14,6 +14,8 @@ from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel
 
+from agent.citation_keys import canonicalize_citation_key
+from agent.retrieval.search import has_path_column
 from evals.coverage import (
     aggregate_scenarios,
     coverage_summary,
@@ -49,6 +51,14 @@ def present_section_pairs(database_url: str) -> set[tuple[str, str]]:
     """Read the Act/section keys currently present in the dedicated eval corpus."""
     with psycopg2.connect(database_url) as conn:
         with conn.cursor() as cursor:
+            # Gated: the dedicated eval database's bare `chunks` schema (see
+            # `evals/seed_test_corpus.py`) has no `path` column at all.
+            if has_path_column(cursor):
+                cursor.execute("SELECT DISTINCT act_number, section_number, path FROM chunks")
+                return {
+                    canonicalize_citation_key(act, section, path)
+                    for act, section, path in cursor.fetchall()
+                }
             cursor.execute("SELECT DISTINCT act_number, section_number FROM chunks")
             return {(str(act), str(section).upper()) for act, section in cursor.fetchall()}
 

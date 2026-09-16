@@ -1,3 +1,4 @@
+import itertools
 import unittest
 from unittest.mock import MagicMock, patch
 
@@ -85,7 +86,10 @@ def _make_db_conn(exists: bool) -> MagicMock:
     cur = MagicMock()
     cur.__enter__ = lambda s: s
     cur.__exit__ = MagicMock(return_value=False)
-    cur.fetchone.return_value = (1,) if exists else None
+    # The first fetchone() answers has_path_column's schema check - kept off
+    # here so these tests exercise the pre-#95 single-clause query; every
+    # fetchone() after that answers the citation-existence query itself.
+    cur.fetchone.side_effect = itertools.chain([(0,)], itertools.repeat((1,) if exists else None))
     conn = MagicMock()
     conn.cursor.return_value = cur
     return conn
@@ -129,7 +133,7 @@ class CheckCitationExistenceTests(unittest.TestCase):
         cur = MagicMock()
         cur.__enter__ = lambda s: s
         cur.__exit__ = MagicMock(return_value=False)
-        cur.fetchone.side_effect = [(1,), None]
+        cur.fetchone.side_effect = [(0,), (1,), None]
         conn = MagicMock()
         conn.cursor.return_value = cur
 
@@ -141,6 +145,23 @@ class CheckCitationExistenceTests(unittest.TestCase):
         self.assertIsNotNone(result)
         self.assertIn("999Z", result)
         self.assertNotIn("90A", result)
+
+    def test_matches_on_path_when_the_schema_has_the_column(self):
+        cur = MagicMock()
+        cur.__enter__ = lambda s: s
+        cur.__exit__ = MagicMock(return_value=False)
+        cur.fetchone.side_effect = [(1,), (1,)]
+        conn = MagicMock()
+        conn.cursor.return_value = cur
+
+        result = check_citation_existence(
+            [{"act_number": "1", "section_number": "", "path": "sched.1/para.1"}], conn
+        )
+
+        self.assertIsNone(result)
+        sql, params = conn.cursor.return_value.execute.call_args.args
+        self.assertIn("OR path = %s", sql)
+        self.assertEqual(params, ("1", "sched.1/para.1", "sched.1/para.1"))
 
 
 class CheckExpectedSectionTests(unittest.TestCase):
@@ -180,6 +201,19 @@ class CheckExpectedSectionTests(unittest.TestCase):
         citations = [{"act_number": "574", "section_number": "90A"}]
         result = check_expected_section(citations, "56", "90A")
         self.assertIsNotNone(result)
+
+    def test_expected_path_matches_a_schedule_citation_with_no_section_number(self):
+        citations = [{"act_number": "1", "section_number": "", "path": "sched.1/para.1"}]
+        self.assertIsNone(check_expected_section(citations, "1", None, "sched.1/para.1"))
+
+    def test_expected_path_does_not_match_a_sibling_paragraph(self):
+        citations = [{"act_number": "1", "section_number": "", "path": "sched.1/para.2"}]
+        result = check_expected_section(citations, "1", None, "sched.1/para.1")
+        self.assertIsNotNone(result)
+        self.assertIn("sched.1/para.1", result)
+
+    def test_not_applicable_when_expected_section_and_path_both_none(self):
+        self.assertIsNone(check_expected_section([], "56", None, None))
 
 
 class CheckLanguageRegisterTests(unittest.TestCase):

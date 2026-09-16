@@ -3,6 +3,7 @@ import json
 import sys
 import threading
 import time
+from unittest.mock import MagicMock, patch
 
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
@@ -194,3 +195,39 @@ def test_disconnected_stream_terminates_the_runner(tmp_path):
     line, return_code = asyncio.run(scenario())
     assert line is None
     assert return_code is not None
+
+
+def _mock_chunks_connection(*, path_available: bool, rows: list[tuple]) -> MagicMock:
+    cursor = MagicMock()
+    cursor.__enter__ = lambda s: s
+    cursor.__exit__ = MagicMock(return_value=False)
+    cursor.fetchone.return_value = (1,) if path_available else (0,)
+    cursor.fetchall.return_value = rows
+    conn = MagicMock()
+    conn.__enter__ = lambda s: s
+    conn.__exit__ = MagicMock(return_value=False)
+    conn.cursor.return_value = cursor
+    return conn
+
+
+def test_present_section_pairs_uses_bare_query_without_a_path_column():
+    conn = _mock_chunks_connection(path_available=False, rows=[("56", "90A")])
+    with patch.object(evals_api.psycopg2, "connect", return_value=conn):
+        pairs = evals_api.present_section_pairs("postgresql://example")
+
+    assert pairs == {("56", "90A")}
+    # The last call is the real query - the first is has_path_column's own
+    # schema check, whose SQL text happens to contain "path" as a literal.
+    sql = conn.cursor.return_value.execute.call_args_list[-1].args[0]
+    assert "path" not in sql
+
+
+def test_present_section_pairs_reads_path_for_a_schedule_row_when_available():
+    conn = _mock_chunks_connection(
+        path_available=True,
+        rows=[("56", "90A", "s.90A"), ("1", "", "sched.1/para.1")],
+    )
+    with patch.object(evals_api.psycopg2, "connect", return_value=conn):
+        pairs = evals_api.present_section_pairs("postgresql://example")
+
+    assert pairs == {("56", "90A"), ("1", "sched.1/para.1")}

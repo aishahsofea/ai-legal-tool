@@ -27,6 +27,7 @@ class JudgeContext:
     expected_act_number: str | None
     expected_section: str | None
     expected_policy: str
+    expected_path: str | None = None
     retrieved_chunks: list[dict[str, Any]] = field(default_factory=list)
     expected_sections: list[dict[str, Any]] | None = None
 
@@ -107,6 +108,7 @@ def judge_case(ctx: JudgeContext) -> JudgeVerdict:
         "query": ctx.query,
         "expected_act_number": ctx.expected_act_number,
         "expected_section": ctx.expected_section,
+        "expected_path": ctx.expected_path,
         "expected_sections": ctx.expected_sections,
         "expected_policy": ctx.expected_policy,
         "agent_response": ctx.agent_response,

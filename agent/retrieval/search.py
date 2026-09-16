@@ -168,7 +168,9 @@ def has_path_column(cur) -> bool:
     Same reason as `_has_division_column`. Public (no leading underscore) since
     `evals/assertions.py` and `api/evals.py` need the same schema-existence
     check before running a query that references `path` directly, rather than
-    duplicating this check a third time.
+    duplicating this check a third time - and, unlike this module's other
+    schema checks, those callers' cursors are plain tuple cursors rather than
+    `RealDictCursor`, so this tolerates either row shape.
     """
     cur.execute(
         """
@@ -180,7 +182,12 @@ def has_path_column(cur) -> bool:
         """
     )
     row = cur.fetchone()
-    return bool(row and row["available"])
+    if row is None:
+        return False
+    try:
+        return bool(row["available"])
+    except (TypeError, KeyError, IndexError):
+        return bool(row[0])
 
 
 def _select_columns(provenance: bool, division: bool = False, path: bool = False) -> str:
