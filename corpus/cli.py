@@ -88,6 +88,8 @@ def _validate(args: argparse.Namespace) -> int:
         )
         for error in result["errors"]:
             print(f"- {error['code']}: {error.get('document_id', '')} {error['detail']}")
+        for warning in result.get("warnings", []):
+            print(f"! {warning['code']}: {warning['detail']}")
     return 0 if result["valid"] else 1
 
 

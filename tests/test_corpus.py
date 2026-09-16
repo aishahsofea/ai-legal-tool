@@ -7,6 +7,8 @@ import pytest
 
 from citation_receipts.locator import locate_evidence
 from corpus.extraction import (
+    EXTRACTOR,
+    EXTRACTOR_VERSION,
     _DIVISION_RE,
     _ENACTING_FORMULA_RE,
     _chunk_quality,
@@ -19,9 +21,9 @@ from corpus.extraction import (
     extract_document,
     extract_manifest,
 )
-from corpus.identity import asset_key, content_hash, document_id, sha256_file
+from corpus.identity import asset_key, content_hash, document_id, extraction_id, sha256_file
 from corpus.manifest import generate_manifest
-from corpus.models import CorpusDocument
+from corpus.models import ActiveDocument, CoordinateSidecar, CorpusDocument, ExtractionRun
 from corpus.registry import CorpusDocumentIntegrityError, CorpusRegistry
 from corpus.validation import validate_manifest
 
@@ -353,6 +355,71 @@ def test_low_yield_ready_documents_have_not_grown_past_their_recorded_ceiling():
     # bare-line pattern stays off for it and its whole chunk set is still one
     # 6.3%-of-the-document blob.
     assert "act-33-en-sha256-7f62b6ce790ee848b027d357a1f25e20975c81c98ed17f53554c46ff20bcd459" in low_yield_ids
+
+
+def _single_active_document_manifest(tmp_path: Path, *, extractor_version: str) -> Path:
+    digest = "d" * 64
+    doc_id = document_id("1", "en", digest)
+    document = CorpusDocument(
+        doc_id, "1", "FIXTURE ACT", "en", asset_key(digest), digest, 100, 1,
+        "https://example.test/1.pdf", "", "REPRINT", "2026-01-01T00:00:00Z", local_path="1.pdf",
+    )
+    config_hash = "a" * 64
+    ext_id = extraction_id(doc_id, EXTRACTOR, extractor_version, config_hash)
+    sidecar_sha = "b" * 64
+    run = ExtractionRun(
+        extraction_id=ext_id, document_id=doc_id, extractor=EXTRACTOR,
+        extractor_version=extractor_version, configuration_hash=config_hash,
+        chunk_set_hash="c" * 64, chunk_count=1, status="ready",
+        coordinate_sidecar=CoordinateSidecar(
+            asset_key=f"statutes/extractions/{ext_id}/{sidecar_sha}.words.json.gz",
+            sha256=sidecar_sha, byte_size=10, local_path=f"{ext_id}.words.json.gz",
+        ),
+    )
+    active = ActiveDocument("1", "en", doc_id, ext_id)
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256",
+        "documents": [document.to_dict()], "extraction_runs": [run.to_dict()],
+        "active_documents": [active.to_dict()], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    return manifest_path
+
+
+def test_validate_manifest_warns_when_active_extractor_version_is_behind_main(tmp_path: Path):
+    """#89: an active extraction run built under an older EXTRACTOR_VERSION than
+    the one corpus/extraction.py computes today must surface as a warning, not
+    silence. `valid` stays true -- drift is expected mid-rollout -- but it must
+    not be invisible."""
+    manifest_path = _single_active_document_manifest(tmp_path, extractor_version="1.0.0")
+    result = validate_manifest(manifest_path, scope="registry")
+    assert result["valid"]
+    codes = {warning["code"] for warning in result["warnings"]}
+    assert "extractor_version_drift" in codes
+
+
+def test_validate_manifest_does_not_warn_when_active_extractor_version_matches_main(tmp_path: Path):
+    manifest_path = _single_active_document_manifest(tmp_path, extractor_version=EXTRACTOR_VERSION)
+    result = validate_manifest(manifest_path, scope="registry")
+    assert result["warnings"] == []
+
+
+def test_manifest_active_extractor_version_drift_is_visible_not_silent():
+    """#89: the real manifest's active extraction_runs fell behind EXTRACTOR_VERSION
+    for five version bumps (2.1.0 through 2.5.0) before anyone noticed, because
+    nothing surfaced the gap short of manually running extract_manifest and
+    diffing by hand. This pins today's real gap so it stays a conscious, visible
+    fact. Once #89's activation actually happens, this test starts failing --
+    fix it by asserting the warning is gone (and update/close #89), not by
+    deleting the check, so the next drift gets caught the same way."""
+    root = Path(__file__).resolve().parents[1]
+    result = validate_manifest(root / "data" / "pdfs" / "manifest.json", scope="registry")
+    codes = {warning["code"] for warning in result["warnings"]}
+    assert "extractor_version_drift" in codes, (
+        f"expected the manifest's active extraction_runs to still be behind "
+        f"EXTRACTOR_VERSION ({EXTRACTOR_VERSION}) -- if #89 activated for real, "
+        "update this test rather than deleting the check"
+    )
 
 
 def test_scraped_at_for_files_each_language_under_its_own_scrape_date():
