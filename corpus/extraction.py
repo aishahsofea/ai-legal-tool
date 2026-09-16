@@ -216,6 +216,23 @@ def _token_sort_key(token: str) -> tuple[int, str]:
     return (int(token), "")
 
 
+def _chunk_path(
+    division: str,
+    is_amendments: bool,
+    schedule_ordinal: int | None,
+    item_kind: str | None,
+    section_number: str,
+) -> str | None:
+    """A chunk's path-qualified identifier (ADR 0018), or None where the
+    division is never addressable (front matter, list of amendments)."""
+    if division == BODY_DIVISION:
+        return f"s.{section_number}"
+    if is_amendments or schedule_ordinal is None:
+        return None
+    base = f"sched.{schedule_ordinal}"
+    return f"{base}/{item_kind}.{section_number}" if section_number else base
+
+
 def _ends_with_a_reference_word(text: str) -> bool:
     """True when `text` ends in a word like "Article" or "paragraph" - the
     shape a cross-reference takes once AGC's line wrap splits "in Article
@@ -343,6 +360,9 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
     current_division = FRONT_MATTER_DIVISION if enacting_start is not None else BODY_DIVISION
     current_division_is_amendments = False
     current_division_max_token: tuple[int, str] | None = None
+    schedule_ordinal_counter = 0
+    current_schedule_ordinal: int | None = None
+    current_item_kind: str | None = None
     previous_line = ""
 
     def flush(page_end: int) -> None:
@@ -354,8 +374,12 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
         raw.append({
             "act_number": document.act_number,
             "act_title": document.act_title,
-            "section_number": current_num,
+            "section_number": current_num if current_division == BODY_DIVISION else "",
             "division": current_division,
+            "path": _chunk_path(
+                current_division, current_division_is_amendments,
+                current_schedule_ordinal, current_item_kind, current_num,
+            ),
             "content": content,
             "content_sha256": content_hash(content),
             "page_number": current_page,
@@ -385,6 +409,12 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
                 flush(page_number)
                 current_division = stripped
                 current_division_is_amendments = bool(_AMENDMENTS_DIVISION_RE.match(stripped.upper()))
+                if current_division_is_amendments:
+                    current_schedule_ordinal = None
+                else:
+                    schedule_ordinal_counter += 1
+                    current_schedule_ordinal = schedule_ordinal_counter
+                current_item_kind = None
                 current_division_max_token = None
                 # A schedule's own text rarely restarts at "1." on the first line
                 # under its heading (Act 512's Second Schedule is a reprinted
@@ -401,6 +431,7 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
                 continue
             match = _SECTION_RE.match(stripped)
             match_is_inline = match is not None
+            item_kind = "para" if match_is_inline and current_division != BODY_DIVISION else None
             if match is None and not current_division_is_amendments:
                 bare_match = _BARE_ITEM_RE.match(stripped)
                 if current_division == BODY_DIVISION:
@@ -414,8 +445,11 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
                         match = bare_match
                 else:
                     match = _SCHEDULE_ARTICLE_RE.match(stripped)
-                    if match is None and bare_match and not _ends_with_a_reference_word(previous_line):
+                    if match is not None:
+                        item_kind = "art"
+                    elif bare_match and not _ends_with_a_reference_word(previous_line):
                         match = bare_match
+                        item_kind = "para"
             if match is not None:
                 # A run of numbering can restart lower than what is already
                 # seen two ways: a schedule with more than one Part (Act 4's
@@ -458,6 +492,7 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
             if match:
                 flush(page_number)
                 current_num = match.group(1)
+                current_item_kind = item_kind
                 current_page = page_number
                 title_candidate = previous_line.strip()
                 if _looks_like_title(title_candidate):
@@ -470,11 +505,14 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
     flush(pdf.page_count)
 
     # Last occurrence still wins, because the table of contents copy of a section
-    # is printed before the body copy. Keying on the division as well stops a
-    # schedule paragraph 1, printed after the body, from taking section 1 with it.
-    deduplicated: dict[tuple[str, str], dict[str, Any]] = {}
+    # is printed before the body copy. Keying on path rather than section_number
+    # (ADR 0018) stops a schedule paragraph 1, printed after the body, from taking
+    # section 1 with it - and, unlike the division heading text alone, also tells
+    # apart two schedules that print the identical bare "Schedule" heading with no
+    # ordinal word (Act 588-style), since path disambiguates by appearance order.
+    deduplicated: dict[tuple[str, str | None], dict[str, Any]] = {}
     for chunk in raw:
-        deduplicated[(chunk["division"], chunk["section_number"])] = chunk
+        deduplicated[(chunk["division"], chunk["path"])] = chunk
     return list(deduplicated.values())
 
 
@@ -712,9 +750,10 @@ def _chunk_quality(chunks: list[dict[str, Any]]) -> dict[str, Any]:
 
     Reads `_extract_chunks`'s real output — the opposite of `_extraction_accounting`,
     which never touches it — so a blob that is a document's *entire* chunk set shows
-    up here even though #89 correctly kept it. A chunk is a blob when its
-    section_number is "", the same key `_extract_chunks` gives a division's own
-    content from its heading onward.
+    up here even though #89 correctly kept it. Since #95, every non-body chunk
+    carries `section_number == ""` (a schedule item's number lives in `path`
+    instead), so a blob is a non-body chunk whose `path` has no item segment:
+    `None` (amendments) or `sched.<k>` with no `/para.`/`/art.` suffix.
     """
     blobs: list[dict[str, Any]] = []
     max_chars = 0
@@ -724,7 +763,8 @@ def _chunk_quality(chunks: list[dict[str, Any]]) -> dict[str, Any]:
         pages = chunk["page_end"] - chunk["page_start"] + 1
         max_chars = max(max_chars, chars)
         max_pages = max(max_pages, pages)
-        if chunk["section_number"] == "":
+        path = chunk.get("path")
+        if chunk["division"] != BODY_DIVISION and (path is None or "/" not in path):
             blobs.append({
                 "division": chunk["division"],
                 "page_start": chunk["page_start"],
@@ -743,30 +783,35 @@ def diff_chunk_sets(
 ) -> dict[str, Any]:
     """What changed between two extraction generations of one document.
 
-    Keyed by (division, section_number) — the same identity `_extract_chunks`'s own
-    last-wins dedup already uses — so a real renumbering reads as one `changed`
-    entry instead of an unrelated add/remove pair.
+    Keyed by (division, path) — the same identity `_extract_chunks`'s own
+    last-wins dedup already uses (ADR 0018) — so a real renumbering reads as one
+    `changed` entry instead of an unrelated add/remove pair.
     """
-    old_by_key = {(c["division"], c["section_number"]): c for c in old_chunks}
-    new_by_key = {(c["division"], c["section_number"]): c for c in new_chunks}
+    def sort_key(key: tuple[str, str | None]) -> tuple[str, str]:
+        # `path` is None for an amendments-division chunk; sorting mixed None/str
+        # raises TypeError, so it sorts as if it were the empty string instead.
+        return (key[0], key[1] or "")
+
+    old_by_key = {(c["division"], c["path"]): c for c in old_chunks}
+    new_by_key = {(c["division"], c["path"]): c for c in new_chunks}
     added_keys = set(new_by_key) - set(old_by_key)
     removed_keys = set(old_by_key) - set(new_by_key)
     changed: list[dict[str, Any]] = []
-    for key in sorted(set(old_by_key) & set(new_by_key)):
+    for key in sorted(set(old_by_key) & set(new_by_key), key=sort_key):
         old_chunk, new_chunk = old_by_key[key], new_by_key[key]
         if old_chunk["content_sha256"] == new_chunk["content_sha256"]:
             continue
         changed.append({
             "division": key[0],
-            "section_number": key[1],
+            "path": key[1],
             "old_chars": len(old_chunk["content"]),
             "new_chars": len(new_chunk["content"]),
             "old_pages": [old_chunk["page_start"], old_chunk["page_end"]],
             "new_pages": [new_chunk["page_start"], new_chunk["page_end"]],
         })
     return {
-        "added": [{"division": k[0], "section_number": k[1]} for k in sorted(added_keys)],
-        "removed": [{"division": k[0], "section_number": k[1]} for k in sorted(removed_keys)],
+        "added": [{"division": k[0], "path": k[1]} for k in sorted(added_keys, key=sort_key)],
+        "removed": [{"division": k[0], "path": k[1]} for k in sorted(removed_keys, key=sort_key)],
         "changed": changed,
         "unchanged_count": len(set(old_by_key) & set(new_by_key)) - len(changed),
     }

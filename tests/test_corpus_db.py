@@ -17,7 +17,7 @@ def _fixture():
         timeline_type="REPRINT", metadata_scraped_at="2026-01-01T00:00:00Z",
     )
     chunks = [{
-        "act_number": "1", "act_title": "ACT 1", "section_number": "1",
+        "act_number": "1", "act_title": "ACT 1", "section_number": "1", "path": "s.1",
         "content": "1. Fixture legal content", "content_sha256": content_hash("1. Fixture legal content"),
         "page_number": 1, "page_start": 1, "page_end": 1, "language": "en",
         "document_id": document.document_id, "extraction_id": "extraction-sha256-fixture",
@@ -101,3 +101,15 @@ def test_extraction_registration_rejects_immutable_metadata_drift():
 
     with pytest.raises(ValueError, match="immutable database metadata"):
         register_extraction(cursor, run)
+
+
+def test_ingest_writes_path_alongside_division_in_the_chunks_insert():
+    document, run, bundle = _fixture()
+    connection = _Connection()
+
+    with patch("corpus.db.psycopg2.extras.execute_values") as execute_values:
+        ingest_extraction(connection, document, run, bundle, [[0.1, 0.2]])
+
+    _cursor, sql, records = execute_values.call_args.args
+    assert "path" in sql
+    assert records[0][-1] == "s.1"
