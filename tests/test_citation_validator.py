@@ -147,6 +147,48 @@ class CitationValidatorTests(unittest.TestCase):
 
         self.assertIn("Citation references unknown Act 49/1965.", result["violations"])
 
+    def test_schedule_paragraph_citation_matches_its_own_path(self):
+        chunk = {
+            "act_number": "1", "act_title": "FIXTURE ACT", "section_number": "",
+            "path": "sched.1/para.1", "content": "1. Fixture schedule content.",
+        }
+        state = {
+            "retrieved_chunks": [chunk],
+            "citations": [{
+                "act_number": "1", "act_title": "FIXTURE ACT",
+                "section_number": "", "path": "sched.1/para.1",
+                "pdf_url": "", "page_number": 1,
+            }],
+            "draft_response": "Paragraph 1 of the First Schedule applies.",
+            "violations": [],
+        }
+
+        result = citation_validator_node(state)
+
+        self.assertEqual(result["violations"], [])
+
+    def test_schedule_paragraph_citation_does_not_match_a_sibling_paragraph(self):
+        # Both chunks share an empty section_number - only `path` tells them
+        # apart, which is the collision this issue exists to fix (ADR 0018).
+        chunk = {
+            "act_number": "1", "act_title": "FIXTURE ACT", "section_number": "",
+            "path": "sched.1/para.1", "content": "1. Fixture schedule content.",
+        }
+        state = {
+            "retrieved_chunks": [chunk],
+            "citations": [{
+                "act_number": "1", "act_title": "FIXTURE ACT",
+                "section_number": "", "path": "sched.1/para.2",
+                "pdf_url": "", "page_number": 1,
+            }],
+            "draft_response": "Paragraph 2 of the First Schedule applies.",
+            "violations": [],
+        }
+
+        result = citation_validator_node(state)
+
+        self.assertTrue(any("was not in retrieved sources" in v for v in result["violations"]))
+
     def test_supervisor_preserves_existing_citation_violations(self):
         state = {
             "draft_response": (

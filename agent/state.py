@@ -23,6 +23,7 @@ class Citation(TypedDict):
     section_number: str
     pdf_url: str
     page_number: int | None
+    path: NotRequired[str]
     receipt: NotRequired[CitationReceipt]
 
 

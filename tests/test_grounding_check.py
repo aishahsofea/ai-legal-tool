@@ -39,6 +39,34 @@ CITATION_90A_WITH_RECEIPT = {
     },
 }
 
+# A schedule item's section_number is "" (ADR 0018) - only `path` tells two
+# siblings apart.
+RETRIEVED_SCHED_PARA_1 = {
+    "act_number": "1",
+    "act_title": "FIXTURE ACT",
+    "section_number": "",
+    "path": "sched.1/para.1",
+    "content": "Fixture schedule paragraph content that a claim can quote.",
+    "page_number": 5,
+    "language": "en",
+    "document_id": "act-1-en-sha256-fixture",
+    "extraction_id": "extraction-sha256-fixture",
+}
+
+CITATION_SCHED_PARA_1 = {
+    "act_number": "1",
+    "act_title": "FIXTURE ACT",
+    "section_number": "",
+    "path": "sched.1/para.1",
+    "pdf_url": "",
+    "page_number": 5,
+    "receipt": {
+        "document_id": RETRIEVED_SCHED_PARA_1["document_id"],
+        "extraction_id": RETRIEVED_SCHED_PARA_1["extraction_id"],
+        "evidence": [],
+    },
+}
+
 
 class GroundingCheckTests(unittest.TestCase):
     def test_collects_only_cited_retrieved_sources(self):
@@ -68,6 +96,45 @@ class GroundingCheckTests(unittest.TestCase):
         self.assertEqual(len(sources), 1)
         self.assertEqual(sources[0]["act_number"], "56")
         self.assertEqual(sources[0]["section_number"], "90A")
+
+    def test_collects_cited_source_by_path_for_a_schedule_item(self):
+        sibling = {**RETRIEVED_SCHED_PARA_1, "path": "sched.1/para.2", "content": "A different paragraph."}
+        state = {
+            "retrieved_chunks": [RETRIEVED_SCHED_PARA_1, sibling],
+            "citations": [CITATION_SCHED_PARA_1],
+        }
+
+        sources = _collect_cited_sources(state)
+
+        self.assertEqual(len(sources), 1)
+        self.assertEqual(sources[0]["path"], "sched.1/para.1")
+        self.assertEqual(sources[0]["content"], RETRIEVED_SCHED_PARA_1["content"])
+
+    def test_schedule_paragraph_claim_becomes_evidence_on_its_own_chunk(self):
+        state = {
+            "draft_response": "Fixture schedule paragraph content that a claim can quote.",
+            "retrieved_chunks": [RETRIEVED_SCHED_PARA_1],
+            "citations": [CITATION_SCHED_PARA_1],
+            "violations": [],
+        }
+        verdict = _GroundingOutput(claims=[_GroundingClaim(
+            claim="Fixture schedule paragraph content that a claim can quote.",
+            # The judge has no separate path field either - it echoes back
+            # whatever `_collect_cited_sources` showed it in place of the
+            # (empty) section_number, same as the synthesiser's LLM does.
+            cited_act_number="1",
+            cited_section_number="sched.1/para.1",
+            support="supported",
+            reason="Direct support.",
+            quote="Fixture schedule paragraph content that a claim can quote",
+        )])
+
+        result = _finalise(verdict, state, [])
+
+        self.assertEqual(result["citations"][0]["receipt"]["evidence"], [{
+            "claim": "Fixture schedule paragraph content that a claim can quote.",
+            "quote": "Fixture schedule paragraph content that a claim can quote",
+        }])
 
     def test_supported_claims_pass(self):
         state = {

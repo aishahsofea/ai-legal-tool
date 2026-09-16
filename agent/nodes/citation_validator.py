@@ -29,11 +29,15 @@ def citation_validator_node(state: AgentState) -> dict:
     citations = state.get("citations", [])
 
     retrieved_keys = {
-        canonicalize_citation_key(chunk.get("act_number"), chunk.get("section_number"))
+        canonicalize_citation_key(
+            chunk.get("act_number"), chunk.get("section_number"), chunk.get("path")
+        )
         for chunk in retrieved_chunks
     }
     structured_keys = {
-        canonicalize_citation_key(citation.get("act_number"), citation.get("section_number"))
+        canonicalize_citation_key(
+            citation.get("act_number"), citation.get("section_number"), citation.get("path")
+        )
         for citation in citations
     }
     structured_keys.discard(("", ""))
