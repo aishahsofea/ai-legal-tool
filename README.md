@@ -25,6 +25,7 @@ Provider-agnostic: `agent/llm_factory.py` for chat models, `agent/embeddings.py`
 Full setup — env vars, database, frontend, evals — lives in [CONTRIBUTING.md](CONTRIBUTING.md). The short version:
 
 ```bash
+cp .env.example .env                         # then fill in its first three values
 pip3 install -r requirements.txt
 python run.py --step all                     # build the knowledge base (~1h, one-time, resumable)
 python3 -m corpus rollout --dry-run           # preview receipt migration/ingestion/activation

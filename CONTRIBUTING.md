@@ -29,26 +29,15 @@ pip3 install -r requirements.txt
 
 ### 2. Environment variables
 
-Create `.env` in the project root:
+Copy the template, then fill in its first three values: `DATABASE_URL`, `OPENAI_API_KEY`, and `ANTHROPIC_API_KEY`.
 
-```env
-DATABASE_URL=postgresql://user@/dbname?host=/path/to/pg/socket
-EVALS_DATABASE_URL=postgresql://user@/ai_legal_tool_evals?host=/path/to/pg/socket
-OPENAI_API_KEY=sk-...
-ANTHROPIC_API_KEY=...
-LANGSMITH_TRACING=true
-LANGSMITH_API_KEY=lsv2_...
-LANGSMITH_PROJECT=ai-legal-tool
-CORPUS_RETRIEVAL_MODE=dual
-CORPUS_MANIFEST_PATH=data/pdfs/manifest.json
-CORPUS_LOCAL_ROOT=data/pdfs
-CORPUS_SIDECAR_ROOT=data/corpus/sidecars
-RECEIPT_DELIVERY_MODE=auto
-REFERENCE_GRAPH_ENABLED=off
-REFERENCE_GRAPH_COMPARISON_ENABLED=off
-FOLLOW_REFERENCES_ENABLED=off
-# CORPUS_CDN_BASE_URL=https://statutes.example.com
+```bash
+cp .env.example .env
 ```
+
+All other lines are optional and commented out. Each group's comment names the section that explains it. To set a value, uncomment its line. Never leave a value blank: python-dotenv loads `NAME=` as an empty string, so the code gets `""` instead of its default. A blank `MAX_HISTORY_TOKENS=` stops the API from starting.
+
+When the code starts reading a new variable, add it to `.env.example`. `tests/test_env_example.py` fails until you do. A variable that only an SDK reads also goes in that test's `_READ_BY_SDKS`.
 
 With `LANGSMITH_TRACING=true`, every graph run traces to LangSmith. The query lifecycle also tags each run — `run_name=legal_query`, `source:api`/`source:eval`, active feature flags — attaches `user_id`/`thread_id` metadata, and posts the turn's quality signals as run **feedback** (`agent/observability.py`): `passed`, `num_violations`, `num_evidence_violations`, `retry_count`, `num_citations`, `fallback_delivered`, `escalated`, a categorical `query_type`. Feedback also includes numeric reference-follow counters — calls, skips/disabled/unavailable, edges considered/returned, target lookup outcomes, boundaries, fail-open occurrences — never provision text, evidence phrases, or query content. Fail-open, off the hot path: it never alters or delays a response. Leave `LANGSMITH_TRACING` unset to disable tracing and feedback entirely.
 
@@ -69,16 +58,16 @@ Optional flags. The `=on` toggles are off by default and accept `1`, `true`, `ye
   - `local` uses local bytes only and fails closed rather than reaching for the CDN.
   - `redirect` and `proxy` skip local bytes. Both need `CORPUS_CDN_BASE_URL`.
   - An unrecognised value falls back to `auto`.
+- `RECEIPT_EVIDENCE_MAX_CHARS` — the longest quote, in characters, that the grounding check keeps as an **Evidence Span**. A longer quote is left off the receipt but does not fail the check. Default 500, which is also the maximum: values outside 1-500 are clamped. A value that isn't a number logs a warning and uses 500.
 - `REFERENCE_GRAPH_ENABLED=on` — exposes a **promoted**, independently validated statutory reference graph. Off by default. Turning it on builds, promotes, and loads nothing — the `reference_graph.cli` commands below do that.
 - `REFERENCE_GRAPH_COMPARISON_ENABLED=on` — adds snapshot selection and one-hop comparison. Needs `REFERENCE_GRAPH_ENABLED=on` too. Independently off by default, fails closed without disabling Phase 1.
 - `FOLLOW_REFERENCES_ENABLED=on` — adds `follow_references` to the **Retrieval Agent** only, so `AGENTIC_RETRIEVAL` must be on too. Independently off by default. Does not need `REFERENCE_GRAPH_ENABLED`: that flag governs public UI/API exposure, while internal retrieval reads the promoted artifacts through `ReferenceGraphStore`. Flag off → model sees only `search_statutes` / `lookup_section`, original prompt.
 - `REFERENCE_GRAPH_ROOT` — read-only root of promoted artifacts, default `data/reference_graph`. Both the public graph flags and `follow_references` read it. Point it at an operator deployment's artifact root.
 
-Create `frontend/.env.local`:
+The frontend has its own template:
 
-```env
-NEXT_PUBLIC_API_URL=http://localhost:8000
-NEXT_PUBLIC_EVALS=1
+```bash
+cp frontend/.env.example frontend/.env.local
 ```
 
 ### 3. Database schema
@@ -265,7 +254,7 @@ python3 -m corpus validate --cdn-base-url https://statutes.example.com \
 
 `diff-extractions` compares two `shadow-extract` runs chunk by chunk, per document, keyed by `(division, section_number)`: which sections were added, removed, or changed content. Point `--old-manifest`/`--old-extraction-root` at a manifest and extraction directory saved before an extractor change. It reads the current ones as `--new-*` by default. This is how to check what a `SECTION_PATTERN` or `DIVISION_PATTERN` edit actually changed, before trusting it corpus-wide.
 
-The CLI loads the repository `.env` — no need to manually export `DATABASE_URL`. Preview `rollout` before its first run against a database; live execution performs embedding calls and changes active retrieval mappings. Live upload uses optional `boto3`, not an application dependency. `upload --scope active` uploads the documents an [Active Corpus Mapping](CONTEXT.md#language) points at, plus their ready sidecars; `--scope full`, the default, uploads every registered document and every ready sidecar. A run fails whole if any one object in its scope fails `validate`, so push `active` first: it is the only set the deployed app can request, and it does not block on registered documents whose bytes are absent. Move to `full` once every registered document has local bytes. Configure R2 bucket retention/object-lock policy and custom-domain CORS outside this repository: allow `GET`, `HEAD`, `OPTIONS`; allow request headers `Range`, `If-None-Match`; expose `ETag`, `Accept-Ranges`, `Content-Range`, `Content-Length`.
+The CLI loads the repository `.env` — no need to manually export `DATABASE_URL`. Preview `rollout` before its first run against a database; live execution performs embedding calls and changes active retrieval mappings. Live upload uses optional `boto3`, not an application dependency. `CORPUS_S3_ENDPOINT_URL` sets the default for `upload --endpoint-url`. `upload --scope active` uploads the documents an [Active Corpus Mapping](CONTEXT.md#language) points at, plus their ready sidecars; `--scope full`, the default, uploads every registered document and every ready sidecar. A run fails whole if any one object in its scope fails `validate`, so push `active` first: it is the only set the deployed app can request, and it does not block on registered documents whose bytes are absent. Move to `full` once every registered document has local bytes. Configure R2 bucket retention/object-lock policy and custom-domain CORS outside this repository: allow `GET`, `HEAD`, `OPTIONS`; allow request headers `Range`, `If-None-Match`; expose `ETag`, `Accept-Ranges`, `Content-Range`, `Content-Length`.
 
 The API logs one `receipt_coverage` line at boot:
 
@@ -412,7 +401,7 @@ It checks whether `contextualize` can still resolve an elliptical follow-up afte
 
 ### Model overrides
 
-Each of the router, contextualize, conversational, synthesiser, and grounding-check nodes — plus the agentic retriever and the background Semantic Memory extractor — has its own env var controlling which model it uses. All resolve through the provider-agnostic factory in `agent/llm_factory.py`: `claude-*` → Anthropic, `gemini-*` → Google, anything else (including the `gpt-*` default) → OpenAI. Contextualize, conversational, and the memory extractor default to a cheaper mini-class model — rewriting a query, replying to small talk, and extracting durable facts are lighter tasks than classification or synthesis. The grounding check defaults to a Claude model, since it acts as an independent judge of whether the synthesiser's claims are supported by the cited sources. The conversational node is the one that runs hot (`temperature=0.7`), so repeated greetings vary in wording; every other node runs at the factory default `temperature=0` for reproducible output. The factory's `system_content` helper also formats system messages per provider, so any node pointed at a `claude-*` model gets Anthropic prompt caching on its system prompt without each node repeating that logic.
+Each of the router, contextualize, conversational, synthesiser, and grounding-check nodes — plus the agentic retriever and the background Semantic Memory extractor — has its own env var controlling which model it uses. All resolve through the provider-agnostic factory in `agent/llm_factory.py`: `claude-*` → Anthropic, `gemini-*` → Google, anything else (including the `gpt-*` default) → OpenAI. `claude-*` models authenticate with `ANTHROPIC_API_KEY`, `gemini-*` models with `GOOGLE_API_KEY`, and the rest with `OPENAI_API_KEY` unless `CHAT_API_KEY` is set ([below](#pointing-the-chat-models-at-another-provider)). Contextualize, conversational, and the memory extractor default to a cheaper mini-class model — rewriting a query, replying to small talk, and extracting durable facts are lighter tasks than classification or synthesis. The grounding check defaults to a Claude model, since it acts as an independent judge of whether the synthesiser's claims are supported by the cited sources. The conversational node is the one that runs hot (`temperature=0.7`), so repeated greetings vary in wording; every other node runs at the factory default `temperature=0` for reproducible output. The factory's `system_content` helper also formats system messages per provider, so any node pointed at a `claude-*` model gets Anthropic prompt caching on its system prompt without each node repeating that logic.
 
 | Env var | Node | Default |
 |---|---|---|
