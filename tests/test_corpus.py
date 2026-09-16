@@ -9,11 +9,13 @@ from citation_receipts.locator import locate_evidence
 from corpus.extraction import (
     EXTRACTOR,
     EXTRACTOR_VERSION,
+    SCANNED_THRESHOLD,
     _DIVISION_RE,
     _ENACTING_FORMULA_RE,
     _chunk_quality,
     _extraction_accounting,
     _is_heading_case,
+    _is_scanned,
     _page_span_bucket,
     chunk_looks_like_table_of_contents,
     diff_chunk_sets,
@@ -155,6 +157,30 @@ def test_registry_supports_versions_languages_aliases_and_history(tmp_path: Path
     paths[1].write_bytes(paths[1].read_bytes() + b"corrupt")
     with pytest.raises(CorpusDocumentIntegrityError):
         registry.validate(registry.get(documents[1]["document_id"]))
+
+
+def test_manifest_and_extraction_share_one_scanned_check():
+    from corpus.manifest import _is_scanned as manifest_is_scanned
+
+    assert manifest_is_scanned is _is_scanned
+
+
+def test_is_scanned_at_the_threshold_boundary(tmp_path: Path):
+    # Single-page fixtures with an exact, empirically-verified character count
+    # (10 lines of 9 chars + 9 lines of 10 chars, each insert_text call
+    # contributing width+1 for its trailing newline): one lands exactly on
+    # SCANNED_THRESHOLD, the other one character under it.
+    at_threshold = tmp_path / "at-threshold.pdf"
+    _pdf(at_threshold, ["x" * 9] * 10)
+    below_threshold = tmp_path / "below-threshold.pdf"
+    _pdf(below_threshold, ["x" * 10] * 9)
+
+    with fitz.open(at_threshold) as pdf:
+        assert sum(len(page.get_text()) for page in pdf) == SCANNED_THRESHOLD
+        assert _is_scanned(pdf) is False
+    with fitz.open(below_threshold) as pdf:
+        assert sum(len(page.get_text()) for page in pdf) == SCANNED_THRESHOLD - 1
+        assert _is_scanned(pdf) is True
 
 
 def test_exact_extraction_sidecar_locator_and_scanned_failure(tmp_path: Path):

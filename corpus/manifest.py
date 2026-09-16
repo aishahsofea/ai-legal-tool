@@ -12,11 +12,10 @@ from urllib.parse import parse_qs, urlparse
 
 import fitz
 
+from corpus.extraction import _is_scanned
 from corpus.identity import asset_key, document_id, sha256_file
 from corpus.models import ActiveDocument, CorpusDocument, ExtractionRun
 from scraper.act_paths import act_number_from_stem, metadata_path
-
-SCANNED_THRESHOLD = 100
 
 
 def _json(path: Path, default: Any = None) -> Any:
@@ -107,8 +106,7 @@ def _pdf_facts(path: Path) -> tuple[str, int, int, bool]:
     byte_size = path.stat().st_size
     with fitz.open(path) as pdf:
         page_count = pdf.page_count
-        characters = sum(len(page.get_text()) for page in pdf)
-    scanned = characters / max(page_count, 1) < SCANNED_THRESHOLD
+        scanned = _is_scanned(pdf)
     return digest, byte_size, page_count, scanned
 
 
