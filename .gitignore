@@ -53,6 +53,7 @@ venv/
 # Environment variables
 .env
 .env.*
+!.env.example
 
 # MCP config (contains API keys)
 .mcp.json
