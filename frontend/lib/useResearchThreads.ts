@@ -25,7 +25,9 @@ function deriveThreadTitle(query: string) {
 }
 
 function citationKey(citation: Citation) {
-  return `${citation.act_number}:${citation.section_number}`;
+  // A schedule citation's section_number is empty (#95) - path is what tells
+  // two sibling schedule items in the same Act apart.
+  return `${citation.act_number}:${citation.section_number}:${citation.path ?? ""}`;
 }
 
 function mergeCitations(existing: Citation[], incoming: Citation[]) {
@@ -44,7 +46,7 @@ function mergeCitations(existing: Citation[], incoming: Citation[]) {
 }
 
 function countUniqueSources(citations: Citation[]) {
-  return new Set(citations.map((citation) => `${citation.act_number}:${citation.section_number}`)).size;
+  return new Set(citations.map(citationKey)).size;
 }
 
 function summarizeSources(citations: Citation[]) {

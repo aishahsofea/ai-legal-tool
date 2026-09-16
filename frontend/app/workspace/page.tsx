@@ -217,7 +217,7 @@ function WorkspaceInner() {
               onDraggingChange={setIsResizingReceipt}
             />
             <CitationReceiptViewer
-              key={`${receiptSelection.citation.receipt?.document_id}:${receiptSelection.citation.section_number}:${receiptSelection.evidenceIndex}`}
+              key={`${receiptSelection.citation.receipt?.document_id}:${receiptSelection.citation.section_number}:${receiptSelection.citation.path ?? ""}:${receiptSelection.evidenceIndex}`}
               citation={receiptSelection.citation}
               initialEvidenceIndex={receiptSelection.evidenceIndex}
               modal={!isDesktopReceiptPane}

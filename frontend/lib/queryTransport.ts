@@ -22,6 +22,7 @@ export interface Citation {
   section_number: string;
   pdf_url: string;
   page_number: number | null;
+  path?: string;
   receipt?: CitationReceipt;
 }
 

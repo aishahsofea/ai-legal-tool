@@ -391,6 +391,8 @@ A question with more than one limb — "which provisions apply, and what remedie
 "min_sections_found": 2
 ```
 
+A provision inside a schedule has no section number of its own (`#95`) — give its entry a `path` instead of `section_number`, e.g. `"path": "sched.2/para.1"`. The scalar case shape takes the same field as `expected_path`, alongside `expected_act_number`. No case does this yet: the fixtures under `data/chunks/en/` only carry body sections, so this is exercised by unit tests, not a live case, until a schedule-bearing fixture exists.
+
 The `section_recall` assertion fails when fewer than `min_sections_found` of those provisions appear in the structured citations, and names the ones that are missing. Set `min_sections_found` below the full list when some entries are defensible alternatives rather than required answers.
 
 Recall is recorded on every such case, pass or fail: each case result carries `section_recall` (matched, expected, fraction, missing sections) and the run summary carries `section_recall_mean`. Read the fraction when deciding whether retrieval needs to decompose a question — the pass bit alone cannot tell you whether the agent found three of four provisions or one of four.
