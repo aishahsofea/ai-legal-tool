@@ -12,7 +12,7 @@ Provider-agnostic: `agent/llm_factory.py` for chat models, `agent/embeddings.py`
 
 ## Highlights
 
-- Every response cites Act + section + PDF page. A verified chunk opens an in-app **Citation Receipt**; otherwise the citation falls back to the Official Source Link.
+- Every response cites Act + section + PDF page — a schedule provision cites its path instead (e.g. `sched.2/para.1`, see [CONTEXT.md](CONTEXT.md#language)). A verified chunk opens an in-app **Citation Receipt**; otherwise the citation falls back to the Official Source Link.
 - Bilingual: English, Bahasa Malaysia, and code-switched queries, retrieving EN and BM chunks together.
 - A supervisor blocks legal-advice phrasing, requires a disclaimer, and escalates client-specific questions to a human — before retrieval even starts.
 - Agentic retrieval (optional): a ReAct agent picks semantic search or exact-section lookup, and re-searches on weak hits. Falls back to a deterministic pgvector path — never retrieves less than that path would.
@@ -94,7 +94,7 @@ data: {"type": "response",  "content": "...", "citations": [...], "violations": 
 data: {"type": "done"}
 ```
 
-- **`response`** carries `content`, `violations`, and `citations` — each with `act_number`, `act_title`, `section_number`, `pdf_url` (the official AGC fallback), and `page_number`. A provenance-backed citation also has `receipt: { document_id, extraction_id, evidence: [{ claim, quote }] }`; legacy/unavailable rows omit it.
+- **`response`** carries `content`, `violations`, and `citations`. Each citation has `act_number`, `act_title`, `section_number`, `pdf_url` (the official AGC fallback), and `page_number` — a schedule provision has `path` instead of `section_number` (e.g. `sched.2/para.1`, see [CONTEXT.md](CONTEXT.md#language)). A provenance-backed citation also has `receipt: { document_id, extraction_id, evidence: [{ claim, quote }] }`; legacy/unavailable rows omit it.
 - **`tool_call`** (`name`, `summary`) fires only on the agentic-retrieval path, once per retrieval tool call; the frontend renders these in the collapsible PROCESS panel.
 - **`node`** (`name`, `model`, `duration_ms`) fires once per model call, in execution order. A retry emits a second synthesiser row, and a node that short-circuits before its model emits none. The PROCESS panel lists them under MODELS, so a run split across providers says which model answered where. Never carries prompt text, user content, or token counts.
 - **`status`** tracks the phase and reflects short-circuits: `"Resolving follow-up..."`, `"Refining response..."` (a retry), `"Escalating to human lawyer..."`, or `"Responding..."` (conversational).
@@ -114,7 +114,7 @@ The answer merges with the original query into one self-contained query, so retr
 
 ### Citation Receipt API
 
-`data/pdfs/manifest.json` is a deterministic, corpus-wide registry of every PDF's identity, version, and language. The current audit: 596 canonical reprints registered, 601 documents total, 48 excluded (amendment-only, zero-chunk, or scanned). Full numbers and the rollout command live in [docs/corpus-receipts.md](docs/corpus-receipts.md); how to run it locally is in [CONTRIBUTING.md](CONTRIBUTING.md#4-build-the-knowledge-base-one-time-1-hour).
+`data/pdfs/manifest.json` is a deterministic, corpus-wide registry of every PDF's identity, version, and language. The checked-in audit lists registered, ready, and blocked counts, with blocked reasons; it lives in [docs/corpus-receipts.md](docs/corpus-receipts.md). How to run it locally is in [CONTRIBUTING.md](CONTRIBUTING.md#4-build-the-knowledge-base-one-time-1-hour).
 
 - `GET|HEAD /receipts/{document_id}/pdf`, `POST /receipts/{document_id}/locate`, `POST /receipts/telemetry` — see [CONTRIBUTING.md](CONTRIBUTING.md#5-start-the-api) for the full signatures.
 
@@ -125,6 +125,8 @@ The viewer renders one page at a time and always keeps the "Check latest on AGC"
 A deterministic index of cross-references inside Employment Act 1955 receipts, in three phases: **Phase 1** live now (audited alias `act-265-reprint-2023-6fec2f07`, Feb 2023), **Phase 2** compares two independently audited snapshots, **Phase 3** (optional) lets the Retrieval Agent follow one published reference when a question explicitly asks about it. Timeline dates label observed snapshots, not exact legal effective dates.
 
 Flags: `REFERENCE_GRAPH_ENABLED` (base graph), `REFERENCE_GRAPH_COMPARISON_ENABLED` (snapshot comparison, needs the base flag too), `FOLLOW_REFERENCES_ENABLED` (binds the agent's `follow_references` tool, needs `AGENTIC_RETRIEVAL=1` too). All default off, all fail open. Full flag semantics, the follow operation's exact constraints (five-edge cap, one hop, deterministic ordering), and the audited-snapshot table are in [CONTRIBUTING.md](CONTRIBUTING.md#statutory-reference-graph-operator-workflow) and [CONTEXT.md](CONTEXT.md).
+
+- `GET /reference-graph/status`, `GET /reference-graph/neighborhood`, `GET /reference-graph/snapshots`, `GET /reference-graph/compare` — flag-gated statutory cross-reference lookups; see [CONTRIBUTING.md](CONTRIBUTING.md#5-start-the-api) for the full query-parameter signatures.
 
 The graph only identifies targets — it never supplies answer text or a citation itself. Same-Act text always comes from the anchor's own extraction; nothing here changes what gets cited.
 
@@ -192,6 +194,8 @@ ai-legal-tool/
 │   └── evals.py        # eval coverage, isolated subprocess SSE, cancellation, saved results
 ├── corpus/             # identities, manifest/audit, extraction, storage, DB lifecycle + CLI
 ├── citation_receipts/  # delivery/locator compatibility façade + telemetry
+├── reference_graph/    # statutory cross-reference graph: build, audit, promote, load (CLI)
+├── schemas/            # JSON schemas backing the reference-graph audit/promote steps
 ├── scraper/            # pipeline steps 1–4 (index, detail, PDFs, extract) + parsers
 ├── ingestion/          # step 5: embed + ingest into pgvector
 ├── evals/              # dataset, coverage logic, L1/L2 checks, runner, eval DB setup, debug tools
