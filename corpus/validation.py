@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from corpus.extraction import EXTRACTOR_VERSION
 from corpus.identity import asset_key
 from corpus.registry import CorpusDocumentIntegrityError, CorpusManifestError, CorpusRegistry
 from corpus.storage import CdnCorpusStorage
@@ -34,6 +35,7 @@ def validate_manifest(
             "extraction_count": 0,
             "active_count": 0,
             "errors": [{"code": "manifest_invalid", "detail": str(exc)}],
+            "warnings": [],
         }
 
     documents = list(registry.documents.values())
@@ -90,6 +92,28 @@ def validate_manifest(
                     "detail": str(exc),
                 })
 
+    warnings: list[dict[str, str]] = []
+    active_versions = {
+        registry.extraction_runs[mapping.extraction_id].extractor_version
+        for mapping in registry.active_documents.values()
+        if mapping.extraction_id in registry.extraction_runs
+    }
+    if active_versions and EXTRACTOR_VERSION not in active_versions:
+        # #89: EXTRACTOR_VERSION drifted from what's active for five version bumps
+        # (2.1.0 through 2.5.0) before anyone noticed, because nothing surfaced the
+        # gap short of manually running extract_manifest and diffing by hand. A
+        # non-fatal warning here means every `corpus validate` run says so instead.
+        warnings.append({
+            "code": "extractor_version_drift",
+            "detail": (
+                f"corpus/extraction.py computes EXTRACTOR_VERSION={EXTRACTOR_VERSION!r}, but the "
+                f"manifest's active extraction runs use {sorted(active_versions)!r}. The database "
+                "is serving an older extractor than main. Expected mid-rollout (shadow-extract "
+                "ahead of activation) -- but the gap should be a decision someone keeps revisiting, "
+                "not a fact nobody notices. See issue #89."
+            ),
+        })
+
     return {
         "valid": not errors,
         "scope": scope,
@@ -100,4 +124,5 @@ def validate_manifest(
         "extraction_count": len(registry.extraction_runs),
         "active_count": len(registry.active_documents),
         "errors": errors,
+        "warnings": warnings,
     }
