@@ -24,8 +24,25 @@ from corpus.registry import CorpusRegistry
 from corpus.sidecars import SIDECAR_FORMAT, write_sidecar
 
 EXTRACTOR = "malaysian-act-sections-pymupdf"
-EXTRACTOR_VERSION = "2.3.0"
+EXTRACTOR_VERSION = "2.4.0"
 SECTION_PATTERN = r"^(\d{1,3}[A-Z]{0,2})\.\s+\S"
+# A number AGC prints alone on its own line: its title on the line above, its
+# text starting on the line after (#72's cohort - 22 documents whose
+# SECTION_PATTERN never matches because nothing follows the dot on that
+# line). Also a schedule's own paragraph marker printed the same way - Act
+# 4's Fifth Schedule numbers its rows "4." / "Barium" / ... - which is why
+# this is shared rather than named for the body alone.
+BARE_ITEM_PATTERN = r"^(\d{1,3}[A-Z]{0,2})\.$"
+# An incorporated instrument's own numbering, reprinted as a schedule rather
+# than translated into Malaysian section numbers - Act 512's Geneva
+# Conventions number "ARTICLE 1", not "1.". Case-sensitive on purpose: Act
+# 512 also cross-references its own articles in running prose ("as defined
+# in Article 13"), and AGC's line wrap occasionally splits that reference
+# onto its own line ("...in Article" / "13."). Measured over the whole
+# document, real headings are uppercase 429 times and a wrapped
+# lowercase-initial reference 3 times - the literal case AGC prints is what
+# tells them apart.
+SCHEDULE_ARTICLE_PATTERN = r"^ARTICLE\s+(\d{1,3}[A-Z]{0,2})\.?$"
 # Headings that end one run of numbering and start another: the schedules at the
 # back of an Act restart at 1, and so do the entries in its list of amendments.
 # Anchored at both ends so a body line that merely mentions a schedule is not a
@@ -37,6 +54,11 @@ DIVISION_PATTERN = (
     r"|LISTS?\s{1,4}OF\s{1,4}AMENDMENTS"
     r"|SENARAI\s{1,4}PINDAAN)$"
 )
+# The subset of DIVISION_PATTERN that names a division whose own content is
+# never an item (#94's scope: "nothing in it is an item"). Narrows, never
+# widens, which heading counts as a division boundary - that decision stays
+# DIVISION_PATTERN's alone.
+AMENDMENTS_DIVISION_PATTERN = r"^(?:LISTS?\s{1,4}OF\s{1,4}AMENDMENTS|SENARAI\s{1,4}PINDAAN)$"
 # A heading is centred and a sentence is not, which is what separates
 # "FIRST SCHEDULE" from "as specified in the First Schedule." Measured on Act 777:
 # the headings sit within 0.005 of the page width of centre, the running prose at
@@ -128,13 +150,19 @@ ENACTING_FORMULA_MIN_PAGE_FLOOR = 30
 SCANNED_THRESHOLD = 100
 MIN_CONTENT_CHARS = 80
 _SECTION_RE = re.compile(SECTION_PATTERN)
+_BARE_ITEM_RE = re.compile(BARE_ITEM_PATTERN)
+_SCHEDULE_ARTICLE_RE = re.compile(SCHEDULE_ARTICLE_PATTERN)
 _DIVISION_RE = re.compile(DIVISION_PATTERN)
+_AMENDMENTS_DIVISION_RE = re.compile(AMENDMENTS_DIVISION_PATTERN)
 _ENACTING_FORMULA_RE = {
     language: re.compile(pattern) for language, pattern in ENACTING_FORMULA_PATTERNS.items()
 }
 EXTRACTOR_CONFIG = {
     "section_pattern": SECTION_PATTERN,
+    "bare_item_pattern": BARE_ITEM_PATTERN,
+    "schedule_article_pattern": SCHEDULE_ARTICLE_PATTERN,
     "division_pattern": DIVISION_PATTERN,
+    "amendments_division_pattern": AMENDMENTS_DIVISION_PATTERN,
     "division_centre_tolerance": DIVISION_CENTRE_TOLERANCE,
     "division_heading_max_chars": DIVISION_HEADING_MAX_CHARS,
     "division_heading_case": DIVISION_HEADING_CASE,
@@ -149,6 +177,8 @@ EXTRACTOR_CONFIG = {
     "deduplication": "last-section-number-wins-within-division",
     "page_numbering": "physical-1-based",
     "division_content": "kept-as-its-own-chunk-even-without-a-numbered-paragraph",
+    "body_bare_item": "numbered-line-alone-kept-only-when-the-line-above-reads-as-a-title",
+    "schedule_item_numbering": "inline-dot-or-bare-numbered-line-or-article-n-never-in-amendments",
 }
 CONFIGURATION_HASH = sha256_json(EXTRACTOR_CONFIG)
 
@@ -160,6 +190,41 @@ def _is_scanned(pdf: fitz.Document) -> bool:
 def _is_heading_case(text: str) -> bool:
     words = text.split()
     return bool(words) and all(word[0].isupper() or word[0].isdigit() for word in words)
+
+
+def _looks_like_title(text: str) -> bool:
+    """A short, unnumbered line - what a section's own title looks like
+    printed above its heading, whether that heading is inline or, per #72,
+    alone on the line below."""
+    return bool(text) and len(text) < 120 and not text[0].isdigit() and not text.startswith("(")
+
+
+_REFERENCE_TAIL_WORDS = {
+    "article", "articles", "paragraph", "paragraphs", "section", "sections",
+    "clause", "clauses", "part", "parts", "item", "items", "regulation",
+    "regulations", "subparagraph", "subparagraphs",
+}
+
+
+def _token_sort_key(token: str) -> tuple[int, str]:
+    """A section token ordered by its numeric prefix first, its letter suffix
+    second - "16A" sorts after "16" and before "17", matching how AGC
+    actually inserts a lettered section between two numbered ones."""
+    for index, character in enumerate(token):
+        if not character.isdigit():
+            return (int(token[:index]), token[index:])
+    return (int(token), "")
+
+
+def _ends_with_a_reference_word(text: str) -> bool:
+    """True when `text` ends in a word like "Article" or "paragraph" - the
+    shape a cross-reference takes once AGC's line wrap splits "in Article
+    1." into "...in Article" / "1." (Act 148's Montreal Protocol schedule).
+    A schedule has no title line to gate a bare item number the way the body
+    does (#72), so this is its guard instead: a real paragraph marker never
+    has a bare reference noun immediately above it."""
+    words = text.split()
+    return bool(words) and words[-1].strip(".,;:").lower() in _REFERENCE_TAIL_WORDS
 
 
 def _division_headings(page: fitz.Page) -> set[str]:
@@ -276,6 +341,8 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
     current_lines: list[str] = []
     enacting_start = _enacting_formula_start(pdf, document.language)
     current_division = FRONT_MATTER_DIVISION if enacting_start is not None else BODY_DIVISION
+    current_division_is_amendments = False
+    current_division_max_token: tuple[int, str] | None = None
     previous_line = ""
 
     def flush(page_end: int) -> None:
@@ -317,6 +384,8 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
             if stripped in headings:
                 flush(page_number)
                 current_division = stripped
+                current_division_is_amendments = bool(_AMENDMENTS_DIVISION_RE.match(stripped.upper()))
+                current_division_max_token = None
                 # A schedule's own text rarely restarts at "1." on the first line
                 # under its heading (Act 512's Second Schedule is a reprinted
                 # Geneva Convention numbered "ARTICLE 1"), so this can't wait for
@@ -331,17 +400,67 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
                 previous_line = stripped
                 continue
             match = _SECTION_RE.match(stripped)
+            match_is_inline = match is not None
+            if match is None and not current_division_is_amendments:
+                bare_match = _BARE_ITEM_RE.match(stripped)
+                if current_division == BODY_DIVISION:
+                    # Only once front matter has a confirmed end (#93): without
+                    # that boundary, a real table of contents reads as body
+                    # text, number-then-title, and every row of it would
+                    # otherwise pass this gate the same way a real split
+                    # heading does (Act 595's "ARRANGEMENT OF SECTIONS" has no
+                    # detectable enacting formula and measured exactly this).
+                    if enacting_start is not None and bare_match and _looks_like_title(previous_line):
+                        match = bare_match
+                else:
+                    match = _SCHEDULE_ARTICLE_RE.match(stripped)
+                    if match is None and bare_match and not _ends_with_a_reference_word(previous_line):
+                        match = bare_match
+            if match is not None:
+                # A run of numbering can restart lower than what is already
+                # seen two ways: a schedule with more than one Part (Act 4's
+                # Fifth Schedule: Part I ends at 16, Part II starts back at
+                # 1), or a division-boundary miss that leaves a reprinted
+                # instrument's own subsection numbers ("(1)...(2)...", once
+                # per article) reading as if they were fresh body sections
+                # (Act 595 (bm): its Second Schedule heading is pruned by
+                # `_division_boundaries` for being longer than the body it
+                # follows, so every one of the Vienna Convention's 79
+                # articles restarts "1" as if it were still body content).
+                # Either way, colliding with the lower number's earlier,
+                # legitimate occurrence would silently lose it to last-wins
+                # dedup - measured at -30,475 characters on Act 4 (en) alone,
+                # -51,014 on Act 595 (bm)'s misclassified body.
+                #
+                # `SECTION_PATTERN`'s inline match is exempt and always wins:
+                # it is the established, pre-#94 signal, so it resets the
+                # watermark unconditionally rather than being compared
+                # against it. That is what lets a document whose real body
+                # starts after a run of unrelated high numbers self-correct -
+                # Act 318 (bm) has no detectable enacting formula either, so
+                # its real table of contents matches inline exactly like a
+                # real section ("56. Kuasa mahkamah...") long before the real
+                # body begins at "1. Akta ini bolehlah...". Only the two
+                # patterns #94 adds - a bare line, or `ARTICLE n` - are
+                # compared against the watermark and rejected below it,
+                # folding their content into whatever chunk is already open
+                # instead of overwriting real content through the dedup that
+                # follows. The same reasoning `_division_boundaries` uses to
+                # drop an out-of-place heading run: the safe direction to be
+                # wrong in.
+                token_key = _token_sort_key(match.group(1))
+                if match_is_inline:
+                    current_division_max_token = token_key
+                elif current_division_max_token is not None and token_key < current_division_max_token:
+                    match = None
+                else:
+                    current_division_max_token = token_key
             if match:
                 flush(page_number)
                 current_num = match.group(1)
                 current_page = page_number
                 title_candidate = previous_line.strip()
-                if (
-                    title_candidate
-                    and len(title_candidate) < 120
-                    and not title_candidate[0].isdigit()
-                    and not title_candidate.startswith("(")
-                ):
+                if _looks_like_title(title_candidate):
                     current_lines = [title_candidate, stripped]
                 else:
                     current_lines = [stripped]
@@ -485,6 +604,9 @@ def _extraction_accounting(pdf: fitz.Document, document: CorpusDocument) -> Extr
     current_chars = 0
     current_lines = 0
     current_division = FRONT_MATTER_DIVISION if enacting_start is not None else BODY_DIVISION
+    current_division_is_amendments = False
+    current_division_max_token: tuple[int, str] | None = None
+    previous_text = ""
     pdf_chars = 0
     unassigned_chars = 0
     classified_chars = 0
@@ -495,31 +617,56 @@ def _extraction_accounting(pdf: fitz.Document, document: CorpusDocument) -> Extr
             classified_chars += len(text)
             if (page_number, text) == enacting_start:
                 current_division = BODY_DIVISION
+            previous_text = text
             continue
         headings = boundaries.get(page_number, frozenset())
         if text in headings:
             if current_key is not None:
                 candidates.append((current_key, current_chars, _candidate_eligible(current_chars, current_lines)))
             current_division = text
+            current_division_is_amendments = bool(_AMENDMENTS_DIVISION_RE.match(text.upper()))
+            current_division_max_token = None
             current_key, current_chars, current_lines = (current_division, ""), 0, 0
             unassigned_chars += len(text)
+            previous_text = text
             continue
         match = _SECTION_RE.match(text)
+        match_is_inline = match is not None
+        if match is None and not current_division_is_amendments:
+            bare_match = _BARE_ITEM_RE.match(text)
+            if current_division == BODY_DIVISION:
+                if enacting_start is not None and bare_match and _looks_like_title(previous_text):
+                    match = bare_match
+            else:
+                match = _SCHEDULE_ARTICLE_RE.match(text)
+                if match is None and bare_match and not _ends_with_a_reference_word(previous_text):
+                    match = bare_match
+        if match is not None:
+            token_key = _token_sort_key(match.group(1))
+            if match_is_inline:
+                current_division_max_token = token_key
+            elif current_division_max_token is not None and token_key < current_division_max_token:
+                match = None
+            else:
+                current_division_max_token = token_key
         if match:
             if current_key is not None:
                 candidates.append((current_key, current_chars, _candidate_eligible(current_chars, current_lines)))
             current_key = (current_division, match.group(1))
             current_chars = len(text)
             current_lines = 1
+            previous_text = text
             continue
         if current_key is not None:
             current_chars += len(text)
             current_lines += 1
+            previous_text = text
             continue
         if text in furniture:
             classified_chars += len(text)
         else:
             unassigned_chars += len(text)
+        previous_text = text
     if current_key is not None:
         candidates.append((current_key, current_chars, _candidate_eligible(current_chars, current_lines)))
 
