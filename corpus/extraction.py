@@ -24,7 +24,7 @@ from corpus.registry import CorpusRegistry
 from corpus.sidecars import SIDECAR_FORMAT, write_sidecar
 
 EXTRACTOR = "malaysian-act-sections-pymupdf"
-EXTRACTOR_VERSION = "2.2.0"
+EXTRACTOR_VERSION = "2.3.0"
 SECTION_PATTERN = r"^(\d{1,3}[A-Z]{0,2})\.\s+\S"
 # Headings that end one run of numbering and start another: the schedules at the
 # back of an Act restart at 1, and so do the entries in its list of amendments.
@@ -53,10 +53,85 @@ DIVISION_HEADING_CASE = "every-word-starts-uppercase"
 # "*FIRST SCHEDULE". The asterisk is not part of the heading.
 DIVISION_HEADING_MARKERS = "*"
 BODY_DIVISION = "body"
+# Front matter and the table of contents, from page 1 to the enacting formula
+# (ADR 0018). Never addressable and never a chunk - `flush()` only ever fires
+# once `current_num` is set, and nothing below ever sets it while this division
+# is active - so this exists purely so `_extraction_accounting` can name the
+# span instead of leaving it a mystery in `unassigned_chars`.
+FRONT_MATTER_DIVISION = "front matter"
+# Matched on the opening words only, not the full clause: the clause wraps
+# across several lines at a point that shifts between AGC's "REPRINT" and
+# "ONLINE VERSION OF UPDATED TEXT" templates (Act 4 splits "as" from
+# "follows:" onto separate lines where Act 160 does not), so anchoring on how
+# the clause ends is unreliable where its opening line is not. For the same
+# reason the royal title after "BE IT ENACTED BY THE" is not matched at all -
+# it has three renderings in the corpus (Act 160: "Seri Paduka Baginda Yang
+# di-Pertuan Agong"; Act 187: "Yang di-Pertuan Agong"; Ordinance No. 26 of
+# 1963: "Duli Yang Maha Mulia Seri Paduka Baginda") - "BE IT ENACTED" alone
+# is distinctive enough. "NOW[,] THEREFORE[,]" prefixes a recital in Acts
+# that cite constitutional authority (Act 245, Act 440). A meaningful share
+# of the corpus has no enacting clause at all: pre-Merdeka Ordinances (Act
+# 159, 198, 260, ...) whose AGC reprint carries a commencement date but
+# never this clause - `None` from `_enacting_formula_start` is that
+# document's real, unmarked state, not a gap in the pattern.
+#
+# Matched per `document.language`, not combined into one pattern the way
+# `DIVISION_PATTERN` combines English and Malay, because a schedule can
+# carry the *other* language's prose as its own content - Act 144 (en)
+# reprints a Malay grant-form schedule whose execution clause starts a line
+# with "Diperbuat".
+#
+# The "bm" pattern requires "diperbuat" to carry its collocate
+# ("undang-undang" for the long form, "oleh parlimen malaysia" for the
+# short form) rather than matching the bare verb the way the English
+# pattern matches "be it enacted" alone, and - unlike the English patterns -
+# is tried on each line joined with the one before it as well as alone,
+# because a bare "diperbuat" is genuinely ambiguous in Malay legal prose: a
+# transitional-provision heading can end a line "...akan \ndiperbuat"
+# ("things done in anticipation of this Act being enacted") with nothing
+# else on that line, indistinguishable at the single-line level from the
+# real clause's own "MAKA, OLEH YANG DEMIKIAN, INILAH DIPERBUAT
+# \nUNDANG-UNDANG oleh ..." (Act 587 - AGC splits the clause's distinctive
+# collocation across the line break). A bare-word pattern picked the heading
+# over the clause on that document, reading its first 68 sections as front
+# matter. Requiring the collocate rules out the heading; checking each line
+# joined with its predecessor is what still finds a clause AGC has split
+# across two lines. The join is a no-op for "en": `^` inside
+# `pattern.search(f"{previous} {line}")` can only match at that string's
+# start, which happens only when `previous` is empty.
+ENACTING_FORMULA_PATTERNS = {
+    "en": (
+        r"^(?:NOW\s*,?\s*THEREFORE\s*,?\s*)?BE\s+IT\s+ENACTED\b"
+        r"|^ENACTED\s+BY\s+THE\s+PARLIAMENT\s+OF\s+MALAYSIA\b"
+    ),
+    "bm": (
+        r"DIPERBUAT(?:KAN)?\s+UNDANG-UNDANG\b"
+        r"|DIPERBUAT\s+OLEH\s+PARLIMEN\s+MALAYSIA\b"
+    ),
+}
+# Front matter cannot reasonably be more than half a printed Act, so a match
+# past this point is something else reprinted alongside the Act, not its own
+# opening - not a guess: measured over every local document with a match
+# (859 of 1,124), page 21 already covers 99% of them and the max legitimate
+# one is page 35 of 687 (Act 777's real clause, a Companies Act with a table
+# of contents to match). Act 136 (Contracts Act 1950, 91 pages) is why this
+# exists: its AGC reprint carries, in an APPENDIX on page 87, the full text
+# of an amending Act - complete with that Act's own "BE IT ENACTED" - and
+# first-occurrence-wins landed on it ahead of nothing at all, since the
+# principal Act's own clause does not match this pattern. Every section
+# between the real front matter and that appendix read as front matter too.
+# The fraction alone shrinks to nothing on a short document - half of a
+# 1-page Act is half a page - so the limit is whichever is larger, with a
+# floor comfortably above the measured p99.
+ENACTING_FORMULA_MAX_PAGE_FRACTION = 0.5
+ENACTING_FORMULA_MIN_PAGE_FLOOR = 30
 SCANNED_THRESHOLD = 100
 MIN_CONTENT_CHARS = 80
 _SECTION_RE = re.compile(SECTION_PATTERN)
 _DIVISION_RE = re.compile(DIVISION_PATTERN)
+_ENACTING_FORMULA_RE = {
+    language: re.compile(pattern) for language, pattern in ENACTING_FORMULA_PATTERNS.items()
+}
 EXTRACTOR_CONFIG = {
     "section_pattern": SECTION_PATTERN,
     "division_pattern": DIVISION_PATTERN,
@@ -64,9 +139,13 @@ EXTRACTOR_CONFIG = {
     "division_heading_max_chars": DIVISION_HEADING_MAX_CHARS,
     "division_heading_case": DIVISION_HEADING_CASE,
     "division_heading_markers": DIVISION_HEADING_MARKERS,
+    "enacting_formula_patterns": ENACTING_FORMULA_PATTERNS,
+    "enacting_formula_max_page_fraction": ENACTING_FORMULA_MAX_PAGE_FRACTION,
+    "enacting_formula_min_page_floor": ENACTING_FORMULA_MIN_PAGE_FLOOR,
     "scanned_threshold": SCANNED_THRESHOLD,
     "min_content_chars": MIN_CONTENT_CHARS,
     "division_boundary": "last-run-per-heading-dropping-a-leading-division-longer-than-the-body",
+    "front_matter_boundary": "enacting-formula-opening-line-in-document-language-else-undivided",
     "deduplication": "last-section-number-wins-within-division",
     "page_numbering": "physical-1-based",
     "division_content": "kept-as-its-own-chunk-even-without-a-numbered-paragraph",
@@ -152,12 +231,51 @@ def _division_boundaries(pdf: fitz.Document) -> dict[int, set[str]]:
     return boundaries
 
 
+def _enacting_formula_start(pdf: fitz.Document, language: str) -> tuple[int, str] | None:
+    """Page and text of the line the body's enacting formula opens on.
+
+    Tries each line against the pattern alone and, since a "bm" clause can
+    split its distinctive collocation across a line break (see
+    `ENACTING_FORMULA_PATTERNS`), joined with the line before it too - inert
+    for "en", whose pattern is anchored at `^` and so can only match a joined
+    string when there was no line before it.
+
+    None when `language` has no pattern to try; when this Act's AGC reprint
+    carries no enacting clause at all (common in pre-Merdeka Ordinances); and
+    when the only match found is past `ENACTING_FORMULA_MAX_PAGE_FRACTION`
+    (Act 136 reprints an amending Act's full text, its own enacting formula
+    included, in an appendix past the halfway point). Every one of these is
+    the signal to leave this document exactly as it stands today: one
+    undivided run, no front-matter division, the same fallback
+    `_division_boundaries` takes for a boundary it cannot place with
+    confidence, rather than guessing and risking the whole document reading
+    as front matter.
+    """
+    pattern = _ENACTING_FORMULA_RE.get(language)
+    if pattern is None:
+        return None
+    page_limit = max(ENACTING_FORMULA_MIN_PAGE_FLOOR, pdf.page_count * ENACTING_FORMULA_MAX_PAGE_FRACTION)
+    previous = ""
+    for page_number, page in enumerate(pdf, 1):
+        if page_number > page_limit:
+            return None
+        for line in page.get_text().split("\n"):
+            stripped = line.strip()
+            if not stripped:
+                continue
+            if pattern.search(stripped.upper()) or pattern.search(f"{previous} {stripped}".upper()):
+                return page_number, stripped
+            previous = stripped
+    return None
+
+
 def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[str, Any]]:
     raw: list[dict[str, Any]] = []
     current_num: str | None = None
     current_page = 1
     current_lines: list[str] = []
-    current_division = BODY_DIVISION
+    enacting_start = _enacting_formula_start(pdf, document.language)
+    current_division = FRONT_MATTER_DIVISION if enacting_start is not None else BODY_DIVISION
     previous_line = ""
 
     def flush(page_end: int) -> None:
@@ -185,6 +303,17 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
         headings = boundaries.get(page_number, frozenset())
         for line in page.get_text().split("\n"):
             stripped = line.strip()
+            if current_division == FRONT_MATTER_DIVISION:
+                # Gated, not just unmatched: a table-of-contents row's number
+                # and title can land on one line and match SECTION_PATTERN
+                # exactly like a real heading (Act 602's TOC row "19B.
+                # Restoration ..." is the real corpus example this guards
+                # against - #97). Every line here stays out of `current_lines`
+                # so nothing before the boundary can ever start a chunk.
+                previous_line = stripped
+                if (page_number, stripped) == enacting_start:
+                    current_division = BODY_DIVISION
+                continue
             if stripped in headings:
                 flush(page_number)
                 current_division = stripped
@@ -301,6 +430,32 @@ def _candidate_eligible(chars: int, lines: int) -> bool:
     return chars + max(0, lines - 1) >= MIN_CONTENT_CHARS
 
 
+def _enacting_formula_start_in_records(
+    records: list[tuple[int, float, str]], language: str, page_count: int
+) -> tuple[int, str] | None:
+    """Same signal as `_extract_chunks`'s `_enacting_formula_start`, rescanned over
+    `_line_records`'s bbox-derived text instead of plain `page.get_text()` lines -
+    an independent pass for the same reason `_extraction_accounting` never calls
+    `_extract_chunks`: a mismatch between the two text modes must show up as a
+    measurement discrepancy, not get silently papered over by sharing one result.
+    Tries each line alone and joined with the one before it, and respects
+    `ENACTING_FORMULA_MAX_PAGE_FRACTION`, same as `_enacting_formula_start`
+    and for the same reasons.
+    """
+    pattern = _ENACTING_FORMULA_RE.get(language)
+    if pattern is None:
+        return None
+    page_limit = max(ENACTING_FORMULA_MIN_PAGE_FLOOR, page_count * ENACTING_FORMULA_MAX_PAGE_FRACTION)
+    previous = ""
+    for page_number, _position, text in records:
+        if page_number > page_limit:
+            return None
+        if pattern.search(text.upper()) or pattern.search(f"{previous} {text}".upper()):
+            return page_number, text
+        previous = text
+    return None
+
+
 def _extraction_accounting(pdf: fitz.Document, document: CorpusDocument) -> ExtractionAccounting:
     """Label every text line chunk/furniture/unassigned, mirroring `_extract_chunks`'s control flow.
 
@@ -315,23 +470,32 @@ def _extraction_accounting(pdf: fitz.Document, document: CorpusDocument) -> Extr
     division's own content is a candidate under key (division, "") from its
     heading onward, exactly like `_extract_chunks`'s `current_num = ""`, so a
     schedule with no numbered paragraphs is `assigned` rather than falling
-    through to `unassigned` the way only its heading line still does.
+    through to `unassigned` the way only its heading line still does. Front
+    matter and the table of contents - everything before the enacting
+    formula - land in `classified` the same way: named and accounted for,
+    never a candidate, because `_extract_chunks` never lets them become one.
     """
     records = _line_records(pdf)
     furniture = _furniture_lines(records, pdf.page_count)
     boundaries = _division_boundaries(pdf)
+    enacting_start = _enacting_formula_start_in_records(records, document.language, pdf.page_count)
 
     candidates: list[tuple[tuple[str, str], int, bool]] = []
     current_key: tuple[str, str] | None = None
     current_chars = 0
     current_lines = 0
-    current_division = BODY_DIVISION
+    current_division = FRONT_MATTER_DIVISION if enacting_start is not None else BODY_DIVISION
     pdf_chars = 0
     unassigned_chars = 0
     classified_chars = 0
 
     for page_number, _position, text in records:
         pdf_chars += len(text)
+        if current_division == FRONT_MATTER_DIVISION:
+            classified_chars += len(text)
+            if (page_number, text) == enacting_start:
+                current_division = BODY_DIVISION
+            continue
         headings = boundaries.get(page_number, frozenset())
         if text in headings:
             if current_key is not None:
