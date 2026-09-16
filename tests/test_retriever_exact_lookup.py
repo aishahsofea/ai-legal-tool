@@ -186,6 +186,99 @@ class SearchHelperTests(unittest.TestCase):
             )
         self.assertEqual(rows, [])
 
+    def test_exact_lookup_matches_on_path_for_a_path_shaped_section(self):
+        class Cursor:
+            def __init__(self):
+                self.calls = []
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                return False
+
+            def execute(self, sql, params=None):
+                self.calls.append((str(sql), params))
+
+            def fetchone(self):
+                return {"available": True}
+
+            def fetchall(self):
+                return [{"act_number": "265", "path": "sched.2/para.1"}]
+
+        class Connection:
+            def __init__(self):
+                self.cursor_value = Cursor()
+
+            def cursor(self, **_kwargs):
+                return self.cursor_value
+
+            def close(self):
+                pass
+
+        connection = Connection()
+        with patch.dict(os.environ, {"CORPUS_RETRIEVAL_MODE": "dual"}), \
+             patch.object(search.psycopg2, "connect", return_value=connection), \
+             patch.object(search, "attach_pdf_urls", side_effect=lambda rows: rows):
+            rows = search.exact_section_lookup("sched.2/para.1", act_number="265")
+
+        self.assertEqual(len(rows), 1)
+        sql, params = connection.cursor_value.calls[-1]
+        where_clause, order_by_clause = sql.split("WHERE", 1)[1].split("ORDER BY")
+        self.assertIn("path = %s", where_clause)
+        self.assertNotIn("section_number", where_clause)
+        # Only the two pre-existing tie-breakers (exact act, English) remain -
+        # the old `body_first` division CASE WHEN is dead (ADR 0018).
+        self.assertEqual(order_by_clause.count("CASE WHEN"), 2)
+        self.assertNotIn("division", order_by_clause)
+        self.assertEqual(params[0], "sched.2/para.1")
+
+    def test_exact_lookup_bare_number_still_matches_on_section_number_with_no_body_first(self):
+        class Cursor:
+            def __init__(self):
+                self.calls = []
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                return False
+
+            def execute(self, sql, params=None):
+                self.calls.append((str(sql), params))
+
+            def fetchone(self):
+                return {"available": True}
+
+            def fetchall(self):
+                return [{"act_number": "56", "section_number": "90A"}]
+
+        class Connection:
+            def __init__(self):
+                self.cursor_value = Cursor()
+
+            def cursor(self, **_kwargs):
+                return self.cursor_value
+
+            def close(self):
+                pass
+
+        connection = Connection()
+        with patch.dict(os.environ, {"CORPUS_RETRIEVAL_MODE": "dual"}), \
+             patch.object(search.psycopg2, "connect", return_value=connection), \
+             patch.object(search, "attach_pdf_urls", side_effect=lambda rows: rows):
+            rows = search.exact_section_lookup("90A", act_number="56")
+
+        self.assertEqual(len(rows), 1)
+        sql, params = connection.cursor_value.calls[-1]
+        where_clause, order_by_clause = sql.split("WHERE", 1)[1].split("ORDER BY")
+        self.assertIn("UPPER(c.section_number) = %s", where_clause)
+        # The old `body_first` ORDER BY hack is dead now that only a body row
+        # ever populates section_number (ADR 0018) - it must not reappear.
+        self.assertEqual(order_by_clause.count("CASE WHEN"), 2)
+        self.assertNotIn("division", order_by_clause)
+        self.assertEqual(params[0], "90A")
+
 
 class RetrieverNodeTests(unittest.TestCase):
     def test_statute_lookup_uses_exact_lookup_without_semantic_when_it_hits(self):

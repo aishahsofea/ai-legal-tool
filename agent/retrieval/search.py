@@ -18,6 +18,7 @@ import psycopg2
 import psycopg2.extras
 from dotenv import load_dotenv
 
+from agent.citation_keys import canonicalize_path
 from agent.embeddings import make_corpus_embedder
 
 load_dotenv()
@@ -161,7 +162,28 @@ def _has_division_column(cur) -> bool:
     return bool(row and row["available"])
 
 
-def _select_columns(provenance: bool, division: bool = False) -> str:
+def has_path_column(cur) -> bool:
+    """Return whether `chunks.path` exists on this database.
+
+    Same reason as `_has_division_column`. Public (no leading underscore) since
+    `evals/assertions.py` and `api/evals.py` need the same schema-existence
+    check before running a query that references `path` directly, rather than
+    duplicating this check a third time.
+    """
+    cur.execute(
+        """
+        SELECT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_schema = 'public' AND table_name = 'chunks'
+            AND column_name = 'path'
+        ) AS available
+        """
+    )
+    row = cur.fetchone()
+    return bool(row and row["available"])
+
+
+def _select_columns(provenance: bool, division: bool = False, path: bool = False) -> str:
     # Rows ingested before the column existed are body sections, because the
     # extractor that wrote them kept only one chunk per section number.
     division_column = (
@@ -169,18 +191,24 @@ def _select_columns(provenance: bool, division: bool = False) -> str:
         if division
         else "'body'::text AS division"
     )
+    prefix = "c." if provenance else ""
+    path_column = (
+        f"COALESCE({prefix}path, 's.' || {prefix}section_number) AS path"
+        if path
+        else "NULL::text AS path"
+    )
     if not provenance:
         return (
             "act_number, act_title, section_number, content, page_number, language, "
             "NULL::text AS document_id, NULL::text AS extraction_id, "
             "NULL::text AS content_sha256, page_number AS page_start, "
-            f"page_number AS page_end, NULL::text AS source_url, {division_column}"
+            f"page_number AS page_end, NULL::text AS source_url, {division_column}, {path_column}"
         )
     return (
         "c.act_number, c.act_title, c.section_number, c.content, c.page_number, c.language, "
         "c.document_id, c.extraction_id, c.content_sha256, "
         "COALESCE(c.page_start, c.page_number) AS page_start, "
-        f"COALESCE(c.page_end, c.page_number) AS page_end, d.source_url, {division_column}"
+        f"COALESCE(c.page_end, c.page_number) AS page_end, d.source_url, {division_column}, {path_column}"
     )
 
 
@@ -238,6 +266,7 @@ def semantic_search(
             mode = _retrieval_mode()
             provenance = _has_provenance_schema(cur)
             division = _has_division_column(cur)
+            path_available = has_path_column(cur)
             if mode == "verified" and not provenance:
                 return []
             prefix = "c." if provenance else ""
@@ -254,7 +283,7 @@ def semantic_search(
             where = f"WHERE {' AND '.join(combined_filters)}" if combined_filters else ""
             cur.execute(
                 f"""
-                SELECT {_select_columns(provenance, division)},
+                SELECT {_select_columns(provenance, division, path_available)},
                        1 - ({prefix}embedding <=> %s::vector) AS similarity
                 FROM chunks {prefix.rstrip('.')}
                 {joins}
@@ -286,9 +315,17 @@ def exact_section_lookup(
     chunks and the exact-act match are ordered first. Pass an open `conn` to
     reuse a connection across several lookups in one request; the caller then
     owns closing it.
+
+    `section` still accepts a bare number, unchanged for the LLM and every
+    existing caller (ADR 0018). Internally: an input that parses against the
+    path grammar (`s.90A`, `sched.2/para.1`, ...) is matched against the `path`
+    column exactly; anything else is matched against `section_number`, which
+    only a body row populates now, so an unqualified "section 1" resolves to
+    the body one without needing an ordering trick.
     """
+    path_query = canonicalize_path(section)
     section_number = extract_section_number(section) or (section or "").strip().upper()
-    if not section_number or not (act_number or act_title):
+    if not (path_query or section_number) or not (act_number or act_title):
         return []
     if bool(document_id) != bool(extraction_id):
         return []
@@ -301,9 +338,14 @@ def exact_section_lookup(
             mode = _retrieval_mode()
             provenance = _has_provenance_schema(cur)
             division = _has_division_column(cur)
+            path_available = has_path_column(cur)
             if mode == "verified" and not provenance:
                 return []
             if document_id and (not provenance or mode == "legacy"):
+                return []
+            if path_query and not path_available:
+                # No schema to satisfy a path-shaped query against - fall back
+                # to semantic search rather than guess at a bare-number match.
                 return []
             joins = """
                 LEFT JOIN active_corpus_documents a
@@ -318,31 +360,29 @@ def exact_section_lookup(
                 identity_filter = "AND c.document_id = %s AND c.extraction_id = %s"
                 identity_params = [document_id, extraction_id]
             prefix = "c." if provenance else ""
-            # A schedule paragraph carries the same number as a body section, so
-            # an unqualified "section 1" has to resolve to the body one.
-            body_first = (
-                f"CASE WHEN COALESCE({prefix}division, 'body') = 'body' THEN 0 ELSE 1 END,"
-                if division
-                else ""
-            )
+            if path_query and path_available:
+                identity_clause = f"{prefix}path = %s"
+                identity_value = path_query
+            else:
+                identity_clause = f"UPPER({prefix}section_number) = %s"
+                identity_value = section_number
             cur.execute(
                 f"""
-                SELECT {_select_columns(provenance, division)},
+                SELECT {_select_columns(provenance, division, path_available)},
                        1.0 AS similarity
                 FROM chunks {prefix.rstrip('.')}
                 {joins}
-                WHERE UPPER({prefix}section_number) = %s
+                WHERE {identity_clause}
                   AND ({prefix}act_number = %s OR {prefix}act_title ILIKE %s)
                   {provenance_filter}
                   {identity_filter}
                 ORDER BY
-                  {body_first}
                   CASE WHEN {prefix}act_number = %s THEN 0 ELSE 1 END,
                   CASE WHEN {prefix}language = 'en' THEN 0 ELSE 1 END
                 LIMIT %s
                 """,
                 (
-                    section_number,
+                    identity_value,
                     act_number or "",
                     title_pattern,
                     *identity_params,
