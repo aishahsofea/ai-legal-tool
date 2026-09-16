@@ -309,6 +309,22 @@ def test_checked_in_coverage_accounts_for_every_source_pdf():
 # 205/373 EN have no enacting formula AGC's current patterns recognise
 # (placeholder issue for the phrasing gap, blocked on finding more real
 # examples).
+#
+# A third English recital shape ("IT IS ENACTED BY", no "BE", actor left
+# unstated so it covers both "the Parliament of Malaysia" and Act 373's
+# "the Yang di-Pertuan Agong ... Parliament") barely moves this ratio:
+# checked against the full local English corpus, it matches 12 of 1,124
+# documents, and most of what they gain was already counted as
+# `classified` front matter, not lost as `unassigned` body. Act 373 EN is
+# the one of the five cohort members named above with a real clause to
+# find: assigned_chars 1,141/7,134 (16.0%, a 2-chunk blob) -> 4,949/7,134
+# (69.4%, 11 chunks). Corpus-wide: assigned_chars +2,929, classified_chars
+# +35,817, unassigned_chars -38,746 - still rounds to the same 0.9235, so
+# the recorded floor is unchanged. Act 33/114/198/205 EN, the other four
+# named above, were never part of this gap: read directly, their AGC
+# reprints carry no enacting clause of any kind, the same legitimate
+# `None` as the pre-Merdeka Ordinances documented above - not a phrasing
+# gap left to close.
 RECORDED_RETENTION_BASELINE = 0.9234
 
 
@@ -334,7 +350,20 @@ def test_corpus_wide_retention_has_not_regressed_below_its_recorded_baseline():
 # find, so the bare-line pattern correctly declines to guess at them rather
 # than risk reading their real table of contents as body text the way Act
 # 595 EN's does.
-RECORDED_LOW_YIELD_CEILING = 38
+#
+# Lowered 38 -> 37: Act 373 EN, one of the five cohort members named above,
+# gets a real front-matter boundary once "IT IS ENACTED BY" is recognised
+# (no "BE", actor unstated), and its chunk count goes 2 -> 11 - clearing
+# both the chunk-count and the assigned-share bar. Checked against the
+# full local English corpus, not a sample: this phrasing also matches Act
+# 297, 595, 622, 636, 641, 659, 660, 686, 712, 720, 747, but 373 is the
+# only one of those that was low-yield for a reason this fix addresses -
+# Act 622 and 659 EN stay low-yield here for a separate, unrelated reason.
+# Act 33/114/198/205 EN, the other four cohort members, stay low-yield
+# too: read directly, their AGC reprints carry no enacting clause of any
+# kind to find, the same legitimate `None` as the pre-Merdeka Ordinances
+# documented above.
+RECORDED_LOW_YIELD_CEILING = 37
 
 
 def test_low_yield_ready_documents_have_not_grown_past_their_recorded_ceiling():
@@ -1012,13 +1041,14 @@ def test_list_of_amendments_never_produces_a_numbered_item(tmp_path: Path):
 
 
 def test_body_bare_line_disabled_without_a_detected_enacting_formula(tmp_path: Path):
-    """#94: Act 595 has no detectable enacting formula (a "WHEREAS" recital,
-    not "BE IT ENACTED"), so its real table of contents - number first,
-    title second - is read as body text with no front-matter boundary to
-    stop it. Every row there looks exactly like a real split heading to the
-    bare-line pattern, so the pattern must stay off for a document with no
-    confirmed front-matter boundary rather than risk exactly the false
-    matches #72 measured corpus-wide."""
+    """#94: a document with no confirmed front-matter boundary reads its own
+    table of contents - number first, title second - as body text; every row
+    there looks exactly like a real split heading to the bare-line pattern.
+    Act 595 EN was the real document that surfaced this risk, back when its
+    own recital ("...IT IS ENACTED by the Parliament of Malaysia", no "BE")
+    went unrecognised. Reproduced here with a fixture carrying no enacting
+    formula at all, since the guard cares about the absence of a confirmed
+    boundary, not about which real documents currently have one."""
     registry, document = _fixture_document(tmp_path, "no_formula_toc", "106", [[
         ("Section", False),
         ("1.", False),
@@ -1126,18 +1156,30 @@ def test_text_before_the_first_heading_is_unassigned_not_vanished(tmp_path: Path
     "NOW THEREFORE BE IT ENACTED by the Seri Paduka Baginda",
     "NOW, THEREFORE, BE IT ENACTED by the Seri Paduka",
     "NOW,THEREFORE,BE IT ENACTED by the Duli Yang Maha Mulia Seri",
+    # Act 595 / Act 622 / Act 636: no "BE", actor is "the Parliament of Malaysia".
+    "NOW, THEREFORE, IT IS ENACTED by the Parliament of",
+    # Act 373: "HEREBY", and a different actor again (Yang di-Pertuan Agong).
+    "NOW, THEREFORE, IT IS HEREBY ENACTED by the",
+    # Act 747: a whole clause ("pursuant to Article 149...") sits between
+    # "NOW, THEREFORE," and "IT IS ENACTED", landing it mid-line rather than
+    # at the start - this is why the third alternative has no leading `^`.
+    "Constitution IT IS ENACTED by the Parliament of Malaysia as",
 ])
 def test_enacting_formula_recognised_in_english(line: str):
-    assert _ENACTING_FORMULA_RE["en"].match(line.upper())
+    assert _ENACTING_FORMULA_RE["en"].search(line.upper())
 
 
 @pytest.mark.parametrize("line", [
     "First enacted 1953 (Ordinance No. 22 of 1953)",  # metadata table, not the clause
     "Section 4 of the principal Act is amended as follows:",  # a later amendment, not the opening
     "An Act to provide for matters as follows",
+    # "Enacted by" alone, without "it is" ahead of it, is a plain past
+    # participle elsewhere in a document (e.g. describing subsidiary
+    # legislation), not this clause - the third alternative requires "IT IS".
+    "Any regulations enacted by the Minister under this section",
 ])
 def test_lines_that_are_not_the_english_enacting_formula(line: str):
-    assert not _ENACTING_FORMULA_RE["en"].match(line.upper())
+    assert not _ENACTING_FORMULA_RE["en"].search(line.upper())
 
 
 @pytest.mark.parametrize("line", [
