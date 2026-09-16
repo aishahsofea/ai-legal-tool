@@ -24,7 +24,7 @@ from corpus.registry import CorpusRegistry
 from corpus.sidecars import SIDECAR_FORMAT, write_sidecar
 
 EXTRACTOR = "malaysian-act-sections-pymupdf"
-EXTRACTOR_VERSION = "2.4.0"
+EXTRACTOR_VERSION = "2.5.0"
 SECTION_PATTERN = r"^(\d{1,3}[A-Z]{0,2})\.\s+\S"
 # A number AGC prints alone on its own line: its title on the line above, its
 # text starting on the line after (#72's cohort - 22 documents whose
@@ -174,11 +174,12 @@ EXTRACTOR_CONFIG = {
     "min_content_chars": MIN_CONTENT_CHARS,
     "division_boundary": "last-run-per-heading-dropping-a-leading-division-longer-than-the-body",
     "front_matter_boundary": "enacting-formula-opening-line-in-document-language-else-undivided",
-    "deduplication": "last-section-number-wins-within-division",
+    "deduplication": "last-path-wins-within-division",
     "page_numbering": "physical-1-based",
     "division_content": "kept-as-its-own-chunk-even-without-a-numbered-paragraph",
     "body_bare_item": "numbered-line-alone-kept-only-when-the-line-above-reads-as-a-title",
     "schedule_item_numbering": "inline-dot-or-bare-numbered-line-or-article-n-never-in-amendments",
+    "chunk_identity": "path-qualified-per-adr-0018-section-number-body-only",
 }
 CONFIGURATION_HASH = sha256_json(EXTRACTOR_CONFIG)
 
