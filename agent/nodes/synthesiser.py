@@ -97,8 +97,12 @@ def _build_messages(state: AgentState) -> list[dict]:
                     f"\n[Reference context: a published {directions} one-hop edge identified "
                     f"{related}; this target text is from the anchor's exact document and extraction.]"
                 )
+        # A schedule chunk's section_number is empty (ADR 0018) - path is what
+        # identifies it, and the LLM has to see it here to be able to cite it
+        # back in citation_refs.section_number at all.
+        identifier = chunk.get("section_number") or chunk.get("path", "")
         return (
-            f"[Section {chunk['section_number']}, {chunk['act_title']} "
+            f"[Section {identifier}, {chunk['act_title']} "
             f"(Act {chunk['act_number']}), source language: "
             f"{chunk.get('language', 'unknown')}]{provenance_note}\n{chunk['content']}"
         )
@@ -139,11 +143,16 @@ def _finalise(result: _SynthesiserOutput, state: AgentState) -> dict:
     # LLMs may echo display labels ("Act 559") while the database stores bare
     # identifiers ("559"). Canonical keys prevent valid citations from being
     # silently dropped; output metadata still comes from the retrieved chunk.
+    # `ref_key` stays 2-arg: `_CitationRef` has no separate path field, and a
+    # schedule chunk's path is what `format_chunk` showed the LLM in place of
+    # its (empty) section_number, so it arrives back in `ref.section_number`
+    # and resolves through canonicalize_citation_key's own path fallback.
     chunk_lookup: dict[tuple[str, str], dict] = {}
     for chunk in chunks:
         key = canonicalize_citation_key(
             chunk.get("act_number"),
             chunk.get("section_number"),
+            chunk.get("path"),
         )
         if all(key):
             # Retrieval is already ordered by relevance. Preserve the first exact
@@ -159,6 +168,7 @@ def _finalise(result: _SynthesiserOutput, state: AgentState) -> dict:
                 "act_number":     chunk["act_number"],
                 "act_title":      chunk["act_title"],
                 "section_number": chunk["section_number"],
+                "path":           chunk.get("path", ""),
                 "pdf_url":        chunk.get("pdf_url", ""),
                 "page_number":    chunk.get("page_number"),
             }

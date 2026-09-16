@@ -129,7 +129,7 @@ def _diff_extractions(args: argparse.Namespace) -> int:
         print(f"- {document_id}: +{len(diff['added'])} -{len(diff['removed'])} ~{len(diff['changed'])}")
         for entry in diff["changed"]:
             print(
-                f"    changed ({entry['division']!r}, {entry['section_number']!r}): "
+                f"    changed ({entry['division']!r}, {entry['path']!r}): "
                 f"{entry['old_chars']} -> {entry['new_chars']} chars"
             )
     return 0

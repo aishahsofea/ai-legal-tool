@@ -233,3 +233,17 @@ def test_case_section_pairs_merges_scalar_and_multi_part_without_duplicates():
     ]
 
     assert case_section_pairs(case) == [("265", "19"), ("265", "60A")]
+
+
+def test_case_section_pairs_expresses_a_schedule_paragraph_via_expected_path():
+    """#95: `path` subsumes `section_number` as the structural half of the key,
+    which is what lets a case express a schedule paragraph for the first time -
+    no real dataset.json case does this yet (no fixture corpus has schedule
+    content), but the plumbing has to carry it end to end regardless."""
+    case = _case("sched-1", act="1", section=None)
+    case["expected_path"] = "sched.1/para.1"
+    case["expected_sections"] = [
+        {"act_number": "1", "section_number": "", "path": "sched.1/para.2"},
+    ]
+
+    assert case_section_pairs(case) == [("1", "sched.1/para.1"), ("1", "sched.1/para.2")]

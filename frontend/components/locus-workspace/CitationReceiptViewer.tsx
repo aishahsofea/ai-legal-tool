@@ -75,7 +75,7 @@ export function CitationReceiptViewer({
   const receipt = citation.receipt;
   const evidence = receipt?.evidence ?? [];
   const [evidenceIndex, setEvidenceIndex] = useState(() => Math.min(initialEvidenceIndex, Math.max(0, evidence.length - 1)));
-  const requestKey = `${receipt?.document_id ?? "none"}:${citation.section_number}:${evidenceIndex}`;
+  const requestKey = `${receipt?.document_id ?? "none"}:${citation.section_number}:${citation.path ?? ""}:${evidenceIndex}`;
   const [locatorState, setLocatorState] = useState<{ key: string; result: LocatorResult | null; error: string }>({ key: "", result: null, error: "" });
   const [pdfErrorState, setPdfErrorState] = useState<{ key: string; error: string }>({ key: "", error: "" });
   const [pageNumber, setPageNumber] = useState(citation.page_number ?? 1);

@@ -116,6 +116,7 @@ def _compact_state(state: dict[str, Any]) -> dict[str, Any]:
             {
                 "act_number": c.get("act_number"),
                 "section_number": c.get("section_number"),
+                "path": c.get("path"),
                 "act_title": c.get("act_title"),
             }
             for c in state.get("retrieved_chunks", [])[:8]
@@ -174,6 +175,7 @@ def _assertion_applicable(
     expected_act_number: str | None,
     expected_section: str | None,
     expected_policy: str,
+    expected_path: str | None = None,
     section_recall_result: dict[str, Any] | None = None,
     expected_tool: str | None = None,
     expected_tool_sequence: list[str] | None = None,
@@ -192,7 +194,7 @@ def _assertion_applicable(
             or expected_reference_direction
         )
     if name == "expected_section":
-        return bool(expected_act_number and expected_section)
+        return bool(expected_act_number and (expected_section or expected_path))
     if name == "section_recall":
         # Matches check_section_recall's own not-applicable check (every entry
         # fails to canonicalize -> section_recall_result is None), not raw
@@ -263,8 +265,9 @@ def iter_suite(
             tool_trace = agent_output.get("tool_trace", [])
             expected_act_number = case.get("expected_act_number")
             expected_section = case.get("expected_section")
+            expected_path = case.get("expected_path")
             expected_sections = case.get("expected_sections")
-            if expected_sections and expected_act_number and expected_section:
+            if expected_sections and expected_act_number and (expected_section or expected_path):
                 # case_section_pairs() folds the scalar pair into the list for a
                 # case that (unusually) declares both shapes, so recall/coverage
                 # agree on what's required instead of section_recall silently
@@ -301,6 +304,7 @@ def iter_suite(
                     expected_act_number=expected_act_number,
                     expected_section=expected_section,
                     expected_policy=expected_policy,
+                    expected_path=expected_path,
                     section_recall_result=recall,
                     expected_tool=expected_tool,
                     expected_tool_sequence=expected_tool_sequence,
@@ -317,6 +321,7 @@ def iter_suite(
                 expected_section=expected_section,
                 expected_policy=expected_policy,
                 db_conn=db_conn,
+                expected_path=expected_path,
                 expected_language=expected_language,
                 expected_sections=expected_sections,
                 min_sections_found=min_sections_found,
@@ -351,6 +356,7 @@ def iter_suite(
                         expected_act_number=expected_act_number,
                         expected_section=expected_section,
                         expected_policy=expected_policy,
+                        expected_path=expected_path,
                         retrieved_chunks=agent_output["retrieved_chunks"],
                         expected_sections=expected_sections,
                     )

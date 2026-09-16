@@ -498,14 +498,17 @@ def test_schedule_paragraph_does_not_overwrite_the_body_section_it_collides_with
         sidecar_root=tmp_path / "sidecars",
     )
     chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
-    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+    by_key = {(chunk["division"], chunk["path"]): chunk for chunk in chunks}
 
-    assert ("body", "1") in by_key and ("FIRST SCHEDULE", "1") in by_key
-    assert "may be cited as" in by_key[("body", "1")]["content"]
-    assert "liquidator" in by_key[("FIRST SCHEDULE", "1")]["content"]
-    assert by_key[("body", "2")]["division"] == "body"
+    assert ("body", "s.1") in by_key and ("FIRST SCHEDULE", "sched.1/para.1") in by_key
+    assert "may be cited as" in by_key[("body", "s.1")]["content"]
+    assert "liquidator" in by_key[("FIRST SCHEDULE", "sched.1/para.1")]["content"]
+    assert by_key[("body", "s.2")]["division"] == "body"
     # The heading is a boundary, not content: it belongs to neither paragraph.
-    assert "FIRST SCHEDULE" not in by_key[("body", "2")]["content"]
+    assert "FIRST SCHEDULE" not in by_key[("body", "s.2")]["content"]
+    # #95: a schedule paragraph's own number lives in `path`, not `section_number`
+    # - that's what stops it colliding with the body section sharing its number.
+    assert by_key[("FIRST SCHEDULE", "sched.1/para.1")]["section_number"] == ""
 
 
 def test_table_of_contents_copy_of_a_heading_is_not_a_division_boundary(tmp_path: Path):
@@ -543,11 +546,11 @@ def test_table_of_contents_copy_of_a_heading_is_not_a_division_boundary(tmp_path
         sidecar_root=tmp_path / "sidecars",
     )
     chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
-    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+    by_key = {(chunk["division"], chunk["path"]): chunk for chunk in chunks}
 
     # The copy on page 1 is the table of contents; the division starts on page 3.
-    assert by_key[("body", "1")]["page_start"] == 2
-    assert by_key[("FIRST SCHEDULE", "1")]["page_start"] == 3
+    assert by_key[("body", "s.1")]["page_start"] == 2
+    assert by_key[("FIRST SCHEDULE", "sched.1/para.1")]["page_start"] == 3
 
 
 def test_division_content_without_numbered_paragraphs_is_kept_not_dropped(tmp_path: Path):
@@ -667,11 +670,15 @@ def test_schedule_article_number_becomes_its_own_chunk(tmp_path: Path):
         sidecar_root=tmp_path / "sidecars",
     )
     chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
-    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+    by_key = {(chunk["division"], chunk["path"]): chunk for chunk in chunks}
 
-    assert ("SECOND SCHEDULE", "") not in by_key
-    assert "respect for the present Convention" in by_key[("SECOND SCHEDULE", "1")]["content"]
-    assert "declared war" in by_key[("SECOND SCHEDULE", "2")]["content"]
+    assert ("SECOND SCHEDULE", "sched.1") not in by_key
+    assert "respect for the present Convention" in by_key[("SECOND SCHEDULE", "sched.1/art.1")]["content"]
+    assert "declared war" in by_key[("SECOND SCHEDULE", "sched.1/art.2")]["content"]
+    # #95: two distinct schedule items get distinct, non-colliding paths, and
+    # neither carries a `section_number` any more (that's `path`'s job now).
+    assert by_key[("SECOND SCHEDULE", "sched.1/art.1")]["section_number"] == ""
+    assert by_key[("SECOND SCHEDULE", "sched.1/art.2")]["section_number"] == ""
 
     with fitz.open(pdf_path) as pdf:
         accounting = _extraction_accounting(pdf, document)
@@ -722,10 +729,10 @@ def test_article_cross_reference_wrapped_onto_its_own_line_is_not_a_new_article(
         sidecar_root=tmp_path / "sidecars",
     )
     chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
-    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+    by_key = {(chunk["division"], chunk["path"]): chunk for chunk in chunks}
 
-    assert ("SECOND SCHEDULE", "13") not in by_key
-    article_12 = by_key[("SECOND SCHEDULE", "12")]["content"]
+    assert ("SECOND SCHEDULE", "sched.1/art.13") not in by_key
+    article_12 = by_key[("SECOND SCHEDULE", "sched.1/art.12")]["content"]
     assert "Article 13." in article_12
     assert "family rights" in article_12
 
@@ -877,11 +884,11 @@ def test_schedule_paragraph_split_across_its_own_line_becomes_its_own_chunk(tmp_
         registry, document, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
     )
     chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
-    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+    by_key = {(chunk["division"], chunk["path"]): chunk for chunk in chunks}
 
-    assert ("FIRST SCHEDULE", "") not in by_key
-    assert "maintenance" in by_key[("FIRST SCHEDULE", "1")]["content"]
-    assert "excessive" in by_key[("FIRST SCHEDULE", "2")]["content"]
+    assert ("FIRST SCHEDULE", "sched.1") not in by_key
+    assert "maintenance" in by_key[("FIRST SCHEDULE", "sched.1/para.1")]["content"]
+    assert "excessive" in by_key[("FIRST SCHEDULE", "sched.1/para.2")]["content"]
 
 
 def test_schedule_bare_item_after_a_reference_word_is_not_a_new_item(tmp_path: Path):
@@ -904,10 +911,10 @@ def test_schedule_bare_item_after_a_reference_word_is_not_a_new_item(tmp_path: P
         registry, document, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
     )
     chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
-    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+    by_key = {(chunk["division"], chunk["path"]): chunk for chunk in chunks}
 
-    assert ("FIRST SCHEDULE", "1") not in by_key
-    assert "of this Schedule and to no other carriage" in by_key[("FIRST SCHEDULE", "2")]["content"]
+    assert ("FIRST SCHEDULE", "sched.1/para.1") not in by_key
+    assert "of this Schedule and to no other carriage" in by_key[("FIRST SCHEDULE", "sched.1/para.2")]["content"]
 
 
 def test_list_of_amendments_never_produces_a_numbered_item(tmp_path: Path):
@@ -933,6 +940,8 @@ def test_list_of_amendments_never_produces_a_numbered_item(tmp_path: Path):
     assert ("LIST OF AMENDMENTS", "184") not in by_key
     assert ("LIST OF AMENDMENTS", "") in by_key
     assert "In force from 1 January 2020" in by_key[("LIST OF AMENDMENTS", "")]["content"]
+    # #95: the list of amendments is never addressable, so it never gets a path.
+    assert by_key[("LIST OF AMENDMENTS", "")]["path"] is None
 
 
 def test_body_bare_line_disabled_without_a_detected_enacting_formula(tmp_path: Path):
@@ -993,11 +1002,11 @@ def test_schedule_part_restart_does_not_collide_with_its_earlier_numbering(tmp_p
         registry, document, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
     )
     chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
-    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+    by_key = {(chunk["division"], chunk["path"]): chunk for chunk in chunks}
 
-    assert "Aluminium" in by_key[("FIRST SCHEDULE", "1")]["content"]
-    assert "Antimony" in by_key[("FIRST SCHEDULE", "2")]["content"]
-    assert "Acetic acid" in by_key[("FIRST SCHEDULE", "2")]["content"]
+    assert "Aluminium" in by_key[("FIRST SCHEDULE", "sched.1/para.1")]["content"]
+    assert "Antimony" in by_key[("FIRST SCHEDULE", "sched.1/para.2")]["content"]
+    assert "Acetic acid" in by_key[("FIRST SCHEDULE", "sched.1/para.2")]["content"]
 
 
 def test_text_before_the_first_heading_is_unassigned_not_vanished(tmp_path: Path):
@@ -1371,10 +1380,15 @@ def test_chunk_quality_reports_a_blob_chunks_division_and_page_span(tmp_path: Pa
     assert quality["max_chunk_chars"] >= blob["chars"]
 
 
-def _synthetic_chunk(division: str, section_number: str, content: str, page: int = 1) -> dict:
+def _synthetic_chunk(
+    division: str, section_number: str, content: str, page: int = 1, path: str | None = None,
+) -> dict:
+    if path is None:
+        path = f"s.{section_number}" if division == "body" else None
     return {
         "division": division,
         "section_number": section_number,
+        "path": path,
         "content": content,
         "content_sha256": content_hash(content),
         "page_start": page,
@@ -1396,10 +1410,10 @@ def test_diff_chunk_sets_reports_added_removed_and_changed():
 
     diff = diff_chunk_sets(old_chunks, new_chunks)
 
-    assert diff["added"] == [{"division": "body", "section_number": "4"}]
-    assert diff["removed"] == [{"division": "body", "section_number": "3"}]
+    assert diff["added"] == [{"division": "body", "path": "s.4"}]
+    assert diff["removed"] == [{"division": "body", "path": "s.3"}]
     assert len(diff["changed"]) == 1
-    assert diff["changed"][0]["section_number"] == "1"
+    assert diff["changed"][0]["path"] == "s.1"
     assert diff["changed"][0]["old_chars"] < diff["changed"][0]["new_chars"]
     assert diff["unchanged_count"] == 1
 

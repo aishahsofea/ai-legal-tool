@@ -39,7 +39,9 @@ TOP_K = max(CUTOFFS)
 def _rank_of_expected(rows: list[dict[str, Any]], expected: tuple[str, str]) -> int | None:
     """1-based rank of the expected section, or None if it is not in `rows`."""
     for position, row in enumerate(rows, 1):
-        pair = normalized_citation_pair(row.get("act_number"), row.get("section_number"))
+        pair = normalized_citation_pair(
+            row.get("act_number"), row.get("section_number"), row.get("path")
+        )
         if pair == expected:
             return position
     return None
@@ -81,7 +83,7 @@ def measure(cases: list[dict[str, Any]], mode: str, *, progress: bool = True) ->
         for case in cases
         if (
             expected := normalized_citation_pair(
-                case.get("expected_act_number"), case.get("expected_section")
+                case.get("expected_act_number"), case.get("expected_section"), case.get("expected_path")
             )
         )
         is not None

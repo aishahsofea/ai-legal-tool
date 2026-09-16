@@ -177,6 +177,36 @@ class SynthesiserDisclaimerTests(unittest.TestCase):
         self.assertEqual(citation["receipt"]["extraction_id"], _CHUNK["extraction_id"])
         self.assertNotIn("source_document_id", citation["receipt"])
 
+    def test_schedule_chunk_is_shown_and_cited_by_its_path(self):
+        # A schedule item's section_number is "" (ADR 0018) - format_chunk must
+        # show its path instead, and citation_refs must be able to echo that
+        # path back and still resolve to the same chunk.
+        chunk = {
+            **_CHUNK,
+            "act_number": "512", "act_title": "GENEVA CONVENTIONS ACT 1962",
+            "section_number": "", "path": "sched.2/art.1",
+        }
+        messages = synthesiser._build_messages({
+            "query": "What does Article 1 of the Second Schedule say?",
+            "retrieved_chunks": [chunk],
+            "history": [],
+            "response_language": "en",
+        })
+        self.assertIn("[Section sched.2/art.1,", messages[1]["content"])
+
+        output = _SynthesiserOutput(
+            answer="Article 1 applies.",
+            citation_refs=[_CitationRef(act_number="512", section_number="sched.2/art.1")],
+        )
+        result = synthesiser._finalise(output, {
+            "retrieved_chunks": [chunk],
+            "response_language": "en",
+        })
+        self.assertEqual(len(result["citations"]), 1)
+        citation = result["citations"][0]
+        self.assertEqual(citation["section_number"], "")
+        self.assertEqual(citation["path"], "sched.2/art.1")
+
 
 if __name__ == "__main__":
     unittest.main()

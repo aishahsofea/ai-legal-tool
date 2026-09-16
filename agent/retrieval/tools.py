@@ -48,7 +48,10 @@ def _summarise(rows: list[dict]) -> str:
     if not rows:
         return "No sections found."
     heads = ", ".join(
-        f"s.{r.get('section_number', '?')} of Act {r.get('act_number', '?')}"
+        # A schedule row's section_number is empty (ADR 0018); its path
+        # ("sched.2/para.1") is what names it instead. `path` already carries
+        # the "s." prefix for a body row, so it's used as-is when present.
+        f"{r.get('path') or 's.' + str(r.get('section_number') or '?')} of Act {r.get('act_number', '?')}"
         for r in rows[:5]
     )
     more = "" if len(rows) <= 5 else f" (+{len(rows) - 5} more)"

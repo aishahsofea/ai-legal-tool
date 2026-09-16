@@ -125,4 +125,14 @@ CREATE INDEX IF NOT EXISTS chunks_document_section_idx
 -- ingested before this column existed; read those as body.
 ALTER TABLE chunks ADD COLUMN IF NOT EXISTS division TEXT;
 
+-- Path-qualified identifier within a division (ADR 0018): 's.<n>' for a body
+-- section, 'sched.<k>/para.<n>' or 'sched.<k>/art.<n>' for a schedule item,
+-- 'sched.<k>' for a schedule's own content with no numbered item. NULL on rows
+-- ingested before this column existed, or where the division has no addressable
+-- item (front matter, list of amendments); read a NULL path as 's.' || section_number.
+ALTER TABLE chunks ADD COLUMN IF NOT EXISTS path TEXT;
+CREATE INDEX IF NOT EXISTS chunks_act_path_idx
+    ON chunks (act_number, path)
+    WHERE path IS NOT NULL;
+
 COMMIT;

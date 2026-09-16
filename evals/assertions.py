@@ -9,6 +9,7 @@ import re
 from typing import Any
 
 from agent.citation_keys import canonicalize_citation_key, normalized_citation_pair
+from agent.retrieval.search import has_path_column
 from evals.language_id import BM_SHARE_THRESHOLDS, bm_share
 
 # Case languages the language_register assertion applies to. Everything else
@@ -38,19 +39,31 @@ def check_citation_existence(
         return None
     missing = []
     with db_conn.cursor() as cur:
+        # Gated: an eval database seeded by `seed_test_corpus.py`'s bare schema
+        # has no `path` column at all, and referencing it would crash rather
+        # than degrade.
+        path_available = has_path_column(cur)
         for c in citations:
-            act_number, section_number = canonicalize_citation_key(
+            act_number, identifier = canonicalize_citation_key(
                 c.get("act_number"),
                 c.get("section_number"),
+                c.get("path"),
             )
-            if not act_number or not section_number:
+            if not act_number or not identifier:
                 continue
-            cur.execute(
-                "SELECT 1 FROM chunks WHERE act_number = %s AND UPPER(section_number) = %s LIMIT 1",
-                (act_number, section_number.upper()),
-            )
+            if path_available:
+                cur.execute(
+                    "SELECT 1 FROM chunks WHERE act_number = %s "
+                    "AND (UPPER(section_number) = UPPER(%s) OR path = %s) LIMIT 1",
+                    (act_number, identifier, identifier),
+                )
+            else:
+                cur.execute(
+                    "SELECT 1 FROM chunks WHERE act_number = %s AND UPPER(section_number) = UPPER(%s) LIMIT 1",
+                    (act_number, identifier),
+                )
             if cur.fetchone() is None:
-                missing.append(f"Section {section_number} of Act {act_number}")
+                missing.append(f"Section {identifier} of Act {act_number}")
     if missing:
         return f"Citations not found in DB: {', '.join(missing)}"
     return None
@@ -60,20 +73,22 @@ def check_expected_section(
     citations: list[dict[str, Any]],
     expected_act_number: str | None,
     expected_section: str | None,
+    expected_path: str | None = None,
 ) -> str | None:
     """Return None if expected act/section is present in citations, or a failure message."""
-    if not expected_act_number or not expected_section:
+    if not expected_act_number or not (expected_section or expected_path):
         return None
-    expected_key = canonicalize_citation_key(expected_act_number, expected_section)
+    expected_key = canonicalize_citation_key(expected_act_number, expected_section, expected_path)
     for c in citations:
         citation_key = canonicalize_citation_key(
             c.get("act_number"),
             c.get("section_number"),
+            c.get("path"),
         )
         if citation_key == expected_key:
             return None
     return (
-        f"Expected Section {expected_section} of Act {expected_act_number} "
+        f"Expected Section {expected_section or expected_path} of Act {expected_act_number} "
         "not found in structured citations."
     )
 
@@ -81,7 +96,9 @@ def check_expected_section(
 def _citation_keys(citations: list[dict[str, Any]]) -> set[tuple[str, str]]:
     keys: set[tuple[str, str]] = set()
     for citation in citations or []:
-        pair = normalized_citation_pair(citation.get("act_number"), citation.get("section_number"))
+        pair = normalized_citation_pair(
+            citation.get("act_number"), citation.get("section_number"), citation.get("path")
+        )
         if pair:
             keys.add(pair)
     return keys
@@ -94,7 +111,9 @@ def _expected_section_keys(
     message and the `missing` list are reported in, so it must be stable."""
     keys: list[tuple[str, str]] = []
     for entry in expected_sections or []:
-        pair = normalized_citation_pair(entry.get("act_number"), entry.get("section_number"))
+        pair = normalized_citation_pair(
+            entry.get("act_number"), entry.get("section_number"), entry.get("path")
+        )
         if pair and pair not in keys:
             keys.append(pair)
     return keys
@@ -286,6 +305,7 @@ def run_assertions(
     expected_section: str | None,
     expected_policy: str,
     db_conn: Any,
+    expected_path: str | None = None,
     expected_language: str | None = None,
     expected_sections: list[dict[str, Any]] | None = None,
     min_sections_found: int | None = None,
@@ -317,7 +337,7 @@ def run_assertions(
     if result is not None:
         failures["tool_selection"] = result
 
-    result = check_expected_section(citations, expected_act_number, expected_section)
+    result = check_expected_section(citations, expected_act_number, expected_section, expected_path)
     if result is not None:
         failures["expected_section"] = result
 

@@ -38,8 +38,12 @@ _Avoid_: latest PDF, remote PDF, Official Source Link
 A deterministic extraction of one **Receipt Document**, identified by document identity, extractor/version, and configuration hash. Owns a chunk-set hash and a hash-verified word-coordinate sidecar. Retrieval chunks carry its `document_id`, `extraction_id`, content hash, page bounds.
 
 **Division**:
-One run of numbering inside an Act. The body is one division; each schedule at the back is another, and so is the list of amendments. Schedules restart at paragraph 1, so a section number only identifies a chunk together with its division. Every chunk carries one, `body` or the heading as the Act prints it.
+One run of numbering inside an Act. The body is one division; each schedule at the back is another, and so is the list of amendments. Every chunk carries one division value: `body`, or the heading as the Act prints it. Schedules restart at paragraph 1, so a chunk's real identity is its **Path**.
 _Avoid_: part, chapter (those subdivide the body and share its numbering)
+
+**Path**:
+A chunk's structural identifier inside its **Division**, replacing `(division, section_number)`: `s.<n>` for a body section; `sched.<k>` for a schedule's own content, with no numbered item; `sched.<k>/para.<n>` or `sched.<k>/art.<n>` for one of that schedule's items. `k` is the schedule's position in the Act. It's not parsed from the printed ordinal word (`"FIRST"`, `"PERTAMA"`), so it also works on a schedule with no ordinal word at all. `section_number` stays populated only for a body chunk.
+_Avoid_: section number (alone) — ambiguous the moment a schedule paragraph shares a body section's number
 
 **Active Corpus Mapping**:
 The reversible pointer from one `(Act, language)` pair to a ready **Receipt Document** and **Extraction Run**. New bytes get registered and shadow-ingested before this pointer moves; the prior mapping stays in activation history for rollback.

@@ -108,6 +108,7 @@ def _collect_cited_sources(state: AgentState) -> list[dict]:
         key = canonicalize_citation_key(
             citation.get("act_number"),
             citation.get("section_number"),
+            citation.get("path"),
         )
         receipt = citation.get("receipt") if isinstance(citation.get("receipt"), dict) else {}
         document_id = receipt.get("document_id") if receipt else None
@@ -118,7 +119,7 @@ def _collect_cited_sources(state: AgentState) -> list[dict]:
         candidates = [
             chunk for chunk in state.get("retrieved_chunks", [])
             if canonicalize_citation_key(
-                chunk.get("act_number"), chunk.get("section_number")
+                chunk.get("act_number"), chunk.get("section_number"), chunk.get("path")
             ) == key
             and (not document_id or chunk.get("document_id") == document_id)
         ]
@@ -129,6 +130,7 @@ def _collect_cited_sources(state: AgentState) -> list[dict]:
             "act_number": chunk.get("act_number", ""),
             "act_title": chunk.get("act_title", ""),
             "section_number": chunk.get("section_number", ""),
+            "path": chunk.get("path", ""),
             "content": chunk.get("content", ""),
             "document_id": chunk.get("document_id", ""),
             "extraction_id": chunk.get("extraction_id", ""),
@@ -165,10 +167,14 @@ def _finalise(result: _GroundingOutput, state: AgentState, violations: list[str]
     citation_lookup: dict[tuple[str, str], list[dict]] = {}
     chunk_lookup: dict[tuple[str, str], list[dict]] = {}
     for citation in citations:
-        key = canonicalize_citation_key(citation.get("act_number"), citation.get("section_number"))
+        key = canonicalize_citation_key(
+            citation.get("act_number"), citation.get("section_number"), citation.get("path")
+        )
         citation_lookup.setdefault(key, []).append(citation)
     for chunk in state.get("retrieved_chunks", []):
-        key = canonicalize_citation_key(chunk.get("act_number"), chunk.get("section_number"))
+        key = canonicalize_citation_key(
+            chunk.get("act_number"), chunk.get("section_number"), chunk.get("path")
+        )
         chunk_lookup.setdefault(key, []).append(chunk)
     seen_evidence: set[tuple[tuple[str, ...], tuple[str, ...]]] = set()
     try:

@@ -24,6 +24,23 @@ def _invoke(tool, args: dict) -> Command:
     return tool.invoke({"type": "tool_call", "id": "call_1", "name": tool.name, "args": args})
 
 
+class SummariseHelperTests(unittest.TestCase):
+    def test_names_a_body_row_by_its_bare_section(self):
+        summary = tools._summarise([{"act_number": "56", "section_number": "90A", "path": "s.90A"}])
+        self.assertIn("s.90A of Act 56", summary)
+
+    def test_names_a_schedule_row_by_its_path_not_a_blank_section_number(self):
+        row = {"act_number": "512", "section_number": "", "path": "sched.2/art.1"}
+        summary = tools._summarise([row])
+        self.assertIn("sched.2/art.1 of Act 512", summary)
+        self.assertNotIn("s. of Act", summary)
+
+    def test_falls_back_to_bare_section_when_path_is_unavailable(self):
+        """A legacy DB with no `path` column still gives the model a readable name."""
+        summary = tools._summarise([{"act_number": "56", "section_number": "90A"}])
+        self.assertIn("s.90A of Act 56", summary)
+
+
 class SearchStatutesToolTests(unittest.TestCase):
     def test_returns_command_updating_retrieved_chunks(self):
         rows = [{"act_number": "709", "section_number": "5"}]
