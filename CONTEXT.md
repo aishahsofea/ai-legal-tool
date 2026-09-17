@@ -35,7 +35,7 @@ An immutable, manifest-identified PDF snapshot — its bytes are exactly those u
 _Avoid_: latest PDF, remote PDF, Official Source Link
 
 **Extraction Run**:
-A deterministic extraction of one **Receipt Document**, identified by document identity, extractor/version, and configuration hash. Owns a chunk-set hash and a hash-verified word-coordinate sidecar. Retrieval chunks carry its `document_id`, `extraction_id`, content hash, page bounds.
+A deterministic extraction of one **Receipt Document**, identified by document identity, extractor/version, and configuration hash. Owns a chunk-set hash and a hash-verified word-coordinate sidecar. Retrieval chunks carry its `document_id`, `extraction_id`, content hash, page bounds. Its text comes from the Receipt Document's own text layer, or — for a scanned Receipt Document — from OCR under the same identity and reproducibility guarantee (ADR 0019).
 
 **Division**:
 One run of numbering inside an Act. The body is one division; each schedule at the back is another, and so is the list of amendments. Every chunk carries one division value: `body`, or the heading as the Act prints it. Schedules restart at paragraph 1, so a chunk's real identity is its **Path**.

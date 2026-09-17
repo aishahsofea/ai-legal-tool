@@ -13,30 +13,32 @@ from corpus.identity import canonical_json_bytes, sha256_file
 SIDECAR_FORMAT = "pymupdf-words-v1+gzip"
 
 
-def sidecar_payload(pdf_path: Path, document_id: str, document_sha256: str) -> dict:
+def sidecar_payload(pdf: fitz.Document, document_id: str, document_sha256: str) -> dict:
+    """Words come from whatever document the caller opened -- the original for a
+    text-layer PDF, or the OCR'd copy for a scanned one (ADR 0019), so this never
+    opens pdf_path itself: the caller decides which bytes produced the text."""
     pages = []
-    with fitz.open(pdf_path) as pdf:
-        for page_index, page in enumerate(pdf):
-            words = []
-            for item in page.get_text("words", sort=True):
-                x0, y0, x1, y1, raw, block, line, word = item[:8]
-                words.append([
-                    round(float(x0), 4),
-                    round(float(y0), 4),
-                    round(float(x1), 4),
-                    round(float(y1), 4),
-                    str(raw),
-                    int(block),
-                    int(line),
-                    int(word),
-                ])
-            pages.append({
-                "page_number": page_index + 1,
-                "width": round(float(page.rect.width), 4),
-                "height": round(float(page.rect.height), 4),
-                "rotation": int(page.rotation),
-                "words": words,
-            })
+    for page_index, page in enumerate(pdf):
+        words = []
+        for item in page.get_text("words", sort=True):
+            x0, y0, x1, y1, raw, block, line, word = item[:8]
+            words.append([
+                round(float(x0), 4),
+                round(float(y0), 4),
+                round(float(x1), 4),
+                round(float(y1), 4),
+                str(raw),
+                int(block),
+                int(line),
+                int(word),
+            ])
+        pages.append({
+            "page_number": page_index + 1,
+            "width": round(float(page.rect.width), 4),
+            "height": round(float(page.rect.height), 4),
+            "rotation": int(page.rotation),
+            "words": words,
+        })
     return {
         "schema_version": 1,
         "document_id": document_id,
@@ -47,12 +49,12 @@ def sidecar_payload(pdf_path: Path, document_id: str, document_sha256: str) -> d
 
 
 def write_sidecar(
-    pdf_path: Path,
+    pdf: fitz.Document,
     output_path: Path,
     document_id: str,
     document_sha256: str,
 ) -> tuple[str, int]:
-    payload = sidecar_payload(pdf_path, document_id, document_sha256)
+    payload = sidecar_payload(pdf, document_id, document_sha256)
     encoded = gzip.compress(canonical_json_bytes(payload), compresslevel=9, mtime=0)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_bytes(encoded)
