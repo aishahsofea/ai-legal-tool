@@ -24,7 +24,7 @@ from corpus.registry import CorpusRegistry
 from corpus.sidecars import SIDECAR_FORMAT, write_sidecar
 
 EXTRACTOR = "malaysian-act-sections-pymupdf"
-EXTRACTOR_VERSION = "2.6.0"
+EXTRACTOR_VERSION = "2.7.0"
 SECTION_PATTERN = r"^(\d{1,3}[A-Z]{0,2})\.\s+\S"
 # A number AGC prints alone on its own line: its title on the line above, its
 # text starting on the line after (#72's cohort - 22 documents whose
@@ -172,6 +172,11 @@ ENACTING_FORMULA_MAX_PAGE_FRACTION = 0.5
 ENACTING_FORMULA_MIN_PAGE_FLOOR = 30
 SCANNED_THRESHOLD = 100
 MIN_CONTENT_CHARS = 80
+# ADR 0019. 300 DPI and eng/msa+eng are the settings #104 measured chunk yield
+# and word-coordinate accuracy against; changing either is a real extraction
+# input, not a knob, which is why both live in EXTRACTOR_CONFIG below.
+OCR_RENDER_DPI = 300
+OCR_LANGUAGE_BY_DOCUMENT_LANGUAGE = {"en": "eng", "bm": "msa+eng"}
 _SECTION_RE = re.compile(SECTION_PATTERN)
 _BARE_ITEM_RE = re.compile(BARE_ITEM_PATTERN)
 _SCHEDULE_ARTICLE_RE = re.compile(SCHEDULE_ARTICLE_PATTERN)
@@ -195,6 +200,13 @@ EXTRACTOR_CONFIG = {
     "enacting_formula_min_page_floor": ENACTING_FORMULA_MIN_PAGE_FLOOR,
     "scanned_threshold": SCANNED_THRESHOLD,
     "min_content_chars": MIN_CONTENT_CHARS,
+    "ocr_render_dpi": OCR_RENDER_DPI,
+    "ocr_language_by_document_language": OCR_LANGUAGE_BY_DOCUMENT_LANGUAGE,
+    # pdfocr_tobytes/get_textpage_ocr run MuPDF's own statically-linked Tesseract
+    # and Leptonica, not the system `tesseract` binary -- neither engine exposes a
+    # runtime version through PyMuPDF's API (ADR 0019), so the PyMuPDF version is
+    # the queryable proxy: it fixes which OCR build is compiled in.
+    "ocr_engine": f"pymupdf-{fitz.VersionBind}",
     "division_boundary": "last-run-per-heading-dropping-a-leading-division-longer-than-the-body",
     "front_matter_boundary": "enacting-formula-opening-line-in-document-language-else-undivided",
     "deduplication": "last-path-wins-within-division",
@@ -209,6 +221,27 @@ CONFIGURATION_HASH = sha256_json(EXTRACTOR_CONFIG)
 
 def _is_scanned(pdf: fitz.Document) -> bool:
     return sum(len(page.get_text()) for page in pdf) / max(pdf.page_count, 1) < SCANNED_THRESHOLD
+
+
+def _ocr_pdf(pdf: fitz.Document, language: str) -> fitz.Document:
+    """Render every page and OCR it, returning a new in-memory PDF with a real text layer.
+
+    ADR 0019: one OCR pass has to feed both the chunk text and the coordinate
+    sidecar, so callers extract chunks and write the sidecar from the document
+    this returns rather than OCR-ing twice. pdfocr_tobytes sizes the OCR'd
+    page from the source pixmap's own resolution, so the returned page's
+    geometry already matches the original page's -- no rescale needed before
+    words end up in the sidecar.
+    """
+    tesseract_language = OCR_LANGUAGE_BY_DOCUMENT_LANGUAGE.get(language, "eng")
+    tessdata = os.environ.get("TESSDATA_PREFIX")
+    ocr_pdf = fitz.open()
+    for page in pdf:
+        pixmap = page.get_pixmap(dpi=OCR_RENDER_DPI)
+        page_bytes = pixmap.pdfocr_tobytes(language=tesseract_language, tessdata=tessdata)
+        with fitz.open("pdf", page_bytes) as page_pdf:
+            ocr_pdf.insert_pdf(page_pdf)
+    return ocr_pdf
 
 
 def _is_heading_case(text: str) -> bool:
@@ -917,30 +950,36 @@ def extract_document(
     identity = extraction_id(
         document.document_id, EXTRACTOR, EXTRACTOR_VERSION, CONFIGURATION_HASH
     )
-    with fitz.open(pdf_path) as pdf:
-        if _is_scanned(pdf):
-            raise ValueError("scanned_image_only")
-        chunks = _extract_chunks(pdf, document)
-    if not chunks:
-        raise ValueError("no_chunks")
-    for chunk in chunks:
-        chunk["extraction_id"] = identity
-
-    sidecar_local = f"{identity}.words.json.gz"
-    sidecar_path = Path(sidecar_root) / sidecar_local
-    sidecar_path.parent.mkdir(parents=True, exist_ok=True)
-    descriptor, temporary_name = tempfile.mkstemp(
-        prefix=f".{identity}-", suffix=".words.json.gz", dir=sidecar_path.parent
-    )
-    os.close(descriptor)
-    temporary_sidecar = Path(temporary_name)
+    ocr_pdf: fitz.Document | None = None
     try:
-        sidecar_sha, sidecar_size = write_sidecar(
-            pdf_path, temporary_sidecar, document.document_id, document.sha256
-        )
-    except Exception:
-        temporary_sidecar.unlink(missing_ok=True)
-        raise
+        with fitz.open(pdf_path) as original_pdf:
+            if _is_scanned(original_pdf):
+                ocr_pdf = _ocr_pdf(original_pdf, document.language)
+            source_pdf = ocr_pdf if ocr_pdf is not None else original_pdf
+            chunks = _extract_chunks(source_pdf, document)
+            if not chunks:
+                raise ValueError("no_chunks")
+            for chunk in chunks:
+                chunk["extraction_id"] = identity
+
+            sidecar_local = f"{identity}.words.json.gz"
+            sidecar_path = Path(sidecar_root) / sidecar_local
+            sidecar_path.parent.mkdir(parents=True, exist_ok=True)
+            descriptor, temporary_name = tempfile.mkstemp(
+                prefix=f".{identity}-", suffix=".words.json.gz", dir=sidecar_path.parent
+            )
+            os.close(descriptor)
+            temporary_sidecar = Path(temporary_name)
+            try:
+                sidecar_sha, sidecar_size = write_sidecar(
+                    source_pdf, temporary_sidecar, document.document_id, document.sha256
+                )
+            except Exception:
+                temporary_sidecar.unlink(missing_ok=True)
+                raise
+    finally:
+        if ocr_pdf is not None:
+            ocr_pdf.close()
     sidecar_key = f"statutes/extractions/{identity}/{sidecar_sha}.words.json.gz"
     sidecar = CoordinateSidecar(
         asset_key=sidecar_key,
@@ -1038,7 +1077,19 @@ def extract_manifest(
         runs[run.extraction_id] = run
         documents[identity] = replace(document, lifecycle_status="extracted")
         with fitz.open(registry.local_path(document)) as pdf:
-            accounting = _extraction_accounting(pdf, document)
+            # _extraction_accounting cross-checks _extract_chunks against an
+            # independent re-read of the same text layer (see its docstring).
+            # A scanned document has no publisher text layer to re-read -- the
+            # original bytes it would open here are the textless source OCR
+            # replaced, not what _extract_chunks actually saw -- so there is
+            # no independent second reading to cross-check against. ADR 0019
+            # scope; skip rather than report accounting against the wrong bytes.
+            ocr = _is_scanned(pdf)
+            accounting = (
+                ExtractionAccounting(pdf_chars=0, assigned_chars=0, classified_chars=0, unassigned_chars=0)
+                if ocr
+                else _extraction_accounting(pdf, document)
+            )
         chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
         quality = _chunk_quality(chunks)
         for chunk in chunks:
@@ -1071,6 +1122,7 @@ def extract_manifest(
             "sidecar_sha256": run.coordinate_sidecar.sha256 if run.coordinate_sidecar else "",
             "bundle": bundle_path.name,
             "status": "ready",
+            "ocr": ocr,
             **accounting.to_dict(),
             **quality,
         })

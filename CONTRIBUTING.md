@@ -88,6 +88,15 @@ python3 -m corpus rollout
 
 Extractor 2.1.0 splits an Act into divisions, so every extraction identity changed. Step 4 re-extracts all 1079 documents rather than resuming, and step 5 re-embeds them. Budget for both before upgrading.
 
+Step 4 also OCRs any scanned document (ADR 0019) — 23 of the corpus's 1124 have no publisher text layer. Before running step 4 on a scanned document, install Tesseract's language data and point `TESSDATA_PREFIX` at it. The other 1101 documents need neither:
+
+```bash
+brew install tesseract tesseract-lang   # tesseract-lang carries msa, the Malay model
+export TESSDATA_PREFIX=/opt/homebrew/share/tessdata
+```
+
+PyMuPDF's OCR calls (`pdfocr_tobytes`, `get_textpage_ocr`) run MuPDF's own bundled Tesseract, not the `tesseract` binary these packages install. Only the language data on disk matters here. `TESSDATA_PREFIX` is Tesseract's own standard variable, nothing project-specific.
+
 All steps are idempotent. Step 3 re-observes authoritative PDF bytes to catch same-URL replacements; content/extraction identities prevent duplicate downstream work. Run steps individually if needed:
 
 ```bash

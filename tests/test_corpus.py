@@ -56,6 +56,25 @@ def _divided_pdf(path: Path, pages: list[list[tuple[str, bool]]]) -> None:
     document.close()
 
 
+def _scanned_pdf(path: Path, lines: list[str], *, dpi: int = 150) -> None:
+    """An image-only PDF: the same text `_pdf` would write, rendered to a pixmap and
+    embedded as an image with no text layer, so `_is_scanned` sees it as scanned and
+    only OCR can recover its content. The page is sized from the pixmap's own
+    resolution so it matches what a real scan's page geometry looks like.
+    """
+    source = fitz.open()
+    page = source.new_page(width=400, height=500)
+    for index, line in enumerate(lines):
+        page.insert_text((40, 60 + index * 20), line, fontsize=11)
+    pixmap = page.get_pixmap(dpi=dpi)
+    source.close()
+    image = fitz.open()
+    image_page = image.new_page(width=pixmap.width * 72 / dpi, height=pixmap.height * 72 / dpi)
+    image_page.insert_image(image_page.rect, pixmap=pixmap)
+    image.save(path)
+    image.close()
+
+
 def _metadata(path: Path, act: str, source: str, *, detail: str = "lang=BI") -> None:
     path.write_text(json.dumps({
         "act_number": act,
@@ -244,8 +263,127 @@ def test_exact_extraction_sidecar_locator_and_scanned_failure(tmp_path: Path):
         "active_documents": [], "aliases": {},
     }), encoding="utf-8")
     scanned_registry = CorpusRegistry(scanned_manifest, asset_root=asset_root)
-    with pytest.raises(ValueError, match="scanned_image_only"):
+    # A genuinely blank scanned page still fails -- OCR now runs (ADR 0019) but
+    # finds nothing to extract, so this ends in no_chunks rather than the old
+    # scanned_image_only, which no longer happens for any scanned document.
+    with pytest.raises(ValueError, match="no_chunks"):
         extract_document(scanned_registry, scanned, extraction_root=extraction_root, sidecar_root=sidecar_root)
+
+
+def test_scanned_document_is_recovered_through_ocr_deterministically(tmp_path: Path):
+    asset_root = tmp_path / "assets"
+    sidecar_root = tmp_path / "sidecars"
+    extraction_root = tmp_path / "extractions"
+    asset_root.mkdir()
+    pdf_path = asset_root / "scanned-fixture.pdf"
+    _scanned_pdf(pdf_path, [
+        "Short title",
+        "1. Alpha evidence appears here and this section contains",
+        "enough additional legal fixture words to pass extraction.",
+        "The remaining sentence makes the text-layer threshold unambiguous.",
+    ])
+    digest = sha256_file(pdf_path)
+    document = CorpusDocument(
+        document_id("101", "en", digest), "101", "SCANNED FIXTURE ACT", "en", asset_key(digest), digest,
+        pdf_path.stat().st_size, 1, "https://example.test/101.pdf", "", "REPRINT",
+        "2026-01-01T00:00:00Z", local_path=pdf_path.name,
+    )
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256", "documents": [document.to_dict()],
+        "extraction_runs": [], "active_documents": [], "aliases": {},
+    }), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=sidecar_root)
+
+    assert _is_scanned(fitz.open(pdf_path)) is True
+
+    first_run, _bundle = extract_document(
+        registry, document, extraction_root=extraction_root, sidecar_root=sidecar_root
+    )
+    assert first_run.chunk_count >= 1
+    sidecar_path = sidecar_root / first_run.coordinate_sidecar.local_path
+    located = locate_evidence(
+        pdf_path, "Alpha evidence appears here", 1, sidecar_path=sidecar_path,
+        document_id=document.document_id, document_sha256=document.sha256,
+    )
+    assert located.status == "matched" and located.pages[0].rectangles
+
+    # Extracting the same scanned document again must reproduce the identical
+    # chunk_set_hash and sidecar SHA-256 (#104's determinism acceptance
+    # criterion) -- registry.extraction_runs already holds the first run, so a
+    # second call that disagrees raises extraction_identity_drift instead of
+    # silently overwriting it.
+    registry.extraction_runs[first_run.extraction_id] = first_run
+    second_run, _bundle = extract_document(
+        registry, document, extraction_root=extraction_root, sidecar_root=sidecar_root
+    )
+    assert second_run.chunk_set_hash == first_run.chunk_set_hash
+    assert second_run.coordinate_sidecar.sha256 == first_run.coordinate_sidecar.sha256
+
+
+def test_ocr_config_changes_the_configuration_hash():
+    from corpus.extraction import CONFIGURATION_HASH, EXTRACTOR_CONFIG
+    from corpus.identity import sha256_json
+
+    for key in ("ocr_render_dpi", "ocr_language_by_document_language", "ocr_engine"):
+        assert key in EXTRACTOR_CONFIG
+    changed = sha256_json({**EXTRACTOR_CONFIG, "ocr_render_dpi": 150})
+    assert changed != CONFIGURATION_HASH
+
+
+def test_extract_manifest_skips_accounting_for_scanned_documents(tmp_path: Path):
+    asset_root = tmp_path / "assets"
+    sidecar_root = tmp_path / "sidecars"
+    extraction_root = tmp_path / "extractions"
+    asset_root.mkdir()
+
+    text_path = asset_root / "text.pdf"
+    _pdf(text_path, [
+        "Short title",
+        "1. Alpha evidence appears here and this section contains",
+        "enough additional legal fixture words to pass extraction.",
+    ])
+    scanned_path = asset_root / "scanned.pdf"
+    _scanned_pdf(scanned_path, [
+        "Short title",
+        "1. Alpha evidence appears here and this section contains",
+        "enough additional legal fixture words to pass extraction.",
+    ])
+    text_digest = sha256_file(text_path)
+    scanned_digest = sha256_file(scanned_path)
+    text_document = CorpusDocument(
+        document_id("102", "en", text_digest), "102", "TEXT ACT", "en", asset_key(text_digest),
+        text_digest, text_path.stat().st_size, 1, "https://example.test/102.pdf", "", "REPRINT",
+        "2026-01-01T00:00:00Z", local_path=text_path.name,
+    )
+    scanned_document = CorpusDocument(
+        document_id("103", "en", scanned_digest), "103", "SCANNED ACT", "en", asset_key(scanned_digest),
+        scanned_digest, scanned_path.stat().st_size, 1, "https://example.test/103.pdf", "", "REPRINT",
+        "2026-01-01T00:00:00Z", local_path=scanned_path.name,
+    )
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256",
+        "documents": [text_document.to_dict(), scanned_document.to_dict()],
+        "extraction_runs": [], "active_documents": [], "aliases": {},
+    }), encoding="utf-8")
+    registry = CorpusRegistry(manifest_path, asset_root=asset_root, sidecar_root=sidecar_root)
+
+    _manifest, report = extract_manifest(
+        registry, extraction_root=extraction_root, sidecar_root=sidecar_root,
+        document_ids=[text_document.document_id, scanned_document.document_id],
+    )
+    results = {item["document_id"]: item for item in report["documents"]}
+    text_result = results[text_document.document_id]
+    scanned_result = results[scanned_document.document_id]
+
+    assert text_result["ocr"] is False
+    assert text_result["pdf_chars"] > 0
+    assert scanned_result["ocr"] is True
+    assert scanned_result["pdf_chars"] == 0
+    assert scanned_result["assigned_chars"] == 0
+    assert scanned_result["classified_chars"] == 0
+    assert scanned_result["unassigned_chars"] == 0
 
 
 def test_checked_in_coverage_accounts_for_every_source_pdf():
