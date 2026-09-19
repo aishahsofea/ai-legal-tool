@@ -81,6 +81,10 @@ A fixed-position overlay of the union of two independently audited, promoted one
 A selective internal **Retrieval Agent** operation: one bounded hop through a promoted **Statutory Reference Graph**, taken only after search/lookup has already established an exact anchor. It never becomes a citation source itself — same-Act text still comes from the anchor's own extraction, cross-Act targets keep their own independent provenance. Missing graph/target data fails open. The exact operational contract (edge cap, ordering, hop limit, boundary handling) is canonical in [CONTRIBUTING.md](CONTRIBUTING.md#statutory-reference-graph-operator-workflow).
 _Avoid_: graph search, automatic traversal, graph citation
 
+**Commentary Note**:
+Background material from an allowlisted web publisher, carried on its own `commentary` channel — never a **Citation**, never appended to `retrieved_chunks`. Gated by `WEB_COMMENTARY_ENABLED` (ADR 0020); flag off means no behaviour change at all. Has no bytes, no page, and no word coordinate — so it can never open a **Citation Receipt** or satisfy citation presence. That absence is a type-level guarantee, not a policy one. Flag semantics: [CONTRIBUTING.md](CONTRIBUTING.md#2-environment-variables).
+_Avoid_: source (already means citation in the UI's SOURCE MAP / SOURCES USED), reference (already the **Statutory Reference Graph**'s vocabulary)
+
 **Timeline Entry**:
 A dated version event for an Act: ORIGINAL, REPRINT, REPRINT ONLINE, or AMENDMENTS. Stored in the `timeline` array of each act metadata file.
 
