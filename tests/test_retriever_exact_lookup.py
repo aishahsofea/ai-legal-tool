@@ -36,6 +36,9 @@ class SearchHelperTests(unittest.TestCase):
         )
 
     def test_extracts_bm_act_hints(self):
+        # Kanun Keseksaan and Akta Pekerjaan have no Malay title in the
+        # manifest, so these two still come from `_ACT_ALIASES` and return
+        # the (English) fallback display title.
         self.assertEqual(
             search.extract_act_hint("seksyen 34 Kanun Keseksaan"),
             ("574", "PENAL CODE"),
@@ -44,18 +47,75 @@ class SearchHelperTests(unittest.TestCase):
             search.extract_act_hint("seksyen 60A Akta Pekerjaan 1955"),
             ("265", "EMPLOYMENT ACT 1955"),
         )
+        # These three resolve from the Act's own Malay title in the manifest,
+        # so the returned title is the Malay one that actually matched - not
+        # the English title, unlike the old hand-maintained alias table.
         self.assertEqual(
             search.extract_act_hint("seksyen 90A Akta Keterangan"),
-            ("56", "EVIDENCE ACT 1950"),
+            ("56", "AKTA KETERANGAN 1950"),
         )
         self.assertEqual(
             search.extract_act_hint("Akta Perlindungan Data Peribadi seksyen 5"),
-            ("709", "PERSONAL DATA PROTECTION ACT 2010"),
+            ("709", "AKTA PERLINDUNGAN DATA PERIBADI 2010"),
         )
         self.assertEqual(
             search.extract_act_hint("seksyen 10 Akta Syarikat"),
-            ("777", "COMPANIES ACT 2016"),
+            ("777", "AKTA SYARIKAT 2016"),
         )
+
+    def test_extracts_act_hint_previously_missing_bm_coverage(self):
+        # #62: neither of these resolved before - Kanun Tatacara Jenayah had
+        # no alias at all, and SPRM has no title in the manifest to match.
+        self.assertEqual(
+            search.extract_act_hint(
+                "Di bawah seksyen 117 Kanun Tatacara Jenayah, apakah yang "
+                "perlu dilakukan apabila siasatan tidak dapat disiapkan?"
+            ),
+            ("593", "CRIMINAL PROCEDURE CODE"),
+        )
+        self.assertEqual(
+            search.extract_act_hint(
+                "Apakah hukuman di bawah Akta SPRM 2009 bagi kesalahan rasuah?"
+            ),
+            ("694", "MALAYSIAN ANTI-CORRUPTION COMMISSION ACT 2009"),
+        )
+
+    def test_extracts_act_hint_from_manifest_title_beyond_the_old_alias_table(self):
+        # Generalises past the 6 Acts the old table hard-coded - any Act's
+        # real title in the manifest now resolves, e.g. the Copyright Act.
+        self.assertEqual(
+            search.extract_act_hint("Section 36 of the Copyright Act protects..."),
+            ("332", "COPYRIGHT ACT 1987"),
+        )
+
+    def test_act_hint_ignores_casing_and_punctuation(self):
+        self.assertEqual(
+            search.extract_act_hint("under the *evidence-act,* what applies?"),
+            ("56", "EVIDENCE ACT 1950"),
+        )
+
+    def test_ambiguous_act_reference_resolves_to_no_act(self):
+        # Two different Acts named in the same query - a wrong Act is worse
+        # than no Act, so this must not guess.
+        self.assertEqual(
+            search.extract_act_hint(
+                "Compare section 5 of the Evidence Act 1950 with section 34 "
+                "of the Penal Code."
+            ),
+            (None, None),
+        )
+
+    def test_unrecognised_act_name_resolves_to_no_act(self):
+        self.assertEqual(
+            search.extract_act_hint("What is the penalty for littering?"),
+            (None, None),
+        )
+
+    def test_act_title_index_is_cached(self):
+        search._act_title_index.cache_clear()
+        first = search._act_title_index()
+        second = search._act_title_index()
+        self.assertIs(first, second)
 
     def test_exact_registered_source_url_wins_and_amendments_are_not_fallbacks(self):
         rows = [{
