@@ -151,6 +151,8 @@ Endpoints:
 
 ### 6. Start the frontend
 
+Needs Node 22 (`frontend/.nvmrc` pins it — run `nvm use` first).
+
 ```bash
 cd frontend
 npm install
