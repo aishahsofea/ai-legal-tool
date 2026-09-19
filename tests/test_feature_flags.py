@@ -15,6 +15,7 @@ from agent.memory.extractor import _enabled as extract_enabled
 from agent.memory.pruner import _enabled as prune_enabled
 from agent.nodes.recall import _enabled as recall_enabled
 from agent.retrieval.reference_graph import follow_references_enabled
+from agent.retrieval.tools import web_commentary_enabled
 from api.reference_graph import reference_graph_comparison_enabled, reference_graph_enabled
 
 TRUE_SPELLINGS = ("1", "true", "TRUE", "yes", "on", "ON", "  on  ")
@@ -26,6 +27,7 @@ FLAGS = {
     "SEMANTIC_MEMORY_PRUNE": prune_enabled,
     "SEMANTIC_MEMORY_RECALL": recall_enabled,
     "FOLLOW_REFERENCES_ENABLED": follow_references_enabled,
+    "WEB_COMMENTARY_ENABLED": web_commentary_enabled,
     "REFERENCE_GRAPH_ENABLED": reference_graph_enabled,
 }
 

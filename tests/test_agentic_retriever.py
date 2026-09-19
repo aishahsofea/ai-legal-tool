@@ -78,6 +78,31 @@ class AgenticRetrieverNodeTests(unittest.TestCase):
             })
         self.assertEqual(result["retrieved_chunks"], det_rows)
 
+    def test_threads_commentary_onto_the_state_update(self):
+        rows = [{"act_number": "709", "section_number": "5"}]
+        notes = [{"url": "https://skrine.com/x", "title": "t", "publisher": "skrine.com",
+                  "published_date": "", "retrieved_at": "", "snippet": ""}]
+        out = {"chunks": rows, "tools": ["search_statutes"], "commentary": notes}
+        with patch("agent.retrieval.agent.run_retrieval_agent", return_value=out):
+            result = retriever.agentic_retriever_node({
+                "query": "data privacy for employers",
+                "query_type": "topical",
+            })
+        self.assertEqual(result["commentary"], notes)
+
+    def test_preserves_commentary_even_when_falling_back_to_deterministic(self):
+        det_rows = [{"act_number": "56", "section_number": "90A"}]
+        notes = [{"url": "https://skrine.com/x", "title": "t", "publisher": "skrine.com",
+                  "published_date": "", "retrieved_at": "", "snippet": ""}]
+        out = {"chunks": [], "tools": [], "commentary": notes}
+        with patch("agent.retrieval.agent.run_retrieval_agent", return_value=out), \
+             patch.object(retriever, "semantic_search", return_value=det_rows):
+            result = retriever.agentic_retriever_node({
+                "query": "q", "query_type": "topical",
+            })
+        self.assertEqual(result["retrieved_chunks"], det_rows)
+        self.assertEqual(result["commentary"], notes)
+
 
 class ToolTraceChannelTests(unittest.TestCase):
     """Error and empty-result paths must land in the trace too. Each tool writes
@@ -197,6 +222,89 @@ class FollowToolBindingTests(unittest.TestCase):
         )
         self.assertIs(disabled_first, disabled_second)
         self.assertEqual(len(compiled), 2)
+
+
+class CommentaryToolBindingTests(unittest.TestCase):
+    def setUp(self):
+        retrieval_agent._build_retrieval_agent.cache_clear()
+
+    def tearDown(self):
+        retrieval_agent._build_retrieval_agent.cache_clear()
+
+    def test_enabled_variant_adds_only_commentary_tool_and_conditional_prompt(self):
+        sentinel = object()
+        with patch.dict(os.environ, {
+            "FOLLOW_REFERENCES_ENABLED": "",
+            "WEB_COMMENTARY_ENABLED": "on",
+        }), patch.object(retrieval_agent, "make_llm", return_value=object()), \
+             patch.object(retrieval_agent, "create_agent", return_value=sentinel) as create:
+            self.assertIs(retrieval_agent.get_retrieval_agent(), sentinel)
+
+        kwargs = create.call_args.kwargs
+        self.assertEqual(
+            [tool.name for tool in kwargs["tools"]],
+            ["search_statutes", "lookup_section", "search_commentary"],
+        )
+        self.assertIn("allowlist of trusted Malaysian legal-commentary", kwargs["system_prompt"])
+        # commentary_enabled alone must not switch the state schema or add a
+        # context_schema — only follow_enabled does that.
+        self.assertIs(kwargs["state_schema"], retrieval_agent.RetrievalState)
+        self.assertNotIn("context_schema", kwargs)
+
+    def test_both_flags_on_binds_all_tools_on_the_reference_schema(self):
+        sentinel = object()
+        with patch.dict(os.environ, {
+            "FOLLOW_REFERENCES_ENABLED": "on",
+            "WEB_COMMENTARY_ENABLED": "on",
+        }), patch.object(retrieval_agent, "make_llm", return_value=object()), \
+             patch.object(retrieval_agent, "create_agent", return_value=sentinel) as create:
+            self.assertIs(retrieval_agent.get_retrieval_agent(), sentinel)
+
+        kwargs = create.call_args.kwargs
+        self.assertEqual(
+            [tool.name for tool in kwargs["tools"]],
+            ["search_statutes", "lookup_section", "follow_references", "search_commentary"],
+        )
+        self.assertIn("explicit statutory-reference intent only", kwargs["system_prompt"])
+        self.assertIn("allowlist of trusted Malaysian legal-commentary", kwargs["system_prompt"])
+        self.assertIs(kwargs["state_schema"], retrieval_agent.ReferenceRetrievalState)
+        self.assertIs(kwargs["context_schema"], retrieval_agent.RetrievalReferenceContext)
+
+    def test_all_four_flag_combinations_compile_independently(self):
+        """Regression guard for the lru_cache sizing: two independent flags make
+        four tool-and-prompt combinations, and a cache sized for fewer would
+        silently reuse the wrong compiled agent for whichever combo evicted."""
+        compiled = []
+
+        def fake_create(*_args, **kwargs):
+            value = tuple(tool.name for tool in kwargs["tools"])
+            compiled.append(value)
+            return value
+
+        combos = [("", ""), ("true", ""), ("", "true"), ("true", "true")]
+        with patch.object(retrieval_agent, "make_llm", return_value=object()), \
+             patch.object(retrieval_agent, "create_agent", side_effect=fake_create):
+            results = []
+            for follow_value, commentary_value in combos:
+                with patch.dict(os.environ, {
+                    "FOLLOW_REFERENCES_ENABLED": follow_value,
+                    "WEB_COMMENTARY_ENABLED": commentary_value,
+                }):
+                    results.append(retrieval_agent.get_retrieval_agent())
+
+            # Re-requesting the first combo must hit the cache, not recompile.
+            with patch.dict(os.environ, {"FOLLOW_REFERENCES_ENABLED": "", "WEB_COMMENTARY_ENABLED": ""}):
+                results.append(retrieval_agent.get_retrieval_agent())
+
+        self.assertEqual(len(compiled), 4)
+        self.assertEqual(results[0], ("search_statutes", "lookup_section"))
+        self.assertEqual(results[1], ("search_statutes", "lookup_section", "follow_references"))
+        self.assertEqual(results[2], ("search_statutes", "lookup_section", "search_commentary"))
+        self.assertEqual(
+            results[3],
+            ("search_statutes", "lookup_section", "follow_references", "search_commentary"),
+        )
+        self.assertEqual(results[4], results[0])
 
 
 class FollowRetrievalGraphIntegrationTests(unittest.TestCase):
@@ -397,6 +505,78 @@ class FollowRetrievalGraphIntegrationTests(unittest.TestCase):
         self.assertEqual(set(result), {"chunks", "tools"})
         self.assertEqual(result["tools"], ["lookup_section"])
         self.assertEqual(result["chunks"], [self._anchor()])
+
+
+class CommentaryRetrievalGraphIntegrationTests(unittest.TestCase):
+    def setUp(self):
+        retrieval_agent._build_retrieval_agent.cache_clear()
+
+    def tearDown(self):
+        retrieval_agent._build_retrieval_agent.cache_clear()
+
+    def test_real_react_loop_calls_commentary_tool_and_populates_channel(self):
+        anchor = {
+            "act_number": "265",
+            "act_title": "EMPLOYMENT ACT 1955",
+            "section_number": "60D",
+            "content": "Section 60D text.",
+            "language": "en",
+            "document_id": "act-265-en-sha256-source",
+            "extraction_id": "extraction-source",
+        }
+        commentary_result = {
+            "status": "ok",
+            "reason": "",
+            "results": [{
+                "url": "https://skrine.com/insights/60d",
+                "title": "What section 60D means in practice",
+                "domain": "skrine.com",
+                "published_date": "2024-03-01",
+                "retrieved_at": "2024-03-02T00:00:00+00:00",
+                "snippet": "Practitioner note.",
+            }],
+            "metrics": {},
+        }
+        model = _ToolCallingFakeModel(responses=[
+            AIMessage(content="", tool_calls=[{
+                "name": "lookup_section",
+                "args": {"section": "60D", "act": "Employment Act"},
+                "id": "lookup_1",
+                "type": "tool_call",
+            }]),
+            AIMessage(content="", tool_calls=[{
+                "name": "search_commentary",
+                "args": {"query": "section 60D practical effect"},
+                "id": "commentary_1",
+                "type": "tool_call",
+            }]),
+            AIMessage(content="Found the section plus background."),
+        ])
+        with patch.dict(os.environ, {
+            "WEB_COMMENTARY_ENABLED": "true",
+            "FOLLOW_REFERENCES_ENABLED": "",
+            "LANGCHAIN_TRACING_V2": "false",
+        }), patch.object(retrieval_agent, "make_llm", return_value=model), \
+             patch.object(retrieval_tools, "exact_section_lookup", return_value=[anchor]), \
+             patch.object(retrieval_tools, "search_web", return_value=commentary_result) as search_web:
+            result = retrieval_agent.run_retrieval_agent(
+                "What does section 60D of the Employment Act say, and how do firms advise on it?"
+            )
+
+        search_web.assert_called_once()
+        self.assertEqual(result["tools"], ["lookup_section", "search_commentary"])
+        self.assertEqual([row["act_number"] for row in result["chunks"]], ["265"])
+        self.assertEqual(
+            result["commentary"],
+            [{
+                "url": "https://skrine.com/insights/60d",
+                "title": "What section 60D means in practice",
+                "publisher": "skrine.com",
+                "published_date": "2024-03-01",
+                "retrieved_at": "2024-03-02T00:00:00+00:00",
+                "snippet": "Practitioner note.",
+            }],
+        )
 
 
 class FlagDispatchTests(unittest.TestCase):

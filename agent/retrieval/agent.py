@@ -30,7 +30,14 @@ from agent.retrieval.reference_graph import (
     follow_references_enabled,
     should_follow_references,
 )
-from agent.retrieval.tools import follow_references, lookup_section, search_statutes
+from agent.retrieval.tools import (
+    follow_references,
+    lookup_section,
+    search_commentary,
+    search_statutes,
+    web_commentary_enabled,
+)
+from agent.state import CommentaryNote
 
 logger = logging.getLogger(__name__)
 
@@ -55,7 +62,7 @@ Choose tools deliberately:
 Stop as soon as you have relevant sections. When you are done, reply with a
 one-line note of what you found — do not answer the legal question yourself."""
 
-_FOLLOW_REFERENCES_SYSTEM = _SYSTEM + """
+_FOLLOW_REFERENCES_ADDENDUM = """
 
 When and only when `follow_references` is available:
 - It is for explicit statutory-reference intent only: what an anchored provision
@@ -71,6 +78,28 @@ When and only when `follow_references` is available:
   never a second hop, and returns at most five edges. Boundary targets cannot be
   expanded. A graph or target lookup failure means keep the existing evidence
   and stop or continue through the normal search path."""
+
+_COMMENTARY_ADDENDUM = """
+
+When and only when `search_commentary` is available:
+- It searches a small allowlist of trusted Malaysian legal-commentary
+  publishers for background and explanatory material — practitioner
+  briefings, firm client alerts, and similar secondary sources. It is never
+  a source of statute text and never a substitute for `lookup_section` or
+  `search_statutes`.
+- Use it only when the question would benefit from practical or explanatory
+  background beyond the bare text of a section — for example how firms
+  advise clients on a provision, or what a recent amendment means in
+  practice. Do not use it for an ordinary "what does section X say?"
+  question, and do not use it as a routine first or only search.
+- Always establish the statutory basis with `lookup_section` or
+  `search_statutes` first, or alongside it. A question this tool cannot find
+  statute sections for is not answered by commentary alone.
+- You may call it more than once with a reformulated query if the first
+  results look weak or off-topic, but do not keep searching indefinitely.
+- Its results are background material, not evidence: never present a
+  commentary note as if it were the text of the law, and never imply a
+  provision says something only a commentary note claims."""
 
 
 def _dedupe_chunks(left: list[dict] | None, right: list[dict] | None) -> list[dict]:
@@ -100,6 +129,10 @@ class RetrievalState(_ReactAgentState):
     # Written by the tools themselves, so the trace records what actually ran
     # rather than what the model asked for. The tool_selection eval asserts order.
     tool_trace: Annotated[list[str], add]
+    # Declared unconditionally (not just on a commentary-enabled schema): an
+    # undeclared channel breaks the graph, an unwritten one is harmless, and this
+    # keeps the schema count at two rather than one per flag combination.
+    commentary: Annotated[list[CommentaryNote], add]
 
 
 def _merge_metrics(left: dict | None, right: dict | None) -> dict:
@@ -119,20 +152,25 @@ class ReferenceRetrievalState(RetrievalState):
     reference_metrics: Annotated[dict, _merge_metrics]
 
 
-@lru_cache(maxsize=2)
-def _build_retrieval_agent(follow_enabled: bool):
-    """maxsize=2 so the two flag variants never share a compiled agent — a leaked
-    tool list would bind follow_references while the flag is off."""
+@lru_cache(maxsize=4)
+def _build_retrieval_agent(follow_enabled: bool, commentary_enabled: bool):
+    """maxsize=4 covers all four flag combinations — two independent flags means
+    two boolean params, and leaving the cache sized for one flag would silently
+    bind the wrong tool list for whichever combination evicted first."""
     model = make_llm(os.getenv("RETRIEVAL_AGENT_MODEL", "gpt-4.1"), node="retrieval_agent")
     tools = [search_statutes, lookup_section]
     system_prompt = _SYSTEM
-    state_schema = RetrievalState
     kwargs = {}
     if follow_enabled:
         tools.append(follow_references)
-        system_prompt = _FOLLOW_REFERENCES_SYSTEM
-        state_schema = ReferenceRetrievalState
+        system_prompt += _FOLLOW_REFERENCES_ADDENDUM
         kwargs["context_schema"] = RetrievalReferenceContext
+    if commentary_enabled:
+        tools.append(search_commentary)
+        system_prompt += _COMMENTARY_ADDENDUM
+    # commentary is declared on the base RetrievalState, so both schemas carry
+    # it regardless of commentary_enabled — no third/fourth schema class needed.
+    state_schema = ReferenceRetrievalState if follow_enabled else RetrievalState
     return create_agent(
         model,
         tools=tools,
@@ -143,9 +181,9 @@ def _build_retrieval_agent(follow_enabled: bool):
 
 
 def get_retrieval_agent():
-    """Reads the flag per call, not at import, so flipping the dark launch takes
-    effect without a restart."""
-    return _build_retrieval_agent(follow_references_enabled())
+    """Reads both flags per call, not at import, so flipping either dark launch
+    takes effect without a restart."""
+    return _build_retrieval_agent(follow_references_enabled(), web_commentary_enabled())
 
 
 def run_retrieval_agent(query: str, feedback: str = "", config=None) -> dict:
@@ -162,7 +200,8 @@ def run_retrieval_agent(query: str, feedback: str = "", config=None) -> dict:
     # sub-loop stays bounded and doesn't inherit the parent's run name.
     invoke_config = {**(config or {}), "recursion_limit": RECURSION_LIMIT, "run_name": "retrieval_agent"}
     follow_enabled = follow_references_enabled()
-    agent = _build_retrieval_agent(follow_enabled)
+    commentary_enabled = web_commentary_enabled()
+    agent = _build_retrieval_agent(follow_enabled, commentary_enabled)
     agent_input = {"messages": [{"role": "user", "content": request}]}
     context = (
         RetrievalReferenceContext(
@@ -215,4 +254,6 @@ def run_retrieval_agent(query: str, feedback: str = "", config=None) -> dict:
                 empty_reference_metrics(),
             ),
         })
+    if commentary_enabled:
+        result["commentary"] = final_state.get("commentary", [])
     return result
