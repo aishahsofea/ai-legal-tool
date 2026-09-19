@@ -246,5 +246,68 @@ class FollowReferencesToolTests(unittest.TestCase):
         )
 
 
+class SearchCommentaryToolTests(unittest.TestCase):
+    def test_returns_command_updating_commentary_never_retrieved_chunks(self):
+        results = [{
+            "url": "https://skrine.com/insights/x",
+            "title": "Amendments to the Employment Act",
+            "domain": "skrine.com",
+            "published_date": "2024-01-01",
+            "retrieved_at": "2024-01-02T00:00:00+00:00",
+            "snippet": "A short summary.",
+        }]
+        search_result = {"status": "ok", "reason": "", "results": results, "metrics": {}}
+        with patch.object(tools, "search_web", return_value=search_result) as search, \
+             patch.dict(os.environ, {"COMMENTARY_ALLOWLIST": "skrine.com, shearndelamore.com"}):
+            cmd = _invoke(tools.search_commentary, {"query": "employment act amendments"})
+
+        search.assert_called_once_with(
+            "employment act amendments",
+            ["skrine.com", "shearndelamore.com"],
+            max_results=5,
+        )
+        self.assertIsInstance(cmd, Command)
+        self.assertNotIn("retrieved_chunks", cmd.update)
+        self.assertEqual(cmd.update["tool_trace"], ["search_commentary"])
+        self.assertEqual(
+            cmd.update["commentary"],
+            [{
+                "url": "https://skrine.com/insights/x",
+                "title": "Amendments to the Employment Act",
+                "publisher": "skrine.com",
+                "published_date": "2024-01-01",
+                "retrieved_at": "2024-01-02T00:00:00+00:00",
+                "snippet": "A short summary.",
+            }],
+        )
+        msg = cmd.update["messages"][0]
+        self.assertIsInstance(msg, ToolMessage)
+        self.assertIn("Amendments to the Employment Act", msg.content)
+
+    def test_unset_allowlist_passes_empty_list_through(self):
+        with patch.object(tools, "search_web", return_value={
+            "status": "ok", "reason": "", "results": [], "metrics": {},
+        }) as search, patch.dict(os.environ, {"COMMENTARY_ALLOWLIST": ""}):
+            cmd = _invoke(tools.search_commentary, {"query": "q"})
+        search.assert_called_once_with("q", [], max_results=5)
+        self.assertEqual(cmd.update["commentary"], [])
+        self.assertIn("No commentary found", cmd.update["messages"][0].content)
+
+    def test_search_failure_fails_open_with_message_not_raise(self):
+        with patch.object(tools, "search_web", return_value={
+            "status": "error", "reason": "timeout", "results": [], "metrics": {},
+        }):
+            cmd = _invoke(tools.search_commentary, {"query": "q"})
+        self.assertEqual(cmd.update["commentary"], [])
+        self.assertIn("timeout", cmd.update["messages"][0].content)
+
+    def test_max_results_passed_through_to_transport(self):
+        with patch.object(tools, "search_web", return_value={
+            "status": "ok", "reason": "", "results": [], "metrics": {},
+        }) as search, patch.dict(os.environ, {"COMMENTARY_ALLOWLIST": ""}):
+            _invoke(tools.search_commentary, {"query": "q", "max_results": 2})
+        search.assert_called_once_with("q", [], max_results=2)
+
+
 if __name__ == "__main__":
     unittest.main()

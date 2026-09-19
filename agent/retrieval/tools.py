@@ -11,6 +11,7 @@ a ToolMessage the model can act on instead of raising through the whole graph.
 from __future__ import annotations
 
 import logging
+import os
 from typing import Literal
 
 from langchain_core.messages import ToolMessage
@@ -21,6 +22,7 @@ from langgraph.prebuilt import ToolRuntime
 from langgraph.types import Command
 from typing_extensions import Annotated
 
+from agent.feature_flags import flag_enabled
 from agent.retrieval.reference_graph import (
     MAX_REFERENCE_EDGES,
     FollowOnceGuard,
@@ -29,6 +31,8 @@ from agent.retrieval.reference_graph import (
     follow_published_references,
 )
 from agent.retrieval.search import exact_section_lookup, semantic_search
+from agent.state import CommentaryNote
+from agent.web_search import search_web
 
 logger = logging.getLogger(__name__)
 
@@ -275,3 +279,75 @@ def lookup_section(
             "lookup_section",
         )
     return _command(rows, _summarise(rows), tool_call_id, "lookup_section")
+
+
+def web_commentary_enabled() -> bool:
+    return flag_enabled("WEB_COMMENTARY_ENABLED")
+
+
+def _commentary_allowlist() -> list[str]:
+    raw = os.getenv("COMMENTARY_ALLOWLIST", "")
+    return [entry.strip() for entry in raw.split(",") if entry.strip()]
+
+
+def _commentary_note(result: dict) -> CommentaryNote:
+    return CommentaryNote(
+        url=result["url"],
+        title=result["title"],
+        publisher=result["domain"],
+        published_date=result["published_date"],
+        retrieved_at=result["retrieved_at"],
+        snippet=result["snippet"],
+    )
+
+
+def _commentary_summary(result: dict) -> str:
+    if result["status"] != "ok":
+        return (
+            f"search_commentary error ({result['reason']}); continue with the "
+            "existing search/lookup evidence."
+        )
+    notes = result["results"]
+    if not notes:
+        return "No commentary found from allowlisted publishers for this query."
+    heads = ", ".join(f"{n['title'] or n['url']} ({n['domain']})" for n in notes[:5])
+    more = "" if len(notes) <= 5 else f" (+{len(notes) - 5} more)"
+    return f"Found {len(notes)} commentary note(s): {heads}{more}."
+
+
+@tool
+def search_commentary(
+    query: str,
+    tool_call_id: Annotated[str, InjectedToolCallId],
+    max_results: int = 5,
+) -> Command:
+    """Search allowlisted legal-commentary publishers for background material.
+
+    Returns practitioner-facing explanatory content — firm briefings, client
+    alerts, and similar secondary commentary — from a small, operator-curated
+    allowlist of trusted publishers. This is never statute text and never a
+    citation: results are carried on a separate ``commentary`` channel and can
+    never satisfy citation presence or be treated as authoritative. Use it
+    only for background beyond what a bare section number tells you — for
+    example how practitioners describe the practical effect of a provision —
+    and only alongside or after ``lookup_section`` / ``search_statutes`` has
+    established the statutory basis. Never use it as a substitute for those
+    tools, and never use it for an ordinary "what does section X say?"
+    question. A domain outside the allowlist is dropped before you see it. If
+    results look weak or off-topic, you may call again once with a
+    reformulated `query`.
+
+    Args:
+        query: Natural-language search text. Reformulate and retry on weak hits.
+        max_results: Max commentary notes to return (default 5).
+    """
+    _emit("search_commentary", f"Searching commentary: “{query}”")
+    result = search_web(query, _commentary_allowlist(), max_results=max_results)
+    notes = [_commentary_note(row) for row in result["results"]] if result["status"] == "ok" else []
+    return Command(
+        update={
+            "commentary": notes,
+            "tool_trace": ["search_commentary"],
+            "messages": [ToolMessage(_commentary_summary(result), tool_call_id=tool_call_id)],
+        }
+    )
