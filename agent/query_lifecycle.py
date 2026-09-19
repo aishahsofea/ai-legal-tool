@@ -62,6 +62,7 @@ def _config(
         "follow_references": flag_enabled("FOLLOW_REFERENCES_ENABLED"),
         "semantic_recall": flag_enabled("SEMANTIC_MEMORY_RECALL"),
         "semantic_extract": flag_enabled("SEMANTIC_MEMORY_EXTRACT"),
+        "web_commentary": flag_enabled("WEB_COMMENTARY_ENABLED"),
         "checkpointer": "memory" if memory_checkpointer else "postgres",
     }
     flag_tags = [
@@ -71,6 +72,7 @@ def _config(
             "follow_references",
             "semantic_recall",
             "semantic_extract",
+            "web_commentary",
         )
         if metadata[key]
     ]

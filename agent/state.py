@@ -27,6 +27,15 @@ class Citation(TypedDict):
     receipt: NotRequired[CitationReceipt]
 
 
+class CommentaryNote(TypedDict):
+    url: str
+    title: str
+    publisher: str        # the allowlist entry that served it
+    published_date: str   # "" when the source gives none
+    retrieved_at: str
+    snippet: str
+
+
 class QueryResult(TypedDict):
     query_type: str
     response: str
@@ -34,6 +43,7 @@ class QueryResult(TypedDict):
     violations: list[str]
     tool_trace: list[str]    # retrieval tools the agent called (agentic retrieval)
     reference_trace: NotRequired[list[dict]]  # enabled-only compact follow outcome
+    commentary: NotRequired[list[CommentaryNote]]  # enabled-only web commentary notes
     grounding_metrics: NotRequired[dict[str, int]]  # grounding checks completed vs failed open
 
 
@@ -47,6 +57,7 @@ class QueryEvent(TypedDict, total=False):
     content: str
     citations: list[Citation]
     violations: list[str]
+    commentary: list[CommentaryNote]  # response: web commentary notes (WEB_COMMENTARY_ENABLED only)
     question: str        # interrupt: the clarifying question to put to the user
     interrupt_id: str    # interrupt: LangGraph interrupt id, echoed back on resume
 
@@ -69,6 +80,7 @@ class AgentState(TypedDict):
     tool_trace: list[str]    # retrieval tool names the agent called this turn
     reference_trace: list[dict]  # compact graph/lookup statuses; never graph provision text
     reference_metrics: dict[str, int]  # low-cardinality follow counters for observability
+    commentary: list[CommentaryNote]  # web commentary notes; never a Citation, never retrieved_chunks (ADR 0020)
     grounding_metrics: dict[str, int]  # grounding checks completed vs failed open this turn
     final_response: str
     retry_count: int

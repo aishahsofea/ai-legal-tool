@@ -88,6 +88,7 @@ def _retry_retrieve_node(state: AgentState) -> dict:
         "retrieval_feedback": _build_retrieval_feedback(state.get("evidence_violations", [])),
         "reference_trace": [],
         "reference_metrics": empty_reference_metrics(),
+        "commentary": [],
     }
 
 
@@ -124,6 +125,7 @@ def _start_turn(state: AgentState) -> dict:
         "tool_trace": [],
         "reference_trace": [],
         "reference_metrics": empty_reference_metrics(disabled=not follow_references_enabled()),
+        "commentary": [],
         "grounding_metrics": empty_grounding_metrics(),
         "final_response": "",
         "retry_count": 0,
