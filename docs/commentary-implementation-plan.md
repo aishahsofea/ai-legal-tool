@@ -101,7 +101,12 @@ Settle the contradiction at the same time. Sequence makes the list a gate; Out o
 an operator decision. The split: a draft list gates the build, the final list is operator config
 in `CONTRIBUTING.md`.
 
-**Verified by:** a human decision. Everything below is conditional on it.
+**Done.** [Comment posted on #56](https://github.com/aishahsofea/ai-legal-tool/issues/56#issuecomment-5739200615),
+2026-09-19 — verdict is build. Draft allowlist: `skrine.com`, `shearndelamore.com`,
+`themalaysianlawyer.com`. The two regulator sources checked, LHDN and Bank Negara, collapse to
+PDF; the firms don't.
+
+**Verified by:** a human decision. Made — see above.
 
 ### Phase 1 — ADR 0020. Docs only.
 
@@ -112,12 +117,14 @@ It states four things: the source class split; that commentary is never citable;
 allowlist is a trust boundary; and that ADR 0016's receipt guarantee is unchanged. It amends
 ADR 0001's legislation-only scope.
 
-It must also settle the grounding question described in section 6 below. That is the design
-decision in this issue, so it belongs in the decision record rather than in review.
+It also settles the grounding question described in section 6 below — that is the design decision
+in this issue, so it belongs in the decision record rather than in review.
 
 **Files:** `docs/adr/0020-commentary-as-a-non-citable-source-class.md`
 
 **Verified by:** the `plain-english` skill. No tests to run.
+
+**Done.** Merged as [PR #120](https://github.com/aishahsofea/ai-legal-tool/pull/120).
 
 ### Phase 2 — State, flag, reset. Nothing produces or consumes yet.
 
@@ -280,9 +287,8 @@ mention commentary for background. Both at once ends every commentary turn in th
 3. Retries burn to `MAX_RETRIES`, and `delivered_response` returns `FINAL_FAILURE_RESPONSE`
    (`agent/query_policy.py:68-69`).
 
-Phase 1 picks the fix: scope the judge to sentences carrying a citation marker, or confine
-commentary prose to a block the judge skips. Phase 5 implements it and proves it with a flag-on
-test.
+Phase 1 picked the fix, in ADR 0020: scope the judge to sentences the draft itself attributes to
+a cited section. Phase 5 implements it and proves it with a flag-on test.
 
 **The lru_cache.** Four flag variants, a cache sized for two, and the failure is silent. See
 Phase 3, wrinkle 1.
