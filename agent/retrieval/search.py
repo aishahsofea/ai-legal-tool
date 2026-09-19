@@ -26,24 +26,24 @@ load_dotenv()
 TOP_K        = 8
 EXACT_TOP_K  = 3
 METADATA_DIR = Path("data/acts_metadata")
+ACTS_MANIFEST_PATH = Path("data/pdfs/manifest.json")
 
 _SECTION_RE = re.compile(r"\b(?:seksyen|sek\.?|section|sec\.?|s\.?)\s*(\d+[A-Z]{0,2})\b", re.IGNORECASE)
 _ACT_NUMBER_RE = re.compile(r"\bact\s+(\d+[A-Z]?)\b", re.IGNORECASE)
-_ACT_ALIASES: dict[str, tuple[str, str]] = {
-    "evidence act": ("56", "EVIDENCE ACT 1950"),
-    "akta keterangan": ("56", "EVIDENCE ACT 1950"),
-    "penal code": ("574", "PENAL CODE"),
-    "kanun keseksaan": ("574", "PENAL CODE"),
-    "criminal procedure code": ("593", "CRIMINAL PROCEDURE CODE"),
-    "cpc": ("593", "CRIMINAL PROCEDURE CODE"),
-    "employment act": ("265", "EMPLOYMENT ACT 1955"),
-    "akta pekerjaan": ("265", "EMPLOYMENT ACT 1955"),
-    "companies act": ("777", "COMPANIES ACT 2016"),
-    "akta syarikat": ("777", "COMPANIES ACT 2016"),
-    "pdpa": ("709", "PERSONAL DATA PROTECTION ACT 2010"),
-    "akta pdpa": ("709", "PERSONAL DATA PROTECTION ACT 2010"),
-    "personal data protection act": ("709", "PERSONAL DATA PROTECTION ACT 2010"),
-    "akta perlindungan data peribadi": ("709", "PERSONAL DATA PROTECTION ACT 2010"),
+_ACT_TEXT_RE = re.compile(r"[^a-z0-9]+")
+_ACT_YEAR_SUFFIX_RE = re.compile(r"\s(?:18|19|20)\d{2}$")
+
+# Names ACTS_MANIFEST_PATH can't supply: an abbreviation (no title spells out
+# "CPC"/"PDPA"/"SPRM"), or a language with no title registered for that Act
+# at all - the manifest has no Malay document for the Penal Code, the
+# Employment Act, or the Criminal Procedure Code (issue #62).
+_ACT_ALIASES: dict[str, str] = {
+    "cpc": "593",
+    "kanun tatacara jenayah": "593",
+    "pdpa": "709",
+    "kanun keseksaan": "574",
+    "akta pekerjaan": "265",
+    "sprm": "694",
 }
 
 _openai, _EMBED_MODEL = make_corpus_embedder()
@@ -83,20 +83,123 @@ def extract_section_number(query: str) -> str | None:
     return match.group(1).upper() if match else None
 
 
+def _normalize_act_text(text: str) -> str:
+    """Fold to lowercase and collapse punctuation to single spaces, dropping
+    the manifest's leading '*' marker, so title matching ignores casing and
+    punctuation (issue #62)."""
+    text = text.strip()
+    if text.startswith("*"):
+        text = text[1:]
+    return _ACT_TEXT_RE.sub(" ", text.lower()).strip()
+
+
+def _bare_act_title(title: str) -> str:
+    """Normalized title with a trailing year dropped, e.g. 'evidence act' for
+    'EVIDENCE ACT 1950'. Most real references to an Act omit the year, and a
+    query that does include it still contains this shorter form too."""
+    return _ACT_YEAR_SUFFIX_RE.sub("", _normalize_act_text(title))
+
+
+@lru_cache(maxsize=1)
+def _act_title_index() -> tuple[list[tuple[str, str, str | None]], dict[str, str]]:
+    """Build the Act-title match pool from ACTS_MANIFEST_PATH, plus a per-Act
+    fallback display title for `_ACT_ALIASES` entries.
+
+    Cached for the process lifetime, like `_pdf_url_map` - extract_act_hint
+    runs on every query, and the manifest holds over a thousand documents.
+    Each pool entry is (act_number, bare normalized title, display title);
+    `_ACT_ALIASES` entries carry no title of their own, so theirs is None.
+    """
+    pool: list[tuple[str, str, str | None]] = []
+    display_en: dict[str, str] = {}
+    display_any: dict[str, str] = {}
+    try:
+        manifest = json.loads(ACTS_MANIFEST_PATH.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        manifest = {}
+    for document in manifest.get("documents", []):
+        act_number = str(document.get("act_number") or "")
+        title = str(document.get("act_title") or "")
+        bare = _bare_act_title(title)
+        if not act_number or not bare:
+            continue
+        display = title[1:].strip() if title.startswith("*") else title.strip()
+        pool.append((act_number, bare, display))
+        display_any.setdefault(act_number, display)
+        if document.get("language") == "en":
+            display_en.setdefault(act_number, display)
+    for phrase, act_number in _ACT_ALIASES.items():
+        pool.append((act_number, _normalize_act_text(phrase), None))
+    return pool, {**display_any, **display_en}
+
+
+def _contains_token_run(haystack: str, needle: str) -> bool:
+    """Whether `needle` appears in `haystack` on word boundaries. Both are
+    already normalized to single-space-separated tokens, so padding each with
+    a space and checking substring containment is a whole-token match without
+    the cost of a per-title regex."""
+    return f" {haystack} ".find(f" {needle} ") != -1
+
+
+def _resolve_act_title(query: str) -> tuple[str | None, str | None] | None:
+    """Resolve via a title/alias match, or None if none was found at all.
+
+    None (not a tuple) means "try the bare 'Act <number>' fallback next";
+    an actual `(None, None)` means titles matched ambiguously and the caller
+    must stop there rather than let a stray "Act <number>" - e.g. the "1950"
+    in "Evidence Act 1950" - override that ambiguity with a wrong guess.
+    """
+    pool, fallback_display = _act_title_index()
+    normalized_query = _normalize_act_text(query)
+    matched = [
+        (act_number, title, display)
+        for act_number, title, display in pool
+        if _contains_token_run(normalized_query, title)
+    ]
+    if not matched:
+        return None
+
+    # A shorter match nested inside another, longer match for a *different*
+    # Act is redundant - e.g. "Employment Act" nests inside "Children and
+    # Young Persons (Employment) Act" - so it shouldn't make an otherwise
+    # precise query read as ambiguous. Keep only the maximal matches.
+    maximal = [
+        (act_number, title, display)
+        for act_number, title, display in matched
+        if not any(
+            other_act != act_number and len(other_title) > len(title)
+            and _contains_token_run(other_title, title)
+            for other_act, other_title, _ in matched
+        )
+    ]
+    acts = {act_number for act_number, _, _ in maximal}
+    if len(acts) != 1:
+        # More than one Act's title is present in the query - a wrong Act is
+        # worse than no Act, so this must not guess (issue #62).
+        return None, None
+
+    act_number = next(iter(acts))
+    displays = [display for a, _, display in maximal if a == act_number and display]
+    display = max(displays, key=len) if displays else fallback_display.get(act_number)
+    return act_number, display
+
+
 def extract_act_hint(query: str) -> tuple[str | None, str | None]:
     """Resolve an Act reference in free text to (act_number, act_title).
 
-    Matches a known alias ('evidence act' → ('56', 'EVIDENCE ACT 1950')) first,
-    then a bare 'Act <number>'. Returns (None, None) when nothing matches.
+    Matches the query against every Act's title(s) in ACTS_MANIFEST_PATH -
+    normalized, so casing and punctuation don't matter - falling back to
+    `_ACT_ALIASES` for the handful of names the manifest can't supply, then to
+    a bare 'Act <number>'. Returns (None, None) when nothing matches, or when
+    the query's text matches more than one Act.
     """
-    lowered = query.lower()
-    for alias, act in _ACT_ALIASES.items():
-        if re.search(rf"\b{re.escape(alias)}\b", lowered):
-            return act
+    resolved = _resolve_act_title(query)
+    if resolved is not None:
+        return resolved
 
-    act_number = _ACT_NUMBER_RE.search(query)
-    if act_number:
-        return act_number.group(1).upper(), None
+    bare_number = _ACT_NUMBER_RE.search(query)
+    if bare_number:
+        return bare_number.group(1).upper(), None
     return None, None
 
 
