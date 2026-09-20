@@ -3,7 +3,6 @@ import json
 import sys
 import threading
 import time
-from unittest.mock import MagicMock, patch
 
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
@@ -73,6 +72,57 @@ def test_run_requires_a_configured_and_fresh_eval_corpus(tmp_path, monkeypatch):
     assert stale.json()["detail"]["missing_sections"] == [
         {"act_number": "56", "section_number": "90A"}
     ]
+
+
+def test_run_gates_staleness_on_the_selected_subset_not_the_whole_dataset(tmp_path, monkeypatch):
+    dataset_path = tmp_path / "dataset.json"
+    dataset_path.write_text(json.dumps({
+        "cases": [
+            {
+                "id": "smoke-case",
+                "category": "citation",
+                "scenario": "exact_match",
+                "query": "What does section 90A provide?",
+                "expected_act_number": "56",
+                "expected_section": "90A",
+                "citation_applicable": True,
+                "expected_policy": "allow",
+                "smoke": True,
+            },
+            {
+                "id": "non-smoke-case",
+                "category": "citation",
+                "scenario": "exact_match",
+                "query": "What does section 19 provide?",
+                "expected_act_number": "265",
+                "expected_section": "19",
+                "citation_applicable": True,
+                "expected_policy": "allow",
+                "smoke": False,
+            },
+        ]
+    }))
+    script = tmp_path / "fake_runner.py"
+    script.write_text(
+        "import json\n"
+        "print(json.dumps({"
+        "'id':'smoke-case','category':'citation','scenario':'exact_match',"
+        "'expected_policy':'allow','expected_act_number':'56','expected_section':'90A',"
+        "'l1_failures':[],'l1_failure_details':{},'judge':{'passed':True,'reasoning':'Grounded'},"
+        "'query':'What does section 90A provide?','response':'Answer','citations':[],"
+        "'elapsed_seconds':0.01}), flush=True)\n"
+    )
+    client = _client(monkeypatch, dataset_path, tmp_path / "results.json")
+    monkeypatch.setenv("EVALS_DATABASE_URL", "postgresql://evals")
+    # Only the smoke case's section is seeded; the non-smoke case's section is
+    # absent. A smoke-only run must not be blocked by a section no case in the
+    # selected subset needs.
+    monkeypatch.setattr(evals_api, "present_section_pairs", lambda _url: {("56", "90A")})
+    monkeypatch.setattr(evals_api, "runner_command", lambda _subset: [sys.executable, str(script)])
+
+    response = client.post("/evals/run", json={"subset": "smoke"})
+
+    assert response.status_code == 200
 
 
 def test_run_streams_fake_jsonl_and_aggregates_a_summary(tmp_path, monkeypatch):
@@ -195,39 +245,3 @@ def test_disconnected_stream_terminates_the_runner(tmp_path):
     line, return_code = asyncio.run(scenario())
     assert line is None
     assert return_code is not None
-
-
-def _mock_chunks_connection(*, path_available: bool, rows: list[tuple]) -> MagicMock:
-    cursor = MagicMock()
-    cursor.__enter__ = lambda s: s
-    cursor.__exit__ = MagicMock(return_value=False)
-    cursor.fetchone.return_value = (1,) if path_available else (0,)
-    cursor.fetchall.return_value = rows
-    conn = MagicMock()
-    conn.__enter__ = lambda s: s
-    conn.__exit__ = MagicMock(return_value=False)
-    conn.cursor.return_value = cursor
-    return conn
-
-
-def test_present_section_pairs_uses_bare_query_without_a_path_column():
-    conn = _mock_chunks_connection(path_available=False, rows=[("56", "90A")])
-    with patch.object(evals_api.psycopg2, "connect", return_value=conn):
-        pairs = evals_api.present_section_pairs("postgresql://example")
-
-    assert pairs == {("56", "90A")}
-    # The last call is the real query - the first is has_path_column's own
-    # schema check, whose SQL text happens to contain "path" as a literal.
-    sql = conn.cursor.return_value.execute.call_args_list[-1].args[0]
-    assert "path" not in sql
-
-
-def test_present_section_pairs_reads_path_for_a_schedule_row_when_available():
-    conn = _mock_chunks_connection(
-        path_available=True,
-        rows=[("56", "90A", "s.90A"), ("1", "", "sched.1/para.1")],
-    )
-    with patch.object(evals_api.psycopg2, "connect", return_value=conn):
-        pairs = evals_api.present_section_pairs("postgresql://example")
-
-    assert pairs == {("56", "90A"), ("1", "sched.1/para.1")}

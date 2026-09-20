@@ -9,17 +9,15 @@ from pathlib import Path
 from threading import Lock
 from typing import Any
 
-import psycopg2
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel
 
-from agent.citation_keys import canonicalize_citation_key
-from agent.retrieval.search import has_path_column
 from evals.coverage import (
     aggregate_scenarios,
     coverage_summary,
     missing_section_pairs,
+    present_section_pairs,
     required_section_pairs,
     select_cases,
 )
@@ -45,22 +43,6 @@ def _sse(payload: dict[str, Any]) -> str:
 
 def _load_cases() -> list[dict[str, Any]]:
     return json.loads(DATASET_PATH.read_text(encoding="utf-8"))["cases"]
-
-
-def present_section_pairs(database_url: str) -> set[tuple[str, str]]:
-    """Read the Act/section keys currently present in the dedicated eval corpus."""
-    with psycopg2.connect(database_url) as conn:
-        with conn.cursor() as cursor:
-            # Gated: the dedicated eval database's bare `chunks` schema (see
-            # `evals/seed_test_corpus.py`) has no `path` column at all.
-            if has_path_column(cursor):
-                cursor.execute("SELECT DISTINCT act_number, section_number, path FROM chunks")
-                return {
-                    canonicalize_citation_key(act, section, path)
-                    for act, section, path in cursor.fetchall()
-                }
-            cursor.execute("SELECT DISTINCT act_number, section_number FROM chunks")
-            return {(str(act), str(section).upper()) for act, section in cursor.fetchall()}
 
 
 def _staleness(cases: list[dict[str, Any]], database_url: str) -> list[dict[str, str]]:
@@ -218,7 +200,7 @@ async def run_evals(req: EvalRunRequest, request: Request):
             raise HTTPException(status_code=422, detail=str(exc)) from exc
 
         try:
-            missing = await asyncio.to_thread(_staleness, cases, database_url)
+            missing = await asyncio.to_thread(_staleness, selected, database_url)
         except Exception as exc:
             raise HTTPException(status_code=503, detail=f"Eval DB unreachable: {exc}") from exc
         if missing:
