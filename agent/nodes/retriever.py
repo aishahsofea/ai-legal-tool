@@ -72,6 +72,9 @@ def agentic_retriever_node(state: AgentState, config=None) -> dict:
 
     if not rows:
         result = retriever_node(state)
+        # The trace records what ran, so it has to survive the fallback.
+        if tools:
+            result["tool_trace"] = tools
         if reference_trace:
             result["reference_trace"] = reference_trace
         if reference_metrics:

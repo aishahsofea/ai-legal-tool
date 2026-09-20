@@ -14,6 +14,7 @@ from agent.retrieval.agent import _dedupe_chunks
 from agent.retrieval.reference_graph import empty_reference_metrics
 from langchain_core.language_models.fake_chat_models import FakeMessagesListChatModel
 from langchain_core.messages import AIMessage
+from langgraph.errors import GraphRecursionError
 
 
 class _ToolCallingFakeModel(FakeMessagesListChatModel):
@@ -576,6 +577,82 @@ class CommentaryRetrievalGraphIntegrationTests(unittest.TestCase):
                 "retrieved_at": "2024-03-02T00:00:00+00:00",
                 "snippet": "Practitioner note.",
             }],
+        )
+
+
+class ModelCallBudgetTests(unittest.TestCase):
+    """A loop that never decides it is done has to be stopped by the code, and it
+    has to stop holding what it found."""
+
+    def setUp(self):
+        retrieval_agent._build_retrieval_agent.cache_clear()
+
+    def tearDown(self):
+        retrieval_agent._build_retrieval_agent.cache_clear()
+
+    @staticmethod
+    def _row():
+        return {
+            "act_number": "265",
+            "act_title": "EMPLOYMENT ACT 1955",
+            "section_number": "19",
+            "content": "Wages payable within seven days.",
+            "language": "en",
+            "document_id": "act-265-en-sha256-source",
+            "extraction_id": "extraction-source",
+        }
+
+    @staticmethod
+    def _endless_searcher():
+        # FakeMessagesListChatModel cycles its responses, so a model that only ever
+        # asks for another search never stops on its own.
+        return _ToolCallingFakeModel(responses=[
+            AIMessage(content="", tool_calls=[{
+                "name": "search_statutes",
+                "args": {"query": f"employment act penalty attempt {i}"},
+                "id": f"search_{i}",
+                "type": "tool_call",
+            }])
+            for i in range(4)
+        ])
+
+    def test_model_call_budget_ends_the_loop_without_raising(self):
+        budget = 3
+        with patch.dict(os.environ, {"LANGCHAIN_TRACING_V2": "false"}), \
+             patch.object(retrieval_agent, "MAX_MODEL_CALLS", budget), \
+             patch.object(retrieval_agent, "RECURSION_LIMIT", 4 * budget + 2), \
+             patch.object(retrieval_agent, "make_llm", return_value=self._endless_searcher()), \
+             patch.object(retrieval_tools, "semantic_search", return_value=[self._row()]):
+            # No warning: the budget must end the run, not the recursion backstop.
+            with self.assertNoLogs("agent.retrieval.agent", level="WARNING"):
+                result = retrieval_agent.run_retrieval_agent("wages and hours remedies")
+
+        self.assertEqual(result["tools"], ["search_statutes"] * budget)
+        self.assertEqual(result["chunks"], [self._row()])
+
+    def test_recursion_backstop_keeps_what_the_agent_already_found(self):
+        """Lowering RETRIEVAL_RECURSION_LIMIT below the call budget is an operator
+        mistake, not a reason to hand the caller nothing."""
+        partial = {"retrieved_chunks": [self._row()], "tool_trace": ["search_statutes"]}
+
+        class _StallingAgent:
+            def stream(self, _input, _config, **_kwargs):
+                yield "values", partial
+                raise GraphRecursionError("Recursion limit of 2 reached")
+
+        with patch.object(retrieval_agent, "_build_retrieval_agent", return_value=_StallingAgent()):
+            with self.assertLogs("agent.retrieval.agent", level="WARNING"):
+                result = retrieval_agent.run_retrieval_agent("wages and hours remedies")
+
+        self.assertEqual(result["chunks"], [self._row()])
+        self.assertEqual(result["tools"], ["search_statutes"])
+
+    def test_recursion_limit_leaves_room_for_the_budget_to_fire_first(self):
+        # Each model round costs four super-steps once the middleware's before_model
+        # and after_model nodes are in the graph.
+        self.assertGreaterEqual(
+            retrieval_agent.RECURSION_LIMIT,
+            4 * retrieval_agent.MAX_MODEL_CALLS + 2,
         )
 
 
