@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { cancelQuery, streamQuery, streamResume, type Citation, type NodeRun, type QueryEvent } from "@/lib/queryTransport";
+import { cancelQuery, streamQuery, streamResume, type Citation, type CommentaryNote, type NodeRun, type QueryEvent } from "@/lib/queryTransport";
 
-export { type Citation, type Message, type NodeRun } from "@/lib/queryTransport";
+export { type Citation, type CommentaryNote, type Message, type NodeRun } from "@/lib/queryTransport";
 
 export interface QueryState {
   status: string;
   response: string;
   citations: Citation[];
+  commentary: CommentaryNote[];
   // Kept structured rather than folded into `status`: the PROCESS panel counts
   // status steps in its collapsed header, and model rows must not change that count.
   nodeRuns: NodeRun[];
@@ -21,6 +22,7 @@ const IDLE: QueryState = {
   status: "",
   response: "",
   citations: [],
+  commentary: [],
   nodeRuns: [],
   isLoading: false,
   error: null,
@@ -63,7 +65,13 @@ export function useQuery() {
               nodeRuns: [...s.nodeRuns, { name: event.name, model: event.model, duration_ms: event.duration_ms }],
             }));
           } else if (event.type === "response") {
-            setState((s) => ({ ...s, response: event.content, citations: event.citations, status: "" }));
+            setState((s) => ({
+              ...s,
+              response: event.content,
+              citations: event.citations,
+              commentary: event.commentary ?? [],
+              status: "",
+            }));
           } else if (event.type === "interrupt") {
             // The graph paused for clarification. Drop out of loading so the composer
             // accepts the answer; useResearchThreads renders the question and routes

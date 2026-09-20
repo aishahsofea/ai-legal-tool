@@ -204,12 +204,29 @@ class QueryLifecycleFlagTagTests(unittest.TestCase):
 
 
 class SsePayloadEquivalenceTests(unittest.TestCase):
-    """Phase 6 (not yet built) is what conditionally adds `commentary` to
-    QueryResult / the SSE `response` event. Until then the key must never
-    leak, flag on or off - this locks today's contract so Phase 6 is a
-    deliberate, reviewed addition rather than an accidental one."""
+    """#56 Phase 6: `commentary` is added to QueryResult / the SSE `response`
+    event only when the turn produced at least one note. An empty or absent
+    channel - always the case with WEB_COMMENTARY_ENABLED off, since nothing
+    ever writes to it - must leave both payloads identical to the pre-Phase-6
+    shape, so the flag stays a true no-op when off (acceptance criterion 1)."""
 
-    def test_run_query_never_surfaces_commentary_key(self):
+    def test_run_query_omits_commentary_key_when_empty(self):
+        final_state = {
+            "query_type": "topical",
+            "final_response": "Section 1 of Example Act applies.",
+            "draft_response": "Section 1 of Example Act applies.",
+            "citations": [],
+            "violations": [],
+            "commentary": [],
+        }
+
+        with patch("agent.query_lifecycle.graph") as graph:
+            graph.invoke.return_value = final_state
+            result = run_query("What does the law say?", "t1")
+
+        self.assertNotIn("commentary", result)
+
+    def test_run_query_surfaces_commentary_when_present(self):
         final_state = {
             "query_type": "topical",
             "final_response": "Section 1 of Example Act applies.",
@@ -223,9 +240,31 @@ class SsePayloadEquivalenceTests(unittest.TestCase):
             graph.invoke.return_value = final_state
             result = run_query("What does the law say?", "t1")
 
-        self.assertNotIn("commentary", result)
+        self.assertEqual(result["commentary"], [COMMENTARY_NOTE])
 
-    def test_stream_response_event_never_surfaces_commentary_key(self):
+    def test_stream_response_event_omits_commentary_key_when_empty(self):
+        async def fake_astream(_input, _config, stream_mode=None):
+            yield ("updates", {
+                "supervisor": {
+                    "final_response": "Section 1 of Example Act applies.",
+                    "citations": [],
+                    "violations": [],
+                    "commentary": [],
+                },
+            })
+
+        async def _collect():
+            with patch("agent.query_lifecycle.graph") as graph:
+                graph.astream = fake_astream
+                return [event async for event in run_query_stream("What does the law say?", "t1")]
+
+        events = asyncio.run(_collect())
+
+        responses = [e for e in events if e["type"] == "response"]
+        self.assertEqual(len(responses), 1)
+        self.assertNotIn("commentary", responses[0])
+
+    def test_stream_response_event_surfaces_commentary_when_present(self):
         async def fake_astream(_input, _config, stream_mode=None):
             yield ("updates", {
                 "supervisor": {
@@ -245,7 +284,7 @@ class SsePayloadEquivalenceTests(unittest.TestCase):
 
         responses = [e for e in events if e["type"] == "response"]
         self.assertEqual(len(responses), 1)
-        self.assertNotIn("commentary", responses[0])
+        self.assertEqual(responses[0]["commentary"], [COMMENTARY_NOTE])
 
 
 if __name__ == "__main__":

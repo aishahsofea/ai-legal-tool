@@ -34,11 +34,22 @@ export interface NodeRun {
   duration_ms: number;
 }
 
+// Background material from an allowlisted web publisher (ADR 0020) — never a
+// Citation, never an evidence source. See CONTEXT.md's Commentary Note entry.
+export interface CommentaryNote {
+  url: string;
+  title: string;
+  publisher: string;
+  published_date: string;
+  retrieved_at: string;
+  snippet: string;
+}
+
 export type QueryEvent =
   | { type: "status"; message: string }
   | { type: "tool_call"; name: string; summary: string }
   | { type: "node"; name: string; model: string; duration_ms: number }
-  | { type: "response"; content: string; citations: Citation[]; violations: string[] }
+  | { type: "response"; content: string; citations: Citation[]; violations: string[]; commentary?: CommentaryNote[] }
   | { type: "interrupt"; question: string; interrupt_id: string }
   | { type: "error"; message: string }
   | { type: "done" };
@@ -102,6 +113,9 @@ function decodeQueryEvent(raw: string): QueryEvent | null {
       content: typeof event.content === "string" ? event.content : "",
       citations: Array.isArray(event.citations) ? (event.citations as Citation[]) : [],
       violations: Array.isArray(event.violations) ? (event.violations as string[]) : [],
+      // Omitted (not defaulted to []) when the backend omits it, so a flag-off
+      // turn's decoded event is byte-identical to before this field existed.
+      ...(Array.isArray(event.commentary) ? { commentary: event.commentary as CommentaryNote[] } : {}),
     };
   }
 

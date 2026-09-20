@@ -81,3 +81,36 @@ describe("node events", () => {
     ]);
   });
 });
+
+describe("response events", () => {
+  it("omits commentary when the backend omits it (#56 Phase 6)", async () => {
+    const events = await collect([
+      { type: "response", content: "answer", citations: [], violations: [] },
+      { type: "done" },
+    ]);
+    expect(events[0]).toEqual({ type: "response", content: "answer", citations: [], violations: [] });
+    expect(events[0]).not.toHaveProperty("commentary");
+  });
+
+  it("decodes commentary notes when the backend sends them", async () => {
+    const note = {
+      url: "https://skrine.com/insights/employment-act-2022-amendments",
+      title: "Employment Act 2022 Amendments",
+      publisher: "skrine.com",
+      published_date: "2022-09-01",
+      retrieved_at: "2026-09-19T00:00:00+00:00",
+      snippet: "The amendments extend maternity leave to 98 days...",
+    };
+    const events = await collect([
+      { type: "response", content: "answer", citations: [], violations: [], commentary: [note] },
+      { type: "done" },
+    ]);
+    expect(events[0]).toEqual({
+      type: "response",
+      content: "answer",
+      citations: [],
+      violations: [],
+      commentary: [note],
+    });
+  });
+});
