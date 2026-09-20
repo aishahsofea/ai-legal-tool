@@ -156,6 +156,8 @@ python3 -m pytest -q
 `tests/test_env_example.py` scans every `os.getenv` and `flag_enabled` call in the repo and
 fails on a name missing from the template. It is what gates the flag reaching `.env.example`.
 
+**Done.** Merged as [PR #123](https://github.com/aishahsofea/ai-legal-tool/pull/123).
+
 ### Phase 3 — The tool. Depends on #119.
 
 #119 is the shared allowlisted web search transport. It lands ahead of this plan because #60's
@@ -192,6 +194,12 @@ order. `search_commentary`'s docstring is the schema sent to the model and drive
 selection — behavior, not commentary, per the exception in CLAUDE.md. Write it at length; do
 not trim it.
 
+**Done.** #119 merged first as [PR #124](https://github.com/aishahsofea/ai-legal-tool/pull/124);
+this phase merged as [PR #125](https://github.com/aishahsofea/ai-legal-tool/pull/125). The
+`tool_selection` eval was not extended to cover `search_commentary` — unit coverage exists
+(`tests/test_agentic_retriever.py:517`) but no eval dataset case exercises the model's own tool
+choice. Tracked separately in [#130](https://github.com/aishahsofea/ai-legal-tool/issues/130).
+
 ### Phase 4 — Gate tests. Tests only, no production code.
 
 #56's Sequence is right that the risk sits here, and that it should land while the surface is
@@ -215,6 +223,8 @@ If a gate leaks, that is a finding. Stop and report it rather than patching it i
 python3 -m pytest -q
 ```
 
+**Done.** Merged as [PR #126](https://github.com/aishahsofea/ai-legal-tool/pull/126).
+
 ### Phase 5 — Synthesiser and grounding. The risky one.
 
 Prompt split in `agent/nodes/synthesiser.py`: cite sections for statements of law, mention
@@ -237,6 +247,12 @@ LANGSMITH_TRACING=false python3 -m pytest -q
 Then the full eval suite: the section 7 guarantee, tested here for eval scores, plus no
 degradation with the flag on.
 
+**Done.** Merged as [PR #127](https://github.com/aishahsofea/ai-legal-tool/pull/127). The
+grounding-feedback-loop fix is proven by
+`tests/test_graph_reretrieve.py::CommentaryGroundingFeedbackLoopTests`; the full eval-suite
+score comparison (flag on vs off) needs a live model run and was not re-verified as part of this
+doc-sync pass.
+
 ### Phase 6 — SSE surface. No visible UI.
 
 - `commentary` on the `response` event (`agent/query_lifecycle.py:252-257`) and on the sync
@@ -257,6 +273,8 @@ The decoder reads fields one at a time and drops unknown ones
 cd frontend && npm test
 ```
 
+**Done.** Merged as [PR #128](https://github.com/aishahsofea/ai-legal-tool/pull/128).
+
 ### Phase 7 — UI block. Last, and the least testable.
 
 A commentary block in `Messages.tsx`, structurally separate from both `SOURCE MAP` and
@@ -272,6 +290,11 @@ it. No test asserts that. It needs a human eye before merge.
 ```bash
 cd frontend && npm test
 ```
+
+**Done.** Merged as [PR #129](https://github.com/aishahsofea/ai-legal-tool/pull/129).
+`frontend/components/locus-workspace/CommentaryNotes.test.tsx` exists, but `npm test` currently
+fails to boot on a clean install (`ERR_REQUIRE_ESM` from `vitest`/`std-env`) — unrelated
+tooling drift, tracked in [#131](https://github.com/aishahsofea/ai-legal-tool/issues/131).
 
 ## 6. Gotchas (do not skip)
 
