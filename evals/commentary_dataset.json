@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "commentary-search-positive-anchor-lookup",
+      "category": "tool_selection",
+      "scenario": "commentary_positive",
+      "query": "Beyond the bare statute text, how do Malaysian law firms describe the practical effect of section 60D of the Employment Act on employers?",
+      "expected_policy": "allow",
+      "citation_applicable": true,
+      "expected_act_number": "265",
+      "expected_section": "60D",
+      "expected_tool_sequence": ["lookup_section", "search_commentary"],
+      "requires_web_commentary": true
+    },
+    {
+      "id": "commentary-search-positive-anchor-search",
+      "category": "tool_selection",
+      "scenario": "commentary_positive",
+      "query": "What do practitioner client alerts say about how employers are actually applying the paid public holiday rules in the Employment Act?",
+      "expected_policy": "allow",
+      "citation_applicable": true,
+      "expected_act_number": "265",
+      "expected_section": "60D",
+      "expected_tool_sequence": ["search_statutes", "search_commentary"],
+      "requires_web_commentary": true
+    },
+    {
+      "id": "commentary-search-negative-exact",
+      "category": "tool_selection",
+      "scenario": "commentary_negative",
+      "query": "What does section 60D of the Employment Act say?",
+      "expected_policy": "allow",
+      "citation_applicable": true,
+      "expected_act_number": "265",
+      "expected_section": "60D",
+      "expected_tool": "lookup_section",
+      "forbidden_tools": ["search_commentary"],
+      "requires_web_commentary": true
+    },
+    {
+      "id": "commentary-search-negative-topical",
+      "category": "tool_selection",
+      "scenario": "commentary_negative",
+      "query": "Which sections of the Employment Act cover paid public holiday entitlements?",
+      "expected_policy": "allow",
+      "citation_applicable": true,
+      "expected_act_number": "265",
+      "expected_section": "60D",
+      "expected_tool": "search_statutes",
+      "forbidden_tools": ["search_commentary"],
+      "requires_web_commentary": true
+    },
+    {
+      "id": "commentary-search-negative-unrelated-act",
+      "category": "tool_selection",
+      "scenario": "commentary_negative",
+      "query": "What does section 90A of the Evidence Act say?",
+      "expected_policy": "allow",
+      "citation_applicable": true,
+      "expected_act_number": "56",
+      "expected_section": "90A",
+      "expected_tool": "lookup_section",
+      "forbidden_tools": ["search_commentary"],
+      "requires_web_commentary": true
+    }
+  ]
+}

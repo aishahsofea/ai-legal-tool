@@ -249,6 +249,15 @@ def iter_suite(
             "FOLLOW_REFERENCES_ENABLED=on, and --mode full"
         )
 
+    commentary_on = flag_enabled("WEB_COMMENTARY_ENABLED")
+    if any(case.get("requires_web_commentary") for case in cases) and not (
+        mode == "full" and agentic_on and commentary_on
+    ):
+        raise ValueError(
+            "This dataset requires AGENTIC_RETRIEVAL=on, "
+            "WEB_COMMENTARY_ENABLED=on, and --mode full"
+        )
+
     # Load the language classifier up front when the subset needs it. Scoring
     # raises if the model is missing, and raising on case 12 of 40 throws away
     # every LLM call already paid for.
