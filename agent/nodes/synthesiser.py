@@ -60,6 +60,13 @@ Rules you MUST follow on every response:
 7. In citation_refs, include an entry for EVERY section you mention in your answer. If you mention section 90A(1) and 90A(2), add one entry with section_number "90A". Never leave citation_refs empty if your answer cites any section.
 8. {memory_rule}"""
 
+# Appended only when this turn's commentary channel is non-empty (ADR 0020), so the
+# flag-off/no-data system prompt stays byte-identical to before this rule existed —
+# the same guard `agent/retrieval/agent.py`'s `_COMMENTARY_ADDENDUM` uses.
+_COMMENTARY_SYNTHESIS_ADDENDUM = """
+
+9. Commentary notes below are background material from an allowlisted web publisher — not statute text, and never something you cite by section. You may mention what a note says only for practical context beyond the bare section text (for example, how practitioners describe an amendment's effect), and only alongside or after the statutory analysis, never in place of it. Attribute it explicitly to its publisher (e.g. "A client alert from skrine.com notes that...") so it reads as reported commentary rather than your own legal conclusion. Never give a commentary-derived sentence a section citation, never add it to citation_refs, and never let it substitute for the cited statutory basis rule 2 requires of a legal claim."""
+
 _LANGUAGE_INSTRUCTIONS = {
     "en": "English",
     "bm": (
@@ -107,28 +114,48 @@ def _build_messages(state: AgentState) -> list[dict]:
             f"{chunk.get('language', 'unknown')}]{provenance_note}\n{chunk['content']}"
         )
 
+    def format_commentary(note: dict) -> str:
+        dated = f", {note['published_date']}" if note.get("published_date") else ""
+        return f"[{note.get('publisher', '')}{dated}] {note.get('title', '')}\n{note.get('snippet', '')}"
+
     context = "\n\n".join(format_chunk(chunk) for chunk in chunks)
     history_text = "\n\n".join(
         f"{turn['role'].title()}: {turn['content']}" for turn in history
     )
+    # Empty when the commentary channel is empty — which it always is with
+    # WEB_COMMENTARY_ENABLED off (ADR 0020) — so the flag-off prompt is unchanged.
+    commentary_notes = state.get("commentary") or []
+    commentary_block = (
+        "\nCommentary notes (background only — not statute text, never cite by section):\n"
+        + "\n\n".join(format_commentary(note) for note in commentary_notes) + "\n"
+        if commentary_notes else ""
+    )
+    closing_instruction = "Answer the query using only the sections above. Cite each section you rely on."
+    if commentary_notes:
+        closing_instruction += (
+            " You may mention the commentary notes above for background, but never as "
+            "the basis for a legal claim and never with a section citation."
+        )
 
     system_prompt = _SYSTEM_TEMPLATE.format(
         language_instruction=_LANGUAGE_INSTRUCTIONS.get(response_language, _LANGUAGE_INSTRUCTIONS["en"]),
         memory_rule=memory_soft_context_rule("the retrieved sections or the query"),
     )
+    if commentary_notes:
+        system_prompt += _COMMENTARY_SYNTHESIS_ADDENDUM
 
     # Retrieved sections lead and the query closes: the sections are by far the longest
     # block here, and answer quality drops when a long block sits between the query and
     # the instruction that acts on it.
     user_message = f"""Retrieved statute sections:
 {context}
-
+{commentary_block}
 Conversation history:
 {history_text or '(none)'}
 {preferences_block(recalled_memory)}
 Query: {state['query']}
 
-Answer the query using only the sections above. Cite each section you rely on."""
+{closing_instruction}"""
 
     return [
         {"role": "system", "content": system_content(system_prompt, _MODEL)},

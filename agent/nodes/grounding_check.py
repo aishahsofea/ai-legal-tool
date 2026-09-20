@@ -77,9 +77,14 @@ def _metrics(state: AgentState, *, checked: int = 0, skipped: int = 0) -> dict[s
 _SYSTEM = """You are a strict grounding verifier for Malaysian statute research answers.
 
 Task:
-- Identify every sentence or clause in the answer that makes a legal claim.
-- For each legal claim, find the passage in the cited statute section text that carries
-  it, then label how far that passage goes.
+- Identify every sentence or clause in the answer that makes a legal claim AND explicitly
+  names the Act or section it rests on (e.g. "Section 90A of the Evidence Act 1950...",
+  "the Act provides that..."). A sentence with no such explicit attribution is background,
+  not a claim — this includes sentences that draw on commentary, publisher material, or
+  general practitioner observations. Skip it entirely; do not extract it as a claim, and
+  do not judge it supported, partial, or unsupported.
+- For each legal claim you do extract, find the passage in the cited statute section text
+  that carries it, then label how far that passage goes.
 - Use only the provided cited source text. Do not use outside legal knowledge.
 
 Labels:
@@ -98,7 +103,8 @@ Work each claim in this order, and fill the fields in this order:
 Deciding the label from the passage you found is the point of this order. Do not pick a
 label first and then look for a quote that fits it.
 
-Ignore non-legal text such as disclaimers, transitions, headings, and source labels.
+Ignore non-legal text such as disclaimers, transitions, headings, source labels, and any
+background sentence with no explicit Act/section attribution — commentary-informed or not.
 Return only the structured result."""
 
 def _collect_cited_sources(state: AgentState) -> list[dict]:
