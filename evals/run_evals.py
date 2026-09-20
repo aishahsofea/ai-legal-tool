@@ -21,7 +21,14 @@ from agent.nodes.synthesiser import synthesiser_node
 from agent.query_lifecycle import run_query
 from agent.feature_flags import flag_enabled
 from evals.assertions import BM_LANGUAGES, run_assertions, section_recall
-from evals.coverage import aggregate_scenarios, case_section_pairs, select_cases
+from evals.coverage import (
+    aggregate_scenarios,
+    case_section_pairs,
+    missing_section_pairs,
+    present_section_pairs,
+    required_section_pairs,
+    select_cases,
+)
 from evals.judge import JudgeContext, judge_case
 from evals.language_id import ensure_available as ensure_language_model
 
@@ -248,7 +255,16 @@ def iter_suite(
     if any(case.get("language") in BM_LANGUAGES for case in cases):
         ensure_language_model()
 
-    db_conn = psycopg2.connect(os.environ["DATABASE_URL"])
+    database_url = os.environ["DATABASE_URL"]
+    missing = missing_section_pairs(required_section_pairs(cases), present_section_pairs(database_url))
+    if missing:
+        pairs = ", ".join(f"Section {m['section_number']} of Act {m['act_number']}" for m in missing)
+        raise ValueError(
+            f"Eval corpus is missing {len(missing)} required section(s): {pairs}. "
+            "Add them without clearing the database: python3 -m evals.seed_test_corpus --missing-only"
+        )
+
+    db_conn = psycopg2.connect(database_url)
     try:
         for idx, case in enumerate(cases, 1):
             query = case["query"]
