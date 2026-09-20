@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 
 from agent.embeddings import corpus_embedding_model, embedding_client
-from evals.coverage import case_section_pairs
+from evals.coverage import case_section_pairs, missing_section_pairs, present_section_pairs
 
 load_dotenv()
 
@@ -49,22 +49,24 @@ def _load_dataset(path: Path) -> list[dict]:
     return json.loads(path.read_text(encoding="utf-8"))["cases"]
 
 
-def _load_sections(cases: list[dict]) -> list[dict]:
-    wanted = {
+def _wanted_pairs(cases: list[dict]) -> set[tuple[str, str]]:
+    return {
         pair
         for case in cases
         if case.get("citation_applicable")
         for pair in case_section_pairs(case)
     }
 
+
+def _load_sections(pairs: set[tuple[str, str]]) -> list[dict]:
     by_act: dict[str, dict[str, dict]] = {}
-    for act_number, section_number in wanted:
+    for act_number, section_number in pairs:
         path = CHUNKS_DIR / f"{act_number}.json"
         rows = json.loads(path.read_text(encoding="utf-8"))
         by_act[act_number] = {row["section_number"]: row for row in rows}
 
     rows: list[dict] = []
-    for act_number, section_number in sorted(wanted):
+    for act_number, section_number in sorted(pairs):
         row = by_act[act_number].get(section_number)
         if not row:
             raise RuntimeError(f"Missing chunk for Act {act_number} section {section_number}")
@@ -105,11 +107,29 @@ def _insert_rows(cur, rows: list[dict], embeddings: list[list[float]]) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Seed the eval corpus with only the validation sections.")
     parser.add_argument("--dataset", type=Path, default=DATASET_PATH)
-    parser.add_argument("--clear", action="store_true")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--clear", action="store_true", help="Truncate chunks before reseeding everything.")
+    mode.add_argument(
+        "--missing-only",
+        action="store_true",
+        help="Add only sections the corpus doesn't have yet. Never truncates.",
+    )
     args = parser.parse_args()
 
     cases = _load_dataset(args.dataset)
-    rows = _load_sections(cases)
+    wanted = _wanted_pairs(cases)
+    database_url = os.environ["DATABASE_URL"]
+
+    if args.missing_only:
+        missing = missing_section_pairs(wanted, present_section_pairs(database_url))
+        if not missing:
+            print("Eval corpus already has every required section.")
+            return 0
+        pairs = {(entry["act_number"], entry["section_number"]) for entry in missing}
+    else:
+        pairs = wanted
+
+    rows = _load_sections(pairs)
 
     client = embedding_client()
     conn = _connect()
@@ -127,7 +147,8 @@ def main() -> int:
                 with conn.cursor() as cur:
                     _insert_rows(cur, batch, embeddings)
 
-        print(f"Seeded {len(rows)} chunks into the eval corpus.")
+        verb = "Added" if args.missing_only else "Seeded"
+        print(f"{verb} {len(rows)} chunks into the eval corpus.")
         return 0
     finally:
         conn.close()

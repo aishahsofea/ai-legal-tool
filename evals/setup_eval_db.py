@@ -1,6 +1,7 @@
 """Create and seed the dedicated eval database in one explicit command."""
 from __future__ import annotations
 
+import argparse
 import os
 import subprocess
 import sys
@@ -14,6 +15,14 @@ load_dotenv()
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description="Create and seed the dedicated eval database.")
+    parser.add_argument(
+        "--missing-only",
+        action="store_true",
+        help="Add only missing sections instead of clearing and reseeding everything.",
+    )
+    args = parser.parse_args()
+
     eval_url = os.getenv("EVALS_DATABASE_URL")
     if not eval_url:
         raise SystemExit("EVALS_DATABASE_URL must point to the dedicated eval database")
@@ -42,8 +51,9 @@ def main() -> int:
     child_env = os.environ.copy()
     child_env["DATABASE_URL"] = eval_url
     child_env["CHECKPOINTER"] = "memory"
+    seed_flag = "--missing-only" if args.missing_only else "--clear"
     completed = subprocess.run(
-        [sys.executable, "-m", "evals.seed_test_corpus", "--clear"],
+        [sys.executable, "-m", "evals.seed_test_corpus", seed_flag],
         env=child_env,
         check=False,
     )

@@ -327,7 +327,15 @@ EVALS_DATABASE_URL=postgresql://user@/ai_legal_tool_evals?host=/path/to/pg/socke
   python3 -m evals.setup_eval_db
 ```
 
-Keep `EVALS_DATABASE_URL` in the API's `.env`. Dashboard subprocesses remap it to `DATABASE_URL` and force `CHECKPOINTER=memory`, so the eval database only needs the `chunks` table. Corpus staleness gets checked before every dashboard run; missing required sections → rerun the setup command. Seeding is deliberately never an HTTP or dashboard action.
+Keep `EVALS_DATABASE_URL` in the API's `.env`. Dashboard subprocesses remap it to `DATABASE_URL` and force `CHECKPOINTER=memory`, so the eval database only needs the `chunks` table. Every run — dashboard or CLI — checks corpus staleness first, against whichever cases are selected. Missing required sections raise before any model call. Add just those sections, without clearing the database:
+
+```bash
+python3 -m evals.seed_test_corpus --missing-only
+# or, if the eval database doesn't exist yet:
+python3 -m evals.setup_eval_db --missing-only
+```
+
+Seeding is deliberately never an HTTP or dashboard action.
 
 For direct CLI runs, explicitly point `DATABASE_URL` at the same eval database:
 

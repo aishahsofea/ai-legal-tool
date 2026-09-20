@@ -4,7 +4,10 @@ from __future__ import annotations
 from collections import Counter
 from typing import Any, Iterable
 
-from agent.citation_keys import normalized_citation_pair as _normalized_pair
+import psycopg2
+
+from agent.citation_keys import canonicalize_citation_key, normalized_citation_pair as _normalized_pair
+from agent.retrieval.search import has_path_column
 
 THIN_COVERAGE_THRESHOLD = 5
 BOUNDARY_COVERAGE_THRESHOLD = 0.20
@@ -57,6 +60,22 @@ def missing_section_pairs(
         {"act_number": act, "section_number": section}
         for act, section in sorted(required - present)
     ]
+
+
+def present_section_pairs(database_url: str) -> set[tuple[str, str]]:
+    """Read the Act/section keys currently present in the dedicated eval corpus."""
+    with psycopg2.connect(database_url) as conn:
+        with conn.cursor() as cursor:
+            # Gated: the dedicated eval database's bare `chunks` schema (see
+            # `evals/seed_test_corpus.py`) has no `path` column at all.
+            if has_path_column(cursor):
+                cursor.execute("SELECT DISTINCT act_number, section_number, path FROM chunks")
+                return {
+                    canonicalize_citation_key(act, section, path)
+                    for act, section, path in cursor.fetchall()
+                }
+            cursor.execute("SELECT DISTINCT act_number, section_number FROM chunks")
+            return {(str(act), str(section).upper()) for act, section in cursor.fetchall()}
 
 
 def coverage_summary(cases: list[dict[str, Any]]) -> dict[str, Any]:
