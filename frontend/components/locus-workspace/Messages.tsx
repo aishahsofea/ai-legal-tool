@@ -103,6 +103,41 @@ function InlineSources({ citations, messageId, onOpenReceipt }: { citations: Non
   );
 }
 
+function CommentaryNotes({ commentary }: { commentary: NonNullable<Message["commentary"]> }) {
+  if (commentary.length === 0) return null;
+
+  return (
+    <section className="chamber-max-content border-t border-dashed border-(--line) pt-4" aria-label="Background commentary, not a legal citation">
+      <div className="mb-3 flex items-center gap-2 text-(--text-subtle)">
+        <Mono className="text-(--text-muted)">COMMENTARY</Mono>
+        <span className="font-serif text-xs italic text-(--text-subtle)">background reading, not cited as authority</span>
+        <span className="h-px flex-1 bg-(--line-soft)" />
+      </div>
+      <ol className="space-y-2">
+        {commentary.map((note, index) => (
+          <li key={`${note.url}-${index}`} className="rounded-lg border border-dashed border-(--line) bg-(--surface-soft) p-3">
+            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-(--text-subtle)">
+              <span className="font-mono text-[10px] uppercase tracking-[0.12em]">{note.publisher}</span>
+              {note.published_date && <span className="font-mono text-[10px] uppercase tracking-[0.12em]">{note.published_date}</span>}
+            </div>
+            <div className="mt-1 font-serif font-light text-(--text)">{note.title}</div>
+            {note.snippet && <p className="mt-1 text-xs leading-5 text-(--text-muted)">{note.snippet}</p>}
+            <a
+              aria-label={`Open publisher site: ${note.title}`}
+              className="chamber-link mt-2 inline-block font-mono text-[10px] uppercase tracking-[0.12em]"
+              href={note.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open publisher site ↗
+            </a>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
 function formatDuration(ms: number) {
   return ms < 1000 ? `${ms}ms` : `${(ms / 1000).toFixed(1)}s`;
 }
@@ -204,6 +239,8 @@ export function AssistantMessage({
       </div>
 
       {message.citations && message.citations.length > 0 && <InlineSources citations={message.citations} messageId={message.id} onOpenReceipt={onOpenReceipt} />}
+
+      {message.commentary && message.commentary.length > 0 && <CommentaryNotes commentary={message.commentary} />}
 
       <div className="flex flex-wrap gap-2 border-t border-(--line-soft) pt-4" role="group" aria-label="Message actions">
         <OutlineButton disabled title="Coming soon" aria-label="Save as memo"><span className="hidden sm:inline">Save as memo</span><span className="sm:hidden">Save</span></OutlineButton>
