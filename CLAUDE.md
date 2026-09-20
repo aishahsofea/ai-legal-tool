@@ -42,8 +42,8 @@ Comments explain **why**, not **what**. If a reader can't tell what a block does
 
 Write a comment when the code can't carry the reason on its own:
 
-- Why this approach and not the obvious one (`maxsize=2` so the two flag variants never share a compiled agent).
-- Why a number is that number (`RECURSION_LIMIT = 6` leaves room for two search rounds plus slack).
+- Why this approach and not the obvious one (`maxsize=4` so no two flag combinations share a compiled agent).
+- Why a number is that number (`MAX_MODEL_CALLS = 8` because measured runs converge in 4-5).
 - A constraint from outside this file — a framework contract, an upstream bug, a fail-open rule an operator depends on.
 - Why an empty `except` is correct, rather than that it's empty.
 
