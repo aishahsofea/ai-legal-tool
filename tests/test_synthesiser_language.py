@@ -208,5 +208,82 @@ class SynthesiserDisclaimerTests(unittest.TestCase):
         self.assertEqual(citation["path"], "sched.2/art.1")
 
 
+class SynthesiserCommentaryTests(unittest.TestCase):
+    """#56 Phase 5 / ADR 0020: commentary is background only, never a citation
+    basis. `WEB_COMMENTARY_ENABLED` off means the commentary channel is always
+    empty (agent/graph.py:_start_turn), so the no-commentary case here is also
+    the flag-off case."""
+
+    _COMMENTARY_NOTE = {
+        "url": "https://skrine.com/insights/employment-act-2022-amendments",
+        "title": "Employment Act 2022 Amendments",
+        "publisher": "skrine.com",
+        "published_date": "2022-09-01",
+        "retrieved_at": "2026-09-19T00:00:00+00:00",
+        "snippet": "The amendments extend maternity leave to 98 days.",
+    }
+
+    def test_no_commentary_prompt_is_unchanged(self):
+        with_key = synthesiser._build_messages({
+            "query": "What does section 34 say?",
+            "retrieved_chunks": [_CHUNK],
+            "history": [],
+            "response_language": "en",
+            "commentary": [],
+        })
+        without_key = synthesiser._build_messages({
+            "query": "What does section 34 say?",
+            "retrieved_chunks": [_CHUNK],
+            "history": [],
+            "response_language": "en",
+        })
+        self.assertEqual(with_key, without_key)
+        self.assertNotIn("Commentary notes", with_key[1]["content"])
+        self.assertNotIn("Commentary notes below", with_key[0]["content"])
+
+    def test_commentary_notes_are_rendered_in_the_user_message(self):
+        messages = synthesiser._build_messages({
+            "query": "What does the Employment Act say about maternity leave?",
+            "retrieved_chunks": [_CHUNK],
+            "history": [],
+            "response_language": "en",
+            "commentary": [self._COMMENTARY_NOTE],
+        })
+        prompt = messages[1]["content"]
+        self.assertIn("Commentary notes (background only", prompt)
+        self.assertIn("skrine.com", prompt)
+        self.assertIn("Employment Act 2022 Amendments", prompt)
+
+    def test_commentary_present_appends_the_system_prompt_rule(self):
+        messages = synthesiser._build_messages({
+            "query": "q",
+            "retrieved_chunks": [_CHUNK],
+            "history": [],
+            "response_language": "en",
+            "commentary": [self._COMMENTARY_NOTE],
+        })
+        system_prompt = messages[0]["content"]
+        self.assertIn("never something you cite by section", system_prompt)
+        self.assertIn("never add it to citation_refs", system_prompt)
+
+    def test_commentary_never_becomes_a_citation(self):
+        """The model still only produces citation_refs from statute sections;
+        commentary in state must never leak into a built Citation."""
+        output = _SynthesiserOutput(
+            answer="Section 34 applies.",
+            citation_refs=[_CitationRef(act_number="574", section_number="34")],
+        )
+        result = synthesiser._finalise(output, {
+            "retrieved_chunks": [_CHUNK],
+            "response_language": "en",
+            "commentary": [self._COMMENTARY_NOTE],
+        })
+        self.assertEqual(len(result["citations"]), 1)
+        citation = result["citations"][0]
+        self.assertEqual(citation["act_number"], "574")
+        self.assertNotIn("publisher", citation)
+        self.assertNotIn("url", citation)
+
+
 if __name__ == "__main__":
     unittest.main()

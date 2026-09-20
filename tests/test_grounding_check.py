@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import Mock, patch
 
 from agent.nodes.grounding_check import (
+    _SYSTEM,
     _GroundingClaim,
     _GroundingOutput,
     _collect_cited_sources,
@@ -413,6 +414,32 @@ class GroundingMetricsTests(unittest.TestCase):
             result = asyncio.run(self._arun(self._state()))
 
         self.assertEqual(result["grounding_metrics"], {"checked": 0, "skipped": 1})
+
+
+class SystemPromptCommentaryScopeTests(unittest.TestCase):
+    """#56 Phase 5 / ADR 0020: the judge must never extract a background or
+    commentary-informed sentence as a claim to verify, because the synthesiser
+    (Phase 5) writes such sentences with no section attribution and doing so
+    would trip `evidence_violations` on every commentary turn (implementation
+    plan section 6, 'The grounding feedback loop').
+
+    Asserted against whitespace-normalised text so a future line-rewrap of
+    `_SYSTEM` doesn't break these on formatting alone.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.normalized = " ".join(_SYSTEM.split())
+
+    def test_system_prompt_requires_explicit_attribution_for_a_claim(self):
+        self.assertIn("explicitly names the Act or section it rests on", self.normalized)
+
+    def test_system_prompt_scopes_out_unattributed_and_commentary_sentences(self):
+        self.assertIn("is background, not a claim", self.normalized)
+        self.assertIn("commentary, publisher material, or general practitioner observations", self.normalized)
+
+    def test_system_prompt_ignore_list_covers_unattributed_background(self):
+        self.assertIn("background sentence with no explicit Act/section attribution", self.normalized)
 
 
 if __name__ == "__main__":
