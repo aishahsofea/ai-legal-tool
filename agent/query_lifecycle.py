@@ -164,6 +164,8 @@ def run_query(query: str, thread_id: str, user_id: str | None = None) -> QueryRe
     }
     if state.get("reference_trace"):
         result["reference_trace"] = state["reference_trace"]
+    if state.get("commentary"):
+        result["commentary"] = state["commentary"]
     if isinstance(state.get("grounding_metrics"), dict):
         result["grounding_metrics"] = state["grounding_metrics"]
     return result
@@ -253,12 +255,15 @@ async def _drive_query_stream(
         yield {"type": "error", "message": "No response generated."}
         return
 
-    yield {
+    response_event: QueryEvent = {
         "type": "response",
         "content": final,
         "citations": state.get("citations", []),
         "violations": state.get("violations", []),
     }
+    if state.get("commentary"):
+        response_event["commentary"] = state["commentary"]
+    yield response_event
 
     # Semantic Memory write path (ADR 0010, extended by ADR 0012): extract in the
     # background after the response is delivered. Runs on legal AND conversational turns
