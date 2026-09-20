@@ -51,7 +51,8 @@ Optional flags. The `=on` toggles are off by default and accept `1`, `true`, `ye
   - On an evidence violation the retry loop re-retrieves with feedback, not just re-drafts.
   - Retrieval tools stream `tool_call` SSE events into the PROCESS panel.
   - The eval `tool_selection` assertion (`expected_tool`) only runs with this flag on.
-  - `RETRIEVAL_RECURSION_LIMIT` (default 6) bounds the ReAct loop.
+  - `RETRIEVAL_MAX_MODEL_CALLS` (default 8) is what bounds the ReAct loop. On the budget's last call the loop ends and returns the sections it has, instead of raising. Without that, a query whose answer isn't in the corpus can reformulate the same search indefinitely. Measured runs converge in 4-5 calls.
+  - `RETRIEVAL_RECURSION_LIMIT` is the backstop, not the budget. It defaults to `4 x RETRIEVAL_MAX_MODEL_CALLS + 2` (34): each model round costs four graph super-steps. Set it lower and it fires before the budget does. The run then keeps the sections it had already reached and carries on with those; only an empty result falls back to the deterministic path.
 - `CORPUS_RETRIEVAL_MODE=dual|verified|legacy` — `dual` (default) reads legacy rows plus provenance rows joined to the active Act/language mapping. `verified` reads active provenance only. `legacy` is the rollback path. It reads only rows with no provenance, so no shadow-ingested row is visible, activated or not.
 - `RECEIPT_DELIVERY_MODE=auto|local|redirect|proxy` — remote coordinate sidecars get hash-checked again after download, whichever mode is set.
   - `auto` (default) prefers verified local bytes. With none present it falls back to CDN objects whose length, content type, and `x-amz-meta-sha256` match the registry.
