@@ -43,23 +43,13 @@ from agent.state import CommentaryNote
 
 logger = logging.getLogger(__name__)
 
-# The budget that actually bounds the loop. Measured on the eval corpus (#133):
-# converging runs spend 4-5 model calls. One query never converged — it reformulated
-# the same search past 15 calls, hunting a penalty section that corpus did not hold.
-# 8 clears the observed ceiling and still cuts the runaway off.
-# exit_behavior="end" is the point: the loop stops with the sections it has already
-# retrieved still in hand, rather than raising and losing them.
+# Measured runs converge in 4-5 model calls. 8 clears that and still cuts off a
+# query that never converges.
 MAX_MODEL_CALLS = int(os.getenv("RETRIEVAL_MAX_MODEL_CALLS", "8"))
 
-# recursion_limit counts graph super-steps, not tool calls. ModelCallLimitMiddleware
-# adds a before_model and an after_model node, so one round costs four super-steps
-# (before, model, after, tools) — hence 4N. The extra two let the middleware see call
-# N+1 coming and route to the end.
-# Derived from MAX_MODEL_CALLS rather than set by hand: anything tighter and this
-# backstop fires first, so the loop raises instead of returning. The old fixed 6
-# allowed three model calls. Every run needing a third search round raised, and
-# agentic_retriever_node's fail-open then threw away the sections already found
-# (#133).
+# ModelCallLimitMiddleware adds a before_model and an after_model node, so a round
+# costs four super-steps, not two. Set tighter than this and the backstop fires
+# before the budget does, and the loop raises instead of returning.
 RECURSION_LIMIT = int(os.getenv("RETRIEVAL_RECURSION_LIMIT", str(4 * MAX_MODEL_CALLS + 2)))
 
 _SYSTEM = """You are the retrieval step of a Malaysian legal research assistant.
@@ -192,9 +182,7 @@ def _build_retrieval_agent(follow_enabled: bool, commentary_enabled: bool):
         tools=tools,
         system_prompt=system_prompt,
         state_schema=state_schema,
-        # The prompt's "do not keep searching indefinitely" is advice the model is
-        # free to ignore, and on a corpus missing the section it expects it does
-        # ignore it. This is the same rule enforced where the model cannot argue.
+        # exit_behavior="end" so a capped loop returns what it found instead of raising.
         middleware=[ModelCallLimitMiddleware(run_limit=MAX_MODEL_CALLS, exit_behavior="end")],
         **kwargs,
     )
@@ -211,12 +199,9 @@ def run_retrieval_agent(query: str, feedback: str = "", config=None) -> dict:
 
     `feedback` comes from a re-retrieval pass so the agent can adjust its search.
     `config` is the parent graph's RunnableConfig; forwarding it is what lets the
-    tools' stream writes reach the parent's stream.
-
-    Raises on failure, leaving the fail-open decision to the caller in
-    agent/nodes/retriever.py — except for a recursion-limit hit, which returns the
-    partial state instead, since the sections already retrieved are worth more to
-    that caller than an exception.
+    tools' stream writes reach the parent's stream. Raises on failure — the caller
+    in agent/nodes/retriever.py decides whether to fail open — except on a recursion
+    hit, which returns the partial state instead.
     """
     request = query if not feedback else f"{query}\n\nRe-retrieval note: {feedback}"
     # Spreading keeps the parent's metadata/tags/callbacks so nested runs stay
@@ -245,9 +230,9 @@ def run_retrieval_agent(query: str, feedback: str = "", config=None) -> dict:
     except Exception:
         parent_writer = None
 
-    # Streamed even with no parent writer to re-emit for: invoke() returns nothing
-    # at all when a run trips the recursion backstop, and the sections found before
-    # that point are exactly what the caller's fail-open needs.
+    # Streamed even with no writer to re-emit for: invoke() returns nothing at all
+    # when a run trips the backstop, and the partial sections are what the caller
+    # needs to fail open on.
     final_state: dict = {}
     stream_kwargs: dict = {
         "stream_mode": ["values"] if parent_writer is None else ["custom", "values"],
@@ -267,10 +252,8 @@ def run_retrieval_agent(query: str, feedback: str = "", config=None) -> dict:
                 else:  # "values" emits full snapshots, so the last one is final
                     final_state = chunk
         except GraphRecursionError:
-            # Swallowed, not re-raised: MAX_MODEL_CALLS ends the loop first, so
-            # getting here means RETRIEVAL_RECURSION_LIMIT was set below the call
-            # budget. Partial evidence beats none, and the node's fail-open still
-            # reaches the deterministic path if the partial state is empty.
+            # Not re-raised: partial evidence beats none, and the caller still reaches
+            # the deterministic path when the partial state is empty.
             logger.warning(
                 "retrieval agent hit RETRIEVAL_RECURSION_LIMIT=%s; keeping %d partial chunk(s)",
                 RECURSION_LIMIT,

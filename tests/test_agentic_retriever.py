@@ -582,8 +582,7 @@ class CommentaryRetrievalGraphIntegrationTests(unittest.TestCase):
 
 class ModelCallBudgetTests(unittest.TestCase):
     """A loop that never decides it is done has to be stopped by the code, and it
-    has to stop holding what it found. #133: it raised instead, and the fail-open
-    then discarded every section the agent had already retrieved."""
+    has to stop holding what it found."""
 
     def setUp(self):
         retrieval_agent._build_retrieval_agent.cache_clear()
@@ -606,9 +605,7 @@ class ModelCallBudgetTests(unittest.TestCase):
     @staticmethod
     def _endless_searcher():
         # FakeMessagesListChatModel cycles its responses, so a model that only ever
-        # asks for another search never stops on its own — the runaway seen on
-        # multi-section-wages-hours-1, where it reformulated past 15 calls hunting a
-        # penalty section the corpus does not hold.
+        # asks for another search never stops on its own.
         return _ToolCallingFakeModel(responses=[
             AIMessage(content="", tool_calls=[{
                 "name": "search_statutes",

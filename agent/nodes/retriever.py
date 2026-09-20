@@ -72,9 +72,7 @@ def agentic_retriever_node(state: AgentState, config=None) -> dict:
 
     if not rows:
         result = retriever_node(state)
-        # The trace records what ran, so it has to survive the fallback. Dropping it
-        # here made a capped or empty agent run look like a run that called no tool
-        # at all, which is what #133 was reported as.
+        # The trace records what ran, so it has to survive the fallback.
         if tools:
             result["tool_trace"] = tools
         if reference_trace:
