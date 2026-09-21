@@ -13,6 +13,7 @@ from agent.feature_flags import flag_enabled, parse_feature_flag
 from agent.graph import _agentic_retrieval_enabled
 from agent.memory.extractor import _enabled as extract_enabled
 from agent.memory.pruner import _enabled as prune_enabled
+from agent.nodes.currency_check import currency_check_enabled
 from agent.nodes.recall import _enabled as recall_enabled
 from agent.retrieval.reference_graph import follow_references_enabled
 from agent.retrieval.tools import web_commentary_enabled
@@ -29,6 +30,7 @@ FLAGS = {
     "FOLLOW_REFERENCES_ENABLED": follow_references_enabled,
     "WEB_COMMENTARY_ENABLED": web_commentary_enabled,
     "REFERENCE_GRAPH_ENABLED": reference_graph_enabled,
+    "CURRENCY_CHECK_ENABLED": currency_check_enabled,
 }
 
 
