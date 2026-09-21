@@ -63,7 +63,7 @@ export function useResearchThreads() {
   const [reasoningOpen, setReasoningOpen] = useState(false);
   const [activeSourceIndex, setActiveSourceIndex] = useState(0);
   const lastStatusRef = useRef<string | null>(null);
-  const { submit, resume, cancel, status, response, citations, commentary, nodeRuns, isLoading, error, pendingQuestion } = useQuery();
+  const { submit, resume, cancel, status, response, citations, commentary, currency_labels, nodeRuns, isLoading, error, pendingQuestion } = useQuery();
 
   const activeThread = useMemo(
     () => threads.find((thread) => thread.id === activeThreadId) ?? null,
@@ -248,7 +248,7 @@ export function useResearchThreads() {
         const messages = [...thread.messages];
         const last = messages[messages.length - 1];
         if (last?.role === "assistant" && last.content === "") {
-          messages[messages.length - 1] = { ...last, content: response, citations, commentary };
+          messages[messages.length - 1] = { ...last, content: response, citations, commentary, currency_labels };
         } else {
           messages.push({ id: makeId(), role: "assistant", content: response, createdAt: nowLabel() });
         }
@@ -270,7 +270,7 @@ export function useResearchThreads() {
       setReasoningOpen(false);
     }
     setPendingThreadId(null);
-  }, [activeThreadId, citations, commentary, pendingThreadId, response]);
+  }, [activeThreadId, citations, commentary, currency_labels, pendingThreadId, response]);
 
   // Clarify interrupt (ADR 0015): the graph paused to ask a question. Show it in the
   // empty assistant placeholder so the practitioner can read and answer it. pendingThreadId

@@ -45,11 +45,21 @@ export interface CommentaryNote {
   snippet: string;
 }
 
+// A cited Act's status against its own metadata timeline — never a Citation,
+// never evidence. "unknown" covers everything short of an outright repeal, so
+// it is never rendered; only "repealed" reaches the UI.
+export interface CurrencyLabel {
+  act_number: string;
+  label: "repealed" | "unknown";
+  detail_url: string;
+  as_of_date: string;
+}
+
 export type QueryEvent =
   | { type: "status"; message: string }
   | { type: "tool_call"; name: string; summary: string }
   | { type: "node"; name: string; model: string; duration_ms: number }
-  | { type: "response"; content: string; citations: Citation[]; violations: string[]; commentary?: CommentaryNote[] }
+  | { type: "response"; content: string; citations: Citation[]; violations: string[]; commentary?: CommentaryNote[]; currency_labels?: CurrencyLabel[] }
   | { type: "interrupt"; question: string; interrupt_id: string }
   | { type: "error"; message: string }
   | { type: "done" };
@@ -116,6 +126,7 @@ function decodeQueryEvent(raw: string): QueryEvent | null {
       // Omitted (not defaulted to []) when the backend omits it, so a flag-off
       // turn's decoded event is byte-identical to before this field existed.
       ...(Array.isArray(event.commentary) ? { commentary: event.commentary as CommentaryNote[] } : {}),
+      ...(Array.isArray(event.currency_labels) ? { currency_labels: event.currency_labels as CurrencyLabel[] } : {}),
     };
   }
 
