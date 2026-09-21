@@ -48,8 +48,8 @@ class SearchHelperTests(unittest.TestCase):
             ("265", "EMPLOYMENT ACT 1955"),
         )
         # These three resolve from the Act's own Malay title in the manifest,
-        # so the returned title is the Malay one that actually matched - not
-        # the English title, unlike the old hand-maintained alias table.
+        # so the returned title is the Malay one that actually matched, not
+        # the English title.
         self.assertEqual(
             search.extract_act_hint("seksyen 90A Akta Keterangan"),
             ("56", "AKTA KETERANGAN 1950"),
@@ -64,8 +64,8 @@ class SearchHelperTests(unittest.TestCase):
         )
 
     def test_extracts_act_hint_previously_missing_bm_coverage(self):
-        # #62: neither of these resolved before - Kanun Tatacara Jenayah had
-        # no alias at all, and SPRM has no title in the manifest to match.
+        # #62: Kanun Tatacara Jenayah has no alias at all, and SPRM has no
+        # title in the manifest to match either.
         self.assertEqual(
             search.extract_act_hint(
                 "Di bawah seksyen 117 Kanun Tatacara Jenayah, apakah yang "
@@ -81,8 +81,8 @@ class SearchHelperTests(unittest.TestCase):
         )
 
     def test_extracts_act_hint_from_manifest_title_beyond_the_old_alias_table(self):
-        # Generalises past the 6 Acts the old table hard-coded - any Act's
-        # real title in the manifest now resolves, e.g. the Copyright Act.
+        # Any Act's real title in the manifest resolves, e.g. the Copyright
+        # Act, not just a fixed shortlist.
         self.assertEqual(
             search.extract_act_hint("Section 36 of the Copyright Act protects..."),
             ("332", "COPYRIGHT ACT 1987"),
@@ -287,8 +287,8 @@ class SearchHelperTests(unittest.TestCase):
         where_clause, order_by_clause = sql.split("WHERE", 1)[1].split("ORDER BY")
         self.assertIn("path = %s", where_clause)
         self.assertNotIn("section_number", where_clause)
-        # Only the two pre-existing tie-breakers (exact act, English) remain -
-        # the old `body_first` division CASE WHEN is dead (ADR 0018).
+        # Only the two tie-breakers (exact act, English) apply; no
+        # division-based ordering (ADR 0018).
         self.assertEqual(order_by_clause.count("CASE WHEN"), 2)
         self.assertNotIn("division", order_by_clause)
         self.assertEqual(params[0], "sched.2/para.1")
@@ -333,8 +333,8 @@ class SearchHelperTests(unittest.TestCase):
         sql, params = connection.cursor_value.calls[-1]
         where_clause, order_by_clause = sql.split("WHERE", 1)[1].split("ORDER BY")
         self.assertIn("UPPER(c.section_number) = %s", where_clause)
-        # The old `body_first` ORDER BY hack is dead now that only a body row
-        # ever populates section_number (ADR 0018) - it must not reappear.
+        # Only a body row ever populates section_number (ADR 0018), so no
+        # division-based ordering here - it must not reappear.
         self.assertEqual(order_by_clause.count("CASE WHEN"), 2)
         self.assertNotIn("division", order_by_clause)
         self.assertEqual(params[0], "90A")

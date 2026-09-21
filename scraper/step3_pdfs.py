@@ -271,8 +271,7 @@ def run_step3() -> None:
     bookkeeping = threading.Lock()
 
     def _worker_session() -> requests.Session:
-        # requests.Session is not thread-safe, so each worker builds its own
-        # instead of sharing the single session this step used to create.
+        # requests.Session is not thread-safe, so each worker builds its own.
         session = getattr(worker_state, "session", None)
         if session is None:
             session = build_download_session()
