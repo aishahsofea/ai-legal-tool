@@ -86,7 +86,11 @@ Background material from an allowlisted web publisher, carried on its own `comme
 _Avoid_: source (already means citation in the UI's SOURCE MAP / SOURCES USED), reference (already the **Statutory Reference Graph**'s vocabulary)
 
 **Timeline Entry**:
-A dated version event for an Act: ORIGINAL, REPRINT, REPRINT ONLINE, or AMENDMENTS. Stored in the `timeline` array of each act metadata file.
+A dated version event for an Act: `ORIGINAL`, `REPRINT`, `REPRINT ONLINE`, `AMENDMENTS`, `REPEALED`, or `SUPERSEDED`. Stored in the `timeline` array of each act metadata file (`timeline_bm` for the Bahasa Malaysia page).
+
+**Currency Label**:
+Attached to a citation after the answer is drafted, from that Act's own **Timeline Entry** history — never from a search or a model. This rollout checks one condition only: whether a `REPEALED` or `SUPERSEDED` entry exists. Anything short of that reads `unknown` and renders nothing. An amendment postdating the corpus's own **Reprint** is not yet distinguished from a current one. Gated by `CURRENCY_CHECK_ENABLED`; flag off is no behaviour change at all. Two limits apply before trusting an `unknown` result. First, the check is only as fresh as the metadata's own `scraped_at` — a repeal gazetted since the last scrape is invisible to it. Second, a same-date collision in the source page's markup (#67) can silently drop a Timeline Entry. Either way, `unknown` means "none recorded," never "verified current." A **Repealed Act** excluded from the corpus at scrape time never reaches this check. The check exists for the opposite case: an Act that was current when indexed and repealed afterward — nothing else in the pipeline removes that Act.
+_Avoid_: repeal warning (a factual check against the timeline, not a heuristic), stale citation (says the Act moved, never that the cited section is wrong)
 
 **Case Law**:
 Court judgments (decisions). Not in scope for v1. Planned for v2 via CommonLII (commonlii.org/my/).
