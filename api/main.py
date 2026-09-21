@@ -15,11 +15,12 @@ SSE event types:
     "duration_ms": 0 }                                — a node finished a model call; one per call,
                                                         in execution order (PROCESS panel)
   { "type": "response",  "content": "...", "citations": [...],
-    "violations": [...], "commentary": [...] }        — final answer. "commentary"
-                                                        (web publisher notes, ADR 0020) is
-                                                        present only when the turn found at
-                                                        least one — omitted, never `[]`,
-                                                        the rest of the time
+    "violations": [...], "commentary": [...],
+    "currency_labels": [...] }                        — final answer. "commentary"
+                                                        (web publisher notes, ADR 0020) and
+                                                        "currency_labels" (repealed-Act flags)
+                                                        are each present only when non-empty —
+                                                        omitted, never `[]`, the rest of the time
   { "type": "interrupt", "question": "...",
     "interrupt_id": "..." }                           — graph paused for clarification;
                                                         answer via POST /resume (ADR 0015)
