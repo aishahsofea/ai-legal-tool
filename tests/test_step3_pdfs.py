@@ -425,7 +425,7 @@ def test_rate_limiting_does_not_sleep_after_the_final_attempt(tmp_path, sleeps):
 
 
 def test_the_last_failure_decides_the_reason(tmp_path):
-    # A timeout on the first attempt used to mask every status after it.
+    # The last failure decides the reported outcome, not the first.
     url = "https://example.test/flapping.pdf"
     host = _FakeHost({url: [
         requests.exceptions.ReadTimeout("read timed out"),

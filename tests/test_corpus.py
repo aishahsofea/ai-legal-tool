@@ -263,9 +263,8 @@ def test_exact_extraction_sidecar_locator_and_scanned_failure(tmp_path: Path):
         "active_documents": [], "aliases": {},
     }), encoding="utf-8")
     scanned_registry = CorpusRegistry(scanned_manifest, asset_root=asset_root)
-    # A genuinely blank scanned page still fails -- OCR now runs (ADR 0019) but
-    # finds nothing to extract, so this ends in no_chunks rather than the old
-    # scanned_image_only, which no longer happens for any scanned document.
+    # A genuinely blank scanned page still fails: OCR runs (ADR 0019) but
+    # finds nothing to extract, so this ends in no_chunks.
     with pytest.raises(ValueError, match="no_chunks"):
         extract_document(scanned_registry, scanned, extraction_root=extraction_root, sidecar_root=sidecar_root)
 
@@ -432,63 +431,6 @@ def test_checked_in_coverage_accounts_for_every_source_pdf():
 # pdf_chars over all ready documents). A drop below this means an extraction
 # change is silently losing more text than it used to keep — investigate
 # before merging, don't just lower the number.
-#
-# Raised 0.8755 -> 0.9252 by #89: `_extract_chunks` dropped a division's own
-# content whenever it never restarted numbering at "1." (schedules printed as
-# prose, or numbered "ARTICLE N"), which also rescued 20 documents that had
-# no chunks at all before.
-#
-# Lowered 0.9252 -> 0.9227 by #93. Expected, and not a loss of real content:
-# a table-of-contents row whose number and title land on one PDF line
-# matches SECTION_PATTERN exactly like a real heading (see #97), and before
-# a front-matter boundary existed to gate it, that row could start a chunk
-# which absorbed the rest of the table of contents and the front matter
-# ahead of the real section carrying that number — assigned_chars counted
-# all of it. #93 stops these from ever starting; the clearest single example
-# is Act 77 EN (Armed Forces Act, 201 pages), whose "1" chunk shrank from
-# 27,775 characters of table-of-contents rows and front matter to none, with
-# section 1 itself still unrecovered (a bare-line heading, #94's cohort).
-# `data/chunks/extract_report.json` was regenerated with `corpus
-# shadow-extract` against the local corpus (1,099 ready documents) and
-# diffed chunk-by-chunk against the prior checked-in report with
-# `diff_chunk_sets`: 86 documents changed, every change a pure removal (0
-# added, 165 removed, 0 changed) — no chunk's content changed shape, none
-# appeared that had not existed before.
-#
-# Raised 0.9227 -> 0.9235 by #94: a numbering scheme per division turns a
-# bare `<n>.` line, a schedule paragraph printed the same way, and
-# `ARTICLE n` into real chunks instead of one undifferentiated blob or, for
-# 15 of the #72 cohort's 22 documents, no chunk at all. Two real bugs found
-# by re-running against the full local corpus rather than trusting the unit
-# fixtures: the bare-line pattern must stay off for a document with no
-# detected enacting formula (Act 595 EN's own table of contents matches it
-# exactly, number then title, with no front-matter boundary to stop it), and
-# a schedule's own paragraph/article match must lose to a lower number
-# already seen unless it came from the pre-#94 inline pattern (Act 4's Fifth
-# Schedule restarts "1" for its Part II, which would otherwise overwrite
-# Part I's own "1" through last-wins dedup — measured at -30,475 characters
-# on that one document before the guard). The remaining 7 of the #72 cohort
-# are named exceptions, not silently dropped: Act 437 EN/BM are a genuine
-# one-page "superseded" stub with no body text at all, and Act 33/114/198/
-# 205/373 EN have no enacting formula AGC's current patterns recognise
-# (placeholder issue for the phrasing gap, blocked on finding more real
-# examples).
-#
-# A third English recital shape ("IT IS ENACTED BY", no "BE", actor left
-# unstated so it covers both "the Parliament of Malaysia" and Act 373's
-# "the Yang di-Pertuan Agong ... Parliament") barely moves this ratio:
-# checked against the full local English corpus, it matches 12 of 1,124
-# documents, and most of what they gain was already counted as
-# `classified` front matter, not lost as `unassigned` body. Act 373 EN is
-# the one of the five cohort members named above with a real clause to
-# find: assigned_chars 1,141/7,134 (16.0%, a 2-chunk blob) -> 4,949/7,134
-# (69.4%, 11 chunks). Corpus-wide: assigned_chars +2,929, classified_chars
-# +35,817, unassigned_chars -38,746 - still rounds to the same 0.9235, so
-# the recorded floor is unchanged. Act 33/114/198/205 EN, the other four
-# named above, were never part of this gap: read directly, their AGC
-# reprints carry no enacting clause of any kind, the same legitimate
-# `None` as the pre-Merdeka Ordinances documented above - not a phrasing
-# gap left to close.
 RECORDED_RETENTION_BASELINE = 0.9234
 
 
@@ -506,27 +448,6 @@ def test_corpus_wide_retention_has_not_regressed_below_its_recorded_baseline():
 # reports success while holding almost nothing retrievable — Act 12 EN's only
 # chunk is its list of amendments, 1.3% of the document. Ceiling, not a target: it
 # must not grow silently.
-#
-# Lowered 66 -> 38 by #94, which fixed Act 12 EN itself along with 14 more of
-# the #72 cohort (each now produces one chunk per real section instead of one
-# blob or none). The 5 members of that cohort still low-yield here (Act 33,
-# 114, 198, 205, 373 EN) have no enacting formula #94's front-matter gate can
-# find, so the bare-line pattern correctly declines to guess at them rather
-# than risk reading their real table of contents as body text the way Act
-# 595 EN's does.
-#
-# Lowered 38 -> 37: Act 373 EN, one of the five cohort members named above,
-# gets a real front-matter boundary once "IT IS ENACTED BY" is recognised
-# (no "BE", actor unstated), and its chunk count goes 2 -> 11 - clearing
-# both the chunk-count and the assigned-share bar. Checked against the
-# full local English corpus, not a sample: this phrasing also matches Act
-# 297, 595, 622, 636, 641, 659, 660, 686, 712, 720, 747, but 373 is the
-# only one of those that was low-yield for a reason this fix addresses -
-# Act 622 and 659 EN stay low-yield here for a separate, unrelated reason.
-# Act 33/114/198/205 EN, the other four cohort members, stay low-yield
-# too: read directly, their AGC reprints carry no enacting clause of any
-# kind to find, the same legitimate `None` as the pre-Merdeka Ordinances
-# documented above.
 RECORDED_LOW_YIELD_CEILING = 37
 
 
