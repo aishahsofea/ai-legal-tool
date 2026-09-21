@@ -50,7 +50,7 @@ query + thread_id (EN / BM / mixed)
   → synthesiser          draft the answer with citations (act, section, page deep-link)
   → citation_validator   reject citations absent from the retrieved sources
   → grounding_check      flag unsupported claims; retain only deterministically verified Evidence Spans
-  → currency_check       flag a cited Act carrying a repeal record in its own metadata timeline
+  → currency_check       flag a cited Act that's been repealed, or amended since the reprint we indexed
   → supervisor           enforce policy — retries once on a violation
   → record_turn          append the turn to checkpointed history
 ```
