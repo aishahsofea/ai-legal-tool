@@ -287,6 +287,7 @@ python3 -m pytest -q
 LANGSMITH_TRACING=false python3 -m pytest -q \
   tests/test_reference_following.py \
   tests/test_reference_follow_evals.py \
+  tests/test_commentary_evals.py \
   tests/test_agentic_retriever.py \
   tests/test_retrieval_tools.py \
   tests/test_retriever_exact_lookup.py \
@@ -294,6 +295,7 @@ LANGSMITH_TRACING=false python3 -m pytest -q \
   tests/test_observability.py \
   tests/test_assertions.py
 python3 -m evals.validate_dataset --dataset evals/reference_follow_dataset.json
+python3 -m evals.validate_dataset --dataset evals/commentary_dataset.json
 cd frontend
 npm run lint
 npm test
@@ -357,9 +359,15 @@ DATABASE_URL="$EVALS_DATABASE_URL" python3 -m evals.run_evals --mode baseline
 AGENTIC_RETRIEVAL=1 FOLLOW_REFERENCES_ENABLED=on \
   DATABASE_URL="$PHASE3_EVAL_DATABASE_URL" \
   python3 -m evals.run_evals --dataset evals/reference_follow_dataset.json --mode full
+
+# search_commentary tool-selection gate (live model calls; the standard
+# $EVALS_DATABASE_URL is enough — no promoted reference graph needed)
+AGENTIC_RETRIEVAL=1 WEB_COMMENTARY_ENABLED=on \
+  DATABASE_URL="$EVALS_DATABASE_URL" \
+  python3 -m evals.run_evals --dataset evals/commentary_dataset.json --mode full
 ```
 
-`run_evals` also supports `--smoke`, `--category`, `--scenario`, `--case-id`, `--language` (comma-separated, e.g. `--language bm,mixed` for the bilingual subset, also offered in the `/evals` picker), and machine-readable `--jsonl` output. Human-readable output stays the default; results write to `evals/results.json` by default. Phase 3 cases add ordered `expected_tool_sequence`, `forbidden_tools`, `max_tool_calls`, and executed `expected_reference_direction` assertions — existing `expected_tool` semantics unchanged. The dedicated dataset fails fast unless both required flags are on. Its database must be a dedicated production-like staging/eval corpus, with an active exact Act 265 document/extraction matching an already-promoted graph — the tiny default eval seed has legacy-shaped chunks, intentionally insufficient for this provenance gate. Don't point the live gate at the application development database. A GitHub Actions workflow (`.github/workflows/evals.yml`, manually triggered via `workflow_dispatch`) runs the 10-case smoke set against the production model defaults and posts the judge pass rate and key L1 metrics as a PR comment; fails if the judge pass rate drops below 80%.
+`run_evals` also supports `--smoke`, `--category`, `--scenario`, `--case-id`, `--language` (comma-separated, e.g. `--language bm,mixed` for the bilingual subset, also offered in the `/evals` picker), and machine-readable `--jsonl` output. Human-readable output stays the default; results write to `evals/results.json` by default. Phase 3 cases add ordered `expected_tool_sequence`, `forbidden_tools`, `max_tool_calls`, and executed `expected_reference_direction` assertions — existing `expected_tool` semantics unchanged. Each dedicated dataset fails fast unless its required flag is on: `reference_follow_dataset.json` needs `requires_follow_references`, `commentary_dataset.json` needs `requires_web_commentary`. Both are checked in `iter_suite`. `reference_follow_dataset.json`'s database must additionally be a dedicated production-like staging/eval corpus, with an active exact Act 265 document/extraction matching an already-promoted graph — the tiny default eval seed has legacy-shaped chunks, intentionally insufficient for this provenance gate. `commentary_dataset.json` has no such requirement: its cases reuse Act 265/60D and Act 56/90A, both already present in the standard eval seed. Don't point either live gate at the application development database. A GitHub Actions workflow (`.github/workflows/evals.yml`, manually triggered via `workflow_dispatch`) runs the 10-case smoke set against the production model defaults and posts the judge pass rate and key L1 metrics as a PR comment; fails if the judge pass rate drops below 80%.
 
 Every run ends with a `Grounding:` line: how many grounding checks completed, and how many failed open. A failed-open check raises no violation and fails no assertion, so the judge pass rate cannot see it. The count is the only place a skipped verification shows. It never changes the exit code — those answers shipped, they just shipped unverified. [Model overrides](#model-overrides) covers when that happens.
 
