@@ -36,6 +36,13 @@ class CommentaryNote(TypedDict):
     snippet: str
 
 
+class CurrencyLabel(TypedDict):
+    act_number: str
+    label: Literal["repealed", "unknown"]
+    detail_url: str  # the timeline entry's own pdf_url, not latest_amendment_pdf
+    as_of_date: str   # that entry's date (DD/MM/YYYY)
+
+
 class QueryResult(TypedDict):
     query_type: str
     response: str
@@ -45,6 +52,7 @@ class QueryResult(TypedDict):
     reference_trace: NotRequired[list[dict]]  # enabled-only compact follow outcome
     commentary: NotRequired[list[CommentaryNote]]  # enabled-only web commentary notes
     grounding_metrics: NotRequired[dict[str, int]]  # grounding checks completed vs failed open
+    currency_labels: NotRequired[list[CurrencyLabel]]  # enabled-only per-citation repeal labels
 
 
 class QueryEvent(TypedDict, total=False):
@@ -58,6 +66,7 @@ class QueryEvent(TypedDict, total=False):
     citations: list[Citation]
     violations: list[str]
     commentary: list[CommentaryNote]  # response: web commentary notes (WEB_COMMENTARY_ENABLED only)
+    currency_labels: list[CurrencyLabel]  # response: repeal labels (CURRENCY_CHECK_ENABLED only)
     question: str        # interrupt: the clarifying question to put to the user
     interrupt_id: str    # interrupt: LangGraph interrupt id, echoed back on resume
 
@@ -82,5 +91,6 @@ class AgentState(TypedDict):
     reference_metrics: dict[str, int]  # low-cardinality follow counters for observability
     commentary: list[CommentaryNote]  # web commentary notes; never a Citation, never retrieved_chunks (ADR 0020)
     grounding_metrics: dict[str, int]  # grounding checks completed vs failed open this turn
+    currency_labels: list[CurrencyLabel]  # per-citation repeal labels; empty unless CURRENCY_CHECK_ENABLED
     final_response: str
     retry_count: int
