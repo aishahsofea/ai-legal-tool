@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { cancelQuery, streamQuery, streamResume, type Citation, type CommentaryNote, type NodeRun, type QueryEvent } from "@/lib/queryTransport";
+import { cancelQuery, streamQuery, streamResume, type Citation, type CommentaryNote, type CurrencyLabel, type NodeRun, type QueryEvent } from "@/lib/queryTransport";
 
-export { type Citation, type CommentaryNote, type Message, type NodeRun } from "@/lib/queryTransport";
+export { type Citation, type CommentaryNote, type CurrencyLabel, type Message, type NodeRun } from "@/lib/queryTransport";
 
 export interface QueryState {
   status: string;
   response: string;
   citations: Citation[];
   commentary: CommentaryNote[];
+  currency_labels: CurrencyLabel[];
   // Kept structured rather than folded into `status`: the PROCESS panel counts
   // status steps in its collapsed header, and model rows must not change that count.
   nodeRuns: NodeRun[];
@@ -23,6 +24,7 @@ const IDLE: QueryState = {
   response: "",
   citations: [],
   commentary: [],
+  currency_labels: [],
   nodeRuns: [],
   isLoading: false,
   error: null,
@@ -70,6 +72,7 @@ export function useQuery() {
               response: event.content,
               citations: event.citations,
               commentary: event.commentary ?? [],
+              currency_labels: event.currency_labels ?? [],
               status: "",
             }));
           } else if (event.type === "interrupt") {
