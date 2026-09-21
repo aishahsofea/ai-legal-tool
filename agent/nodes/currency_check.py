@@ -1,11 +1,14 @@
-"""Local repeal check for cited Acts.
+"""Local currency check for cited Acts.
 
 Reads each cited Act's own metadata timeline; no network or model call.
 Runs after grounding_check and only ever attaches a label beside an
-already-validated citation, never edits one. Only `repealed` is
-distinguished from `unknown` for now -- `superseded` and
-`current_as_indexed` need an amendment-date comparison not built yet, so
-anything short of an outright repeal currently reads as `unknown`.
+already-validated citation, never edits one. Repeal takes priority over
+everything else: a REPEALED/SUPERSEDED timeline entry means `repealed`
+regardless of dates. Otherwise the latest AMENDMENTS date is compared
+against the citation's own reprint date (`data/pdfs/manifest.json`'s
+`timeline_date`) to tell `superseded` from `current_as_indexed`. Anything
+that can't be compared -- no manifest match, no AMENDMENTS entry, an
+unparseable date -- reads `unknown`.
 """
 from __future__ import annotations
 
@@ -22,13 +25,23 @@ from scraper.act_paths import metadata_path
 logger = logging.getLogger(__name__)
 
 METADATA_DIR = Path("data/acts_metadata")
+MANIFEST_PATH = Path("data/pdfs/manifest.json")
 
 # SUPERSEDED is a repeal by a differently-named instrument; same user-facing label.
 _REPEAL_LOG_TYPES = {"REPEALED", "SUPERSEDED"}
+_AMENDMENT_LOG_TYPE = "AMENDMENTS"
+_DATE_FORMAT = "%d/%m/%Y"
 
 
 def currency_check_enabled() -> bool:
     return flag_enabled("CURRENCY_CHECK_ENABLED")
+
+
+def _parse_date(value: str) -> datetime | None:
+    try:
+        return datetime.strptime(str(value or ""), _DATE_FORMAT)
+    except ValueError:
+        return None
 
 
 def _select_repeal_entry(timeline: list[dict]) -> dict | None:
@@ -46,6 +59,33 @@ def _select_repeal_entry(timeline: list[dict]) -> dict | None:
     return max(dated, key=lambda item: item[0])[1] if dated else repeal_entries[0]
 
 
+def _select_latest_amendment_entry(timeline: list[dict]) -> dict | None:
+    # Unlike repeal, an amendment's date is the whole signal here (it is what gets
+    # compared against the reprint date), so an unparseable one can't fall back to
+    # an arbitrary entry the way repeal does -- it can only drop out of contention.
+    dated: list[tuple[datetime, dict]] = []
+    for entry in timeline:
+        if entry.get("log_type") != _AMENDMENT_LOG_TYPE:
+            continue
+        parsed = _parse_date(entry.get("date", ""))
+        if parsed is not None:
+            dated.append((parsed, entry))
+    return max(dated, key=lambda item: item[0])[1] if dated else None
+
+
+def _reprint_dates_by_document(manifest_path: Path | None = None) -> dict[str, str]:
+    path = manifest_path if manifest_path is not None else MANIFEST_PATH
+    try:
+        manifest = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return {
+        str(document["document_id"]): str(document.get("timeline_date", ""))
+        for document in manifest.get("documents", [])
+        if document.get("document_id")
+    }
+
+
 def _chunk_lookup(state: AgentState) -> dict[tuple[str, str], list[dict]]:
     lookup: dict[tuple[str, str], list[dict]] = {}
     for chunk in state.get("retrieved_chunks", []):
@@ -56,7 +96,9 @@ def _chunk_lookup(state: AgentState) -> dict[tuple[str, str], list[dict]]:
     return lookup
 
 
-def _label_for_act(display_act_number: str, canonical_act_number: str, language: str) -> CurrencyLabel:
+def _label_for_act(
+    display_act_number: str, canonical_act_number: str, language: str, reprint_date: str
+) -> CurrencyLabel:
     path = metadata_path(METADATA_DIR, canonical_act_number)
     if not path.exists():
         return CurrencyLabel(act_number=display_act_number, label="unknown", detail_url="", as_of_date="")
@@ -67,16 +109,32 @@ def _label_for_act(display_act_number: str, canonical_act_number: str, language:
         return CurrencyLabel(act_number=display_act_number, label="unknown", detail_url="", as_of_date="")
 
     timeline = metadata.get("timeline_bm" if language == "bm" else "timeline")
-    entry = _select_repeal_entry(timeline if isinstance(timeline, list) else [])
-    if entry is None:
+    timeline = timeline if isinstance(timeline, list) else []
+
+    repeal_entry = _select_repeal_entry(timeline)
+    if repeal_entry is not None:
+        return CurrencyLabel(
+            act_number=display_act_number,
+            label="repealed",
+            detail_url=str(repeal_entry.get("pdf_url", "")),
+            as_of_date=str(repeal_entry.get("date", "")),
+        )
+
+    reprint_parsed = _parse_date(reprint_date)
+    amendment_entry = _select_latest_amendment_entry(timeline)
+    amendment_parsed = _parse_date(amendment_entry.get("date", "")) if amendment_entry else None
+    if reprint_parsed is None or amendment_parsed is None:
         return CurrencyLabel(act_number=display_act_number, label="unknown", detail_url="", as_of_date="")
 
-    return CurrencyLabel(
-        act_number=display_act_number,
-        label="repealed",
-        detail_url=str(entry.get("pdf_url", "")),
-        as_of_date=str(entry.get("date", "")),
-    )
+    if amendment_parsed > reprint_parsed:
+        return CurrencyLabel(
+            act_number=display_act_number,
+            label="superseded",
+            detail_url=str(amendment_entry.get("pdf_url", "")),
+            as_of_date=str(amendment_entry.get("date", "")),
+        )
+
+    return CurrencyLabel(act_number=display_act_number, label="current_as_indexed", detail_url="", as_of_date="")
 
 
 def currency_check_node(state: AgentState) -> dict:
@@ -85,6 +143,7 @@ def currency_check_node(state: AgentState) -> dict:
 
     try:
         chunks = _chunk_lookup(state)
+        reprint_dates = _reprint_dates_by_document()
         labels: list[CurrencyLabel] = []
         seen: set[str] = set()
 
@@ -99,9 +158,11 @@ def currency_check_node(state: AgentState) -> dict:
                 act_number, citation.get("section_number"), citation.get("path")
             )
             matches = chunks.get(key, [])
-            language = matches[0].get("language", "en") if matches else "en"
+            chunk = matches[0] if matches else {}
+            language = chunk.get("language", "en")
+            reprint_date = reprint_dates.get(str(chunk.get("document_id", "")), "")
 
-            labels.append(_label_for_act(act_number, canonical_act, language))
+            labels.append(_label_for_act(act_number, canonical_act, language, reprint_date))
 
         return {"currency_labels": labels}
     except Exception:

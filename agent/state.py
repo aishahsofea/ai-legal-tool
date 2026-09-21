@@ -38,7 +38,7 @@ class CommentaryNote(TypedDict):
 
 class CurrencyLabel(TypedDict):
     act_number: str
-    label: Literal["repealed", "unknown"]
+    label: Literal["repealed", "superseded", "current_as_indexed", "unknown"]
     detail_url: str  # the timeline entry's own pdf_url, not latest_amendment_pdf
     as_of_date: str   # that entry's date (DD/MM/YYYY)
 
