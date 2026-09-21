@@ -168,6 +168,8 @@ def run_query(query: str, thread_id: str, user_id: str | None = None) -> QueryRe
         result["commentary"] = state["commentary"]
     if isinstance(state.get("grounding_metrics"), dict):
         result["grounding_metrics"] = state["grounding_metrics"]
+    if state.get("currency_labels"):
+        result["currency_labels"] = state["currency_labels"]
     return result
 
 
@@ -263,6 +265,8 @@ async def _drive_query_stream(
     }
     if state.get("commentary"):
         response_event["commentary"] = state["commentary"]
+    if state.get("currency_labels"):
+        response_event["currency_labels"] = state["currency_labels"]
     yield response_event
 
     # Semantic Memory write path (ADR 0010, extended by ADR 0012): extract in the
