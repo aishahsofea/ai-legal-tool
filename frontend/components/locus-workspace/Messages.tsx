@@ -59,31 +59,53 @@ function InlineSourceSummary({ citations, messageId }: { citations: CitationList
 }
 
 function RepealBadge({ citation, label }: { citation: CitationList[number]; label: NonNullable<Message["currency_labels"]>[number] }) {
-  const warning = `Act ${citation.act_number} carries a repeal record dated ${label.as_of_date}. This does not mean Section ${citation.section_number} itself is void — open the repeal record to check.`;
+  if (label.label === "repealed") {
+    const warning = `Act ${citation.act_number} carries a repeal record dated ${label.as_of_date}. This does not mean Section ${citation.section_number} itself is void — open the repeal record to check.`;
+    return (
+      <a
+        href={label.detail_url}
+        target="_blank"
+        rel="noopener noreferrer"
+        title={warning}
+        aria-label={`Warning: ${warning}`}
+        className="inline-flex items-center gap-1 rounded-full border border-(--danger) bg-(--danger-soft) px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-(--danger) transition-opacity duration-200 hover:opacity-80"
+      >
+        ⚠ Act repealed {label.as_of_date}
+      </a>
+    );
+  }
 
-  return (
-    <a
-      href={label.detail_url}
-      target="_blank"
-      rel="noopener noreferrer"
-      title={warning}
-      aria-label={`Warning: ${warning}`}
-      className="inline-flex items-center gap-1 rounded-full border border-(--danger) bg-(--danger-soft) px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-(--danger) transition-opacity duration-200 hover:opacity-80"
-    >
-      ⚠ Act repealed {label.as_of_date}
-    </a>
-  );
+  if (label.label === "superseded") {
+    const notice = `Act ${citation.act_number} has been amended since the reprint we indexed (${label.as_of_date}). This does not mean Section ${citation.section_number} itself changed — open the amendment to check.`;
+    return (
+      <a
+        href={label.detail_url}
+        target="_blank"
+        rel="noopener noreferrer"
+        title={notice}
+        aria-label={`Notice: ${notice}`}
+        className="inline-flex items-center gap-1 rounded-full border border-(--warning) bg-(--warning-soft) px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-(--warning) transition-opacity duration-200 hover:opacity-80"
+      >
+        Act amended {label.as_of_date}
+      </a>
+    );
+  }
+
+  return null;
 }
 
 function InlineSources({ citations, currencyLabels, messageId, onOpenReceipt }: { citations: NonNullable<Message["citations"]>; currencyLabels: NonNullable<Message["currency_labels"]>; messageId: string; onOpenReceipt: OpenReceipt }) {
   if (citations.length === 0) return null;
 
   const mapId = sourceMapId(messageId);
-  // Repeal is a fact about the Act, not the specific citation, so it is keyed and
-  // deduped by act_number on the backend already (agent/nodes/currency_check.py) —
-  // this lookup just re-attaches it to every citation of that Act.
-  const repealedByAct = new Map(
-    currencyLabels.filter((label) => label.label === "repealed").map((label) => [label.act_number, label]),
+  // Currency status is a fact about the Act, not the specific citation, so it is
+  // keyed and deduped by act_number on the backend already
+  // (agent/nodes/currency_check.py) — this lookup just re-attaches it to every
+  // citation of that Act. current_as_indexed/unknown render nothing.
+  const currencyByAct = new Map(
+    currencyLabels
+      .filter((label) => label.label === "repealed" || label.label === "superseded")
+      .map((label) => [label.act_number, label]),
   );
 
   return (
@@ -94,14 +116,14 @@ function InlineSources({ citations, currencyLabels, messageId, onOpenReceipt }: 
       </div>
       <ol className="space-y-2">
         {citations.map((citation, index) => {
-          const repeal = repealedByAct.get(citation.act_number);
+          const currency = currencyByAct.get(citation.act_number);
           return (
             <li id={sourceRefId(messageId, citation, index)} key={sourceRefId(messageId, citation, index)} className="scroll-mt-4 rounded-lg border border-(--line) bg-(--surface) p-3 shadow-[var(--shadow-soft)]">
               <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm text-(--text)">
                 <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-(--accent)">[{index + 1}] § {citation.section_number}</span>
                 <span className="font-serif font-light">{formatSourceTitle(citation.act_title)}</span>
                 {citation.page_number && <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-(--text-subtle)">p. {citation.page_number}</span>}
-                {repeal && <RepealBadge citation={citation} label={repeal} />}
+                {currency && <RepealBadge citation={citation} label={currency} />}
               </div>
               <div className="mt-2 flex flex-wrap gap-3">
                 {citation.receipt ? (

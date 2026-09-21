@@ -46,11 +46,11 @@ export interface CommentaryNote {
 }
 
 // A cited Act's status against its own metadata timeline — never a Citation,
-// never evidence. "unknown" covers everything short of an outright repeal, so
-// it is never rendered; only "repealed" reaches the UI.
+// never evidence. "current_as_indexed" and "unknown" render nothing; only
+// "repealed" and "superseded" reach the UI.
 export interface CurrencyLabel {
   act_number: string;
-  label: "repealed" | "unknown";
+  label: "repealed" | "superseded" | "current_as_indexed" | "unknown";
   detail_url: string;
   as_of_date: string;
 }
