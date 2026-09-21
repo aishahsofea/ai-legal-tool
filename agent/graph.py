@@ -1,9 +1,9 @@
 """LangGraph agent graph for the Malaysian Legal Research Assistant.
 
 The graph owns the full query lifecycle, including bounded retries:
-router → retriever → synthesiser → citation_validator → grounding_check → supervisor
-                                      ↑                               ↓
-                                      └──── retry when violations ────┘
+router → retriever → synthesiser → citation_validator → grounding_check → currency_check → supervisor
+                                      ↑                                                  ↓
+                                      └────────────── retry when violations ────────────┘
 """
 import atexit
 import contextlib
@@ -20,6 +20,7 @@ from agent.nodes.citation_validator import citation_validator_node
 from agent.nodes.clarify import clarify_node
 from agent.nodes.contextualize import acontextualize_node, contextualize_node
 from agent.nodes.conversational import aconversational_node, conversational_node
+from agent.nodes.currency_check import currency_check_node
 from agent.nodes.grounding_check import (
     agrounding_check_node,
     empty_grounding_metrics,
@@ -127,6 +128,7 @@ def _start_turn(state: AgentState) -> dict:
         "reference_metrics": empty_reference_metrics(disabled=not follow_references_enabled()),
         "commentary": [],
         "grounding_metrics": empty_grounding_metrics(),
+        "currency_labels": [],
         "final_response": "",
         "retry_count": 0,
         "clarifying_question": "",
@@ -256,6 +258,7 @@ def build_graph(checkpointer=None, store=None) -> StateGraph:
     g.add_node("synthesiser", RunnableCallable(synthesiser_node, asynthesiser_node, name="synthesiser"))
     g.add_node("citation_validator", citation_validator_node)
     g.add_node("grounding_check", RunnableCallable(grounding_check_node, agrounding_check_node, name="grounding_check"))
+    g.add_node("currency_check", currency_check_node)
     g.add_node("supervisor", supervisor_node)
     g.add_node("increment_retry", _increment_retry_node)
     g.add_node("retry_retrieve", _retry_retrieve_node)
@@ -281,7 +284,8 @@ def build_graph(checkpointer=None, store=None) -> StateGraph:
     g.add_edge("recall", "synthesiser")
     g.add_edge("synthesiser", "citation_validator")
     g.add_edge("citation_validator", "grounding_check")
-    g.add_edge("grounding_check", "supervisor")
+    g.add_edge("grounding_check", "currency_check")
+    g.add_edge("currency_check", "supervisor")
     g.add_conditional_edges("supervisor", _route_from_supervisor, {
         "increment_retry": "increment_retry",
         "retry_retrieve": "retry_retrieve",
