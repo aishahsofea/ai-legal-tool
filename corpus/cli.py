@@ -324,7 +324,9 @@ def _upload(args: argparse.Namespace) -> int:
         import boto3  # type: ignore[import-not-found]
     except ImportError as exc:
         raise SystemExit("Live upload requires the optional boto3 package; dry-run does not") from exc
-    client = boto3.client("s3", endpoint_url=args.endpoint_url or None)
+    # R2 rejects AWS region names outright; boto3 falls back to whatever
+    # AWS_DEFAULT_REGION/~/.aws/config resolves to unless told otherwise.
+    client = boto3.client("s3", endpoint_url=args.endpoint_url or None, region_name="auto")
     for path, key, content_type, digest in objects:
         client.upload_file(
             str(path), args.bucket, key,
