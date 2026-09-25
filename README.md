@@ -116,7 +116,7 @@ The answer merges with the original query into one self-contained query, so retr
 
 ### Citation Receipt API
 
-`data/pdfs/manifest.json` is a deterministic, corpus-wide registry of every PDF's identity, version, and language. The checked-in audit lists registered, ready, and blocked counts, with blocked reasons; it lives in [docs/corpus-receipts.md](docs/corpus-receipts.md). How to run it locally is in [CONTRIBUTING.md](CONTRIBUTING.md#4-build-the-knowledge-base-one-time-1-hour).
+`data/pdfs/manifest.json` is a deterministic, corpus-wide registry of every PDF's identity, version, and language. The checked-in audit lists registered, ready, and blocked counts, with blocked reasons; it lives in [docs/corpus-receipts.md](docs/corpus-receipts.md). How to run it locally is in [CONTRIBUTING.md](CONTRIBUTING.md#4-build-the-knowledge-base-one-time-1-hour). Only the five pilot PDFs are tracked in git; the PDFs and highlight coordinates behind receipts live in Cloudflare R2, and upload and delivery are in [CONTRIBUTING.md](CONTRIBUTING.md#citation-receipt-assets-and-verification).
 
 - `GET|HEAD /receipts/{document_id}/pdf`, `POST /receipts/{document_id}/locate`, `POST /receipts/telemetry` — see [CONTRIBUTING.md](CONTRIBUTING.md#5-start-the-api) for the full signatures.
 

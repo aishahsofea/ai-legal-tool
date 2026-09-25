@@ -55,7 +55,7 @@ Optional flags. The `=on` toggles are off by default and accept `1`, `true`, `ye
   - `RETRIEVAL_RECURSION_LIMIT` is the backstop, not the budget. It defaults to `4 x RETRIEVAL_MAX_MODEL_CALLS + 2` (34): each model round costs four graph super-steps. Set it lower and it fires before the budget does. The run then keeps the sections it had already reached and carries on with those; only an empty result falls back to the deterministic path.
 - `CORPUS_RETRIEVAL_MODE=dual|verified|legacy` — `dual` (default) reads legacy rows plus provenance rows joined to the active Act/language mapping. `verified` reads active provenance only. `legacy` is the rollback path. It reads only rows with no provenance, so no shadow-ingested row is visible, activated or not.
 - `RECEIPT_DELIVERY_MODE=auto|local|redirect|proxy` — remote coordinate sidecars get hash-checked again after download, whichever mode is set.
-  - `auto` (default) prefers verified local bytes. With none present it falls back to CDN objects whose length, content type, and `x-amz-meta-sha256` match the registry.
+  - `auto` (default) prefers verified local bytes. With none present it falls back to CDN objects whose length, content type, and ETag (a content MD5) match the registry.
   - `local` uses local bytes only and fails closed rather than reaching for the CDN.
   - `redirect` and `proxy` skip local bytes. Both need `CORPUS_CDN_BASE_URL`.
   - An unrecognised value falls back to `auto`.
@@ -188,7 +188,7 @@ python3 -m reference_graph.cli --document-id act-265-en-sha256-... audit \
   --export-decisions audit-decisions.json
 ```
 
-`acquire` without `--download` just catalogs, network-free. With `--download`, every result reports as one of: downloaded, already registered, unavailable, integrity failure, scanned/unparseable, or ready. A successful registration records, idempotently: exact source URL/date/type, SHA-256, byte size, page count, content-addressed local path, receipt route. Unreachable, corrupt, or unparseable sources stay explicit blockers — nothing gets guessed. Recorded dates describe observed snapshots, not exact effective dates.
+`acquire` without `--download` just catalogs, network-free. With `--download`, every result reports as one of: downloaded, already registered, unavailable, integrity failure, scanned/unparseable, or ready. A successful registration records, idempotently: exact source URL/date/type, SHA-256, MD5, byte size, page count, content-addressed local path, receipt route. Unreachable, corrupt, or unparseable sources stay explicit blockers — nothing gets guessed. Recorded dates describe observed snapshots, not exact effective dates.
 
 Keep separate deterministic operator reports for the pilot and the older observations — the checked-in examples are `snapshot-acquisition-act-265.json` and `snapshot-acquisition-act-265-older.json`. Re-running acquisition must report `already_registered`, make no further request for locally verified bytes, leave `active_documents` unchanged.
 
@@ -265,21 +265,23 @@ python3 -m corpus upload --pdf-root /path/to/data/pdfs \
   --sidecar-root /path/to/full/sidecars --bucket <r2-bucket> \
   --endpoint-url https://<account>.r2.cloudflarestorage.com --scope active --dry-run
 python3 -m corpus validate --cdn-base-url https://statutes.example.com \
-  --scope full --deep --format json
+  --scope active --deep --format json
 ```
 
 `diff-extractions` compares two `shadow-extract` runs chunk by chunk, per document, keyed by `(division, section_number)`: which sections were added, removed, or changed content. Point `--old-manifest`/`--old-extraction-root` at a manifest and extraction directory saved before an extractor change. It reads the current ones as `--new-*` by default. This is how to check what a `SECTION_PATTERN` or `DIVISION_PATTERN` edit actually changed, before trusting it corpus-wide.
 
 The CLI loads the repository `.env` — no need to manually export `DATABASE_URL`. Preview `rollout` before its first run against a database; live execution performs embedding calls and changes active retrieval mappings. Live upload uses optional `boto3`, not an application dependency. `CORPUS_S3_ENDPOINT_URL` sets the default for `upload --endpoint-url`. `upload --scope active` uploads the documents an [Active Corpus Mapping](CONTEXT.md#language) points at, plus their ready sidecars; `--scope full`, the default, uploads every registered document and every ready sidecar. A run fails whole if any one object in its scope fails `validate`, so push `active` first: it is the only set the deployed app can request, and it does not block on registered documents whose bytes are absent. Move to `full` once every registered document has local bytes. Configure R2 bucket retention/object-lock policy and custom-domain CORS outside this repository: allow `GET`, `HEAD`, `OPTIONS`; allow request headers `Range`, `If-None-Match`; expose `ETag`, `Accept-Ranges`, `Content-Range`, `Content-Length`.
 
-The API logs one `receipt_coverage` line at boot:
+`upload` sends each object in a single PUT, so its ETag is the content MD5. The API and `validate --cdn-base-url` compare that ETag with the `md5` in the manifest. R2's public and custom-domain path drops `x-amz-meta-*` headers, so the SHA-256 that `upload` stores as object metadata can't be read back there. An object uploaded any other way, such as a multipart copy of a large file, gets a different ETag and fails with `was uploaded multipart`. Run `validate --cdn-base-url` with the same `--scope` you uploaded. `--deep` still downloads each object and checks its SHA-256.
+
+The API logs one `receipt_coverage` line at boot. With no `CORPUS_CDN_BASE_URL`, it looks like this:
 
 ```
-receipt_coverage registered=1124 registered_local=5/1124 active=5 active_local=5/5 \
-  active_cdn=not probed active_reachable=5/5 mode=auto cdn=unset
+receipt_coverage registered=1124 registered_local=5/1124 active=1117 active_local=5/1117 \
+  active_cdn=not probed active_reachable=5/1117 mode=auto cdn=unset
 ```
 
-The deployed image carries `data/pdfs/manifest.json` but only the PDFs git tracks, so `registered_local` is the number worth reading: every document outside it answers 503 the moment it is activated. `registered_local` and `active_local` are size checks against the manifest, not hashes — they say bytes shipped, not that bytes are intact. With `CORPUS_CDN_BASE_URL` set, `active_cdn` counts active documents whose object passed one `HEAD`; that probe stops after 5 seconds total, 2 seconds per request, and `active_cdn` then reports only what it reached. It cannot fail the boot.
+The deployed image carries `data/pdfs/manifest.json` but only the PDFs git tracks. Without `CORPUS_CDN_BASE_URL`, `registered_local` is the number worth reading: every document outside it answers 503 the moment it is activated. `registered_local` and `active_local` are size checks against the manifest, not hashes — they say bytes shipped, not that bytes are intact. With `CORPUS_CDN_BASE_URL` set, `active_cdn` counts active documents whose object passed one `HEAD` check (length, content type, and ETag). The probe stops after 5 seconds total, 2 seconds per request, and `active_cdn` then reports only what it reached. `active_reachable` counts local documents plus the ones the probe reached, so it undercounts when the probe stops early. The report cannot fail the boot.
 
 Run all automated checks from the repository root and frontend respectively:
 

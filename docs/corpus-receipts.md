@@ -14,15 +14,19 @@ Deterministic inventory: `data/pdfs/manifest.json`. `data/corpus/coverage.json` 
 
 ## Storage and delivery
 
-Development: `CORPUS_LOCAL_ROOT` and `CORPUS_SIDECAR_ROOT`. Production: an S3-compatible immutable bucket (Cloudflare R2 recommended) plus a custom CDN domain. Store `sha256` as object metadata; configure retention/object lock outside the app.
+Development: `CORPUS_LOCAL_ROOT` and `CORPUS_SIDECAR_ROOT`. Production: an S3-compatible immutable bucket (Cloudflare R2 recommended) plus a custom CDN domain. Upload each object in one part, or the API's ETag check fails ([CONTRIBUTING.md](../CONTRIBUTING.md#citation-receipt-assets-and-verification) has the details). Configure retention/object lock outside the app.
 
-`RECEIPT_DELIVERY_MODE` is one of `auto`, `local`, `redirect`, `proxy`. Before a CDN redirect/proxy, the API requires matching object length, `application/pdf`, and `x-amz-meta-sha256`. Sidecars pass the same gate, hash-checked again after download, before decoding. GET/HEAD share SHA ETags and immutable caching; local/proxy modes support ranges. CORS must allow GET/HEAD/OPTIONS and expose range/identity headers.
+`RECEIPT_DELIVERY_MODE` is one of `auto`, `local`, `redirect`, `proxy`. Before a CDN redirect/proxy, the API requires matching object length, `application/pdf`, and an ETag equal to the manifest's `md5`. Sidecars pass the same gate, hash-checked again after download, before decoding.
+
+The API's own GET/HEAD responses use the SHA-256 as their ETag, with immutable caching; local/proxy modes support ranges. CORS must allow GET/HEAD/OPTIONS and expose range/identity headers.
 
 The locator reads the hash-verified sidecar for v2 extractions. Live PyMuPDF word extraction only exists for saved v1 aliases, during dual-read. `matched`, `not_found`, `ambiguous` semantics unchanged.
 
 ## Rollout
 
-The checked-in audit: 624 inputs, 596 canonical reprints registered, 576 exact shadow extractions ready, five repaired pilots active, 48 blocked (28 amendment-only, 15 no-chunk, 5 scanned). The six BM-only documents stay `bm` sources. That audit predates full bilingual ingestion (issue #39) — Steps 2 and 3 now also fetch `lang=BM`; see [CONTRIBUTING.md](../CONTRIBUTING.md#4-build-the-knowledge-base-one-time-1-hour) for what that changes. New BM documents shadow-ingest through the same Steps 3-5 and stay unactivated — nothing changes for retrieval until an Act/language mapping is explicitly activated. Rerun `corpus generate-manifest` after a full rescrape to refresh the numbers above.
+The checked-in audit, taken before full bilingual ingestion (issue #39): 624 inputs, 596 canonical reprints registered, 576 exact shadow extractions ready, five repaired pilots active, 48 blocked (28 amendment-only, 15 no-chunk, 5 scanned). The six BM-only documents stay `bm` sources. Rerun `corpus generate-manifest` after a full rescrape to refresh these numbers.
+
+Since then, Steps 2 and 3 also fetch `lang=BM`; see [CONTRIBUTING.md](../CONTRIBUTING.md#4-build-the-knowledge-base-one-time-1-hour) for what that changes. New BM documents shadow-ingest through the same Steps 3-5 and stay unactivated — nothing changes for retrieval until an Act/language mapping is explicitly activated. #104 (2026-09-18) activated 1117 of the 1124 registered documents (637 English, 480 Malay), all on extractor 2.7.0.
 
 One idempotent command for the normal local/operator workflow:
 
@@ -36,7 +40,7 @@ Full flag semantics (embedding cost cap, `--document-id`, `--no-activate`, resum
 Production asset upload stays intentionally operator-gated — object-storage credentials, retention, and CDN verification live outside the application:
 
 1. Apply `migrations/0001_corpus_provenance.sql` with `python -m corpus migrate`.
-2. Upload all registered PDFs and the 576 generated sidecars, then run full CDN metadata/byte validation.
+2. Upload the active documents' PDFs and sidecars (`upload --scope active`), then run `validate --cdn-base-url … --deep` with the same scope. Use `--scope full` once every registered document has local bytes.
 3. Register the manifest and atomically ingest shadow bundles.
 4. Compare row counts/chunk-set hashes and activate Act/language mappings in reviewed batches.
 5. Monitor availability/integrity/delivery failures and locator outcome rates.
