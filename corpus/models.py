@@ -18,6 +18,7 @@ class CoordinateSidecar:
     byte_size: int
     format: str = "pymupdf-words-v1+gzip"
     local_path: str = ""
+    md5: str = ""
 
     @classmethod
     def from_dict(cls, value: dict[str, Any]) -> "CoordinateSidecar":
@@ -27,6 +28,7 @@ class CoordinateSidecar:
             byte_size=int(value["byte_size"]),
             format=str(value.get("format", "pymupdf-words-v1+gzip")),
             local_path=str(value.get("local_path", "")),
+            md5=str(value.get("md5", "")).lower(),
         )
         if item.byte_size < 1:
             raise ValueError("coordinate sidecar byte_size must be positive")
@@ -51,6 +53,7 @@ class CorpusDocument:
     document_kind: str = "reprint"
     detail_url: str = ""
     local_path: str = ""
+    md5: str = ""
 
     @classmethod
     def from_dict(cls, value: dict[str, Any]) -> "CorpusDocument":
@@ -71,6 +74,7 @@ class CorpusDocument:
             document_kind=str(value.get("document_kind", "reprint")),
             detail_url=str(value.get("detail_url", "")),
             local_path=str(value.get("local_path", "")),
+            md5=str(value.get("md5", "")).lower(),
         )
         if item.byte_size < 1 or item.page_count < 1:
             raise ValueError("document size and page count must be positive")

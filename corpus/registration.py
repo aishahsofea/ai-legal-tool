@@ -10,7 +10,7 @@ from pathlib import Path
 
 import fitz
 
-from corpus.identity import asset_key, document_id, sha256_file
+from corpus.identity import asset_key, document_id, file_digests, sha256_file
 from corpus.manifest import _timeline_for, scraped_at_for, source_language
 from corpus.models import CorpusDocument
 
@@ -71,7 +71,7 @@ def register_pdf(
     retrieved until extraction, embedding, validation, and explicit activation.
     """
     pdf_path = Path(pdf_path)
-    digest = sha256_file(pdf_path)
+    digest, md5 = file_digests(pdf_path)
     with fitz.open(pdf_path) as pdf:
         if pdf.page_count < 1:
             raise ValueError("downloaded PDF has no pages")
@@ -116,6 +116,7 @@ def register_pdf(
         document_kind="reprint",
         detail_url=str(detail_url if detail_url is not None else metadata.get("detail_url", "")),
         local_path=local_path,
+        md5=md5,
     )
     try:
         raw = json.loads(Path(manifest_path).read_text(encoding="utf-8"))

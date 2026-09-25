@@ -20,6 +20,17 @@ def sha256_file(path: Path, block_size: int = 1024 * 1024) -> str:
     return digest.hexdigest()
 
 
+def file_digests(path: Path, block_size: int = 1024 * 1024) -> tuple[str, str]:
+    """(sha256, md5) in one read. The MD5 is what `CdnCorpusStorage` checks against ETag (#57)."""
+    sha256 = hashlib.sha256()
+    md5 = hashlib.md5()
+    with Path(path).open("rb") as stream:
+        for block in iter(lambda: stream.read(block_size), b""):
+            sha256.update(block)
+            md5.update(block)
+    return sha256.hexdigest(), md5.hexdigest()
+
+
 def canonical_json_bytes(value: object) -> bytes:
     return json.dumps(
         value,

@@ -322,9 +322,15 @@ def _upload(args: argparse.Namespace) -> int:
         return 0
     try:
         import boto3  # type: ignore[import-not-found]
+        from boto3.s3.transfer import TransferConfig
     except ImportError as exc:
         raise SystemExit("Live upload requires the optional boto3 package; dry-run does not") from exc
-    client = boto3.client("s3", endpoint_url=args.endpoint_url or None)
+    # R2 rejects AWS region names outright; boto3 falls back to whatever
+    # AWS_DEFAULT_REGION/~/.aws/config resolves to unless told otherwise.
+    client = boto3.client("s3", endpoint_url=args.endpoint_url or None, region_name="auto")
+    # Single-part keeps ETag a content MD5, which storage.py's verify() compares (#57).
+    # 5 GiB is R2's single-PUT ceiling.
+    transfer_config = TransferConfig(multipart_threshold=5 * 1024**3)
     for path, key, content_type, digest in objects:
         client.upload_file(
             str(path), args.bucket, key,
@@ -333,6 +339,7 @@ def _upload(args: argparse.Namespace) -> int:
                 "CacheControl": "public, max-age=31536000, immutable",
                 "Metadata": {"sha256": digest},
             },
+            Config=transfer_config,
         )
     _print({"status": "uploaded", "scope": args.scope, "bucket": args.bucket, "object_count": len(objects)})
     return 0

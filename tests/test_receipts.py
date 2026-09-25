@@ -253,9 +253,8 @@ def test_cdn_sidecar_is_verified_by_metadata_and_download_hash():
     head = Mock(
         headers={
             "Content-Length": str(len(payload)),
-            "X-Corpus-SHA256": run.coordinate_sidecar.sha256,
             "Content-Type": "application/gzip",
-            "ETag": '"sidecar"',
+            "ETag": f'"{run.coordinate_sidecar.md5}"',
         }
     )
     head.raise_for_status.return_value = None
@@ -269,7 +268,7 @@ def test_cdn_sidecar_is_verified_by_metadata_and_download_hash():
         metadata = storage.verify_sidecar(run)
         received = storage.get_sidecar(run)
 
-    assert metadata.sha256 == run.coordinate_sidecar.sha256
+    assert metadata.md5 == run.coordinate_sidecar.md5
     assert received == payload
 
 

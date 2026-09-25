@@ -13,7 +13,7 @@ from urllib.parse import parse_qs, urlparse
 import fitz
 
 from corpus.extraction import _is_scanned
-from corpus.identity import asset_key, document_id, sha256_file
+from corpus.identity import asset_key, document_id, file_digests
 from corpus.models import ActiveDocument, CorpusDocument, ExtractionRun
 from scraper.act_paths import act_number_from_stem, metadata_path
 
@@ -101,13 +101,13 @@ def _timeline_for(metadata: dict, source_url: str, key: str = "timeline") -> tup
     return "", ""
 
 
-def _pdf_facts(path: Path) -> tuple[str, int, int, bool]:
-    digest = sha256_file(path)
+def _pdf_facts(path: Path) -> tuple[str, str, int, int, bool]:
+    digest, md5 = file_digests(path)
     byte_size = path.stat().st_size
     with fitz.open(path) as pdf:
         page_count = pdf.page_count
         scanned = _is_scanned(pdf)
-    return digest, byte_size, page_count, scanned
+    return digest, md5, byte_size, page_count, scanned
 
 
 def _coverage_row(
@@ -248,7 +248,7 @@ def generate_manifest(
         title = titles.get(act_number, {}).get(f"title_{language}", "")
         timeline_date, timeline_type = _timeline_for(metadata, source_url)
         try:
-            digest, byte_size, page_count, scanned = _pdf_facts(path)
+            digest, md5, byte_size, page_count, scanned = _pdf_facts(path)
         except Exception:
             coverage.append(_coverage_row(
                 path=Path(relative), document=None, status="blocked", reason="corrupt_pdf",
@@ -277,6 +277,7 @@ def generate_manifest(
             document_kind="reprint",
             detail_url=fallback_url,
             local_path=relative,
+            md5=md5,
         )
         documents[identity] = document.to_dict()
         observed_at = scraped_at_for(metadata, language)

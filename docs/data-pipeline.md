@@ -77,7 +77,7 @@ Downloads the canonical reprint(s) for each Act into content-addressed local sto
 - Registration is not parallel. The manifest write stays on one thread, so identity never depends on the order downloads finish
 - Every failure in the report carries a reason
 - PDF selection: `latest_reprint_pdf` (primary) and `latest_reprint_pdf_bm` (secondary), or skip. An amendment never substitutes for a base Act, in either language.
-- Needs an openable PDF response. Then records full SHA-256, byte size, page count, source URL/timeline, language, content-derived document/object identities.
+- Needs an openable PDF response. Then records full SHA-256, MD5 (checked against CDN ETags), byte size, page count, source URL/timeline, language, content-derived document/object identities.
 - Every run re-observes the authoritative bytes, so same-URL replacements get caught. Unchanged hash → records a source observation, no duplicate document. Changed hash → stages a new identity, active mapping doesn't move.
 - New BM documents land as unactivated shadow rows — activating them for retrieval is separate, manual work.
 - Report: `data/pdfs/download_report.json`

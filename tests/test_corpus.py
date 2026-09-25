@@ -23,9 +23,10 @@ from corpus.extraction import (
     extract_document,
     extract_manifest,
 )
-from corpus.identity import asset_key, content_hash, document_id, extraction_id, sha256_file
+from corpus.identity import asset_key, content_hash, document_id, extraction_id, file_digests, sha256_file
 from corpus.manifest import generate_manifest
 from corpus.models import ActiveDocument, CoordinateSidecar, CorpusDocument, ExtractionRun
+from corpus.registration import register_pdf
 from corpus.registry import CorpusDocumentIntegrityError, CorpusRegistry
 from corpus.validation import validate_manifest
 
@@ -1862,10 +1863,11 @@ def test_receipt_coverage_counts_a_document_the_cdn_carries(tmp_path: Path, monk
         "for the extractor to clear its text-layer threshold on this page.",
     ])
     digest = sha256_file(path)
+    md5 = file_digests(path)[1]
     document = CorpusDocument(
         document_id("43", "en", digest), "43", "ACT 43", "en", asset_key(digest), digest,
         path.stat().st_size, 1, "https://example.test/43.pdf", "", "REPRINT",
-        "2026-01-01T00:00:00Z", local_path=path.name,
+        "2026-01-01T00:00:00Z", local_path=path.name, md5=md5,
     )
     manifest_path = tmp_path / "manifest.json"
     manifest_path.write_text(json.dumps({
@@ -1886,8 +1888,7 @@ def test_receipt_coverage_counts_a_document_the_cdn_carries(tmp_path: Path, monk
     class _Response:
         headers = {
             "Content-Length": str(document.byte_size),
-            "X-Amz-Meta-Sha256": document.sha256,
-            "ETag": '"fixture"',
+            "ETag": f'"{document.md5}"',
             "Content-Type": "application/pdf",
         }
 
@@ -1902,3 +1903,25 @@ def test_receipt_coverage_counts_a_document_the_cdn_carries(tmp_path: Path, monk
     assert (result.registered_local, result.active_local) == (0, 0)
     assert (result.probed, result.active_remote, result.active_reachable) == (1, 1, 1)
     assert "active_cdn=1/1" in result.line()
+
+
+def test_register_pdf_records_the_md5_the_cdn_verify_compares(tmp_path: Path):
+    source = tmp_path / "43.pdf"
+    _pdf(source, ["Act 43 short title", "1. Section one of Act 43 carries enough legal fixture text"])
+    manifest_path = tmp_path / "manifest.json"
+
+    document = register_pdf(
+        source,
+        metadata={"act_number": "43"},
+        act_title="ACT 43",
+        manifest_path=manifest_path,
+        asset_root=tmp_path / "assets",
+        source_url="https://example.test/43.pdf",
+        timeline_type="REPRINT",
+        language="en",
+    )
+
+    expected = hashlib.md5(source.read_bytes()).hexdigest()
+    assert document.md5 == expected
+    stored = json.loads(manifest_path.read_text(encoding="utf-8"))
+    assert [item["md5"] for item in stored["documents"]] == [expected]
