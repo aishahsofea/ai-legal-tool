@@ -971,7 +971,7 @@ def extract_document(
             os.close(descriptor)
             temporary_sidecar = Path(temporary_name)
             try:
-                sidecar_sha, sidecar_size = write_sidecar(
+                sidecar_sha, sidecar_md5, sidecar_size = write_sidecar(
                     source_pdf, temporary_sidecar, document.document_id, document.sha256
                 )
             except Exception:
@@ -987,6 +987,7 @@ def extract_document(
         byte_size=sidecar_size,
         format=SIDECAR_FORMAT,
         local_path=sidecar_local,
+        md5=sidecar_md5,
     )
     run = ExtractionRun(
         extraction_id=identity,

@@ -8,7 +8,7 @@ from pathlib import Path
 
 import fitz
 
-from corpus.identity import canonical_json_bytes, sha256_file
+from corpus.identity import canonical_json_bytes, file_digests
 
 SIDECAR_FORMAT = "pymupdf-words-v1+gzip"
 
@@ -53,12 +53,13 @@ def write_sidecar(
     output_path: Path,
     document_id: str,
     document_sha256: str,
-) -> tuple[str, int]:
+) -> tuple[str, str, int]:
     payload = sidecar_payload(pdf, document_id, document_sha256)
     encoded = gzip.compress(canonical_json_bytes(payload), compresslevel=9, mtime=0)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_bytes(encoded)
-    return sha256_file(output_path), len(encoded)
+    sha256, md5 = file_digests(output_path)
+    return sha256, md5, len(encoded)
 
 
 def read_sidecar_bytes(encoded: bytes, document_id: str, document_sha256: str) -> dict:

@@ -23,7 +23,7 @@ from corpus.extraction import (
     extract_document,
     extract_manifest,
 )
-from corpus.identity import asset_key, content_hash, document_id, extraction_id, sha256_file
+from corpus.identity import asset_key, content_hash, document_id, extraction_id, file_digests, sha256_file
 from corpus.manifest import generate_manifest
 from corpus.models import ActiveDocument, CoordinateSidecar, CorpusDocument, ExtractionRun
 from corpus.registry import CorpusDocumentIntegrityError, CorpusRegistry
@@ -1862,10 +1862,11 @@ def test_receipt_coverage_counts_a_document_the_cdn_carries(tmp_path: Path, monk
         "for the extractor to clear its text-layer threshold on this page.",
     ])
     digest = sha256_file(path)
+    md5 = file_digests(path)[1]
     document = CorpusDocument(
         document_id("43", "en", digest), "43", "ACT 43", "en", asset_key(digest), digest,
         path.stat().st_size, 1, "https://example.test/43.pdf", "", "REPRINT",
-        "2026-01-01T00:00:00Z", local_path=path.name,
+        "2026-01-01T00:00:00Z", local_path=path.name, md5=md5,
     )
     manifest_path = tmp_path / "manifest.json"
     manifest_path.write_text(json.dumps({
@@ -1886,8 +1887,7 @@ def test_receipt_coverage_counts_a_document_the_cdn_carries(tmp_path: Path, monk
     class _Response:
         headers = {
             "Content-Length": str(document.byte_size),
-            "X-Amz-Meta-Sha256": document.sha256,
-            "ETag": '"fixture"',
+            "ETag": f'"{document.md5}"',
             "Content-Type": "application/pdf",
         }
 

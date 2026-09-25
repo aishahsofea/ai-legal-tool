@@ -16,7 +16,7 @@ from corpus.registry import CorpusDocumentIntegrityError, CorpusRegistry
 @dataclass(frozen=True)
 class ObjectMetadata:
     byte_size: int
-    sha256: str
+    md5: str
     etag: str
     content_type: str
 
@@ -37,33 +37,35 @@ class CdnCorpusStorage:
         self,
         asset_key: str,
         byte_size: int,
-        sha256: str,
+        md5: str,
         content_types: set[str],
     ) -> ObjectMetadata:
+        """R2's public/custom-domain path drops `x-amz-meta-*` entirely, so identity
+        is checked against `ETag` instead -- a plain content MD5 for a single-part
+        upload. `_upload` (corpus/cli.py) pins uploads to single-part for this (#57)."""
         try:
             response = requests.head(
                 self.object_url(asset_key), timeout=self.timeout, allow_redirects=True
             )
             response.raise_for_status()
             size = int(response.headers.get("Content-Length", "-1"))
-            digest = (
-                response.headers.get("X-Corpus-SHA256")
-                or response.headers.get("X-Amz-Meta-Sha256")
-                or ""
-            ).lower()
-            etag = response.headers.get("ETag", "").strip()
+            etag = response.headers.get("ETag", "").strip().strip('"').lower()
             content_type = response.headers.get("Content-Type", "").split(";", 1)[0].lower()
         except Exception as exc:
             raise CorpusDocumentIntegrityError("Corpus CDN object is unavailable") from exc
-        if size != byte_size or digest != sha256 or content_type not in content_types:
+        if "-" in etag:
+            raise CorpusDocumentIntegrityError(
+                "Corpus CDN object was uploaded multipart; ETag is not a content MD5"
+            )
+        if size != byte_size or etag != md5 or content_type not in content_types:
             raise CorpusDocumentIntegrityError("Corpus CDN object metadata mismatch")
-        return ObjectMetadata(size, digest, etag, content_type)
+        return ObjectMetadata(size, etag, etag, content_type)
 
     def verify(self, document: CorpusDocument) -> ObjectMetadata:
         return self._verify_object(
             document.asset_key,
             document.byte_size,
-            document.sha256,
+            document.md5,
             {"application/pdf"},
         )
 
@@ -96,7 +98,7 @@ class CdnCorpusStorage:
         return self._verify_object(
             sidecar.asset_key,
             sidecar.byte_size,
-            sidecar.sha256,
+            sidecar.md5,
             {"application/gzip", "application/octet-stream"},
         )
 
