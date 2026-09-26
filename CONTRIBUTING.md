@@ -538,6 +538,38 @@ Shell exports beat `.env` values, so you can override your local default in a si
 
 ---
 
+## Production database
+
+Production reads the Supabase project named in Railway's `DATABASE_URL`. It is on the Pro plan, in
+AWS `ap-southeast-1`, the same city as Railway's `asia-southeast1-eqsg3a`. Compute is Micro, 1 GB of
+RAM. Pro projects never pause when idle. Free ones do, which caused an outage on 2026-09-25.
+
+Pro includes 8,192 MB of disk. The corpus is 1,802 MB locally: `chunks` at 1,796 MB plus 5.6 MB of
+registry tables. The checkpointer and store add about 5 MB per 57 conversations. Read the current
+size before assuming the headroom is still there:
+
+```bash
+psql "$DATABASE_URL" -c "SELECT pg_size_pretty(pg_database_size(current_database()));"
+```
+
+**Raise disk by hand before any bulk load.** Disk is not provisioned at 8,192 MB up front. It
+auto-expands into that allowance only at 90% full, in 50% steps, and at most four times in a rolling
+24 hours. That is slower than an import can fill it. Supabase forces a database into read-only mode
+when an upload exceeds 1.5x its current storage. A load that multiplies the corpus stalls part-way
+with Postgres's read-only-transaction error. Set the disk size on the project's Database Settings
+page first. Inside 8,192 MB that is free; beyond it, disk bills at US$0.125 per GB.
+
+**Compute size does not follow a plan change.** Resizing restarts the database, so Supabase never
+auto-upgrades it. A project left on Nano after an upgrade runs on 0.5 GB of RAM at the Micro price.
+
+**Cost tracks the unpaused project count, and the spend cap does not change that.** Pro is billed per
+organization: US$25 a month with one US$10 compute credit. But compute is billed per project, and in
+a paid organization Nano bills at the Micro price. So the price is `$25 + (unpaused - 1) x $10`.
+Paused projects are free. The spend cap is on by default and should stay on, but it covers disk
+overage, egress and monthly active users — never compute.
+
+ADR 0021 records why this is a paid plan and what was not measured.
+
 ## Utility commands
 
 ```bash
