@@ -37,13 +37,19 @@ Requirement 3 is no pause when idle. Requirement 6 is enough RAM to keep the HNS
   Nothing in the repo changes. No rows move. It is the only option that cannot break production
   while fixing it.
 
-- **`ai-legal-tool` gets an organization to itself.** Supabase bills Pro per organization and grants
-  the US$10 compute credit once per organization. In a paid organization, Nano compute is billed at
-  the Micro price. Organization `aishahsofea` holds five projects, so upgrading it as it stands
-  would cost `$25 + (unpaused - 1) x $10`, up to US$65 a month for one project's benefit. Transfer
-  the project out, or pause the other four, and it is US$25. Read the upgrade dialog's monthly
-  estimate before confirming. It also settles whether the organization is already paid, which
-  `supabase orgs list` does not report.
+- **`ai-legal-tool` becomes the only unpaused project in its organization.** Supabase bills Pro per
+  organization and grants the US$10 compute credit once per organization. Compute itself is billed
+  per project, and in a paid organization Nano compute is billed at the Micro price. So the price is
+  `$25 + (unpaused - 1) x $10`, and a paused project is free. Organization `aishahsofea` holds five
+  projects. All five unpaused would be US$65 a month. The Free plan allows two active projects, so at
+  least three were already paused on 2026-09-26, and pausing the one other active project brings this
+  to US$25. That pausing is a step of this upgrade, not a state it already had. Read the upgrade
+  dialog's monthly estimate before confirming. It also settles whether the organization is already
+  paid; `supabase orgs list` does not report that.
+
+- **Resizing is a separate step, so it is part of this upgrade.** Supabase does not auto-upgrade
+  compute size, because it would force downtime. A project left on Nano after the upgrade runs on
+  0.5 GB of RAM at the Micro price. Raising `ai-legal-tool` to Micro restarts the database.
 
 - **Micro first, and requirement 6 stays open until the corpus is loaded.** Micro's 1 GB of RAM
   against a 612 MB provenance HNSW index fits on paper and leaves little for heap pages. A latency
@@ -102,9 +108,15 @@ Requirement 3 is no pause when idle. Requirement 6 is enough RAM to keep the HNS
   `#156` inherits the measurement, and the fix for a bad number is a compute setting, not a
   migration.
 - Supabase's spend cap is on by default on Pro. Leave it on. It converts a surprise bill into a
-  surprise read-only database, which is the failure this project can actually notice.
-- The organization split is now load-bearing for the price. Creating a sixth project in whichever
-  organization holds `ai-legal-tool` adds about US$10 a month.
+  surprise read-only database, which is the failure this project can actually notice. Compute is
+  excluded from the cap, as something deliberately opted into. The cap covers disk past 8,192 MB,
+  egress and monthly active users, never the US$10 per unpaused project. Only the project count and
+  the compute size control that.
+- Un-pausing one of the four, or creating a sixth project in this organization, each add about
+  US$10 a month.
+- The four paused projects are restorable for 90 days under the Free plan's rule, after which
+  Supabase replaces restore with a download of the last logical backup. Paid projects get a year.
+  The upgrade may extend the window for these four; this ADR does not rely on it.
 
 ## Related
 
