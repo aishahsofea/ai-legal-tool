@@ -27,7 +27,7 @@ Requirement 3 is no pause when idle. Requirement 6 is enough RAM to keep the HNS
 
 - **Supabase Pro, same project, same URL, no data move.** Pro meets five requirements outright:
 
-  1. 8,192 MB of included disk against 1,802 MB used
+  1. 8,192 MB of included disk against 1,802 MB used, with allocated disk auto-expanding into it
   2. pgvector 0.8.2, with the HNSW index already built
   3. no pause when idle
   4. one `DATABASE_URL`, already shared by psycopg2 (`agent/retrieval/search.py:17`,
@@ -107,6 +107,12 @@ Requirement 3 is no pause when idle. Requirement 6 is enough RAM to keep the HNS
 - Requirement 6 is deliberately unresolved, and "Micro first" was never claimed to be verified.
   `#156` inherits the measurement, and the fix for a bad number is a compute setting, not a
   migration.
+- Disk is not provisioned at 8,192 MB up front. It auto-expands into that allowance at 90% full, in
+  50% steps, capped at four resizes in a rolling 24 hours. That is slower than a bulk import, and
+  Supabase puts a database into read-only mode when an upload exceeds 1.5x its current storage.
+  Production holds 411 MB, and `#156` takes it to about 1,802 MB, which is 4.4x. So `#156` must raise
+  disk by hand before it loads anything. Inside 8,192 MB this costs nothing; only the disk beyond it
+  bills at US$0.125 per GB.
 - Supabase's spend cap is on by default on Pro. Leave it on. It converts a surprise bill into a
   surprise read-only database, which is the failure this project can actually notice. Compute is
   excluded from the cap, as something deliberately opted into. The cap covers disk past 8,192 MB,
