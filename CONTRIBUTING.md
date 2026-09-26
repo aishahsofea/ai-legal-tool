@@ -544,9 +544,16 @@ Production reads the Supabase project named in Railway's `DATABASE_URL`. It is o
 AWS `ap-southeast-1`, the same city as Railway's `asia-southeast1-eqsg3a`. Compute is Micro, 1 GB of
 RAM. Pro projects never pause when idle. Free ones do, which caused an outage on 2026-09-25.
 
-Pro includes 8,192 MB of disk. The corpus is 1,802 MB locally: `chunks` at 1,796 MB plus 5.6 MB of
-registry tables. The checkpointer and store add about 5 MB per 57 conversations. Read the current
-size before assuming the headroom is still there:
+Pro includes 8,192 MB of disk. What uses it:
+
+- Production after the #156 load on 2026-09-26: 1,494 MB by `pg_database_size`, which leaves out
+  WAL. That is 23,941 legacy chunks and 62,608 provenance chunks.
+- WAL: 496 MB after the load. It counts against the disk too.
+- Checkpointer and store: about 5 MB per 57 conversations.
+- The local database is bigger, 1,802 MB, because it also keeps 25,107 chunks from superseded
+  extractions that no retrieval mode reads.
+
+Read the current size before assuming the headroom is still there:
 
 ```bash
 psql "$DATABASE_URL" -c "SELECT pg_size_pretty(pg_database_size(current_database()));"
@@ -557,7 +564,20 @@ auto-expands into that allowance only at 90% full, in 50% steps, and at most fou
 24 hours. That is slower than an import can fill it. Supabase forces a database into read-only mode
 when an upload exceeds 1.5x its current storage. A load that multiplies the corpus stalls part-way
 with Postgres's read-only-transaction error. Set the disk size on the project's Database Settings
-page first. Inside 8,192 MB that is free; beyond it, disk bills at US$0.125 per GB.
+page first. It accepts 8 GB or more. This project stayed at 2 GB after the upgrade, so set 8 GB.
+Inside 8,192 MB that is free; beyond it, disk bills at US$0.125 per GB.
+
+**Production's vector index is ivfflat, not HNSW.** `chunks_embedding_idx` is `ivfflat` with
+`lists=100`, on pgvector 0.8.0. The local database has an HNSW index instead, which
+`ingestion/step5_ingest.py` builds. So `SET ivfflat.probes = 10` in `semantic_search` is live on
+production. A retrieval eval run locally measures HNSW, not what production serves.
+
+After the load the index is 677 MB. One query touches about 8,700 of its pages: 2 s cold, 0.14 s
+repeated. Over 20 queries in three passes from a laptop (14 ms round trip), `semantic_search`
+measured a median of 1.4 to 2.8 s and a p95 of 3.1 to 6.7 s.
+
+The connection's `statement_timeout` is 2 minutes, so one statement that runs longer, such as an
+index build, is cancelled.
 
 **Compute size does not follow a plan change.** Resizing restarts the database, so Supabase never
 auto-upgrades it. A project left on Nano after an upgrade runs on 0.5 GB of RAM at the Micro price.
