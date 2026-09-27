@@ -88,6 +88,69 @@ class ChatBaseUrlTests(unittest.TestCase):
         self.assertEqual(claude[0]["cache_control"], {"type": "ephemeral"})
 
 
+class PerNodeProviderTests(unittest.TestCase):
+    """GROUNDING_BASE_URL/GROUNDING_API_KEY (env_prefix="GROUNDING") let one node sit on a
+    different provider than CHAT_BASE_URL/CHAT_API_KEY, which the router and synthesiser
+    keep using unchanged (issue #162)."""
+
+    def _clean(self):
+        for name in ("GROUNDING_BASE_URL", "GROUNDING_API_KEY", "CHAT_BASE_URL", "CHAT_API_KEY"):
+            os.environ.pop(name, None)
+
+    def test_prefix_pair_overrides_chat_pair(self):
+        with patch.dict(os.environ, {}, clear=False), patch.object(llm_factory, "ChatOpenAI") as mock:
+            self._clean()
+            os.environ["GROUNDING_BASE_URL"] = "https://api.studio.nebius.com/v1/"
+            os.environ["GROUNDING_API_KEY"] = "nebius-key"
+            os.environ["CHAT_BASE_URL"] = "https://example.invalid/v1/"
+            os.environ["CHAT_API_KEY"] = "chat-key"
+            llm_factory.make_llm("nvidia/Nemotron-3-Ultra-550b-a55b", node="grounding_check", env_prefix="GROUNDING")
+            self.assertEqual(mock.call_args.kwargs["base_url"], "https://api.studio.nebius.com/v1/")
+            self.assertEqual(mock.call_args.kwargs["api_key"], "nebius-key")
+
+    def test_prefix_falls_back_to_chat_pair_when_unset(self):
+        with patch.dict(os.environ, {}, clear=False), patch.object(llm_factory, "ChatOpenAI") as mock:
+            self._clean()
+            os.environ["CHAT_BASE_URL"] = "https://api.studio.nebius.com/v1/"
+            os.environ["CHAT_API_KEY"] = "chat-key"
+            llm_factory.make_llm("nvidia/Nemotron-3-Ultra-550b-a55b", node="grounding_check", env_prefix="GROUNDING")
+            self.assertEqual(mock.call_args.kwargs["base_url"], "https://api.studio.nebius.com/v1/")
+            self.assertEqual(mock.call_args.kwargs["api_key"], "chat-key")
+
+    def test_two_nodes_on_different_base_urls(self):
+        """The acceptance criterion on #162: one node overridden, another untouched."""
+        with patch.dict(os.environ, {}, clear=False), patch.object(llm_factory, "ChatOpenAI") as mock:
+            self._clean()
+            os.environ["GROUNDING_BASE_URL"] = "https://api.studio.nebius.com/v1/"
+            os.environ["GROUNDING_API_KEY"] = "nebius-key"
+            # CHAT_BASE_URL stays unset, so the synthesiser keeps talking to api.openai.com.
+            llm_factory.make_llm("nvidia/Nemotron-3-Ultra-550b-a55b", node="grounding_check", env_prefix="GROUNDING")
+            grounding_call = mock.call_args
+            llm_factory.make_llm("gpt-4.1", node="synthesiser")
+            synthesiser_call = mock.call_args
+            self.assertEqual(grounding_call.kwargs["base_url"], "https://api.studio.nebius.com/v1/")
+            self.assertEqual(grounding_call.kwargs["api_key"], "nebius-key")
+            self.assertIsNone(synthesiser_call.kwargs["base_url"])
+            self.assertNotIn("api_key", synthesiser_call.kwargs)
+
+    def test_prefix_base_url_without_any_key_raises(self):
+        """Silently falling through to OPENAI_API_KEY here would send it to GROUNDING_BASE_URL
+        (e.g. Nebius) instead — the exact leak a per-node override must not create."""
+        with patch.dict(os.environ, {}, clear=False):
+            self._clean()
+            os.environ["GROUNDING_BASE_URL"] = "https://api.studio.nebius.com/v1/"
+            with self.assertRaises(RuntimeError) as ctx:
+                llm_factory.make_llm("nvidia/Nemotron-3-Ultra-550b-a55b", node="grounding_check", env_prefix="GROUNDING")
+            self.assertIn("GROUNDING_API_KEY", str(ctx.exception))
+
+    def test_no_env_prefix_never_raises_on_missing_key(self):
+        """The plain CHAT_BASE_URL path (every other node) is unchanged: no new validation."""
+        with patch.dict(os.environ, {}, clear=False), patch.object(llm_factory, "ChatOpenAI"):
+            self._clean()
+            os.environ["CHAT_BASE_URL"] = "https://api.studio.nebius.com/v1/"
+            llm_factory.make_llm("gpt-4.1")  # must not raise
+
+
 class NodeModelRegistryTests(unittest.TestCase):
     def test_node_name_recorded(self):
         with patch.object(llm_factory, "ChatOpenAI"):

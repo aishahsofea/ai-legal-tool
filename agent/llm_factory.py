@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 _NODE_MODELS: dict[str, str] = {}
 
 
-def make_llm(model_name: str, temperature: float = 0, node: str | None = None):
+def make_llm(model_name: str, temperature: float = 0, node: str | None = None, env_prefix: str | None = None):
     if node:
         _NODE_MODELS[node] = model_name
     if model_name.startswith("claude-"):
@@ -38,18 +38,38 @@ def make_llm(model_name: str, temperature: float = 0, node: str | None = None):
     # CHAT_BASE_URL aims the OpenAI-shaped client at any OpenAI-compatible
     # provider — the chat-side twin of EMBEDDING_BASE_URL. Unset keeps
     # api.openai.com, so an unconfigured deployment behaves exactly as before.
+    #
+    # env_prefix (e.g. "GROUNDING") lets one node override that pair — <PREFIX>_BASE_URL
+    # and <PREFIX>_API_KEY — while every other node keeps using CHAT_BASE_URL/CHAT_API_KEY
+    # (issue #162: a Nemotron grounding judge on Nebius, gpt-4.1 router/synthesiser on
+    # OpenAI). Each field falls back independently to its CHAT_* counterpart when unset.
+    base_url = (
+        (env_prefix and os.getenv(f"{env_prefix}_BASE_URL"))
+        or os.getenv("CHAT_BASE_URL")
+        or None
+    )
+    key = (env_prefix and os.getenv(f"{env_prefix}_API_KEY")) or os.getenv("CHAT_API_KEY") or None
+    if env_prefix and base_url and not key:
+        # Omitting api_key here would let ChatOpenAI resolve OPENAI_API_KEY itself and send
+        # it to base_url instead — fine when base_url is unset (api.openai.com is the right
+        # destination for that key), wrong the moment a node's own base_url points elsewhere.
+        raise RuntimeError(
+            f"{env_prefix}_BASE_URL is set to {base_url!r} but neither {env_prefix}_API_KEY nor "
+            "CHAT_API_KEY is set. Refusing to fall back to OPENAI_API_KEY, which would send it "
+            f"to {base_url!r} instead of api.openai.com."
+        )
     kwargs = {}
     # CHAT_API_KEY has to be separate from OPENAI_API_KEY: agent/embeddings.py
     # authenticates with OPENAI_API_KEY too, and EMBEDDING_BASE_URL moves
     # independently. Overloading one key would send the chat provider's key to
     # api.openai.com on every embedding call. Omitted when unset so ChatOpenAI
     # resolves OPENAI_API_KEY itself, exactly as it did before.
-    if chat_key := os.getenv("CHAT_API_KEY"):
-        kwargs["api_key"] = chat_key
+    if key:
+        kwargs["api_key"] = key
     return ChatOpenAI(
         model=model_name,
         temperature=temperature,
-        base_url=os.getenv("CHAT_BASE_URL") or None,
+        base_url=base_url,
         **kwargs,
     )
 
