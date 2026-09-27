@@ -26,7 +26,9 @@ The locator reads the hash-verified sidecar for v2 extractions. Live PyMuPDF wor
 
 The checked-in audit, taken before full bilingual ingestion (issue #39): 624 inputs, 596 canonical reprints registered, 576 exact shadow extractions ready, five repaired pilots active, 48 blocked (28 amendment-only, 15 no-chunk, 5 scanned). The six BM-only documents stay `bm` sources. Rerun `corpus generate-manifest` after a full rescrape to refresh these numbers.
 
-Since then, Steps 2 and 3 also fetch `lang=BM`; see [CONTRIBUTING.md](../CONTRIBUTING.md#4-build-the-knowledge-base-one-time-1-hour) for what that changes. New BM documents shadow-ingest through the same Steps 3-5 and stay unactivated — nothing changes for retrieval until an Act/language mapping is explicitly activated. #104 (2026-09-18) activated 1117 of the 1124 registered documents (637 English, 480 Malay), all on extractor 2.7.0.
+Since then, Steps 2 and 3 also fetch `lang=BM`; see [CONTRIBUTING.md](../CONTRIBUTING.md#4-build-the-knowledge-base-one-time-1-hour) for what that changes. New BM documents shadow-ingest through the same Steps 3-5 and stay unactivated — nothing changes for retrieval until an Act/language mapping is explicitly activated.
+
+Local database: #104 (2026-09-18) activated 1117 of the 1124 registered documents (637 English, 480 Malay), all on extractor 2.7.0. Production: its database is the Supabase project in Railway's `DATABASE_URL`, and #156 loaded and activated the same 1,117 there on 2026-09-26. That database now holds about 1.5 GB of its 8 GB disk. [CONTRIBUTING.md](../CONTRIBUTING.md#production-database) has the Pro plan, the exact size and the disk rules.
 
 One idempotent command for the normal local/operator workflow:
 
@@ -44,7 +46,7 @@ Production asset upload stays intentionally operator-gated — object-storage cr
 3. Register the manifest and atomically ingest shadow bundles.
 4. Compare row counts/chunk-set hashes and activate Act/language mappings in reviewed batches.
 5. Monitor availability/integrity/delivery failures and locator outcome rates.
-6. Use `python -m corpus rollback --act-number ... --language ...` if a batch regresses.
+6. If a batch regresses, use `python -m corpus rollback --act-number ... --language ...`. It restores the previous mapping. A first activation has none, so `rollback` stops with `no previous active mapping is available`. Then set `CORPUS_RETRIEVAL_MODE=legacy`, which answers from the legacy rows. Keep them until item 7.
 7. Switch `CORPUS_RETRIEVAL_MODE=verified` only once legacy coverage is no longer needed.
 
 Run `python -m corpus --help` for the generate, validate, shadow, migrate, register, ingest, activate, rollback, and upload commands. Every state-changing database/storage command has a dry-run, documented in `CONTRIBUTING.md`.
