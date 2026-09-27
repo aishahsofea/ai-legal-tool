@@ -233,6 +233,13 @@ class CounterAndCallContractTests(unittest.TestCase):
         self.assertEqual(payload["query"], "privacy act")
         self.assertEqual(payload["max_results"], 3)
 
+    def test_allowlist_reaches_the_request_payload_as_include_domains(self):
+        session = _FakeSession(_FakeResponse({"results": []}))
+        search_web("query", ALLOWLIST, api_key="k", session=session)
+
+        payload = session.calls[0]["json"]
+        self.assertEqual(payload["include_domains"], ALLOWLIST)
+
     def test_api_key_never_appears_in_the_returned_result(self):
         session = _FakeSession(_FakeResponse(_TAVILY_PAYLOAD))
         result = search_web("query", ALLOWLIST, api_key="a-secret-key", session=session)
