@@ -105,7 +105,12 @@ def search_web(
     try:
         response = http.post(
             _TAVILY_SEARCH_URL,
-            json={"api_key": key, "query": query, "max_results": max_results},
+            json={
+                "api_key": key,
+                "query": query,
+                "max_results": max_results,
+                "include_domains": allowlist,
+            },
             timeout=timeout,
         )
         response.raise_for_status()
