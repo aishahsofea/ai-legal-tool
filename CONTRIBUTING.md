@@ -500,6 +500,28 @@ When structured output fails the factory raises `StructuredOutputError` naming t
 
 Every node records the model it bound onto the LangSmith run as `model_<node>` (`agent/query_lifecycle.py`), so a run split across two providers can be read back afterwards. The turn also streams a [`node` event](README.md#api) per model call, so the PROCESS panel names the model without anyone opening a trace.
 
+#### Overriding one node's provider
+
+`CHAT_BASE_URL`/`CHAT_API_KEY` move every non-Claude, non-Gemini node at once. `GROUNDING_BASE_URL` and `GROUNDING_API_KEY` move only the grounding check. That lets it sit on a different provider than the router and synthesiser (issue #162: a Nemotron judge on Nebius while they stay on OpenAI's `gpt-4.1`). Each falls back to its `CHAT_*` counterpart when unset. So leaving both unset keeps the grounding check wherever `CHAT_BASE_URL`/`CHAT_API_KEY` already send every other node.
+
+| Env var | Drives | Default |
+|---|---|---|
+| `GROUNDING_BASE_URL` | the grounding check only (optional) | falls back to `CHAT_BASE_URL` |
+| `GROUNDING_API_KEY` | auth for the grounding check only (optional) | falls back to `CHAT_API_KEY` |
+
+If `GROUNDING_BASE_URL` is set and neither `GROUNDING_API_KEY` nor `CHAT_API_KEY` is, `make_llm` raises at startup rather than falling back to `OPENAI_API_KEY`. That fallback would send your OpenAI key to `GROUNDING_BASE_URL` instead of `api.openai.com`.
+
+Worked example — grounding check on Nemotron-3-Ultra via Nebius, everything else stays on OpenAI:
+
+```bash
+GROUNDING_MODEL=nvidia/Nemotron-3-Ultra-550b-a55b
+GROUNDING_BASE_URL=https://api.studio.nebius.com/v1/
+GROUNDING_API_KEY=<your Nebius key>
+# ROUTER_MODEL, SYNTHESISER_MODEL, etc. stay unset — unchanged
+```
+
+In the factory this is `make_llm(model_name, node=..., env_prefix="GROUNDING")`. Only the grounding check passes `env_prefix` today; the same pattern would extend to another node the same way.
+
 Embedding models resolve through their own factory, `agent/embeddings.py`, separate from the chat-model factory above. Embeddings need one shared vector space, not provider routing.
 
 `CORPUS_EMBEDDING_MODEL` moves the whole statute corpus at once:

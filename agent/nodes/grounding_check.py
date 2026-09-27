@@ -25,7 +25,10 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 
 _MODEL = os.getenv("GROUNDING_MODEL", "claude-sonnet-4-6")
-_llm = make_llm(_MODEL, node="grounding_check")
+# env_prefix lets this node sit on its own provider (GROUNDING_BASE_URL/GROUNDING_API_KEY)
+# instead of the CHAT_BASE_URL/CHAT_API_KEY every other node shares — issue #162: a Nemotron
+# judge on Nebius while the router and synthesiser stay on OpenAI.
+_llm = make_llm(_MODEL, node="grounding_check", env_prefix="GROUNDING")
 
 
 class _GroundingClaim(BaseModel):
