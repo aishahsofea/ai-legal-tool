@@ -13,13 +13,19 @@ const SOURCE_MAP_VISIBLE_LIMIT = 6;
 type CitationList = NonNullable<Message["citations"]>;
 type OpenReceipt = (citation: Citation, evidenceIndex: number, opener: HTMLElement) => void;
 
+// A schedule citation's section_number is empty (ADR 0018) - path ("sched.2/art.1")
+// is its only identifier. Falling back to it keeps the rendered key non-blank.
+function citationMarker(citation: { section_number: string; path?: string }) {
+  return citation.section_number || citation.path || "";
+}
+
 function SourceMapLink({ citation, index, messageId }: { citation: CitationList[number]; index: number; messageId: string }) {
   const refId = sourceRefId(messageId, citation, index);
 
   return (
     <a key={refId} href={`#source-ref-${scopedId(messageId, citation.act_number, citation.section_number, index)}`} className="inline-flex min-h-8 items-center gap-2 rounded-lg border border-(--line) bg-(--surface) px-3 py-1 text-xs text-(--text-muted) transition-colors duration-200 hover:border-(--accent-line) hover:bg-(--accent-tint) hover:text-(--accent)">
       <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-(--accent)">[{index + 1}]</span>
-      <span className="font-serif">§ {citation.section_number}</span>
+      <span className="font-serif">§ {citationMarker(citation)}</span>
     </a>
   );
 }
@@ -60,7 +66,7 @@ function InlineSourceSummary({ citations, messageId }: { citations: CitationList
 
 function RepealBadge({ citation, label }: { citation: CitationList[number]; label: NonNullable<Message["currency_labels"]>[number] }) {
   if (label.label === "repealed") {
-    const warning = `Act ${citation.act_number} carries a repeal record dated ${label.as_of_date}. This does not mean Section ${citation.section_number} itself is void — open the repeal record to check.`;
+    const warning = `Act ${citation.act_number} carries a repeal record dated ${label.as_of_date}. This does not mean Section ${citationMarker(citation)} itself is void — open the repeal record to check.`;
     return (
       <a
         href={label.detail_url}
@@ -76,7 +82,7 @@ function RepealBadge({ citation, label }: { citation: CitationList[number]; labe
   }
 
   if (label.label === "superseded") {
-    const notice = `Act ${citation.act_number} has been amended since the reprint we indexed (${label.as_of_date}). This does not mean Section ${citation.section_number} itself changed — open the amendment to check.`;
+    const notice = `Act ${citation.act_number} has been amended since the reprint we indexed (${label.as_of_date}). This does not mean Section ${citationMarker(citation)} itself changed — open the amendment to check.`;
     return (
       <a
         href={label.detail_url}
@@ -120,7 +126,7 @@ function InlineSources({ citations, currencyLabels, messageId, onOpenReceipt }: 
           return (
             <li id={sourceRefId(messageId, citation, index)} key={sourceRefId(messageId, citation, index)} className="scroll-mt-4 rounded-lg border border-(--line) bg-(--surface) p-3 shadow-[var(--shadow-soft)]">
               <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm text-(--text)">
-                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-(--accent)">[{index + 1}] § {citation.section_number}</span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-(--accent)">[{index + 1}] § {citationMarker(citation)}</span>
                 <span className="font-serif font-light">{formatSourceTitle(citation.act_title)}</span>
                 {citation.page_number && <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-(--text-subtle)">p. {citation.page_number}</span>}
                 {currency && <RepealBadge citation={citation} label={currency} />}
