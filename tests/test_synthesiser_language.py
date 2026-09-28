@@ -224,19 +224,21 @@ class SynthesiserCommentaryTests(unittest.TestCase):
     }
 
     def test_no_commentary_prompt_is_unchanged(self):
-        with_key = synthesiser._build_messages({
-            "query": "What does section 34 say?",
-            "retrieved_chunks": [_CHUNK],
-            "history": [],
-            "response_language": "en",
-            "commentary": [],
-        })
-        without_key = synthesiser._build_messages({
-            "query": "What does section 34 say?",
-            "retrieved_chunks": [_CHUNK],
-            "history": [],
-            "response_language": "en",
-        })
+        # Pinned: an Ultra model salts its system prompt on every build (#177), so two builds would differ.
+        with patch.object(synthesiser, "_MODEL", "gpt-4.1"):
+            with_key = synthesiser._build_messages({
+                "query": "What does section 34 say?",
+                "retrieved_chunks": [_CHUNK],
+                "history": [],
+                "response_language": "en",
+                "commentary": [],
+            })
+            without_key = synthesiser._build_messages({
+                "query": "What does section 34 say?",
+                "retrieved_chunks": [_CHUNK],
+                "history": [],
+                "response_language": "en",
+            })
         self.assertEqual(with_key, without_key)
         self.assertNotIn("Commentary notes", with_key[1]["content"])
         self.assertNotIn("Commentary notes below", with_key[0]["content"])

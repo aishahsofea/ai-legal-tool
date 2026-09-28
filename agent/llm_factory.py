@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import uuid
 
 from dotenv import load_dotenv
 from langchain_anthropic import ChatAnthropic
@@ -229,8 +230,14 @@ def structured_llm(llm, schema, *, node: str, model_name: str):
     return _StructuredLLM(llm, schema, node, model_name)
 
 
+# Nebius serves Ultra wrongly on a prompt-prefix cache hit; a unique first line defeats the cache (#177).
+_PREFIX_CACHE_BROKEN = "nemotron-3-ultra"
+
+
 def system_content(text: str, model_name: str):
     """Return system message content in the correct format for the provider."""
     if model_name.startswith("claude-"):
         return [{"type": "text", "text": text, "cache_control": {"type": "ephemeral"}}]
+    if _PREFIX_CACHE_BROKEN in model_name.lower():
+        return f"[request {uuid.uuid4().hex}]\n{text}"
     return text
