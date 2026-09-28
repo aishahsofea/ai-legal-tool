@@ -6,9 +6,11 @@ A LangGraph agent that answers over a pgvector corpus of section-level chunks sc
 [AGC portal](https://lom.agc.gov.my). It cites every legal claim. It never gives legal advice.
 For anything client-specific, it hands off to a human lawyer.
 
-**Stack:** LangGraph · FastAPI (Railway) · Next.js (Vercel) · Postgres + pgvector (Supabase) · OpenAI `text-embedding-3-small` · GPT-4.1
+**Stack:** LangGraph · FastAPI (Railway) · Next.js (Vercel) · Postgres + pgvector (Supabase) · NVIDIA Nemotron on Nebius Token Factory · OpenAI `text-embedding-3-small`
 
-Provider-agnostic: `agent/llm_factory.py` for chat models, `agent/embeddings.py` for embeddings. Claude and Gemini are swappable in; Claude runs the eval judge. The `text-embedding-3-small` and GPT-4.1 defaults are env-overridable, and `CHAT_BASE_URL` points chat models at any OpenAI-compatible endpoint. Open-weights models on a hosted provider are a config change — see [model overrides](CONTRIBUTING.md#model-overrides).
+The hosted demo runs every chat model on open-weights NVIDIA Nemotron, served by Nebius Token Factory. Nemotron-3.5-Lightning (30B) handles the light steps: classifying the query, rewriting follow-ups, replying to small talk, and extracting memories. Nemotron-3-Ultra (550B) searches the statutes as an agent, writes the cited answer, and checks it against the sources (the grounding check). The chat UI's PROCESS panel names the model behind each step.
+
+Out of the box, the code uses the GPT-4.1 family, plus Claude for the grounding check. Nemotron comes from config: `CHAT_BASE_URL` points the chat models at Nebius, or at any OpenAI-compatible endpoint. Any step can also run on a Claude or Gemini model. [Model overrides](CONTRIBUTING.md#model-overrides) has the default and the setting for every step and for embeddings. Chat models go through `agent/llm_factory.py` and embeddings through `agent/embeddings.py`. Claude runs the eval judge.
 
 ## Highlights
 
