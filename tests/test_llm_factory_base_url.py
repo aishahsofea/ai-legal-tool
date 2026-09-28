@@ -151,6 +151,36 @@ class PerNodeProviderTests(unittest.TestCase):
             llm_factory.make_llm("gpt-4.1")  # must not raise
 
 
+class UltraPrefixCacheSaltTests(unittest.TestCase):
+    """Nebius serves Ultra wrongly when the start of a prompt is already in its prefix
+    cache (issue #177), so every Ultra system prompt opens with a line no earlier
+    request shared."""
+
+    ULTRA = "nvidia/Nemotron-3-Ultra-550b-a55b"
+
+    def test_ultra_system_prompt_gets_a_new_first_line_every_call(self):
+        first_line_a, _, rest_a = llm_factory.system_content("prompt", self.ULTRA).partition("\n")
+        first_line_b, _, rest_b = llm_factory.system_content("prompt", self.ULTRA).partition("\n")
+        self.assertNotEqual(first_line_a, first_line_b)
+        self.assertEqual(rest_a, "prompt")
+        self.assertEqual(rest_b, "prompt")
+
+    def test_the_id_match_ignores_case(self):
+        # Nebius ids are not consistently cased: the Super id is all lowercase, Ultra's is not.
+        _, _, rest = llm_factory.system_content("prompt", "nvidia/nemotron-3-ultra-550b-a55b").partition("\n")
+        self.assertEqual(rest, "prompt")
+
+    def test_every_other_model_keeps_its_system_prompt_unchanged(self):
+        for model in (
+            "gpt-4.1",
+            "nvidia/Nemotron-3_5-Lightning",
+            "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+            "nvidia/nemotron-3-super-120b-a12b",
+        ):
+            with self.subTest(model=model):
+                self.assertEqual(llm_factory.system_content("prompt", model), "prompt")
+
+
 class NodeModelRegistryTests(unittest.TestCase):
     def test_node_name_recorded(self):
         with patch.object(llm_factory, "ChatOpenAI"):
