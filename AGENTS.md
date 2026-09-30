@@ -1,5 +1,7 @@
 # AGENTS.md
 
+Read and follow `.agent/standards/AGENTS.md` before editing code. Rules in this repository's `AGENTS.md` take precedence when they conflict.
+
 > Canonical project instructions live in [CLAUDE.md](CLAUDE.md). Read and follow that file before making changes in this repository.
 
 ## Keeping docs in sync

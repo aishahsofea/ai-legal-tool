@@ -21,6 +21,14 @@ Use a `<type>/` prefix that matches the change: `feat/`, `fix/`, `chore/`, `docs
 - Node.js 20+
 - PostgreSQL 16 with the `vector` extension ([pgvector](https://github.com/pgvector/pgvector))
 
+This repo carries the shared [ai-standards](https://github.com/aishahsofea/ai-standards) rules as a git submodule at `.agent/standards`. A plain `git clone` leaves it empty — clone recursively, or populate it after the fact:
+
+```bash
+git clone --recurse-submodules <repo-url>
+# or, after a plain clone:
+git submodule update --init --recursive
+```
+
 ### 1. Python dependencies
 
 ```bash
