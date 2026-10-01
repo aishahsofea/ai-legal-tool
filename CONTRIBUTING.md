@@ -13,6 +13,75 @@ gh pr create
 
 Use a `<type>/` prefix that matches the change: `feat/`, `fix/`, `chore/`, `docs/`, `refactor/`. `main` stays deployable; every change lands through a reviewable PR.
 
+## Architecture map
+
+Use this to find which directory owns what. Each edge was checked against imports, routes, or `agent/graph.py` in [#185](https://github.com/aishahsofea/ai-legal-tool/issues/185), which lists the source file for every edge.
+
+```mermaid
+flowchart TB
+  SRC["scraper/ (steps 1-4)"]
+  CORPUS["corpus/ (Corpus Registry)"]
+  PG[("pgvector: chunks, active_corpus_documents")]
+  REFG["reference_graph/ (Statutory Reference Graph)"]
+  RCPT["citation_receipts/ (Citation Receipt)"]
+  API["api/main.py (+ routers)"]
+  FE["frontend/ (app, lib, components)"]
+  LIFE["agent/query_lifecycle.py + graph.py"]
+  ROUTE["router / clarify / contextualize"]
+  RETR["retriever (agent/retrieval/)"]
+  SYNTH["synthesiser"]
+  VERIFY["citation_validator → grounding_check → currency_check → supervisor"]
+  EVALS["evals/"]
+
+  SRC -->|"PDFs + manifest"| CORPUS
+  CORPUS -->|"register / ingest / activate"| PG
+  CORPUS -->|"registry reads PDFs"| REFG
+  CORPUS -->|"registry / storage"| RCPT
+  FE -->|"HTTP + SSE"| API
+  API -->|"/query /resume /cancel"| LIFE
+  API -->|"/receipts/*"| RCPT
+  API -->|"/reference-graph/*"| REFG
+  API -->|"/evals/* subprocess"| EVALS
+  LIFE --> ROUTE
+  ROUTE --> RETR
+  PG -->|"search"| RETR
+  REFG -->|"follow references"| RETR
+  RETR --> SYNTH
+  RCPT -->|"receipt on citation"| SYNTH
+  RCPT -->|"evidence locator"| VERIFY
+  SYNTH --> VERIFY
+  VERIFY -->|"retry: re-draft"| SYNTH
+  VERIFY -->|"retry: re-retrieve"| RETR
+  EVALS -->|"graph.invoke"| LIFE
+```
+
+| Node | Path | Read when you change | What it does |
+|---|---|---|---|
+| SRC | `scraper/`, `run.py` | how Acts and PDFs are fetched | Scrapes lom.agc.gov.my and cuts section chunks (steps 1-4). |
+| CORPUS | `corpus/` | Act identity, manifests, extraction runs, rollout | Owns the registry, extraction sidecars, and DB registration. |
+| PG | `ingestion/step5_ingest.py`, `corpus/db.py`, `migrations/` | missing or stale chunks | Embeds and stores chunks. The `active_corpus_documents` table picks which extraction is live. |
+| REFG | `reference_graph/` | cross-reference edges, snapshots, audits | Builds, checks, and serves promoted reference-graph files. |
+| RCPT | `citation_receipts/` | citation provenance, passage location | Holds immutable receipt documents and finds Evidence Spans deterministically. |
+| API | `api/main.py`, `api/*.py` | an endpoint or SSE event shape | HTTP entry points, SSE streaming, and the receipts, reference-graph, and evals routers. |
+| FE | `frontend/lib/`, `frontend/app/workspace/` | the chat UI, receipt viewer, graph explorer | Calls the API. Shows chat, citations, and receipts. |
+| LIFE | `agent/query_lifecycle.py`, `agent/graph.py` | graph wiring, cancel/resume, streaming | Runs the compiled LangGraph and turns it into stream events. |
+| ROUTE | `agent/nodes/router.py`, `clarify.py`, `contextualize.py` | query classification, clarification | `router.py` classifies the query. `clarify.py` asks the user a question. `contextualize.py` rewrites the query to stand alone. |
+| RETR | `agent/nodes/retriever.py`, `agent/retrieval/` | search, tools, reference following | Fetches chunks by search. With `AGENTIC_RETRIEVAL` on, a ReAct agent runs the search instead. |
+| SYNTH | `agent/nodes/synthesiser.py` | the answer prompt, citation building | Drafts the answer and attaches a receipt to each citation. |
+| VERIFY | `agent/nodes/{citation_validator,grounding_check,currency_check,supervisor}.py` | validation, repeal labels, retry rules | `citation_validator` checks citations. `grounding_check` checks claims against sources. `currency_check` labels repealed or amended Acts. `supervisor` retries or finishes. |
+| EVALS | `evals/`, `evals/dataset.json` | behaviour the evals measure | Runs datasets through the graph with assertions and a judge. |
+
+Not on the map:
+
+- **Graph branches:** `escalate`, `conversational`, `recall_conversational`, the `clarify` interrupt loop, `start_turn`, `record_turn`. See [README.md](README.md#how-it-works).
+- **Semantic Memory:** `agent/memory/`, the `recall` node, the checkpointer and store.
+- **Helper modules:** `agent/web_search.py`, `llm_factory.py`, `feature_flags.py`, `observability.py`, `citation_keys.py`, `query_policy.py`.
+- **Scraper-to-agent file link:** `citation_validator` and `currency_check` read Act metadata through `scraper/act_paths`, not the DB.
+- **Evals to retrieval:** `evals/assertions.py` imports `agent.retrieval.search`.
+- **Eval seeding:** `evals/seed_test_corpus.py` writes to the eval database.
+- **The SSE reply path** from LIFE back to API.
+- **Infra and data:** Railway, Vercel, `data/`, `schemas/`, `.agent/standards`.
+
 ## Local Setup
 
 ### Prerequisites
