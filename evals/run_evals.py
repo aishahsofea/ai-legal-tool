@@ -31,6 +31,7 @@ from evals.coverage import (
 )
 from evals.judge import JudgeContext, judge_case
 from evals.language_id import ensure_available as ensure_language_model
+from evals.usage import UsageHandler, eval_usage, format_usage, usage_to_json
 
 load_dotenv()
 
@@ -425,7 +426,9 @@ def _grounding_summary(results: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def _build_report(mode: str, results: list[dict[str, Any]]) -> dict[str, Any]:
+def _build_report(
+    mode: str, results: list[dict[str, Any]], usage: dict[str, Any] | None = None
+) -> dict[str, Any]:
     l1_applicable = {name: 0 for name in _ASSERTION_NAMES}
     l1_passed = {name: 0 for name in _ASSERTION_NAMES}
     judge_total = 0
@@ -470,6 +473,7 @@ def _build_report(mode: str, results: list[dict[str, Any]]) -> dict[str, Any]:
         "judge_pass_rate": _rate(judge_passed, judge_total),
         "grounding": _grounding_summary(results),
         "by_scenario": aggregate_scenarios(serialize_case_result(result) for result in results),
+        "usage": usage_to_json(usage if usage is not None else UsageHandler().summarize()),
     }
 
     return {
@@ -541,23 +545,24 @@ def run_suite(
         print(f"[{index}/{total}] {case['id']} ...", flush=True)
 
     results: list[dict[str, Any]] = []
-    for result in iter_suite(mode, cases, on_case_start=print_start if progress else None):
-        results.append(result)
-        if progress:
-            elapsed = result["elapsed_seconds"]
-            failures = result.get("l1_failures", {})
-            if failures:
-                print(f"    L1 FAIL in {elapsed:.1f}s | {', '.join(failures)}", flush=True)
-            else:
-                verdict = result["judge"]
-                print(
-                    f"    done in {elapsed:.1f}s | judge={'PASS' if verdict['passed'] else 'FAIL'}",
-                    flush=True,
-                )
-        if on_case_result:
-            on_case_result(serialize_case_result(result))
+    with eval_usage() as usage_handler:
+        for result in iter_suite(mode, cases, on_case_start=print_start if progress else None):
+            results.append(result)
+            if progress:
+                elapsed = result["elapsed_seconds"]
+                failures = result.get("l1_failures", {})
+                if failures:
+                    print(f"    L1 FAIL in {elapsed:.1f}s | {', '.join(failures)}", flush=True)
+                else:
+                    verdict = result["judge"]
+                    print(
+                        f"    done in {elapsed:.1f}s | judge={'PASS' if verdict['passed'] else 'FAIL'}",
+                        flush=True,
+                    )
+            if on_case_result:
+                on_case_result(serialize_case_result(result))
 
-    return _build_report(mode, results)
+    return _build_report(mode, results, usage_handler.summarize())
 
 
 def _subset_label(args: argparse.Namespace) -> str:
@@ -647,7 +652,9 @@ def main() -> int:
             "turns shipped unverified. Check the GROUNDING_MODEL entry in "
             "CONTRIBUTING.md#model-overrides."
         )
-    print(f"Results written to: {args.output}")
+    print()
+    print("\n".join(format_usage(summary["usage"])))
+    print(f"\nResults written to: {args.output}")
 
     citation_existence_rate = l1["citation_existence"]["rate"]
     citation_existence_total = l1["citation_existence"]["total"]
