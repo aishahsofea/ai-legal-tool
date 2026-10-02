@@ -12,6 +12,8 @@ import json
 import logging
 import os
 import uuid
+from collections.abc import Callable
+from contextvars import ContextVar
 
 from dotenv import load_dotenv
 from langchain_anthropic import ChatAnthropic
@@ -27,6 +29,10 @@ logger = logging.getLogger(__name__)
 # Filled in as each node builds its model. query_lifecycle stamps this onto the
 # LangSmith run, because a mixed-provider turn is unreadable afterwards without it.
 _NODE_MODELS: dict[str, str] = {}
+
+# Set only by evals/usage.py, so the eval report can count json_mode retries
+# without agent/ importing evals/. Unset in production: one ContextVar read.
+retry_observer: ContextVar[Callable[[], None] | None] = ContextVar("llm_retry_observer", default=None)
 
 
 def make_llm(model_name: str, temperature: float = 0, node: str | None = None, env_prefix: str | None = None):
@@ -187,6 +193,9 @@ class _StructuredLLM:
             self._model_name,
             type(exc).__name__,
         )
+        observer = retry_observer.get()
+        if observer is not None:
+            observer()
 
     def invoke(self, *args, **kwargs):
         try:

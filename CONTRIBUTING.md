@@ -451,6 +451,12 @@ AGENTIC_RETRIEVAL=1 WEB_COMMENTARY_ENABLED=on \
 
 Every run ends with a `Grounding:` line: how many grounding checks completed, and how many failed open. A failed-open check raises no violation and fails no assertion, so the judge pass rate cannot see it. The count is the only place a skipped verification shows. It never changes the exit code — those answers shipped, they just shipped unverified. [Model overrides](#model-overrides) covers when that happens.
 
+Every run prints a `Usage (estimated)` block and writes the same numbers to `summary.usage` in `evals/results.json`. It lists calls, input tokens, output tokens and USD for each model, and the same counts for each graph node. The Claude judge is counted too. Prices live in `MODEL_PRICES_PER_MILLION_USD` in `evals/usage.py`. They cover the three Nebius Nemotron models, taken from the Nebius dashboard on 2026-09-28. A model missing from that table prints `price unknown`. It is left out of the USD total, and the total is marked partial. It is never priced at $0. Add a row there when you add a model.
+
+Treat the token counts as a floor. A call the provider cuts off reports no usage. Each json_mode retry is counted in the block, but can hide up to about 8,192 output tokens. The block only sees this run. It will not match the Nebius dashboard if anything else used the same key.
+
+LangSmith has no Nemotron prices, so its cost column is empty. To fill it, add the three Nemotron ids at workspace Settings → Models, using the prices from `MODEL_PRICES_PER_MILLION_USD`. LangSmith matches them on `ls_model_name`. They only price traces logged after you add them.
+
 #### Scoring bilingual cases
 
 Every case declares a `language`: `en`, `bm` (Bahasa Malaysia), or `mixed` (code-switched). 40 of the cases are `bm` or `mixed`, split evenly. They cover:
