@@ -169,8 +169,7 @@ def _messages(answer: str, sources: list[dict]) -> list[dict]:
     ]
 
 
-# Strictest threshold measured in the #201 Phase 3 sweep; an unset or unparseable
-# value must never loosen the gate.
+# Strictest threshold swept in #201; an unset or unparseable value must never loosen the gate.
 _DEFAULT_JEV_THRESHOLD = 0.99
 
 
@@ -198,7 +197,7 @@ def _jev_threshold() -> float:
 
 
 def _jev_source_text(source: dict) -> str:
-    # Same shape evals/jev_answers.py scored in Phase 3; the threshold was chosen on it.
+    # Keep in step with evals/jev_answers.py: the threshold was chosen on this shape.
     return (
         f"({source['act_title']}, Act {source['act_number']}, Section {source['section_number']}):\n"
         f"{source['content']}"
@@ -338,8 +337,7 @@ def grounding_check_node(state: AgentState) -> dict:
 
     jev_errors = 0
     if _jev_enabled():
-        # Blocking HTTP, like the Ultra call below it. A cleared answer carries no
-        # evidence quotes: Jev returns a label only.
+        # A cleared answer carries no evidence quotes: Jev returns a label only.
         cleared, errored = _jev_clears(answer, sources)
         if cleared:
             return {"violations": violations, "grounding_metrics": _metrics(state, checked=1, jev_skipped_ultra=1)}
@@ -371,8 +369,7 @@ async def agrounding_check_node(state: AgentState) -> dict:
 
     jev_errors = 0
     if _jev_enabled():
-        # Blocking HTTP, like the Ultra call below it. A cleared answer carries no
-        # evidence quotes: Jev returns a label only.
+        # A cleared answer carries no evidence quotes: Jev returns a label only.
         cleared, errored = await asyncio.to_thread(_jev_clears, answer, sources)
         if cleared:
             return {"violations": violations, "grounding_metrics": _metrics(state, checked=1, jev_skipped_ultra=1)}

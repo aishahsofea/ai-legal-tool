@@ -18,7 +18,7 @@ MODEL_PRICES_PER_MILLION_USD: dict[str, tuple[Decimal, Decimal]] = {
     "nvidia/Nemotron-3-Ultra-550b-a55b": (Decimal("1.00"), Decimal("3.00")),
     "nvidia/Nemotron-3_5-Lightning": (Decimal("0.06"), Decimal("0.24")),
     "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B": (Decimal("0.06"), Decimal("0.24")),
-    # TypeSafe price list quoted in #193: $0.042 per million input tokens, output free.
+    # $0.042 per million input tokens, output free (#193).
     "jev-1.13.0": (Decimal("0.042"), Decimal("0")),
 }
 

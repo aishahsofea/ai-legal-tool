@@ -1,9 +1,6 @@
 """Jev (TypeSafe AI) client for the grounding first pass (#201).
 
-Jev returns a label with probabilities, never a quote, so it can only decide
-whether a claim is worth sending to the Ultra judge. This module raises on
-every failure: the caller owns the fail-open decision and falls through to
-Ultra.
+Raises on every failure: the caller owns the fail-open decision.
 """
 import os
 from collections.abc import Callable
@@ -13,8 +10,7 @@ import requests
 
 _JEV_URL = "https://api.typesafe.ai/v1/systemone"
 
-# Measured in #190 as 0/270 unsupported-called-supported on `jev-1.13.0`.
-# `jev-latest` can change under us, so the model is pinned in config.
+# `jev-latest` can change under us, so the model is pinned in config (#190).
 _FLOATING_MODEL = "jev-latest"
 
 _INSTRUCTIONS = (
@@ -28,8 +24,7 @@ _CRITERIA = {
 }
 
 
-# Set only by evals/usage.py (model, input_tokens, output_tokens), so the eval report can
-# price Jev calls that LangChain callbacks never see. Unset in production.
+# Set only by evals/usage.py: LangChain callbacks never see Jev calls.
 usage_observer: ContextVar[Callable[[str, int, int], None] | None] = ContextVar(
     "jev_usage_observer", default=None
 )
@@ -49,11 +44,7 @@ def _model() -> str:
 
 
 def supported_probability(claim: str, source: str, *, timeout: float = 5.0) -> float:
-    """P(`supported`) of `claim` against its cited `source` text.
-
-    Raises JevError on a missing key or model, a transport error, a timeout,
-    a bad status, or a response without a probability for `supported`.
-    """
+    """P(`supported`) of `claim` against its cited `source` text. Raises JevError on any failure."""
     key = os.getenv("TYPESAFE_API_KEY")
     if not key:
         raise JevError("TYPESAFE_API_KEY is not set")

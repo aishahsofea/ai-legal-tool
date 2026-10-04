@@ -1,10 +1,8 @@
 """Deterministic claim extraction for the Jev first pass (#201).
 
-Mirrors the attribution rule in `grounding_check._SYSTEM`: only a sentence that
-names an Act or section is a claim. Over-keeping is safe, because an extra claim
-only gives Jev one more sentence to clear. Dropping a real claim is the failure
-that matters, since a claim that is never extracted is never checked once Ultra is
-skipped. Every returned claim is a slice of the draft, so it always passes
+Mirrors the attribution rule in `grounding_check._SYSTEM`. Over-keeping is safe;
+dropping a real claim is not, since an unextracted claim is never checked once
+Ultra is skipped. Every claim is a slice of the draft, so it passes
 `contains_normalized_sequence(claim, draft)`.
 """
 from __future__ import annotations
@@ -50,9 +48,8 @@ def _sentences(draft: str) -> list[tuple[str, bool]]:
 def split_claims(draft: str) -> list[str]:
     """Sentences naming an Act or section, plus the unattributed ones that follow them.
 
-    Ultra extracts a sentence like "That permission is subject to a Minister" as a
-    claim even though it names nothing (measured in #201), so a same-paragraph
-    sentence after a claim is kept too. Disclaimers sit after a paragraph break.
+    Ultra counts unattributed follow-ons ("That permission is subject to a Minister")
+    as claims, so same-paragraph ones are kept. Disclaimers sit after a paragraph break.
     """
     claims = []
     previous_kept = False
@@ -74,9 +71,8 @@ _SECTION_MENTION = re.compile(
 def pair_source(claim: str, sources: list[dict]) -> dict | None:
     """The one cited source a claim rests on, or None when that is not certain.
 
-    Ultra returns the Act and section per claim; a sentence has to be read for
-    them. None sends the claim to Ultra rather than guessing, because Jev scored
-    against the wrong section would be a confident answer to the wrong question.
+    None sends the claim to Ultra rather than guessing: Jev scored against the
+    wrong section is a confident answer to the wrong question.
     """
     mentioned = {canonicalize_section_number(m) for m in _SECTION_MENTION.findall(claim)}
     candidates = [

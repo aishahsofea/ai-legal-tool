@@ -1,15 +1,12 @@
 """Jev first pass measured on real answers instead of labelled claims (#201 Phase 3).
 
-Two steps, so the paid agent run and the judge runs can be repeated apart:
+Two steps, so the paid agent run and the judge runs repeat apart:
 
     python3 -m evals.jev_answers collect --limit 8 --out answers.json
     JEV_MODEL=jev-1.13.0 python3 -m evals.jev_answers analyse answers.json [--locate] --out rows.json
 
-`collect` runs router, retriever and synthesiser (the state grounding_check sees)
-and keeps the draft, citations and retrieved chunks. `analyse` runs Ultra on each
-answer as the reference, then replays the first pass: split, pair each claim to
-its source, score with Jev. A claim that cannot be paired, or a Jev error, sends
-the whole answer to Ultra, as the node would.
+`collect` keeps the state grounding_check sees. `analyse` runs Ultra as the
+reference, then replays the first pass.
 """
 from __future__ import annotations
 
@@ -46,7 +43,7 @@ def collect(limit: int | None, out: Path) -> None:
             "draft_response": state["draft_response"], "citations": state["citations"],
             "retrieved_chunks": state["retrieved_chunks"], "violations": state.get("violations", []),
         })
-        # Per answer, because each one is a paid agent run that a late crash must not lose.
+        # Per answer: each is a paid run a late crash must not lose.
         out.write_text(json.dumps(answers, ensure_ascii=False, indent=1, default=float))
     print(f"{len(answers)} answers -> {out}")
 
@@ -143,8 +140,7 @@ def analyse_answer(answer: dict, *, locate_client: Any = None) -> dict:
 
 def _skips(row: dict, threshold: float) -> bool:
     scores = row.get("jev_scores")
-    # No sentence to check means the splitter found nothing, which must not clear an
-    # answer Ultra found claims in.
+    # No claims must not clear an answer Ultra found claims in.
     return bool(scores) and all(s is not None and s >= threshold for s in scores)
 
 
