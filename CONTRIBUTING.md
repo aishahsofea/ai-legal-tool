@@ -118,37 +118,82 @@ When the code starts reading a new variable, add it to `.env.example`. `tests/te
 
 With `LANGSMITH_TRACING=true`, every graph run traces to LangSmith. The query lifecycle also tags each run — `run_name=legal_query`, `source:api`/`source:eval`, active feature flags — attaches `user_id`/`thread_id` metadata, and posts the turn's quality signals as run **feedback** (`agent/observability.py`): `passed`, `num_violations`, `num_evidence_violations`, `retry_count`, `num_citations`, `fallback_delivered`, `escalated`, a categorical `query_type`. Feedback also includes numeric reference-follow counters — calls, skips/disabled/unavailable, edges considered/returned, target lookup outcomes, boundaries, fail-open occurrences — never provision text, evidence phrases, or query content. Fail-open, off the hot path: it never alters or delays a response. Leave `LANGSMITH_TRACING` unset to disable tracing and feedback entirely.
 
-Optional flags. The `=on` toggles are off by default and accept `1`, `true`, `yes`, or `on`; anything else leaves them off. The mode variables take only the values listed with each one — `CORPUS_RETRIEVAL_MODE` defaults to `dual`, `RECEIPT_DELIVERY_MODE` to `auto`. Unset `CHECKPOINTER` means Postgres whenever `DATABASE_URL` is set.
+Optional flags. `on` toggles are off by default and accept `1`, `true`, `yes`, or `on`; anything else leaves them off. The one exception is `GROUNDING_JEV_ENABLED`, which is on by default; only `off` disables it.
 
-- `CHECKPOINTER=memory` — forces the in-process `MemorySaver` + `InMemoryStore` instead of Postgres. Handy for local runs without a database. The test suite sets this automatically.
-- `SEMANTIC_MEMORY_RECALL=on` — enables `recall`, so the synthesiser **reads** cross-thread **Semantic Memory** (ADR 0010). Off by default, fail-open.
-- `SEMANTIC_MEMORY_EXTRACT=on` — background **write** path (`agent/memory/extractor.py`). Saves durable facts about the practitioner, including their professional background (ADR 0012), after each turn. Off by default, fail-open, runs after the response is delivered. Turn both flags on to see `recall` surface facts written on earlier turns.
-- `SEMANTIC_MEMORY_PRUNE=on` — background **maintenance** path (`agent/memory/pruner.py`). Consolidates duplicate profiles and near-duplicate topics. Evicts low-value topics by importance + recency, not TTL. Off by default, fail-open. Runs off the hot path, size-debounced. Never deletes the sole profile, never empties a namespace.
-- `AGENTIC_RETRIEVAL=1` — swaps the deterministic `retriever` node for a `create_agent` ReAct loop (ADR 0013). The loop binds `search_statutes` / `lookup_section` and decides how to search. Off by default, fail-open: any error or empty result falls back to the deterministic pgvector path. When on:
-  - On an evidence violation the retry loop re-retrieves with feedback, not just re-drafts.
-  - Retrieval tools stream `tool_call` SSE events into the PROCESS panel.
-  - The eval `tool_selection` assertion (`expected_tool`) only runs with this flag on.
-  - `RETRIEVAL_MAX_MODEL_CALLS` (default 8) is what bounds the ReAct loop. On the budget's last call the loop ends and returns the sections it has, instead of raising. Without that, a query whose answer isn't in the corpus can reformulate the same search indefinitely. Measured runs converge in 4-5 calls.
-  - `RETRIEVAL_RECURSION_LIMIT` is the backstop, not the budget. It defaults to `4 x RETRIEVAL_MAX_MODEL_CALLS + 2` (34): each model round costs four graph super-steps. Set it lower and it fires before the budget does. The run then keeps the sections it had already reached and carries on with those; only an empty result falls back to the deterministic path.
-- `CORPUS_RETRIEVAL_MODE=dual|verified|legacy` — `dual` (default) reads legacy rows plus provenance rows joined to the active Act/language mapping. `verified` reads active provenance only. `legacy` is the rollback path. It reads only rows with no provenance, so no shadow-ingested row is visible, activated or not.
-- `RECEIPT_DELIVERY_MODE=auto|local|redirect|proxy` — remote coordinate sidecars get hash-checked again after download, whichever mode is set.
-  - `auto` (default) prefers verified local bytes. With none present it falls back to CDN objects whose length, content type, and ETag (a content MD5) match the registry.
-  - `local` uses local bytes only and fails closed rather than reaching for the CDN.
-  - `redirect` and `proxy` skip local bytes. Both need `CORPUS_CDN_BASE_URL`.
-  - An unrecognised value falls back to `auto`.
-- `RECEIPT_EVIDENCE_MAX_CHARS` — the longest quote, in characters, that the grounding check keeps as an **Evidence Span**. A longer quote is left off the receipt but does not fail the check. Default 500, which is also the maximum: values outside 1-500 are clamped. A value that isn't a number logs a warning and uses 500.
-- `REFERENCE_GRAPH_ENABLED=on` — exposes a **promoted**, independently validated statutory reference graph. Off by default. Turning it on builds, promotes, and loads nothing — the `reference_graph.cli` commands below do that.
-- `REFERENCE_GRAPH_COMPARISON_ENABLED=on` — adds snapshot selection and one-hop comparison. Needs `REFERENCE_GRAPH_ENABLED=on` too. Independently off by default, fails closed without disabling Phase 1.
-- `FOLLOW_REFERENCES_ENABLED=on` — adds `follow_references` to the **Retrieval Agent** only, so `AGENTIC_RETRIEVAL` must be on too. Independently off by default. Does not need `REFERENCE_GRAPH_ENABLED`: that flag governs public UI/API exposure, while internal retrieval reads the promoted artifacts through `ReferenceGraphStore`. Flag off → model sees only `search_statutes` / `lookup_section`, original prompt.
-- `WEB_COMMENTARY_ENABLED=on` — adds `search_commentary` to the **Retrieval Agent**, gated exactly like `FOLLOW_REFERENCES_ENABLED`: off by default, needs `AGENTIC_RETRIEVAL` too. The tool writes background material to the `commentary` state channel as **Commentary Notes**, never citations (ADR 0020). The synthesiser may mention a note for background, but never cites it by section or adds it to `citation_refs`. The grounding check never judges an unattributed background sentence as a claim to verify. So turning this on changes what the agent may say, never what it can cite. A turn's notes ride the SSE `response` event and `QueryResult` as `commentary`, present only when non-empty. The frontend renders these in their own `COMMENTARY` block (`frontend/components/locus-workspace/Messages.tsx`), structurally separate from `SOURCE MAP` and `SOURCES USED`. Which publishers `search_commentary` may return comes from `COMMENTARY_ALLOWLIST`, not from code.
-- `COMMENTARY_ALLOWLIST` — comma-separated publisher domains `search_commentary` is allowed to return, e.g. `skrine.com,shearndelamore.com,themalaysianlawyer.com`. A hostname matches an entry exactly or as one of its subdomains, case-insensitively; anything else is dropped and counted, never returned. Empty or unset means every result is dropped, even with the flag and `TAVILY_API_KEY` both set — operator config, not a code default. Draft list from #56's Phase 0 allowlist call: `skrine.com`, `shearndelamore.com`, `themalaysianlawyer.com`.
-- `TAVILY_API_KEY` — credential for `agent/web_search.py` (#119), the Tavily client shared by `search_commentary` (#56). The module has no flag of its own and no default allowlist: every caller passes its own domain list and its own flag, and a result whose host isn't an exact or subdomain match for one of those domains is dropped and counted, never returned. Every failure — missing key, HTTP error, timeout, a response that doesn't parse, a search with no hits — comes back as a reason in the result, never an exception.
-- `CURRENCY_CHECK_ENABLED=on` — adds a `currency_check` node between `grounding_check` and `supervisor`. Off by default. Fails open: on any error, that turn just gets no labels — the answer itself is never blocked. Makes no network call and no model call. For each cited Act, it reads the Act's own metadata timeline (`data/acts_metadata/<act>.json`) and the corpus manifest (`data/pdfs/manifest.json`), attaching one of four Currency Labels to the citation. Ships on the SSE `response` event and `QueryResult` as `currency_labels`, present only when non-empty. The frontend renders it as a badge on the citation (`frontend/components/locus-workspace/Messages.tsx`). See [CONTEXT.md](CONTEXT.md#language)'s **Currency Label** entry for the four outcomes, which ones render, and their limits. Run `python3 -m evals.currency_split` for a current split of the indexed corpus by outcome.
-- `GROUNDING_JEV_ENABLED=off` — turns off the cheap first pass that runs before the grounding judge (#201). The pass is on by default, but only runs when both `TYPESAFE_API_KEY` and `JEV_MODEL` are set. How it works: Jev (`agent/jev_client.py`) gets the same answer and cited sources as the judge, and scores the whole answer in one call. The judge is skipped only if that score is at or above `GROUNDING_JEV_THRESHOLD`. Otherwise the answer goes to the judge as before. That includes a Jev error. A skipped answer has no **Evidence Spans**, because Jev returns a score and no quote. 
-- `GROUNDING_JEV_THRESHOLD` — minimum P(supported) the answer needs for the judge to be skipped. Must be above 0 and at most 1. Default 0.97, also used (with a logged warning) for any other value. On 25 answers over four Jev runs (#201), an answer the judge flagged scored as high as 0.95, and scores moved by up to 0.14 between runs.
-- `TYPESAFE_API_KEY` — credential for the Jev API.
-- `JEV_MODEL` — pinned Jev version, such as `jev-1.13.0`. Required for the first pass to run. `jev-latest` is rejected, because a floating model can change the scores under a fixed threshold.
-- `REFERENCE_GRAPH_ROOT` — read-only root of promoted artifacts, default `data/reference_graph`. Both the public graph flags and `follow_references` read it. Point it at an operator deployment's artifact root.
+**Memory**
+
+| Variable | Values | Default | What it does |
+|---|---|---|---|
+| `CHECKPOINTER` | `memory` | Postgres if `DATABASE_URL` set | Forces the in-process `MemorySaver` + `InMemoryStore`. For local runs without a database. Tests set it automatically. |
+| `SEMANTIC_MEMORY_RECALL` | `on` | off | `recall` lets the synthesiser **read** cross-thread **Semantic Memory** (ADR 0010). Fail-open. |
+| `SEMANTIC_MEMORY_EXTRACT` | `on` | off | Background **write** path (`agent/memory/extractor.py`). Saves durable practitioner facts, including professional background (ADR 0012), after the response is delivered. Fail-open. |
+| `SEMANTIC_MEMORY_PRUNE` | `on` | off | Background **maintenance** path (`agent/memory/pruner.py`). Fail-open, off the hot path, size-debounced. |
+
+Turn recall and extract on together to see earlier facts. The pruner consolidates duplicate profiles and near-duplicate topics. It evicts low-value topics by importance + recency, not TTL. It never deletes the sole profile or empties a namespace.
+
+**Retrieval**
+
+| Variable | Values | Default | What it does |
+|---|---|---|---|
+| `AGENTIC_RETRIEVAL` | `1` | off | Swaps the deterministic `retriever` node for a `create_agent` ReAct loop (ADR 0013). Fail-open: any error or empty result falls back to the deterministic pgvector path. |
+| `RETRIEVAL_MAX_MODEL_CALLS` | integer | 8 | Bounds the ReAct loop. |
+| `RETRIEVAL_RECURSION_LIMIT` | integer | `4 x RETRIEVAL_MAX_MODEL_CALLS + 2` (34) | Backstop, not the budget. |
+| `CORPUS_RETRIEVAL_MODE` | `dual`, `verified`, `legacy` | `dual` | Which rows retrieval reads. `dual`: legacy rows plus provenance rows joined to the active Act/language mapping. `verified`: active provenance only. `legacy`: rollback path; reads only rows with no provenance, so no shadow-ingested row is visible, activated or not. |
+
+`AGENTIC_RETRIEVAL` binds `search_statutes` / `lookup_section`. When on:
+
+- An evidence violation makes the retry loop re-retrieve with feedback, not just re-draft.
+- Retrieval tools stream `tool_call` SSE events into the PROCESS panel.
+- The eval `tool_selection` assertion (`expected_tool`) only runs with it on.
+- `RETRIEVAL_MAX_MODEL_CALLS` ends the loop on the budget's last call and returns the sections it has, instead of raising. Without that, a query not answered by the corpus can reformulate forever. Measured runs converge in 4-5 calls.
+- Each model round costs four graph super-steps, hence `RETRIEVAL_RECURSION_LIMIT`'s default of 34. Set lower, it fires before the budget does. The run then keeps the sections already reached. Only an empty result falls back to the deterministic path.
+
+**Receipts**
+
+| Variable | Values | Default | What it does |
+|---|---|---|---|
+| `RECEIPT_DELIVERY_MODE` | `auto`, `local`, `redirect`, `proxy` | `auto` | Where receipt bytes come from; see bullets. An unrecognised value falls back to `auto`. |
+| `RECEIPT_EVIDENCE_MAX_CHARS` | integer, 1-500 | 500 | Longest quote, in characters, kept as an **Evidence Span**. A longer quote is left off the receipt but does not fail the grounding check. Values outside 1-500 are clamped. A non-number logs a warning and uses 500. |
+
+- `auto` prefers verified local bytes. With none present it falls back to CDN objects whose length, content type, and ETag (a content MD5) match the registry.
+- `local` uses local bytes only and fails closed rather than reaching for the CDN.
+- `redirect` and `proxy` skip local bytes and need `CORPUS_CDN_BASE_URL`.
+- In every mode, remote coordinate sidecars are hash-checked again after download.
+
+**Reference graph**
+
+| Variable | Values | Default | What it does |
+|---|---|---|---|
+| `REFERENCE_GRAPH_ENABLED` | `on` | off | Exposes a **promoted**, independently validated statutory reference graph. Builds, promotes, and loads nothing; the `reference_graph.cli` commands below do that. |
+| `REFERENCE_GRAPH_COMPARISON_ENABLED` | `on` | off | Adds snapshot selection and one-hop comparison. Needs `REFERENCE_GRAPH_ENABLED=on`. Fails closed without disabling Phase 1. |
+| `FOLLOW_REFERENCES_ENABLED` | `on` | off | Adds `follow_references` to the **Retrieval Agent** only, so `AGENTIC_RETRIEVAL` must be on too. Does not need `REFERENCE_GRAPH_ENABLED`, which governs public UI/API exposure; retrieval reads promoted artifacts through `ReferenceGraphStore`. Off: model sees only `search_statutes` / `lookup_section`, original prompt. |
+| `REFERENCE_GRAPH_ROOT` | path | `data/reference_graph` | Read-only root of promoted artifacts, read by the public graph flags and `follow_references`. Point it at an operator deployment's artifact root. |
+
+**Commentary**
+
+| Variable | Values | Default | What it does |
+|---|---|---|---|
+| `WEB_COMMENTARY_ENABLED` | `on` | off | Adds `search_commentary` to the **Retrieval Agent**, gated like `FOLLOW_REFERENCES_ENABLED`: needs `AGENTIC_RETRIEVAL` too (ADR 0020). |
+| `COMMENTARY_ALLOWLIST` | comma-separated domains | empty | Publisher domains `search_commentary` may return, e.g. `skrine.com,shearndelamore.com,themalaysianlawyer.com` (the draft list from #56's Phase 0 allowlist call). Match is exact or subdomain, case-insensitive; anything else is dropped and counted, never returned. Empty or unset drops every result, even with the flag and `TAVILY_API_KEY` set. This is operator config, not a code default. |
+| `TAVILY_API_KEY` | key | unset | Credential for `agent/web_search.py` (#119), the Tavily client `search_commentary` (#56) uses. |
+
+`search_commentary` writes background material to the `commentary` state channel as **Commentary Notes**. The synthesiser may mention a note for background but never cites it by section or adds it to `citation_refs`, and the grounding check never judges an unattributed background sentence as a claim. The flag changes what the agent may say, never what it can cite. A turn's notes ride the SSE `response` event and `QueryResult` as `commentary`, present only when non-empty. The frontend renders them in their own `COMMENTARY` block (`frontend/components/locus-workspace/Messages.tsx`), separate from `SOURCE MAP` and `SOURCES USED`.
+
+`agent/web_search.py` has no flag and no default allowlist. Each caller passes its own domains and flag. A result from any other host is dropped and counted. Every failure comes back as a reason in the result, never an exception: missing key, HTTP error, timeout, unparseable response, no hits.
+
+**Grounding and currency**
+
+| Variable | Values | Default | What it does |
+|---|---|---|---|
+| `CURRENCY_CHECK_ENABLED` | `on` | off | Adds `currency_check` between `grounding_check` and `supervisor`. Fails open: on error the turn gets no labels; the answer is never blocked. |
+| `GROUNDING_JEV_ENABLED` | `off` | on; runs only with `TYPESAFE_API_KEY` and `JEV_MODEL` set | Set `off` to disable the cheap Jev pass before the grounding judge (#201). |
+| `GROUNDING_JEV_THRESHOLD` | number, above 0 and at most 1 | 0.97 | Minimum P(supported) to skip the judge. Any other value uses 0.97, with a logged warning. |
+| `TYPESAFE_API_KEY` | key | unset | Credential for the Jev API. |
+| `JEV_MODEL` | model version | unset | Pinned Jev version, e.g. `jev-1.13.0`. Required for the first pass. `jev-latest` is rejected: a floating model can shift scores under a fixed threshold. |
+
+`currency_check` makes no network call and no model call. For each cited Act, it reads the Act's own metadata timeline (`data/acts_metadata/<act>.json`) and the corpus manifest (`data/pdfs/manifest.json`), attaching one of four Currency Labels to the citation. Labels ship on the SSE `response` event and `QueryResult` as `currency_labels` (only when non-empty) and render as a citation badge (`frontend/components/locus-workspace/Messages.tsx`). See [CONTEXT.md](CONTEXT.md#language), **Currency Label**, for the four outcomes, how each renders, and its limits. Run `python3 -m evals.currency_split` for a current split of the indexed corpus by outcome.
+
+Jev (`agent/jev_client.py`) sees the same answer and cited sources as the judge, and scores the whole answer in one call. The judge is skipped only if that score is at or above `GROUNDING_JEV_THRESHOLD`. Any other result goes to the judge, including a Jev error. A skipped answer has no **Evidence Spans**, because Jev returns a score and no quote. On 25 answers over four Jev runs (#201), an answer the judge flagged scored as high as 0.95, and scores moved by up to 0.14 between runs.
 
 The frontend has its own template:
 
