@@ -447,7 +447,7 @@ if __name__ == "__main__":
 
 
 class JevFirstPassTests(unittest.TestCase):
-    """Jev first pass (#201), on by default when TYPESAFE_API_KEY is set: Jev may skip Ultra only when every claim clears."""
+    """Jev first pass (#201), on by default when TYPESAFE_API_KEY is set: Jev may skip Ultra only when the answer clears."""
 
     def _state(self):
         return {
@@ -458,20 +458,20 @@ class JevFirstPassTests(unittest.TestCase):
             "grounding_metrics": empty_grounding_metrics(),
         }
 
-    def _run(self, scores=None, error=None, flag="1", threshold=None):
+    def _run(self, score=None, error=None, flag="1", threshold=None):
         env = {"GROUNDING_JEV_ENABLED": flag, "TYPESAFE_API_KEY": "k", "JEV_MODEL": "jev-1.13.0"}
         if threshold:
             env["GROUNDING_JEV_THRESHOLD"] = threshold
         with patch.dict("os.environ", env), \
              patch("agent.nodes.grounding_check.supported_probability",
-                   side_effect=error or scores) as jev, \
+                   side_effect=error, return_value=score) as jev, \
              patch("agent.nodes.grounding_check._grounding_llm") as llm:
             llm.invoke.return_value = _GroundingOutput(claims=[])
             result = grounding_check_node(self._state())
         return result, jev, llm
 
     def test_flag_off_never_calls_jev(self):
-        result, jev, llm = self._run(scores=[1.0], flag="off")
+        result, jev, llm = self._run(score=1.0, flag="off")
 
         jev.assert_not_called()
         llm.invoke.assert_called_once()
@@ -483,9 +483,13 @@ class JevFirstPassTests(unittest.TestCase):
                 from agent.nodes.grounding_check import _jev_enabled
                 self.assertIs(_jev_enabled(), expected)
 
-    def test_every_claim_clearing_skips_ultra(self):
-        result, jev, llm = self._run(scores=[0.995, 0.999])
+    def test_clearing_answer_skips_ultra(self):
+        result, jev, llm = self._run(score=0.98)
 
+        jev.assert_called_once()
+        answer, sources = jev.call_args.args
+        self.assertEqual(answer, self._state()["draft_response"])
+        self.assertEqual([s["section_number"] for s in sources], ["90A"])
         llm.invoke.assert_not_called()
         self.assertEqual(result["violations"], [])
         self.assertEqual(
@@ -493,19 +497,19 @@ class JevFirstPassTests(unittest.TestCase):
             {"checked": 1, "skipped": 0, "jev_skipped_ultra": 1, "jev_errors": 0},
         )
 
-    def test_one_unclear_claim_sends_the_whole_answer_to_ultra(self):
-        result, jev, llm = self._run(scores=[0.999, 0.5])
+    def test_answer_below_threshold_goes_to_ultra(self):
+        result, jev, llm = self._run(score=0.96)
 
         llm.invoke.assert_called_once()
         self.assertEqual(result["grounding_metrics"]["jev_skipped_ultra"], 0)
 
     def test_threshold_comes_from_env(self):
-        _, _, llm = self._run(scores=[0.6, 0.6], threshold="0.5")
+        _, _, llm = self._run(score=0.6, threshold="0.5")
 
         llm.invoke.assert_not_called()
 
     def test_invalid_threshold_falls_back_to_strictest(self):
-        _, _, llm = self._run(scores=[0.9, 0.9], threshold="banana")
+        _, _, llm = self._run(score=0.96, threshold="banana")
 
         llm.invoke.assert_called_once()
 
@@ -518,17 +522,6 @@ class JevFirstPassTests(unittest.TestCase):
         self.assertEqual(result["grounding_metrics"]["jev_errors"], 1)
         self.assertEqual(result["grounding_metrics"]["checked"], 1)
 
-    def test_claim_with_no_resolvable_source_goes_to_ultra(self):
-        state = self._state()
-        state["draft_response"] = "Section 999 of the Evidence Act 1950 applies."
-        with patch.dict("os.environ", {"GROUNDING_JEV_ENABLED": "1", "TYPESAFE_API_KEY": "k", "JEV_MODEL": "jev-1.13.0"}), \
-             patch("agent.nodes.grounding_check.supported_probability") as jev, \
-             patch("agent.nodes.grounding_check._grounding_llm") as llm:
-            llm.invoke.return_value = _GroundingOutput(claims=[])
-            grounding_check_node(state)
-
-        llm.invoke.assert_called_once()
-
     def test_async_twin_clears_and_falls_through_like_sync(self):
         import asyncio
         from unittest.mock import AsyncMock
@@ -536,7 +529,7 @@ class JevFirstPassTests(unittest.TestCase):
         from agent.nodes.grounding_check import agrounding_check_node
 
         with patch.dict("os.environ", {"GROUNDING_JEV_ENABLED": "1", "TYPESAFE_API_KEY": "k", "JEV_MODEL": "jev-1.13.0"}), \
-             patch("agent.nodes.grounding_check.supported_probability", side_effect=[1.0, 1.0]), \
+             patch("agent.nodes.grounding_check.supported_probability", return_value=1.0), \
              patch("agent.nodes.grounding_check._grounding_llm") as llm:
             llm.ainvoke = AsyncMock()
             cleared = asyncio.run(agrounding_check_node(self._state()))
@@ -544,7 +537,7 @@ class JevFirstPassTests(unittest.TestCase):
         self.assertEqual(cleared["grounding_metrics"]["jev_skipped_ultra"], 1)
 
         with patch.dict("os.environ", {"GROUNDING_JEV_ENABLED": "1", "TYPESAFE_API_KEY": "k", "JEV_MODEL": "jev-1.13.0"}), \
-             patch("agent.nodes.grounding_check.supported_probability", side_effect=[1.0, 0.1]), \
+             patch("agent.nodes.grounding_check.supported_probability", return_value=0.1), \
              patch("agent.nodes.grounding_check._grounding_llm") as llm:
             llm.ainvoke = AsyncMock(return_value=_GroundingOutput(claims=[]))
             asyncio.run(agrounding_check_node(self._state()))

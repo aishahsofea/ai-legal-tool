@@ -1,3 +1,4 @@
+import json
 import os
 from collections.abc import Callable
 from contextvars import ContextVar
@@ -10,13 +11,14 @@ _JEV_URL = "https://api.typesafe.ai/v1/systemone"
 _FLOATING_MODEL = "jev-latest"
 
 _INSTRUCTIONS = (
-    "You verify Malaysian statute research claims. Use only the cited source text in the state; "
-    "no outside legal knowledge. Label the CLAIM against the cited section text."
+    "You verify Malaysian statute research answers. Use only the cited source text in the state; "
+    "no outside legal knowledge. Label the whole ANSWER: check every legal claim against the cited "
+    "section it relies on. Ignore disclaimers, transitions and background with no Act/section attribution."
 )
 _CRITERIA = {
-    "supported": "the cited section text directly supports the claim.",
-    "partial": "the cited section text supports only part of the claim or the claim overstates the text.",
-    "unsupported": "the cited section text does not support the claim.",
+    "supported": "every legal claim in the answer is directly supported by the cited section text it relies on.",
+    "partial": "at least one claim is only partly supported, or overstates the cited section text.",
+    "unsupported": "at least one claim is not supported by any cited section text.",
 }
 
 
@@ -39,15 +41,16 @@ def _model() -> str:
     return model
 
 
-def supported_probability(claim: str, source: str, *, timeout: float = 5.0) -> float:
-    """P(`supported`) of `claim` against `source`; raises JevError on any failure."""
+def supported_probability(answer: str, sources: list[dict], *, timeout: float = 5.0) -> float:
+    """P(every claim in `answer` is `supported`) against the cited `sources`; raises JevError on any failure."""
     key = os.getenv("TYPESAFE_API_KEY")
     if not key:
         raise JevError("TYPESAFE_API_KEY is not set")
     model = _model()
 
     body = {
-        "state": f"CITED SOURCE:\n{source}\n\nCLAIM:\n{claim}",
+        # Same payload as the Ultra judge's `_messages`, so both judges see the same answer.
+        "state": json.dumps({"cited_sources": sources, "answer": answer}, ensure_ascii=False, indent=2),
         "model": model,
         "questions": {
             "verdict": {"type": "choice", "instructions": _INSTRUCTIONS, "criteria": _CRITERIA}

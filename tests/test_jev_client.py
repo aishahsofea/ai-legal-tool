@@ -1,3 +1,4 @@
+import json
 import os
 import unittest
 from unittest.mock import MagicMock, patch
@@ -27,12 +28,14 @@ class JevClientTests(unittest.TestCase):
         with patch.dict(os.environ, _ENV), patch(
             "agent.jev_client.requests.post", return_value=_ok(0.93)
         ) as post:
-            self.assertEqual(supported_probability("the claim", "the source"), 0.93)
+            self.assertEqual(supported_probability("the answer", [{"content": "the section"}]), 0.93)
 
         body = post.call_args.kwargs["json"]
         self.assertEqual(body["model"], "jev-1.13.0")
-        self.assertIn("the claim", body["state"])
-        self.assertIn("the source", body["state"])
+        self.assertEqual(
+            json.loads(body["state"]),
+            {"cited_sources": [{"content": "the section"}], "answer": "the answer"},
+        )
         self.assertEqual(post.call_args.kwargs["headers"], {"Authorization": "Bearer test-key"})
         self.assertIsNotNone(post.call_args.kwargs["timeout"])
 
@@ -41,7 +44,7 @@ class JevClientTests(unittest.TestCase):
             "agent.jev_client.requests.post", side_effect=requests.exceptions.Timeout()
         ):
             with self.assertRaises(JevError):
-                supported_probability("c", "s")
+                supported_probability("a", [])
 
     def test_bad_status_raises(self):
         error = requests.exceptions.HTTPError("500")
@@ -49,7 +52,7 @@ class JevClientTests(unittest.TestCase):
             "agent.jev_client.requests.post", return_value=_response({}, status_error=error)
         ):
             with self.assertRaises(JevError):
-                supported_probability("c", "s")
+                supported_probability("a", [])
 
     def test_malformed_response_raises(self):
         for body in ({}, {"answers": {"verdict": {"probabilities": {}}}}, {"answers": None}):
@@ -57,21 +60,21 @@ class JevClientTests(unittest.TestCase):
                 "agent.jev_client.requests.post", return_value=_response(body)
             ):
                 with self.assertRaises(JevError):
-                    supported_probability("c", "s")
+                    supported_probability("a", [])
 
     def test_out_of_range_probability_raises(self):
         with patch.dict(os.environ, _ENV), patch(
             "agent.jev_client.requests.post", return_value=_ok(1.5)
         ):
             with self.assertRaises(JevError):
-                supported_probability("c", "s")
+                supported_probability("a", [])
 
     def test_jev_latest_is_rejected_before_any_request(self):
         with patch.dict(os.environ, {**_ENV, "JEV_MODEL": "jev-latest"}), patch(
             "agent.jev_client.requests.post"
         ) as post:
             with self.assertRaises(JevError):
-                supported_probability("c", "s")
+                supported_probability("a", [])
         post.assert_not_called()
 
     def test_missing_model_or_key_raises_before_any_request(self):
@@ -81,7 +84,7 @@ class JevClientTests(unittest.TestCase):
                 "agent.jev_client.requests.post"
             ) as post:
                 with self.assertRaises(JevError):
-                    supported_probability("c", "s")
+                    supported_probability("a", [])
             post.assert_not_called()
 
 

@@ -10,45 +10,36 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from agent.jev_client import JevError, supported_probability
-from agent.nodes.claim_splitter import split_claims
 
 GROUNDING_PATH = Path(__file__).resolve().parent / "grounding_dataset.json"
-THRESHOLDS = (0.5, 0.7, 0.8, 0.9, 0.95, 0.99)
+THRESHOLDS = (0.5, 0.7, 0.8, 0.9, 0.95, 0.97, 0.99)
 
 
 def _draft(case: dict) -> str:
     return f"Here is the position.\n\n{case['claim']}\n\nThis is not legal advice."
 
 
-def _source(case: dict) -> str:
-    return (
-        f"({case['act_title']}, Act {case['act_number']}, Section {case['section_number']}):\n"
-        f"{case['source_text']}"
-    )
+def _source(case: dict) -> dict:
+    return {
+        "act_number": case["act_number"], "act_title": case["act_title"],
+        "section_number": case["section_number"], "content": case["source_text"],
+    }
 
 
 def score_case(case: dict) -> dict:
-    claims = split_claims(_draft(case))
-    row = {"id": case["id"], "verdict": case["verdict"], "language": case["language"],
-           "claims": len(claims), "split_ok": claims == [case["claim"]]}
+    row = {"id": case["id"], "verdict": case["verdict"], "language": case["language"]}
     try:
-        row["scores"] = [supported_probability(claim, _source(case)) for claim in claims]
+        row["score"] = supported_probability(_draft(case), [_source(case)])
     except JevError as exc:
         row["error"] = str(exc)[:300]
     return row
 
 
-def _clears(row: dict, threshold: float) -> bool:
-    # No claims extracted means nothing for Jev to check, so it must not clear.
-    return bool(row["scores"]) and all(score >= threshold for score in row["scores"])
-
-
 def report(rows: list[dict]) -> str:
-    scored = [row for row in rows if "scores" in row]
+    scored = [row for row in rows if "score" in row]
     errors = [row for row in rows if "error" in row]
     lines = [
         f"cases: {len(rows)}  scored: {len(scored)}  jev errors: {len(errors)}",
-        f"splitter returned exactly the labelled claim: {sum(r['split_ok'] for r in rows)}/{len(rows)}",
         f"verdicts: {dict(Counter(r['verdict'] for r in scored))}",
         "",
         "| threshold | unsupported cleared | partial cleared | supported cleared | share reaching Ultra |",
@@ -56,16 +47,13 @@ def report(rows: list[dict]) -> str:
     ]
     for threshold in THRESHOLDS:
         by_verdict = {v: [r for r in scored if r["verdict"] == v] for v in ("unsupported", "partial", "supported")}
-        cleared = {v: sum(_clears(r, threshold) for r in rs) for v, rs in by_verdict.items()}
-        reaching = sum(not _clears(r, threshold) for r in scored) / max(len(scored), 1)
+        cleared = {v: sum(r["score"] >= threshold for r in rs) for v, rs in by_verdict.items()}
+        reaching = sum(r["score"] < threshold for r in scored) / max(len(scored), 1)
         lines.append(
             f"| {threshold} | {cleared['unsupported']}/{len(by_verdict['unsupported'])} "
             f"| {cleared['partial']}/{len(by_verdict['partial'])} "
             f"| {cleared['supported']}/{len(by_verdict['supported'])} | {reaching:.1%} |"
         )
-    missed = [r["id"] for r in rows if not r["split_ok"]]
-    if missed:
-        lines += ["", f"splitter misses: {missed}"]
     return "\n".join(lines)
 
 

@@ -223,7 +223,7 @@ def test_jev_call_is_priced_and_attributed_through_the_observer(monkeypatch):
     monkeypatch.setattr(requests, "post", lambda *a, **k: _Response())
 
     with eval_usage() as handler:
-        jev_client.supported_probability("claim", "source")
+        jev_client.supported_probability("answer", [])
 
     summary = handler.summarize()
     assert summary["by_node"]["jev_first_pass"]["calls"] == 1

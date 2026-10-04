@@ -19,7 +19,6 @@ from agent.citation_keys import canonicalize_citation_key
 from agent.jev_client import JevError, supported_probability
 from agent.llm_factory import make_llm, structured_llm, system_content
 from agent.node_events import node_model_event
-from agent.nodes.claim_splitter import pair_source, split_claims
 from agent.state import AgentState
 from citation_receipts.locator import contains_normalized_sequence, normalized_tokens
 
@@ -169,8 +168,9 @@ def _messages(answer: str, sources: list[dict]) -> list[dict]:
     ]
 
 
+# On 25 answers (#201), an Ultra-flagged answer scored up to 0.95 across two runs.
 # Unset or unparseable values must never loosen the gate.
-_DEFAULT_JEV_THRESHOLD = 0.99
+_DEFAULT_JEV_THRESHOLD = 0.97
 
 
 def _jev_enabled() -> bool:
@@ -194,31 +194,13 @@ def _jev_threshold() -> float:
     return value
 
 
-def _jev_source_text(source: dict) -> str:
-    return (
-        f"({source['act_title']}, Act {source['act_number']}, Section {source['section_number']}):\n"
-        f"{source['content']}"
-    )
-
-
 def _jev_clears(answer: str, sources: list[dict]) -> tuple[bool, bool]:
-    """(clears, errored); anything but a full clear sends the answer to Ultra."""
-    claims = split_claims(answer)
-    # No extracted sentence must not clear an answer Ultra might find claims in.
-    if not claims:
-        return False, False
-    threshold = _jev_threshold()
+    """(clears, errored); anything but a clear sends the answer to Ultra."""
     try:
-        for claim in claims:
-            source = pair_source(claim, sources)
-            if source is None:
-                return False, False
-            if supported_probability(claim, _jev_source_text(source)) < threshold:
-                return False, False
+        return supported_probability(answer, sources) >= _jev_threshold(), False
     except JevError:
         logger.warning("Jev first pass failed; falling through to Ultra", exc_info=True)
         return False, True
-    return True, False
 
 
 def _finalise(
