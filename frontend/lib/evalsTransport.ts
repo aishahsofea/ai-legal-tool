@@ -9,7 +9,11 @@ export type EvalSubset =
   | { language: string }
   | { category: string }
   | { scenario: string }
-  | { case_id: string };
+  | { case_id: string }
+  // Comma-separated ids from the case list's row selection.
+  | { case_ids: string };
+
+export type GroundingLabel = "supported" | "partial" | "unsupported";
 
 export interface GapFlag {
   rule: "thin_scenario" | "weak_boundary_coverage" | "no_smoke_coverage";
@@ -36,6 +40,15 @@ export interface CoverageResponse {
   corpus_staleness:
     | { checked: true; missing_sections: MissingSection[] }
     | { checked: false; reason: string };
+}
+
+// Counts for the grounding set, which has no scenarios, policies or gap flags.
+export interface GroundingCoverage {
+  total_cases: number;
+  by_verdict: Record<string, number>;
+  by_language: Record<string, number>;
+  judgement_calls: number;
+  corpus_staleness: { checked: false; reason: string };
 }
 
 export interface EvalCitation {
@@ -86,15 +99,66 @@ export interface EvalRunSummary {
   by_scenario: Record<string, ScenarioStats>;
 }
 
+export interface GroundingCase {
+  id: string;
+  language: string;
+  claim: string;
+  act_number: string;
+  act_title: string;
+  section_number: string;
+  source_text: string;
+  verdict: GroundingLabel;
+  judgement_call?: boolean;
+  note?: string;
+}
+
+// `too_lenient`: the judge cleared a claim the dataset marks weaker.
+// `too_strict`: the judge flagged a claim the dataset marks stronger.
+export type GroundingErrorKind = "too_lenient" | "too_strict";
+
+export interface GroundingResult {
+  id: string;
+  case: GroundingCase;
+  label: GroundingLabel;
+  judge_label: GroundingLabel | null;
+  match: boolean;
+  error_kind: GroundingErrorKind | null;
+  jev_score: number | null;
+  jev_cleared: boolean;
+  jev_error: boolean;
+  reason: string;
+  quote: string;
+  // Set when the judge call failed; there is no label to compare.
+  error?: string;
+}
+
+export interface GroundingSummary {
+  total_cases: number;
+  judge_errors: number;
+  matched: number;
+  match_rate: number;
+  by_error_kind: Partial<Record<GroundingErrorKind, number>>;
+  jev_cleared: number;
+  jev_errors: number;
+}
+
+export function isGroundingResult(value: object): value is GroundingResult {
+  return "judge_label" in value;
+}
+
+export function isGroundingSummary(value: object): value is GroundingSummary {
+  return "match_rate" in value;
+}
+
 export type EvalEvent =
   | { type: "run_start"; subset: EvalSubset; case_count: number }
   | { type: "case_start"; id: string; index: number; total: number }
-  | ({ type: "case_result" } & EvalCaseResult)
-  | ({ type: "run_summary" } & EvalRunSummary)
+  | ({ type: "case_result" } & (EvalCaseResult | GroundingResult))
+  | ({ type: "run_summary" } & (EvalRunSummary | GroundingSummary))
   | { type: "error"; message: string }
   | { type: "done" };
 
-interface PersistedResult {
+export interface PersistedResult {
   case: {
     id: string;
     category: string;
@@ -112,8 +176,33 @@ interface PersistedResult {
 
 export interface EvalResultsReport {
   generated_at: string;
-  summary: EvalRunSummary & { total_cases: number };
-  results: PersistedResult[];
+  summary: (EvalRunSummary & { total_cases: number }) | GroundingSummary;
+  results: (PersistedResult | GroundingResult)[];
+}
+
+export interface EvalSetInfo {
+  name: string;
+}
+
+export interface EvalSetsResponse {
+  default: string;
+  sets: EvalSetInfo[];
+}
+
+export type EvalCaseStatus = "passed" | "failed" | "not run";
+
+// One dataset case merged with its latest saved result, as GET /evals/cases returns it.
+// End-to-end rows carry `query`/`scenario`; grounding rows carry `claim`/`verdict`.
+export interface EvalCaseRow extends Partial<GroundingCase> {
+  id: string;
+  category?: string;
+  scenario?: string;
+  query?: string;
+  expected_policy?: string;
+  expected_act_number?: string | null;
+  expected_section?: string | null;
+  status: EvalCaseStatus;
+  result: PersistedResult | GroundingResult | null;
 }
 
 export class EvalApiError extends Error {
@@ -141,14 +230,30 @@ async function responseError(response: Response): Promise<EvalApiError> {
   return new EvalApiError(message, response.status, detail);
 }
 
-export async function fetchEvalCoverage(): Promise<CoverageResponse> {
-  const response = await fetch(`${API_URL}/evals/coverage`, { cache: "no-store" });
+function setQuery(set: string) {
+  return `set=${encodeURIComponent(set)}`;
+}
+
+export async function fetchEvalSets(): Promise<EvalSetsResponse> {
+  const response = await fetch(`${API_URL}/evals/sets`, { cache: "no-store" });
   if (!response.ok) throw await responseError(response);
   return response.json();
 }
 
-export async function fetchEvalResults(): Promise<EvalResultsReport | null> {
-  const response = await fetch(`${API_URL}/evals/results`, { cache: "no-store" });
+export async function fetchEvalCases(set: string): Promise<EvalCaseRow[]> {
+  const response = await fetch(`${API_URL}/evals/cases?${setQuery(set)}`, { cache: "no-store" });
+  if (!response.ok) throw await responseError(response);
+  return (await response.json()).cases;
+}
+
+export async function fetchEvalCoverage(set: string): Promise<CoverageResponse | GroundingCoverage> {
+  const response = await fetch(`${API_URL}/evals/coverage?${setQuery(set)}`, { cache: "no-store" });
+  if (!response.ok) throw await responseError(response);
+  return response.json();
+}
+
+export async function fetchEvalResults(set: string): Promise<EvalResultsReport | null> {
+  const response = await fetch(`${API_URL}/evals/results?${setQuery(set)}`, { cache: "no-store" });
   if (response.status === 404) return null;
   if (!response.ok) throw await responseError(response);
   return response.json();
@@ -165,13 +270,14 @@ function decodeEvalEvent(raw: string): EvalEvent | null {
 }
 
 export async function* streamEvalRun(
+  set: string,
   subset: EvalSubset,
   signal?: AbortSignal,
 ): AsyncGenerator<EvalEvent> {
   const response = await fetch(`${API_URL}/evals/run`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ subset }),
+    body: JSON.stringify({ set, subset }),
     signal,
   });
   if (!response.ok) throw await responseError(response);

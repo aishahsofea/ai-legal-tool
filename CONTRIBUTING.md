@@ -271,10 +271,14 @@ Endpoints:
 - `GET /reference-graph/neighborhood?document_id=&focus_provision_id=` — one-hop direct incoming/outgoing edges only; no depth parameter
 - `GET /reference-graph/snapshots?act_number=265&language=en` — promoted/audited snapshot selector data
 - `GET /reference-graph/compare?base_document_id=&compare_document_id=&focus_provision_id=` — one Act/language pair, one focus, one one-hop overlay
-- `GET /evals/coverage` — dataset coverage and best-effort dedicated-corpus status
-- `POST /evals/run { subset }` — isolated eval run streamed as SSE; one active run at a time
+- `GET /evals/sets` — the eval sets: `end_to_end` and `grounding`
+- `GET /evals/cases?set=` — every case in the set, with its saved result and a status: `passed`, `failed` or `not run`
+- `GET /evals/coverage?set=` — dataset coverage and a best-effort check that the eval corpus holds every section the cases need. If the eval database is not set or unreachable, the check is skipped and the reason is returned. The `grounding` set returns counts by verdict and language, plus the judgement-call count.
+- `POST /evals/run { set, subset }` — isolated eval run streamed as SSE; one active run at a time. `subset` is `"smoke"`, `"all"`, or one of `{ "category": … }`, `{ "scenario": … }`, `{ "language": … }`, `{ "case_id": … }`, `{ "case_ids": "a,b,c" }`. An unknown id returns 422.
 - `POST /evals/cancel` — terminate the active eval subprocess
-- `GET /evals/results` — last persisted eval report
+- `GET /evals/results?set=` — last persisted report for that set
+
+Every endpoint that takes `set` defaults to `end_to_end`. An unknown set returns 404.
 
 > **Adding an LLM node?** Give it a **sync + async twin**: `x_node` (`.invoke`) and `ax_node` (`await .ainvoke`), sharing extracted prompt-building/post-processing. Register it as `RunnableCallable(x_node, ax_node, name=...)` in `graph.py` (see `synthesiser`/`recall`). The async twin lets a barge-in cancel the in-flight model request; the sync twin keeps the eval path (`run_query` → `graph.invoke`) working. Pure-Python nodes (e.g. `supervisor`) need no twin. A node's `except Exception` stays cancellation-safe as-is — `asyncio.CancelledError` is a `BaseException`, so a barge-in propagates through it instead of being swallowed.
 
@@ -501,6 +505,22 @@ AGENTIC_RETRIEVAL=1 WEB_COMMENTARY_ENABLED=on \
 `evals/routing_dataset.json` has 99 routing queries in English, BM and mixed. Each has the `query_type` and language the router should return. A human has reviewed every label. Some queries include chat history, because history decides whether the right label is `clarify`. The `escalate` type is not labelled here: a regex in `agent/nodes/router.py` decides it before any model call. Check the file with `python3 -m evals.validate_routing_dataset`. Add `--require-reviewed` to fail on any label added later that no human has checked, or `--review` to print a checklist. `run_evals` does not read this file yet.
 
 `evals/grounding_dataset.json` has 134 claims, each paired with the statute text it cites and a verdict. The verdict is one of the three values the grounding judge returns: `supported`, `partial` or `unsupported`. Use this file to score a grounding judge for correctness. Nothing else in the repo does. Claims are in English, BM and mixed. A `supported` claim is drafted from the statute text. Each `partial` or `unsupported` claim breaks one, and `origin` names how: a changed number, a changed period, a changed actor, a changed scope, a claim stronger than the text, an added detail, a reversal, or a claim whose content belongs to another section. Source text comes from the extracted corpus, not from model output. A case with `judgement_call: true` has a `note` saying which other label is arguable and why. A human has reviewed every label. Check the file with `python3 -m evals.validate_grounding_dataset`. Add `--require-reviewed` to fail on any label no human has reviewed, or `--review` to print a checklist that shows each source text once. `run_evals` does not read this file.
+
+`python3 -m evals.run_grounding` runs the real judge over this file and prints one line per claim.
+
+- **Needs:** the grounding judge's credentials (`GROUNDING_MODEL` and friends, see [Model overrides](#model-overrides)). It needs no database. The Jev first pass runs only when `TYPESAFE_API_KEY` and `JEV_MODEL` are set and `GROUNDING_JEV_ENABLED` is not `off`.
+- **Flow:** each claim goes through Jev first, then the judge, as in production. A claim Jev clears counts as `supported` and skips the judge.
+- **Mismatch:** the judge's label differs from the dataset verdict. Verdicts run from `supported` (most supportive) through `partial` to `unsupported`. *Too lenient* means the judge's label is more supportive than the verdict. *Too strict* means it is less supportive.
+- **Flags:** `--case-ids a,b,c`, `--case-id`, `--verdict`, `--language`, `--judgement-call`, `--limit`, `--jsonl`, `--output`.
+- **Output:** `evals/results/grounding.json`. The `end_to_end` set saves to `evals/results.json`. A run never overwrites the other set's file.
+
+In `/evals`, the set selector switches between `end_to_end` and `grounding`. The grounding view lists all 134 claims before any run. From there you can:
+
+- filter by label, language and judgement call
+- run one claim from its row, or run the selected claims
+- read the dataset label next to the judge's label, the Jev score, and the judge's quote and reason
+
+A full run is up to 134 judge calls. Any run over 20 claims asks you to confirm and shows the count.
 
 Every run ends with a `Grounding:` line. It shows how many grounding checks completed and how many failed open. A failed-open check raises no violation and fails no assertion, so the judge pass rate cannot see it. This line is the only place a skipped verification shows. It never changes the exit code — those answers shipped, they just shipped unverified. [Model overrides](#model-overrides) covers when that happens.
 

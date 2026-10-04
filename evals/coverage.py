@@ -147,6 +147,16 @@ def select_cases(
             if not isinstance(value, str) or not wanted:
                 raise ValueError("Invalid eval subset")
             selected = [case for case in cases if case.get("language", "en") in wanted]
+        elif key == "case_ids":
+            wanted_ids = [part.strip() for part in str(value).split(",") if part.strip()]
+            known = {case.get("id") for case in cases}
+            unknown = [case_id for case_id in wanted_ids if case_id not in known]
+            if not isinstance(value, str) or not wanted_ids:
+                raise ValueError("Invalid eval subset")
+            if unknown:
+                raise ValueError(f"Unknown case ids: {', '.join(unknown)}")
+            wanted_set = set(wanted_ids)
+            selected = [case for case in cases if case.get("id") in wanted_set]
         else:
             field = {"category": "category", "scenario": "scenario", "case_id": "id"}.get(key)
             if field is None or not isinstance(value, str) or not value:

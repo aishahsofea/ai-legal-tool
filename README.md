@@ -138,10 +138,12 @@ The graph only identifies targets — it never supplies answer text or a citatio
 
 The developer-only `/evals` page needs `NEXT_PUBLIC_EVALS=1` at build time. It uses a dedicated corpus (`EVALS_DATABASE_URL`) — never falls back to the app's `DATABASE_URL`.
 
+- `GET /evals/sets` — the eval sets: `end_to_end` (default) and `grounding`. The other endpoints take `?set=`; see [CONTRIBUTING.md](CONTRIBUTING.md#5-start-the-api).
+- `GET /evals/cases` — every case with its saved result and status.
 - `GET /evals/coverage` — static dataset counts, fixed coverage-gap flags, best-effort eval-corpus staleness check.
-- `POST /evals/run { subset }` — stream one subset (`"smoke"`, `"all"`, category, scenario, or case ID) from an isolated subprocess. SSE events: `run_start`, `case_start`, `case_result`, `run_summary`, `error`, `done`.
+- `POST /evals/run { set, subset }` — stream one subset from an isolated subprocess; the accepted values are listed in [CONTRIBUTING.md](CONTRIBUTING.md#5-start-the-api). SSE events: `run_start`, `case_start`, `case_result`, `run_summary`, `error`, `done`.
 - `POST /evals/cancel` — terminate the single active eval subprocess; returns `cancelled` or `no_active_run`.
-- `GET /evals/results` — last `evals/results.json` report, or 404 when no run is available.
+- `GET /evals/results` — last saved report for the set, or 404 when no run is available.
 
 The server refuses stale corpora, blocks concurrent runs, and kills a run when its browser stream disconnects — no abandoned page keeps burning tokens.
 
@@ -168,7 +170,7 @@ Bahasa Malaysia or code-switched.
 A GitHub Actions workflow (`.github/workflows/evals.yml`, manually triggered) runs a 10-case smoke
 eval against the GPT-4.1 defaults. It posts the judge pass rate and key L1 metrics as a PR comment,
 and fails if the pass rate drops below 80%. The gated `/evals` dashboard adds static coverage
-analysis, interactive subset runs, per-case drill-down, and a per-scenario summary.
+analysis, interactive subset runs, per-case drill-down, and a per-scenario summary. A second set, `grounding`, scores the grounding judge claim by claim against labelled verdicts.
 
 Multi-part cases are scored by how many of their provisions the agent cited, not by one expected
 section. `evals/retrieval_recall.py` scores retrieval on its own, so a retrieval regression is not

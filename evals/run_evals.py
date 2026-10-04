@@ -494,6 +494,7 @@ def _resolve_cli_cases(
     category: str | None = None,
     scenario: str | None = None,
     case_id: str | None = None,
+    case_ids: str | None = None,
     language: str | None = None,
     limit: int | None = None,
 ) -> list[dict[str, Any]]:
@@ -503,11 +504,12 @@ def _resolve_cli_cases(
         category is not None,
         scenario is not None,
         case_id is not None,
+        case_ids is not None,
         language is not None,
     ]
     if sum(subset_filters) > 1:
         raise ValueError(
-            "Choose only one of --smoke, --category, --scenario, --case-id, or --language"
+            "Choose only one of --smoke, --category, --scenario, --case-id, --case-ids, or --language"
         )
     if smoke:
         cases = select_cases(cases, "smoke")
@@ -517,6 +519,8 @@ def _resolve_cli_cases(
         cases = select_cases(cases, {"scenario": scenario})
     elif case_id is not None:
         cases = select_cases(cases, {"case_id": case_id})
+    elif case_ids is not None:
+        cases = select_cases(cases, {"case_ids": case_ids})
     elif language is not None:
         cases = select_cases(cases, {"language": language})
     return _maybe_limit(cases, limit)
@@ -531,6 +535,7 @@ def run_suite(
     category: str | None = None,
     scenario: str | None = None,
     case_id: str | None = None,
+    case_ids: str | None = None,
     language: str | None = None,
     progress: bool = True,
     on_case_result: Callable[[dict[str, Any]], None] | None = None,
@@ -541,6 +546,7 @@ def run_suite(
         category=category,
         scenario=scenario,
         case_id=case_id,
+        case_ids=case_ids,
         language=language,
         limit=limit,
     )
@@ -580,6 +586,8 @@ def _subset_label(args: argparse.Namespace) -> str:
         subset = f"scenario {args.scenario}"
     elif args.case_id:
         subset = f"case {args.case_id}"
+    elif args.case_ids:
+        subset = f"cases {args.case_ids}"
     elif args.language:
         subset = f"language {args.language}"
     else:
@@ -597,6 +605,7 @@ def main() -> int:
     parser.add_argument("--category")
     parser.add_argument("--scenario")
     parser.add_argument("--case-id")
+    parser.add_argument("--case-ids", help="Comma-separated case ids, e.g. a,b,c.")
     parser.add_argument(
         "--language",
         help="Comma-separated case languages, e.g. bm,mixed (the BM/mixed baseline subset).",
@@ -621,6 +630,7 @@ def main() -> int:
             category=args.category,
             scenario=args.scenario,
             case_id=args.case_id,
+            case_ids=args.case_ids,
             language=args.language,
             progress=not args.jsonl,
             on_case_result=(

@@ -10,26 +10,16 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from agent.jev_client import JevError, supported_probability
+from evals.grounding_inputs import draft, source
 
 GROUNDING_PATH = Path(__file__).resolve().parent / "grounding_dataset.json"
 THRESHOLDS = (0.5, 0.7, 0.8, 0.9, 0.95, 0.97, 0.99)
 
 
-def _draft(case: dict) -> str:
-    return f"Here is the position.\n\n{case['claim']}\n\nThis is not legal advice."
-
-
-def _source(case: dict) -> dict:
-    return {
-        "act_number": case["act_number"], "act_title": case["act_title"],
-        "section_number": case["section_number"], "content": case["source_text"],
-    }
-
-
 def score_case(case: dict) -> dict:
     row = {"id": case["id"], "verdict": case["verdict"], "language": case["language"]}
     try:
-        row["score"] = supported_probability(_draft(case), [_source(case)])
+        row["score"] = supported_probability(draft(case), [source(case)])
     except JevError as exc:
         row["error"] = str(exc)[:300]
     return row
