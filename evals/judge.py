@@ -7,8 +7,9 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from dotenv import load_dotenv
-from langchain_anthropic import ChatAnthropic
 from pydantic import BaseModel, Field
+
+from agent.llm_factory import make_llm, structured_llm, system_content
 
 load_dotenv()
 
@@ -33,8 +34,9 @@ class JudgeContext:
 
 
 _MODEL = os.getenv("EVALS_JUDGE_MODEL", "claude-haiku-4-5-20251001")
-_llm = ChatAnthropic(model=_MODEL, temperature=0)
-_judge_llm = _llm.with_structured_output(JudgeVerdict)
+# Through the factory so EVALS_JUDGE_MODEL can name a non-Claude judge (e.g. a Nemotron
+# model on CHAT_BASE_URL), and so a reasoning model gets the json_mode retry.
+_judge_llm = structured_llm(make_llm(_MODEL), JudgeVerdict, node="judge", model_name=_MODEL)
 
 _SYSTEM = """You are a strict evaluation judge for a Malaysian legal research assistant.
 
@@ -119,7 +121,7 @@ def judge_case(ctx: JudgeContext) -> JudgeVerdict:
 
     verdict: JudgeVerdict = _judge_llm.invoke(
         [
-            {"role": "system", "content": _SYSTEM},
+            {"role": "system", "content": system_content(_SYSTEM, _MODEL)},
             {"role": "user", "content": json.dumps(payload, ensure_ascii=False, indent=2)},
         ]
     )

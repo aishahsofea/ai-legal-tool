@@ -7,12 +7,13 @@ Cited text retains the registered language of the retrieved statute source.
 import json
 import logging
 import os
+import re
 from typing import Optional
 
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
-from agent.citation_keys import canonicalize_citation_key
+from agent.citation_keys import canonicalize_act_number, canonicalize_citation_key
 from agent.llm_factory import make_llm, structured_llm, system_content
 from agent.node_events import node_model_event
 from agent.query_policy import (
@@ -57,15 +58,25 @@ Rules you MUST follow on every response:
 4. Only state what the statute says — do not advise on what a person should do.
 5. If the retrieved sections do not contain enough information to answer, say so clearly rather than speculating.
 6. Omit the disclaimer from your answer field — it will be appended separately.
-7. In citation_refs, include an entry for EVERY section you mention in your answer. If you mention section 90A(1) and 90A(2), add one entry with section_number "90A". Never leave citation_refs empty if your answer cites any section.
-8. {memory_rule}"""
+7. In citation_refs, include an entry for EVERY section you mention in your answer. If you mention section 90A(1) and 90A(2), add one entry with section_number "90A". Never leave citation_refs empty if your answer cites any section. act_number is always the bare number from the "(Act N)" in the section header, such as "709" — never the Act's name or an abbreviation of it, even when you use that name as a heading.
+8. {memory_rule}
+9. STRUCTURE: Write the answer field as markdown with real blank lines between blocks. Start with a one or two sentence direct answer. Then, when more than one Act applies, give each Act its own block: a "### " heading with the Act's name, followed by one short paragraph or a "- " list with one provision per line. A single-Act answer needs no heading. No paragraph may run past about 4 sentences, and never chain several section references into one sentence. This rule applies in every language of rule 1. Shape, with placeholders:
+
+Direct answer in one or two sentences.
+
+### <Act name>
+- Section X: what it provides.
+- Section Y: what it provides.
+
+### <Other Act name>
+Section Z provides that..."""
 
 # Appended only when this turn's commentary channel is non-empty (ADR 0020), so the
 # flag-off/no-data system prompt stays byte-identical to before this rule existed —
 # the same guard `agent/retrieval/agent.py`'s `_COMMENTARY_ADDENDUM` uses.
 _COMMENTARY_SYNTHESIS_ADDENDUM = """
 
-9. Commentary notes below are background material from an allowlisted web publisher — not statute text, and never something you cite by section. You may mention what a note says only for practical context beyond the bare section text (for example, how practitioners describe an amendment's effect), and only alongside or after the statutory analysis, never in place of it. Attribute it explicitly to its publisher (e.g. "A client alert from skrine.com notes that...") so it reads as reported commentary rather than your own legal conclusion. Never give a commentary-derived sentence a section citation, never add it to citation_refs, and never let it substitute for the cited statutory basis rule 2 requires of a legal claim."""
+10. Commentary notes below are background material from an allowlisted web publisher — not statute text, and never something you cite by section. You may mention what a note says only for practical context beyond the bare section text (for example, how practitioners describe an amendment's effect), and only alongside or after the statutory analysis, never in place of it. Attribute it explicitly to its publisher (e.g. "A client alert from skrine.com notes that...") so it reads as reported commentary rather than your own legal conclusion. Never give a commentary-derived sentence a section citation, never add it to citation_refs, and never let it substitute for the cited statutory basis rule 2 requires of a legal claim."""
 
 _LANGUAGE_INSTRUCTIONS = {
     "en": "English",
@@ -163,6 +174,32 @@ Query: {state['query']}
     ]
 
 
+def _title_key(value) -> str:
+    # Stored titles carry markers the model drops ("*COMPANIES ACT 2016").
+    return " ".join(re.sub(r"[^a-z0-9]+", " ", str(value or "").casefold()).split())
+
+
+def _resolve_act_number(raw: str, chunks: list[dict]) -> str:
+    """Map an Act title echoed in `act_number` back to the retrieved Act's number.
+
+    The context shows each chunk as "<title> (Act <number>)", and the model often
+    returns the title ("Evidence Act 1950") instead of the bare number. That left
+    citation_refs unmatched, so the validator saw no citation and failed the turn.
+    Only retrieved Acts can match, and an ambiguous title resolves to nothing, so
+    the validator's "cited section was retrieved" guarantee is unchanged.
+    """
+    known = {canonicalize_act_number(c.get("act_number")) for c in chunks}
+    if canonicalize_act_number(raw) in known:
+        return raw
+    text = _title_key(raw)
+    matches = {
+        str(c["act_number"])
+        for c in chunks
+        if _title_key(c.get("act_title")) and _title_key(c["act_title"]) in text
+    }
+    return matches.pop() if len(matches) == 1 else raw
+
+
 def _finalise(result: _SynthesiserOutput, state: AgentState) -> dict:
     chunks = state["retrieved_chunks"]
     response_language = state.get("response_language", "en")
@@ -188,7 +225,9 @@ def _finalise(result: _SynthesiserOutput, state: AgentState) -> dict:
 
     citations = []
     for ref in result.citation_refs:
-        ref_key = canonicalize_citation_key(ref.act_number, ref.section_number)
+        ref_key = canonicalize_citation_key(
+            _resolve_act_number(ref.act_number, chunks), ref.section_number
+        )
         chunk = chunk_lookup.get(ref_key)
         if chunk:
             citation = {

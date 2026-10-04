@@ -933,6 +933,37 @@
       "expected_section": null,
       "citation_applicable": false,
       "expected_policy": "allow"
+    },
+    {
+      "id": "multi-section-public-defamation-1",
+      "category": "citation",
+      "scenario": "multi_section",
+      "language": "en",
+      "query": "what is the law for public defamation",
+      "expected_act_number": null,
+      "expected_section": null,
+      "citation_applicable": true,
+      "expected_policy": "allow",
+      "expected_tool": "search_statutes",
+      "expected_sections": [
+        {
+          "act_number": "574",
+          "section_number": "499"
+        },
+        {
+          "act_number": "574",
+          "section_number": "500"
+        },
+        {
+          "act_number": "301",
+          "section_number": "8A"
+        },
+        {
+          "act_number": "286",
+          "section_number": "12"
+        }
+      ],
+      "min_sections_found": 3
     }
   ]
 }
