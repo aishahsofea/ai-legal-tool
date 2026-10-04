@@ -51,7 +51,7 @@ class QueryResult(TypedDict):
     tool_trace: list[str]    # retrieval tools the agent called (agentic retrieval)
     reference_trace: NotRequired[list[dict]]  # enabled-only compact follow outcome
     commentary: NotRequired[list[CommentaryNote]]  # enabled-only web commentary notes
-    grounding_metrics: NotRequired[dict[str, int]]  # grounding checks completed vs failed open
+    grounding_metrics: NotRequired[dict[str, int]]  # grounding checks completed vs failed open, plus Jev first-pass counters
     currency_labels: NotRequired[list[CurrencyLabel]]  # enabled-only per-citation repeal labels
 
 
@@ -90,7 +90,7 @@ class AgentState(TypedDict):
     reference_trace: list[dict]  # compact graph/lookup statuses; never graph provision text
     reference_metrics: dict[str, int]  # low-cardinality follow counters for observability
     commentary: list[CommentaryNote]  # web commentary notes; never a Citation, never retrieved_chunks (ADR 0020)
-    grounding_metrics: dict[str, int]  # grounding checks completed vs failed open this turn
+    grounding_metrics: dict[str, int]  # grounding checks completed vs failed open this turn, plus Jev first-pass counters
     currency_labels: list[CurrencyLabel]  # per-citation repeal labels; empty unless CURRENCY_CHECK_ENABLED
     final_response: str
     retry_count: int

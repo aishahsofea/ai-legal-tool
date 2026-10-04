@@ -2,6 +2,8 @@ import base64
 import json
 import os
 
+import pytest
+
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
 # Force the in-process MemorySaver checkpointer for the whole test suite so that
@@ -25,3 +27,10 @@ def encrypt_envelope(payload: dict, key_hex: str = FAKE_RESPONSE_KEY) -> dict:
     ciphertext, tag = ciphertext_with_tag[:-16], ciphertext_with_tag[-16:]
     raw = iv + tag + ciphertext
     return {"encrypted": True, "data": base64.b64encode(raw).decode("ascii")}
+
+
+@pytest.fixture(autouse=True)
+def _no_jev_by_default(monkeypatch):
+    # The developer's .env sets a key, which would make grounding tests call Jev.
+    monkeypatch.delenv("TYPESAFE_API_KEY", raising=False)
+    monkeypatch.delenv("JEV_MODEL", raising=False)

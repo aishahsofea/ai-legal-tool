@@ -39,7 +39,7 @@ class GroundingSummaryTests(unittest.TestCase):
 
         summary = _grounding_summary([bare])
 
-        self.assertEqual(summary, {"checked": 0, "skipped": 0, "skip_rate": 0.0})
+        self.assertEqual(summary, {"checked": 0, "skipped": 0, "jev_skipped_ultra": 0, "jev_errors": 0, "skip_rate": 0.0})
 
     def test_report_carries_the_summary(self):
         report = _build_report("full", [_result(1, 1)])
