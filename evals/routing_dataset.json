@@ -1,0 +1,985 @@
+{
+  "schema_version": 1,
+  "notes": "Routing labels for the router's LLM path. query_type and response_language are the ground truth the router is scored against. 'escalate' is excluded: a regex in agent/nodes/router.py decides it before any model call. Cases with source=eval_dataset reuse a query from dataset.json (source_id); source=hand cases were written for this set. Every label was checked by a human (review_status=reviewed) on 2026-10-04.",
+  "cases": [
+    {
+      "id": "route-penal-34-1",
+      "language": "en",
+      "query": "Under section 34 of the Penal Code, when a criminal act is done by several people in furtherance of a common intention, how are they each liable?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "penal-34-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-penal-420-1",
+      "language": "en",
+      "query": "Under section 420 of the Penal Code, what conduct is punished when someone cheats and dishonestly induces another to deliver property or alter a valuable security?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "penal-420-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-penal-503-1",
+      "language": "en",
+      "query": "Under section 503 of the Penal Code, what is criminal intimidation — a threat intended to cause alarm or make someone do or omit an act?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "penal-503-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-penal-506-1",
+      "language": "en",
+      "query": "Under section 506 of the Penal Code, what sentence applies for criminal intimidation when the threat is to cause death, grievous hurt, destruction by fire, or an offence punishable with death or imprisonment?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "penal-506-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-employment-60a-1",
+      "language": "en",
+      "query": "What limits does section 60A of the Employment Act impose on daily hours, weekly hours, and rest breaks?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "employment-60a-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-companies-132-1",
+      "language": "en",
+      "query": "When may directors authorize a distribution to shareholders under section 132 of the Companies Act, and what solvency test must be satisfied?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "companies-132-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-bm-employment-60a-1",
+      "language": "bm",
+      "query": "Apakah had waktu kerja harian dan mingguan yang dibenarkan di bawah seksyen 60A Akta Pekerjaan 1955?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "bm-employment-60a-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-bm-penal-34-1",
+      "language": "bm",
+      "query": "Di bawah seksyen 34 Kanun Keseksaan, bagaimana tanggungjawab setiap peserta ditentukan apabila suatu perbuatan jenayah dilakukan bersama dalam menjalankan niat bersama?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "bm-penal-34-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-bm-penal-420-1",
+      "language": "bm",
+      "query": "Apakah hukuman bagi kesalahan menipu dan dengan itu mendorong penyerahan harta di bawah seksyen 420 Kanun Keseksaan?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "bm-penal-420-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-bm-evidence-114a-1",
+      "language": "bm",
+      "query": "Di bawah seksyen 114A Akta Keterangan 1950, siapakah yang disifatkan sebagai penerbit sesuatu penerbitan dalam talian?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "bm-evidence-114a-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-bm-cpc-117-1",
+      "language": "bm",
+      "query": "Di bawah seksyen 117 Kanun Tatacara Jenayah, apakah yang perlu dilakukan apabila siasatan terhadap seorang tahanan tidak dapat disiapkan dalam tempoh dua puluh empat jam?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "bm-cpc-117-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-bm-companies-213-1",
+      "language": "bm",
+      "query": "Apakah kewajipan seorang pengarah semasa menjalankan kuasanya di bawah seksyen 213 Akta Syarikat 2016?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "bm-companies-213-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-mixed-penal-379-1",
+      "language": "mixed",
+      "query": "Section 379 Penal Code punya hukuman apa untuk kes theft biasa?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "mixed-penal-379-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-mixed-evidence-65-1",
+      "language": "mixed",
+      "query": "original document dah hilang — boleh guna secondary evidence tak? Section 65 Evidence Act cakap apa?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "mixed-evidence-65-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-mixed-pdpa-30-1",
+      "language": "mixed",
+      "query": "data subject boleh request access ke personal data dia tak? Section 30 PDPA cover apa?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "mixed-pdpa-30-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-mixed-companies-540-1",
+      "language": "mixed",
+      "query": "Under Section 540 Companies Act 2016, bila court boleh declare director personally liable untuk fraudulent trading?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "mixed-companies-540-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-mixed-arbitration-37-1",
+      "language": "mixed",
+      "query": "nak tanya, under Section 37 Arbitration Act 2005, atas alasan apa High Court boleh set aside satu award?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "mixed-arbitration-37-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-mixed-copyright-36-1",
+      "language": "mixed",
+      "query": "macam mana copyright infringement ditakrifkan under Section 36 Copyright Act 1987?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "mixed-copyright-36-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-mixed-consumer-32-1",
+      "language": "mixed",
+      "query": "kalau barang yang dibeli tak acceptable quality, Section 32 Consumer Protection Act 1999 cakap apa?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "mixed-consumer-32-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-mixed-cpc-173-1",
+      "language": "mixed",
+      "query": "dalam summary trial kat Magistrate Court, procedure under Section 173 CPC macam mana?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "mixed-cpc-173-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-mixed-employment-60-1",
+      "language": "mixed",
+      "query": "tolong check Section 60 Employment Act — boleh ke majikan paksa pekerja kerja pada rest day?",
+      "query_type": "statute_lookup",
+      "source": "eval_dataset",
+      "source_id": "mixed-employment-60-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-evidence-90a-1",
+      "language": "en",
+      "query": "Can a computer-produced document be used as evidence in criminal or civil proceedings under the Evidence Act?",
+      "query_type": "topical",
+      "source": "eval_dataset",
+      "source_id": "evidence-90a-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-evidence-73a-1",
+      "language": "en",
+      "query": "In a civil case, when is a statement in a document admissible without calling the maker?",
+      "query_type": "topical",
+      "source": "eval_dataset",
+      "source_id": "evidence-73a-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-evidence-114-1",
+      "language": "en",
+      "query": "What presumption does the Evidence Act make when someone is found in possession of stolen goods soon after a theft?",
+      "query_type": "topical",
+      "source": "eval_dataset",
+      "source_id": "evidence-114-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-pdpa-12-1",
+      "language": "en",
+      "query": "Does a data subject have a right to access and correct personal data held by a data user?",
+      "query_type": "topical",
+      "source": "eval_dataset",
+      "source_id": "pdpa-12-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-pdpa-40-1",
+      "language": "en",
+      "query": "When can sensitive personal data be processed under the PDPA?",
+      "query_type": "topical",
+      "source": "eval_dataset",
+      "source_id": "pdpa-40-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-employment-19-1",
+      "language": "en",
+      "query": "When must wages be paid after the wage period ends?",
+      "query_type": "topical",
+      "source": "eval_dataset",
+      "source_id": "employment-19-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-penal-499-1",
+      "language": "en",
+      "query": "What counts as defamation under the Penal Code?",
+      "query_type": "topical",
+      "source": "eval_dataset",
+      "source_id": "penal-499-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-penal-507a-1",
+      "language": "en",
+      "query": "What is stalking under the Penal Code?",
+      "query_type": "topical",
+      "source": "eval_dataset",
+      "source_id": "penal-507a-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-bm-evidence-90a-1",
+      "language": "bm",
+      "query": "Bolehkah dokumen yang dihasilkan oleh komputer digunakan sebagai keterangan dalam prosiding jenayah atau sivil di bawah Akta Keterangan?",
+      "query_type": "topical",
+      "source": "eval_dataset",
+      "source_id": "bm-evidence-90a-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-bm-pdpa-12-1",
+      "language": "bm",
+      "query": "Adakah subjek data berhak untuk mengakses dan membetulkan data peribadi yang dipegang oleh pengguna data di bawah Akta Perlindungan Data Peribadi?",
+      "query_type": "topical",
+      "source": "eval_dataset",
+      "source_id": "bm-pdpa-12-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-bm-topical-umur-persaraan-1",
+      "language": "bm",
+      "query": "Apakah umur persaraan minimum bagi pekerja sektor swasta di Malaysia?",
+      "query_type": "topical",
+      "source": "eval_dataset",
+      "source_id": "bm-topical-umur-persaraan-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-bm-topical-buang-kerja-1",
+      "language": "bm",
+      "query": "Ke manakah seseorang pekerja boleh membuat representasi jika dia dibuang kerja tanpa sebab yang adil dan munasabah?",
+      "query_type": "topical",
+      "source": "eval_dataset",
+      "source_id": "bm-topical-buang-kerja-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-bm-insufficient-gaji-minimum-1",
+      "language": "bm",
+      "query": "Berapakah kadar gaji minimum bulanan yang berkuat kuasa di Malaysia pada masa ini?",
+      "query_type": "topical",
+      "source": "eval_dataset",
+      "source_id": "bm-insufficient-gaji-minimum-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-mixed-pdpa-130-1",
+      "language": "mixed",
+      "query": "PDPA ada offence tak untuk orang yang collect atau disclose personal data tanpa consent data user?",
+      "query_type": "topical",
+      "source": "eval_dataset",
+      "source_id": "mixed-pdpa-130-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-mixed-osha-24-1",
+      "language": "mixed",
+      "query": "under OSHA 1994, apa duty seorang employee masa dia kerja kat tempat kerja?",
+      "query_type": "topical",
+      "source": "eval_dataset",
+      "source_id": "mixed-osha-24-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-mixed-insufficient-tenancy-1",
+      "language": "mixed",
+      "query": "boleh check tak berapa lama notice period untuk terminate tenancy agreement rumah kedai?",
+      "query_type": "topical",
+      "source": "eval_dataset",
+      "source_id": "mixed-insufficient-tenancy-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-ambiguous-pdpa-manual-files-1",
+      "language": "en",
+      "query": "Does the Personal Data Protection Act 2010 apply to personal data held in purely manual filing systems?",
+      "query_type": "topical",
+      "source": "eval_dataset",
+      "source_id": "ambiguous-pdpa-manual-files-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-multi-section-digital-crime-1",
+      "language": "en",
+      "query": "When someone uses a fake social media account to threaten another person in Malaysia, which provisions of the Penal Code could apply and how do they interact?",
+      "query_type": "topical",
+      "source": "eval_dataset",
+      "source_id": "multi-section-digital-crime-1",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-01",
+      "language": "en",
+      "query": "Show me section 90A of the Evidence Act 1950.",
+      "query_type": "statute_lookup",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-02",
+      "language": "en",
+      "query": "Quote section 415 of the Penal Code.",
+      "query_type": "statute_lookup",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-03",
+      "language": "en",
+      "query": "What does s 114A of the Evidence Act say?",
+      "query_type": "statute_lookup",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-04",
+      "language": "en",
+      "query": "Read out section 12 of the Personal Data Protection Act 2010.",
+      "query_type": "statute_lookup",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-05",
+      "language": "bm",
+      "query": "Apakah yang dinyatakan dalam seksyen 12 Akta Perlindungan Data Peribadi 2010?",
+      "query_type": "statute_lookup",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-06",
+      "language": "bm",
+      "query": "Sila bacakan seksyen 19 Akta Pekerjaan 1955.",
+      "query_type": "statute_lookup",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-07",
+      "language": "mixed",
+      "query": "boleh show Section 405 Penal Code punya text?",
+      "query_type": "statute_lookup",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-08",
+      "language": "en",
+      "query": "Which laws cover data privacy for employers in Malaysia?",
+      "query_type": "topical",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-09",
+      "language": "en",
+      "query": "What law governs non-compete clauses in employment contracts?",
+      "query_type": "topical",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-10",
+      "language": "en",
+      "query": "Which Acts deal with consumer refunds for defective goods?",
+      "query_type": "topical",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-11",
+      "language": "bm",
+      "query": "Undang-undang apa yang mengawal pembatalan perjanjian sewa rumah?",
+      "query_type": "topical",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-12",
+      "language": "bm",
+      "query": "Akta mana yang meliputi keselamatan di tempat kerja?",
+      "query_type": "topical",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-13",
+      "language": "mixed",
+      "query": "law apa yang govern online scams kat Malaysia?",
+      "query_type": "topical",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-14",
+      "language": "mixed",
+      "query": "which Act cover sexual harassment kat workplace?",
+      "query_type": "topical",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-15",
+      "language": "en",
+      "query": "List all penalty provisions in the PDPA.",
+      "query_type": "provision_extraction",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-16",
+      "language": "en",
+      "query": "Give me every offence section in the Consumer Protection Act 1999.",
+      "query_type": "provision_extraction",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-17",
+      "language": "en",
+      "query": "What are all the powers of the Commissioner under the Personal Data Protection Act?",
+      "query_type": "provision_extraction",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-18",
+      "language": "en",
+      "query": "List all the definitions in the interpretation section of the Companies Act 2016.",
+      "query_type": "provision_extraction",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-19",
+      "language": "en",
+      "query": "Show every provision in the Employment Act that deals with maternity leave.",
+      "query_type": "provision_extraction",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-20",
+      "language": "bm",
+      "query": "Senaraikan semua peruntukan penalti dalam Akta Perlindungan Data Peribadi 2010.",
+      "query_type": "provision_extraction",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-21",
+      "language": "bm",
+      "query": "Sila senaraikan semua kesalahan di bawah Akta Pekerjaan 1955.",
+      "query_type": "provision_extraction",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-22",
+      "language": "bm",
+      "query": "Apakah semua kuasa Pesuruhjaya di bawah APDP?",
+      "query_type": "provision_extraction",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-23",
+      "language": "bm",
+      "query": "Senaraikan semua peruntukan tafsiran dalam Akta Syarikat 2016.",
+      "query_type": "provision_extraction",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-24",
+      "language": "mixed",
+      "query": "list semua offence provisions dalam Arbitration Act 2005.",
+      "query_type": "provision_extraction",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-25",
+      "language": "mixed",
+      "query": "tolong senaraikan all penalty sections under OSHA 1994.",
+      "query_type": "provision_extraction",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-26",
+      "language": "mixed",
+      "query": "semua seksyen yang cover director's duties dalam Companies Act 2016, boleh list?",
+      "query_type": "provision_extraction",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-27",
+      "language": "en",
+      "query": "What does section 5 say?",
+      "query_type": "clarify",
+      "source": "hand",
+      "tags": [
+        "clarify_boundary"
+      ],
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-28",
+      "language": "en",
+      "query": "Explain section 12.",
+      "query_type": "clarify",
+      "source": "hand",
+      "tags": [
+        "clarify_boundary"
+      ],
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-29",
+      "language": "en",
+      "query": "What is the penalty under section 420?",
+      "query_type": "clarify",
+      "source": "hand",
+      "tags": [
+        "clarify_boundary"
+      ],
+      "note": "Act not named; 420 exists in more than one Act.",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-30",
+      "language": "en",
+      "query": "Is it an offence?",
+      "query_type": "clarify",
+      "source": "hand",
+      "tags": [
+        "clarify_boundary"
+      ],
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-31",
+      "language": "en",
+      "query": "Can my landlord do that?",
+      "query_type": "clarify",
+      "source": "hand",
+      "tags": [
+        "clarify_boundary"
+      ],
+      "note": "No Act, topic or facts to retrieve against.",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-32",
+      "language": "en",
+      "query": "Tell me about the Act.",
+      "query_type": "clarify",
+      "source": "hand",
+      "tags": [
+        "clarify_boundary"
+      ],
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-33",
+      "language": "bm",
+      "query": "Apakah kandungan seksyen 9?",
+      "query_type": "clarify",
+      "source": "hand",
+      "tags": [
+        "clarify_boundary"
+      ],
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-34",
+      "language": "bm",
+      "query": "Berapakah hukumannya?",
+      "query_type": "clarify",
+      "source": "hand",
+      "tags": [
+        "clarify_boundary"
+      ],
+      "note": "No history, nothing to resolve 'hukumannya'.",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-35",
+      "language": "bm",
+      "query": "Terangkan seksyen 18.",
+      "query_type": "clarify",
+      "source": "hand",
+      "tags": [
+        "clarify_boundary"
+      ],
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-36",
+      "language": "mixed",
+      "query": "section 23 cakap apa?",
+      "query_type": "clarify",
+      "source": "hand",
+      "tags": [
+        "clarify_boundary"
+      ],
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-37",
+      "language": "mixed",
+      "query": "boleh explain Section 114 tu?",
+      "query_type": "clarify",
+      "source": "hand",
+      "tags": [
+        "clarify_boundary"
+      ],
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-38",
+      "language": "mixed",
+      "query": "apa penalty dia?",
+      "query_type": "clarify",
+      "source": "hand",
+      "tags": [
+        "clarify_boundary"
+      ],
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-39",
+      "language": "en",
+      "query": "hi",
+      "query_type": "conversational",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-40",
+      "language": "en",
+      "query": "thanks!",
+      "query_type": "conversational",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-41",
+      "language": "en",
+      "query": "My name is Shameel.",
+      "query_type": "conversational",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-42",
+      "language": "en",
+      "query": "What can you do?",
+      "query_type": "conversational",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-43",
+      "language": "en",
+      "query": "How does this work?",
+      "query_type": "conversational",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-44",
+      "language": "en",
+      "query": "Are you a lawyer?",
+      "query_type": "conversational",
+      "source": "hand",
+      "tags": [
+        "tie_break"
+      ],
+      "note": "Meta question about the assistant, no legal research intent.",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-45",
+      "language": "bm",
+      "query": "Selamat pagi.",
+      "query_type": "conversational",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-46",
+      "language": "bm",
+      "query": "Terima kasih banyak-banyak.",
+      "query_type": "conversational",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-47",
+      "language": "bm",
+      "query": "Awak boleh buat apa?",
+      "query_type": "conversational",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-48",
+      "language": "mixed",
+      "query": "hai, nama saya Aina.",
+      "query_type": "conversational",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-49",
+      "language": "mixed",
+      "query": "thanks ya, appreciate it.",
+      "query_type": "conversational",
+      "source": "hand",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-50",
+      "language": "en",
+      "query": "Thanks! One more thing: what does section 34 of the Penal Code say?",
+      "query_type": "statute_lookup",
+      "source": "hand",
+      "tags": [
+        "tie_break"
+      ],
+      "note": "Social opener, legal substance wins.",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-51",
+      "language": "en",
+      "query": "Hi, which Act covers data protection?",
+      "query_type": "topical",
+      "source": "hand",
+      "tags": [
+        "tie_break"
+      ],
+      "note": "Greeting plus a legal question.",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-52",
+      "language": "bm",
+      "query": "Terima kasih. Apakah hukuman di bawah seksyen 420 Kanun Keseksaan?",
+      "query_type": "statute_lookup",
+      "source": "hand",
+      "tags": [
+        "tie_break"
+      ],
+      "note": "Thanks plus a named section.",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-53",
+      "language": "mixed",
+      "query": "hi, boleh tolong saya check Section 60 Employment Act?",
+      "query_type": "statute_lookup",
+      "source": "hand",
+      "tags": [
+        "tie_break"
+      ],
+      "note": "Greeting plus a named section.",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-54",
+      "language": "en",
+      "query": "Can you help me with a legal question?",
+      "query_type": "conversational",
+      "source": "hand",
+      "tags": [
+        "tie_break"
+      ],
+      "note": "No substance yet. Judgment call: confirm label.",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-55",
+      "language": "en",
+      "query": "And section 35?",
+      "query_type": "statute_lookup",
+      "source": "hand",
+      "history": [
+        {
+          "role": "user",
+          "content": "What does section 34 of the Penal Code say?"
+        },
+        {
+          "role": "assistant",
+          "content": "Section 34 of the Penal Code 1936 makes each person liable for a criminal act done by several people in furtherance of a common intention."
+        }
+      ],
+      "tags": [
+        "history"
+      ],
+      "note": "Act recoverable from history, so no clarify.",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-56",
+      "language": "en",
+      "query": "What is the penalty?",
+      "query_type": "statute_lookup",
+      "source": "hand",
+      "history": [
+        {
+          "role": "user",
+          "content": "What does section 420 of the Penal Code cover?"
+        },
+        {
+          "role": "assistant",
+          "content": "Section 420 of the Penal Code 1936 covers cheating and dishonestly inducing delivery of property."
+        }
+      ],
+      "tags": [
+        "history"
+      ],
+      "note": "Act and section recoverable from history.",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-57",
+      "language": "bm",
+      "query": "Berapa hukumannya?",
+      "query_type": "statute_lookup",
+      "source": "hand",
+      "history": [
+        {
+          "role": "user",
+          "content": "Apakah seksyen 506 Kanun Keseksaan?"
+        },
+        {
+          "role": "assistant",
+          "content": "Seksyen 506 Kanun Keseksaan memperuntukkan hukuman bagi ugutan jenayah."
+        }
+      ],
+      "tags": [
+        "history"
+      ],
+      "note": "Same query as the no-history clarify case, history flips the label.",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-58",
+      "language": "en",
+      "query": "Which other laws are related to this?",
+      "query_type": "topical",
+      "source": "hand",
+      "history": [
+        {
+          "role": "user",
+          "content": "What does section 12 of the PDPA say?"
+        },
+        {
+          "role": "assistant",
+          "content": "Section 12 of the Personal Data Protection Act 2010 sets out the right of access to personal data."
+        }
+      ],
+      "tags": [
+        "history"
+      ],
+      "note": "Topic recoverable from history.",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-59",
+      "language": "en",
+      "query": "What does section 5 say?",
+      "query_type": "clarify",
+      "source": "hand",
+      "history": [
+        {
+          "role": "user",
+          "content": "hi"
+        },
+        {
+          "role": "assistant",
+          "content": "Hello. Ask me about Malaysian statutes."
+        }
+      ],
+      "tags": [
+        "clarify_boundary",
+        "history"
+      ],
+      "note": "History has no Act, so history cannot supply it.",
+      "review_status": "reviewed"
+    },
+    {
+      "id": "route-hand-60",
+      "language": "en",
+      "query": "What about section 5?",
+      "query_type": "statute_lookup",
+      "source": "hand",
+      "history": [
+        {
+          "role": "user",
+          "content": "What does section 34 of the Penal Code say?"
+        },
+        {
+          "role": "assistant",
+          "content": "Section 34 of the Penal Code 1936 makes each person liable for a criminal act done by several people in furtherance of a common intention."
+        }
+      ],
+      "tags": [
+        "history"
+      ],
+      "note": "Contrast with the previous case: here the Act is in history.",
+      "review_status": "reviewed"
+    }
+  ]
+}
