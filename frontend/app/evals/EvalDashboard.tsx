@@ -7,12 +7,22 @@ import {
   EvalCaseResult,
   EvalRunSummary,
   EvalSubset,
+  fetchEvalCases,
   fetchEvalCoverage,
   fetchEvalResults,
+  fetchEvalSets,
   flattenPersistedResult,
+  isGroundingResult,
+  isGroundingSummary,
   streamEvalRun,
   type CoverageResponse,
+  type EvalCaseRow,
   type GapFlag,
+  type GroundingCoverage,
+  type GroundingErrorKind,
+  type GroundingLabel,
+  type GroundingResult,
+  type GroundingSummary,
 } from "@/lib/evalsTransport";
 
 type PickerMode = "smoke" | "all" | "language" | "category" | "scenario" | "case_id";
@@ -148,6 +158,161 @@ function CaseDetails({ result }: { result: EvalCaseResult }) {
   );
 }
 
+const GROUNDING_LABELS: GroundingLabel[] = ["supported", "partial", "unsupported"];
+
+// The two mismatch kinds cost differently: too lenient lets an unsupported claim
+// through, too strict blocks a sound one.
+const ERROR_KIND_STYLE: Record<GroundingErrorKind, { label: string; bg: string; fill: string }> = {
+  too_lenient: { label: "judge too lenient", bg: palette.failSoft, fill: palette.fail },
+  too_strict: { label: "judge too strict", bg: palette.warningSoft, fill: palette.partial },
+};
+
+function groundingBadge(result: GroundingResult) {
+  if (result.error) return { text: "judge error", bg: palette.warningSoft, fill: palette.partial, mark: "!" };
+  if (result.match) return { text: "match", bg: palette.passSoft, fill: palette.pass, mark: "✓" };
+  const kind = ERROR_KIND_STYLE[result.error_kind ?? "too_strict"];
+  return { text: kind.label, bg: kind.bg, fill: kind.fill, mark: "×" };
+}
+
+function judgeLabelText(result: GroundingResult) {
+  if (result.error) return "none (judge call failed)";
+  if (result.jev_cleared) return `${result.judge_label} (Jev cleared, judge skipped)`;
+  return result.judge_label ?? "none";
+}
+
+function GroundingDetails({ row, result }: { row: EvalCaseRow; result: GroundingResult | undefined }) {
+  const badge = result
+    ? groundingBadge(result)
+    : { text: "not run", bg: palette.idle, fill: palette.idle, mark: "·" };
+  return (
+    <details className="rounded-xl border" style={{ borderColor: palette.line, background: palette.panel }}>
+      <summary className="grid cursor-pointer list-none grid-cols-[28px_minmax(0,1fr)_auto] items-center gap-2 px-4 py-3">
+        <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold" style={{ background: badge.fill, color: palette.ink }}>
+          {badge.mark}
+        </span>
+        <span className="min-w-0">
+          <span className="block font-mono text-xs font-semibold" style={{ color: palette.ink }}>
+            {row.id} · {row.language} · expects {row.verdict}{row.judgement_call ? " · judgement call" : ""}
+          </span>
+          <span className="mt-1 block truncate text-sm" style={{ color: palette.muted }}>{row.claim}</span>
+        </span>
+        <span className="rounded-full px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.08em]" style={{ background: badge.bg, color: palette.ink }}>
+          {result?.judge_label ? `${result.judge_label}${result.jev_cleared ? " · jev" : ""}` : badge.text}
+        </span>
+      </summary>
+
+      <div className="grid gap-4 border-t px-4 py-4 text-sm lg:grid-cols-2" style={{ borderColor: palette.line }}>
+        <div className="space-y-4">
+          <DetailBlock title="Claim"><p>{row.claim}</p></DetailBlock>
+          <DetailBlock title={`Source · ${row.act_title} §${row.section_number}`}>
+            <p>{row.source_text}</p>
+          </DetailBlock>
+          {row.judgement_call && (
+            <DetailBlock title="Judgement call"><p>{row.note || "Flagged as a judgement call."}</p></DetailBlock>
+          )}
+        </div>
+        <div className="space-y-4">
+          <DetailBlock title="Label vs judge">
+            <p>Dataset label: <b>{row.verdict}</b></p>
+            {result ? (
+              <>
+                <p>Judge label: <b>{judgeLabelText(result)}</b></p>
+                <p style={{ color: result.match ? palette.muted : palette.warning }}>
+                  {result.error ? "No comparison: the judge call failed." : result.match ? "Match." : `Mismatch: ${ERROR_KIND_STYLE[result.error_kind ?? "too_strict"].label}.`}
+                </p>
+              </>
+            ) : <p>Not run yet.</p>}
+          </DetailBlock>
+          {result && (
+            <>
+              <DetailBlock title="Jev first pass">
+                <p>
+                  Score: {result.jev_score === null ? "—" : result.jev_score.toFixed(3)}
+                  {" · "}cleared: {result.jev_cleared ? "yes" : "no"}
+                  {result.jev_error ? " · Jev errored, fell through to the judge" : ""}
+                </p>
+              </DetailBlock>
+              {result.quote && <DetailBlock title="Judge quote"><p className="whitespace-pre-wrap">{result.quote}</p></DetailBlock>}
+              <DetailBlock title="Judge reason">
+                <p className="whitespace-pre-wrap" style={result.error ? { color: palette.warning } : undefined}>
+                  {result.error || result.reason || "No reason supplied."}
+                </p>
+              </DetailBlock>
+            </>
+          )}
+        </div>
+      </div>
+    </details>
+  );
+}
+
+// Dataset label (rows) against judge label (columns). A Jev-cleared claim counts as supported, as in production.
+function GroundingMatrix({ rows, results }: { rows: EvalCaseRow[]; results: Record<string, GroundingResult> }) {
+  const counts: Record<string, number> = {};
+  for (const row of rows) {
+    const judged = results[row.id]?.judge_label;
+    if (judged) counts[`${row.verdict}:${judged}`] = (counts[`${row.verdict}:${judged}`] ?? 0) + 1;
+  }
+  return (
+    <div className="overflow-x-auto rounded-[20px] border p-4 md:p-5" style={{ borderColor: palette.line, background: palette.panel }}>
+      <table className="w-full min-w-[420px] border-separate border-spacing-2 text-center text-sm">
+        <thead>
+          <tr className="font-mono text-[10px] uppercase tracking-[0.1em]" style={{ color: palette.muted }}>
+            <th className="text-left">dataset ↓ · judge →</th>
+            {GROUNDING_LABELS.map((label) => <th key={label}>{label}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {GROUNDING_LABELS.map((verdict) => (
+            <tr key={verdict}>
+              <th className="text-left font-mono text-xs" style={{ color: palette.ink }}>{verdict}</th>
+              {GROUNDING_LABELS.map((judged) => {
+                const count = counts[`${verdict}:${judged}`] ?? 0;
+                const rank = (label: string) => GROUNDING_LABELS.length - GROUNDING_LABELS.indexOf(label as GroundingLabel);
+                const background = count === 0 ? palette.idle
+                  : verdict === judged ? palette.pass
+                  : rank(judged) > rank(verdict) ? ERROR_KIND_STYLE.too_lenient.fill : ERROR_KIND_STYLE.too_strict.fill;
+                return (
+                  <td key={judged} className="rounded-lg py-3 font-mono text-xl font-bold" style={{ background, color: palette.ink }}>{count}</td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+// Per-set seam: each set renders its own detail component.
+function CaseRowDetail({ row, result, grounding }: {
+  row: EvalCaseRow;
+  result: EvalCaseResult | undefined;
+  grounding: GroundingResult | undefined;
+}) {
+  if (row.claim !== undefined) return <GroundingDetails row={row} result={grounding} />;
+  if (result) return <CaseDetails result={result} />;
+  return <NotRunRow row={row} />;
+}
+
+function NotRunRow({ row }: { row: EvalCaseRow }) {
+  return (
+    <div className="grid grid-cols-[28px_minmax(0,1fr)_auto] items-center gap-2 rounded-xl border px-4 py-3" style={{ borderColor: palette.line, background: palette.panel }}>
+      <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold" style={{ background: palette.idle, color: palette.muted }}>·</span>
+      <span className="min-w-0">
+        <span className="block font-mono text-xs font-semibold" style={{ color: palette.ink }}>{row.id}</span>
+        <span className="mt-1 block truncate text-sm" style={{ color: palette.muted }}>{row.query}</span>
+        <span className="mt-1 block font-mono text-[11px]" style={{ color: palette.muted }}>
+          expects {row.expected_policy ?? "allow"} · Act {row.expected_act_number ?? "—"} · Section {row.expected_section ?? "—"}
+        </span>
+      </span>
+      <span className="rounded-full px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.08em]" style={{ background: palette.idle, color: palette.ink }}>
+        not run
+      </span>
+    </div>
+  );
+}
+
 function DetailBlock({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
@@ -159,26 +324,32 @@ function DetailBlock({ title, children }: { title: string; children: React.React
 
 function ResultMatrix({
   coverage,
-  results,
+  cases,
+  resultsById,
   source,
   running,
   selectedScenario,
   onSelectScenario,
 }: {
   coverage: CoverageResponse;
-  results: EvalCaseResult[];
+  cases: EvalCaseRow[];
+  resultsById: Record<string, EvalCaseResult>;
   source: ResultSource;
   running: boolean;
   selectedScenario: string | null;
   onSelectScenario: (scenario: string) => void;
 }) {
   const scenarios = Object.keys(coverage.by_scenario);
+  // Every dataset case sits in its scenario cell; a case with no result is a
+  // `null` slot, so a partial run still shows the cases it did not cover.
   const byScenario = useMemo(() => {
-    const grouped: Record<string, EvalCaseResult[]> = {};
+    const grouped: Record<string, { id: string; result: EvalCaseResult | null }[]> = {};
     for (const scenario of scenarios) grouped[scenario] = [];
-    for (const result of results) (grouped[result.scenario] ??= []).push(result);
+    for (const row of cases) {
+      (grouped[row.scenario ?? ""] ??= []).push({ id: row.id, result: resultsById[row.id] ?? null });
+    }
     return grouped;
-  }, [results, scenarios]);
+  }, [cases, resultsById, scenarios]);
 
   return (
     <div className="overflow-x-auto rounded-[20px] border p-4 shadow-[var(--shadow-raised)] md:p-5" style={{ borderColor: palette.line, background: palette.panel }}>
@@ -208,8 +379,9 @@ function ResultMatrix({
           </div>
 
           {scenarios.map((scenario) => {
-            const scenarioResults = byScenario[scenario] ?? [];
-            const passed = scenarioResults.filter(casePassed).length;
+            const slots = byScenario[scenario] ?? [];
+            const ran = slots.filter((slot) => slot.result);
+            const passed = ran.filter((slot) => casePassed(slot.result!)).length;
             const active = selectedScenario === scenario;
             return (
               <button
@@ -218,21 +390,21 @@ function ResultMatrix({
                 onClick={() => onSelectScenario(scenario)}
                 className="min-h-[96px] rounded-xl border-2 px-2 py-2 text-center transition-transform hover:-translate-y-0.5"
                 style={{
-                  background: cellColor(passed, scenarioResults.length),
+                  background: cellColor(passed, ran.length),
                   borderColor: active ? palette.ink : "transparent",
                   color: palette.ink,
                 }}
                 aria-label={`Inspect ${formatScenario(scenario)} results`}
               >
-                {scenarioResults.length ? (
+                {ran.length ? (
                   <>
                     <div className="font-mono text-[28px] font-bold leading-none">
-                      {passed}<span className="text-base font-medium opacity-55">/{scenarioResults.length}</span>
+                      {passed}<span className="text-base font-medium opacity-55">/{slots.length}</span>
                     </div>
                     <div className="mt-2 flex min-h-5 flex-wrap justify-center gap-x-2 gap-y-1 font-mono text-sm font-bold">
-                      {scenarioResults.map((result) => (
-                        <span key={result.id} title={`${result.id}: ${caseFailureKind(result)}`}>
-                          {casePassed(result) ? "✓" : "×"}
+                      {slots.map(({ id, result }) => (
+                        <span key={id} title={`${id}: ${result ? caseFailureKind(result) : "not run"}`}>
+                          {result ? (casePassed(result) ? "✓" : "×") : "·"}
                         </span>
                       ))}
                     </div>
@@ -252,9 +424,17 @@ function ResultMatrix({
 }
 
 export default function EvalDashboard() {
-  const [coverage, setCoverage] = useState<CoverageResponse | null>(null);
-  const [results, setResults] = useState<EvalCaseResult[]>([]);
+  const [sets, setSets] = useState<string[]>([]);
+  const [set, setSet] = useState<string | null>(null);
+  const [coverage, setCoverage] = useState<CoverageResponse | GroundingCoverage | null>(null);
+  const [cases, setCases] = useState<EvalCaseRow[]>([]);
+  const [resultsById, setResultsById] = useState<Record<string, EvalCaseResult>>({});
   const [summary, setSummary] = useState<EvalRunSummary | null>(null);
+  const [groundingById, setGroundingById] = useState<Record<string, GroundingResult>>({});
+  const [groundingSummary, setGroundingSummary] = useState<GroundingSummary | null>(null);
+  const [verdictFilter, setVerdictFilter] = useState("");
+  const [languageFilter, setLanguageFilter] = useState("");
+  const [judgementOnly, setJudgementOnly] = useState(false);
   const [resultSource, setResultSource] = useState<ResultSource>("empty");
   const [lastRunAt, setLastRunAt] = useState<string | null>(null);
   const [selectedScenario, setSelectedScenario] = useState<string | null>(null);
@@ -263,21 +443,17 @@ export default function EvalDashboard() {
   const [running, setRunning] = useState(false);
   const [progress, setProgress] = useState("");
   const [error, setError] = useState("");
-  const [confirmArmed, setConfirmArmed] = useState(false);
+  const [confirmArmed, setConfirmArmed] = useState<string | null>(null);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const abortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     let alive = true;
-    Promise.all([fetchEvalCoverage(), fetchEvalResults()])
-      .then(([nextCoverage, report]) => {
+    fetchEvalSets()
+      .then((response) => {
         if (!alive) return;
-        setCoverage(nextCoverage);
-        if (report) {
-          setResults(report.results.map(flattenPersistedResult));
-          setSummary(report.summary);
-          setResultSource("cached");
-          setLastRunAt(report.generated_at);
-        }
+        setSets(response.sets.map((entry) => entry.name));
+        setSet(response.default);
       })
       .catch((cause) => alive && setError(cause instanceof Error ? cause.message : "Unable to load eval dashboard"));
     return () => {
@@ -286,6 +462,36 @@ export default function EvalDashboard() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!set) return;
+    let alive = true;
+    Promise.all([fetchEvalCoverage(set), fetchEvalCases(set), fetchEvalResults(set)])
+      .then(([nextCoverage, rows, report]) => {
+        if (!alive) return;
+        setCoverage(nextCoverage);
+        setMode("by_verdict" in nextCoverage ? "all" : "smoke");
+        setCases(rows);
+        const saved: Record<string, EvalCaseResult> = {};
+        const savedGrounding: Record<string, GroundingResult> = {};
+        for (const row of rows) {
+          if (!row.result) continue;
+          if (isGroundingResult(row.result)) savedGrounding[row.id] = row.result;
+          else saved[row.id] = flattenPersistedResult(row.result);
+        }
+        setResultsById(saved);
+        setGroundingById(savedGrounding);
+        const savedSummary = report?.summary ?? null;
+        setSummary(savedSummary && !isGroundingSummary(savedSummary) ? savedSummary : null);
+        setGroundingSummary(savedSummary && isGroundingSummary(savedSummary) ? savedSummary : null);
+        setResultSource(report ? "cached" : "empty");
+        setLastRunAt(report?.generated_at ?? null);
+      })
+      .catch((cause) => alive && setError(cause instanceof Error ? cause.message : "Unable to load eval dashboard"));
+    return () => {
+      alive = false;
+    };
+  }, [set]);
+
   const subset = useMemo<EvalSubset>(() => {
     if (mode === "smoke" || mode === "all") return mode;
     return { [mode]: value } as EvalSubset;
@@ -293,6 +499,7 @@ export default function EvalDashboard() {
 
   const estimatedCount = useMemo(() => {
     if (!coverage) return 0;
+    if (!("by_scenario" in coverage)) return mode === "all" ? coverage.total_cases : 0;
     if (mode === "smoke") return coverage.smoke_cases;
     if (mode === "all") return coverage.total_cases;
     if (mode === "category") return coverage.by_category[value] ?? 0;
@@ -305,34 +512,57 @@ export default function EvalDashboard() {
     return value ? 1 : 0;
   }, [coverage, mode, value]);
 
-  const displayedResults = selectedScenario
-    ? results.filter((result) => result.scenario === selectedScenario)
-    : results;
-  const passedCount = results.filter(casePassed).length;
+  const results = useMemo(
+    () => cases.flatMap((row) => (resultsById[row.id] ? [resultsById[row.id]] : [])),
+    [cases, resultsById],
+  );
+  const e2eCoverage = coverage && "by_scenario" in coverage ? coverage : null;
+  const groundingCoverage = coverage && "by_verdict" in coverage ? coverage : null;
+  const displayedCases = groundingCoverage
+    ? cases.filter((row) =>
+        (!verdictFilter || row.verdict === verdictFilter)
+        && (!languageFilter || row.language === languageFilter)
+        && (!judgementOnly || row.judgement_call))
+    : selectedScenario
+      ? cases.filter((row) => row.scenario === selectedScenario)
+      : cases;
+  const groundingResults = Object.values(groundingById);
+  const resultCount = groundingCoverage ? groundingResults.length : results.length;
+  const passedCount = groundingCoverage
+    ? groundingResults.filter((result) => result.match).length
+    : results.filter(casePassed).length;
   const missingSections = coverage?.corpus_staleness.checked ? coverage.corpus_staleness.missing_sections : [];
   const invalidPicker = mode !== "smoke" && mode !== "all" && !value.trim();
 
-  async function startRun() {
-    if (estimatedCount > 20 && !confirmArmed) {
-      setConfirmArmed(true);
+  // `key` names what the confirm click belongs to, so arming one button never
+  // lets another run through unconfirmed.
+  async function startRun(key: string, runSubset: EvalSubset, count: number) {
+    if (!set || running) return;
+    if (count > 20 && confirmArmed !== key) {
+      setConfirmArmed(key);
       return;
     }
-    setConfirmArmed(false);
+    setConfirmArmed(null);
     setError("");
-    setResults([]);
     setSummary(null);
+    setGroundingSummary(null);
     setResultSource("live");
     setLastRunAt(null);
-    setSelectedScenario(null);
     setRunning(true);
     const controller = new AbortController();
     abortRef.current = controller;
     try {
-      for await (const event of streamEvalRun(subset, controller.signal)) {
+      for await (const event of streamEvalRun(set, runSubset, controller.signal)) {
         if (event.type === "run_start") setProgress(`Starting ${event.case_count} cases`);
         if (event.type === "case_start") setProgress(`${event.index}/${event.total} · ${event.id}`);
-        if (event.type === "case_result") setResults((current) => [...current, event]);
-        if (event.type === "run_summary") setSummary(event);
+        if (event.type === "case_result") {
+          if (isGroundingResult(event)) setGroundingById((current) => ({ ...current, [event.id]: event }));
+          else setResultsById((current) => ({ ...current, [event.id]: event }));
+        }
+        if (event.type === "run_summary") {
+          if (isGroundingSummary(event)) setGroundingSummary(event);
+          else setSummary(event);
+        }
         if (event.type === "error") setError(event.message);
       }
       setLastRunAt(new Date().toISOString());
@@ -351,6 +581,18 @@ export default function EvalDashboard() {
     }
   }
 
+  const runIds = (ids: string[]) =>
+    startRun(`ids:${ids.join(",")}`, { case_ids: ids.join(",") }, ids.length);
+
+  function toggleSelected(id: string) {
+    setConfirmArmed(null);
+    setSelectedIds((current) => {
+      const next = new Set(current);
+      if (!next.delete(id)) next.add(id);
+      return next;
+    });
+  }
+
   async function cancelRun() {
     await cancelEvalRun().catch(() => undefined);
     abortRef.current?.abort();
@@ -358,7 +600,7 @@ export default function EvalDashboard() {
     setProgress("");
   }
 
-  if (!coverage) {
+  if (!coverage || !set) {
     return <main className="min-h-screen p-10" style={{ background: palette.page, color: palette.muted }}>Loading evaluation suite…</main>;
   }
 
@@ -372,7 +614,7 @@ export default function EvalDashboard() {
           Locus eval studio
         </div>
         <div className="flex items-center gap-2">
-          <span className="rounded-full px-4 py-2 font-mono text-xs font-bold" style={{ background: palette.panel }}>n {results.length || "—"}</span>
+          <span className="rounded-full px-4 py-2 font-mono text-xs font-bold" style={{ background: palette.panel }}>n {resultCount || "—"}</span>
           <span className="rounded-full px-4 py-2 font-mono text-xs font-bold uppercase" style={{ background: palette.panel }}>
             <span className="mr-2 inline-block h-2 w-2 rounded-full" style={{ background: resultSource === "live" ? palette.accent : palette.muted }} />
             {running ? "live" : resultSource === "cached" ? "cached" : "ready"}
@@ -388,7 +630,9 @@ export default function EvalDashboard() {
               <span className="rounded-full px-4 py-2 font-mono text-sm font-bold" style={{ background: palette.accent, color: palette.panel }}>latest</span>
             </div>
             <p className="mt-3 text-base" style={{ color: palette.muted }}>
-              {coverage.total_cases} benchmark cases · {Object.keys(coverage.by_scenario).length} scenarios
+              {groundingCoverage
+                ? `${coverage.total_cases} labelled claims · ${groundingCoverage.judgement_calls} judgement calls`
+                : `${coverage.total_cases} benchmark cases · ${Object.keys(e2eCoverage!.by_scenario).length} scenarios`}
               {lastRunAt ? ` · results ${resultSource === "cached" ? "saved" : "completed"} ${new Date(lastRunAt).toLocaleString()}` : ""}
             </p>
           </div>
@@ -404,33 +648,63 @@ export default function EvalDashboard() {
             </button>
             <button
               type="button"
-              onClick={startRun}
+              onClick={() => startRun("picker", subset, estimatedCount)}
               disabled={running || invalidPicker || missingSections.length > 0}
               className="min-w-[160px] rounded-xl px-5 py-3 font-semibold disabled:opacity-45"
               style={{ background: palette.accent, color: palette.panel }}
             >
-              {running ? `Running ${progress || "…"}` : confirmArmed ? "Confirm run" : `Run ${estimatedCount || ""} cases`}
+              {running ? `Running ${progress || "…"}` : confirmArmed === "picker" ? "Confirm run" : `Run ${estimatedCount || ""} ${groundingCoverage ? "claims" : "cases"}`}
             </button>
           </div>
         </header>
 
         <section className="rounded-xl border p-3" style={{ borderColor: palette.line, background: palette.panelSoft }} aria-label="Run configuration">
-          <div className="grid gap-3 md:grid-cols-[220px_minmax(220px,1fr)_auto] md:items-center">
+          <div className="grid gap-3 md:grid-cols-[180px_220px_minmax(220px,1fr)_auto] md:items-center">
+            <label className="flex items-center gap-3">
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.1em]" style={{ color: palette.muted }}>Set</span>
+              <select
+                value={set}
+                disabled={running}
+                onChange={(event) => {
+                  setCoverage(null);
+                  setSelectedScenario(null);
+                  setSelectedIds(new Set());
+                  setVerdictFilter("");
+                  setLanguageFilter("");
+                  setJudgementOnly(false);
+                  setError("");
+                  setMode("smoke");
+                  setValue("");
+                  setConfirmArmed(null);
+                  setSet(event.target.value);
+                }}
+                className="w-full rounded-xl border px-3 py-2.5 text-sm font-semibold"
+                style={{ borderColor: palette.line, background: palette.panel }}
+              >
+                {sets.map((name) => <option key={name} value={name}>{formatScenario(name)}</option>)}
+              </select>
+            </label>
             <label className="flex items-center gap-3">
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.1em]" style={{ color: palette.muted }}>Run</span>
               <select
                 value={mode}
                 disabled={running}
-                onChange={(event) => { setMode(event.target.value as PickerMode); setValue(""); setConfirmArmed(false); }}
+                onChange={(event) => { setMode(event.target.value as PickerMode); setValue(""); setConfirmArmed(null); }}
                 className="w-full rounded-xl border px-3 py-2.5 text-sm font-semibold"
                 style={{ borderColor: palette.line, background: palette.panel }}
               >
-                <option value="smoke">Smoke subset</option>
-                <option value="all">All cases</option>
-                <option value="language">By language</option>
-                <option value="category">By category</option>
-                <option value="scenario">By scenario</option>
-                <option value="case_id">Single case ID</option>
+                {groundingCoverage ? (
+                  <option value="all">All claims</option>
+                ) : (
+                  <>
+                    <option value="smoke">Smoke subset</option>
+                    <option value="all">All cases</option>
+                    <option value="language">By language</option>
+                    <option value="category">By category</option>
+                    <option value="scenario">By scenario</option>
+                    <option value="case_id">Single case ID</option>
+                  </>
+                )}
               </select>
             </label>
 
@@ -439,19 +713,19 @@ export default function EvalDashboard() {
                 <select value={value} onChange={(event) => setValue(event.target.value)} className="w-full rounded-xl border px-3 py-2.5 text-sm" style={{ borderColor: palette.line, background: palette.panel }}>
                   <option value="">Choose language…</option>
                   <option value={BILINGUAL_SUBSET}>bm + mixed (bilingual baseline)</option>
-                  {Object.keys(coverage.by_language).map((language) => <option key={language}>{language}</option>)}
+                  {Object.keys(e2eCoverage?.by_language ?? {}).map((language) => <option key={language}>{language}</option>)}
                 </select>
               )}
               {mode === "category" && (
                 <select value={value} onChange={(event) => setValue(event.target.value)} className="w-full rounded-xl border px-3 py-2.5 text-sm" style={{ borderColor: palette.line, background: palette.panel }}>
                   <option value="">Choose category…</option>
-                  {Object.keys(coverage.by_category).map((category) => <option key={category}>{category}</option>)}
+                  {Object.keys(e2eCoverage?.by_category ?? {}).map((category) => <option key={category}>{category}</option>)}
                 </select>
               )}
               {mode === "scenario" && (
                 <select value={value} onChange={(event) => setValue(event.target.value)} className="w-full rounded-xl border px-3 py-2.5 text-sm" style={{ borderColor: palette.line, background: palette.panel }}>
                   <option value="">Choose scenario…</option>
-                  {Object.keys(coverage.by_scenario).map((scenario) => <option key={scenario}>{scenario}</option>)}
+                  {Object.keys(e2eCoverage?.by_scenario ?? {}).map((scenario) => <option key={scenario}>{scenario}</option>)}
                 </select>
               )}
               {mode === "case_id" && (
@@ -459,7 +733,9 @@ export default function EvalDashboard() {
               )}
               {(mode === "smoke" || mode === "all") && (
                 <p className="text-sm" style={{ color: palette.muted }}>
-                  {mode === "smoke" ? "Fast signal across the CI-tagged cases." : "Complete benchmark; uses real model and judge tokens."}
+                  {groundingCoverage
+                    ? "Runs the live grounding judge on every claim. Filter the list below to run a subset."
+                    : mode === "smoke" ? "Fast signal across the CI-tagged cases." : "Complete benchmark; uses real model and judge tokens."}
                 </p>
               )}
             </div>
@@ -469,7 +745,12 @@ export default function EvalDashboard() {
 
         {confirmArmed && (
           <div className="rounded-xl border px-4 py-3 text-sm" style={{ borderColor: palette.warning, background: palette.warningSoft }}>
-            {estimatedCount} cases run the live agent and LLM judge, take roughly 5–8 minutes, and incur token cost. Click <strong>Confirm run</strong> to continue.
+            {(() => {
+              const count = confirmArmed === "picker" ? estimatedCount : confirmArmed.slice(4).split(",").length;
+              return groundingCoverage
+                ? `${count} claims each call Jev, then the live grounding judge unless Jev clears the claim. The full set of ${coverage.total_cases} is up to ${coverage.total_cases} judge calls and incurs token cost.`
+                : `${count} cases run the live agent and LLM judge, take roughly 5–8 minutes, and incur token cost.`;
+            })()} Click <strong>Confirm run</strong> to continue.
           </div>
         )}
 
@@ -478,14 +759,42 @@ export default function EvalDashboard() {
             <strong>Run blocked:</strong> the eval corpus is missing {missingSections.length} required sections. Reseed the dedicated eval database first.
           </div>
         )}
-        {!corpusChecked && (
+        {!corpusChecked && !groundingCoverage && (
           <div className="rounded-xl border px-4 py-3 text-sm" style={{ borderColor: palette.line, background: palette.panelSoft, color: palette.muted }}>
             Corpus status is not checked: {coverage.corpus_staleness.reason}. Coverage and saved results still work; a live run requires the eval database.
           </div>
         )}
         {error && <div className="rounded-xl border px-4 py-3 text-sm" style={{ borderColor: palette.warning, background: palette.failSoft }} role="alert">{error}</div>}
 
-        <section aria-labelledby="matrix-title">
+        {groundingCoverage && (
+          <section aria-labelledby="matrix-title">
+            <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.12em]" style={{ color: palette.muted }}>Label vs judge</p>
+                <h2 id="matrix-title" className="mt-1 text-2xl font-black">Where the judge disagrees</h2>
+              </div>
+              <div className="flex flex-wrap items-center gap-4 text-xs" style={{ color: palette.muted }}>
+                <span><i className="mr-1 inline-block h-2.5 w-2.5 rounded-sm" style={{ background: palette.pass }} />match</span>
+                <span><i className="mr-1 inline-block h-2.5 w-2.5 rounded-sm" style={{ background: ERROR_KIND_STYLE.too_lenient.fill }} />judge too lenient</span>
+                <span><i className="mr-1 inline-block h-2.5 w-2.5 rounded-sm" style={{ background: ERROR_KIND_STYLE.too_strict.fill }} />judge too strict</span>
+                {groundingSummary && (
+                  <span className="font-mono font-bold" style={{ color: palette.ink }}>
+                    {groundingSummary.matched}/{groundingSummary.total_cases - groundingSummary.judge_errors} matched
+                    {" · "}{groundingSummary.by_error_kind.too_lenient ?? 0} lenient · {groundingSummary.by_error_kind.too_strict ?? 0} strict
+                    {groundingSummary.judge_errors ? ` · ${groundingSummary.judge_errors} judge errors` : ""}
+                  </span>
+                )}
+                {!groundingSummary && groundingResults.length > 0 && (
+                  <span className="font-mono font-bold" style={{ color: palette.ink }}>{passedCount}/{groundingResults.length} matched</span>
+                )}
+              </div>
+            </div>
+            <GroundingMatrix rows={cases} results={groundingById} />
+            <p className="mt-3 text-xs" style={{ color: palette.muted }}>A claim Jev clears counts as judge-supported, the same as in production.</p>
+          </section>
+        )}
+
+        {e2eCoverage && <section aria-labelledby="matrix-title">
           <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="font-mono text-[10px] font-bold uppercase tracking-[0.12em]" style={{ color: palette.muted }}>Result matrix</p>
@@ -498,22 +807,27 @@ export default function EvalDashboard() {
             </div>
           </div>
           <ResultMatrix
-            coverage={coverage}
-            results={results}
+            coverage={e2eCoverage}
+            cases={cases}
+            resultsById={resultsById}
             source={resultSource}
             running={running}
             selectedScenario={selectedScenario}
             onSelectScenario={(scenario) => setSelectedScenario((current) => current === scenario ? null : scenario)}
           />
           <p className="mt-3 text-xs" style={{ color: palette.muted }}>Click a scenario cell to inspect only its cases below.</p>
-        </section>
+        </section>}
 
         <section className="grid gap-4 md:grid-cols-3" aria-label="How to use this dashboard">
-          {[
+          {(groundingCoverage ? [
+            ["01", "Filter the claims", "Narrow the list by dataset label, language or judgement call. Counts beside each option come from the dataset."],
+            ["02", "Run what you see", "Select the shown claims, or tick a few, then run them. Each row also has its own Run button."],
+            ["03", "Read the mismatches", "Expand a claim to compare the dataset label with the judge label, the Jev score, and the judge's quote and reason."],
+          ] : [
             ["01", "Choose a subset", "Start with Smoke for a quick signal. Use All only when you want the full benchmark."],
             ["02", "Run and watch", "Each completed case adds a ✓ or × to its scenario cell while the run is live."],
-            ["03", "Inspect failures", "Select a colored cell, then expand a failed case to see whether L1 or the judge rejected it."],
-          ].map(([number, title, copy]) => (
+            ["03", "Inspect failures", "Select a colored cell, then expand a failed case in the list to see whether L1 or the judge rejected it."],
+          ]).map(([number, title, copy]) => (
             <div key={number} className="rounded-xl border p-4" style={{ borderColor: palette.line, background: palette.panelSoft }}>
               <span className="font-mono text-xs font-bold" style={{ color: palette.accent }}>{number}</span>
               <h3 className="mt-3 font-bold">{title}</h3>
@@ -525,34 +839,95 @@ export default function EvalDashboard() {
         <section aria-labelledby="details-title" className="space-y-4">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.12em]" style={{ color: palette.muted }}>Drill-down</p>
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.12em]" style={{ color: palette.muted }}>Case browser</p>
               <h2 id="details-title" className="mt-1 text-2xl font-black">
-                {selectedScenario ? `${formatScenario(selectedScenario)} cases` : "All completed cases"}
+                {selectedScenario ? `${formatScenario(selectedScenario)} cases` : groundingCoverage ? `${displayedCases.length} of ${cases.length} claims` : "All cases"}
               </h2>
             </div>
+            <div className="flex flex-wrap items-center gap-2">
+              {groundingCoverage && (
+                <>
+                  <select aria-label="Filter by dataset label" value={verdictFilter} onChange={(event) => setVerdictFilter(event.target.value)} className="rounded-full border px-3 py-1.5 text-xs font-semibold" style={{ borderColor: palette.line, background: palette.panel }}>
+                    <option value="">All labels</option>
+                    {GROUNDING_LABELS.map((label) => <option key={label} value={label}>{label} ({groundingCoverage.by_verdict[label] ?? 0})</option>)}
+                  </select>
+                  <select aria-label="Filter by language" value={languageFilter} onChange={(event) => setLanguageFilter(event.target.value)} className="rounded-full border px-3 py-1.5 text-xs font-semibold" style={{ borderColor: palette.line, background: palette.panel }}>
+                    <option value="">All languages</option>
+                    {Object.entries(groundingCoverage.by_language).map(([language, count]) => <option key={language} value={language}>{language} ({count})</option>)}
+                  </select>
+                  <label className="flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold" style={{ background: palette.panel }}>
+                    <input type="checkbox" checked={judgementOnly} onChange={(event) => setJudgementOnly(event.target.checked)} />
+                    Judgement calls only ({groundingCoverage.judgement_calls})
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => { setConfirmArmed(null); setSelectedIds(new Set(displayedCases.map((row) => row.id))); }}
+                    disabled={displayedCases.length === 0}
+                    className="rounded-full px-4 py-2 text-xs font-semibold disabled:opacity-45"
+                    style={{ background: palette.panel }}
+                  >
+                    Select {displayedCases.length} shown
+                  </button>
+                </>
+              )}
+              {selectedIds.size > 0 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => runIds(cases.filter((row) => selectedIds.has(row.id)).map((row) => row.id))}
+                    disabled={running}
+                    className="rounded-full px-4 py-2 text-xs font-semibold disabled:opacity-45"
+                    style={{ background: palette.accent, color: palette.panel }}
+                  >
+                    {confirmArmed?.startsWith("ids:") && selectedIds.size > 20 ? "Confirm run" : `Run ${selectedIds.size} selected`}
+                  </button>
+                  <button type="button" onClick={() => { setSelectedIds(new Set()); setConfirmArmed(null); }} className="rounded-full px-4 py-2 text-xs font-semibold" style={{ background: palette.panel }}>Clear selection</button>
+                </>
+              )}
             {selectedScenario && (
               <button type="button" onClick={() => setSelectedScenario(null)} className="rounded-full px-4 py-2 text-xs font-semibold" style={{ background: palette.panel }}>Show all cases</button>
             )}
+            </div>
           </div>
           <div className="space-y-2">
-            {displayedResults.map((result) => <CaseDetails key={result.id} result={result} />)}
-            {displayedResults.length === 0 && (
+            {displayedCases.map((row) => (
+              <div key={row.id} className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-2">
+                <input
+                  type="checkbox"
+                  aria-label={`Select ${row.id}`}
+                  checked={selectedIds.has(row.id)}
+                  onChange={() => toggleSelected(row.id)}
+                  className="mt-4 h-4 w-4"
+                />
+                <CaseRowDetail row={row} result={resultsById[row.id]} grounding={groundingById[row.id]} />
+                <button
+                  type="button"
+                  onClick={() => runIds([row.id])}
+                  disabled={running || missingSections.length > 0}
+                  className="mt-2.5 rounded-full px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.08em] disabled:opacity-45"
+                  style={{ background: palette.panel, border: `1px solid ${palette.line}` }}
+                >
+                  Run
+                </button>
+              </div>
+            ))}
+            {displayedCases.length === 0 && (
               <div className="rounded-xl border border-dashed p-6 text-center text-sm" style={{ borderColor: palette.line, color: palette.muted }}>
-                {results.length ? "No cases from this scenario were included in the run." : "Choose a subset and run it. Results will appear here as each case completes."}
+                This set has no cases.
               </div>
             )}
           </div>
         </section>
 
-        <details className="rounded-xl border" style={{ borderColor: palette.line, background: palette.panelSoft }}>
+        {e2eCoverage && <details className="rounded-xl border" style={{ borderColor: palette.line, background: palette.panelSoft }}>
           <summary className="cursor-pointer px-4 py-3 font-semibold">Dataset coverage and gaps</summary>
           <div className="grid gap-4 border-t px-4 py-4 lg:grid-cols-[1fr_1.4fr]" style={{ borderColor: palette.line }}>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-2">
               {[
                 ["Total", coverage.total_cases],
-                ["Smoke", coverage.smoke_cases],
-                ["Allow", coverage.by_policy.allow ?? 0],
-                ["Block", coverage.by_policy.block ?? 0],
+                ["Smoke", e2eCoverage.smoke_cases],
+                ["Allow", e2eCoverage.by_policy.allow ?? 0],
+                ["Block", e2eCoverage.by_policy.block ?? 0],
               ].map(([label, count]) => (
                 <div key={label} className="rounded-xl p-4" style={{ background: palette.panel }}>
                   <div className="font-mono text-[10px] uppercase" style={{ color: palette.muted }}>{label}</div>
@@ -561,12 +936,12 @@ export default function EvalDashboard() {
               ))}
             </div>
             <div className="space-y-2">
-              {coverage.gap_flags.map((flag, index) => (
+              {e2eCoverage.gap_flags.map((flag, index) => (
                 <div key={`${flag.rule}-${flag.scenario ?? flag.category ?? index}`} className="rounded-xl px-4 py-3 text-sm" style={{ background: palette.warningSoft }}>{flagText(flag)}</div>
               ))}
             </div>
           </div>
-        </details>
+        </details>}
       </div>
     </main>
   );

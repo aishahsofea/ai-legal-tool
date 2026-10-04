@@ -158,10 +158,28 @@ def test_language_subset_takes_several_languages_and_defaults_missing_labels_to_
     assert [case["id"] for case in english] == ["en-case", "unlabelled-case"]
 
 
+def test_case_ids_subset_keeps_dataset_order_and_rejects_unknown_ids():
+    cases = [_case("a"), _case("b"), _case("c")]
+
+    assert [case["id"] for case in select_cases(cases, {"case_ids": "c, a"})] == ["a", "c"]
+    try:
+        select_cases(cases, {"case_ids": "a,nope"})
+    except ValueError as exc:
+        assert "nope" in str(exc)
+    else:
+        raise AssertionError("Expected unknown case id to be rejected")
+
+
 def test_select_cases_rejects_unknown_or_empty_subsets():
     cases = [_case("only")]
 
-    for subset in ({"category": "missing"}, {"unknown": "value"}, "invalid", {"language": " , "}):
+    for subset in (
+        {"category": "missing"},
+        {"unknown": "value"},
+        "invalid",
+        {"language": " , "},
+        {"case_ids": " , "},
+    ):
         try:
             select_cases(cases, subset)
         except ValueError:

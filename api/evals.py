@@ -5,9 +5,11 @@ import asyncio
 import json
 import os
 import sys
+from collections import Counter
+from dataclasses import dataclass
 from pathlib import Path
 from threading import Lock
-from typing import Any
+from typing import Any, Callable
 
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import JSONResponse, StreamingResponse
@@ -21,12 +23,60 @@ from evals.coverage import (
     required_section_pairs,
     select_cases,
 )
+from evals.grounding_summary import summarise as summarise_grounding
 
 ROOT = Path(__file__).resolve().parents[1]
 DATASET_PATH = ROOT / "evals" / "dataset.json"
 RESULTS_PATH = ROOT / "evals" / "results.json"
+GROUNDING_DATASET_PATH = ROOT / "evals" / "grounding_dataset.json"
+GROUNDING_RESULTS_PATH = ROOT / "evals" / "results" / "grounding.json"
 
 router = APIRouter(prefix="/evals", tags=["evals"])
+
+DEFAULT_SET = "end_to_end"
+
+
+@dataclass(frozen=True)
+class EvalSet:
+    name: str
+    # Callables, not Paths: tests monkeypatch DATASET_PATH / RESULTS_PATH on this module.
+    dataset_path: Callable[[], Path]
+    results_path: Callable[[], Path]
+    runner_module: str
+    case_passed: Callable[[dict[str, Any]], bool]
+    run_summary: Callable[[list[dict[str, Any]]], dict[str, Any]]
+    # False for sets that judge text directly: no corpus, so no DB check or staleness.
+    needs_corpus: bool = True
+
+
+EVAL_SETS: dict[str, EvalSet] = {
+    DEFAULT_SET: EvalSet(
+        name=DEFAULT_SET,
+        dataset_path=lambda: DATASET_PATH,
+        results_path=lambda: RESULTS_PATH,
+        runner_module="evals.run_evals",
+        case_passed=lambda result: not result.get("l1_failures")
+        and isinstance(result.get("judge"), dict)
+        and result["judge"].get("passed") is True,
+        run_summary=lambda results: _run_summary(results),
+    ),
+    "grounding": EvalSet(
+        name="grounding",
+        dataset_path=lambda: GROUNDING_DATASET_PATH,
+        results_path=lambda: GROUNDING_RESULTS_PATH,
+        runner_module="evals.run_grounding",
+        case_passed=lambda result: result.get("match") is True,
+        run_summary=lambda results: {"type": "run_summary", **summarise_grounding(results)},
+        needs_corpus=False,
+    ),
+}
+
+
+def _get_set(name: str) -> EvalSet:
+    try:
+        return EVAL_SETS[name]
+    except KeyError:
+        raise HTTPException(status_code=404, detail=f"Unknown eval set: {name}") from None
 
 _active_lock = Lock()
 _active_process: asyncio.subprocess.Process | None = None
@@ -35,14 +85,16 @@ _run_reserved = False
 
 class EvalRunRequest(BaseModel):
     subset: str | dict[str, str] = "smoke"
+    set: str = DEFAULT_SET
 
 
 def _sse(payload: dict[str, Any]) -> str:
     return f"data: {json.dumps(payload, ensure_ascii=False)}\n\n"
 
 
-def _load_cases() -> list[dict[str, Any]]:
-    return json.loads(DATASET_PATH.read_text(encoding="utf-8"))["cases"]
+def _load_cases(eval_set: EvalSet | None = None) -> list[dict[str, Any]]:
+    path = (eval_set or EVAL_SETS[DEFAULT_SET]).dataset_path()
+    return json.loads(path.read_text(encoding="utf-8"))["cases"]
 
 
 def _staleness(cases: list[dict[str, Any]], database_url: str) -> list[dict[str, str]]:
@@ -52,16 +104,17 @@ def _staleness(cases: list[dict[str, Any]], database_url: str) -> list[dict[str,
     )
 
 
-def runner_command(subset: str | dict[str, str]) -> list[str]:
+def runner_command(subset: str | dict[str, str], eval_set: EvalSet | None = None) -> list[str]:
+    eval_set = eval_set or EVAL_SETS[DEFAULT_SET]
     command = [
         sys.executable,
         "-m",
-        "evals.run_evals",
+        eval_set.runner_module,
         "--jsonl",
         "--dataset",
-        str(DATASET_PATH),
+        str(eval_set.dataset_path()),
         "--output",
-        str(RESULTS_PATH),
+        str(eval_set.results_path()),
     ]
     if subset == "smoke":
         command.append("--smoke")
@@ -71,6 +124,7 @@ def runner_command(subset: str | dict[str, str]) -> list[str]:
             "category": "--category",
             "scenario": "--scenario",
             "case_id": "--case-id",
+            "case_ids": "--case-ids",
             "language": "--language",
         }[key]
         command.extend([flag, value])
@@ -108,9 +162,23 @@ def reset_active_run_for_tests() -> None:
         _run_reserved = False
 
 
+@router.get("/sets")
+def list_sets():
+    return {"default": DEFAULT_SET, "sets": [{"name": name} for name in EVAL_SETS]}
+
+
 @router.get("/coverage")
-async def get_coverage():
-    cases = _load_cases()
+async def get_coverage(set: str = DEFAULT_SET):
+    eval_set = _get_set(set)
+    cases = _load_cases(eval_set)
+    if not eval_set.needs_corpus:
+        return {
+            "total_cases": len(cases),
+            "by_verdict": dict(Counter(case["verdict"] for case in cases)),
+            "by_language": dict(Counter(case["language"] for case in cases)),
+            "judgement_calls": sum(bool(case.get("judgement_call")) for case in cases),
+            "corpus_staleness": {"checked": False, "reason": "This set needs no corpus"},
+        }
     payload = coverage_summary(cases)
     database_url = os.getenv("EVALS_DATABASE_URL")
     if not database_url:
@@ -186,23 +254,26 @@ async def _readline_or_disconnect(
 
 @router.post("/run")
 async def run_evals(req: EvalRunRequest, request: Request):
+    eval_set = _get_set(req.set)
     _reserve_run()
     process: asyncio.subprocess.Process | None = None
     try:
         database_url = os.getenv("EVALS_DATABASE_URL")
-        if not database_url:
+        if eval_set.needs_corpus and not database_url:
             raise HTTPException(status_code=503, detail="Eval DB not configured")
 
-        cases = _load_cases()
+        cases = _load_cases(eval_set)
         try:
             selected = select_cases(cases, req.subset)
         except ValueError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
 
-        try:
-            missing = await asyncio.to_thread(_staleness, selected, database_url)
-        except Exception as exc:
-            raise HTTPException(status_code=503, detail=f"Eval DB unreachable: {exc}") from exc
+        missing: list[dict[str, str]] = []
+        if eval_set.needs_corpus:
+            try:
+                missing = await asyncio.to_thread(_staleness, selected, database_url)
+            except Exception as exc:
+                raise HTTPException(status_code=503, detail=f"Eval DB unreachable: {exc}") from exc
         if missing:
             raise HTTPException(
                 status_code=422,
@@ -213,10 +284,15 @@ async def run_evals(req: EvalRunRequest, request: Request):
             )
 
         child_env = os.environ.copy()
-        child_env["DATABASE_URL"] = database_url
+        if database_url:
+            child_env["DATABASE_URL"] = database_url
         child_env["CHECKPOINTER"] = "memory"
         process = await asyncio.create_subprocess_exec(
-            *runner_command(req.subset),
+            *(
+                runner_command(req.subset)
+                if eval_set.name == DEFAULT_SET
+                else runner_command(req.subset, eval_set)
+            ),
             cwd=ROOT,
             env=child_env,
             stdout=asyncio.subprocess.PIPE,
@@ -264,7 +340,7 @@ async def run_evals(req: EvalRunRequest, request: Request):
             elif len(results) != len(selected):
                 yield _sse({"type": "error", "message": "Eval runner stopped before all cases completed"})
             else:
-                yield _sse(_run_summary(results))
+                yield _sse(eval_set.run_summary(results))
             yield _sse({"type": "done"})
         finally:
             if process.returncode is None:
@@ -296,7 +372,30 @@ async def cancel_evals():
 
 
 @router.get("/results")
-def get_results():
-    if not RESULTS_PATH.exists():
+def get_results(set: str = DEFAULT_SET):
+    path = _get_set(set).results_path()
+    if not path.exists():
         return JSONResponse(status_code=404, content={"available": False})
-    return json.loads(RESULTS_PATH.read_text(encoding="utf-8"))
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+@router.get("/cases")
+def list_cases(set: str = DEFAULT_SET):
+    eval_set = _get_set(set)
+    cases = _load_cases(eval_set)
+    path = eval_set.results_path()
+    saved: dict[str, dict[str, Any]] = {}
+    if path.exists():
+        for result in json.loads(path.read_text(encoding="utf-8")).get("results", []):
+            case_id = (result.get("case") or {}).get("id")
+            if case_id is not None:
+                saved[case_id] = result
+
+    rows = []
+    for case in cases:
+        result = saved.get(case["id"])
+        status = "not run" if result is None else (
+            "passed" if eval_set.case_passed(result) else "failed"
+        )
+        rows.append({**case, "status": status, "result": result})
+    return {"set": eval_set.name, "cases": rows}

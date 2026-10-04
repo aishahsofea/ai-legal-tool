@@ -194,6 +194,11 @@ def _jev_threshold() -> float:
     return value
 
 
+def judge_claims(answer: str, sources: list[dict]) -> _GroundingOutput:
+    """The judge's raw per-claim output. Raises on judge failure; the caller owns fail-open."""
+    return _grounding_llm.invoke(_messages(answer, sources))
+
+
 def _jev_clears(answer: str, sources: list[dict]) -> tuple[bool, bool]:
     """(clears, errored); anything but a clear sends the answer to Ultra."""
     try:
@@ -319,7 +324,7 @@ def grounding_check_node(state: AgentState) -> dict:
 
     try:
         with node_model_event("grounding_check", _MODEL):
-            result: _GroundingOutput = _grounding_llm.invoke(_messages(answer, sources))
+            result = judge_claims(answer, sources)
     except Exception:
         # The judge malfunctioning is not evidence that the answer is ungrounded.
         # Fail open: citation validation already guaranteed structural integrity, so
