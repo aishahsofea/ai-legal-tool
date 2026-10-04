@@ -6,6 +6,7 @@ citation validation, so it can assume citation references are structurally sane.
 """
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import os
@@ -15,8 +16,10 @@ from dotenv import load_dotenv
 from pydantic import BaseModel, Field, field_validator
 
 from agent.citation_keys import canonicalize_citation_key
+from agent.jev_client import JevError, supported_probability
 from agent.llm_factory import make_llm, structured_llm, system_content
 from agent.node_events import node_model_event
+from agent.nodes.claim_splitter import pair_source, split_claims
 from agent.state import AgentState
 from citation_receipts.locator import contains_normalized_sequence, normalized_tokens
 
@@ -64,16 +67,25 @@ _grounding_llm = structured_llm(_llm, _GroundingOutput, node="grounding_check", 
 
 
 def empty_grounding_metrics() -> dict[str, int]:
-    return {"checked": 0, "skipped": 0}
+    return {"checked": 0, "skipped": 0, "jev_skipped_ultra": 0, "jev_errors": 0}
 
 
-def _metrics(state: AgentState, *, checked: int = 0, skipped: int = 0) -> dict[str, int]:
+def _metrics(
+    state: AgentState,
+    *,
+    checked: int = 0,
+    skipped: int = 0,
+    jev_skipped_ultra: int = 0,
+    jev_errors: int = 0,
+) -> dict[str, int]:
     """Accumulate, never overwrite: a retry runs this node again on the same turn,
     and the turn's total is what says how often verification actually happened."""
     current = state.get("grounding_metrics") or {}
     return {
         "checked": int(current.get("checked", 0)) + checked,
         "skipped": int(current.get("skipped", 0)) + skipped,
+        "jev_skipped_ultra": int(current.get("jev_skipped_ultra", 0)) + jev_skipped_ultra,
+        "jev_errors": int(current.get("jev_errors", 0)) + jev_errors,
     }
 
 
@@ -157,7 +169,70 @@ def _messages(answer: str, sources: list[dict]) -> list[dict]:
     ]
 
 
-def _finalise(result: _GroundingOutput, state: AgentState, violations: list[str]) -> dict:
+# Strictest threshold measured in the #201 Phase 3 sweep; an unset or unparseable
+# value must never loosen the gate.
+_DEFAULT_JEV_THRESHOLD = 0.99
+
+
+def _jev_enabled() -> bool:
+    """On by default, but only where Jev is configured (key and model): without them every answer would
+    log an error and count a jev_error for a first pass nobody set up. Set
+    GROUNDING_JEV_ENABLED=off to force it off."""
+    if os.getenv("GROUNDING_JEV_ENABLED", "").strip().casefold() in {"0", "false", "no", "off"}:
+        return False
+    return bool(os.getenv("TYPESAFE_API_KEY") and os.getenv("JEV_MODEL"))
+
+
+def _jev_threshold() -> float:
+    raw = os.getenv("GROUNDING_JEV_THRESHOLD")
+    if raw is None or not raw.strip():
+        return _DEFAULT_JEV_THRESHOLD
+    try:
+        value = float(raw)
+    except ValueError:
+        value = -1.0
+    if not 0.0 < value <= 1.0:
+        logger.warning("Invalid GROUNDING_JEV_THRESHOLD %r; using %s", raw, _DEFAULT_JEV_THRESHOLD)
+        return _DEFAULT_JEV_THRESHOLD
+    return value
+
+
+def _jev_source_text(source: dict) -> str:
+    # Same shape evals/jev_answers.py scored in Phase 3; the threshold was chosen on it.
+    return (
+        f"({source['act_title']}, Act {source['act_number']}, Section {source['section_number']}):\n"
+        f"{source['content']}"
+    )
+
+
+def _jev_clears(answer: str, sources: list[dict]) -> tuple[bool, bool]:
+    """(clears, errored). Clears only when every claim pairs to one source and scores
+    at or above the threshold; anything else sends the whole answer to Ultra.
+
+    A Jev failure is not evidence either way, so it returns errored and the caller
+    falls through to Ultra, which owns the fail-open decision.
+    """
+    claims = split_claims(answer)
+    # No extracted sentence must not clear an answer Ultra might find claims in.
+    if not claims:
+        return False, False
+    threshold = _jev_threshold()
+    try:
+        for claim in claims:
+            source = pair_source(claim, sources)
+            if source is None:
+                return False, False
+            if supported_probability(claim, _jev_source_text(source)) < threshold:
+                return False, False
+    except JevError:
+        logger.warning("Jev first pass failed; falling through to Ultra", exc_info=True)
+        return False, True
+    return True, False
+
+
+def _finalise(
+    result: _GroundingOutput, state: AgentState, violations: list[str], *, jev_errors: int = 0
+) -> dict:
     # An unsupported claim is an evidence gap: the retry should re-retrieve better
     # sources (Phase 4), so these are tracked in evidence_violations too.
     evidence_violations = list(state.get("evidence_violations", []))
@@ -245,7 +320,7 @@ def _finalise(result: _GroundingOutput, state: AgentState, violations: list[str]
         "violations": violations,
         "evidence_violations": evidence_violations,
         "citations": citations,
-        "grounding_metrics": _metrics(state, checked=1),
+        "grounding_metrics": _metrics(state, checked=1, jev_errors=jev_errors),
     }
 
 
@@ -261,6 +336,15 @@ def grounding_check_node(state: AgentState) -> dict:
     if not answer or not sources:
         return {"violations": violations}
 
+    jev_errors = 0
+    if _jev_enabled():
+        # Blocking HTTP, like the Ultra call below it. A cleared answer carries no
+        # evidence quotes: Jev returns a label only.
+        cleared, errored = _jev_clears(answer, sources)
+        if cleared:
+            return {"violations": violations, "grounding_metrics": _metrics(state, checked=1, jev_skipped_ultra=1)}
+        jev_errors = int(errored)
+
     try:
         with node_model_event("grounding_check", _MODEL):
             result: _GroundingOutput = _grounding_llm.invoke(_messages(answer, sources))
@@ -271,8 +355,8 @@ def grounding_check_node(state: AgentState) -> dict:
         # The counter is what keeps this honest — a fail-open nobody can count is
         # indistinguishable from a check that never ran (issue #85).
         logger.warning("grounding_check_node failed; skipping grounding verification", exc_info=True)
-        return {"violations": violations, "grounding_metrics": _metrics(state, skipped=1)}
-    return _finalise(result, state, violations)
+        return {"violations": violations, "grounding_metrics": _metrics(state, skipped=1, jev_errors=jev_errors)}
+    return _finalise(result, state, violations, jev_errors=jev_errors)
 
 
 async def agrounding_check_node(state: AgentState) -> dict:
@@ -285,10 +369,19 @@ async def agrounding_check_node(state: AgentState) -> dict:
     if not answer or not sources:
         return {"violations": violations}
 
+    jev_errors = 0
+    if _jev_enabled():
+        # Blocking HTTP, like the Ultra call below it. A cleared answer carries no
+        # evidence quotes: Jev returns a label only.
+        cleared, errored = await asyncio.to_thread(_jev_clears, answer, sources)
+        if cleared:
+            return {"violations": violations, "grounding_metrics": _metrics(state, checked=1, jev_skipped_ultra=1)}
+        jev_errors = int(errored)
+
     try:
         with node_model_event("grounding_check", _MODEL):
             result: _GroundingOutput = await _grounding_llm.ainvoke(_messages(answer, sources))
     except Exception:
         logger.warning("grounding_check_node failed; skipping grounding verification", exc_info=True)
-        return {"violations": violations, "grounding_metrics": _metrics(state, skipped=1)}
-    return _finalise(result, state, violations)
+        return {"violations": violations, "grounding_metrics": _metrics(state, skipped=1, jev_errors=jev_errors)}
+    return _finalise(result, state, violations, jev_errors=jev_errors)

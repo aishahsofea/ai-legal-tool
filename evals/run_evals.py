@@ -412,16 +412,20 @@ def _grounding_summary(results: list[dict[str, Any]]) -> dict[str, Any]:
     is the only run-level signal that verification did not happen (issue #85).
     Zero on --mode raw/baseline, which never reach the node.
     """
-    checked = skipped = 0
+    checked = skipped = jev_skipped_ultra = jev_errors = 0
     for result in results:
         metrics = result.get("agent", {}).get("grounding_metrics")
         if not isinstance(metrics, dict):
             continue
         checked += int(metrics.get("checked", 0))
         skipped += int(metrics.get("skipped", 0))
+        jev_skipped_ultra += int(metrics.get("jev_skipped_ultra", 0))
+        jev_errors += int(metrics.get("jev_errors", 0))
     return {
         "checked": checked,
         "skipped": skipped,
+        "jev_skipped_ultra": jev_skipped_ultra,
+        "jev_errors": jev_errors,
         "skip_rate": _rate(skipped, checked + skipped),
     }
 
@@ -644,6 +648,11 @@ def main() -> int:
         f"Grounding: {grounding['checked']}/{attempted} verified, "
         f"{grounding['skipped']} failed open = {grounding['skip_rate']:.1%} skipped"
     )
+    if grounding["jev_skipped_ultra"] or grounding["jev_errors"]:
+        print(
+            f"Jev first pass: {grounding['jev_skipped_ultra']} answer(s) cleared without Ultra, "
+            f"{grounding['jev_errors']} error(s) fell through to Ultra"
+        )
     if grounding["skipped"]:
         # Not a gate. A skipped check is a weaker guarantee, not a wrong answer, and
         # failing the suite on it would block a run whose answers are all fine.

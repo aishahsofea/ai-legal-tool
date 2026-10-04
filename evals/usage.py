@@ -8,6 +8,7 @@ from decimal import Decimal
 from langchain_core.callbacks import BaseCallbackHandler
 from langchain_core.tracers.context import register_configure_hook
 
+from agent.jev_client import usage_observer as jev_usage_observer
 from agent.llm_factory import retry_observer
 
 # Nebius dashboard, 2026-09-28. USD per million tokens, (input, output).
@@ -17,6 +18,8 @@ MODEL_PRICES_PER_MILLION_USD: dict[str, tuple[Decimal, Decimal]] = {
     "nvidia/Nemotron-3-Ultra-550b-a55b": (Decimal("1.00"), Decimal("3.00")),
     "nvidia/Nemotron-3_5-Lightning": (Decimal("0.06"), Decimal("0.24")),
     "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B": (Decimal("0.06"), Decimal("0.24")),
+    # TypeSafe price list quoted in #193: $0.042 per million input tokens, output free.
+    "jev-1.13.0": (Decimal("0.042"), Decimal("0")),
 }
 
 _MILLION = Decimal(1_000_000)
@@ -80,6 +83,17 @@ class UsageHandler(BaseCallbackHandler):
         with self._lock:
             self._pending.pop(run_id, None)
 
+    def record_external(self, model: str, node: str, input_tokens: int, output_tokens: int) -> None:
+        """A call that bypasses LangChain (Jev), so on_llm_end never sees it."""
+        with self._lock:
+            for bucket in (
+                self._by_model.setdefault(model, _empty()),
+                self._by_node.setdefault(node, _empty()),
+            ):
+                bucket["calls"] += 1
+                bucket["input_tokens"] += input_tokens
+                bucket["output_tokens"] += output_tokens
+
     def record_retry(self) -> None:
         with self._lock:
             self._retries += 1
@@ -121,9 +135,13 @@ def eval_usage():
     handler = UsageHandler()
     token = _active.set(handler)
     observer_token = retry_observer.set(handler.record_retry)
+    jev_token = jev_usage_observer.set(
+        lambda model, i, o: handler.record_external(model, "jev_first_pass", i, o)
+    )
     try:
         yield handler
     finally:
+        jev_usage_observer.reset(jev_token)
         retry_observer.reset(observer_token)
         _active.reset(token)
 

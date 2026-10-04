@@ -201,3 +201,31 @@ def test_build_report_carries_usage_and_defaults_to_empty():
     default = _build_report("full", [])
     assert default["summary"]["usage"]["total"]["calls"] == 0
     assert default["summary"]["usage"]["partial"] is False
+
+
+def test_jev_call_is_priced_and_attributed_through_the_observer(monkeypatch):
+    import requests
+
+    from agent import jev_client
+
+    class _Response:
+        def raise_for_status(self):
+            pass
+
+        def json(self):
+            return {
+                "answers": {"verdict": {"probabilities": {"supported": 0.9}}},
+                "usage": {"input_tokens": 1_000_000, "output_tokens": 50},
+            }
+
+    monkeypatch.setenv("TYPESAFE_API_KEY", "k")
+    monkeypatch.setenv("JEV_MODEL", "jev-1.13.0")
+    monkeypatch.setattr(requests, "post", lambda *a, **k: _Response())
+
+    with eval_usage() as handler:
+        jev_client.supported_probability("claim", "source")
+
+    summary = handler.summarize()
+    assert summary["by_node"]["jev_first_pass"]["calls"] == 1
+    assert summary["by_model"]["jev-1.13.0"]["usd"] == Decimal("0.042")
+    assert not summary["partial"]
