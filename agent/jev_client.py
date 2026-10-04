@@ -1,7 +1,3 @@
-"""Jev (TypeSafe AI) client for the grounding first pass (#201).
-
-Raises on every failure: the caller owns the fail-open decision.
-"""
 import os
 from collections.abc import Callable
 from contextvars import ContextVar
@@ -10,7 +6,7 @@ import requests
 
 _JEV_URL = "https://api.typesafe.ai/v1/systemone"
 
-# `jev-latest` can change under us, so the model is pinned in config (#190).
+# `jev-latest` can change under us, so the model is pinned in config.
 _FLOATING_MODEL = "jev-latest"
 
 _INSTRUCTIONS = (
@@ -44,7 +40,7 @@ def _model() -> str:
 
 
 def supported_probability(claim: str, source: str, *, timeout: float = 5.0) -> float:
-    """P(`supported`) of `claim` against its cited `source` text. Raises JevError on any failure."""
+    """P(`supported`) of `claim` against `source`; raises JevError on any failure."""
     key = os.getenv("TYPESAFE_API_KEY")
     if not key:
         raise JevError("TYPESAFE_API_KEY is not set")

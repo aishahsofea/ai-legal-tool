@@ -169,14 +169,12 @@ def _messages(answer: str, sources: list[dict]) -> list[dict]:
     ]
 
 
-# Strictest threshold swept in #201; an unset or unparseable value must never loosen the gate.
+# Unset or unparseable values must never loosen the gate.
 _DEFAULT_JEV_THRESHOLD = 0.99
 
 
 def _jev_enabled() -> bool:
-    """On by default, but only where Jev is configured (key and model): without them every answer would
-    log an error and count a jev_error for a first pass nobody set up. Set
-    GROUNDING_JEV_ENABLED=off to force it off."""
+    """On only where Jev is configured, unless GROUNDING_JEV_ENABLED=off."""
     if os.getenv("GROUNDING_JEV_ENABLED", "").strip().casefold() in {"0", "false", "no", "off"}:
         return False
     return bool(os.getenv("TYPESAFE_API_KEY") and os.getenv("JEV_MODEL"))
@@ -197,7 +195,6 @@ def _jev_threshold() -> float:
 
 
 def _jev_source_text(source: dict) -> str:
-    # Keep in step with evals/jev_answers.py: the threshold was chosen on this shape.
     return (
         f"({source['act_title']}, Act {source['act_number']}, Section {source['section_number']}):\n"
         f"{source['content']}"
@@ -205,12 +202,7 @@ def _jev_source_text(source: dict) -> str:
 
 
 def _jev_clears(answer: str, sources: list[dict]) -> tuple[bool, bool]:
-    """(clears, errored). Clears only when every claim pairs to one source and scores
-    at or above the threshold; anything else sends the whole answer to Ultra.
-
-    A Jev failure is not evidence either way, so it returns errored and the caller
-    falls through to Ultra, which owns the fail-open decision.
-    """
+    """(clears, errored); anything but a full clear sends the answer to Ultra."""
     claims = split_claims(answer)
     # No extracted sentence must not clear an answer Ultra might find claims in.
     if not claims:

@@ -1,10 +1,3 @@
-"""Deterministic claim extraction for the Jev first pass (#201).
-
-Mirrors the attribution rule in `grounding_check._SYSTEM`. Over-keeping is safe;
-dropping a real claim is not, since an unextracted claim is never checked once
-Ultra is skipped. Every claim is a slice of the draft, so it passes
-`contains_normalized_sequence(claim, draft)`.
-"""
 from __future__ import annotations
 
 import re
@@ -46,11 +39,7 @@ def _sentences(draft: str) -> list[tuple[str, bool]]:
 
 
 def split_claims(draft: str) -> list[str]:
-    """Sentences naming an Act or section, plus the unattributed ones that follow them.
-
-    Ultra counts unattributed follow-ons ("That permission is subject to a Minister")
-    as claims, so same-paragraph ones are kept. Disclaimers sit after a paragraph break.
-    """
+    """Sentences naming an Act or section, plus same-paragraph follow-ons, as draft slices."""
     claims = []
     previous_kept = False
     for piece, same_paragraph in _sentences(draft):
@@ -69,11 +58,7 @@ _SECTION_MENTION = re.compile(
 
 
 def pair_source(claim: str, sources: list[dict]) -> dict | None:
-    """The one cited source a claim rests on, or None when that is not certain.
-
-    None sends the claim to Ultra rather than guessing: Jev scored against the
-    wrong section is a confident answer to the wrong question.
-    """
+    """The one cited source a claim rests on, or None when uncertain."""
     mentioned = {canonicalize_section_number(m) for m in _SECTION_MENTION.findall(claim)}
     candidates = [
         s for s in sources

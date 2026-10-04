@@ -31,7 +31,6 @@ def encrypt_envelope(payload: dict, key_hex: str = FAKE_RESPONSE_KEY) -> dict:
 
 @pytest.fixture(autouse=True)
 def _no_jev_by_default(monkeypatch):
-    """The Jev first pass is on whenever a key is set, and the developer's .env has one.
-    Without this, any grounding test would make a paid network call."""
+    # The developer's .env sets a key, which would make grounding tests call Jev.
     monkeypatch.delenv("TYPESAFE_API_KEY", raising=False)
     monkeypatch.delenv("JEV_MODEL", raising=False)

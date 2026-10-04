@@ -1,12 +1,7 @@
-"""Jev first pass measured on real answers instead of labelled claims (#201 Phase 3).
-
-Two steps, so the paid agent run and the judge runs repeat apart:
+"""Jev first pass on real answers (#201); `collect` is the paid agent run, `analyse` replays judges.
 
     python3 -m evals.jev_answers collect --limit 8 --out answers.json
     JEV_MODEL=jev-1.13.0 python3 -m evals.jev_answers analyse answers.json [--locate] --out rows.json
-
-`collect` keeps the state grounding_check sees. `analyse` runs Ultra as the
-reference, then replays the first pass.
 """
 from __future__ import annotations
 
@@ -65,7 +60,7 @@ def _covered(ultra_claim: str, sentences: list[str]) -> bool:
 
 
 def _locate_first_quote(client: Any, citations: list[dict]) -> str | None:
-    """matched / not_found / ... for the first evidence quote on the first receipt that has one."""
+    """Match status of the first evidence quote on the first receipt that has one."""
     for citation in citations:
         receipt = citation.get("receipt")
         if not isinstance(receipt, dict) or not receipt.get("evidence"):

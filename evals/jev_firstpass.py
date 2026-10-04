@@ -1,12 +1,4 @@
-"""Jev as a first-pass grounding judge on evals/grounding_dataset.json (#201).
-
-Each labelled claim is wrapped in a short draft, split, and scored by Jev against
-its cited source. A case clears when every extracted claim meets the threshold.
-
-Calls the live Jev API (about $0.00003 per claim). Needs TYPESAFE_API_KEY and
-JEV_MODEL. Splitter recall is measured in evals/jev_answers.py: this set holds
-claims, not drafts.
-"""
+"""Jev first pass on evals/grounding_dataset.json (#201); live API, needs TYPESAFE_API_KEY and JEV_MODEL."""
 from __future__ import annotations
 
 import argparse
