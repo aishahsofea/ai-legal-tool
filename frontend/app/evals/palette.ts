@@ -1,0 +1,18 @@
+export const palette = {
+  ink: "#1e1d1a",
+  muted: "#645f57",
+  line: "#d8d0c2",
+  page: "#f6f1e7",
+  panel: "#fffdf8",
+  panelSoft: "#eee7dc",
+  accent: "#6e2f3a",
+  accentSoft: "#eee0e1",
+  pass: "#b8cdbd",
+  passSoft: "#dfe9e1",
+  partial: "#d7dde6",
+  fail: "#d9aaad",
+  failSoft: "#f1dddd",
+  idle: "#e5ddcf",
+  warning: "#9a5b47",
+  warningSoft: "#f2dfd2",
+};
