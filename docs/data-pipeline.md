@@ -91,6 +91,7 @@ Validates each registered PDF, extracts section-level text with PyMuPDF, writes 
 - Section boundaries detected by Malaysian Act numbering regex (`1.`, `32A.`, `90A.` etc)
   - The letter suffix matches in either case and is stored upper-cased. BM prints `73a.` and EN prints `73A.`. Both give section `73A`
   - It also matches a number AGC prints alone on its own line. With a title above, it is a body section. With no title at all, it is a schedule paragraph
+  - A blank line may sit between a title and its number. The title is then the last non-blank line above the number. If that line ends in `.`, `;`, `:` or `,`, it is a paragraph's last line, not a title. Exception: a line ending in `etc.`, `dsb.` or `dll.` is still a title
 - [Division](../CONTEXT.md#language) boundaries detected from centred headings (`FIRST SCHEDULE`, `JADUAL PERTAMA`, `LIST OF AMENDMENTS`), so a schedule paragraph never overwrites the body section it shares a number with. A schedule reprinting its own instrument (`ARTICLE n`) is numbered by that instrument's scheme instead. Separately, the list of amendments is never split into items
 - Each chunk carries `document_id`, `extraction_id`, `content_sha256`, `page_start`, `page_end`, `division`, Act/title/section/content/language
 - The extraction run records extractor/version/configuration hash, chunk-set hash/count, sidecar identity/status

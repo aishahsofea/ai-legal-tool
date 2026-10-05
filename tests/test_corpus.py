@@ -1081,6 +1081,56 @@ def test_lowercase_lettered_heading_becomes_its_own_upper_cased_section(tmp_path
     assert "73a." not in by_key[("body", "73")]["content"]
 
 
+def test_bare_number_after_a_blank_line_still_takes_the_title_above_it(tmp_path: Path):
+    """#221: AGC prints a blank line between some titles and their bare
+    number (Act 498 BM's "2F.", "22A.", "31H."). The title check read the
+    blank line instead of the title, so the heading folded into the section
+    above."""
+    chunks = _body_chunks(tmp_path, "blank_gap", "105", [
+        "1. This Act may be cited as the Blank Gap Fixture Act 2026.",
+        "This is the text of section one.",
+        "Kuasa Suruhanjaya untuk menentukan bentuk buku",
+        " ",
+        "2F.",
+        "This is the text of section two F.",
+    ])
+    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+
+    assert [chunk["section_number"] for chunk in chunks] == ["1", "2F"]
+    assert by_key[("body", "2F")]["content"].startswith("Kuasa Suruhanjaya")
+
+
+def test_bare_number_after_a_paragraph_and_a_blank_line_is_not_a_heading(tmp_path: Path):
+    """#221: looking back past a blank line must not turn a paragraph's last
+    line into a title. A short sentence ending in a full stop is the
+    case a length check alone lets through."""
+    chunks = _body_chunks(tmp_path, "blank_paragraph", "106", [
+        "1. This Act may be cited as the Blank Paragraph Fixture Act 2026.",
+        "This is the text of section one, and it ends with a short last line",
+        "payable by an employer under this Act.",
+        " ",
+        "5.",
+        "A stray number, not a section heading.",
+    ])
+
+    assert [chunk["section_number"] for chunk in chunks] == ["1"]
+    assert "A stray number" in chunks[0]["content"]
+
+
+def test_title_ending_in_an_abbreviation_still_heads_a_section_after_a_blank_line(tmp_path: Path):
+    chunks = _body_chunks(tmp_path, "blank_abbreviation", "107", [
+        "1. This Act may be cited as the Blank Abbreviation Fixture Act 2026.",
+        "This is the text of section one.",
+        "Penyitaan benda, dsb.",
+        " ",
+        "2.",
+        "This is the text of section two, long enough to clear the content floor.",
+    ])
+
+    assert [chunk["section_number"] for chunk in chunks] == ["1", "2"]
+    assert chunks[1]["content"].startswith("Penyitaan benda, dsb.")
+
+
 def test_uppercase_only_headings_extract_as_before(tmp_path: Path):
     chunks = _body_chunks(tmp_path, "uppercase", "104", [
         "73. A statement is not evidence of the fact unless this Act says so.",
