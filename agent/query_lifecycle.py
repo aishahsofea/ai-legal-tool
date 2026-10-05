@@ -161,6 +161,7 @@ def run_query(query: str, thread_id: str, user_id: str | None = None) -> QueryRe
         "citations": state.get("citations", []),
         "violations": state.get("violations", []),
         "tool_trace": state.get("tool_trace", []),
+        "retrieved_chunks": state.get("retrieved_chunks", []),
     }
     if state.get("reference_trace"):
         result["reference_trace"] = state["reference_trace"]
