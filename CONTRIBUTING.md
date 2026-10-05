@@ -65,7 +65,7 @@ flowchart TB
 | API | `api/main.py`, `api/*.py` | an endpoint or SSE event shape | HTTP entry points, SSE streaming, and the receipts, reference-graph, and evals routers. |
 | FE | `frontend/lib/`, `frontend/app/workspace/` | the chat UI, receipt viewer, graph explorer | Calls the API. Shows chat, citations, and receipts. |
 | LIFE | `agent/query_lifecycle.py`, `agent/graph.py` | graph wiring, cancel/resume, streaming | Runs the compiled LangGraph and turns it into stream events. |
-| ROUTE | `agent/nodes/router.py`, `clarify.py`, `contextualize.py` | query classification, clarification | `router.py` classifies the query. `clarify.py` asks the user a question. `contextualize.py` rewrites the query to stand alone. |
+| ROUTE | `agent/nodes/router.py`, `router_jev.py`, `clarify.py`, `contextualize.py` | query classification, clarification | `router.py` classifies the query. `router_jev.py` is the optional Jev first pass. `clarify.py` asks the user a question. `contextualize.py` rewrites the query to stand alone. |
 | RETR | `agent/nodes/retriever.py`, `agent/retrieval/` | search, tools, reference following | Fetches chunks by search. With `AGENTIC_RETRIEVAL` on, a ReAct agent runs the search instead. |
 | SYNTH | `agent/nodes/synthesiser.py` | the answer prompt, citation building | Drafts the answer and attaches a receipt to each citation. |
 | VERIFY | `agent/nodes/{citation_validator,grounding_check,currency_check,supervisor}.py` | validation, repeal labels, retry rules | `citation_validator` checks citations. `grounding_check` checks claims against sources. `currency_check` labels repealed or amended Acts. `supervisor` retries or finishes. |
@@ -188,8 +188,9 @@ Turn recall and extract on together to see earlier facts. The pruner consolidate
 | `CURRENCY_CHECK_ENABLED` | `on` | off | Adds `currency_check` between `grounding_check` and `supervisor`. Fails open: on error the turn gets no labels; the answer is never blocked. |
 | `GROUNDING_JEV_ENABLED` | `off` | on; runs only with `TYPESAFE_API_KEY` and `JEV_MODEL` set | Set `off` to disable the cheap Jev pass before the grounding judge (#201). |
 | `GROUNDING_JEV_THRESHOLD` | number, above 0 and at most 1 | 0.97 | Minimum P(supported) to skip the judge. Any other value uses 0.97, with a logged warning. |
+| `ROUTER_JEV_ENABLED` | `on` | off | Router first pass through Jev (#212). Runs only with `TYPESAFE_API_KEY` and `JEV_MODEL` set. On a Jev error or timeout (2s) the router falls back to the LLM router. |
 | `TYPESAFE_API_KEY` | key | unset | Credential for the Jev API. |
-| `JEV_MODEL` | model version | unset | Pinned Jev version, e.g. `jev-1.13.0`. Required for the first pass. `jev-latest` is rejected: a floating model can shift scores under a fixed threshold. |
+| `JEV_MODEL` | model version | unset | Pinned Jev version, e.g. `jev-1.13.0`. Required for the grounding and router first passes. `jev-latest` is rejected. A floating model can shift scores under a fixed threshold. |
 
 `currency_check` makes no network call and no model call. For each cited Act, it reads the Act's own metadata timeline (`data/acts_metadata/<act>.json`) and the corpus manifest (`data/pdfs/manifest.json`), attaching one of four Currency Labels to the citation. Labels ship on the SSE `response` event and `QueryResult` as `currency_labels` (only when non-empty) and render as a citation badge (`frontend/components/locus-workspace/Messages.tsx`). See [CONTEXT.md](CONTEXT.md#language), **Currency Label**, for the four outcomes, how each renders, and its limits. Run `python3 -m evals.currency_split` for a current split of the indexed corpus by outcome.
 
@@ -513,7 +514,7 @@ ROUTER_MODEL=nvidia/Nemotron-3_5-Lightning python3 -m evals.run_routing --repeat
 
 - **Flags:** `--case-id`, `--case-ids a,b,c`, `--language`, `--query-type`, `--tag`, `--limit`, `--repeats`, `--jsonl`, `--output`, `--dataset`. `--tag` can repeat or take a comma list. A query matches if it has any listed tag, so `--tag tie_break --tag clarify_boundary` selects 19 queries.
 - **Repeats:** `--repeats N` runs every selected query N times. Accuracy is the mean over all runs. Agreement is the share of queries where every run returned the same `query_type`.
-- **Summary:** `query_type` accuracy, language accuracy, a confusion table, accuracy broken down by tag, by language and by `query_type`, and miss directions (`clarify_to_legal`, `legal_to_clarify`, `legal_to_conversational`, `other`). It also counts runs by router path (`jev`, `llm`, `fallback`). Every run is `llm` until the Jev router lands.
+- **Summary:** `query_type` accuracy, language accuracy, a confusion table, accuracy broken down by tag, by language and by `query_type`, and miss directions (`clarify_to_legal`, `legal_to_clarify`, `legal_to_conversational`, `other`). It also counts runs by router path (`jev`, `llm`, `fallback`). With `ROUTER_JEV_ENABLED` off every run is `llm`. With it on, a `fallback` row means Jev failed and the LLM router answered. Those rows are not Jev results.
 - **Errors:** two cases count as errors, not misses: a router call that raises, and a query that routes to `escalate` (the dataset must not contain one). Errors are left out of accuracy. The run writes `--output` first, then exits 1 if there were any errors, else 0.
 - **Output:** `evals/results/routing.json`.
 - **Language sources:** `python3 -m evals.routing_language` scores three sources of `response_language` against the labels: the LLM router, Jev and fastText. It takes `--sources llm,jev,fasttext`, `--case-ids`, `--language` and `--limit`, and writes `evals/results/routing_language.json`. The `llm` and `jev` sources call live APIs.

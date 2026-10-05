@@ -4,6 +4,8 @@ Router node — classifies the query and detects escalation triggers.
 Escalation is checked with keyword matching before any LLM call.
 Classification uses structured output for the three non-escalation types.
 """
+import asyncio
+import logging
 import os
 import re
 from typing import Literal
@@ -11,12 +13,16 @@ from typing import Literal
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
+from agent.jev_client import JevError
 from agent.llm_factory import make_llm, structured_llm, system_content
 from agent.node_events import node_model_event
+from agent.nodes import router_jev
 from agent.query_policy import trim_history
 from agent.state import AgentState
 
 load_dotenv()
+
+logger = logging.getLogger(__name__)
 
 _ESCALATION_PATTERNS = re.compile(
     r'\bmy client\b|\bam i liable\b|\bi have been charged\b|\bi was charged\b'
@@ -38,6 +44,13 @@ class _RouterOutput(BaseModel):
 
 
 _structured_llm = structured_llm(_llm, _RouterOutput, node="router", model_name=_MODEL)
+
+
+class _ClarifyOutput(BaseModel):
+    clarifying_question: str
+
+
+_clarify_llm = structured_llm(_llm, _ClarifyOutput, node="router", model_name=_MODEL)
 
 _SYSTEM = """You classify legal research queries from Malaysian law practitioners.
 
@@ -75,6 +88,13 @@ Set response_language based on the dominant language of the current query:
 Reply with a brief one-sentence reasoning first, then the most appropriate type and the response language."""
 
 
+_CLARIFY_SYSTEM = """A Malaysian law practitioner's message has legal-research intent but is missing a detail
+without which retrieval cannot proceed — most often a section number with no Act named.
+Write clarifying_question: the single, specific question that would unblock the research
+(e.g. "Which Act's section 5 do you mean?"). Ask in the language of the current query.
+If the conversation history already supplies the missing detail, leave clarifying_question empty."""
+
+
 def _escalation_shortcut(state: AgentState) -> dict | None:
     # Escalation triggers are intentionally checked only against the current user
     # query. Assistant history contains the required legal-advice disclaimer, and
@@ -93,6 +113,34 @@ def _build_messages(state: AgentState) -> list[dict]:
     ]
 
 
+def _clarify_messages(state: AgentState) -> list[dict]:
+    messages = _build_messages(state)
+    messages[0] = {"role": "system", "content": system_content(_CLARIFY_SYSTEM, _MODEL)}
+    return messages
+
+
+# Jev decides query_type but cannot write prose, so this call only words the question.
+# On failure the empty question makes the graph fall through to retrieval (agent/graph.py).
+def write_clarifying_question(state: AgentState) -> str:
+    try:
+        with node_model_event("router", _MODEL):
+            result: _ClarifyOutput = _clarify_llm.invoke(_clarify_messages(state))
+    except Exception:
+        logger.warning("clarify question writer failed; falling through to retrieval", exc_info=True)
+        return ""
+    return (result.clarifying_question or "").strip()
+
+
+async def awrite_clarifying_question(state: AgentState) -> str:
+    try:
+        with node_model_event("router", _MODEL):
+            result: _ClarifyOutput = await _clarify_llm.ainvoke(_clarify_messages(state))
+    except Exception:
+        logger.warning("clarify question writer failed; falling through to retrieval", exc_info=True)
+        return ""
+    return (result.clarifying_question or "").strip()
+
+
 def _result(result: _RouterOutput) -> dict:
     out = {"query_type": result.query_type, "response_language": result.response_language}
     # Only carry the question on the clarify path; keep it empty everywhere else so a
@@ -102,9 +150,35 @@ def _result(result: _RouterOutput) -> dict:
     return out
 
 
+def _jev_result(jev: dict, question: str | None = None) -> dict:
+    logger.info("router jev: %s p=%.3f", jev["query_type"], jev["query_type_probability"])
+    out = {"query_type": jev["query_type"], "response_language": jev["response_language"]}
+    if jev["query_type"] == "clarify":
+        out["clarifying_question"] = question or ""
+    return out
+
+
+def _fell_back(exc: JevError) -> None:
+    logger.warning("router jev failed, falling back to the LLM router: %s", exc)
+    router_jev.report_path("fallback")
+
+
 def router_node(state: AgentState) -> dict:
     if (short := _escalation_shortcut(state)) is not None:
         return short
+    if router_jev.enabled():
+        try:
+            with node_model_event("router", router_jev.model_name()):
+                jev = router_jev.jev_route(state)
+        except JevError as exc:
+            _fell_back(exc)
+        else:
+            if jev is not None:
+                question = write_clarifying_question(state) if jev["query_type"] == "clarify" else None
+                router_jev.report_path("jev")
+                return _jev_result(jev, question)
+    else:
+        router_jev.report_path("llm")
     with node_model_event("router", _MODEL):
         result: _RouterOutput = _structured_llm.invoke(_build_messages(state))
     return _result(result)
@@ -113,6 +187,19 @@ def router_node(state: AgentState) -> dict:
 async def arouter_node(state: AgentState) -> dict:
     if (short := _escalation_shortcut(state)) is not None:
         return short
+    if router_jev.enabled():
+        try:
+            with node_model_event("router", router_jev.model_name()):
+                jev = await asyncio.to_thread(router_jev.jev_route, state)
+        except JevError as exc:
+            _fell_back(exc)
+        else:
+            if jev is not None:
+                question = await awrite_clarifying_question(state) if jev["query_type"] == "clarify" else None
+                router_jev.report_path("jev")
+                return _jev_result(jev, question)
+    else:
+        router_jev.report_path("llm")
     with node_model_event("router", _MODEL):
         result: _RouterOutput = await _structured_llm.ainvoke(_build_messages(state))
     return _result(result)

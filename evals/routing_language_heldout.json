@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "notes": "Held-out set for the #212 Jev language wording. Written after the bm/mixed criteria were tuned on routing_dataset.json, never used to tune them. Labels are proposed, not human-reviewed.",
+  "cases": [
+    {
+      "id": "heldout-lang-01",
+      "language": "bm",
+      "query": "Apakah yang dinyatakan oleh seksyen 302 Kanun Keseksaan?",
+      "query_type": "statute_lookup",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-lang-02",
+      "language": "bm",
+      "query": "Tunjukkan teks seksyen 7 Akta Perlindungan Pengguna 1999.",
+      "query_type": "statute_lookup",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-lang-03",
+      "language": "bm",
+      "query": "Akta mana yang mengawal tuntutan gaji tertunggak oleh pekerja?",
+      "query_type": "topical",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-lang-04",
+      "language": "bm",
+      "query": "Apakah undang-undang yang melindungi data peribadi pelanggan?",
+      "query_type": "topical",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-lang-05",
+      "language": "bm",
+      "query": "Senaraikan semua kesalahan dalam Akta Keselamatan dan Kesihatan Pekerjaan 1994.",
+      "query_type": "provision_extraction",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-lang-06",
+      "language": "bm",
+      "query": "Sila nyatakan semua peruntukan penalti dalam Akta Syarikat 2016.",
+      "query_type": "provision_extraction",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-lang-07",
+      "language": "bm",
+      "query": "Terima kasih, sangat membantu.",
+      "query_type": "conversational",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-lang-08",
+      "language": "bm",
+      "query": "Awak ini sebenarnya apa?",
+      "query_type": "conversational",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-lang-09",
+      "language": "bm",
+      "query": "Apakah hukuman bagi seksyen 12?",
+      "query_type": "clarify",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-lang-10",
+      "language": "bm",
+      "query": "Tolong paparkan seksyen 5 Contracts Act 1950.",
+      "query_type": "statute_lookup",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-lang-11",
+      "language": "mixed",
+      "query": "pls show me seksyen 90A Evidence Act, urgent sikit.",
+      "query_type": "statute_lookup",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-lang-12",
+      "language": "mixed",
+      "query": "what law covers tenant yang tak bayar sewa?",
+      "query_type": "topical",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-lang-13",
+      "language": "mixed",
+      "query": "client saya kena buang kerja tanpa notis, which Act applies?",
+      "query_type": "topical",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-lang-14",
+      "language": "mixed",
+      "query": "Please list semua definition dalam Interpretation Acts 1948 dan 1967.",
+      "query_type": "provision_extraction",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-lang-15",
+      "language": "mixed",
+      "query": "Apa bunyi section 13 Contracts Act 1950 tu?",
+      "query_type": "statute_lookup",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-lang-16",
+      "language": "mixed",
+      "query": "can you check seksyen 44 tu, ada kesalahan ke?",
+      "query_type": "clarify",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-lang-17",
+      "language": "mixed",
+      "query": "okay thanks, awak memang pandai lah.",
+      "query_type": "conversational",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-lang-18",
+      "language": "mixed",
+      "query": "bail untuk kes dadah, undang-undang mana yang govern?",
+      "query_type": "topical",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-lang-19",
+      "language": "mixed",
+      "query": "Boleh explain seksyen 114 Evidence Act 1950?",
+      "query_type": "statute_lookup",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-lang-20",
+      "language": "mixed",
+      "query": "senaraikan all the offences under Computer Crimes Act 1997 please.",
+      "query_type": "provision_extraction",
+      "source": "hand",
+      "review_status": "proposed"
+    }
+  ]
+}
