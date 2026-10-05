@@ -843,6 +843,69 @@ def _chunk_quality(chunks: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+_LETTERED_SECTION_RE = re.compile(r"^\d+[A-Z]+$")
+
+
+def _language_parity_gaps(
+    en_sections: set[str], bm_sections: set[str]
+) -> dict[str, dict[str, list[str]]] | None:
+    """Body sections one language has and the other lacks, or None when matched.
+
+    #74's retention accounting counts a section folded into its neighbour as
+    kept (#218), so only comparing the two languages notices it is missing.
+    Lettered gaps (`73A`) are split from plain ones: a lettered gap in a BM
+    document is the known lowercase-heading failure and must reach zero, while
+    plain gaps (#218's `55`, `93`) have another cause and are only reported.
+    """
+    def split(sections: set[str]) -> dict[str, list[str]]:
+        ordered = sorted(sections, key=_token_sort_key)
+        return {
+            "lettered": [item for item in ordered if _LETTERED_SECTION_RE.match(item)],
+            "other": [item for item in ordered if not _LETTERED_SECTION_RE.match(item)],
+        }
+
+    en_only, bm_only = split(en_sections - bm_sections), split(bm_sections - en_sections)
+    if not any(en_only.values()) and not any(bm_only.values()):
+        return None
+    return {"en_only": en_only, "bm_only": bm_only}
+
+
+def _language_parity(
+    body_sections: dict[tuple[str, str], list[set[str]]],
+) -> dict[str, Any]:
+    """Compare every act extracted in both languages in this run.
+
+    An act-language with several documents in the run has no single section set
+    to compare, so it is listed instead of guessed at.
+    """
+    acts = sorted({act for act, _language in body_sections})
+    compared = 0
+    ambiguous: list[str] = []
+    with_gaps: dict[str, Any] = {}
+    totals = {"en_only_lettered": 0, "en_only_other": 0, "bm_only_lettered": 0, "bm_only_other": 0}
+    for act in acts:
+        en, bm = body_sections.get((act, "en")), body_sections.get((act, "bm"))
+        if not en or not bm:
+            continue
+        if len(en) > 1 or len(bm) > 1:
+            ambiguous.append(act)
+            continue
+        compared += 1
+        gaps = _language_parity_gaps(en[0], bm[0])
+        if gaps is None:
+            continue
+        with_gaps[act] = gaps
+        for side in ("en_only", "bm_only"):
+            for kind in ("lettered", "other"):
+                totals[f"{side}_{kind}"] += len(gaps[side][kind])
+    return {
+        "acts_compared": compared,
+        "acts_skipped_multiple_documents": ambiguous,
+        "acts_with_gaps": with_gaps,
+        "totals": totals,
+    }
+
+
 def diff_chunk_sets(
     old_chunks: Iterable[dict[str, Any]], new_chunks: Iterable[dict[str, Any]]
 ) -> dict[str, Any]:
@@ -1067,6 +1130,7 @@ def extract_manifest(
     chunk_size_distribution: dict[str, int] = {}
     toc_chunks_scanned = 0
     toc_flagged: list[dict[str, str]] = []
+    body_sections: dict[tuple[str, str], list[set[str]]] = {}
     for identity in sorted(selected):
         document = registry.get(identity)
         if document.document_kind != "reprint" or not document.act_title:
@@ -1100,6 +1164,11 @@ def extract_manifest(
             )
         chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
         quality = _chunk_quality(chunks)
+        body_sections.setdefault((document.act_number, document.language), []).append({
+            chunk["section_number"]
+            for chunk in chunks
+            if chunk["division"] == BODY_DIVISION and chunk["section_number"]
+        })
         for chunk in chunks:
             span = chunk["page_end"] - chunk["page_start"] + 1
             bucket = _page_span_bucket(span)
@@ -1166,5 +1235,6 @@ def extract_manifest(
         },
         "chunk_size_distribution": chunk_size_distribution,
         "toc_oracle": {"chunks_scanned": toc_chunks_scanned, "flagged": toc_flagged},
+        "language_parity": _language_parity(body_sections),
     }
     return manifest, report

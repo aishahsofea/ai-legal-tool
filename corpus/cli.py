@@ -108,7 +108,13 @@ def _shadow(args: argparse.Namespace) -> int:
     )
     dump_json(_path(args.output or args.manifest), manifest)
     dump_json(_path(args.report), report)
-    _print({"ready": report["ready"], "blocked": report["blocked"], "report": _path(args.report).as_posix()})
+    parity = report["language_parity"]
+    _print({
+        "ready": report["ready"],
+        "blocked": report["blocked"],
+        "report": _path(args.report).as_posix(),
+        "language_parity": {"acts_compared": parity["acts_compared"], **parity["totals"]},
+    })
     return 0 if not report["blocked"] else 2
 
 

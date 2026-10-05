@@ -16,6 +16,7 @@ from corpus.extraction import (
     _extraction_accounting,
     _is_heading_case,
     _is_scanned,
+    _language_parity_gaps,
     _page_span_bucket,
     chunk_looks_like_table_of_contents,
     diff_chunk_sets,
@@ -1997,3 +1998,79 @@ def test_register_pdf_records_the_md5_the_cdn_verify_compares(tmp_path: Path):
     assert document.md5 == expected
     stored = json.loads(manifest_path.read_text(encoding="utf-8"))
     assert [item["md5"] for item in stored["documents"]] == [expected]
+
+
+def test_language_parity_splits_lettered_gaps_from_plain_ones():
+    """#218: retention accounting counts a section folded into its neighbour as
+    kept, so only comparing the two languages notices it is gone."""
+    gaps = _language_parity_gaps({"1", "2", "2A", "3", "9"}, {"1", "2", "4", "9"})
+
+    assert gaps == {
+        "en_only": {"lettered": ["2A"], "other": ["3"]},
+        "bm_only": {"lettered": [], "other": ["4"]},
+    }
+
+
+def test_language_parity_reports_nothing_for_a_matched_pair():
+    assert _language_parity_gaps({"1", "2A"}, {"2A", "1"}) is None
+
+
+def test_language_parity_sorts_lettered_gaps_numerically():
+    gaps = _language_parity_gaps({"9A", "10A", "73AA", "73A"}, set())
+
+    assert gaps["en_only"]["lettered"] == ["9A", "10A", "73A", "73AA"]
+
+
+def _sectioned_pdf(path: Path, headed_sections: list[tuple[str, str]]) -> None:
+    pages = [[
+        (f"Heading for section {number}", False),
+        (f"{number}. {text} and enough further words to clear the text-layer", False),
+        ("threshold the extractor applies to every page of a document.", False),
+    ] for number, text in headed_sections]
+    _divided_pdf(path, pages)
+
+
+def _registry_of(tmp_path: Path, pdfs: list[tuple[str, str, Path]]) -> CorpusRegistry:
+    documents = []
+    for act, language, path in pdfs:
+        digest = sha256_file(path)
+        documents.append(CorpusDocument(
+            document_id(act, language, digest), act, f"PARITY FIXTURE {act}", language,
+            asset_key(digest), digest, path.stat().st_size, len(fitz.open(path)),
+            f"https://example.test/{act}-{language}.pdf", "", "REPRINT",
+            "2026-01-01T00:00:00Z", local_path=path.name,
+        ))
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256",
+        "documents": [item.to_dict() for item in documents],
+        "extraction_runs": [], "active_documents": [], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    return CorpusRegistry(
+        manifest_path, asset_root=tmp_path / "assets", sidecar_root=tmp_path / "sidecars"
+    )
+
+
+def test_extract_manifest_report_lists_sections_one_language_lacks(tmp_path: Path):
+    (tmp_path / "assets").mkdir()
+    en, bm, solo = (tmp_path / "assets" / name for name in ("en.pdf", "bm.pdf", "solo.pdf"))
+    _sectioned_pdf(en, [("1", "Short title"), ("2", "Interpretation"), ("2A", "Special rule"), ("3", "Repeal")])
+    _sectioned_pdf(bm, [("1", "Tajuk ringkas"), ("2", "Tafsiran")])
+    _sectioned_pdf(solo, [("1", "Only in one language")])
+    registry = _registry_of(
+        tmp_path, [("97", "en", en), ("97", "bm", bm), ("96", "en", solo)]
+    )
+
+    _manifest, report = extract_manifest(
+        registry, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
+    )
+
+    parity = report["language_parity"]
+    assert parity["acts_compared"] == 1
+    assert parity["acts_with_gaps"] == {
+        "97": {
+            "en_only": {"lettered": ["2A"], "other": ["3"]},
+            "bm_only": {"lettered": [], "other": []},
+        }
+    }
+    assert parity["totals"] == {"en_only_lettered": 1, "en_only_other": 1, "bm_only_lettered": 0, "bm_only_other": 0}
