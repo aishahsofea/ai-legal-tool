@@ -1043,6 +1043,78 @@ def test_bare_number_line_after_long_prose_does_not_split_the_section(tmp_path: 
     assert "the rate of contribution" in by_key[("body", "1")]["content"]
 
 
+_ENACTING_LINE = ("BE IT ENACTED by the Parliament of Malaysia as follows:", False)
+
+
+def _body_chunks(tmp_path: Path, name: str, act_number: str, lines: list[str]) -> list[dict]:
+    registry, document = _fixture_document(
+        tmp_path, name, act_number, [[_ENACTING_LINE, *[(line, False) for line in lines]]]
+    )
+    _run, bundle_path = extract_document(
+        registry, document, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
+    )
+    return json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+
+
+def test_lowercase_lettered_heading_becomes_its_own_upper_cased_section(tmp_path: Path):
+    """#218: AGC prints BM section numbers in lowercase ("73a."), and
+    `SECTION_PATTERN` only allowed an uppercase suffix, so 73a's text was
+    folded into section 73 and the #74 accounting still counted it as kept.
+    The token is upper-cased so `73a` and `73A` are the same section."""
+    chunks = _body_chunks(tmp_path, "lowercase", "103", [
+        "73. A statement is not evidence of the fact unless this Act says so.",
+        "This is the rest of the text of section seventy-three.",
+        "73a. A statement made in a document is admissible in civil proceedings.",
+        "This is the text of section seventy-three A.",
+        "73aa. A further lettered section follows the first one.",
+        "This is the text of section seventy-three AA.",
+        "74. The next numbered section begins here.",
+    ])
+    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+
+    assert [chunk["section_number"] for chunk in chunks] == ["73", "73A", "73AA", "74"]
+    assert by_key[("body", "73A")]["path"] == "s.73A"
+    assert "seventy-three A." in by_key[("body", "73A")]["content"]
+    assert "seventy-three A" not in by_key[("body", "73")]["content"]
+    assert "73a." not in by_key[("body", "73")]["content"]
+
+
+def test_uppercase_only_headings_extract_as_before(tmp_path: Path):
+    chunks = _body_chunks(tmp_path, "uppercase", "104", [
+        "73. A statement is not evidence of the fact unless this Act says so.",
+        "This is the rest of the text of section seventy-three.",
+        "73A. A statement made in a document is admissible in civil proceedings.",
+        "This is the text of section seventy-three A.",
+        "73AA. A further lettered section follows the first one.",
+        "This is the text of section seventy-three AA.",
+    ])
+
+    assert [(chunk["section_number"], chunk["path"]) for chunk in chunks] == [
+        ("73", "s.73"), ("73A", "s.73A"), ("73AA", "s.73AA"),
+    ]
+    assert "73A." not in chunks[0]["content"]
+    assert "73A. A statement made in a document" in chunks[1]["content"]
+
+
+def test_lowercase_suffix_is_compared_upper_cased_by_the_watermark(tmp_path: Path):
+    """A bare number is rejected when it sorts below the highest number seen in
+    its division. Compared raw, "73a" > "73B" ("a" > "B" in ASCII), so a stray
+    bare "73a." after 73B would be accepted as a new section."""
+    chunks = _body_chunks(tmp_path, "watermark", "105", [
+        "73B. A statement made in a document is admissible in civil proceedings.",
+        "This is the text of section seventy-three B.",
+        "Interpretation",
+        "73a.",
+        "text that follows a stray bare number below the watermark.",
+        "Short title",
+        "73c.",
+        "This is the text of a real section above the watermark, long enough to be kept.",
+    ])
+
+    assert [chunk["section_number"] for chunk in chunks] == ["73B", "73C"]
+    assert "stray bare number" in chunks[0]["content"]
+
+
 def test_schedule_paragraph_split_across_its_own_line_becomes_its_own_chunk(tmp_path: Path):
     """#94: some schedules number their own paragraphs the same split-line way
     the body's #72 cohort does - Act 4's Fifth Schedule prints "4." /

@@ -24,15 +24,18 @@ from corpus.registry import CorpusRegistry
 from corpus.sidecars import SIDECAR_FORMAT, write_sidecar
 
 EXTRACTOR = "malaysian-act-sections-pymupdf"
-EXTRACTOR_VERSION = "2.7.0"
-SECTION_PATTERN = r"^(\d{1,3}[A-Z]{0,2})\.\s+\S"
+EXTRACTOR_VERSION = "2.8.0"
+# The suffix is case-insensitive because AGC prints BM section numbers in
+# lowercase ("73a."); `_normalize_token` upper-cases it so 73a and 73A are one
+# section in both languages (#218).
+SECTION_PATTERN = r"^(\d{1,3}[A-Za-z]{0,2})\.\s+\S"
 # A number AGC prints alone on its own line: its title on the line above, its
 # text starting on the line after (#72's cohort - 22 documents whose
 # SECTION_PATTERN never matches because nothing follows the dot on that
 # line). Also a schedule's own paragraph marker printed the same way - Act
 # 4's Fifth Schedule numbers its rows "4." / "Barium" / ... - which is why
 # this is shared rather than named for the body alone.
-BARE_ITEM_PATTERN = r"^(\d{1,3}[A-Z]{0,2})\.$"
+BARE_ITEM_PATTERN = r"^(\d{1,3}[A-Za-z]{0,2})\.$"
 # An incorporated instrument's own numbering, reprinted as a schedule rather
 # than translated into Malaysian section numbers - Act 512's Geneva
 # Conventions number "ARTICLE 1", not "1.". Case-sensitive on purpose: Act
@@ -41,8 +44,8 @@ BARE_ITEM_PATTERN = r"^(\d{1,3}[A-Z]{0,2})\.$"
 # onto its own line ("...in Article" / "13."). Measured over the whole
 # document, real headings are uppercase 429 times and a wrapped
 # lowercase-initial reference 3 times - the literal case AGC prints is what
-# tells them apart.
-SCHEDULE_ARTICLE_PATTERN = r"^ARTICLE\s+(\d{1,3}[A-Z]{0,2})\.?$"
+# tells them apart. Only the number's suffix is case-insensitive.
+SCHEDULE_ARTICLE_PATTERN = r"^ARTICLE\s+(\d{1,3}[A-Za-z]{0,2})\.?$"
 # Headings that end one run of numbering and start another: the schedules at the
 # back of an Act restart at 1, and so do the entries in its list of amendments.
 # Anchored at both ends so a body line that merely mentions a schedule is not a
@@ -261,6 +264,10 @@ _REFERENCE_TAIL_WORDS = {
     "clause", "clauses", "part", "parts", "item", "items", "regulation",
     "regulations", "subparagraph", "subparagraphs",
 }
+
+
+def _normalize_token(token: str) -> str:
+    return token.upper()
 
 
 def _token_sort_key(token: str) -> tuple[int, str]:
@@ -540,7 +547,7 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
                 # follows. The same reasoning `_division_boundaries` uses to
                 # drop an out-of-place heading run: the safe direction to be
                 # wrong in.
-                token_key = _token_sort_key(match.group(1))
+                token_key = _token_sort_key(_normalize_token(match.group(1)))
                 if match_is_inline:
                     current_division_max_token = token_key
                 elif current_division_max_token is not None and token_key < current_division_max_token:
@@ -549,7 +556,7 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
                     current_division_max_token = token_key
             if match:
                 flush(page_number)
-                current_num = match.group(1)
+                current_num = _normalize_token(match.group(1))
                 current_item_kind = item_kind
                 current_page = page_number
                 title_candidate = previous_line.strip()
@@ -738,7 +745,7 @@ def _extraction_accounting(pdf: fitz.Document, document: CorpusDocument) -> Extr
                 if match is None and bare_match and not _ends_with_a_reference_word(previous_text):
                     match = bare_match
         if match is not None:
-            token_key = _token_sort_key(match.group(1))
+            token_key = _token_sort_key(_normalize_token(match.group(1)))
             if match_is_inline:
                 current_division_max_token = token_key
             elif current_division_max_token is not None and token_key < current_division_max_token:
@@ -748,7 +755,7 @@ def _extraction_accounting(pdf: fitz.Document, document: CorpusDocument) -> Extr
         if match:
             if current_key is not None:
                 candidates.append((current_key, current_chars, _candidate_eligible(current_chars, current_lines)))
-            current_key = (current_division, match.group(1))
+            current_key = (current_division, _normalize_token(match.group(1)))
             current_chars = len(text)
             current_lines = 1
             previous_text = text
@@ -920,7 +927,7 @@ _TOC_HEADING_RE = re.compile(r"ARRANGEMENT OF (?:SECTIONS|CLAUSES)|SUSUNAN SEKSY
 # contents entry's number takes once PyMuPDF splits it from its title (#72).
 # SECTION_PATTERN already refuses this shape, so a real heading's own line is never
 # mistaken for one: `_extract_chunks` only ever keeps a numbered line with content on it.
-_TOC_ROW_RE = re.compile(r"^\d{1,3}[A-Z]{0,2}\.$")
+_TOC_ROW_RE = re.compile(r"^\d{1,3}[A-Za-z]{0,2}\.$")
 
 
 def chunk_looks_like_table_of_contents(content: str) -> bool:
