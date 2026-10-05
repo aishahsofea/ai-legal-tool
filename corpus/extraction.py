@@ -25,7 +25,7 @@ from corpus.registry import CorpusRegistry
 from corpus.sidecars import SIDECAR_FORMAT, write_sidecar
 
 EXTRACTOR = "malaysian-act-sections-pymupdf"
-EXTRACTOR_VERSION = "2.8.0"
+EXTRACTOR_VERSION = "2.9.0"
 # The suffix is case-insensitive because AGC prints BM section numbers in
 # lowercase ("73a."); `_normalize_token` upper-cases it so 73a and 73A are one
 # section in both languages (#218).
@@ -260,6 +260,30 @@ def _looks_like_title(text: str) -> bool:
     return bool(text) and len(text) < 120 and not text[0].isdigit() and not text.startswith("(")
 
 
+# AGC titles ending in an abbreviation ("Penyitaan benda, dsb.") keep their
+# full stop; any other title never does, so a line ending in one is a
+# paragraph's last line.
+_TITLE_ABBREVIATION_ENDINGS = ("etc.", "dsb.", "dll.")
+
+
+def _title_above(previous_line: str, last_text_line: str) -> str:
+    """The title a bare-number heading takes, or "" when the line above is not one.
+
+    AGC sometimes prints a blank line between the title and its number (#221),
+    so a blank `previous_line` falls back to the last text line. That
+    fallback is stricter than the adjacent case: a paragraph's last line also
+    sits above a blank line, and reading it as a title would split a section
+    at a stray number.
+    """
+    if previous_line:
+        return previous_line if _looks_like_title(previous_line) else ""
+    if not _looks_like_title(last_text_line):
+        return ""
+    if last_text_line.endswith((".", ";", ":", ",")) and not last_text_line.endswith(_TITLE_ABBREVIATION_ENDINGS):
+        return ""
+    return last_text_line
+
+
 _REFERENCE_TAIL_WORDS = {
     "article", "articles", "paragraph", "paragraphs", "section", "sections",
     "clause", "clauses", "part", "parts", "item", "items", "regulation",
@@ -430,6 +454,7 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
     current_schedule_ordinal: int | None = None
     current_item_kind: str | None = None
     previous_line = ""
+    last_text_line = ""
 
     def flush(page_end: int) -> None:
         if current_num is None:
@@ -468,6 +493,7 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
                 # against - #97). Every line here stays out of `current_lines`
                 # so nothing before the boundary can ever start a chunk.
                 previous_line = stripped
+                last_text_line = stripped or last_text_line
                 if (page_number, stripped) == enacting_start:
                     current_division = BODY_DIVISION
                 continue
@@ -494,6 +520,7 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
                 current_page = page_number
                 current_lines = []
                 previous_line = stripped
+                last_text_line = stripped or last_text_line
                 continue
             match = _SECTION_RE.match(stripped)
             match_is_inline = match is not None
@@ -507,7 +534,7 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
                     # otherwise pass this gate the same way a real split
                     # heading does (Act 595's "ARRANGEMENT OF SECTIONS" has no
                     # detectable enacting formula and measured exactly this).
-                    if enacting_start is not None and bare_match and _looks_like_title(previous_line):
+                    if enacting_start is not None and bare_match and _title_above(previous_line, last_text_line):
                         match = bare_match
                 else:
                     match = _SCHEDULE_ARTICLE_RE.match(stripped)
@@ -560,7 +587,7 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
                 current_num = _normalize_token(match.group(1))
                 current_item_kind = item_kind
                 current_page = page_number
-                title_candidate = previous_line.strip()
+                title_candidate = previous_line if match_is_inline or item_kind else _title_above(previous_line, last_text_line)
                 if _looks_like_title(title_candidate):
                     current_lines = [title_candidate, stripped]
                 else:
@@ -568,6 +595,7 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
             elif current_num is not None:
                 current_lines.append(stripped)
             previous_line = stripped
+            last_text_line = stripped or last_text_line
     flush(pdf.page_count)
 
     # Last occurrence still wins, because the table of contents copy of a section
