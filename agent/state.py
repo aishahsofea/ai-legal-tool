@@ -53,6 +53,7 @@ class QueryResult(TypedDict):
     commentary: NotRequired[list[CommentaryNote]]  # enabled-only web commentary notes
     grounding_metrics: NotRequired[dict[str, int]]  # grounding checks completed vs failed open, plus Jev first-pass counters
     currency_labels: NotRequired[list[CurrencyLabel]]  # enabled-only per-citation repeal labels
+    retrieved_chunks: NotRequired[list[dict]]  # eval judge needs them to check citations against what was retrieved
 
 
 class QueryEvent(TypedDict, total=False):

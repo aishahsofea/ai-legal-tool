@@ -88,10 +88,13 @@ Validates each registered PDF, extracts section-level text with PyMuPDF, writes 
 
 - ~700 PDFs, a few minutes (CPU-bound)
 - Scanned PDFs (< 100 chars/page average) and zero-chunk results are explicit blockers
-- Section boundaries detected by Malaysian Act numbering regex (`1.`, `32A.`, `90A.` etc). This also matches a number AGC prints alone on its own line: with a title above, it is a body section; with no title at all, it is a schedule paragraph
+- Section boundaries detected by Malaysian Act numbering regex (`1.`, `32A.`, `90A.` etc)
+  - The letter suffix matches in either case and is stored upper-cased. BM prints `73a.` and EN prints `73A.`. Both give section `73A`
+  - It also matches a number AGC prints alone on its own line. With a title above, it is a body section. With no title at all, it is a schedule paragraph
 - [Division](../CONTEXT.md#language) boundaries detected from centred headings (`FIRST SCHEDULE`, `JADUAL PERTAMA`, `LIST OF AMENDMENTS`), so a schedule paragraph never overwrites the body section it shares a number with. A schedule reprinting its own instrument (`ARTICLE n`) is numbered by that instrument's scheme instead. Separately, the list of amendments is never split into items
 - Each chunk carries `document_id`, `extraction_id`, `content_sha256`, `page_start`, `page_end`, `division`, Act/title/section/content/language
 - The extraction run records extractor/version/configuration hash, chunk-set hash/count, sidecar identity/status
+- The report also lists sections present in one language but not the other. See [`language_parity`](../CONTRIBUTING.md#citation-receipt-assets-and-verification)
 - Report: `data/chunks/extract_report.json`
 
 ### Step 5 — Embed and ingest → pgvector

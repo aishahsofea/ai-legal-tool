@@ -7,6 +7,7 @@ import os
 import re
 import tempfile
 from dataclasses import dataclass, replace
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -24,15 +25,18 @@ from corpus.registry import CorpusRegistry
 from corpus.sidecars import SIDECAR_FORMAT, write_sidecar
 
 EXTRACTOR = "malaysian-act-sections-pymupdf"
-EXTRACTOR_VERSION = "2.7.0"
-SECTION_PATTERN = r"^(\d{1,3}[A-Z]{0,2})\.\s+\S"
+EXTRACTOR_VERSION = "2.8.0"
+# The suffix is case-insensitive because AGC prints BM section numbers in
+# lowercase ("73a."); `_normalize_token` upper-cases it so 73a and 73A are one
+# section in both languages (#218).
+SECTION_PATTERN = r"^(\d{1,3}[A-Za-z]{0,2})\.\s+\S"
 # A number AGC prints alone on its own line: its title on the line above, its
 # text starting on the line after (#72's cohort - 22 documents whose
 # SECTION_PATTERN never matches because nothing follows the dot on that
 # line). Also a schedule's own paragraph marker printed the same way - Act
 # 4's Fifth Schedule numbers its rows "4." / "Barium" / ... - which is why
 # this is shared rather than named for the body alone.
-BARE_ITEM_PATTERN = r"^(\d{1,3}[A-Z]{0,2})\.$"
+BARE_ITEM_PATTERN = r"^(\d{1,3}[A-Za-z]{0,2})\.$"
 # An incorporated instrument's own numbering, reprinted as a schedule rather
 # than translated into Malaysian section numbers - Act 512's Geneva
 # Conventions number "ARTICLE 1", not "1.". Case-sensitive on purpose: Act
@@ -41,8 +45,8 @@ BARE_ITEM_PATTERN = r"^(\d{1,3}[A-Z]{0,2})\.$"
 # onto its own line ("...in Article" / "13."). Measured over the whole
 # document, real headings are uppercase 429 times and a wrapped
 # lowercase-initial reference 3 times - the literal case AGC prints is what
-# tells them apart.
-SCHEDULE_ARTICLE_PATTERN = r"^ARTICLE\s+(\d{1,3}[A-Z]{0,2})\.?$"
+# tells them apart. Only the number's suffix is case-insensitive.
+SCHEDULE_ARTICLE_PATTERN = r"^ARTICLE\s+(\d{1,3}[A-Za-z]{0,2})\.?$"
 # Headings that end one run of numbering and start another: the schedules at the
 # back of an Act restart at 1, and so do the entries in its list of amendments.
 # Anchored at both ends so a body line that merely mentions a schedule is not a
@@ -261,6 +265,10 @@ _REFERENCE_TAIL_WORDS = {
     "clause", "clauses", "part", "parts", "item", "items", "regulation",
     "regulations", "subparagraph", "subparagraphs",
 }
+
+
+def _normalize_token(token: str) -> str:
+    return token.upper()
 
 
 def _token_sort_key(token: str) -> tuple[int, str]:
@@ -540,7 +548,7 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
                 # follows. The same reasoning `_division_boundaries` uses to
                 # drop an out-of-place heading run: the safe direction to be
                 # wrong in.
-                token_key = _token_sort_key(match.group(1))
+                token_key = _token_sort_key(_normalize_token(match.group(1)))
                 if match_is_inline:
                     current_division_max_token = token_key
                 elif current_division_max_token is not None and token_key < current_division_max_token:
@@ -549,7 +557,7 @@ def _extract_chunks(pdf: fitz.Document, document: CorpusDocument) -> list[dict[s
                     current_division_max_token = token_key
             if match:
                 flush(page_number)
-                current_num = match.group(1)
+                current_num = _normalize_token(match.group(1))
                 current_item_kind = item_kind
                 current_page = page_number
                 title_candidate = previous_line.strip()
@@ -738,7 +746,7 @@ def _extraction_accounting(pdf: fitz.Document, document: CorpusDocument) -> Extr
                 if match is None and bare_match and not _ends_with_a_reference_word(previous_text):
                     match = bare_match
         if match is not None:
-            token_key = _token_sort_key(match.group(1))
+            token_key = _token_sort_key(_normalize_token(match.group(1)))
             if match_is_inline:
                 current_division_max_token = token_key
             elif current_division_max_token is not None and token_key < current_division_max_token:
@@ -748,7 +756,7 @@ def _extraction_accounting(pdf: fitz.Document, document: CorpusDocument) -> Extr
         if match:
             if current_key is not None:
                 candidates.append((current_key, current_chars, _candidate_eligible(current_chars, current_lines)))
-            current_key = (current_division, match.group(1))
+            current_key = (current_division, _normalize_token(match.group(1)))
             current_chars = len(text)
             current_lines = 1
             previous_text = text
@@ -836,6 +844,105 @@ def _chunk_quality(chunks: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+_LETTERED_SECTION_RE = re.compile(r"^\d+[A-Z]+$")
+
+
+def _language_parity_gaps(
+    en_sections: set[str], bm_sections: set[str]
+) -> dict[str, dict[str, list[str]]] | None:
+    """Body sections one language has and the other lacks, or None when matched.
+
+    #74's retention accounting counts a section folded into its neighbour as
+    kept (#218), so only comparing the two languages notices it is missing.
+    Lettered gaps (`73A`) are split from plain ones: a lettered gap in a BM
+    document is the known lowercase-heading failure (or one of its two
+    pre-#218 siblings, #220 and #221) and should reach zero, while plain gaps
+    (#218's `55`, `93`) have another cause and are only reported.
+    """
+    def split(sections: set[str]) -> dict[str, list[str]]:
+        ordered = sorted(sections, key=_token_sort_key)
+        return {
+            "lettered": [item for item in ordered if _LETTERED_SECTION_RE.match(item)],
+            "other": [item for item in ordered if not _LETTERED_SECTION_RE.match(item)],
+        }
+
+    en_only, bm_only = split(en_sections - bm_sections), split(bm_sections - en_sections)
+    if not any(en_only.values()) and not any(bm_only.values()):
+        return None
+    return {"en_only": en_only, "bm_only": bm_only}
+
+
+def _timeline_date(value: str) -> date | None:
+    """The registry holds `dd/mm/yyyy` (AGC's own format); ISO is accepted too.
+
+    None when empty or unreadable, so an unknown date never excuses a gap.
+    """
+    for fmt, width in (("%d/%m/%Y", 10), ("%Y-%m-%d", 10)):
+        try:
+            return datetime.strptime(value.strip()[:width], fmt).date()
+        except ValueError:
+            continue
+    return None
+
+
+def _language_parity(
+    body_sections: dict[tuple[str, str], list[tuple[set[str], str]]],
+) -> dict[str, Any]:
+    """Compare every act extracted in both languages in this run.
+
+    An act-language with several documents in the run has no single section set
+    to compare, so it is listed instead of guessed at.
+
+    When the BM reprint is older than the EN one, BM lacks EN's newer lettered
+    sections for a legitimate reason (measured in #218: 119 of 164 remaining
+    lettered gaps). Those move to `edition_older` and stay out of the
+    `en_only_lettered` total, so what is left in that total is a real bug.
+    """
+    acts = sorted({act for act, _language in body_sections})
+    compared = 0
+    ambiguous: list[str] = []
+    with_gaps: dict[str, Any] = {}
+    totals = {
+        "en_only_lettered": 0, "en_only_other": 0, "bm_only_lettered": 0, "bm_only_other": 0,
+        "edition_older": 0,
+    }
+    for act in acts:
+        en, bm = body_sections.get((act, "en")), body_sections.get((act, "bm"))
+        if not en or not bm:
+            continue
+        if len(en) > 1 or len(bm) > 1:
+            ambiguous.append(act)
+            continue
+        compared += 1
+        (en_sections, en_date), (bm_sections, bm_date) = en[0], bm[0]
+        gaps = _language_parity_gaps(en_sections, bm_sections)
+        if gaps is None:
+            continue
+        en_day, bm_day = _timeline_date(en_date), _timeline_date(bm_date)
+        bm_is_older = en_day is not None and bm_day is not None and bm_day < en_day
+        edition_older = gaps["en_only"]["lettered"] if bm_is_older else []
+        entry = {
+            "en_only": {
+                "lettered": [] if bm_is_older else gaps["en_only"]["lettered"],
+                "other": gaps["en_only"]["other"],
+            },
+            "bm_only": gaps["bm_only"],
+            "edition_older": edition_older,
+            "timeline_date": {"en": en_date, "bm": bm_date},
+        }
+        with_gaps[act] = entry
+        for side in ("en_only", "bm_only"):
+            for kind in ("lettered", "other"):
+                totals[f"{side}_{kind}"] += len(entry[side][kind])
+        totals["edition_older"] += len(edition_older)
+    return {
+        "acts_compared": compared,
+        "acts_skipped_multiple_documents": ambiguous,
+        "acts_with_gaps": with_gaps,
+        "totals": totals,
+    }
+
+
 def diff_chunk_sets(
     old_chunks: Iterable[dict[str, Any]], new_chunks: Iterable[dict[str, Any]]
 ) -> dict[str, Any]:
@@ -920,7 +1027,7 @@ _TOC_HEADING_RE = re.compile(r"ARRANGEMENT OF (?:SECTIONS|CLAUSES)|SUSUNAN SEKSY
 # contents entry's number takes once PyMuPDF splits it from its title (#72).
 # SECTION_PATTERN already refuses this shape, so a real heading's own line is never
 # mistaken for one: `_extract_chunks` only ever keeps a numbered line with content on it.
-_TOC_ROW_RE = re.compile(r"^\d{1,3}[A-Z]{0,2}\.$")
+_TOC_ROW_RE = re.compile(r"^\d{1,3}[A-Za-z]{0,2}\.$")
 
 
 def chunk_looks_like_table_of_contents(content: str) -> bool:
@@ -1060,6 +1167,7 @@ def extract_manifest(
     chunk_size_distribution: dict[str, int] = {}
     toc_chunks_scanned = 0
     toc_flagged: list[dict[str, str]] = []
+    body_sections: dict[tuple[str, str], list[tuple[set[str], str]]] = {}
     for identity in sorted(selected):
         document = registry.get(identity)
         if document.document_kind != "reprint" or not document.act_title:
@@ -1093,6 +1201,14 @@ def extract_manifest(
             )
         chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
         quality = _chunk_quality(chunks)
+        body_sections.setdefault((document.act_number, document.language), []).append((
+            {
+                chunk["section_number"]
+                for chunk in chunks
+                if chunk["division"] == BODY_DIVISION and chunk["section_number"]
+            },
+            document.timeline_date,
+        ))
         for chunk in chunks:
             span = chunk["page_end"] - chunk["page_start"] + 1
             bucket = _page_span_bucket(span)
@@ -1159,5 +1275,6 @@ def extract_manifest(
         },
         "chunk_size_distribution": chunk_size_distribution,
         "toc_oracle": {"chunks_scanned": toc_chunks_scanned, "flagged": toc_flagged},
+        "language_parity": _language_parity(body_sections),
     }
     return manifest, report

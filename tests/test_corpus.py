@@ -16,6 +16,8 @@ from corpus.extraction import (
     _extraction_accounting,
     _is_heading_case,
     _is_scanned,
+    _language_parity,
+    _language_parity_gaps,
     _page_span_bucket,
     chunk_looks_like_table_of_contents,
     diff_chunk_sets,
@@ -1043,6 +1045,78 @@ def test_bare_number_line_after_long_prose_does_not_split_the_section(tmp_path: 
     assert "the rate of contribution" in by_key[("body", "1")]["content"]
 
 
+_ENACTING_LINE = ("BE IT ENACTED by the Parliament of Malaysia as follows:", False)
+
+
+def _body_chunks(tmp_path: Path, name: str, act_number: str, lines: list[str]) -> list[dict]:
+    registry, document = _fixture_document(
+        tmp_path, name, act_number, [[_ENACTING_LINE, *[(line, False) for line in lines]]]
+    )
+    _run, bundle_path = extract_document(
+        registry, document, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
+    )
+    return json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
+
+
+def test_lowercase_lettered_heading_becomes_its_own_upper_cased_section(tmp_path: Path):
+    """#218: AGC prints BM section numbers in lowercase ("73a."), and
+    `SECTION_PATTERN` only allowed an uppercase suffix, so 73a's text was
+    folded into section 73 and the #74 accounting still counted it as kept.
+    The token is upper-cased so `73a` and `73A` are the same section."""
+    chunks = _body_chunks(tmp_path, "lowercase", "103", [
+        "73. A statement is not evidence of the fact unless this Act says so.",
+        "This is the rest of the text of section seventy-three.",
+        "73a. A statement made in a document is admissible in civil proceedings.",
+        "This is the text of section seventy-three A.",
+        "73aa. A further lettered section follows the first one.",
+        "This is the text of section seventy-three AA.",
+        "74. The next numbered section begins here.",
+    ])
+    by_key = {(chunk["division"], chunk["section_number"]): chunk for chunk in chunks}
+
+    assert [chunk["section_number"] for chunk in chunks] == ["73", "73A", "73AA", "74"]
+    assert by_key[("body", "73A")]["path"] == "s.73A"
+    assert "seventy-three A." in by_key[("body", "73A")]["content"]
+    assert "seventy-three A" not in by_key[("body", "73")]["content"]
+    assert "73a." not in by_key[("body", "73")]["content"]
+
+
+def test_uppercase_only_headings_extract_as_before(tmp_path: Path):
+    chunks = _body_chunks(tmp_path, "uppercase", "104", [
+        "73. A statement is not evidence of the fact unless this Act says so.",
+        "This is the rest of the text of section seventy-three.",
+        "73A. A statement made in a document is admissible in civil proceedings.",
+        "This is the text of section seventy-three A.",
+        "73AA. A further lettered section follows the first one.",
+        "This is the text of section seventy-three AA.",
+    ])
+
+    assert [(chunk["section_number"], chunk["path"]) for chunk in chunks] == [
+        ("73", "s.73"), ("73A", "s.73A"), ("73AA", "s.73AA"),
+    ]
+    assert "73A." not in chunks[0]["content"]
+    assert "73A. A statement made in a document" in chunks[1]["content"]
+
+
+def test_lowercase_suffix_is_compared_upper_cased_by_the_watermark(tmp_path: Path):
+    """A bare number is rejected when it sorts below the highest number seen in
+    its division. Compared raw, "73a" > "73B" ("a" > "B" in ASCII), so a stray
+    bare "73a." after 73B would be accepted as a new section."""
+    chunks = _body_chunks(tmp_path, "watermark", "105", [
+        "73B. A statement made in a document is admissible in civil proceedings.",
+        "This is the text of section seventy-three B.",
+        "Interpretation",
+        "73a.",
+        "text that follows a stray bare number below the watermark.",
+        "Short title",
+        "73c.",
+        "This is the text of a real section above the watermark, long enough to be kept.",
+    ])
+
+    assert [chunk["section_number"] for chunk in chunks] == ["73B", "73C"]
+    assert "stray bare number" in chunks[0]["content"]
+
+
 def test_schedule_paragraph_split_across_its_own_line_becomes_its_own_chunk(tmp_path: Path):
     """#94: some schedules number their own paragraphs the same split-line way
     the body's #72 cohort does - Act 4's Fifth Schedule prints "4." /
@@ -1925,3 +1999,154 @@ def test_register_pdf_records_the_md5_the_cdn_verify_compares(tmp_path: Path):
     assert document.md5 == expected
     stored = json.loads(manifest_path.read_text(encoding="utf-8"))
     assert [item["md5"] for item in stored["documents"]] == [expected]
+
+
+def test_language_parity_splits_lettered_gaps_from_plain_ones():
+    """#218: retention accounting counts a section folded into its neighbour as
+    kept, so only comparing the two languages notices it is gone."""
+    gaps = _language_parity_gaps({"1", "2", "2A", "3", "9"}, {"1", "2", "4", "9"})
+
+    assert gaps == {
+        "en_only": {"lettered": ["2A"], "other": ["3"]},
+        "bm_only": {"lettered": [], "other": ["4"]},
+    }
+
+
+def test_language_parity_reports_nothing_for_a_matched_pair():
+    assert _language_parity_gaps({"1", "2A"}, {"2A", "1"}) is None
+
+
+def test_language_parity_sorts_lettered_gaps_numerically():
+    gaps = _language_parity_gaps({"9A", "10A", "73AA", "73A"}, set())
+
+    assert gaps["en_only"]["lettered"] == ["9A", "10A", "73A", "73AA"]
+
+
+def _sectioned_pdf(path: Path, headed_sections: list[tuple[str, str]]) -> None:
+    pages = [[
+        (f"Heading for section {number}", False),
+        (f"{number}. {text} and enough further words to clear the text-layer", False),
+        ("threshold the extractor applies to every page of a document.", False),
+    ] for number, text in headed_sections]
+    _divided_pdf(path, pages)
+
+
+def _registry_of(
+    tmp_path: Path, pdfs: list[tuple[str, str, Path]], dates: dict[tuple[str, str], str] | None = None
+) -> CorpusRegistry:
+    dates = dates or {}
+    documents = []
+    for act, language, path in pdfs:
+        digest = sha256_file(path)
+        documents.append(CorpusDocument(
+            document_id(act, language, digest), act, f"PARITY FIXTURE {act}", language,
+            asset_key(digest), digest, path.stat().st_size, len(fitz.open(path)),
+            f"https://example.test/{act}-{language}.pdf", dates.get((act, language), ""), "REPRINT",
+            "2026-01-01T00:00:00Z", local_path=path.name,
+        ))
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({
+        "schema_version": 2, "identity_algorithm": "sha256",
+        "documents": [item.to_dict() for item in documents],
+        "extraction_runs": [], "active_documents": [], "aliases": {}, "source_observations": [],
+    }), encoding="utf-8")
+    return CorpusRegistry(
+        manifest_path, asset_root=tmp_path / "assets", sidecar_root=tmp_path / "sidecars"
+    )
+
+
+def test_extract_manifest_report_lists_sections_one_language_lacks(tmp_path: Path):
+    (tmp_path / "assets").mkdir()
+    en, bm, solo = (tmp_path / "assets" / name for name in ("en.pdf", "bm.pdf", "solo.pdf"))
+    _sectioned_pdf(en, [("1", "Short title"), ("2", "Interpretation"), ("2A", "Special rule"), ("3", "Repeal")])
+    _sectioned_pdf(bm, [("1", "Tajuk ringkas"), ("2", "Tafsiran")])
+    _sectioned_pdf(solo, [("1", "Only in one language")])
+    registry = _registry_of(
+        tmp_path, [("97", "en", en), ("97", "bm", bm), ("96", "en", solo)]
+    )
+
+    _manifest, report = extract_manifest(
+        registry, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
+    )
+
+    parity = report["language_parity"]
+    assert parity["acts_compared"] == 1
+    assert parity["acts_with_gaps"] == {
+        "97": {
+            "en_only": {"lettered": ["2A"], "other": ["3"]},
+            "bm_only": {"lettered": [], "other": []},
+            "edition_older": [],
+            "timeline_date": {"en": "", "bm": ""},
+        }
+    }
+    assert parity["totals"] == {
+        "en_only_lettered": 1, "en_only_other": 1, "bm_only_lettered": 0, "bm_only_other": 0,
+        "edition_older": 0,
+    }
+
+
+def test_language_parity_sets_aside_lettered_gaps_when_the_bm_reprint_is_older():
+    """An older BM reprint predates EN's new sections, so it lacks them
+    legitimately. They stay listed but must not count as the #218 bug."""
+    parity = _language_parity({
+        ("56", "en"): [({"1", "73A", "90F"}, "18/11/2023")],
+        ("56", "bm"): [({"1"}, "11/08/2019")],
+    })
+
+    assert parity["acts_with_gaps"]["56"] == {
+        "en_only": {"lettered": [], "other": []},
+        "bm_only": {"lettered": [], "other": []},
+        "edition_older": ["73A", "90F"],
+        "timeline_date": {"en": "18/11/2023", "bm": "11/08/2019"},
+    }
+    assert parity["totals"]["en_only_lettered"] == 0
+    assert parity["totals"]["edition_older"] == 2
+
+
+def test_language_parity_counts_a_real_lettered_gap_when_bm_is_not_older():
+    for en_date, bm_date in [
+        ("11/08/2019", "11/08/2019"),
+        ("11/08/2019", "18/11/2023"),
+        ("", "11/08/2019"),
+        ("18/11/2023", "not a date"),
+    ]:
+        parity = _language_parity({
+            ("56", "en"): [({"1", "73A"}, en_date)],
+            ("56", "bm"): [({"1"}, bm_date)],
+        })
+
+        assert parity["acts_with_gaps"]["56"]["en_only"]["lettered"] == ["73A"], (en_date, bm_date)
+        assert parity["acts_with_gaps"]["56"]["edition_older"] == []
+        assert parity["totals"]["en_only_lettered"] == 1
+
+
+def test_language_parity_keeps_plain_and_bm_only_gaps_when_bm_is_older():
+    parity = _language_parity({
+        ("56", "en"): [({"1", "2", "2A"}, "2023-11-18")],
+        ("56", "bm"): [({"1", "9"}, "2019-08-11")],
+    })
+
+    entry = parity["acts_with_gaps"]["56"]
+    assert entry["edition_older"] == ["2A"]
+    assert entry["en_only"]["other"] == ["2"]
+    assert entry["bm_only"]["other"] == ["9"]
+
+
+def test_extract_manifest_report_marks_an_older_bm_edition(tmp_path: Path):
+    (tmp_path / "assets").mkdir()
+    en, bm = (tmp_path / "assets" / name for name in ("en.pdf", "bm.pdf"))
+    _sectioned_pdf(en, [("1", "Short title"), ("2", "Interpretation"), ("2A", "Special rule")])
+    _sectioned_pdf(bm, [("1", "Tajuk ringkas"), ("2", "Tafsiran")])
+    registry = _registry_of(
+        tmp_path, [("97", "en", en), ("97", "bm", bm)],
+        dates={("97", "en"): "18/11/2023", ("97", "bm"): "11/08/2019"},
+    )
+
+    _manifest, report = extract_manifest(
+        registry, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
+    )
+
+    parity = report["language_parity"]
+    assert parity["acts_with_gaps"]["97"]["edition_older"] == ["2A"]
+    assert parity["totals"]["en_only_lettered"] == 0
+    assert parity["totals"]["edition_older"] == 1

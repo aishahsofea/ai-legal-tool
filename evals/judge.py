@@ -1,4 +1,4 @@
-"""Claude-based judge for eval responses."""
+"""LLM judge for eval responses (Nemotron Lightning by default)."""
 from __future__ import annotations
 
 import json
@@ -33,7 +33,7 @@ class JudgeContext:
     expected_sections: list[dict[str, Any]] | None = None
 
 
-_MODEL = os.getenv("EVALS_JUDGE_MODEL", "claude-haiku-4-5-20251001")
+_MODEL = os.getenv("EVALS_JUDGE_MODEL", "nvidia/Nemotron-3_5-Lightning")
 # Through the factory so EVALS_JUDGE_MODEL can name a non-Claude judge (e.g. a Nemotron
 # model on CHAT_BASE_URL), and so a reasoning model gets the json_mode retry.
 _judge_llm = structured_llm(make_llm(_MODEL), JudgeVerdict, node="judge", model_name=_MODEL)

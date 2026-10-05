@@ -75,7 +75,7 @@ def _run_full_agent(query: str, history: list[dict[str, Any]] | None = None) -> 
         "citations": result["citations"],
         "violations": result["violations"],
         "retry_count": 0,
-        "retrieved_chunks": [],
+        "retrieved_chunks": result.get("retrieved_chunks", []),
         "tool_trace": result.get("tool_trace", []),
     }
     if result.get("reference_trace"):
