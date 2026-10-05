@@ -41,37 +41,51 @@ def _model() -> str:
     return model
 
 
-def supported_probability(answer: str, sources: list[dict], *, timeout: float = 5.0) -> float:
-    """P(every claim in `answer` is `supported`) against the cited `sources`; raises JevError on any failure."""
+def _post(questions: dict, state: str, timeout: float) -> dict:
+    """Raises JevError on any failure; returns the response's `answers` dict."""
     key = os.getenv("TYPESAFE_API_KEY")
     if not key:
         raise JevError("TYPESAFE_API_KEY is not set")
     model = _model()
 
-    body = {
-        # Same payload as the Ultra judge's `_messages`, so both judges see the same answer.
-        "state": json.dumps({"cited_sources": sources, "answer": answer}, ensure_ascii=False, indent=2),
-        "model": model,
-        "questions": {
-            "verdict": {"type": "choice", "instructions": _INSTRUCTIONS, "criteria": _CRITERIA}
-        },
-    }
+    body = {"state": state, "model": model, "questions": questions}
     try:
         response = requests.post(
             _JEV_URL, json=body, headers={"Authorization": f"Bearer {key}"}, timeout=timeout
         )
         response.raise_for_status()
         payload = response.json()
-        probabilities = payload["answers"]["verdict"]["probabilities"]
-        probability = float(probabilities["supported"])
+        answers = payload["answers"]
         usage = payload.get("usage") or {}
+        observer = usage_observer.get()
+        if observer is not None:
+            observer(model, int(usage.get("input_tokens", 0)), int(usage.get("output_tokens", 0)))
     except requests.exceptions.RequestException as exc:
         raise JevError(f"Jev request failed: {exc}") from exc
+    except (ValueError, KeyError, TypeError, AttributeError) as exc:
+        raise JevError(f"Jev response was malformed: {exc!r}") from exc
+    if not isinstance(answers, dict):
+        raise JevError("Jev response `answers` is not an object")
+    return answers
+
+
+def classify(state: str, questions: dict, *, timeout: float = 5.0) -> dict:
+    """Ask `questions` of `state`; returns the `answers` dict. Raises JevError on any failure."""
+    return _post(questions, state, timeout)
+
+
+def supported_probability(answer: str, sources: list[dict], *, timeout: float = 5.0) -> float:
+    """P(every claim in `answer` is `supported`) against the cited `sources`; raises JevError on any failure."""
+    answers = _post(
+        {"verdict": {"type": "choice", "instructions": _INSTRUCTIONS, "criteria": _CRITERIA}},
+        # Same payload as the Ultra judge's `_messages`, so both judges see the same answer.
+        json.dumps({"cited_sources": sources, "answer": answer}, ensure_ascii=False, indent=2),
+        timeout,
+    )
+    try:
+        probability = float(answers["verdict"]["probabilities"]["supported"])
     except (ValueError, KeyError, TypeError) as exc:
         raise JevError(f"Jev response had no usable `supported` probability: {exc!r}") from exc
     if not 0.0 <= probability <= 1.0:
         raise JevError(f"Jev returned an out-of-range probability: {probability}")
-    observer = usage_observer.get()
-    if observer is not None:
-        observer(model, int(usage.get("input_tokens", 0)), int(usage.get("output_tokens", 0)))
     return probability

@@ -67,6 +67,11 @@ def summarise(results: list[dict[str, Any]]) -> dict[str, Any]:
         "by_tag": _grouped(scored, lambda e: e.get("tags", [])),
         "by_language": _grouped(scored, lambda e: [e["label_language"]]),
         "by_query_type": _grouped(scored, lambda e: [e["label_type"]]),
+        # A gate run must show zero `fallback` rows, or its numbers are the LLM router's.
+        "by_path": {
+            path: sum(e.get("route_path", "llm") == path for e in scored)
+            for path in ("jev", "llm", "fallback")
+        },
         "miss_directions": {
             key: directions.get(key, 0)
             for key in ("clarify_to_legal", "legal_to_clarify", "legal_to_conversational", "other")

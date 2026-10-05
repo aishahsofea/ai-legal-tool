@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, patch
 
 import requests
 
-from agent.jev_client import JevError, supported_probability
+from agent.jev_client import JevError, classify, supported_probability
 
 _ENV = {"TYPESAFE_API_KEY": "test-key", "JEV_MODEL": "jev-1.13.0"}
 
@@ -85,6 +85,56 @@ class JevClientTests(unittest.TestCase):
             ) as post:
                 with self.assertRaises(JevError):
                     supported_probability("a", [])
+            post.assert_not_called()
+
+    def test_classify_returns_answers_and_sends_questions(self):
+        answers = {"query_type": {"choice": "topical", "probabilities": {"topical": 0.9}}}
+        questions = {"query_type": {"type": "choice", "instructions": "x", "criteria": {"topical": "y"}}}
+        with patch.dict(os.environ, _ENV), patch(
+            "agent.jev_client.requests.post", return_value=_response({"answers": answers})
+        ) as post:
+            self.assertEqual(classify("the query", questions, timeout=2.0), answers)
+
+        body = post.call_args.kwargs["json"]
+        self.assertEqual(body["questions"], questions)
+        self.assertEqual(body["state"], "the query")
+        self.assertEqual(body["model"], "jev-1.13.0")
+        self.assertEqual(post.call_args.kwargs["timeout"], 2.0)
+
+    def test_classify_reports_usage_to_observer(self):
+        from agent.jev_client import usage_observer
+
+        seen = []
+        body = {"answers": {}, "usage": {"input_tokens": 7, "output_tokens": 2}}
+        token = usage_observer.set(lambda *args: seen.append(args))
+        try:
+            with patch.dict(os.environ, _ENV), patch(
+                "agent.jev_client.requests.post", return_value=_response(body)
+            ):
+                classify("s", {})
+        finally:
+            usage_observer.reset(token)
+        self.assertEqual(seen, [("jev-1.13.0", 7, 2)])
+
+    def test_classify_bad_shape_raises(self):
+        for body in ({}, {"answers": None}, {"answers": []}, None):
+            with self.subTest(body=body), patch.dict(os.environ, _ENV), patch(
+                "agent.jev_client.requests.post", return_value=_response(body)
+            ):
+                with self.assertRaises(JevError):
+                    classify("s", {})
+
+    def test_classify_missing_key_or_floating_model_raises_before_any_request(self):
+        cases = (
+            {k: v for k, v in _ENV.items() if k != "TYPESAFE_API_KEY"},
+            {**_ENV, "JEV_MODEL": "jev-latest"},
+        )
+        for env in cases:
+            with self.subTest(env=env), patch.dict(os.environ, env, clear=True), patch(
+                "agent.jev_client.requests.post"
+            ) as post:
+                with self.assertRaises(JevError):
+                    classify("s", {})
             post.assert_not_called()
 
 

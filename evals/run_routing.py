@@ -52,6 +52,8 @@ def score_case(
         type_match=got == case["query_type"],
         language_match=out["response_language"] == case["language"],
         miss_direction=miss_direction(case["query_type"], got),
+        # Router has no Jev path yet; every row is the LLM router until it exposes `route_path`.
+        route_path=out.get("route_path", "llm"),
     )
     return entry
 
@@ -107,7 +109,8 @@ def _print_summary(summary: dict[str, Any]) -> None:
     _print_group("By tag", summary["by_tag"])
     _print_group("By language", summary["by_language"])
     _print_group("By query_type", summary["by_query_type"])
-    print(f"\nMiss directions: {summary['miss_directions']}")
+    print(f"\nRoute paths: {summary['by_path']}")
+    print(f"Miss directions: {summary['miss_directions']}")
     if (agreement := summary["agreement"]) is not None:
         print(f"Agreement: {agreement['agree']}/{agreement['cases']} = {agreement['rate']:.1%}")
 

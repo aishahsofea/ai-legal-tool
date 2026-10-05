@@ -774,7 +774,7 @@
     },
     {
       "id": "route-hand-48",
-      "language": "mixed",
+      "language": "bm",
       "query": "hai, nama saya Aina.",
       "query_type": "conversational",
       "source": "hand",
@@ -782,7 +782,7 @@
     },
     {
       "id": "route-hand-49",
-      "language": "mixed",
+      "language": "en",
       "query": "thanks ya, appreciate it.",
       "query_type": "conversational",
       "source": "hand",

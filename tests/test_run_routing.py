@@ -64,6 +64,17 @@ def test_summary_agreement_over_repeats():
     assert s["agreement"] == {"cases": 2, "agree": 1, "rate": 0.5}
 
 
+def test_summary_counts_route_paths():
+    results = [
+        _entry("a", "topical", "topical", route_path="jev"),
+        _entry("b", "topical", "topical", route_path="jev"),
+        _entry("c", "topical", "topical", route_path="fallback"),
+        _entry("d", "topical", "topical"),
+        _error("e"),
+    ]
+    assert summarise(results)["by_path"] == {"jev": 2, "llm": 1, "fallback": 1}
+
+
 def test_summary_empty_and_all_error_no_zero_division():
     for results in ([], [_error("a")]):
         s = summarise(results)
@@ -115,6 +126,12 @@ def test_raising_case_is_error_exit_1_and_output_written(monkeypatch, tmp_path):
     assert code == 1
     assert data["summary"]["errors"] == 1
     assert data["summary"]["by_error"] == {"RuntimeError: timeout": 1}
+
+
+def test_score_case_records_route_path():
+    assert score_case(_DATASET[0], _fake(), 0)["route_path"] == "llm"
+    jev = lambda case: {**_fake()(case), "route_path": "jev"}
+    assert score_case(_DATASET[0], jev, 0)["route_path"] == "jev"
 
 
 def test_escalate_is_error_not_miss():
