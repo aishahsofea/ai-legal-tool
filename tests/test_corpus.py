@@ -16,6 +16,7 @@ from corpus.extraction import (
     _extraction_accounting,
     _is_heading_case,
     _is_scanned,
+    _language_parity,
     _language_parity_gaps,
     _page_span_bucket,
     chunk_looks_like_table_of_contents,
@@ -2030,14 +2031,17 @@ def _sectioned_pdf(path: Path, headed_sections: list[tuple[str, str]]) -> None:
     _divided_pdf(path, pages)
 
 
-def _registry_of(tmp_path: Path, pdfs: list[tuple[str, str, Path]]) -> CorpusRegistry:
+def _registry_of(
+    tmp_path: Path, pdfs: list[tuple[str, str, Path]], dates: dict[tuple[str, str], str] | None = None
+) -> CorpusRegistry:
+    dates = dates or {}
     documents = []
     for act, language, path in pdfs:
         digest = sha256_file(path)
         documents.append(CorpusDocument(
             document_id(act, language, digest), act, f"PARITY FIXTURE {act}", language,
             asset_key(digest), digest, path.stat().st_size, len(fitz.open(path)),
-            f"https://example.test/{act}-{language}.pdf", "", "REPRINT",
+            f"https://example.test/{act}-{language}.pdf", dates.get((act, language), ""), "REPRINT",
             "2026-01-01T00:00:00Z", local_path=path.name,
         ))
     manifest_path = tmp_path / "manifest.json"
@@ -2071,6 +2075,78 @@ def test_extract_manifest_report_lists_sections_one_language_lacks(tmp_path: Pat
         "97": {
             "en_only": {"lettered": ["2A"], "other": ["3"]},
             "bm_only": {"lettered": [], "other": []},
+            "edition_older": [],
+            "timeline_date": {"en": "", "bm": ""},
         }
     }
-    assert parity["totals"] == {"en_only_lettered": 1, "en_only_other": 1, "bm_only_lettered": 0, "bm_only_other": 0}
+    assert parity["totals"] == {
+        "en_only_lettered": 1, "en_only_other": 1, "bm_only_lettered": 0, "bm_only_other": 0,
+        "edition_older": 0,
+    }
+
+
+def test_language_parity_sets_aside_lettered_gaps_when_the_bm_reprint_is_older():
+    """An older BM reprint predates EN's new sections, so it lacks them
+    legitimately. They stay listed but must not count as the #218 bug."""
+    parity = _language_parity({
+        ("56", "en"): [({"1", "73A", "90F"}, "18/11/2023")],
+        ("56", "bm"): [({"1"}, "11/08/2019")],
+    })
+
+    assert parity["acts_with_gaps"]["56"] == {
+        "en_only": {"lettered": [], "other": []},
+        "bm_only": {"lettered": [], "other": []},
+        "edition_older": ["73A", "90F"],
+        "timeline_date": {"en": "18/11/2023", "bm": "11/08/2019"},
+    }
+    assert parity["totals"]["en_only_lettered"] == 0
+    assert parity["totals"]["edition_older"] == 2
+
+
+def test_language_parity_counts_a_real_lettered_gap_when_bm_is_not_older():
+    for en_date, bm_date in [
+        ("11/08/2019", "11/08/2019"),
+        ("11/08/2019", "18/11/2023"),
+        ("", "11/08/2019"),
+        ("18/11/2023", "not a date"),
+    ]:
+        parity = _language_parity({
+            ("56", "en"): [({"1", "73A"}, en_date)],
+            ("56", "bm"): [({"1"}, bm_date)],
+        })
+
+        assert parity["acts_with_gaps"]["56"]["en_only"]["lettered"] == ["73A"], (en_date, bm_date)
+        assert parity["acts_with_gaps"]["56"]["edition_older"] == []
+        assert parity["totals"]["en_only_lettered"] == 1
+
+
+def test_language_parity_keeps_plain_and_bm_only_gaps_when_bm_is_older():
+    parity = _language_parity({
+        ("56", "en"): [({"1", "2", "2A"}, "2023-11-18")],
+        ("56", "bm"): [({"1", "9"}, "2019-08-11")],
+    })
+
+    entry = parity["acts_with_gaps"]["56"]
+    assert entry["edition_older"] == ["2A"]
+    assert entry["en_only"]["other"] == ["2"]
+    assert entry["bm_only"]["other"] == ["9"]
+
+
+def test_extract_manifest_report_marks_an_older_bm_edition(tmp_path: Path):
+    (tmp_path / "assets").mkdir()
+    en, bm = (tmp_path / "assets" / name for name in ("en.pdf", "bm.pdf"))
+    _sectioned_pdf(en, [("1", "Short title"), ("2", "Interpretation"), ("2A", "Special rule")])
+    _sectioned_pdf(bm, [("1", "Tajuk ringkas"), ("2", "Tafsiran")])
+    registry = _registry_of(
+        tmp_path, [("97", "en", en), ("97", "bm", bm)],
+        dates={("97", "en"): "18/11/2023", ("97", "bm"): "11/08/2019"},
+    )
+
+    _manifest, report = extract_manifest(
+        registry, extraction_root=tmp_path / "extractions", sidecar_root=tmp_path / "sidecars",
+    )
+
+    parity = report["language_parity"]
+    assert parity["acts_with_gaps"]["97"]["edition_older"] == ["2A"]
+    assert parity["totals"]["en_only_lettered"] == 0
+    assert parity["totals"]["edition_older"] == 1

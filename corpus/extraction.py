@@ -7,6 +7,7 @@ import os
 import re
 import tempfile
 from dataclasses import dataclass, replace
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -854,8 +855,9 @@ def _language_parity_gaps(
     #74's retention accounting counts a section folded into its neighbour as
     kept (#218), so only comparing the two languages notices it is missing.
     Lettered gaps (`73A`) are split from plain ones: a lettered gap in a BM
-    document is the known lowercase-heading failure and must reach zero, while
-    plain gaps (#218's `55`, `93`) have another cause and are only reported.
+    document is the known lowercase-heading failure (or one of its two
+    pre-#218 siblings, #220 and #221) and should reach zero, while plain gaps
+    (#218's `55`, `93`) have another cause and are only reported.
     """
     def split(sections: set[str]) -> dict[str, list[str]]:
         ordered = sorted(sections, key=_token_sort_key)
@@ -870,19 +872,40 @@ def _language_parity_gaps(
     return {"en_only": en_only, "bm_only": bm_only}
 
 
+def _timeline_date(value: str) -> date | None:
+    """The registry holds `dd/mm/yyyy` (AGC's own format); ISO is accepted too.
+
+    None when empty or unreadable, so an unknown date never excuses a gap.
+    """
+    for fmt, width in (("%d/%m/%Y", 10), ("%Y-%m-%d", 10)):
+        try:
+            return datetime.strptime(value.strip()[:width], fmt).date()
+        except ValueError:
+            continue
+    return None
+
+
 def _language_parity(
-    body_sections: dict[tuple[str, str], list[set[str]]],
+    body_sections: dict[tuple[str, str], list[tuple[set[str], str]]],
 ) -> dict[str, Any]:
     """Compare every act extracted in both languages in this run.
 
     An act-language with several documents in the run has no single section set
     to compare, so it is listed instead of guessed at.
+
+    When the BM reprint is older than the EN one, BM lacks EN's newer lettered
+    sections for a legitimate reason (measured in #218: 119 of 164 remaining
+    lettered gaps). Those move to `edition_older` and stay out of the
+    `en_only_lettered` total, so what is left in that total is a real bug.
     """
     acts = sorted({act for act, _language in body_sections})
     compared = 0
     ambiguous: list[str] = []
     with_gaps: dict[str, Any] = {}
-    totals = {"en_only_lettered": 0, "en_only_other": 0, "bm_only_lettered": 0, "bm_only_other": 0}
+    totals = {
+        "en_only_lettered": 0, "en_only_other": 0, "bm_only_lettered": 0, "bm_only_other": 0,
+        "edition_older": 0,
+    }
     for act in acts:
         en, bm = body_sections.get((act, "en")), body_sections.get((act, "bm"))
         if not en or not bm:
@@ -891,13 +914,27 @@ def _language_parity(
             ambiguous.append(act)
             continue
         compared += 1
-        gaps = _language_parity_gaps(en[0], bm[0])
+        (en_sections, en_date), (bm_sections, bm_date) = en[0], bm[0]
+        gaps = _language_parity_gaps(en_sections, bm_sections)
         if gaps is None:
             continue
-        with_gaps[act] = gaps
+        en_day, bm_day = _timeline_date(en_date), _timeline_date(bm_date)
+        bm_is_older = en_day is not None and bm_day is not None and bm_day < en_day
+        edition_older = gaps["en_only"]["lettered"] if bm_is_older else []
+        entry = {
+            "en_only": {
+                "lettered": [] if bm_is_older else gaps["en_only"]["lettered"],
+                "other": gaps["en_only"]["other"],
+            },
+            "bm_only": gaps["bm_only"],
+            "edition_older": edition_older,
+            "timeline_date": {"en": en_date, "bm": bm_date},
+        }
+        with_gaps[act] = entry
         for side in ("en_only", "bm_only"):
             for kind in ("lettered", "other"):
-                totals[f"{side}_{kind}"] += len(gaps[side][kind])
+                totals[f"{side}_{kind}"] += len(entry[side][kind])
+        totals["edition_older"] += len(edition_older)
     return {
         "acts_compared": compared,
         "acts_skipped_multiple_documents": ambiguous,
@@ -1130,7 +1167,7 @@ def extract_manifest(
     chunk_size_distribution: dict[str, int] = {}
     toc_chunks_scanned = 0
     toc_flagged: list[dict[str, str]] = []
-    body_sections: dict[tuple[str, str], list[set[str]]] = {}
+    body_sections: dict[tuple[str, str], list[tuple[set[str], str]]] = {}
     for identity in sorted(selected):
         document = registry.get(identity)
         if document.document_kind != "reprint" or not document.act_title:
@@ -1164,11 +1201,14 @@ def extract_manifest(
             )
         chunks = json.loads(bundle_path.read_text(encoding="utf-8"))["chunks"]
         quality = _chunk_quality(chunks)
-        body_sections.setdefault((document.act_number, document.language), []).append({
-            chunk["section_number"]
-            for chunk in chunks
-            if chunk["division"] == BODY_DIVISION and chunk["section_number"]
-        })
+        body_sections.setdefault((document.act_number, document.language), []).append((
+            {
+                chunk["section_number"]
+                for chunk in chunks
+                if chunk["division"] == BODY_DIVISION and chunk["section_number"]
+            },
+            document.timeline_date,
+        ))
         for chunk in chunks:
             span = chunk["page_end"] - chunk["page_start"] + 1
             bucket = _page_span_bucket(span)
