@@ -197,7 +197,7 @@ A practitioner's question with legal-research substance: statute lookup ("what d
 
 **Conversational Turn**:
 A message with no legal-research substance: a greeting, self-introduction, thanks, small talk, or a meta question about the assistant ("what can you do?").
-- The router picks `conversational` only when the message is unambiguously social or meta. Anything with legal substance stays on the legal path.
+- The router picks `conversational` only when the message is unambiguously social or meta. Anything with legal substance stays on the legal path. The Jev first pass and the LLM router both follow this rule.
 - Gets a short, warm, direct reply in the query language. Skips retrieval and the **Supervisor Rules**. No citations, no disclaimer.
 - Reads **Conversation History** and recalled **Semantic Memory**, via the same `recall` step as the synthesiser.
 - Writes **Semantic Memory** from a self-introduction (ADR 0012). Only the practitioner's own professional identity is stored. Confidential client or matter facts and sensitive personal life are excluded by construction.

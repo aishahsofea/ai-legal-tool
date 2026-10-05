@@ -12,6 +12,7 @@ from typing import Any, Callable
 from dotenv import load_dotenv
 
 from agent.nodes.router import router_node
+from agent.nodes.router_jev import route_path_observer
 from evals.run_evals import _initial_state
 from evals.routing_summary import miss_direction, summarise
 
@@ -22,7 +23,14 @@ DEFAULT_RESULTS_PATH = Path(__file__).resolve().parent / "results" / "routing.js
 def _route(case: dict[str, Any]) -> dict[str, Any]:
     """The one seam to the router. Swap only this to score another classifier."""
     state = _initial_state(case["query"], case.get("history"))
-    return router_node(state)
+    paths: list[str] = []
+    token = route_path_observer.set(paths.append)
+    try:
+        out = router_node(state)
+    finally:
+        route_path_observer.reset(token)
+    # Escalation answers before any model, so it reports nothing and counts as the LLM router.
+    return {**out, "route_path": paths[-1] if paths else "llm"}
 
 
 def score_case(
@@ -52,7 +60,6 @@ def score_case(
         type_match=got == case["query_type"],
         language_match=out["response_language"] == case["language"],
         miss_direction=miss_direction(case["query_type"], got),
-        # Router has no Jev path yet; every row is the LLM router until it exposes `route_path`.
         route_path=out.get("route_path", "llm"),
     )
     return entry

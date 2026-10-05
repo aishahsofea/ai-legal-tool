@@ -45,7 +45,7 @@ against, drafted, then checked for citations, grounding, and policy before it re
 ```text
 query + thread_id (EN / BM / mixed)
   → start_turn           load thread history, reset per-turn scratch state
-  → router               classify (or short-circuit: escalate → hand-off, conversational → warm reply, clarify → ask the user)
+  → router               classify, Jev first pass with LLM fallback (or short-circuit: escalate → hand-off, conversational → warm reply, clarify → ask the user)
   → contextualize        rewrite an elliptical follow-up into a standalone query
   → retriever            pgvector section search (or ReAct search/lookup; optionally one selective published-reference hop)
   → recall               surface saved practitioner preferences as framing hints (optional)

@@ -16,6 +16,7 @@ from typing import Any, Callable
 from dotenv import load_dotenv
 
 from agent import jev_client
+from agent.nodes.router_jev import QUESTIONS
 from agent.query_policy import trim_history
 from evals import language_id
 from evals.run_evals import _initial_state
@@ -28,42 +29,6 @@ SOURCES = ("llm", "jev", "fasttext")
 # not a calibration. Scored as-is: the point is to see how far it gets.
 FASTTEXT_BM_AT = 0.75
 FASTTEXT_EN_AT = 0.25
-
-_QUESTIONS = {
-    "query_type": {
-        "type": "choice",
-        "instructions": (
-            "You classify legal research queries from Malaysian law practitioners. "
-            "Tie-break: use conversational only when the message is unambiguously social or meta. "
-            "Use clarify only when the history does not already supply the missing detail."
-        ),
-        "criteria": {
-            "statute_lookup": "the user wants the text of a specific section or provision.",
-            "topical": "the user wants to find which Acts or sections govern a topic.",
-            "provision_extraction": "the user wants all provisions of a specific kind within one Act.",
-            "conversational": "no legal-research substance: greetings, names, thanks, small talk, or questions about the assistant.",
-            "clarify": "legal-research intent, but a detail is missing without which retrieval cannot proceed, such as a section number with no Act named.",
-        },
-    },
-    "response_language": {
-        "type": "choice",
-        "instructions": "Judge the dominant language of the current query, not the history.",
-        "criteria": {
-            "en": "the query is primarily in English.",
-            "bm": (
-                "the query is written in Bahasa Malaysia throughout (e.g. \"seksyen\", \"akta\", \"tolong semak\", "
-                "\"bagaimana\"). English appears only inside proper names such as an Act's title."
-            ),
-            "mixed": (
-                "the query switches between BM and English within it, usually BM grammar words "
-                "(\"boleh\", \"apa\", \"dalam\", \"punya\", \"tak\", \"kat\", \"ke\") around English words or phrases that are "
-                "not part of a name (\"Section 34\", \"offence\", \"penalty\", \"personal data\", \"thanks\"), or English "
-                "grammar around BM words (\"which Act cover this kat workplace\")."
-            ),
-        },
-    },
-}
-
 
 def _jev_state(case: dict[str, Any]) -> str:
     # Same layout as the LLM router's user message, so both see the same context.
@@ -83,7 +48,7 @@ def _jev(case: dict[str, Any]) -> dict[str, Any]:
     tokens: list[tuple[int, int]] = []
     token = jev_client.usage_observer.set(lambda _model, i, o: tokens.append((i, o)))
     try:
-        answers = jev_client.classify(_jev_state(case), _QUESTIONS, timeout=15.0)
+        answers = jev_client.classify(_jev_state(case), QUESTIONS, timeout=15.0)
     finally:
         jev_client.usage_observer.reset(token)
     try:
