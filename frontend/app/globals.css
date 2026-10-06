@@ -261,11 +261,14 @@ body {
   outline-offset: 2px;
 }
 
-button,
-input,
-textarea,
-select {
-  font: inherit;
+/* In the base layer so a button's own text-* and font-* classes can override it. */
+@layer base {
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
 }
 
 button:not(:disabled),

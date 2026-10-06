@@ -1,4 +1,5 @@
 type IconProps = { className?: string };
+type SpinnerProps = IconProps & { size?: number };
 
 export function ChevronDown({ className }: IconProps) {
   return (
@@ -25,9 +26,9 @@ export function Stop({ className }: IconProps) {
 }
 
 // Reduced-motion users get a static arc instead of a spinning one.
-export function Spinner({ className }: IconProps) {
+export function Spinner({ className, size = 14 }: SpinnerProps) {
   return (
-    <svg className={`motion-safe:animate-spin ${className ?? ""}`} width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+    <svg className={`motion-safe:animate-spin ${className ?? ""}`} width={size} height={size} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
       <circle cx="8" cy="8" r="6" opacity="0.25" />
       <path d="M14 8a6 6 0 0 0-6-6" />
     </svg>
