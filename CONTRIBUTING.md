@@ -507,7 +507,7 @@ AGENTIC_RETRIEVAL=1 WEB_COMMENTARY_ENABLED=on \
 
 `evals/routing_dataset.json` has 99 routing queries in English, BM and mixed. Each has the `query_type` and language the router should return. A human has reviewed every label. Some queries include chat history, because history decides whether the right label is `clarify`. The `escalate` type is not labelled here: a regex in `agent/nodes/router.py` decides it before any model call. Check the file with `python3 -m evals.validate_routing_dataset`. Add `--require-reviewed` to fail on any label added later that no human has checked, or `--review` to print a checklist.
 
-`python3 -m evals.run_routing` runs the real router over this file and prints one line per query. It needs the credentials for `ROUTER_MODEL` and no database. With no override it uses the app's `ROUTER_MODEL`. To compare models, set `ROUTER_MODEL` on the command line, as below.
+`python3 -m evals.run_routing` runs the real router over this file and prints one line per query. It needs the credentials for `ROUTER_MODEL` and no database. With no override it uses the app's `ROUTER_MODEL`. It runs the LLM router, not the Jev first pass. Set `ROUTER_JEV_ENABLED=on` on the command line to include Jev. `evals.routing_language` and `evals.debug_case` pin it the same way. To compare models, set `ROUTER_MODEL` on the command line, as below.
 
 ```bash
 ROUTER_MODEL=nvidia/Nemotron-3_5-Lightning python3 -m evals.run_routing

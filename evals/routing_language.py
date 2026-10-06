@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import statistics
 import time
 from pathlib import Path
@@ -119,6 +120,8 @@ def summarise(entries: list[dict[str, Any]]) -> dict[str, Any]:
 
 def main(argv: list[str] | None = None) -> int:
     load_dotenv()
+    # Evals measure the LLM router unless the caller asks for Jev: ROUTER_JEV_ENABLED=on on the command line.
+    os.environ.setdefault("ROUTER_JEV_ENABLED", "off")
     parser = argparse.ArgumentParser(description="Score response_language sources on the routing dataset.")
     parser.add_argument("--dataset", type=Path, default=DEFAULT_DATASET_PATH)
     parser.add_argument("--output", type=Path, default=DEFAULT_RESULTS_PATH)

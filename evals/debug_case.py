@@ -9,11 +9,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 
 from dotenv import load_dotenv
 
 load_dotenv()
+# Evals measure the LLM router unless the caller asks for Jev: ROUTER_JEV_ENABLED=on on the command line.
+os.environ.setdefault("ROUTER_JEV_ENABLED", "off")
 
 from agent.nodes.citation_validator import citation_validator_node
 from agent.nodes.grounding_check import grounding_check_node
