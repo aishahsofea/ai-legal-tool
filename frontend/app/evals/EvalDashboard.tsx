@@ -26,6 +26,7 @@ import {
 } from "@/lib/evalsTransport";
 import { palette } from "./palette";
 import { Play, Spinner, Stop } from "./icons";
+import { Pager } from "./Pager";
 import { Select } from "./Select";
 import { headerState, selectRange, toggleShown } from "./selection";
 import { addResult, emptyTally, outcomeText, toOutcome, withTotal, type RunOutcome, type RunTally } from "./runOutcome";
@@ -57,6 +58,7 @@ const ROW_PAD = "px-3 py-1.5";
 // Height of a collapsed case row (two text lines + ROW_PAD + border), so the checkbox and run button centre on it even when the row's details are open.
 const ROW_SIDE = "flex h-[50px] items-center";
 const PANE_PAD = "px-3 py-3";
+const CASES_PER_PAGE = 25;
 const CELL = "min-h-[52px] rounded-xl border-2 px-2 py-1";
 
 const asOption = (name: string) => ({ value: name, label: name });
@@ -477,6 +479,14 @@ export default function EvalDashboard() {
   const [outcome, setOutcome] = useState<RunOutcome | null>(null);
   const [confirmArmed, setConfirmArmed] = useState<string | null>(null);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [page, setPage] = useState(0);
+  // Back to page 1 whenever the list changes under the reader; adjusting state during render avoids a stale-page frame.
+  const listKey = `${set}|${selectedScenario}|${verdictFilter}|${languageFilter}|${judgementOnly}`;
+  const [pageListKey, setPageListKey] = useState(listKey);
+  if (pageListKey !== listKey) {
+    setPageListKey(listKey);
+    setPage(0);
+  }
   const abortRef = useRef<AbortController | null>(null);
   // Refs, not state: cancelRun reads the tally while startRun's stream loop is mid-flight.
   const tallyRef = useRef<RunTally>(emptyTally);
@@ -569,6 +579,21 @@ export default function EvalDashboard() {
   const hiddenSelectedCount = selectedIds.size - shownIds.filter((id) => selectedIds.has(id)).length;
   const selectionArmed = confirmArmed?.startsWith("ids:") === true && selectedIds.size > 20;
   const activeHiddenByFilter = activeCaseId !== null && !displayedCases.some((row) => row.id === activeCaseId);
+  // A filter can shrink the list under the current page, so clamp instead of resetting in an effect.
+  const pageCount = Math.max(1, Math.ceil(displayedCases.length / CASES_PER_PAGE));
+  const currentPage = Math.min(page, pageCount - 1);
+  const pageCases = displayedCases.slice(currentPage * CASES_PER_PAGE, (currentPage + 1) * CASES_PER_PAGE);
+  const activeIndex = activeCaseId ? displayedCases.findIndex((row) => row.id === activeCaseId) : -1;
+  const activePage = activeIndex >= 0 ? Math.floor(activeIndex / CASES_PER_PAGE) : null;
+  const activeOffPage = activePage !== null && activePage !== currentPage;
+
+  // From the bottom pager the reader is at the foot of the list, so bring the new page's top into view.
+  function goToPage(next: number, scrollToTop = false) {
+    setPage(next);
+    if (!scrollToTop) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.getElementById("case-browser")?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+  }
 
   // `indeterminate` is a DOM property with no React prop.
   useEffect(() => {
@@ -742,6 +767,11 @@ export default function EvalDashboard() {
               <span className="font-mono text-xs" style={{ color: palette.muted }} role="status">
                 running {activeCaseId} · hidden by filter
               </span>
+            )}
+            {activeOffPage && (
+              <button type="button" onClick={() => setPage(activePage!)} className={`${PILL} font-mono font-semibold`} style={{ background: palette.panel }}>
+                running {activeCaseId} · go to page {activePage! + 1}
+              </button>
             )}
             <button
               type="button"
@@ -925,7 +955,7 @@ export default function EvalDashboard() {
         <section className="grid gap-3 md:grid-cols-3" aria-label="How to use this dashboard">
           {(groundingCoverage ? [
             ["01", "Filter the claims", "Narrow the list by dataset label, language or judgement call. Counts beside each option come from the dataset."],
-            ["02", "Run what you see", "Tick the box above the list to select every shown claim, or tick a few. Shift-click ticks a range. Then run them. Each row also has its own Run button."],
+            ["02", "Run what you see", "Tick the box above the list to select every claim in the filtered list across all pages, or tick a few. Shift-click ticks a range. Then run them. Each row also has its own Run button."],
             ["03", "Read the mismatches", "Expand a claim to compare the dataset label with the judge label, the Jev score, and the judge's quote and reason."],
           ] : [
             ["01", "Choose a subset", "Start with Smoke for a quick signal. Use All only when you want the full benchmark."],
@@ -940,7 +970,7 @@ export default function EvalDashboard() {
           ))}
         </section>
 
-        <section aria-labelledby="details-title" className="space-y-3">
+        <section id="case-browser" aria-labelledby="details-title" className="scroll-mt-4 space-y-3">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
               <p className={EYEBROW} style={{ color: palette.muted }}>Case browser</p>
@@ -1007,9 +1037,12 @@ export default function EvalDashboard() {
                 onChange={toggleAllShown}
                 className="h-4 w-4"
               />
-              Select {shownIds.length} shown
+              Select all {shownIds.length}{pageCount > 1 ? " across pages" : ""}
             </label>
-            {displayedCases.map((row) => (
+            {pageCount > 1 && (
+              <Pager page={currentPage} pageCount={pageCount} total={displayedCases.length} pageSize={CASES_PER_PAGE} label="Case pages, top" onPage={setPage} />
+            )}
+            {pageCases.map((row) => (
               <div key={row.id} data-case-id={row.id} className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-2">
                 <span className={ROW_SIDE}>
                   <input
@@ -1040,6 +1073,11 @@ export default function EvalDashboard() {
             {displayedCases.length === 0 && (
               <div className="rounded-xl border border-dashed p-4 text-center text-sm" style={{ borderColor: palette.line, color: palette.muted }}>
                 This set has no cases.
+              </div>
+            )}
+            {pageCount > 1 && (
+              <div className="pt-2">
+                <Pager page={currentPage} pageCount={pageCount} total={displayedCases.length} pageSize={CASES_PER_PAGE} label="Case pages, bottom" onPage={(next) => goToPage(next, true)} />
               </div>
             )}
           </div>
