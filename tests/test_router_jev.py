@@ -8,7 +8,7 @@ from agent.nodes import router_jev
 
 @pytest.fixture
 def jev_on(monkeypatch):
-    monkeypatch.setenv("ROUTER_JEV_ENABLED", "1")
+    monkeypatch.delenv("ROUTER_JEV_ENABLED", raising=False)
     monkeypatch.setenv("TYPESAFE_API_KEY", "k")
     monkeypatch.setenv("JEV_MODEL", "jev-2026-01")
 
@@ -43,18 +43,33 @@ def test_sends_history_and_query_with_short_timeout(jev_on):
     assert classify.call_args.kwargs["timeout"] == 2.0
 
 
-@pytest.mark.parametrize("missing", ["ROUTER_JEV_ENABLED", "TYPESAFE_API_KEY", "JEV_MODEL"])
-def test_disabled_without_flag_or_vars(jev_on, monkeypatch, missing):
+@pytest.mark.parametrize("missing", ["TYPESAFE_API_KEY", "JEV_MODEL"])
+def test_disabled_without_jev_config(jev_on, monkeypatch, missing):
     monkeypatch.delenv(missing)
     with patch("agent.jev_client.classify") as classify:
         assert router_jev.jev_route(_state()) is None
     classify.assert_not_called()
 
 
-@pytest.mark.parametrize("value", ["", "0", "off", "false"])
-def test_flag_falsey_values_disable(jev_on, monkeypatch, value):
+def test_on_by_default_when_jev_configured(jev_on):
+    assert router_jev.enabled()
+    out, classify = _route(_answers())
+    assert out is not None
+    classify.assert_called_once()
+
+
+@pytest.mark.parametrize("value", ["", "on", "1", "true"])
+def test_flag_other_values_leave_it_on(jev_on, monkeypatch, value):
     monkeypatch.setenv("ROUTER_JEV_ENABLED", value)
-    assert router_jev.jev_route(_state()) is None
+    assert router_jev.enabled()
+
+
+@pytest.mark.parametrize("value", ["off", "OFF", "0", "false", "no"])
+def test_flag_off_values_disable(jev_on, monkeypatch, value):
+    monkeypatch.setenv("ROUTER_JEV_ENABLED", value)
+    with patch("agent.jev_client.classify") as classify:
+        assert router_jev.jev_route(_state()) is None
+    classify.assert_not_called()
 
 
 def test_client_error_propagates(jev_on):
@@ -198,9 +213,18 @@ def test_jev_error_falls_back_to_llm(jev_on, llm, node, caplog):
     assert "falling back" in caplog.text
 
 
-@pytest.mark.parametrize("missing", ["ROUTER_JEV_ENABLED", "TYPESAFE_API_KEY", "JEV_MODEL"])
+@pytest.mark.parametrize("missing", ["TYPESAFE_API_KEY", "JEV_MODEL"])
 def test_missing_config_uses_llm_without_calling_jev(jev_on, llm, node, monkeypatch, missing):
     monkeypatch.delenv(missing)
+    with patch("agent.jev_client.classify") as classify:
+        out, paths = _run(node, _state())
+    assert out["query_type"] == "statute_lookup"
+    assert paths == ["llm"]
+    classify.assert_not_called()
+
+
+def test_flag_off_uses_llm_without_calling_jev(jev_on, llm, node, monkeypatch):
+    monkeypatch.setenv("ROUTER_JEV_ENABLED", "off")
     with patch("agent.jev_client.classify") as classify:
         out, paths = _run(node, _state())
     assert out["query_type"] == "statute_lookup"

@@ -3,6 +3,7 @@ import os
 import unittest
 from unittest.mock import MagicMock, patch
 
+import langsmith
 import requests
 
 from agent.jev_client import JevError, classify, supported_probability
@@ -136,6 +137,75 @@ class JevClientTests(unittest.TestCase):
                 with self.assertRaises(JevError):
                     classify("s", {})
             post.assert_not_called()
+
+
+class JevTracingTests(unittest.TestCase):
+    """The `llm` run per Jev call, checked against a stub LangSmith client."""
+
+    def _run(self, post, *, client=None, call=lambda: classify("the query", {"q": {}})):
+        client = client or MagicMock()
+        with patch.dict(os.environ, _ENV), patch("agent.jev_client.requests.post", **post):
+            with langsmith.tracing_context(enabled=True, client=client):
+                try:
+                    return client, call()
+                except JevError as exc:
+                    return client, exc
+
+    def test_run_carries_model_inputs_answers_and_usage(self):
+        body = {"answers": {"q": {"choice": "x"}}, "usage": {"input_tokens": 7, "output_tokens": 2}}
+        client, _ = self._run({"return_value": _response(body)})
+
+        create = client.create_run.call_args.kwargs
+        self.assertEqual(create["run_type"], "llm")
+        self.assertEqual(create["name"], "jev")
+        self.assertEqual(create["extra"]["metadata"]["ls_model_name"], "jev-1.13.0")
+        self.assertEqual(create["inputs"], {"state": "the query", "questions": {"q": {}}})
+        update = client.update_run.call_args.kwargs
+        self.assertEqual(update["outputs"]["answers"], body["answers"])
+        self.assertEqual(
+            update["outputs"]["usage_metadata"],
+            {"input_tokens": 7, "output_tokens": 2, "total_tokens": 9},
+        )
+
+    def test_api_key_never_reaches_the_run(self):
+        client, _ = self._run({"return_value": _response({"answers": {}})})
+        recorded = repr(client.method_calls)
+        self.assertNotIn("test-key", recorded)
+        self.assertNotIn("Authorization", recorded)
+
+    def test_failed_request_still_raises_and_marks_the_run_as_an_error(self):
+        client, result = self._run({"side_effect": requests.exceptions.Timeout()})
+        self.assertIsInstance(result, JevError)
+        self.assertIn("Timeout", client.update_run.call_args.kwargs["error"])
+
+    def test_tracing_failure_does_not_break_the_call(self):
+        client = MagicMock()
+        client.create_run.side_effect = RuntimeError("langsmith down")
+        client.update_run.side_effect = RuntimeError("langsmith down")
+        _, result = self._run({"return_value": _response({"answers": {"q": 1}})}, client=client)
+        self.assertEqual(result, {"q": 1})
+
+    def test_tracing_off_never_touches_the_client(self):
+        client = MagicMock()
+        with patch.dict(os.environ, _ENV), patch(
+            "agent.jev_client.requests.post", return_value=_response({"answers": {"q": 1}})
+        ), langsmith.tracing_context(enabled=False, client=client):
+            self.assertEqual(classify("s", {}), {"q": 1})
+        self.assertEqual(client.method_calls, [])
+
+    def test_config_errors_create_no_run(self):
+        cases = (
+            {k: v for k, v in _ENV.items() if k != "TYPESAFE_API_KEY"},
+            {**_ENV, "JEV_MODEL": "jev-latest"},
+        )
+        for env in cases:
+            client = MagicMock()
+            with self.subTest(env=env), patch.dict(os.environ, env, clear=True), patch(
+                "agent.jev_client.requests.post"
+            ), langsmith.tracing_context(enabled=True, client=client):
+                with self.assertRaises(JevError):
+                    classify("s", {})
+            client.create_run.assert_not_called()
 
 
 if __name__ == "__main__":
