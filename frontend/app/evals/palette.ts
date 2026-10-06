@@ -9,9 +9,13 @@ export const palette = {
   accentSoft: "#eee0e1",
   pass: "#b8cdbd",
   passSoft: "#dfe9e1",
+  // Strong fills carry white text: 6.02:1 (pass) and 6.60:1 (fail), both WCAG AA.
+  passStrong: "#2f6f47",
   partial: "#d7dde6",
   fail: "#d9aaad",
   failSoft: "#f1dddd",
+  failStrong: "#a8323a",
+  onStrong: "#ffffff",
   idle: "#e5ddcf",
   warning: "#9a5b47",
   warningSoft: "#f2dfd2",
