@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 from typing import Any, Callable
 
@@ -124,6 +125,8 @@ def _print_summary(summary: dict[str, Any]) -> None:
 
 def main(argv: list[str] | None = None) -> int:
     load_dotenv()
+    # Evals measure the LLM router unless the caller asks for Jev: ROUTER_JEV_ENABLED=on on the command line.
+    os.environ.setdefault("ROUTER_JEV_ENABLED", "off")
     parser = argparse.ArgumentParser(description="Run the router over the routing dataset.")
     parser.add_argument("--dataset", type=Path, default=DEFAULT_DATASET_PATH)
     parser.add_argument("--output", type=Path, default=DEFAULT_RESULTS_PATH)

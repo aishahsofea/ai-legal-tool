@@ -1,4 +1,4 @@
-"""Jev first pass for the router (#212). Off unless ROUTER_JEV_ENABLED is set.
+"""Jev first pass for the router (#212). On wherever Jev is configured, unless ROUTER_JEV_ENABLED=off.
 
 `jev_route` raises JevError on any failure; the caller falls back to the LLM router.
 """
@@ -76,11 +76,9 @@ def model_name() -> str:
 
 
 def enabled() -> bool:
-    return (
-        (os.getenv("ROUTER_JEV_ENABLED") or "").strip().lower() in {"1", "true", "on", "yes"}
-        and bool(os.getenv("TYPESAFE_API_KEY"))
-        and bool(model_name())
-    )
+    if (os.getenv("ROUTER_JEV_ENABLED") or "").strip().casefold() in {"0", "false", "no", "off"}:
+        return False
+    return bool(os.getenv("TYPESAFE_API_KEY")) and bool(model_name())
 
 
 def _state_text(state: AgentState) -> str:

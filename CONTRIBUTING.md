@@ -65,7 +65,7 @@ flowchart TB
 | API | `api/main.py`, `api/*.py` | an endpoint or SSE event shape | HTTP entry points, SSE streaming, and the receipts, reference-graph, and evals routers. |
 | FE | `frontend/lib/`, `frontend/app/workspace/` | the chat UI, receipt viewer, graph explorer | Calls the API. Shows chat, citations, and receipts. |
 | LIFE | `agent/query_lifecycle.py`, `agent/graph.py` | graph wiring, cancel/resume, streaming | Runs the compiled LangGraph and turns it into stream events. |
-| ROUTE | `agent/nodes/router.py`, `router_jev.py`, `clarify.py`, `contextualize.py` | query classification, clarification | `router.py` classifies the query. `router_jev.py` is the optional Jev first pass. `clarify.py` asks the user a question. `contextualize.py` rewrites the query to stand alone. |
+| ROUTE | `agent/nodes/router.py`, `router_jev.py`, `clarify.py`, `contextualize.py` | query classification, clarification | `router.py` classifies the query. `router_jev.py` is the Jev first pass (see `ROUTER_JEV_ENABLED`). `clarify.py` asks the user a question. `contextualize.py` rewrites the query to stand alone. |
 | RETR | `agent/nodes/retriever.py`, `agent/retrieval/` | search, tools, reference following | Fetches chunks by search. With `AGENTIC_RETRIEVAL` on, a ReAct agent runs the search instead. |
 | SYNTH | `agent/nodes/synthesiser.py` | the answer prompt, citation building | Drafts the answer and attaches a receipt to each citation. |
 | VERIFY | `agent/nodes/{citation_validator,grounding_check,currency_check,supervisor}.py` | validation, repeal labels, retry rules | `citation_validator` checks citations. `grounding_check` checks claims against sources. `currency_check` labels repealed or amended Acts. `supervisor` retries or finishes. |
@@ -116,9 +116,9 @@ All other lines are optional and commented out. Each group's comment names the s
 
 When the code starts reading a new variable, add it to `.env.example`. `tests/test_env_example.py` fails until you do. A variable that only an SDK reads also goes in that test's `_READ_BY_SDKS`.
 
-With `LANGSMITH_TRACING=true`, every graph run traces to LangSmith. The query lifecycle also tags each run — `run_name=legal_query`, `source:api`/`source:eval`, active feature flags — attaches `user_id`/`thread_id` metadata, and posts the turn's quality signals as run **feedback** (`agent/observability.py`): `passed`, `num_violations`, `num_evidence_violations`, `retry_count`, `num_citations`, `fallback_delivered`, `escalated`, a categorical `query_type`. Feedback also includes numeric reference-follow counters — calls, skips/disabled/unavailable, edges considered/returned, target lookup outcomes, boundaries, fail-open occurrences — never provision text, evidence phrases, or query content. Fail-open, off the hot path: it never alters or delays a response. Leave `LANGSMITH_TRACING` unset to disable tracing and feedback entirely.
+With `LANGSMITH_TRACING=true`, every graph run traces to LangSmith. The query lifecycle also tags each run — `run_name=legal_query`, `source:api`/`source:eval`, active feature flags — attaches `user_id`/`thread_id` metadata, and posts the turn's quality signals as run **feedback** (`agent/observability.py`): `passed`, `num_violations`, `num_evidence_violations`, `retry_count`, `num_citations`, `fallback_delivered`, `escalated`, a categorical `query_type`. Feedback also includes numeric reference-follow counters — calls, skips/disabled/unavailable, edges considered/returned, target lookup outcomes, boundaries, fail-open occurrences — never provision text, evidence phrases, or query content. Fail-open, off the hot path: it never alters or delays a response. Each Jev call (`agent/jev_client.py`) also traces as a model run named `jev`, under the router or grounding span. It records the model, the input, the answers with probabilities, and token usage, never the API key. The input is the query and history for the router, and the answer and its cited sources for grounding. The Lightning router prompt and the Ultra judge prompt already put this text in the run traces, so Jev adds no new exposure. Leave `LANGSMITH_TRACING` unset to disable tracing and feedback entirely.
 
-Optional flags. `on` toggles are off by default and accept `1`, `true`, `yes`, or `on`; anything else leaves them off. The one exception is `GROUNDING_JEV_ENABLED`, which is on by default; only `off` disables it.
+Optional flags are off by default. Set one to `1`, `true`, `yes`, or `on` to turn it on. Any other value leaves it off. `GROUNDING_JEV_ENABLED` and `ROUTER_JEV_ENABLED` are the exceptions. They are on by default, and `0`, `false`, `no`, or `off` disables them.
 
 **Memory**
 
@@ -186,11 +186,11 @@ Turn recall and extract on together to see earlier facts. The pruner consolidate
 | Variable | Values | Default | What it does |
 |---|---|---|---|
 | `CURRENCY_CHECK_ENABLED` | `on` | off | Adds `currency_check` between `grounding_check` and `supervisor`. Fails open: on error the turn gets no labels; the answer is never blocked. |
-| `GROUNDING_JEV_ENABLED` | `off` | on; runs only with `TYPESAFE_API_KEY` and `JEV_MODEL` set | Set `off` to disable the cheap Jev pass before the grounding judge (#201). |
+| `GROUNDING_JEV_ENABLED` | `off` | on | Set `off` to disable the cheap Jev pass before the grounding judge (#201). It also needs `TYPESAFE_API_KEY` and `JEV_MODEL` set. |
 | `GROUNDING_JEV_THRESHOLD` | number, above 0 and at most 1 | 0.97 | Minimum P(supported) to skip the judge. Any other value uses 0.97, with a logged warning. |
-| `ROUTER_JEV_ENABLED` | `on` | off | Router first pass through Jev (#212). Runs only with `TYPESAFE_API_KEY` and `JEV_MODEL` set. On a Jev error or timeout (2s) the router falls back to the LLM router. |
+| `ROUTER_JEV_ENABLED` | `off` | on | Set `off` to disable the router first pass through Jev (#212). It also needs `TYPESAFE_API_KEY` and `JEV_MODEL` set. On a Jev error or timeout (2s) the router falls back to the LLM router. |
 | `TYPESAFE_API_KEY` | key | unset | Credential for the Jev API. |
-| `JEV_MODEL` | model version | unset | Pinned Jev version, e.g. `jev-1.13.0`. Required for the grounding and router first passes. `jev-latest` is rejected. A floating model can shift scores under a fixed threshold. |
+| `JEV_MODEL` | model version | unset | Pinned Jev version, e.g. `jev-1.13.0`. Required for the grounding and router first passes. `jev-latest` is rejected because a floating model can shift scores under a fixed threshold. |
 
 `currency_check` makes no network call and no model call. For each cited Act, it reads the Act's own metadata timeline (`data/acts_metadata/<act>.json`) and the corpus manifest (`data/pdfs/manifest.json`), attaching one of four Currency Labels to the citation. Labels ship on the SSE `response` event and `QueryResult` as `currency_labels` (only when non-empty) and render as a citation badge (`frontend/components/locus-workspace/Messages.tsx`). See [CONTEXT.md](CONTEXT.md#language), **Currency Label**, for the four outcomes, how each renders, and its limits. Run `python3 -m evals.currency_split` for a current split of the indexed corpus by outcome.
 
@@ -507,7 +507,7 @@ AGENTIC_RETRIEVAL=1 WEB_COMMENTARY_ENABLED=on \
 
 `evals/routing_dataset.json` has 99 routing queries in English, BM and mixed. Each has the `query_type` and language the router should return. A human has reviewed every label. Some queries include chat history, because history decides whether the right label is `clarify`. The `escalate` type is not labelled here: a regex in `agent/nodes/router.py` decides it before any model call. Check the file with `python3 -m evals.validate_routing_dataset`. Add `--require-reviewed` to fail on any label added later that no human has checked, or `--review` to print a checklist.
 
-`python3 -m evals.run_routing` runs the real router over this file and prints one line per query. It needs the credentials for `ROUTER_MODEL` and no database. With no override it uses the app's `ROUTER_MODEL`. To compare models, set `ROUTER_MODEL` on the command line, as below.
+`python3 -m evals.run_routing` runs the real router over this file and prints one line per query. It needs the credentials for `ROUTER_MODEL` and no database. With no override it uses the app's `ROUTER_MODEL`. It runs the LLM router, not the Jev first pass. Set `ROUTER_JEV_ENABLED=on` on the command line to include Jev. `evals.routing_language` and `evals.debug_case` pin it the same way. To compare models, set `ROUTER_MODEL` on the command line, as below.
 
 ```bash
 ROUTER_MODEL=nvidia/Nemotron-3_5-Lightning python3 -m evals.run_routing
