@@ -4,6 +4,12 @@
 
 At the start of every session in this repo, invoke the `caveman` skill and keep that ultra-compressed style for the rest of the session, unless the user asks to turn it off.
 
+## Long or paid runs
+
+Before any command that runs longer than a few minutes or spends money on a model API (a smoke run, a full eval, a re-extraction), tell the user the rough time and the rough cost. Give both numbers and their source, for example the `Usage (estimated)` block that `python -m evals.run_evals` prints. Say when one is a guess.
+
+State this before the command starts, not after. If the user gave a spending cap, say whether the run fits under it. Running several in parallel counts as one job: give the total.
+
 ## Issues before PRs
 
 Anything worth a PR is worth an issue first. Agree the scope there, then branch and build. The issue is where the reasoning lives; the PR is where the code lives. Reference the issue in the PR.
