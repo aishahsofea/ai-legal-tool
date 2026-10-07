@@ -32,7 +32,15 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 
 _MODEL = os.getenv("SYNTHESISER_MODEL", "gpt-4.1")
-_llm = make_llm(_MODEL, node="synthesiser")
+# Lightning reasons to the 8192-token ceiling on some prompts and never emits JSON (#216).
+# Nebius ignores every effort/budget knob; only this chat-template flag turns thinking off.
+# Off costs some citation recall (pdpa-12-1 stopped citing s.12), so it stays opt-in.
+_THINKING_OFF_BODY = {"chat_template_kwargs": {"enable_thinking": False}}
+_llm = make_llm(
+    _MODEL,
+    node="synthesiser",
+    extra_body=_THINKING_OFF_BODY if os.getenv("SYNTHESISER_THINKING", "").lower() == "off" else None,
+)
 
 
 class _CitationRef(BaseModel):

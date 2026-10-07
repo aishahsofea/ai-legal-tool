@@ -35,7 +35,13 @@ _NODE_MODELS: dict[str, str] = {}
 retry_observer: ContextVar[Callable[[], None] | None] = ContextVar("llm_retry_observer", default=None)
 
 
-def make_llm(model_name: str, temperature: float = 0, node: str | None = None, env_prefix: str | None = None):
+def make_llm(
+    model_name: str,
+    temperature: float = 0,
+    node: str | None = None,
+    env_prefix: str | None = None,
+    extra_body: dict | None = None,
+):
     if node:
         _NODE_MODELS[node] = model_name
     if model_name.startswith("claude-"):
@@ -73,6 +79,9 @@ def make_llm(model_name: str, temperature: float = 0, node: str | None = None, e
     # resolves OPENAI_API_KEY itself, exactly as it did before.
     if key:
         kwargs["api_key"] = key
+    # extra_body only reaches OpenAI-compatible providers; claude-* and gemini-* return above.
+    if extra_body:
+        kwargs["extra_body"] = extra_body
     return ChatOpenAI(
         model=model_name,
         temperature=temperature,

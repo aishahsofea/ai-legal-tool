@@ -622,6 +622,14 @@ Each of the router, contextualize, conversational, synthesiser, and grounding-ch
 | `RETRIEVAL_AGENT_MODEL` | agentic retriever ReAct agent (`AGENTIC_RETRIEVAL` on) | `gpt-4.1` |
 | `MEMORY_EXTRACT_MODEL` | Semantic Memory extractor (background write path) | `gpt-4.1-mini` |
 
+`SYNTHESISER_THINKING=off` turns off thinking on the synthesiser's calls. It works only on `nvidia/Nemotron-3_5-Lightning` through Nebius. Other models ignore it. It is unset by default.
+
+Why it exists: Lightning sometimes reasons until it hits the 8192-token limit and never returns JSON. The `json_mode` retry fails the same way (#216). Nebius ignored every effort and budget setting we tried (`reasoning_effort`, `thinking_budget` and others), so thinking can only be fully on or fully off.
+
+What it does: with thinking off, every synthesiser call in three smoke runs returned JSON. A call takes about 1 to 3 seconds instead of 30 to 40, and uses no reasoning tokens instead of about 8,000 (rough ranges from one failing case and the smoke runs, not medians over a full run).
+
+The trade-off is citation recall: with thinking off, the synthesiser stopped citing s.12 on `pdpa-12-1` in all three runs.
+
 #### Pointing the chat models at another provider
 
 `CHAT_BASE_URL` sends the OpenAI-shaped client to any OpenAI-compatible endpoint — the chat-side twin of `EMBEDDING_BASE_URL`. Leave it unset and the client talks to `api.openai.com`. `claude-*` and `gemini-*` still route to Anthropic and Google, so they ignore it.
