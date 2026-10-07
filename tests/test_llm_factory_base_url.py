@@ -36,6 +36,14 @@ class ChatBaseUrlTests(unittest.TestCase):
             self.assertEqual(mock.call_args.kwargs["base_url"], url)
             self.assertEqual(mock.call_args.kwargs["model"], "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B")
 
+    def test_extra_body_forwarded_only_when_set(self):
+        body = {"chat_template_kwargs": {"enable_thinking": False}}
+        with patch.object(llm_factory, "ChatOpenAI") as mock:
+            llm_factory.make_llm("nvidia/Nemotron-3_5-Lightning", extra_body=body)
+            self.assertEqual(mock.call_args.kwargs["extra_body"], body)
+            llm_factory.make_llm("nvidia/Nemotron-3_5-Lightning")
+            self.assertNotIn("extra_body", mock.call_args.kwargs)
+
     def test_base_url_ignored_by_anthropic(self):
         with patch.dict(os.environ, {"CHAT_BASE_URL": "https://example.invalid/v1/"}), \
              patch.object(llm_factory, "ChatAnthropic") as mock:
