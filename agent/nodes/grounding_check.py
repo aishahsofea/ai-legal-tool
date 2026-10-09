@@ -30,7 +30,9 @@ _MODEL = os.getenv("GROUNDING_MODEL", "claude-sonnet-4-6")
 # env_prefix lets this node sit on its own provider (GROUNDING_BASE_URL/GROUNDING_API_KEY)
 # instead of the CHAT_BASE_URL/CHAT_API_KEY every other node shares — issue #162: a Nemotron
 # judge on Nebius while the router and synthesiser stay on OpenAI.
-_llm = make_llm(_MODEL, node="grounding_check", env_prefix="GROUNDING")
+# Opt-in: Nebius's 8192 default cuts the judge off mid-reasoning and the node fails open (#233).
+_MAX_TOKENS = int(v) if (v := os.getenv("GROUNDING_MAX_TOKENS")) else None
+_llm = make_llm(_MODEL, node="grounding_check", env_prefix="GROUNDING", max_tokens=_MAX_TOKENS)
 
 
 class _GroundingClaim(BaseModel):

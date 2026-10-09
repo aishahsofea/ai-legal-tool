@@ -628,7 +628,14 @@ Two opt-in flags fix the same Lightning failure (#216): the synthesiser reasons 
 
 `SYNTHESISER_THINKING=off` is the alternative. Nebius ignored every effort and budget setting we tried (`reasoning_effort`, `thinking_budget` and others), so thinking can only be fully on or fully off. A call takes about 1 to 3 seconds and uses no reasoning tokens, instead of about 8,000 on the failing case. These are rough ranges from that case and the smoke runs, not medians over a full run. It is the lossy alternative: with thinking off, the synthesiser stopped citing s.12 on `pdpa-12-1` in all three runs and lost citations on `companies-132-1`. Use it only if the latency of `SYNTHESISER_MAX_TOKENS` is not acceptable.
 
-Neither flag touches the grounding check, which hits the same limit. See the note on provider limits [below](#pointing-the-chat-models-at-another-provider).
+`GROUNDING_MAX_TOKENS=24576` does the same for the grounding check (#233). It is unset by default and, like the synthesiser flags, applies only on the OpenAI-compatible path. Three smoke runs each, Lightning, `SYNTHESISER_MAX_TOKENS` also at 24576 in the second row:
+
+| `GROUNDING_MAX_TOKENS` | Fail-opens per run | Grounding checks per run | `json_mode` retries (total) |
+|---|---|---|---|
+| unset | 5, 6, 6 | 8 | 17 |
+| 24576 | 0, 1, 2 | 8, 8, 7 | 4 |
+
+Three of those 4 retries failed too. Every failure stopped at exactly 24576 reasoning tokens, so the judge can still fail open. Raise the value if fail-opens matter. Latency was only measured with both caps at 24576, never unset. Per-case time ran from 3 to 407 seconds. Run means were 76, 114 and 136 seconds. See the note on provider limits [below](#pointing-the-chat-models-at-another-provider).
 
 #### Pointing the chat models at another provider
 
@@ -675,9 +682,9 @@ Passing that check is not enough for the synthesiser, which has to fill `citatio
 
 The smoke eval table in `docs/build-log.md` was measured with all seven nodes on Lightning, not on the split above. It passes the gate, but the citation measurement above says not to read that as clearing a Lightning synthesiser.
 
-Two provider limits worth knowing. `method="function_calling"` fails with a 422 on every Nemotron — LangChain sends `parallel_tool_calls` and Nebius refuses the extra field. Plain `bind_tools` sends no such field and works, so the retrieval agent is fine. And a reasoning model handed a `json_schema` can generate to the 8192-token ceiling without the request failing. The ceiling is the Nebius `max_tokens` default (see `SYNTHESISER_MAX_TOKENS` above). Longer prompts hit it more often. The grounding check's ~2000-token prompt hits it on Lightning: 5 or 6 fail-opens out of 8 turns in each of three smoke runs.
+Two provider limits worth knowing. `method="function_calling"` fails with a 422 on every Nemotron — LangChain sends `parallel_tool_calls` and Nebius refuses the extra field. Plain `bind_tools` sends no such field and works, so the retrieval agent is fine. And a reasoning model handed a `json_schema` can generate to the 8192-token ceiling without the request failing. The ceiling is the Nebius `max_tokens` default (see `SYNTHESISER_MAX_TOKENS` and `GROUNDING_MAX_TOKENS` above). Longer prompts hit it more often. The grounding check's ~2000-token prompt hits it on Lightning.
 
-When a request hits the ceiling, the factory retries once in `json_mode`. That asks for a plain JSON object and puts the schema in the prompt text instead. Sending the schema as a `json_schema` request is what provokes the reasoning, so dropping it is the lever. The retry reuses the same client, so it carries `SYNTHESISER_MAX_TOKENS` too. Claude and Gemini models get no such retry — they have no `json_object` format and do not hit this. If the retry fails too, the grounding check fails open as it always has.
+When a request hits the ceiling, the factory retries once in `json_mode`. That asks for a plain JSON object and puts the schema in the prompt text instead. Sending the schema as a `json_schema` request is what provokes the reasoning, so dropping it is the lever. The retry reuses the same client, so it keeps the node's cap (`SYNTHESISER_MAX_TOKENS` or `GROUNDING_MAX_TOKENS`). Claude and Gemini models get no such retry — they have no `json_object` format and do not hit this. If the retry fails too, the grounding check fails open as it always has.
 
 Ultra has a third problem on Nebius. When Nebius has already cached the start of a prompt, Ultra answers as if that part were missing. Send the same question to `POST /query` twice. The second answer says the retrieved sections do not cover it, and it cites nothing. Lightning and Nano do not do this. So `system_content` in `agent/llm_factory.py` puts a `[request <random id>]` line first in every Ultra system prompt, and no two requests share a start. The check matches any model id containing `nemotron-3-ultra`, ignoring case. The retrieval agent builds its system prompt once, so it cannot carry a per-request id and gets no line. It only runs when `AGENTIC_RETRIEVAL=1`. Delete the line when Nebius fixes its cache (#177).
 
