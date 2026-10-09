@@ -41,6 +41,7 @@ def make_llm(
     node: str | None = None,
     env_prefix: str | None = None,
     extra_body: dict | None = None,
+    max_tokens: int | None = None,
 ):
     if node:
         _NODE_MODELS[node] = model_name
@@ -82,6 +83,9 @@ def make_llm(
     # extra_body only reaches OpenAI-compatible providers; claude-* and gemini-* return above.
     if extra_body:
         kwargs["extra_body"] = extra_body
+    # Nebius defaults to 8192 output tokens, reasoning included; raise it so long reasoning can finish (#216).
+    if max_tokens:
+        kwargs["max_tokens"] = max_tokens
     return ChatOpenAI(
         model=model_name,
         temperature=temperature,
