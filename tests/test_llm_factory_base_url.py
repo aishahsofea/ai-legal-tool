@@ -44,6 +44,21 @@ class ChatBaseUrlTests(unittest.TestCase):
             llm_factory.make_llm("nvidia/Nemotron-3_5-Lightning")
             self.assertNotIn("extra_body", mock.call_args.kwargs)
 
+    def test_max_tokens_forwarded_only_when_set(self):
+        with patch.object(llm_factory, "ChatOpenAI") as mock:
+            llm_factory.make_llm("nvidia/Nemotron-3_5-Lightning", max_tokens=24576)
+            self.assertEqual(mock.call_args.kwargs["max_tokens"], 24576)
+            llm_factory.make_llm("nvidia/Nemotron-3_5-Lightning")
+            self.assertNotIn("max_tokens", mock.call_args.kwargs)
+
+    def test_max_tokens_ignored_by_anthropic_and_gemini(self):
+        with patch.object(llm_factory, "ChatAnthropic") as anthropic:
+            llm_factory.make_llm("claude-sonnet-4-6", max_tokens=24576)
+            self.assertNotIn("max_tokens", anthropic.call_args.kwargs)
+        with patch.object(llm_factory, "ChatGoogleGenerativeAI") as gemini:
+            llm_factory.make_llm("gemini-1.5-pro", max_tokens=24576)
+            self.assertNotIn("max_tokens", gemini.call_args.kwargs)
+
     def test_base_url_ignored_by_anthropic(self):
         with patch.dict(os.environ, {"CHAT_BASE_URL": "https://example.invalid/v1/"}), \
              patch.object(llm_factory, "ChatAnthropic") as mock:
@@ -345,6 +360,32 @@ class JsonModeFallbackTests(unittest.TestCase):
         self.assertEqual(retried[:2], self.MESSAGES)
         self.assertIn("JSON Schema", retried[-1]["content"])
         self.assertIn("answer", retried[-1]["content"])
+
+    def test_retry_request_carries_the_token_cap(self):
+        """The retry reuses the LLM object, so a cap set on it reaches the json_mode
+        request. A raised cap that only applied to the first attempt would leave the
+        retry cut off at the provider default (#216)."""
+        class _Stop(Exception):
+            pass
+
+        llm = llm_factory.make_llm("nvidia/Nemotron-3_5-Lightning", max_tokens=24576)
+        wrapped = llm_factory.structured_llm(
+            llm, _Schema, node="synthesiser", model_name="nvidia/Nemotron-3_5-Lightning"
+        )
+        payloads = []
+
+        real = llm_factory.ChatOpenAI._get_request_payload
+
+        def spy(self_, *args, **kwargs):
+            payloads.append(real(self_, *args, **kwargs))
+            raise _Stop
+
+        with patch.object(llm_factory.ChatOpenAI, "_get_request_payload", spy):
+            with self.assertRaises(_Stop):
+                wrapped._fallback.invoke(self.MESSAGES)
+
+        self.assertEqual(payloads[0]["response_format"], {"type": "json_object"})
+        self.assertEqual(payloads[0]["max_completion_tokens"], 24576)
 
     def test_async_path_retries_too(self):
         import asyncio

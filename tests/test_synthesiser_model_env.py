@@ -45,6 +45,24 @@ class SynthesiserModelEnvTests(unittest.TestCase):
                     mock_openai.assert_called_once_with(model="gpt-4o", temperature=0, base_url=None)
                     mock_anthropic.assert_not_called()
 
+    def _reload_with(self, **overrides):
+        # "" for unset: see the note in test_synthesiser_defaults_to_gpt_4_1.
+        env = {"SYNTHESISER_MODEL": "nvidia/Nemotron-3_5-Lightning", "CHAT_BASE_URL": "", "CHAT_API_KEY": "",
+               "SYNTHESISER_MAX_TOKENS": "", **overrides}
+        with patch.dict(os.environ, env):
+            with patch.object(llm_factory, "ChatOpenAI") as mock_openai:
+                mock_openai.return_value.with_structured_output.return_value = MagicMock()
+                importlib.reload(synthesiser)
+                return mock_openai
+
+    def test_max_tokens_read_from_env(self):
+        mock_openai = self._reload_with(SYNTHESISER_MAX_TOKENS="24576")
+        self.assertEqual(mock_openai.call_args.kwargs["max_tokens"], 24576)
+
+    def test_max_tokens_unset_sends_nothing(self):
+        mock_openai = self._reload_with()
+        self.assertNotIn("max_tokens", mock_openai.call_args.kwargs)
+
     @classmethod
     def tearDownClass(cls):
         importlib.reload(synthesiser)
