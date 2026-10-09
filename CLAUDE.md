@@ -4,6 +4,10 @@
 
 At the start of every session in this repo, invoke the `caveman` skill and keep that ultra-compressed style for the rest of the session, unless the user asks to turn it off.
 
+## Shared standards
+
+Before editing code, read `.agent/standards/AGENTS.md` (git submodule). Claude Code does not load `AGENTS.md` on its own, so this line is the only thing that makes it apply. If the file is missing, run `git submodule update --init`.
+
 ## Long or paid runs
 
 Before any command that runs longer than a few minutes or spends money on a model API (a smoke run, a full eval, a re-extraction), tell the user the rough time and the rough cost. Give both numbers and their source, for example the `Usage (estimated)` block that `python -m evals.run_evals` prints. Say when one is a guess.
@@ -60,6 +64,8 @@ Delete a comment when it:
 - tracks history the git log already holds ("we used to parse the message list")
 
 Docstrings follow the same rule. Keep the part a caller can't infer — raising behavior, which caller owns the fail-open decision, what a non-obvious parameter is for. Drop the opening sentence that repeats the function name.
+
+Length limit, from `.agent/standards/AGENTS.md`: one line per comment, no comment blocks, one-sentence docstrings. Put the measurements and the retelling in the issue or PR, and point to it with `(#NN)`. If the why needs more than a line, the code is probably in the wrong shape.
 
 **Exception: text the model reads is behavior, not commentary.** Tool docstrings in `agent/retrieval/tools.py` become the tool schema sent to the LLM, and the system prompts in `agent/nodes/*.py` and `agent/retrieval/agent.py` steer the graph the same way. They describe what and when on purpose, at length, because that is what drives tool selection and routing. Never trim them for brevity. Changing them changes what the agent does, and the `tool_selection` evals will catch it.
 

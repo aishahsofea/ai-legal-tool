@@ -36,9 +36,8 @@ _MODEL = os.getenv("SYNTHESISER_MODEL", "gpt-4.1")
 # Nebius ignores every effort/budget knob; only this chat-template flag turns thinking off.
 # Off costs some citation recall (pdpa-12-1 stopped citing s.12), so it stays opt-in.
 _THINKING_OFF_BODY = {"chat_template_kwargs": {"enable_thinking": False}}
-# Opt-in, unset by default. 8192 is the Nebius default, not a hard cap: raising it lets
-# Lightning finish the 6k-15k reasoning tokens it needs on long prompts (#216).
-_MAX_TOKENS = int(os.getenv("SYNTHESISER_MAX_TOKENS") or 0) or None
+# Opt-in: Nebius's 8192 default cuts Lightning off mid-reasoning (#216).
+_MAX_TOKENS = int(v) if (v := os.getenv("SYNTHESISER_MAX_TOKENS")) else None
 _llm = make_llm(
     _MODEL,
     node="synthesiser",

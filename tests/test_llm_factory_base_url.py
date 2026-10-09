@@ -362,9 +362,7 @@ class JsonModeFallbackTests(unittest.TestCase):
         self.assertIn("answer", retried[-1]["content"])
 
     def test_retry_request_carries_the_token_cap(self):
-        """The retry reuses the LLM object, so a cap set on it reaches the json_mode
-        request. A raised cap that only applied to the first attempt would leave the
-        retry cut off at the provider default (#216)."""
+        # The retry reuses the LLM object, so the cap must reach the json_mode request (#216).
         class _Stop(Exception):
             pass
 
