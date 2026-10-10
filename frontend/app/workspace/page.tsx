@@ -21,6 +21,8 @@ import {
 } from "@/components/conversation";
 import { useResearchThreads } from "@/lib/useResearchThreads";
 import { useSession } from "@/lib/useSession";
+import { getSupabase } from "@/lib/supabaseClient";
+import type { Session } from "@supabase/supabase-js";
 import type { Citation } from "@/lib/useQuery";
 import {
   DEFAULT_RECEIPT_PANE_WIDTH,
@@ -79,7 +81,13 @@ function QueryPrefill({ setInput }: { setInput: (v: string) => void }) {
   return null;
 }
 
-function WorkspaceInner() {
+function accountLabels(session: Session) {
+  const { email, user_metadata: meta } = session.user;
+  const name = (meta?.full_name ?? meta?.name ?? meta?.user_name) as string | undefined;
+  return name ? { name, subtitle: email } : { name: email ?? "Signed in", subtitle: undefined };
+}
+
+function WorkspaceInner({ session }: { session: Session }) {
   const [receiptSelection, setReceiptSelection] = useState<ReceiptSelection | null>(null);
   const [receiptPaneWidth, setReceiptPaneWidth] = useState(DEFAULT_RECEIPT_PANE_WIDTH);
   const [isResizingReceipt, setIsResizingReceipt] = useState(false);
@@ -89,6 +97,7 @@ function WorkspaceInner() {
     getDesktopReceiptPaneSnapshot,
     getServerDesktopReceiptPaneSnapshot,
   );
+  const account = accountLabels(session);
   const clampedReceiptPaneWidth = clampReceiptPaneWidth(receiptPaneWidth, viewportWidth);
   const {
     threads,
@@ -101,6 +110,7 @@ function WorkspaceInner() {
     reasoningOpen,
     isLoading,
     error,
+    loadError,
     status,
     setInput,
     setReasoningOpen,
@@ -161,8 +171,9 @@ function WorkspaceInner() {
           onNewThread={newThread}
           onSelectThread={selectThread}
           switchingDisabled={false}
-          userName="Siti Rahimah"
-          userFirm="Tan & Partners · KL"
+          userName={account.name}
+          userSubtitle={account.subtitle}
+          onSignOut={() => void getSupabase().auth.signOut()}
         />
 
         <main className="workspace-main flex min-h-0 min-w-0 flex-col bg-(--canvas)">
@@ -170,6 +181,12 @@ function WorkspaceInner() {
 
           <div className="flex-1 overflow-y-auto px-4 py-6 md:px-6 lg:px-8">
             <div className="chamber-full-content flex w-full flex-col gap-6">
+              {loadError && (
+                <div className="rounded-xl border border-(--accent-line) bg-(--danger-soft) px-4 py-3 text-sm text-(--danger)" role="alert">
+                  {loadError}
+                </div>
+              )}
+
               {messages.length === 0 && <EmptyState onQuery={setInput} />}
 
               {messages.map((msg, i) => {
@@ -239,5 +256,5 @@ export default function Workspace() {
     if (session === null) router.replace("/login");
   }, [session, router]);
 
-  return session ? <WorkspaceInner /> : null;
+  return session ? <WorkspaceInner session={session} /> : null;
 }

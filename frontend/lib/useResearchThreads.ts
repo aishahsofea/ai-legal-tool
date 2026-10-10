@@ -2,8 +2,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useQuery, type Citation, type NodeRun } from "@/lib/useQuery";
 import type { Message as ThreadMessage, ThreadSummary } from "@/components/conversation";
+import { fetchThread, fetchThreads, type StoredThread, type ThreadListItem } from "@/lib/threadsTransport";
 
 type ResearchThread = ThreadSummary & {
+  // False for a thread known only from GET /threads; its turns load on first select.
+  loaded: boolean;
   messages: ThreadMessage[];
   citations: Citation[];
   statusHistory: string[];
@@ -55,8 +58,35 @@ function summarizeSources(citations: Citation[]) {
   return `${citedCount} citation${citedCount === 1 ? "" : "s"} · ${sourceCount} source${sourceCount === 1 ? "" : "s"}`;
 }
 
+function dateLabel(iso: string) {
+  return new Date(iso).toLocaleDateString([], { day: "numeric", month: "short" });
+}
+
+function listedThread(item: ThreadListItem): ResearchThread {
+  return {
+    id: item.id,
+    title: item.title ?? "Untitled thread",
+    meta: dateLabel(item.updated_at),
+    active: false,
+    loaded: false,
+    messages: [],
+    citations: [],
+    statusHistory: [],
+    nodeRuns: [],
+  };
+}
+
+function restoredThread(stored: StoredThread): ResearchThread {
+  const createdAt = dateLabel(stored.created_at);
+  const messages = stored.messages.map((message) => ({ ...message, id: makeId(), createdAt }));
+  const citations = messages.reduce<Citation[]>((all, message) => mergeCitations(all, message.citations ?? []), []);
+  return { ...listedThread(stored), loaded: true, messages, citations, meta: summarizeSources(citations) };
+}
+
 export function useResearchThreads() {
   const [threads, setThreads] = useState<ResearchThread[]>([]);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const selectRequestRef = useRef(0);
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null);
   const [pendingThreadId, setPendingThreadId] = useState<string | null>(null);
   const [input, setInput] = useState("");
@@ -85,6 +115,7 @@ export function useResearchThreads() {
   );
 
   const newThread = useCallback(() => {
+    selectRequestRef.current++;
     setInput("");
     setReasoningOpen(false);
     setActiveSourceIndex(0);
@@ -94,15 +125,50 @@ export function useResearchThreads() {
     setThreads((prev) => syncActiveFlags(prev, null));
   }, [syncActiveFlags]);
 
+  useEffect(() => {
+    let cancelled = false;
+    fetchThreads()
+      .then((items) => {
+        if (cancelled) return;
+        // Keep any thread already started in this session; the server list only adds the rest.
+        setThreads((prev) => {
+          const known = new Set(prev.map((thread) => thread.id));
+          return [...prev, ...items.filter((item) => !known.has(item.id)).map(listedThread)];
+        });
+      })
+      .catch(() => {
+        if (!cancelled) setLoadError("Could not load your threads.");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const selectThread = useCallback(
-    (threadId: string) => {
+    async (threadId: string) => {
       const selectedThread = threads.find((thread) => thread.id === threadId);
       if (!selectedThread) return;
 
+      // Only the latest click may activate: a slow earlier fetch must not win.
+      const request = ++selectRequestRef.current;
+      let restored: ResearchThread | null = null;
+      if (!selectedThread.loaded) {
+        try {
+          restored = restoredThread(await fetchThread(threadId));
+        } catch {
+          if (request === selectRequestRef.current) setLoadError("Could not open that thread.");
+          return;
+        }
+        if (request !== selectRequestRef.current) return;
+      }
+
+      setLoadError(null);
       setActiveThreadId(threadId);
       setActiveSourceIndex(0);
       setReasoningOpen(false);
-      setThreads((prev) => syncActiveFlags(prev, threadId));
+      setThreads((prev) =>
+        syncActiveFlags(prev.map((thread) => (restored && thread.id === threadId ? restored : thread)), threadId),
+      );
     },
     [syncActiveFlags, threads],
   );
@@ -135,6 +201,7 @@ export function useResearchThreads() {
                 title,
                 meta: "Loading…",
                 active: true,
+                loaded: true,
                 messages: nextMessages,
                 citations: [],
                 statusHistory: [],
@@ -315,6 +382,7 @@ export function useResearchThreads() {
     reasoningOpen,
     isLoading,
     error,
+    loadError,
     status,
     setInput,
     setReasoningOpen,
