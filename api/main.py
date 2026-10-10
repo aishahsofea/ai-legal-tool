@@ -46,6 +46,7 @@ Endpoints:
   POST /evals/run    { subset }                     — run a subset (SSE stream)
   POST /evals/cancel                                — stop the active eval run
   GET  /evals/results                               — last persisted eval report
+  GET  /evals/workflow                              — graph nodes, edges and their evals (workflow map)
 """
 import json
 import logging

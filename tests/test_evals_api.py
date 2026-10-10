@@ -596,3 +596,33 @@ def test_node_evals_point_at_real_sets_and_scripts():
                 assert entry["set"] in evals_api.EVAL_SETS, node
             else:
                 assert (evals_api.ROOT / entry["script"]).is_file(), node
+
+
+def test_workflow_returns_every_node_and_edge_with_labels_on_conditionals_only(tmp_path, monkeypatch):
+    from agent.graph import build_graph
+    from agent.graph_meta import NODE_META
+
+    client = _client(monkeypatch, _dataset(tmp_path), tmp_path / "results.json")
+    body = client.get("/evals/workflow").json()
+
+    assert len(body["nodes"]) == len(NODE_META) == 17
+    real = {(e.source, e.target) for e in build_graph().get_graph().edges if e.source in NODE_META and e.target in NODE_META}
+    assert {(e["source"], e["target"]) for e in body["edges"]} == real
+    for edge in body["edges"]:
+        assert bool(edge["label"]) == edge["conditional"]
+
+
+def test_workflow_lists_each_nodes_evals(tmp_path, monkeypatch):
+    client = _client(monkeypatch, _dataset(tmp_path), tmp_path / "results.json")
+    nodes = {n["id"]: n for n in client.get("/evals/workflow").json()["nodes"]}
+
+    assert {"set": "routing"} in nodes["router"]["evals"]
+    assert nodes["clarify"]["evals"] == []
+
+
+def test_workflow_needs_no_database_url(tmp_path, monkeypatch):
+    monkeypatch.delenv("DATABASE_URL", raising=False)
+    evals_api._workflow.cache_clear()
+    client = _client(monkeypatch, _dataset(tmp_path), tmp_path / "results.json")
+
+    assert client.get("/evals/workflow").status_code == 200

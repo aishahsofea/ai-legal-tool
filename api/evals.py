@@ -6,15 +6,18 @@ import json
 import os
 import sys
 from collections import Counter
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from threading import Lock
+from functools import cache
 from typing import Any, Callable
 
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel
 
+from agent.graph_meta import EDGE_LABELS, NODE_META
+from api.eval_workflow import NODE_EVALS
 from evals.coverage import (
     aggregate_scenarios,
     coverage_summary,
@@ -202,6 +205,31 @@ def reset_active_run_for_tests() -> None:
 @router.get("/sets")
 def list_sets():
     return {"default": DEFAULT_SET, "sets": [{"name": name} for name in EVAL_SETS]}
+
+
+@cache
+def _workflow() -> dict[str, Any]:
+    from agent.graph import build_graph
+
+    # No checkpointer or store, so building the graph opens no DB connection.
+    graph = build_graph().get_graph()
+    nodes = [{"id": node_id, **asdict(meta), "evals": NODE_EVALS[node_id]} for node_id, meta in NODE_META.items()]
+    edges = [
+        {
+            "source": edge.source,
+            "target": edge.target,
+            "conditional": edge.conditional,
+            "label": EDGE_LABELS.get((edge.source, edge.target)) if edge.conditional else None,
+        }
+        for edge in graph.edges
+        if edge.source in NODE_META and edge.target in NODE_META
+    ]
+    return {"nodes": nodes, "edges": edges}
+
+
+@router.get("/workflow")
+def get_workflow():
+    return _workflow()
 
 
 @router.get("/coverage")
