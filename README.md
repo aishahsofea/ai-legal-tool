@@ -141,7 +141,7 @@ The graph only identifies targets — it never supplies answer text or a citatio
 
 The developer-only `/evals` page needs `NEXT_PUBLIC_EVALS=1` at build time. It uses a dedicated corpus (`EVALS_DATABASE_URL`) — never falls back to the app's `DATABASE_URL`.
 
-- `GET /evals/sets` — the eval sets: `end_to_end` (default) and `grounding`. The other endpoints take `?set=`; see [CONTRIBUTING.md](CONTRIBUTING.md#5-start-the-api).
+- `GET /evals/sets` — the eval sets: `end_to_end` (default), `grounding` and `routing`. The other endpoints take `?set=`; see [CONTRIBUTING.md](CONTRIBUTING.md#5-start-the-api).
 - `GET /evals/cases` — every case with its saved result and status.
 - `GET /evals/coverage` — static dataset counts, fixed coverage-gap flags, best-effort eval-corpus staleness check.
 - `POST /evals/run { set, subset }` — stream one subset from an isolated subprocess; the accepted values are listed in [CONTRIBUTING.md](CONTRIBUTING.md#5-start-the-api). SSE events: `run_start`, `case_start`, `case_result`, `run_summary`, `error`, `done`.

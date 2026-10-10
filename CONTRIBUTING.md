@@ -304,10 +304,10 @@ Endpoints. `/query`, `/resume`, `/cancel` and `/threads` need `Authorization: Be
 - `GET /reference-graph/neighborhood?document_id=&focus_provision_id=` — one-hop direct incoming/outgoing edges only; no depth parameter
 - `GET /reference-graph/snapshots?act_number=265&language=en` — promoted/audited snapshot selector data
 - `GET /reference-graph/compare?base_document_id=&compare_document_id=&focus_provision_id=` — one Act/language pair, one focus, one one-hop overlay
-- `GET /evals/sets` — the eval sets: `end_to_end` and `grounding`
+- `GET /evals/sets` — the eval sets: `end_to_end`, `grounding` and `routing`
 - `GET /evals/cases?set=` — every case in the set, with its saved result and a status: `passed`, `failed` or `not run`
-- `GET /evals/coverage?set=` — dataset coverage and a best-effort check that the eval corpus holds every section the cases need. If the eval database is not set or unreachable, the check is skipped and the reason is returned. The `grounding` set returns counts by verdict and language, plus the judgement-call count.
-- `POST /evals/run { set, subset }` — isolated eval run streamed as SSE; one active run at a time. `subset` is `"smoke"`, `"all"`, or one of `{ "category": … }`, `{ "scenario": … }`, `{ "language": … }`, `{ "case_id": … }`, `{ "case_ids": "a,b,c" }`. An unknown id returns 422.
+- `GET /evals/coverage?set=` — dataset coverage and a best-effort check that the eval corpus holds every section the cases need. If the eval database is not set or unreachable, the check is skipped and the reason is returned. The `grounding` set returns counts by verdict and language, plus the judgement-call count. The `routing` set returns counts by `query_type` and language. It needs no corpus, so it skips the corpus check.
+- `POST /evals/run { set, subset }` — isolated eval run streamed as SSE; one active run at a time. `subset` is `"smoke"`, `"all"`, or one of `{ "category": … }`, `{ "scenario": … }`, `{ "language": … }`, `{ "case_id": … }`, `{ "case_ids": "a,b,c" }`. An unknown id returns 422. The `routing` set accepts only `"all"`, `{ "language" }`, `{ "query_type" }` and `{ "case_ids" }`. Any other subset returns 422. It always runs once (`--repeats 1`).
 - `POST /evals/cancel` — terminate the active eval subprocess
 - `GET /evals/results?set=` — last persisted report for that set
 
@@ -542,6 +542,8 @@ AGENTIC_RETRIEVAL=1 WEB_COMMENTARY_ENABLED=on \
 `evals/routing_dataset.json` has 99 routing queries in English, BM and mixed. Each has the `query_type` and language the router should return. A human has reviewed every label. Some queries include chat history, because history decides whether the right label is `clarify`. The `escalate` type is not labelled here: a regex in `agent/nodes/router.py` decides it before any model call. Check the file with `python3 -m evals.validate_routing_dataset`. Add `--require-reviewed` to fail on any label added later that no human has checked, or `--review` to print a checklist.
 
 `python3 -m evals.run_routing` runs the real router over this file and prints one line per query. It needs the credentials for `ROUTER_MODEL` and no database. With no override it uses the app's `ROUTER_MODEL`. It runs the LLM router, not the Jev first pass. Set `ROUTER_JEV_ENABLED=on` on the command line to include Jev. `evals.routing_language` and `evals.debug_case` pin it the same way. To compare models, set `ROUTER_MODEL` on the command line, as below.
+
+The `/evals` dashboard lists this file as the `routing` set. It offers four modes: All, Language, Query type and Case ids. Its summary shows type and language accuracy, the confusion table and the router-path counts. It warns when `fallback` or `jev` is above zero, because those rows did not come from the LLM router. A dashboard run needs no database.
 
 ```bash
 ROUTER_MODEL=nvidia/Nemotron-3_5-Lightning python3 -m evals.run_routing
