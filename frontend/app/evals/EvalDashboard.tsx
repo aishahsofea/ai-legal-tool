@@ -14,6 +14,8 @@ import {
   flattenPersistedResult,
   isGroundingResult,
   isGroundingSummary,
+  isRoutingResult,
+  isRoutingSummary,
   streamEvalRun,
   type CoverageResponse,
   type EvalCaseRow,
@@ -23,28 +25,21 @@ import {
   type GroundingLabel,
   type GroundingResult,
   type GroundingSummary,
+  type RoutingCoverage,
+  type RoutingResult,
+  type RoutingSummary,
 } from "@/lib/evalsTransport";
 import { palette } from "./palette";
 import { Play, Spinner, Stop } from "./icons";
+import { defaultMode, modesFor, routingEstimate, setKindOf, type PickerMode, type SetKind } from "./evalSets";
 import { Pager } from "./Pager";
 import { Select } from "./Select";
 import { headerState, selectRange, toggleShown } from "./selection";
 import { addResult, emptyTally, outcomeText, toOutcome, withTotal, type RunOutcome, type RunTally } from "./runOutcome";
 
-type PickerMode = "smoke" | "all" | "language" | "category" | "scenario" | "case_id";
-
 // The bilingual baseline runs BM and code-switched cases together, so it is one
 // option rather than two separate runs.
 const BILINGUAL_SUBSET = "bm,mixed";
-
-const RUN_MODES: { value: PickerMode; label: string }[] = [
-  { value: "smoke", label: "Smoke subset" },
-  { value: "all", label: "All cases" },
-  { value: "language", label: "By language" },
-  { value: "category", label: "By category" },
-  { value: "scenario", label: "By scenario" },
-  { value: "case_id", label: "Single case ID" },
-];
 
 // Shared sizes, so a density change is one edit. Weight stays with the caller:
 // two weight classes in one string would be decided by CSS order, not by us.
@@ -318,13 +313,122 @@ function GroundingMatrix({ rows, results }: { rows: EvalCaseRow[]; results: Reco
   );
 }
 
+const routingPassed = (result: RoutingResult) => result.type_match === true;
+
+function routingBadge(result: RoutingResult | undefined) {
+  if (!result) return { text: "not run", bg: palette.idle, fill: palette.idle, ink: palette.ink, mark: "·" };
+  if (result.error) return { text: "router error", bg: palette.warningSoft, fill: palette.partial, ink: palette.ink, mark: "!" };
+  if (routingPassed(result)) return { text: result.query_type ?? "match", bg: palette.passSoft, fill: palette.passStrong, ink: palette.onStrong, mark: "✓" };
+  return { text: result.query_type ?? "miss", bg: palette.failSoft, fill: palette.failStrong, ink: palette.onStrong, mark: "×" };
+}
+
+function RoutingDetails({ row, result, active }: { row: EvalCaseRow; result: RoutingResult | undefined; active: boolean }) {
+  const badge = routingBadge(result);
+  return (
+    <details className="rounded-xl border" style={rowStyle(active)}>
+      <summary className={`grid cursor-pointer list-none grid-cols-[28px_minmax(0,1fr)_auto] items-center gap-2 ${ROW_PAD}`}>
+        <StatusMark active={active} fill={badge.fill} ink={badge.ink} mark={badge.mark} />
+        <span className="min-w-0">
+          <span className="block font-mono text-xs font-semibold" style={{ color: palette.ink }}>
+            {row.id} · {row.language} · expects {row.query_type}
+          </span>
+          <span className="block truncate text-sm" style={{ color: palette.muted }}>{row.query}</span>
+        </span>
+        <span className={BADGE} style={{ background: badge.bg, color: palette.ink }}>{badge.text}</span>
+      </summary>
+
+      <div className={`grid gap-3 border-t text-sm lg:grid-cols-2 ${PANE_PAD}`} style={{ borderColor: palette.line }}>
+        <DetailBlock title="Query"><p>{row.query}</p></DetailBlock>
+        <DetailBlock title="Label vs router">
+          <p>Dataset type: <b>{row.query_type}</b> · language: <b>{row.language}</b></p>
+          {result?.error ? (
+            <p style={{ color: palette.warning }}>No comparison: {result.error}</p>
+          ) : result ? (
+            <>
+              <p>Router type: <b>{result.query_type}</b> · language: <b>{result.response_language}</b></p>
+              <p>Route path: <b>{result.route_path ?? "not recorded"}</b></p>
+              <p style={{ color: routingPassed(result) ? palette.muted : palette.warning }}>
+                {routingPassed(result) ? "Type match." : `Type miss: ${result.miss_direction ?? "other"}.`}
+                {result.language_match === false ? " Language mismatch." : ""}
+              </p>
+            </>
+          ) : <p>Not run yet.</p>}
+        </DetailBlock>
+      </div>
+    </details>
+  );
+}
+
+const percent = (rate: number) => `${(rate * 100).toFixed(1)}%`;
+
+function RoutingSummaryPanel({ summary }: { summary: RoutingSummary }) {
+  const types = Object.keys(summary.confusion);
+  const columns = [...new Set([...types, ...types.flatMap((label) => Object.keys(summary.confusion[label]))])].sort();
+  const paths = summary.by_path;
+  const fallback = paths?.fallback ?? 0;
+  const jev = paths?.jev ?? 0;
+  return (
+    <div className="space-y-3">
+      <div className="grid gap-2 sm:grid-cols-2">
+        {([["Type accuracy", summary.query_type_accuracy], ["Language accuracy", summary.language_accuracy]] as const).map(([label, rate]) => (
+          <div key={label} className="rounded-xl p-3" style={{ background: palette.panel }}>
+            <div className="font-mono text-[10px] uppercase" style={{ color: palette.muted }}>{label}</div>
+            <div className={SECTION_TITLE}>{percent(rate)}</div>
+          </div>
+        ))}
+      </div>
+      {fallback > 0 && (
+        <div className={BANNER} style={{ borderColor: palette.warning, background: palette.failSoft }} role="alert">
+          <strong>{fallback} rows took the fallback path.</strong> A gate run needs zero fallback rows.
+        </div>
+      )}
+      {jev > 0 && (
+        <div className={BANNER} style={{ borderColor: palette.warning, background: palette.warningSoft }} role="alert">
+          <strong>{jev} rows were routed by Jev, not the LLM router.</strong> These numbers do not measure the LLM router alone.
+        </div>
+      )}
+      <div className="overflow-x-auto rounded-xl border p-3" style={{ borderColor: palette.line, background: palette.panel }}>
+        <table className="w-full min-w-[520px] border-separate border-spacing-2 text-center text-sm">
+          <thead>
+            <tr className="font-mono text-[10px] uppercase tracking-[0.1em]" style={{ color: palette.muted }}>
+              <th className="text-left">dataset ↓ · router →</th>
+              {columns.map((type) => <th key={type}>{type}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {types.map((label) => (
+              <tr key={label}>
+                <th className="text-left font-mono text-xs" style={{ color: palette.ink }}>{label}</th>
+                {columns.map((got) => {
+                  const count = summary.confusion[label][got] ?? 0;
+                  const background = count === 0 ? palette.idle : label === got ? palette.pass : palette.fail;
+                  return <td key={got} className="rounded-lg py-2 font-mono text-lg font-bold" style={{ background, color: palette.ink }}>{count}</td>;
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="font-mono text-xs font-bold" style={{ color: palette.ink }}>
+        {paths ? `paths: ${paths.llm} llm · ${jev} jev · ${fallback} fallback` : "paths: not recorded for this run"}
+        {summary.errors ? ` · ${summary.errors} router errors` : ""}
+        {" · misses: "}
+        {Object.entries(summary.miss_directions).filter(([, count]) => count > 0).map(([name, count]) => `${count} ${name}`).join(", ") || "none"}
+      </p>
+    </div>
+  );
+}
+
 // Per-set seam: each set renders its own detail component.
-function CaseRowDetail({ row, result, grounding, active }: {
+function CaseRowDetail({ kind, row, result, grounding, routing, active }: {
+  kind: SetKind;
   row: EvalCaseRow;
   result: EvalCaseResult | undefined;
   grounding: GroundingResult | undefined;
+  routing: RoutingResult | undefined;
   active: boolean;
 }) {
+  if (kind === "routing") return <RoutingDetails row={row} result={routing} active={active} />;
   if (row.claim !== undefined) return <GroundingDetails row={row} result={grounding} active={active} />;
   if (result) return <CaseDetails result={result} active={active} />;
   return <NotRunRow row={row} active={active} />;
@@ -458,12 +562,14 @@ function ResultMatrix({
 export default function EvalDashboard() {
   const [sets, setSets] = useState<string[]>([]);
   const [set, setSet] = useState<string | null>(null);
-  const [coverage, setCoverage] = useState<CoverageResponse | GroundingCoverage | null>(null);
+  const [coverage, setCoverage] = useState<CoverageResponse | GroundingCoverage | RoutingCoverage | null>(null);
   const [cases, setCases] = useState<EvalCaseRow[]>([]);
   const [resultsById, setResultsById] = useState<Record<string, EvalCaseResult>>({});
   const [summary, setSummary] = useState<EvalRunSummary | null>(null);
   const [groundingById, setGroundingById] = useState<Record<string, GroundingResult>>({});
   const [groundingSummary, setGroundingSummary] = useState<GroundingSummary | null>(null);
+  const [routingById, setRoutingById] = useState<Record<string, RoutingResult>>({});
+  const [routingSummary, setRoutingSummary] = useState<RoutingSummary | null>(null);
   const [verdictFilter, setVerdictFilter] = useState("");
   const [languageFilter, setLanguageFilter] = useState("");
   const [judgementOnly, setJudgementOnly] = useState(false);
@@ -517,20 +623,24 @@ export default function EvalDashboard() {
       .then(([nextCoverage, rows, report]) => {
         if (!alive) return;
         setCoverage(nextCoverage);
-        setMode("by_verdict" in nextCoverage ? "all" : "smoke");
+        setMode(defaultMode(setKindOf(nextCoverage)));
         setCases(rows);
         const saved: Record<string, EvalCaseResult> = {};
         const savedGrounding: Record<string, GroundingResult> = {};
+        const savedRouting: Record<string, RoutingResult> = {};
         for (const row of rows) {
           if (!row.result) continue;
-          if (isGroundingResult(row.result)) savedGrounding[row.id] = row.result;
+          if (isRoutingResult(row.result)) savedRouting[row.id] = row.result;
+          else if (isGroundingResult(row.result)) savedGrounding[row.id] = row.result;
           else saved[row.id] = flattenPersistedResult(row.result);
         }
         setResultsById(saved);
         setGroundingById(savedGrounding);
+        setRoutingById(savedRouting);
         const savedSummary = report?.summary ?? null;
-        setSummary(savedSummary && !isGroundingSummary(savedSummary) ? savedSummary : null);
+        setSummary(savedSummary && !isGroundingSummary(savedSummary) && !isRoutingSummary(savedSummary) ? savedSummary : null);
         setGroundingSummary(savedSummary && isGroundingSummary(savedSummary) ? savedSummary : null);
+        setRoutingSummary(savedSummary && isRoutingSummary(savedSummary) ? savedSummary : null);
         setResultSource(report ? "cached" : "empty");
         setLastRunAt(report?.generated_at ?? null);
       })
@@ -547,6 +657,7 @@ export default function EvalDashboard() {
 
   const estimatedCount = useMemo(() => {
     if (!coverage) return 0;
+    if (setKindOf(coverage) === "routing") return routingEstimate(coverage as RoutingCoverage, mode, value);
     if (!("by_scenario" in coverage)) return mode === "all" ? coverage.total_cases : 0;
     if (mode === "smoke") return coverage.smoke_cases;
     if (mode === "all") return coverage.total_cases;
@@ -566,6 +677,8 @@ export default function EvalDashboard() {
   );
   const e2eCoverage = coverage && "by_scenario" in coverage ? coverage : null;
   const groundingCoverage = coverage && "by_verdict" in coverage ? coverage : null;
+  const routingCoverage = coverage && "by_query_type" in coverage ? coverage : null;
+  const kind = coverage ? setKindOf(coverage) : "end_to_end";
   const displayedCases = groundingCoverage
     ? cases.filter((row) =>
         (!verdictFilter || row.verdict === verdictFilter)
@@ -616,10 +729,13 @@ export default function EvalDashboard() {
     row.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" });
   }, [activeCaseId]);
   const groundingResults = Object.values(groundingById);
-  const resultCount = groundingCoverage ? groundingResults.length : results.length;
-  const passedCount = groundingCoverage
-    ? groundingResults.filter((result) => result.match).length
-    : results.filter(casePassed).length;
+  const routingResults = Object.values(routingById);
+  const resultCount = routingCoverage ? routingResults.length : groundingCoverage ? groundingResults.length : results.length;
+  const passedCount = routingCoverage
+    ? routingResults.filter(routingPassed).length
+    : groundingCoverage
+      ? groundingResults.filter((result) => result.match).length
+      : results.filter(casePassed).length;
   const missingSections = coverage?.corpus_staleness.checked ? coverage.corpus_staleness.missing_sections : [];
   const invalidPicker = mode !== "smoke" && mode !== "all" && !value.trim();
 
@@ -638,6 +754,7 @@ export default function EvalDashboard() {
     cancelledRef.current = false;
     setSummary(null);
     setGroundingSummary(null);
+    setRoutingSummary(null);
     setResultSource("live");
     setLastRunAt(null);
     setRunning(true);
@@ -656,7 +773,10 @@ export default function EvalDashboard() {
         }
         if (event.type === "case_result") {
           setActiveCaseId((current) => (current === event.id ? null : current));
-          if (isGroundingResult(event)) {
+          if (isRoutingResult(event)) {
+            tallyRef.current = addResult(tallyRef.current, routingPassed(event));
+            setRoutingById((current) => ({ ...current, [event.id]: event }));
+          } else if (isGroundingResult(event)) {
             tallyRef.current = addResult(tallyRef.current, event.match);
             setGroundingById((current) => ({ ...current, [event.id]: event }));
           } else {
@@ -665,7 +785,8 @@ export default function EvalDashboard() {
           }
         }
         if (event.type === "run_summary") {
-          if (isGroundingSummary(event)) setGroundingSummary(event);
+          if (isRoutingSummary(event)) setRoutingSummary(event);
+          else if (isGroundingSummary(event)) setGroundingSummary(event);
           else setSummary(event);
         }
         if (event.type === "error") {
@@ -680,7 +801,7 @@ export default function EvalDashboard() {
       }
     } catch (cause) {
       if (!controller.signal.aborted) {
-        const message = cause instanceof EvalApiError && cause.status === 422
+        const message = cause instanceof EvalApiError && cause.status === 422 && kind === "end_to_end"
           ? `${cause.message}. Reseed the dedicated eval corpus before running.`
           : cause instanceof Error ? cause.message : "Eval run failed";
         setOutcome(toOutcome("error", tallyRef.current, message));
@@ -755,7 +876,9 @@ export default function EvalDashboard() {
               <span className={`${PILL} font-mono font-bold`} style={{ background: palette.accent, color: palette.panel }}>latest</span>
             </div>
             <p className="mt-1 text-sm" style={{ color: palette.muted }}>
-              {groundingCoverage
+              {routingCoverage
+                ? `${coverage.total_cases} labelled queries · ${Object.keys(routingCoverage.by_query_type).length} query types`
+                : groundingCoverage
                 ? `${coverage.total_cases} labelled claims · ${groundingCoverage.judgement_calls} judgement calls`
                 : `${coverage.total_cases} benchmark cases · ${Object.keys(e2eCoverage!.by_scenario).length} scenarios`}
               {lastRunAt ? ` · results ${resultSource === "cached" ? "saved" : "completed"} ${new Date(lastRunAt).toLocaleString()}` : ""}
@@ -854,14 +977,14 @@ export default function EvalDashboard() {
                 bold
                 value={mode}
                 disabled={running}
-                options={groundingCoverage ? [{ value: "all", label: "All claims" }] : RUN_MODES}
+                options={modesFor(kind)}
                 onChange={(next) => { setMode(next as PickerMode); setValue(""); setConfirmArmed(null); }}
               />
             </label>
 
             <div>
               {mode === "language" && (
-                <Select aria-label="Language" value={value} onChange={setValue} options={[{ value: "", label: "Choose language…" }, { value: BILINGUAL_SUBSET, label: "bm + mixed (bilingual baseline)" }, ...Object.keys(e2eCoverage?.by_language ?? {}).map(asOption)]} />
+                <Select aria-label="Language" value={value} onChange={setValue} options={[{ value: "", label: "Choose language…" }, { value: BILINGUAL_SUBSET, label: "bm + mixed (bilingual baseline)" }, ...Object.keys((routingCoverage ?? e2eCoverage)?.by_language ?? {}).map(asOption)]} />
               )}
               {mode === "category" && (
                 <Select aria-label="Category" value={value} onChange={setValue} options={[{ value: "", label: "Choose category…" }, ...Object.keys(e2eCoverage?.by_category ?? {}).map(asOption)]} />
@@ -869,12 +992,20 @@ export default function EvalDashboard() {
               {mode === "scenario" && (
                 <Select aria-label="Scenario" value={value} onChange={setValue} options={[{ value: "", label: "Choose scenario…" }, ...Object.keys(e2eCoverage?.by_scenario ?? {}).map(asOption)]} />
               )}
+              {mode === "query_type" && (
+                <Select aria-label="Query type" value={value} onChange={setValue} options={[{ value: "", label: "Choose query type…" }, ...Object.keys(routingCoverage?.by_query_type ?? {}).map(asOption)]} />
+              )}
+              {mode === "case_ids" && (
+                <input value={value} onChange={(event) => setValue(event.target.value)} placeholder="route-penal-34-1, route-penal-34-2" className="w-full rounded-xl border px-3 py-2.5 text-sm" style={{ borderColor: palette.line, background: palette.panel }} />
+              )}
               {mode === "case_id" && (
                 <input value={value} onChange={(event) => setValue(event.target.value)} placeholder="evidence-90a-1" className="w-full rounded-xl border px-3 py-2.5 text-sm" style={{ borderColor: palette.line, background: palette.panel }} />
               )}
               {(mode === "smoke" || mode === "all") && (
                 <p className="text-sm" style={{ color: palette.muted }}>
-                  {groundingCoverage
+                  {routingCoverage
+                    ? "Sends every query to the live router. Filter the list below to run a subset."
+                    : groundingCoverage
                     ? "Runs the live grounding judge on every claim. Filter the list below to run a subset."
                     : mode === "smoke" ? "Fast signal across the CI-tagged cases." : "Complete benchmark; uses real model and judge tokens."}
                 </p>
@@ -888,7 +1019,9 @@ export default function EvalDashboard() {
           <div className={BANNER} style={{ borderColor: palette.warning, background: palette.warningSoft }}>
             {(() => {
               const count = confirmArmed === "picker" ? estimatedCount : confirmArmed.slice(4).split(",").length;
-              return groundingCoverage
+              return routingCoverage
+                ? `${count} queries each call the live router and incur token cost.`
+                : groundingCoverage
                 ? `${count} claims each call Jev, then the live grounding judge unless Jev clears the claim. The full set of ${coverage.total_cases} is up to ${coverage.total_cases} judge calls and incurs token cost.`
                 : `${count} cases run the live agent and LLM judge, take roughly 5–8 minutes, and incur token cost.`;
             })()} Click <strong>Confirm</strong> to continue.
@@ -900,12 +1033,26 @@ export default function EvalDashboard() {
             <strong>Run blocked:</strong> the eval corpus is missing {missingSections.length} required sections. Reseed the dedicated eval database first.
           </div>
         )}
-        {!corpusChecked && !groundingCoverage && (
+        {!corpusChecked && e2eCoverage && (
           <div className={BANNER} style={{ borderColor: palette.line, background: palette.panelSoft, color: palette.muted }}>
             Corpus status is not checked: {coverage.corpus_staleness.reason}. Coverage and saved results still work; a live run requires the eval database.
           </div>
         )}
         {error && <div className={BANNER} style={{ borderColor: palette.warning, background: palette.failSoft }} role="alert">{error}</div>}
+
+        {routingCoverage && (
+          <section id="eval-results" className="scroll-mt-4" aria-labelledby="routing-title">
+            <div className="mb-2">
+              <p className={EYEBROW} style={{ color: palette.muted }}>Label vs router</p>
+              <h2 id="routing-title" className={SECTION_TITLE}>Where the router disagrees</h2>
+            </div>
+            {routingSummary ? <RoutingSummaryPanel summary={routingSummary} /> : (
+              <p className="text-sm" style={{ color: palette.muted }}>
+                {routingResults.length > 0 ? `${passedCount}/${routingResults.length} type matches so far. The summary appears when the run ends.` : "No saved run yet."}
+              </p>
+            )}
+          </section>
+        )}
 
         {groundingCoverage && (
           <section id="eval-results" className="scroll-mt-4" aria-labelledby="matrix-title">
@@ -953,7 +1100,11 @@ export default function EvalDashboard() {
         </section>}
 
         <section className="grid gap-3 md:grid-cols-3" aria-label="How to use this dashboard">
-          {(groundingCoverage ? [
+          {(routingCoverage ? [
+            ["01", "Choose a mode", "All runs every query. Language, Query type and Case IDs narrow the run. There is no smoke subset."],
+            ["02", "Run and watch", "Each row shows the router's type as its result arrives."],
+            ["03", "Read the misses", "The confusion matrix shows which types get confused. Warnings appear when rows took the fallback or Jev path."],
+          ] : groundingCoverage ? [
             ["01", "Filter the claims", "Narrow the list by dataset label, language or judgement call. Counts beside each option come from the dataset."],
             ["02", "Run what you see", "Tick the box above the list to select every claim in the filtered list across all pages, or tick a few. Shift-click ticks a range. Then run them. Each row also has its own Run button."],
             ["03", "Read the mismatches", "Expand a claim to compare the dataset label with the judge label, the Jev score, and the judge's quote and reason."],
@@ -1054,7 +1205,7 @@ export default function EvalDashboard() {
                     className="h-4 w-4"
                   />
                 </span>
-                <CaseRowDetail row={row} result={resultsById[row.id]} grounding={groundingById[row.id]} active={row.id === activeCaseId} />
+                <CaseRowDetail kind={kind} row={row} result={resultsById[row.id]} grounding={groundingById[row.id]} routing={routingById[row.id]} active={row.id === activeCaseId} />
                 <span className={ROW_SIDE}>
                   <button
                     type="button"
