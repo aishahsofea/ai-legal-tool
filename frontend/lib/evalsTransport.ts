@@ -11,7 +11,8 @@ export type EvalSubset =
   | { scenario: string }
   | { case_id: string }
   // Comma-separated ids from the case list's row selection.
-  | { case_ids: string };
+  | { case_ids: string }
+  | { query_type: string };
 
 export type GroundingLabel = "supported" | "partial" | "unsupported";
 
@@ -142,6 +143,73 @@ export interface GroundingSummary {
   jev_errors: number;
 }
 
+export type RoutingQueryType = "statute_lookup" | "topical" | "provision_extraction" | "clarify" | "conversational";
+export type RoutingMissDirection = "clarify_to_legal" | "legal_to_clarify" | "legal_to_conversational" | "other";
+// `jev` is the keyword fast path and `fallback` the router's error path; only `llm` measures the LLM router.
+export type RoutingPath = "jev" | "llm" | "fallback";
+
+export interface RoutingCase {
+  id: string;
+  query_type: RoutingQueryType;
+  language: string;
+  tags?: string[];
+}
+
+export interface RoutingResult {
+  id: string;
+  case: RoutingCase;
+  repeat: number;
+  label_type: RoutingQueryType;
+  label_language: string;
+  query_type?: RoutingQueryType;
+  response_language?: string;
+  type_match?: boolean;
+  language_match?: boolean;
+  miss_direction: RoutingMissDirection | null;
+  route_path?: RoutingPath;
+  // Set when the router call failed; the row has no prediction to compare.
+  error?: string;
+}
+
+export interface RoutingGroupStats {
+  n: number;
+  type_accuracy: number;
+  language_accuracy: number;
+}
+
+export interface RoutingSummary {
+  total_cases: number;
+  total_runs: number;
+  errors: number;
+  by_error: Record<string, number>;
+  query_type_accuracy: number;
+  language_accuracy: number;
+  confusion: Record<string, Record<string, number>>;
+  by_tag: Record<string, RoutingGroupStats>;
+  by_language: Record<string, RoutingGroupStats>;
+  by_query_type: Record<string, RoutingGroupStats>;
+  // Absent in results saved before the router reported its path.
+  by_path?: Record<RoutingPath, number>;
+  miss_directions: Record<RoutingMissDirection, number>;
+  agreement: { cases: number; agree: number; rate: number } | null;
+}
+
+// Counts for the routing set, which has no scenarios, policies or verdicts.
+export interface RoutingCoverage {
+  total_cases: number;
+  by_query_type: Record<string, number>;
+  by_language: Record<string, number>;
+  corpus_staleness: { checked: false; reason: string };
+}
+
+export function isRoutingResult(value: object): value is RoutingResult {
+  return "label_type" in value;
+}
+
+export function isRoutingSummary(value: object): value is RoutingSummary {
+  return "query_type_accuracy" in value;
+}
+
 export function isGroundingResult(value: object): value is GroundingResult {
   return "judge_label" in value;
 }
@@ -153,8 +221,8 @@ export function isGroundingSummary(value: object): value is GroundingSummary {
 export type EvalEvent =
   | { type: "run_start"; subset: EvalSubset; case_count: number }
   | { type: "case_start"; id: string; index: number; total: number }
-  | ({ type: "case_result" } & (EvalCaseResult | GroundingResult))
-  | ({ type: "run_summary" } & (EvalRunSummary | GroundingSummary))
+  | ({ type: "case_result" } & (EvalCaseResult | GroundingResult | RoutingResult))
+  | ({ type: "run_summary" } & (EvalRunSummary | GroundingSummary | RoutingSummary))
   | { type: "error"; message: string }
   | { type: "done" };
 
@@ -176,8 +244,8 @@ export interface PersistedResult {
 
 export interface EvalResultsReport {
   generated_at: string;
-  summary: (EvalRunSummary & { total_cases: number }) | GroundingSummary;
-  results: (PersistedResult | GroundingResult)[];
+  summary: (EvalRunSummary & { total_cases: number }) | GroundingSummary | RoutingSummary;
+  results: (PersistedResult | GroundingResult | RoutingResult)[];
 }
 
 export interface EvalSetInfo {
@@ -192,17 +260,18 @@ export interface EvalSetsResponse {
 export type EvalCaseStatus = "passed" | "failed" | "not run";
 
 // One dataset case merged with its latest saved result, as GET /evals/cases returns it.
-// End-to-end rows carry `query`/`scenario`; grounding rows carry `claim`/`verdict`.
+// End-to-end rows carry `scenario`; grounding rows `claim`/`verdict`; routing rows `query`/`query_type`.
 export interface EvalCaseRow extends Partial<GroundingCase> {
   id: string;
   category?: string;
   scenario?: string;
   query?: string;
+  query_type?: RoutingQueryType;
   expected_policy?: string;
   expected_act_number?: string | null;
   expected_section?: string | null;
   status: EvalCaseStatus;
-  result: PersistedResult | GroundingResult | null;
+  result: PersistedResult | GroundingResult | RoutingResult | null;
 }
 
 export class EvalApiError extends Error {
@@ -246,7 +315,7 @@ export async function fetchEvalCases(set: string): Promise<EvalCaseRow[]> {
   return (await response.json()).cases;
 }
 
-export async function fetchEvalCoverage(set: string): Promise<CoverageResponse | GroundingCoverage> {
+export async function fetchEvalCoverage(set: string): Promise<CoverageResponse | GroundingCoverage | RoutingCoverage> {
   const response = await fetch(`${API_URL}/evals/coverage?${setQuery(set)}`, { cache: "no-store" });
   if (!response.ok) throw await responseError(response);
   return response.json();

@@ -147,6 +147,11 @@ def select_cases(
             if not isinstance(value, str) or not wanted:
                 raise ValueError("Invalid eval subset")
             selected = [case for case in cases if case.get("language", "en") in wanted]
+        elif key == "query_type":
+            wanted = {part.strip() for part in str(value).split(",") if part.strip()}
+            if not isinstance(value, str) or not wanted:
+                raise ValueError("Invalid eval subset")
+            selected = [case for case in cases if case.get("query_type") in wanted]
         elif key == "case_ids":
             wanted_ids = [part.strip() for part in str(value).split(",") if part.strip()]
             known = {case.get("id") for case in cases}

@@ -158,6 +158,22 @@ def test_language_subset_takes_several_languages_and_defaults_missing_labels_to_
     assert [case["id"] for case in english] == ["en-case", "unlabelled-case"]
 
 
+def test_query_type_subset_takes_several_types_and_rejects_empty_matches():
+    cases = [
+        {"id": "a", "query_type": "factual"},
+        {"id": "b", "query_type": "advice"},
+        {"id": "c", "query_type": "chitchat"},
+    ]
+
+    assert [case["id"] for case in select_cases(cases, {"query_type": "factual, chitchat"})] == ["a", "c"]
+    for bad in ({"query_type": "nope"}, {"query_type": " , "}):
+        try:
+            select_cases(cases, bad)
+        except ValueError:
+            continue
+        raise AssertionError(f"Expected {bad} to be rejected")
+
+
 def test_case_ids_subset_keeps_dataset_order_and_rejects_unknown_ids():
     cases = [_case("a"), _case("b"), _case("c")]
 

@@ -185,6 +185,7 @@ def test_runner_command_passes_each_dashboard_subset_through_as_its_cli_flag():
         ({"case_id": "evidence-90a-1"}, "--case-id", "evidence-90a-1"),
         ({"language": "bm,mixed"}, "--language", "bm,mixed"),
         ({"case_ids": "a,b,c"}, "--case-ids", "a,b,c"),
+        ({"query_type": "factual,advice"}, "--query-type", "factual,advice"),
     ):
         assert evals_api.runner_command(subset)[-2:] == [flag, value]
 
@@ -266,7 +267,7 @@ def test_sets_lists_the_registry_with_end_to_end_as_default(tmp_path, monkeypatc
     response = client.get("/evals/sets")
 
     assert response.status_code == 200
-    assert response.json() == {"default": "end_to_end", "sets": [{"name": "end_to_end"}, {"name": "grounding"}]}
+    assert response.json() == {"default": "end_to_end", "sets": [{"name": "end_to_end"}, {"name": "grounding"}, {"name": "routing"}]}
 
 
 def test_unknown_set_returns_404_on_every_endpoint(tmp_path, monkeypatch):
@@ -421,3 +422,158 @@ def test_each_set_reads_only_its_own_results_file(tmp_path, monkeypatch):
     assert client.get("/evals/results?set=grounding").status_code == 200
     assert evals_api.runner_command("all", evals_api.EVAL_SETS["grounding"]).count(str(grounding_path)) == 1
     assert str(tmp_path / "end_to_end.json") in evals_api.runner_command("all")
+
+
+def test_run_rejects_a_subset_the_set_does_not_allow_before_spawning(tmp_path, monkeypatch):
+    client = _client(monkeypatch, _dataset(tmp_path), tmp_path / "results.json")
+    monkeypatch.setenv("EVALS_DATABASE_URL", "postgresql://evals")
+    narrow = evals_api.EvalSet(
+        **{**evals_api.EVAL_SETS["end_to_end"].__dict__, "name": "narrow", "allowed_subsets": frozenset({"all"})}
+    )
+    monkeypatch.setitem(evals_api.EVAL_SETS, "narrow", narrow)
+    spawned = []
+
+    async def fail_spawn(*args, **kwargs):
+        spawned.append(args)
+
+    monkeypatch.setattr(asyncio, "create_subprocess_exec", fail_spawn)
+
+    for subset in ("smoke", {"category": "citation"}):
+        response = client.post("/evals/run", json={"set": "narrow", "subset": subset})
+        assert response.status_code == 422
+        assert "narrow" in response.json()["detail"]
+    assert spawned == []
+    assert evals_api._run_reserved is False
+
+
+def _routing_client(tmp_path, monkeypatch, results=None):
+    dataset = tmp_path / "routing.json"
+    dataset.write_text(json.dumps({"cases": [
+        {"id": "r1", "language": "en", "query": "q1", "query_type": "statute_lookup"},
+        {"id": "r2", "language": "bm", "query": "q2", "query_type": "clarify"},
+        {"id": "r3", "language": "en", "query": "q3", "query_type": "topical"},
+    ]}))
+    results_path = tmp_path / "routing-results.json"
+    if results is not None:
+        results_path.write_text(json.dumps({"results": results}))
+    monkeypatch.setattr(evals_api, "ROUTING_DATASET_PATH", dataset)
+    monkeypatch.setattr(evals_api, "ROUTING_RESULTS_PATH", results_path)
+    evals_api.reset_active_run_for_tests()
+    app = FastAPI()
+    app.include_router(evals_api.router)
+    return TestClient(app)
+
+
+def test_sets_lists_routing(tmp_path, monkeypatch):
+    client = _routing_client(tmp_path, monkeypatch)
+
+    assert {"name": "routing"} in client.get("/evals/sets").json()["sets"]
+
+
+def test_routing_coverage_counts_by_query_type_without_a_corpus(tmp_path, monkeypatch):
+    client = _routing_client(tmp_path, monkeypatch)
+
+    body = client.get("/evals/coverage?set=routing").json()
+
+    assert body["total_cases"] == 3
+    assert body["by_query_type"] == {"statute_lookup": 1, "clarify": 1, "topical": 1}
+    assert body["by_language"] == {"en": 2, "bm": 1}
+    assert "by_verdict" not in body
+    assert body["corpus_staleness"]["checked"] is False
+
+
+def test_routing_cases_show_passed_failed_and_errored_rows(tmp_path, monkeypatch):
+    client = _routing_client(tmp_path, monkeypatch, results=[
+        {"id": "r1", "case": {"id": "r1"}, "type_match": True},
+        {"id": "r2", "case": {"id": "r2"}, "type_match": False},
+        {"id": "r3", "case": {"id": "r3"}, "error": "Timeout: boom"},
+    ])
+
+    rows = client.get("/evals/cases?set=routing").json()["cases"]
+
+    assert {row["id"]: row["status"] for row in rows} == {
+        "r1": "passed", "r2": "failed", "r3": "failed"
+    }
+
+
+def test_routing_case_passed_needs_an_exact_type_match():
+    passed = evals_api.EVAL_SETS["routing"].case_passed
+
+    assert passed({"type_match": True}) is True
+    assert passed({"type_match": False}) is False
+    assert passed({"error": "boom"}) is False
+
+
+def test_routing_run_summary_is_tagged_and_scores_only_clean_rows():
+    rows = [
+        {"id": "r1", "repeat": 0, "label_type": "topical", "label_language": "en",
+         "query_type": "topical", "type_match": True, "language_match": True,
+         "miss_direction": None, "route_path": "llm", "tags": []},
+        {"id": "r2", "repeat": 0, "error": "boom"},
+    ]
+
+    summary = evals_api.EVAL_SETS["routing"].run_summary(rows)
+
+    assert summary["type"] == "run_summary"
+    assert summary["query_type_accuracy"] == 1.0
+
+
+def test_routing_run_rejects_modes_it_does_not_offer(tmp_path, monkeypatch):
+    client = _routing_client(tmp_path, monkeypatch)
+    spawned = []
+
+    async def fail_spawn(*args, **kwargs):
+        spawned.append(args)
+
+    monkeypatch.setattr(asyncio, "create_subprocess_exec", fail_spawn)
+
+    for subset in ("smoke", {"category": "x"}, {"scenario": "x"}):
+        response = client.post("/evals/run", json={"set": "routing", "subset": subset})
+        assert response.status_code == 422
+    assert spawned == []
+
+
+def test_routing_stream_emits_one_case_start_per_runner_row(tmp_path, monkeypatch):
+    script = tmp_path / "fake_runner.py"
+    script.write_text(
+        "import json\n"
+        "for cid, label, got in (('r1', 'statute_lookup', 'statute_lookup'), ('r3', 'topical', 'clarify')):\n"
+        "    print(json.dumps({'id': cid, 'repeat': 0, 'tags': [], 'label_type': label,"
+        " 'label_language': 'en', 'query_type': got, 'response_language': 'en',"
+        " 'type_match': label == got, 'language_match': True,"
+        " 'miss_direction': None if label == got else 'other', 'route_path': 'llm'}), flush=True)\n"
+    )
+    client = _routing_client(tmp_path, monkeypatch)
+    monkeypatch.delenv("EVALS_DATABASE_URL", raising=False)
+    monkeypatch.setattr(
+        evals_api, "runner_command", lambda _subset, _set=None: [sys.executable, str(script)]
+    )
+
+    response = client.post("/evals/run", json={"set": "routing", "subset": {"case_ids": "r1,r3"}})
+    events = _events(response)
+
+    assert response.status_code == 200
+    assert [e["type"] for e in events].count("case_start") == 2
+    assert events[-2]["type"] == "run_summary"
+    assert events[-2]["query_type_accuracy"] == 0.5
+
+
+def test_routing_runner_command_targets_the_routing_runner(tmp_path, monkeypatch):
+    command = evals_api.runner_command({"query_type": "clarify"}, evals_api.EVAL_SETS["routing"])
+
+    assert command[2] == "evals.run_routing"
+    assert command[-2:] == ["--query-type", "clarify"]
+
+
+def test_routing_dashboard_subset_selects_what_the_runner_selects():
+    from evals.coverage import select_cases
+    from evals.run_routing import select_routing_cases
+
+    cases = json.loads(evals_api.ROUTING_DATASET_PATH.read_text(encoding="utf-8"))["cases"]
+    for subset, kwargs in (
+        ({"language": "bm"}, {"language": "bm"}),
+        ({"query_type": "clarify,topical"}, {"query_type": "clarify,topical"}),
+    ):
+        api_ids = [case["id"] for case in select_cases(cases, subset)]
+        runner_ids = [case["id"] for case in select_routing_cases(cases, **kwargs)]
+        assert api_ids == runner_ids
