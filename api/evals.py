@@ -24,12 +24,15 @@ from evals.coverage import (
     select_cases,
 )
 from evals.grounding_summary import summarise as summarise_grounding
+from evals.routing_summary import summarise as summarise_routing
 
 ROOT = Path(__file__).resolve().parents[1]
 DATASET_PATH = ROOT / "evals" / "dataset.json"
 RESULTS_PATH = ROOT / "evals" / "results.json"
 GROUNDING_DATASET_PATH = ROOT / "evals" / "grounding_dataset.json"
 GROUNDING_RESULTS_PATH = ROOT / "evals" / "results" / "grounding.json"
+ROUTING_DATASET_PATH = ROOT / "evals" / "routing_dataset.json"
+ROUTING_RESULTS_PATH = ROOT / "evals" / "results" / "routing.json"
 
 router = APIRouter(prefix="/evals", tags=["evals"])
 
@@ -49,7 +52,24 @@ class EvalSet:
     run_summary: Callable[[list[dict[str, Any]]], dict[str, Any]]
     # False for sets that judge text directly: no corpus, so no DB check or staleness.
     needs_corpus: bool = True
+    # Coverage counts for sets with no corpus; unused when needs_corpus.
+    case_counts: Callable[[list[dict[str, Any]]], dict[str, Any]] | None = None
     allowed_subsets: frozenset[str] = DEFAULT_SUBSETS
+
+
+def _grounding_counts(cases: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "by_verdict": dict(Counter(case["verdict"] for case in cases)),
+        "by_language": dict(Counter(case["language"] for case in cases)),
+        "judgement_calls": sum(bool(case.get("judgement_call")) for case in cases),
+    }
+
+
+def _routing_counts(cases: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "by_query_type": dict(Counter(case["query_type"] for case in cases)),
+        "by_language": dict(Counter(case["language"] for case in cases)),
+    }
 
 
 EVAL_SETS: dict[str, EvalSet] = {
@@ -71,6 +91,19 @@ EVAL_SETS: dict[str, EvalSet] = {
         case_passed=lambda result: result.get("match") is True,
         run_summary=lambda results: {"type": "run_summary", **summarise_grounding(results)},
         needs_corpus=False,
+        case_counts=_grounding_counts,
+    ),
+    "routing": EvalSet(
+        name="routing",
+        dataset_path=lambda: ROUTING_DATASET_PATH,
+        results_path=lambda: ROUTING_RESULTS_PATH,
+        runner_module="evals.run_routing",
+        # Errored rows carry no type_match key.
+        case_passed=lambda result: result.get("type_match") is True,
+        run_summary=lambda results: {"type": "run_summary", **summarise_routing(results)},
+        needs_corpus=False,
+        case_counts=_routing_counts,
+        allowed_subsets=frozenset({"all", "language", "query_type", "case_ids"}),
     ),
 }
 
@@ -178,9 +211,7 @@ async def get_coverage(set: str = DEFAULT_SET):
     if not eval_set.needs_corpus:
         return {
             "total_cases": len(cases),
-            "by_verdict": dict(Counter(case["verdict"] for case in cases)),
-            "by_language": dict(Counter(case["language"] for case in cases)),
-            "judgement_calls": sum(bool(case.get("judgement_call")) for case in cases),
+            **eval_set.case_counts(cases),
             "corpus_staleness": {"checked": False, "reason": "This set needs no corpus"},
         }
     payload = coverage_summary(cases)
