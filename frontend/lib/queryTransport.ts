@@ -1,4 +1,4 @@
-import { getUserId } from "@/lib/userIdentity";
+import { authHeaders } from "@/lib/supabaseClient";
 
 export interface Message {
   role: "user" | "assistant";
@@ -69,8 +69,8 @@ export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000
 async function fetchQueryResponse(query: string, threadId: string, signal?: AbortSignal) {
   return fetch(`${API_URL}/query`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query, thread_id: threadId, user_id: getUserId() }),
+    headers: { "Content-Type": "application/json", ...(await authHeaders()) },
+    body: JSON.stringify({ query, thread_id: threadId }),
     signal,
   });
 }
@@ -80,8 +80,8 @@ async function fetchQueryResponse(query: string, threadId: string, signal?: Abor
 async function fetchResumeResponse(threadId: string, value: string, signal?: AbortSignal) {
   return fetch(`${API_URL}/resume`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ thread_id: threadId, value, user_id: getUserId() }),
+    headers: { "Content-Type": "application/json", ...(await authHeaders()) },
+    body: JSON.stringify({ thread_id: threadId, value }),
     signal,
   });
 }
@@ -235,7 +235,7 @@ export async function cancelQuery(threadId: string): Promise<void> {
   try {
     await fetch(`${API_URL}/cancel`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...(await authHeaders()) },
       body: JSON.stringify({ thread_id: threadId }),
       keepalive: true,
     });

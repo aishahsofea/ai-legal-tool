@@ -7,14 +7,16 @@ export function ThreadSidebar({
   onNewThread,
   onSelectThread,
   userName,
-  userFirm,
+  userSubtitle,
+  onSignOut,
   switchingDisabled = false,
 }: {
   threads: ThreadSummary[];
   onNewThread: () => void;
-  onSelectThread: (threadId: string) => void;
+  onSelectThread: (threadId: string) => void | Promise<void>;
   userName: string;
-  userFirm: string;
+  userSubtitle?: string;
+  onSignOut: () => void;
   switchingDisabled?: boolean;
 }) {
   return (
@@ -47,10 +49,17 @@ export function ThreadSidebar({
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-(--accent) text-xs font-semibold text-(--surface)">
           {userName.slice(0, 2).toUpperCase()}
         </div>
-        <div>
-          <div className="text-sm text-(--text)">{userName}</div>
-          <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.12em] text-(--text-subtle)">{userFirm}</div>
+        <div className="min-w-0 flex-1">
+          <div className="truncate text-sm text-(--text)">{userName}</div>
+          {userSubtitle && <div className="mt-1 truncate text-xs text-(--text-subtle)">{userSubtitle}</div>}
         </div>
+        <button
+          type="button"
+          onClick={onSignOut}
+          className="cursor-pointer rounded-lg border border-(--line) bg-transparent px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-(--text-subtle) transition-colors duration-200 hover:bg-(--surface) hover:text-(--text)"
+        >
+          Sign out
+        </button>
       </div>
     </aside>
   );

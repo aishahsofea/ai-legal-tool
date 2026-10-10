@@ -120,6 +120,16 @@ With `LANGSMITH_TRACING=true`, every graph run traces to LangSmith. The query li
 
 Optional flags are off by default. Set one to `1`, `true`, `yes`, or `on` to turn it on. Any other value leaves it off. `GROUNDING_JEV_ENABLED` and `ROUTER_JEV_ENABLED` are the exceptions. They are on by default, and `0`, `false`, `no`, or `off` disables them.
 
+**Auth and CORS**
+
+| Variable | Default | What it does |
+|---|---|---|
+| `SUPABASE_URL` | none, required | Project URL. The API fetches the signing keys from `<SUPABASE_URL>/auth/v1/.well-known/jwks.json`. |
+| `SUPABASE_JWT_SECRET` | unset | Only for a project still signing with the legacy HS256 secret. Unset, an HS256 token is rejected. |
+| `FRONTEND_ORIGIN` | `http://localhost:3000` | Comma-separated browser origins the API answers with CORS headers. A blank value means the default. Never `*`. Set it to the frontend URL on Railway. |
+
+The frontend reads `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` from `frontend/.env.local` (template: `frontend/.env.example`).
+
 **Memory**
 
 | Variable | Values | Default | What it does |
@@ -208,6 +218,26 @@ The normal corpus rollout command applies the additive migration automatically, 
 
 `chunks.division` is one of those nullable columns — see [division](CONTEXT.md#language). It is `NULL` on rows ingested before the column existed; retrieval reads those as body sections. An exact section lookup returns body sections ahead of schedule paragraphs that carry the same number.
 
+Saved threads use two tables, `threads` and `thread_turns`. `migrations/0002_threads.sql` creates them, and the API applies it on every start. The SQL is `IF NOT EXISTS`, so repeating it is safe. If the database is unreachable at start, the API logs `threads schema unavailable` and still starts. To apply it by hand:
+
+```bash
+psql "$DATABASE_URL" -f migrations/0002_threads.sql
+```
+
+Without the tables, `/threads` and `/query` return 500. A browser reports that 500 as a CORS error, because error responses carry no CORS headers.
+
+### Sign-in (Supabase Auth)
+
+The workspace is behind a GitHub sign-in (ADR 0022). One-time setup:
+
+1. Create a GitHub OAuth app. Its callback URL is `https://<project-ref>.supabase.co/auth/v1/callback`.
+2. In the Supabase dashboard, open Authentication, Providers, GitHub. Enable it and paste the app's client id and secret.
+3. Under Authentication, URL Configuration, add `http://localhost:3000/auth/callback` and the deployed frontend's `/auth/callback` to the redirect URLs.
+4. Set `SUPABASE_URL` in `.env`, and the two `NEXT_PUBLIC_SUPABASE_*` values in `frontend/.env.local`. The anon key is in the dashboard under Project Settings, API.
+5. In Project Settings, JWT Keys, check how the project signs. Only a project on the legacy HS256 secret needs `SUPABASE_JWT_SECRET`.
+
+Open sign-up lets anyone with a GitHub account spend the model budget. To limit it, turn off sign-ups under Authentication, Sign In / Providers. Then create the judge accounts by hand.
+
 ### 4. Build the knowledge base (one-time, ~1 hour)
 
 ```bash
@@ -261,10 +291,12 @@ uvicorn api.main:app --port 8000 --reload
 
 Health check: `GET http://localhost:8000/health`
 
-Endpoints:
-- `POST /query { query, thread_id, user_id? }` — run a turn (streams SSE)
-- `POST /resume { thread_id, value, user_id? }` — answer a clarify interrupt, stream the resumed turn (ADR 0015)
+Endpoints. `/query`, `/resume`, `/cancel` and `/threads` need `Authorization: Bearer <access token>`. A `user_id` in a request body is ignored (ADR 0022).
+- `POST /query { query, thread_id }` — run a turn (streams SSE)
+- `POST /resume { thread_id, value }` — answer a clarify interrupt, stream the resumed turn (ADR 0015)
 - `POST /cancel { thread_id }` — barge-in: stop the in-flight turn for a thread (ADR 0014)
+- `GET /threads` — the signed-in user's saved threads, newest first
+- `GET /threads/{thread_id}` — that thread's messages, with citations, commentary and currency labels
 - `GET|HEAD /receipts/{document_id}/pdf` — serve, proxy, or redirect one verified immutable Receipt Document (ETag/304, ranges supported)
 - `POST /receipts/{document_id}/locate { evidence_quote?, start_page, extraction_id? }` — locate one Evidence Span against the exact extraction sidecar
 - `POST /receipts/telemetry` — accepts a small allowlisted, quote-free frontend failure event
@@ -278,6 +310,8 @@ Endpoints:
 - `POST /evals/run { set, subset }` — isolated eval run streamed as SSE; one active run at a time. `subset` is `"smoke"`, `"all"`, or one of `{ "category": … }`, `{ "scenario": … }`, `{ "language": … }`, `{ "case_id": … }`, `{ "case_ids": "a,b,c" }`. An unknown id returns 422.
 - `POST /evals/cancel` — terminate the active eval subprocess
 - `GET /evals/results?set=` — last persisted report for that set
+
+A missing or bad token returns 401. Another user's thread returns 404, the same as a missing one. `/receipts/*`, `/reference-graph/*` and `/evals/*` take no token.
 
 Every endpoint that takes `set` defaults to `end_to_end`. An unknown set returns 404.
 
@@ -295,7 +329,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). With `NEXT_PUBLIC_EVALS=1`, the standalone dashboard is at [http://localhost:3000/evals](http://localhost:3000/evals); without that build-time flag the route returns 404.
+Open [http://localhost:3000](http://localhost:3000). The workspace sends you to `/login` until you sign in; set up [Supabase Auth](#sign-in-supabase-auth) first. With `NEXT_PUBLIC_EVALS=1`, the standalone dashboard is at [http://localhost:3000/evals](http://localhost:3000/evals); without that build-time flag the route returns 404.
 
 The Citation Receipt viewer uses `react-pdf` with the matching `pdfjs-dist` worker, bundled by Next.js from `pdfjs-dist/build/pdf.worker.min.mjs` — don't replace it with a runtime CDN. The viewer module is client-only, dynamically imported with SSR disabled.
 

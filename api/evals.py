@@ -353,7 +353,6 @@ async def run_evals(req: EvalRunRequest, request: Request):
         headers={
             "Cache-Control": "no-cache",
             "X-Accel-Buffering": "no",
-            "Access-Control-Allow-Origin": "*",
         },
     )
 
