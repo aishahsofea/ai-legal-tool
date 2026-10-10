@@ -138,9 +138,16 @@ app.include_router(receipts_router)
 app.include_router(reference_graph_router)
 app.include_router(threads_router)
 
+
+def _allowed_origins() -> list[str]:
+    configured = os.getenv("FRONTEND_ORIGIN", "")
+    origins = [o.strip().rstrip("/") for o in configured.split(",") if o.strip()]
+    return origins or ["http://localhost:3000"]
+
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],   # tighten to frontend URL in production
+    allow_origins=_allowed_origins(),
     allow_methods=["POST", "GET", "HEAD", "OPTIONS"],
     allow_headers=["*"],
     expose_headers=["Accept-Ranges", "Content-Length", "Content-Range", "ETag", "Location"],
@@ -219,9 +226,8 @@ async def query_endpoint(req: QueryRequest, request: Request, user_id: str = Dep
         _stream_query(req.query, req.thread_id, user_id),
         media_type="text/event-stream",
         headers={
-            "Cache-Control":               "no-cache",
-            "X-Accel-Buffering":           "no",   # disable nginx buffering
-            "Access-Control-Allow-Origin": "*",
+            "Cache-Control":     "no-cache",
+            "X-Accel-Buffering": "no",   # disable nginx buffering
         },
     )
 
@@ -240,9 +246,8 @@ async def resume_endpoint(req: ResumeRequest, request: Request, user_id: str = D
         _stream_query(None, req.thread_id, user_id, resume=req.value),
         media_type="text/event-stream",
         headers={
-            "Cache-Control":               "no-cache",
-            "X-Accel-Buffering":           "no",
-            "Access-Control-Allow-Origin": "*",
+            "Cache-Control":     "no-cache",
+            "X-Accel-Buffering": "no",
         },
     )
 

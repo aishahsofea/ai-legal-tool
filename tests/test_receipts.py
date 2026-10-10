@@ -210,7 +210,7 @@ def test_pdf_head_conditional_ranges_and_cors(tmp_path: Path):
         cors = client.options(
             f"/receipts/{document_id}/pdf",
             headers={
-                "Origin": "https://frontend.example",
+                "Origin": "http://localhost:3000",
                 "Access-Control-Request-Method": "HEAD",
                 "Access-Control-Request-Headers": "Range,If-None-Match",
             },

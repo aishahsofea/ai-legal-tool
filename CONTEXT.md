@@ -229,11 +229,24 @@ _Avoid_: expanded query, resolved query
 ### Conversation and memory
 
 **Practitioner**:
-The human using the assistant across research threads. Identified by a **User Id**: a UUID generated and kept in the practitioner's browser, sent with every query.
-- Weak, per-browser identity (no authentication in v1).
-- It is the scope key that lets **Semantic Memory** outlive one thread.
+The human using the assistant across research threads. Signs in with GitHub through Supabase Auth. Identified by a **User Id**, the Supabase user id inside the verified access token (ADR 0022).
+- The server reads the **User Id** from the token. A `user_id` in a request body is ignored.
+- **Semantic Memory** is stored under the **User Id**, so it outlasts any one thread. Every **Thread** is owned by one.
+- Memory saved under the old browser-made UUIDs is orphaned: no account can reach it.
 
 _Avoid_: account, session (a session is one thread; a **Practitioner** spans many)
+
+**Thread**:
+One conversation, named by a `thread_id`, owned by one **Practitioner**. The sidebar lists a practitioner's threads, newest first.
+- Another user's `thread_id` returns 404, the same as a missing one.
+- Stored in the `threads` table, apart from the LangGraph checkpoint (ADR 0022).
+
+_Avoid_: session, chat
+
+**Turn**:
+One question and its delivered answer inside a **Thread**. A completed turn is saved to `thread_turns` with its citations, **Commentary Notes** and **Currency Labels**. A reload can then reopen its receipts without a new query.
+- A turn paused for clarification, or cancelled, is not saved.
+- Not **Conversational Turn**, which is a kind of turn with no legal substance.
 
 **Conversation History**:
 The prior turns in the same thread, passed as a list of user/assistant messages. Used to interpret follow-ups like "what about criminal cases?".
