@@ -142,7 +142,7 @@ NODE_META: dict[str, NodeMeta] = {
         "Computes the delivered response (safe fallback if violations remain) and appends the turn to history.",
         ("query", "citations", "violations", "draft_response"),
         ("final_response", "history", "citations"),
-        10, 2,
+        11, 2,  # a row below supervisor, so long edges into it clear the retry nodes
     ),
 }
 

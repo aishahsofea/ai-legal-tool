@@ -1,4 +1,4 @@
-import type { CoverageResponse, GroundingCoverage, RoutingCoverage } from "@/lib/evalsTransport";
+import type { CoverageResponse, EvalResultsReport, GroundingCoverage, RoutingCoverage } from "@/lib/evalsTransport";
 
 export type SetKind = "end_to_end" | "grounding" | "routing";
 export type PickerMode = "smoke" | "all" | "language" | "category" | "scenario" | "case_id" | "query_type" | "case_ids";
@@ -44,4 +44,22 @@ export function routingEstimate(coverage: RoutingCoverage, mode: PickerMode, val
   const items = value.split(",").map((item) => item.trim()).filter(Boolean);
   if (mode === "language") return items.reduce((total, language) => total + (coverage.by_language[language] ?? 0), 0);
   return mode === "case_ids" ? items.length : 0;
+}
+
+export type CostBasis = { perCase: number; cases: number; usd: number; partial: boolean };
+
+// The last saved run is the only measured price; each run overwrites its report, so usage and results describe the same cases.
+export function costBasisOf(report: EvalResultsReport | null): CostBasis | null {
+  const usd = report?.summary.usage?.total.usd;
+  const cases = report?.results.length ?? 0;
+  if (usd == null || cases === 0) return null;
+  return { perCase: usd / cases, cases, usd, partial: report!.summary.usage!.partial };
+}
+
+export const formatUsd = (usd: number) => `$${usd < 0.01 ? usd.toFixed(4) : usd.toFixed(2)}`;
+
+export function costText(basis: CostBasis | null, count: number): string {
+  if (!basis) return "Cost: no saved run has recorded usage yet.";
+  const floor = basis.partial ? "at least " : "";
+  return `Estimated cost ${floor}${formatUsd(basis.perCase * count)}, from the last saved run (${formatUsd(basis.usd)} for ${basis.cases} cases).`;
 }

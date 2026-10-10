@@ -626,3 +626,29 @@ def test_workflow_needs_no_database_url(tmp_path, monkeypatch):
     client = _client(monkeypatch, _dataset(tmp_path), tmp_path / "results.json")
 
     assert client.get("/evals/workflow").status_code == 200
+
+
+def test_workflow_names_each_nodes_models(tmp_path, monkeypatch):
+    from agent.embeddings import corpus_embedding_model
+    from agent.llm_factory import node_models
+
+    client = _client(monkeypatch, _dataset(tmp_path), tmp_path / "results.json")
+    nodes = {n["id"]: n for n in client.get("/evals/workflow").json()["nodes"]}
+
+    assert nodes["router"]["models"][-1] == node_models()["router"]
+    assert nodes["retriever"]["models"] == [corpus_embedding_model()]
+    assert nodes["supervisor"]["models"] == []
+
+
+def test_workflow_lists_jev_first_where_it_runs(tmp_path, monkeypatch):
+    monkeypatch.setenv("TYPESAFE_API_KEY", "test")
+    monkeypatch.setenv("JEV_MODEL", "jev-test")
+    monkeypatch.setenv("ROUTER_JEV_ENABLED", "on")
+    monkeypatch.setenv("GROUNDING_JEV_ENABLED", "off")
+    evals_api._workflow.cache_clear()
+    client = _client(monkeypatch, _dataset(tmp_path), tmp_path / "results.json")
+    nodes = {n["id"]: n for n in client.get("/evals/workflow").json()["nodes"]}
+    evals_api._workflow.cache_clear()
+
+    assert nodes["router"]["models"][0] == "jev-test"
+    assert "jev-test" not in nodes["grounding_check"]["models"]

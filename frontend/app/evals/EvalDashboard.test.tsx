@@ -5,13 +5,23 @@ import EvalDashboard from "./EvalDashboard";
 
 const mocks = vi.hoisted(() => ({
   streamEvalRun: vi.fn(),
+  mapMounts: vi.fn(),
 }));
 
-vi.mock("./WorkflowMap", () => ({
-  WorkflowMap: ({ onRunSet }: { onRunSet: (name: string) => void }) => (
-    <button type="button" onClick={() => onRunSet("routing")}>map run routing</button>
-  ),
-}));
+vi.mock("./WorkflowMap", async () => {
+  const { useEffect } = await import("react");
+  return {
+    WorkflowMap: ({ onRunSet, onSelectSet }: { onRunSet: (name: string) => void; onSelectSet: (name: string) => void }) => {
+      useEffect(() => mocks.mapMounts(), []);
+      return (
+        <>
+          <button type="button" onClick={() => onRunSet("routing")}>map run routing</button>
+          <button type="button" onClick={() => onSelectSet("routing")}>map select routing</button>
+        </>
+      );
+    },
+  };
+});
 
 vi.mock("@/lib/evalsTransport", async () => ({
   ...(await vi.importActual<typeof import("@/lib/evalsTransport")>("@/lib/evalsTransport")),
@@ -27,6 +37,7 @@ vi.mock("@/lib/evalsTransport", async () => ({
 
 beforeEach(() => {
   mocks.streamEvalRun.mockReset();
+  mocks.mapMounts.mockReset();
   mocks.streamEvalRun.mockImplementation(async function* () {});
 });
 
@@ -55,5 +66,12 @@ describe("EvalDashboard run confirm", () => {
     await userEvent.click(await screen.findByRole("button", { name: "Run 5 cases" }));
     await waitFor(() => expect(mocks.streamEvalRun).toHaveBeenCalledTimes(1));
     expect(mocks.streamEvalRun.mock.calls[0].slice(0, 2)).toEqual(["end_to_end", "smoke"]);
+  });
+
+  it("a node click switches the set without remounting the map", async () => {
+    render(<EvalDashboard />);
+    await userEvent.click(await screen.findByRole("button", { name: "map select routing" }));
+    expect(await screen.findByText(/3 labelled queries/)).toBeInTheDocument();
+    expect(mocks.mapMounts).toHaveBeenCalledTimes(1);
   });
 });

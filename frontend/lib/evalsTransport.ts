@@ -242,9 +242,15 @@ export interface PersistedResult {
   judge: EvalCaseResult["judge"];
 }
 
+// Written by the runners from evals/usage.py; reports saved before a runner recorded usage lack it.
+export interface RunUsage {
+  total: { calls: number; usd: number | null };
+  partial: boolean;
+}
+
 export interface EvalResultsReport {
   generated_at: string;
-  summary: (EvalRunSummary & { total_cases: number }) | GroundingSummary | RoutingSummary;
+  summary: ((EvalRunSummary & { total_cases: number }) | GroundingSummary | RoutingSummary) & { usage?: RunUsage };
   results: (PersistedResult | GroundingResult | RoutingResult)[];
 }
 
@@ -270,6 +276,8 @@ export interface WorkflowNode {
   writes: string[];
   rank: number;
   lane: number;
+  // Call order: a Jev first pass comes before the node's LLM.
+  models: string[];
   evals: WorkflowNodeEval[];
 }
 
