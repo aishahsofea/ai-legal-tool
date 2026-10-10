@@ -34,6 +34,7 @@ import { Play, Spinner, Stop } from "./icons";
 import { defaultMode, modesFor, routingEstimate, setKindOf, type PickerMode, type SetKind } from "./evalSets";
 import { Pager } from "./Pager";
 import { Select } from "./Select";
+import { WorkflowMap } from "./WorkflowMap";
 import { headerState, selectRange, toggleShown } from "./selection";
 import { addResult, emptyTally, outcomeText, toOutcome, withTotal, type RunOutcome, type RunTally } from "./runOutcome";
 
@@ -601,6 +602,21 @@ export default function EvalDashboard() {
   const lastClickedRef = useRef<string | null>(null);
   const headerCheckboxRef = useRef<HTMLInputElement>(null);
 
+  const chooseSet = (next: string) => {
+    setCoverage(null);
+    setSelectedScenario(null);
+    setSelectedIds(new Set());
+    setVerdictFilter("");
+    setLanguageFilter("");
+    setJudgementOnly(false);
+    setError("");
+    setOutcome(null);
+    setMode("smoke");
+    setValue("");
+    setConfirmArmed(null);
+    setSet(next);
+  };
+
   useEffect(() => {
     let alive = true;
     fetchEvalSets()
@@ -944,7 +960,7 @@ export default function EvalDashboard() {
           </div>
         )}
 
-        <section className="rounded-xl border p-3" style={{ borderColor: palette.line, background: palette.panelSoft }} aria-label="Run configuration">
+        <section id="eval-run-config" className="scroll-mt-4 rounded-xl border p-3" style={{ borderColor: palette.line, background: palette.panelSoft }} aria-label="Run configuration">
           <div className="grid gap-3 md:grid-cols-[180px_220px_minmax(220px,1fr)_auto] md:items-center">
             <label className="flex items-center gap-3">
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.1em]" style={{ color: palette.muted }}>Set</span>
@@ -954,20 +970,7 @@ export default function EvalDashboard() {
                 value={set}
                 disabled={running}
                 options={sets.map((name) => ({ value: name, label: formatScenario(name) }))}
-                onChange={(next) => {
-                  setCoverage(null);
-                  setSelectedScenario(null);
-                  setSelectedIds(new Set());
-                  setVerdictFilter("");
-                  setLanguageFilter("");
-                  setJudgementOnly(false);
-                  setError("");
-                  setOutcome(null);
-                  setMode("smoke");
-                  setValue("");
-                  setConfirmArmed(null);
-                  setSet(next);
-                }}
+                onChange={chooseSet}
               />
             </label>
             <label className="flex items-center gap-3">
@@ -1260,6 +1263,12 @@ export default function EvalDashboard() {
             </div>
           </div>
         </details>}
+
+        <WorkflowMap onSelectSet={(name) => {
+          if (running) return;
+          chooseSet(name);
+          document.getElementById("eval-run-config")?.scrollIntoView?.({ behavior: "smooth" });
+        }} />
       </div>
     </main>
   );

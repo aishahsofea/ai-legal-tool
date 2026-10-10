@@ -257,6 +257,40 @@ export interface EvalSetsResponse {
   sets: EvalSetInfo[];
 }
 
+export type WorkflowNodeKind = "llm" | "deterministic" | "control";
+
+// A runnable set, or a manual script that the dashboard cannot start.
+export type WorkflowNodeEval = { set: string; script?: never } | { script: string; set?: never };
+
+export interface WorkflowNode {
+  id: string;
+  kind: WorkflowNodeKind;
+  description: string;
+  reads: string[];
+  writes: string[];
+  rank: number;
+  lane: number;
+  evals: WorkflowNodeEval[];
+}
+
+export interface WorkflowEdge {
+  source: string;
+  target: string;
+  conditional: boolean;
+  label: string | null;
+}
+
+export interface EvalWorkflow {
+  nodes: WorkflowNode[];
+  edges: WorkflowEdge[];
+}
+
+export function isEvalWorkflow(value: unknown): value is EvalWorkflow {
+  return typeof value === "object" && value !== null
+    && Array.isArray((value as EvalWorkflow).nodes)
+    && Array.isArray((value as EvalWorkflow).edges);
+}
+
 export type EvalCaseStatus = "passed" | "failed" | "not run";
 
 // One dataset case merged with its latest saved result, as GET /evals/cases returns it.
@@ -307,6 +341,14 @@ export async function fetchEvalSets(): Promise<EvalSetsResponse> {
   const response = await fetch(`${API_URL}/evals/sets`, { cache: "no-store" });
   if (!response.ok) throw await responseError(response);
   return response.json();
+}
+
+export async function fetchEvalWorkflow(): Promise<EvalWorkflow> {
+  const response = await fetch(`${API_URL}/evals/workflow`, { cache: "no-store" });
+  if (!response.ok) throw await responseError(response);
+  const body: unknown = await response.json();
+  if (!isEvalWorkflow(body)) throw new EvalApiError("Unexpected workflow response", response.status, body);
+  return body;
 }
 
 export async function fetchEvalCases(set: string): Promise<EvalCaseRow[]> {
