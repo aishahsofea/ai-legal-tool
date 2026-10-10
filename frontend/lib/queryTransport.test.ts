@@ -1,5 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { streamQuery, type QueryEvent } from "./queryTransport";
+import { cancelQuery, streamQuery, streamResume, type QueryEvent } from "./queryTransport";
+
+vi.mock("@/lib/supabaseClient", () => ({
+  authHeaders: async () => ({ Authorization: "Bearer test-token" }),
+}));
 
 function sseBody(events: Record<string, unknown>[]) {
   const text = events.map((e) => `data: ${JSON.stringify(e)}\n\n`).join("");
@@ -112,5 +116,24 @@ describe("response events", () => {
       violations: [],
       commentary: [note],
     });
+  });
+});
+
+describe("auth", () => {
+  function sentRequest() {
+    const [, init] = vi.mocked(fetch).mock.calls[0];
+    return { headers: init?.headers as Record<string, string>, body: JSON.parse(init?.body as string) };
+  }
+
+  it.each([
+    ["query", () => streamQuery("q", "t1").next()],
+    ["resume", () => streamResume("t1", "answer").next()],
+    ["cancel", () => cancelQuery("t1")],
+  ])("%s sends the bearer token and no user_id", async (_name, call) => {
+    stubFetch([{ type: "done" }]);
+    await call();
+    const { headers, body } = sentRequest();
+    expect(headers.Authorization).toBe("Bearer test-token");
+    expect(body).not.toHaveProperty("user_id");
   });
 });

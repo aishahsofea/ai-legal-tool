@@ -10,7 +10,7 @@ import {
   useSyncExternalStore,
 } from "react";
 import dynamic from "next/dynamic";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Composer,
   ConversationHeader,
@@ -20,6 +20,7 @@ import {
   UserMessage,
 } from "@/components/conversation";
 import { useResearchThreads } from "@/lib/useResearchThreads";
+import { useSession } from "@/lib/useSession";
 import type { Citation } from "@/lib/useQuery";
 import {
   DEFAULT_RECEIPT_PANE_WIDTH,
@@ -231,5 +232,12 @@ function WorkspaceInner() {
 }
 
 export default function Workspace() {
-  return <WorkspaceInner />;
+  const router = useRouter();
+  const session = useSession();
+
+  useEffect(() => {
+    if (session === null) router.replace("/login");
+  }, [session, router]);
+
+  return session ? <WorkspaceInner /> : null;
 }
