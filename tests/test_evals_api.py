@@ -185,6 +185,7 @@ def test_runner_command_passes_each_dashboard_subset_through_as_its_cli_flag():
         ({"case_id": "evidence-90a-1"}, "--case-id", "evidence-90a-1"),
         ({"language": "bm,mixed"}, "--language", "bm,mixed"),
         ({"case_ids": "a,b,c"}, "--case-ids", "a,b,c"),
+        ({"query_type": "factual,advice"}, "--query-type", "factual,advice"),
     ):
         assert evals_api.runner_command(subset)[-2:] == [flag, value]
 
@@ -421,3 +422,25 @@ def test_each_set_reads_only_its_own_results_file(tmp_path, monkeypatch):
     assert client.get("/evals/results?set=grounding").status_code == 200
     assert evals_api.runner_command("all", evals_api.EVAL_SETS["grounding"]).count(str(grounding_path)) == 1
     assert str(tmp_path / "end_to_end.json") in evals_api.runner_command("all")
+
+
+def test_run_rejects_a_subset_the_set_does_not_allow_before_spawning(tmp_path, monkeypatch):
+    client = _client(monkeypatch, _dataset(tmp_path), tmp_path / "results.json")
+    monkeypatch.setenv("EVALS_DATABASE_URL", "postgresql://evals")
+    narrow = evals_api.EvalSet(
+        **{**evals_api.EVAL_SETS["end_to_end"].__dict__, "name": "narrow", "allowed_subsets": frozenset({"all"})}
+    )
+    monkeypatch.setitem(evals_api.EVAL_SETS, "narrow", narrow)
+    spawned = []
+
+    async def fail_spawn(*args, **kwargs):
+        spawned.append(args)
+
+    monkeypatch.setattr(asyncio, "create_subprocess_exec", fail_spawn)
+
+    for subset in ("smoke", {"category": "citation"}):
+        response = client.post("/evals/run", json={"set": "narrow", "subset": subset})
+        assert response.status_code == 422
+        assert "narrow" in response.json()["detail"]
+    assert spawned == []
+    assert evals_api._run_reserved is False

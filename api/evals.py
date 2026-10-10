@@ -35,6 +35,8 @@ router = APIRouter(prefix="/evals", tags=["evals"])
 
 DEFAULT_SET = "end_to_end"
 
+DEFAULT_SUBSETS = frozenset({"all", "smoke", "category", "scenario", "case_id", "case_ids", "language"})
+
 
 @dataclass(frozen=True)
 class EvalSet:
@@ -47,6 +49,7 @@ class EvalSet:
     run_summary: Callable[[list[dict[str, Any]]], dict[str, Any]]
     # False for sets that judge text directly: no corpus, so no DB check or staleness.
     needs_corpus: bool = True
+    allowed_subsets: frozenset[str] = DEFAULT_SUBSETS
 
 
 EVAL_SETS: dict[str, EvalSet] = {
@@ -126,6 +129,7 @@ def runner_command(subset: str | dict[str, str], eval_set: EvalSet | None = None
             "case_id": "--case-id",
             "case_ids": "--case-ids",
             "language": "--language",
+            "query_type": "--query-type",
         }[key]
         command.extend([flag, value])
     return command
@@ -261,6 +265,12 @@ async def run_evals(req: EvalRunRequest, request: Request):
         database_url = os.getenv("EVALS_DATABASE_URL")
         if eval_set.needs_corpus and not database_url:
             raise HTTPException(status_code=503, detail="Eval DB not configured")
+
+        mode = req.subset if isinstance(req.subset, str) else next(iter(req.subset), "")
+        if mode not in eval_set.allowed_subsets:
+            raise HTTPException(
+                status_code=422, detail=f"Subset '{mode}' is not available for set {eval_set.name}"
+            )
 
         cases = _load_cases(eval_set)
         try:
