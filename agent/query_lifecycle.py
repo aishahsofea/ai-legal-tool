@@ -18,6 +18,7 @@ from agent.memory.pruner import schedule_pruning
 from agent.observability import emit_feedback, root_run_id
 from agent.query_policy import delivered_response, strip_disclaimer
 from agent.state import AgentState, QueryEvent, QueryResult
+from api import threads_store
 
 logger = logging.getLogger(__name__)
 
@@ -118,6 +119,22 @@ def _response_text(state: dict) -> str:
     return state.get("final_response") or state.get("draft_response") or ""
 
 
+async def _persist_turn(thread_id: str, query: str, response: QueryEvent) -> None:
+    try:
+        await asyncio.to_thread(
+            threads_store.append_turn,
+            thread_id,
+            query,
+            response["content"],
+            response["citations"],
+            response.get("commentary"),
+            response.get("currency_labels"),
+        )
+    except Exception:
+        # Fail open: the answer is already delivered, and a lost history row beats a broken turn.
+        logger.exception("append_turn failed for thread=%s", thread_id)
+
+
 def _fail_closed_if_violations(state: AgentState) -> AgentState:
     """Replace any known non-compliant final draft with a safe fallback.
 
@@ -180,6 +197,7 @@ async def _drive_query_stream(
     user_id: str | None = None,
     *,
     resume: str | None = None,
+    persist: bool = False,
 ) -> AsyncIterator[QueryEvent]:
     collector = RunCollectorCallbackHandler()
     config = _config(thread_id, user_id, collector, source="api")
@@ -270,6 +288,10 @@ async def _drive_query_stream(
         response_event["currency_labels"] = state["currency_labels"]
     yield response_event
 
+    if persist:
+        # On resume, clarify merged the answer into state["query"]; that merged text is the turn's question.
+        await _persist_turn(thread_id, state.get("query") or query, response_event)
+
     # Semantic Memory write path (ADR 0010, extended by ADR 0012): extract in the
     # background after the response is delivered. Runs on legal AND conversational turns
     # — the latter is where a practitioner states their own background ("I'm a software
@@ -320,6 +342,7 @@ async def run_query_stream(
     user_id: str | None = None,
     *,
     resume: str | None = None,
+    persist: bool = False,
 ) -> AsyncIterator[QueryEvent]:
     """Stream a turn, cancellable via cancel_thread() or client disconnect.
 
@@ -332,6 +355,8 @@ async def run_query_stream(
     Pass `resume` (with query=None) to continue a turn paused at a clarify interrupt
     (ADR 0015): the graph resumes from the interrupt on the same thread_id. Resume runs
     under the same single-active-run + cancellation machinery as a fresh turn.
+
+    Pass `persist=True` to store the completed turn (ADR 0022); the caller must own the thread.
     """
     # One active run per thread: unwind any prior run before starting this one.
     await _cancel_active(thread_id)
@@ -341,7 +366,7 @@ async def run_query_stream(
 
     async def _producer() -> None:
         try:
-            async for event in _drive_query_stream(query, thread_id, user_id, resume=resume):
+            async for event in _drive_query_stream(query, thread_id, user_id, resume=resume, persist=persist):
                 await queue.put(event)
         finally:
             # put_nowait never blocks (unbounded queue), so the sentinel is delivered

@@ -2,8 +2,9 @@
 FastAPI backend for the Malaysian Legal Research AI Assistant.
 
 Single endpoint: POST /query
-- Accepts { query, thread_id, user_id? } JSON. Conversation memory lives server-side keyed
-  by thread_id; user_id (optional) scopes cross-thread Semantic Memory per practitioner (ADR 0010).
+- Accepts { query, thread_id } JSON with an `Authorization: Bearer <Supabase access token>`
+  header (ADR 0022). Conversation memory lives server-side keyed by thread_id; the token's
+  user scopes thread ownership and cross-thread Semantic Memory (ADR 0010).
 - Streams Server-Sent Events (SSE) with progressive status updates and the final response
 - Designed to be consumed by the Next.js frontend via Vercel AI SDK / EventSource
 
@@ -28,9 +29,10 @@ SSE event types:
   { "type": "done" }                                 — stream complete
 
 Endpoints:
-  POST /query        { query, thread_id, user_id? } — run a turn (SSE stream)
-  POST /resume       { thread_id, value, user_id? }  — answer a clarify interrupt (SSE stream)
-  POST /cancel       { thread_id }                   — barge-in: stop the in-flight turn
+  POST /query        { query, thread_id }           — run a turn (SSE stream); bearer token
+  POST /resume       { thread_id, value }           — answer a clarify interrupt (SSE stream); bearer token
+  POST /cancel       { thread_id }                   — barge-in: stop the in-flight turn; bearer token
+  /query, /resume and /cancel return 401 without a valid token and 404 for another user's thread.
   GET|HEAD /receipts/{document_id}/pdf              — verified immutable bytes/redirect
   POST /receipts/{document_id}/locate               — locate one verified Evidence Span
   POST /receipts/telemetry                           — sanitized browser receipt failures
@@ -51,11 +53,13 @@ from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
+from api import threads_store
+from api.auth import current_user_id
 from api.evals import router as evals_router
 from api.reference_graph import router as reference_graph_router
 from api.receipts import router as receipts_router
@@ -142,9 +146,7 @@ app.add_middleware(
 class QueryRequest(BaseModel):
     query: str
     thread_id: str
-    # Weak, per-browser practitioner identity used to scope Semantic Memory across
-    # threads (ADR 0010). Optional so older clients keep working; absent means the
-    # memory path simply has no practitioner to attach durable facts to.
+    # Ignored: the access token decides the user (ADR 0022). Kept so older clients don't get a 422.
     user_id: str | None = None
 
 
@@ -157,6 +159,7 @@ class ResumeRequest(BaseModel):
     # The user's answer to a clarify interrupt. Fed to the graph as Command(resume=value)
     # so the paused turn continues on the same thread_id (ADR 0015).
     value: str
+    # Ignored, as on QueryRequest.
     user_id: str | None = None
 
 
@@ -179,17 +182,23 @@ _STATUS_MESSAGES = {
 async def _stream_query(
     query: str | None,
     thread_id: str,
-    user_id: str | None,
+    user_id: str,
     *,
     resume: str | None = None,
 ) -> AsyncGenerator[str, None]:
     try:
-        async for event in run_query_stream(query, thread_id, user_id, resume=resume):
+        async for event in run_query_stream(query, thread_id, user_id, resume=resume, persist=True):
             yield _sse(event)
     except Exception as exc:
         logger.exception("Agent error for query=%r resume=%r", query, resume)
         yield _sse({"type": "error", "message": f"An error occurred: {str(exc)}"})
     yield _sse({"type": "done"})
+
+
+async def _require_owner(thread_id: str, user_id: str) -> None:
+    # 404, not 403, so a probe can't tell a foreign thread from a missing one.
+    if not await asyncio.to_thread(threads_store.owns, thread_id, user_id):
+        raise HTTPException(404, "Thread not found")
 
 
 @app.get("/health")
@@ -198,10 +207,12 @@ def health():
 
 
 @app.post("/query")
-async def query_endpoint(req: QueryRequest, request: Request):
+async def query_endpoint(req: QueryRequest, request: Request, user_id: str = Depends(current_user_id)):
+    if not await asyncio.to_thread(threads_store.claim_thread, req.thread_id, user_id, req.query):
+        raise HTTPException(404, "Thread not found")
     await request.app.state.agent_runtime.ensure_started()
     return StreamingResponse(
-        _stream_query(req.query, req.thread_id, req.user_id),
+        _stream_query(req.query, req.thread_id, user_id),
         media_type="text/event-stream",
         headers={
             "Cache-Control":               "no-cache",
@@ -212,16 +223,17 @@ async def query_endpoint(req: QueryRequest, request: Request):
 
 
 @app.post("/resume")
-async def resume_endpoint(req: ResumeRequest, request: Request):
+async def resume_endpoint(req: ResumeRequest, request: Request, user_id: str = Depends(current_user_id)):
     """Resume a turn paused at a clarify interrupt (ADR 0015).
 
     The graph suspended at the clarify node and emitted an `interrupt` SSE event on the
     prior /query stream; this feeds the user's answer back as Command(resume=value) and
     streams the continuation (the resolved turn's real response) on the same thread_id.
     """
+    await _require_owner(req.thread_id, user_id)
     await request.app.state.agent_runtime.ensure_started()
     return StreamingResponse(
-        _stream_query(None, req.thread_id, req.user_id, resume=req.value),
+        _stream_query(None, req.thread_id, user_id, resume=req.value),
         media_type="text/event-stream",
         headers={
             "Cache-Control":               "no-cache",
@@ -232,11 +244,12 @@ async def resume_endpoint(req: ResumeRequest, request: Request):
 
 
 @app.post("/cancel")
-async def cancel_endpoint(req: CancelRequest):
+async def cancel_endpoint(req: CancelRequest, user_id: str = Depends(current_user_id)):
     """Barge-in: stop the in-flight turn for a thread (the Stop button / Esc).
 
     Server-authoritative so Stop fires even if the client can't cleanly abort the SSE
     connection. Idempotent; returns no_active_run when nothing is running. See ADR 0014.
     """
+    await _require_owner(req.thread_id, user_id)
     cancelled = cancel_thread(req.thread_id)
     return {"status": "cancelled" if cancelled else "no_active_run"}
