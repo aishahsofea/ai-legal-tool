@@ -32,7 +32,9 @@ Endpoints:
   POST /query        { query, thread_id }           — run a turn (SSE stream); bearer token
   POST /resume       { thread_id, value }           — answer a clarify interrupt (SSE stream); bearer token
   POST /cancel       { thread_id }                   — barge-in: stop the in-flight turn; bearer token
-  /query, /resume and /cancel return 401 without a valid token and 404 for another user's thread.
+  GET  /threads                                     — caller's threads, newest first; bearer token
+  GET  /threads/{thread_id}                         — one thread's messages with citations; bearer token
+  /query, /resume, /cancel and /threads return 401 without a valid token and 404 for another user's thread.
   GET|HEAD /receipts/{document_id}/pdf              — verified immutable bytes/redirect
   POST /receipts/{document_id}/locate               — locate one verified Evidence Span
   POST /receipts/telemetry                           — sanitized browser receipt failures
@@ -63,6 +65,7 @@ from api.auth import current_user_id
 from api.evals import router as evals_router
 from api.reference_graph import router as reference_graph_router
 from api.receipts import router as receipts_router
+from api.threads import router as threads_router
 
 load_dotenv()
 
@@ -133,6 +136,7 @@ app = FastAPI(title="Malaysian Legal Research API", lifespan=lifespan)
 app.include_router(evals_router)
 app.include_router(receipts_router)
 app.include_router(reference_graph_router)
+app.include_router(threads_router)
 
 app.add_middleware(
     CORSMiddleware,
