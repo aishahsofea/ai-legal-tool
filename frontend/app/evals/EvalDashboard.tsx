@@ -755,11 +755,24 @@ export default function EvalDashboard() {
   const missingSections = coverage?.corpus_staleness.checked ? coverage.corpus_staleness.missing_sections : [];
   const invalidPicker = mode !== "smoke" && mode !== "all" && !value.trim();
 
+  // A run from the workflow map always confirms; the banner waits for coverage so it never shows a zero count.
+  function runFromNode(name: string) {
+    if (running) return;
+    if (name === set) {
+      setMode(defaultMode(kind));
+      setValue("");
+      setConfirmArmed(null);
+    } else {
+      chooseSet(name);
+    }
+    setConfirmArmed("node");
+  }
+
   // `key` names what the confirm click belongs to, so arming one button never
   // lets another run through unconfirmed.
   async function startRun(key: string, runSubset: EvalSubset, count: number) {
     if (!set || running) return;
-    if (count > 20 && confirmArmed !== key) {
+    if ((count > 20 || key === "node") && confirmArmed !== key) {
       setConfirmArmed(key);
       return;
     }
@@ -1018,16 +1031,22 @@ export default function EvalDashboard() {
           </div>
         </section>
 
-        {confirmArmed && (
+        {confirmArmed && !(confirmArmed === "node" && !coverage) && (
           <div className={BANNER} style={{ borderColor: palette.warning, background: palette.warningSoft }}>
             {(() => {
-              const count = confirmArmed === "picker" ? estimatedCount : confirmArmed.slice(4).split(",").length;
+              const count = confirmArmed === "picker" || confirmArmed === "node" ? estimatedCount : confirmArmed.slice(4).split(",").length;
               return routingCoverage
                 ? `${count} queries each call the live router and incur token cost.`
                 : groundingCoverage
                 ? `${count} claims each call Jev, then the live grounding judge unless Jev clears the claim. The full set of ${coverage.total_cases} is up to ${coverage.total_cases} judge calls and incurs token cost.`
                 : `${count} cases run the live agent and LLM judge, take roughly 5–8 minutes, and incur token cost.`;
             })()} Click <strong>Confirm</strong> to continue.
+            {confirmArmed === "node" && (
+              <span className="ml-3 inline-flex gap-2">
+                <button type="button" onClick={() => startRun("node", subset, estimatedCount)} disabled={running || missingSections.length > 0} className={BUTTON} style={{ background: palette.accent, color: palette.panel }}>Confirm</button>
+                <button type="button" onClick={() => setConfirmArmed(null)} className={`${PILL} font-semibold`} style={{ background: palette.panel }}>Dismiss</button>
+              </span>
+            )}
           </div>
         )}
 
@@ -1264,7 +1283,10 @@ export default function EvalDashboard() {
           </div>
         </details>}
 
-        <WorkflowMap onSelectSet={(name) => {
+        <WorkflowMap running={running} onRunSet={(name) => {
+          runFromNode(name);
+          document.getElementById("eval-run-config")?.scrollIntoView?.({ behavior: "smooth" });
+        }} onSelectSet={(name) => {
           if (running) return;
           chooseSet(name);
           document.getElementById("eval-run-config")?.scrollIntoView?.({ behavior: "smooth" });

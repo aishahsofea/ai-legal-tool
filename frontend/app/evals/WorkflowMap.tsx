@@ -25,7 +25,7 @@ function Fields({ title, fields }: { title: string; fields: string[] }) {
   );
 }
 
-function NodePanel({ node, onSelectSet }: { node: WorkflowNode; onSelectSet: (name: string) => void }) {
+function NodePanel({ node, onSelectSet, onRunSet, running }: { node: WorkflowNode; onSelectSet: (name: string) => void; onRunSet: (name: string) => void; running: boolean }) {
   return (
     <div className="rounded-xl border p-3" style={{ borderColor: palette.line, background: palette.panel }} aria-live="polite">
       <h3 className="font-mono text-sm font-bold">{node.id}</h3>
@@ -42,9 +42,21 @@ function NodePanel({ node, onSelectSet }: { node: WorkflowNode; onSelectSet: (na
             {node.evals.map((entry) => (
               <li key={entry.set ?? entry.script}>
                 {entry.set ? (
-                  <button type="button" onClick={() => onSelectSet(entry.set!)} className="font-mono font-semibold underline" style={{ color: palette.accent }}>
-                    {entry.set}
-                  </button>
+                  <span className="flex items-center gap-2">
+                    <button type="button" onClick={() => onSelectSet(entry.set!)} className="font-mono font-semibold underline" style={{ color: palette.accent }}>
+                      {entry.set}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onRunSet(entry.set!)}
+                      disabled={running}
+                      aria-label={`Run ${entry.set}`}
+                      className="rounded-full border px-2.5 py-0.5 text-xs font-semibold disabled:opacity-50"
+                      style={{ borderColor: palette.accent, color: palette.accent }}
+                    >
+                      Run
+                    </button>
+                  </span>
                 ) : (
                   <span>manual, not runnable from the dashboard: <code className="font-mono text-xs">{entry.script}</code></span>
                 )}
@@ -57,7 +69,7 @@ function NodePanel({ node, onSelectSet }: { node: WorkflowNode; onSelectSet: (na
   );
 }
 
-export function WorkflowMap({ onSelectSet }: { onSelectSet: (name: string) => void }) {
+export function WorkflowMap({ onSelectSet, onRunSet, running }: { onSelectSet: (name: string) => void; onRunSet: (name: string) => void; running: boolean }) {
   const [workflow, setWorkflow] = useState<EvalWorkflow | null>(null);
   const [error, setError] = useState("");
   const [selected, setSelected] = useState<string | null>(null);
@@ -152,7 +164,7 @@ export function WorkflowMap({ onSelectSet }: { onSelectSet: (name: string) => vo
               ))}
             </ul>
           </div>
-          {node ? <NodePanel node={node} onSelectSet={onSelectSet} /> : (
+          {node ? <NodePanel node={node} onSelectSet={onSelectSet} onRunSet={onRunSet} running={running} /> : (
             <p className="text-sm" style={{ color: palette.muted }}>Pick a node to see what it reads, writes and which evals cover it.</p>
           )}
         </div>
