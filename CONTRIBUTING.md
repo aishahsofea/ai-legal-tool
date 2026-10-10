@@ -218,13 +218,13 @@ The normal corpus rollout command applies the additive migration automatically, 
 
 `chunks.division` is one of those nullable columns — see [division](CONTEXT.md#language). It is `NULL` on rows ingested before the column existed; retrieval reads those as body sections. An exact section lookup returns body sections ahead of schedule paragraphs that carry the same number.
 
-Saved threads use two tables, `threads` and `thread_turns`. `migrations/0002_threads.sql` creates them. Nothing applies it on startup, so run it once per database. Running it again is safe.
+Saved threads use two tables, `threads` and `thread_turns`. `migrations/0002_threads.sql` creates them, and the API applies it on every start. The SQL is `IF NOT EXISTS`, so repeating it is safe. If the database is unreachable at start, the API logs `threads schema unavailable` and still starts. To apply it by hand:
 
 ```bash
 psql "$DATABASE_URL" -f migrations/0002_threads.sql
 ```
 
-Until you run it, `/query` fails for every signed-in user, because `/query` writes a `threads` row before the graph runs.
+Without the tables, `/threads` and `/query` return 500. A browser reports that 500 as a CORS error, because error responses carry no CORS headers.
 
 ### Sign-in (Supabase Auth)
 

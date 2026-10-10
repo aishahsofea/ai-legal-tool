@@ -11,6 +11,12 @@ from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 # present in .env and is loaded by node modules at import time).
 os.environ.setdefault("CHECKPOINTER", "memory")
 
+
+@pytest.fixture(autouse=True)
+def no_threads_schema_at_startup(monkeypatch):
+    # The API lifespan would otherwise run the migration on whatever DATABASE_URL .env holds.
+    monkeypatch.setattr("api.threads_store.ensure_schema", lambda: None)
+
 # A fixture-only AES-256 key (never AGC's real one) shared by the scraper
 # crypto/step1/step2 tests that need to build a realistic encrypted envelope.
 FAKE_RESPONSE_KEY = "00" * 32

@@ -126,6 +126,7 @@ async def lifespan(app: FastAPI):
     runtime = _AgentRuntime()
     app.state.agent_runtime = runtime
     _report_receipt_coverage()
+    await asyncio.to_thread(threads_store.ensure_schema)
     try:
         yield
     finally:

@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
+import logging
 import os
 from contextlib import closing
 from pathlib import Path
 
 import psycopg2
 import psycopg2.extras
+
+logger = logging.getLogger(__name__)
 
 MIGRATION_PATH = Path(__file__).resolve().parents[1] / "migrations" / "0002_threads.sql"
 
@@ -24,6 +27,15 @@ def apply_migration(connection) -> None:
     with connection:
         with connection.cursor() as cursor:
             cursor.execute(MIGRATION_PATH.read_text(encoding="utf-8"))
+
+
+def ensure_schema() -> None:
+    """Create the thread tables if missing; fail open so a database fault can't stop the API starting."""
+    try:
+        with closing(_connect()) as connection:
+            apply_migration(connection)
+    except Exception:
+        logger.exception("threads schema unavailable")
 
 
 def claim_thread(thread_id: str, user_id: str, title: str | None) -> bool:
