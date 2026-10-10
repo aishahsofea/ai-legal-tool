@@ -577,3 +577,22 @@ def test_routing_dashboard_subset_selects_what_the_runner_selects():
         api_ids = [case["id"] for case in select_cases(cases, subset)]
         runner_ids = [case["id"] for case in select_routing_cases(cases, **kwargs)]
         assert api_ids == runner_ids
+
+
+def test_node_evals_cover_every_graph_node():
+    from agent.graph_meta import NODE_META
+    from api.eval_workflow import NODE_EVALS
+
+    assert set(NODE_EVALS) == set(NODE_META)
+
+
+def test_node_evals_point_at_real_sets_and_scripts():
+    from api.eval_workflow import NODE_EVALS
+
+    for node, entries in NODE_EVALS.items():
+        for entry in entries:
+            assert entry.keys() in ({"set"}, {"script"}), node
+            if "set" in entry:
+                assert entry["set"] in evals_api.EVAL_SETS, node
+            else:
+                assert (evals_api.ROOT / entry["script"]).is_file(), node
