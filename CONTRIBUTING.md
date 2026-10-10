@@ -305,6 +305,7 @@ Endpoints. `/query`, `/resume`, `/cancel` and `/threads` need `Authorization: Be
 - `GET /reference-graph/snapshots?act_number=265&language=en` — promoted/audited snapshot selector data
 - `GET /reference-graph/compare?base_document_id=&compare_document_id=&focus_provision_id=` — one Act/language pair, one focus, one one-hop overlay
 - `GET /evals/sets` — the eval sets: `end_to_end`, `grounding` and `routing`
+- `GET /evals/workflow` — the graph's nodes and edges, with the evals for each node (see the workflow map in [Running Evals](#running-evals))
 - `GET /evals/cases?set=` — every case in the set, with its saved result and a status: `passed`, `failed` or `not run`
 - `GET /evals/coverage?set=` — dataset coverage and a best-effort check that the eval corpus holds every section the cases need. If the eval database is not set or unreachable, the check is skipped and the reason is returned. The `grounding` set returns counts by verdict and language, plus the judgement-call count. The `routing` set returns counts by `query_type` and language. It needs no corpus, so it skips the corpus check.
 - `POST /evals/run { set, subset }` — isolated eval run streamed as SSE; one active run at a time. `subset` is `"smoke"`, `"all"`, or one of `{ "category": … }`, `{ "scenario": … }`, `{ "language": … }`, `{ "case_id": … }`, `{ "case_ids": "a,b,c" }`. An unknown id returns 422. The `routing` set accepts only `"all"`, `{ "language" }`, `{ "query_type" }` and `{ "case_ids" }`. Any other subset returns 422. It always runs once (`--repeats 1`).
@@ -491,6 +492,8 @@ Expected SHA-256: `c11400ad1b0a9941919d7328c60fc1c2b49fb2788671bf9697c2923364c96
 ## Running Evals
 
 Requires `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, and a dedicated eval database. Never point dashboard evals or the destructive seed command at the app's development corpus.
+
+The `/evals` page also draws the agent graph as a workflow map. Click a node to see what it reads and writes and which evals exercise it. Each runnable eval has a Run button, which always asks you to confirm before it runs. Evals that only run from a script are listed with the script path. `agent/graph_meta.py` holds `NODE_META` (per node: kind, description, `reads`, `writes`, grid position) and `EDGE_LABELS`. `api/eval_workflow.py` (`NODE_EVALS`) maps nodes to evals. Tests check that node ids, edge labels and `AgentState` field names exist in the real graph. They do not check that each node really reads and writes what `reads` and `writes` say, so update both when a node changes.
 
 Create (if needed) and seed the conventional `ai_legal_tool_evals` database with one command. This embeds the curated sections and clears only the database named in `EVALS_DATABASE_URL`:
 
