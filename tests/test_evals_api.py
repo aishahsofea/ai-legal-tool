@@ -133,6 +133,8 @@ def test_run_gates_staleness_on_the_selected_subset_not_the_whole_dataset(tmp_pa
     response = client.post("/evals/run", json={"subset": "smoke"})
 
     assert response.status_code == 200
+    # CORS headers come from the app middleware (FRONTEND_ORIGIN), never from the route.
+    assert "access-control-allow-origin" not in response.headers
 
 
 def test_run_streams_fake_jsonl_and_aggregates_a_summary(tmp_path, monkeypatch):
