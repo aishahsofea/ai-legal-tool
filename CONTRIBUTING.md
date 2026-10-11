@@ -312,7 +312,7 @@ Endpoints. `/query`, `/resume`, `/cancel` and `/threads` need `Authorization: Be
 - `POST /evals/cancel` — terminate the active eval subprocess
 - `GET /evals/results?set=` — last persisted report for that set
 
-A missing or bad token returns 401. Another user's thread returns 404, the same as a missing one. `/receipts/*`, `/reference-graph/*` and `/evals/*` take no token.
+A missing or bad token returns 401. Another user's thread returns 404, the same as a missing one. `/receipts/*` and `/reference-graph/*` take no token. `/evals/sets`, `/evals/workflow` and `/evals/coverage` take none either. `POST /evals/run`, `POST /evals/cancel`, `GET /evals/results` and `GET /evals/cases` need a token (401 without one) from a user listed in `EVALS_ADMIN_USER_IDS` (comma-separated Supabase user ids; 403 otherwise). If the variable is unset or empty, no one is allowed. Set it on the API host to use the `/evals` dashboard there.
 
 Every endpoint that takes `set` defaults to `end_to_end`. An unknown set returns 404.
 

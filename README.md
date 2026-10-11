@@ -149,6 +149,8 @@ The developer-only `/evals` page needs `NEXT_PUBLIC_EVALS=1` at build time. It u
 - `POST /evals/cancel` — terminate the single active eval subprocess; returns `cancelled` or `no_active_run`.
 - `GET /evals/results` — last saved report for the set, or 404 when no run is available.
 
+`/evals/run`, `/evals/cancel`, `/evals/results` and `/evals/cases` need a sign-in token from a user in `EVALS_ADMIN_USER_IDS` ([CONTRIBUTING.md](CONTRIBUTING.md#5-start-the-api)).
+
 The server refuses stale corpora, blocks concurrent runs, and kills a run when its browser stream disconnects — no abandoned page keeps burning tokens.
 
 ### Threads

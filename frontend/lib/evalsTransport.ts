@@ -1,3 +1,4 @@
+import { authHeaders } from "@/lib/supabaseClient";
 import { parseSseStream } from "@/lib/queryTransport";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
@@ -360,7 +361,7 @@ export async function fetchEvalWorkflow(): Promise<EvalWorkflow> {
 }
 
 export async function fetchEvalCases(set: string): Promise<EvalCaseRow[]> {
-  const response = await fetch(`${API_URL}/evals/cases?${setQuery(set)}`, { cache: "no-store" });
+  const response = await fetch(`${API_URL}/evals/cases?${setQuery(set)}`, { cache: "no-store", headers: await authHeaders() });
   if (!response.ok) throw await responseError(response);
   return (await response.json()).cases;
 }
@@ -372,7 +373,7 @@ export async function fetchEvalCoverage(set: string): Promise<CoverageResponse |
 }
 
 export async function fetchEvalResults(set: string): Promise<EvalResultsReport | null> {
-  const response = await fetch(`${API_URL}/evals/results?${setQuery(set)}`, { cache: "no-store" });
+  const response = await fetch(`${API_URL}/evals/results?${setQuery(set)}`, { cache: "no-store", headers: await authHeaders() });
   if (response.status === 404) return null;
   if (!response.ok) throw await responseError(response);
   return response.json();
@@ -395,7 +396,7 @@ export async function* streamEvalRun(
 ): AsyncGenerator<EvalEvent> {
   const response = await fetch(`${API_URL}/evals/run`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...(await authHeaders()) },
     body: JSON.stringify({ set, subset }),
     signal,
   });
@@ -405,7 +406,7 @@ export async function* streamEvalRun(
 }
 
 export async function cancelEvalRun(): Promise<void> {
-  await fetch(`${API_URL}/evals/cancel`, { method: "POST", keepalive: true });
+  await fetch(`${API_URL}/evals/cancel`, { method: "POST", keepalive: true, headers: await authHeaders() });
 }
 
 export function flattenPersistedResult(result: PersistedResult): EvalCaseResult {
