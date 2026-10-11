@@ -6,15 +6,18 @@ import json
 import os
 import sys
 from collections import Counter
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from threading import Lock
+from functools import cache
 from typing import Any, Callable
 
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel
 
+from agent.graph_meta import EDGE_LABELS, NODE_META
+from api.eval_workflow import NODE_EVALS
 from evals.coverage import (
     aggregate_scenarios,
     coverage_summary,
@@ -202,6 +205,46 @@ def reset_active_run_for_tests() -> None:
 @router.get("/sets")
 def list_sets():
     return {"default": DEFAULT_SET, "sets": [{"name": name} for name in EVAL_SETS]}
+
+
+@cache
+def _workflow() -> dict[str, Any]:
+    from agent.embeddings import corpus_embedding_model, memory_embedding_model
+    from agent.graph import build_graph
+    from agent.llm_factory import node_models
+    from agent.nodes import router_jev
+    from agent.nodes.grounding_check import _jev_enabled as grounding_jev_enabled
+
+    # No checkpointer or store, so building the graph opens no DB connection.
+    graph = build_graph().get_graph()
+    # Read after build_graph: each node registers its model when its module is imported.
+    models: dict[str, list[str]] = {node: [model] for node, model in node_models().items()}
+    models["retriever"] = [corpus_embedding_model()]
+    models["recall"] = models["recall_conversational"] = [memory_embedding_model()]
+    # Jev runs before the LLM in these nodes, so it is listed first: call order.
+    for node, jev_on in (("router", router_jev.enabled()), ("grounding_check", grounding_jev_enabled())):
+        if jev_on:
+            models[node] = [router_jev.model_name(), *models.get(node, [])]
+    nodes = [
+        {"id": node_id, **asdict(meta), "models": models.get(node_id, []), "evals": NODE_EVALS[node_id]}
+        for node_id, meta in NODE_META.items()
+    ]
+    edges = [
+        {
+            "source": edge.source,
+            "target": edge.target,
+            "conditional": edge.conditional,
+            "label": EDGE_LABELS.get((edge.source, edge.target)) if edge.conditional else None,
+        }
+        for edge in graph.edges
+        if edge.source in NODE_META and edge.target in NODE_META
+    ]
+    return {"nodes": nodes, "edges": edges}
+
+
+@router.get("/workflow")
+def get_workflow():
+    return _workflow()
 
 
 @router.get("/coverage")

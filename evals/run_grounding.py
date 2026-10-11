@@ -16,6 +16,7 @@ from agent.jev_client import JevError, supported_probability
 from agent.nodes.grounding_check import _jev_enabled, _jev_threshold, judge_claims
 from evals.grounding_inputs import draft, source
 from evals.grounding_summary import summarise
+from evals.usage import eval_usage, format_usage, usage_to_json
 
 DEFAULT_DATASET_PATH = Path(__file__).resolve().parent / "grounding_dataset.json"
 DEFAULT_RESULTS_PATH = Path(__file__).resolve().parent / "results" / "grounding.json"
@@ -144,17 +145,18 @@ def main() -> int:
         parser.error(str(exc))
 
     results = []
-    for case in selected:
-        result = judge_case(case)
-        results.append(result)
-        if args.jsonl:
-            print(json.dumps(result, ensure_ascii=False), flush=True)
-        else:
-            shown = result["judge_label"] or f"ERROR {result.get('error', '')}"
-            print(f"{case['id']}: dataset {result['label']}, judge {shown}"
-                  f"{'' if result['match'] else ' MISMATCH'}", flush=True)
+    with eval_usage() as usage:
+        for case in selected:
+            result = judge_case(case)
+            results.append(result)
+            if args.jsonl:
+                print(json.dumps(result, ensure_ascii=False), flush=True)
+            else:
+                shown = result["judge_label"] or f"ERROR {result.get('error', '')}"
+                print(f"{case['id']}: dataset {result['label']}, judge {shown}"
+                      f"{'' if result['match'] else ' MISMATCH'}", flush=True)
 
-    summary = summarise(results)
+    summary = {**summarise(results), "usage": usage_to_json(usage.summarize())}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
         json.dumps({"summary": summary, "results": results}, ensure_ascii=False, indent=2),
@@ -163,6 +165,7 @@ def main() -> int:
     if not args.jsonl:
         print(f"\nMatched {summary['matched']}/{summary['total_cases']} = {summary['match_rate']:.1%}")
         print(f"Mismatches: {summary['by_error_kind']}  judge errors: {summary['judge_errors']}")
+        print("\n".join(format_usage(summary["usage"])))
         print(f"Results written to: {args.output}")
     return 0
 

@@ -4,6 +4,8 @@ import {
   fetchEvalCoverage,
   fetchEvalResults,
   fetchEvalSets,
+  fetchEvalWorkflow,
+  isEvalWorkflow,
   isGroundingResult,
   isGroundingSummary,
   isRoutingResult,
@@ -84,5 +86,27 @@ describe("routing payload guards", () => {
   it("is not matched by the other guards", () => {
     expect(isGroundingResult(routing)).toBe(false);
     expect(isGroundingSummary({ query_type_accuracy: 0.9 })).toBe(false);
+  });
+});
+
+describe("evalsTransport workflow", () => {
+  const fixture = {
+    nodes: [{ id: "router", kind: "llm", description: "d", reads: [], writes: [], rank: 1, lane: 2, evals: [{ set: "routing" }] }],
+    edges: [{ source: "router", target: "clarify", conditional: true, label: "clarify" }],
+  };
+
+  it("guard accepts the workflow shape and rejects coverage and results", () => {
+    expect(isEvalWorkflow(fixture)).toBe(true);
+    expect(isEvalWorkflow({ total_cases: 3, by_policy: {} })).toBe(false);
+    expect(isEvalWorkflow({ generated_at: "x", summary: {}, results: [] })).toBe(false);
+    expect(isEvalWorkflow(null)).toBe(false);
+  });
+
+  it("fetchEvalWorkflow reads /evals/workflow and validates", async () => {
+    const fn = mockFetch(fixture);
+    expect((await fetchEvalWorkflow()).nodes[0].id).toBe("router");
+    expect(String(fn.mock.calls[0][0])).toContain("/evals/workflow");
+    mockFetch({ total_cases: 3 });
+    await expect(fetchEvalWorkflow()).rejects.toThrow("Unexpected workflow response");
   });
 });

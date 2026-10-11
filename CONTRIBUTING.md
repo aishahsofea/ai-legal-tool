@@ -305,6 +305,7 @@ Endpoints. `/query`, `/resume`, `/cancel` and `/threads` need `Authorization: Be
 - `GET /reference-graph/snapshots?act_number=265&language=en` — promoted/audited snapshot selector data
 - `GET /reference-graph/compare?base_document_id=&compare_document_id=&focus_provision_id=` — one Act/language pair, one focus, one one-hop overlay
 - `GET /evals/sets` — the eval sets: `end_to_end`, `grounding` and `routing`
+- `GET /evals/workflow` — the graph's nodes and edges, with the evals and `models` for each node. `models` is in call order, so a Jev first pass comes before the node's LLM (see the workflow map in [Running Evals](#running-evals))
 - `GET /evals/cases?set=` — every case in the set, with its saved result and a status: `passed`, `failed` or `not run`
 - `GET /evals/coverage?set=` — dataset coverage and a best-effort check that the eval corpus holds every section the cases need. If the eval database is not set or unreachable, the check is skipped and the reason is returned. The `grounding` set returns counts by verdict and language, plus the judgement-call count. The `routing` set returns counts by `query_type` and language. It needs no corpus, so it skips the corpus check.
 - `POST /evals/run { set, subset }` — isolated eval run streamed as SSE; one active run at a time. `subset` is `"smoke"`, `"all"`, or one of `{ "category": … }`, `{ "scenario": … }`, `{ "language": … }`, `{ "case_id": … }`, `{ "case_ids": "a,b,c" }`. An unknown id returns 422. The `routing` set accepts only `"all"`, `{ "language" }`, `{ "query_type" }` and `{ "case_ids" }`. Any other subset returns 422. It always runs once (`--repeats 1`).
@@ -492,6 +493,10 @@ Expected SHA-256: `c11400ad1b0a9941919d7328c60fc1c2b49fb2788671bf9697c2923364c96
 
 Requires `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, and a dedicated eval database. Never point dashboard evals or the destructive seed command at the app's development corpus.
 
+The `/evals` page opens with the agent graph drawn as a workflow map. Click a node to load its eval set and see what it reads and writes, which models it calls, and which evals exercise it. You can zoom, drag nodes, and drag a line to reshape its curve. Reset restores the layout. Each runnable eval has a Run button, which always asks you to confirm before it runs. Evals that only run from a script are listed with the script path.
+
+To change the map: `agent/graph_meta.py` holds `NODE_META` (per node: kind, description, `reads`, `writes`, grid position) and `EDGE_LABELS`. `api/eval_workflow.py` (`NODE_EVALS`) maps nodes to evals. Tests check that node ids, edge labels and `AgentState` field names exist in the real graph. They do not check that each node really reads and writes what `reads` and `writes` say, so update both when a node changes.
+
 Create (if needed) and seed the conventional `ai_legal_tool_evals` database with one command. This embeds the curated sections and clears only the database named in `EVALS_DATABASE_URL`:
 
 ```bash
@@ -579,7 +584,9 @@ Every run ends with a `Grounding:` line. It shows how many grounding checks comp
 
 When the first pass runs, a second line shows `jev_skipped_ultra` (answers cleared without the judge) and `jev_errors` (Jev errors that fell through to the judge). A cleared answer counts as completed on the `Grounding:` line.
 
-Every run prints a `Usage (estimated)` block and writes the same numbers to `summary.usage` in `evals/results.json`. It lists calls, input tokens, output tokens and USD for each model, and the same counts for each graph node. The Claude judge is counted too. Prices live in `MODEL_PRICES_PER_MILLION_USD` in `evals/usage.py`. They cover the three Nebius Nemotron models, taken from the Nebius dashboard on 2026-09-28. A model missing from that table prints `price unknown`. It is left out of the USD total, and the total is marked partial. It is never priced at $0. Add a row there when you add a model.
+`run_evals`, `run_grounding` and `run_routing` each print a `Usage (estimated)` block and write the same numbers to `summary.usage` in the results file: `evals/results.json`, `evals/results/grounding.json` or `evals/results/routing.json`. The block lists calls, input tokens, output tokens and USD for each model, and the same counts for each graph node. The Claude judge is counted too. Prices live in `MODEL_PRICES_PER_MILLION_USD` in `evals/usage.py`. They cover the three Nebius Nemotron models, taken from the Nebius dashboard on 2026-09-28. A model missing from that table prints `price unknown`. It is left out of the USD total, and the total is marked partial. It is never priced at $0. Add a row there when you add a model.
+
+The dashboard estimates cost as (last saved run's USD ÷ its case count) × cases selected. Until a set has a run with recorded usage, it shows `cost unknown`.
 
 Treat the token counts as a floor. A call the provider cuts off reports no usage. Each json_mode retry is counted in the block, but can hide up to about 8,192 output tokens. The block only sees this run. It will not match the Nebius dashboard if anything else used the same key.
 

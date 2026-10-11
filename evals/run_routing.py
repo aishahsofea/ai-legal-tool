@@ -16,6 +16,7 @@ from agent.nodes.router import router_node
 from agent.nodes.router_jev import route_path_observer
 from evals.run_evals import _initial_state
 from evals.routing_summary import miss_direction, summarise
+from evals.usage import eval_usage, format_usage, usage_to_json
 
 DEFAULT_DATASET_PATH = Path(__file__).resolve().parent / "routing_dataset.json"
 DEFAULT_RESULTS_PATH = Path(__file__).resolve().parent / "results" / "routing.json"
@@ -155,18 +156,19 @@ def main(argv: list[str] | None = None) -> int:
         parser.error(str(exc))
 
     results = []
-    for repeat in range(max(args.repeats, 1)):
-        for case in selected:
-            entry = score_case(case, _route, repeat)
-            results.append(entry)
-            if args.jsonl:
-                print(json.dumps(entry, ensure_ascii=False), flush=True)
-            else:
-                shown = entry.get("query_type") or f"ERROR {entry.get('error', '')}"
-                miss = "" if not entry.get("miss_direction") else f" MISS ({entry['miss_direction']})"
-                print(f"{case['id']}#{repeat}: label {entry['label_type']}, got {shown}{miss}", flush=True)
+    with eval_usage() as usage:
+        for repeat in range(max(args.repeats, 1)):
+            for case in selected:
+                entry = score_case(case, _route, repeat)
+                results.append(entry)
+                if args.jsonl:
+                    print(json.dumps(entry, ensure_ascii=False), flush=True)
+                else:
+                    shown = entry.get("query_type") or f"ERROR {entry.get('error', '')}"
+                    miss = "" if not entry.get("miss_direction") else f" MISS ({entry['miss_direction']})"
+                    print(f"{case['id']}#{repeat}: label {entry['label_type']}, got {shown}{miss}", flush=True)
 
-    summary = summarise(results)
+    summary = {**summarise(results), "usage": usage_to_json(usage.summarize())}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
         json.dumps({"summary": summary, "results": results}, ensure_ascii=False, indent=2),
@@ -174,6 +176,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     if not args.jsonl:
         _print_summary(summary)
+        print("\n".join(format_usage(summary["usage"])))
         print(f"Results written to: {args.output}")
     return 1 if summary["errors"] else 0
 

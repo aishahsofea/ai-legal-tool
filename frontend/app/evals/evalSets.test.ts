@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { RoutingCoverage } from "@/lib/evalsTransport";
-import { defaultMode, modesFor, routingEstimate, setKindOf } from "./evalSets";
+import { costBasisOf, costText, defaultMode, modesFor, routingEstimate, setKindOf } from "./evalSets";
 
 const routing: RoutingCoverage = {
   total_cases: 99,
@@ -40,5 +40,26 @@ describe("routingEstimate", () => {
     expect(routingEstimate(routing, "query_type", "topical")).toBe(30);
     expect(routingEstimate(routing, "language", "bm, mixed")).toBe(39);
     expect(routingEstimate(routing, "case_ids", "a, b,,c")).toBe(3);
+  });
+});
+
+describe("cost estimate", () => {
+  const report = (usage: object | undefined, cases: number) =>
+    ({ generated_at: "", summary: { usage }, results: Array(cases).fill({}) }) as never;
+
+  it("scales the last run's per-case cost to the selection", () => {
+    const basis = costBasisOf(report({ total: { calls: 8, usd: 0.04 }, partial: false }, 4));
+    expect(basis).toEqual({ perCase: 0.01, cases: 4, usd: 0.04, partial: false });
+    expect(costText(basis, 30)).toBe("Estimated cost $0.30, from the last saved run ($0.04 for 4 cases).");
+  });
+
+  it("marks a partial price as a floor", () => {
+    expect(costText(costBasisOf(report({ total: { calls: 1, usd: 0.001 }, partial: true }, 1)), 2)).toMatch(/at least \$0\.0020/);
+  });
+
+  it("has no basis without recorded usage", () => {
+    expect(costBasisOf(null)).toBeNull();
+    expect(costBasisOf(report(undefined, 3))).toBeNull();
+    expect(costText(null, 5)).toMatch(/no saved run/);
   });
 });

@@ -168,3 +168,8 @@ def test_other_selectors():
         select_routing_cases(_DATASET, case_ids="nope")
     with pytest.raises(ValueError, match="no cases"):
         select_routing_cases(_DATASET, language="bm", query_type="clarify", tags=["history"])
+
+
+def test_report_records_usage_for_the_dashboard_cost_estimate(monkeypatch, tmp_path):
+    _, data = _run(monkeypatch, tmp_path, _fake(), "--limit", "2")
+    assert data["summary"]["usage"]["total"] == {"calls": 0, "input_tokens": 0, "output_tokens": 0, "reasoning_tokens": 0, "usd": 0.0}

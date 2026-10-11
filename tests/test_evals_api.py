@@ -577,3 +577,78 @@ def test_routing_dashboard_subset_selects_what_the_runner_selects():
         api_ids = [case["id"] for case in select_cases(cases, subset)]
         runner_ids = [case["id"] for case in select_routing_cases(cases, **kwargs)]
         assert api_ids == runner_ids
+
+
+def test_node_evals_cover_every_graph_node():
+    from agent.graph_meta import NODE_META
+    from api.eval_workflow import NODE_EVALS
+
+    assert set(NODE_EVALS) == set(NODE_META)
+
+
+def test_node_evals_point_at_real_sets_and_scripts():
+    from api.eval_workflow import NODE_EVALS
+
+    for node, entries in NODE_EVALS.items():
+        for entry in entries:
+            assert entry.keys() in ({"set"}, {"script"}), node
+            if "set" in entry:
+                assert entry["set"] in evals_api.EVAL_SETS, node
+            else:
+                assert (evals_api.ROOT / entry["script"]).is_file(), node
+
+
+def test_workflow_returns_every_node_and_edge_with_labels_on_conditionals_only(tmp_path, monkeypatch):
+    from agent.graph import build_graph
+    from agent.graph_meta import NODE_META
+
+    client = _client(monkeypatch, _dataset(tmp_path), tmp_path / "results.json")
+    body = client.get("/evals/workflow").json()
+
+    assert len(body["nodes"]) == len(NODE_META) == 17
+    real = {(e.source, e.target) for e in build_graph().get_graph().edges if e.source in NODE_META and e.target in NODE_META}
+    assert {(e["source"], e["target"]) for e in body["edges"]} == real
+    for edge in body["edges"]:
+        assert bool(edge["label"]) == edge["conditional"]
+
+
+def test_workflow_lists_each_nodes_evals(tmp_path, monkeypatch):
+    client = _client(monkeypatch, _dataset(tmp_path), tmp_path / "results.json")
+    nodes = {n["id"]: n for n in client.get("/evals/workflow").json()["nodes"]}
+
+    assert {"set": "routing"} in nodes["router"]["evals"]
+    assert nodes["clarify"]["evals"] == []
+
+
+def test_workflow_needs_no_database_url(tmp_path, monkeypatch):
+    monkeypatch.delenv("DATABASE_URL", raising=False)
+    evals_api._workflow.cache_clear()
+    client = _client(monkeypatch, _dataset(tmp_path), tmp_path / "results.json")
+
+    assert client.get("/evals/workflow").status_code == 200
+
+
+def test_workflow_names_each_nodes_models(tmp_path, monkeypatch):
+    from agent.embeddings import corpus_embedding_model
+    from agent.llm_factory import node_models
+
+    client = _client(monkeypatch, _dataset(tmp_path), tmp_path / "results.json")
+    nodes = {n["id"]: n for n in client.get("/evals/workflow").json()["nodes"]}
+
+    assert nodes["router"]["models"][-1] == node_models()["router"]
+    assert nodes["retriever"]["models"] == [corpus_embedding_model()]
+    assert nodes["supervisor"]["models"] == []
+
+
+def test_workflow_lists_jev_first_where_it_runs(tmp_path, monkeypatch):
+    monkeypatch.setenv("TYPESAFE_API_KEY", "test")
+    monkeypatch.setenv("JEV_MODEL", "jev-test")
+    monkeypatch.setenv("ROUTER_JEV_ENABLED", "on")
+    monkeypatch.setenv("GROUNDING_JEV_ENABLED", "off")
+    evals_api._workflow.cache_clear()
+    client = _client(monkeypatch, _dataset(tmp_path), tmp_path / "results.json")
+    nodes = {n["id"]: n for n in client.get("/evals/workflow").json()["nodes"]}
+    evals_api._workflow.cache_clear()
+
+    assert nodes["router"]["models"][0] == "jev-test"
+    assert "jev-test" not in nodes["grounding_check"]["models"]

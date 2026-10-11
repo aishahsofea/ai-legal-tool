@@ -31,9 +31,10 @@ import {
 } from "@/lib/evalsTransport";
 import { palette } from "./palette";
 import { Play, Spinner, Stop } from "./icons";
-import { defaultMode, modesFor, routingEstimate, setKindOf, type PickerMode, type SetKind } from "./evalSets";
+import { costBasisOf, costText, defaultMode, formatUsd, modesFor, routingEstimate, setKindOf, type CostBasis, type PickerMode, type SetKind } from "./evalSets";
 import { Pager } from "./Pager";
 import { Select } from "./Select";
+import { WorkflowMap } from "./WorkflowMap";
 import { headerState, selectRange, toggleShown } from "./selection";
 import { addResult, emptyTally, outcomeText, toOutcome, withTotal, type RunOutcome, type RunTally } from "./runOutcome";
 
@@ -575,6 +576,7 @@ export default function EvalDashboard() {
   const [judgementOnly, setJudgementOnly] = useState(false);
   const [resultSource, setResultSource] = useState<ResultSource>("empty");
   const [lastRunAt, setLastRunAt] = useState<string | null>(null);
+  const [costBasis, setCostBasis] = useState<CostBasis | null>(null);
   const [selectedScenario, setSelectedScenario] = useState<string | null>(null);
   const [mode, setMode] = useState<PickerMode>("smoke");
   const [value, setValue] = useState("");
@@ -600,6 +602,21 @@ export default function EvalDashboard() {
   // Shift-click anchor: the last row ticked or unticked, by id.
   const lastClickedRef = useRef<string | null>(null);
   const headerCheckboxRef = useRef<HTMLInputElement>(null);
+
+  const chooseSet = (next: string) => {
+    setCoverage(null);
+    setSelectedScenario(null);
+    setSelectedIds(new Set());
+    setVerdictFilter("");
+    setLanguageFilter("");
+    setJudgementOnly(false);
+    setError("");
+    setOutcome(null);
+    setMode("smoke");
+    setValue("");
+    setConfirmArmed(null);
+    setSet(next);
+  };
 
   useEffect(() => {
     let alive = true;
@@ -643,6 +660,7 @@ export default function EvalDashboard() {
         setRoutingSummary(savedSummary && isRoutingSummary(savedSummary) ? savedSummary : null);
         setResultSource(report ? "cached" : "empty");
         setLastRunAt(report?.generated_at ?? null);
+        setCostBasis(costBasisOf(report));
       })
       .catch((cause) => alive && setError(cause instanceof Error ? cause.message : "Unable to load eval dashboard"));
     return () => {
@@ -739,11 +757,24 @@ export default function EvalDashboard() {
   const missingSections = coverage?.corpus_staleness.checked ? coverage.corpus_staleness.missing_sections : [];
   const invalidPicker = mode !== "smoke" && mode !== "all" && !value.trim();
 
+  // A run from the workflow map always confirms; the banner waits for coverage so it never shows a zero count.
+  function runFromNode(name: string) {
+    if (running) return;
+    if (name === set) {
+      setMode(defaultMode(kind));
+      setValue("");
+      setConfirmArmed(null);
+    } else {
+      chooseSet(name);
+    }
+    setConfirmArmed("node");
+  }
+
   // `key` names what the confirm click belongs to, so arming one button never
   // lets another run through unconfirmed.
   async function startRun(key: string, runSubset: EvalSubset, count: number) {
     if (!set || running) return;
-    if (count > 20 && confirmArmed !== key) {
+    if ((count > 20 || key === "node") && confirmArmed !== key) {
       setConfirmArmed(key);
       return;
     }
@@ -798,6 +829,7 @@ export default function EvalDashboard() {
       // cancelRun owns the banner when it ended the stream.
       if (!failed && !cancelledRef.current && !controller.signal.aborted) {
         setOutcome(toOutcome("complete", tallyRef.current));
+        fetchEvalResults(set).then((report) => setCostBasis(costBasisOf(report))).catch(() => undefined);
       }
     } catch (cause) {
       if (!controller.signal.aborted) {
@@ -846,11 +878,11 @@ export default function EvalDashboard() {
     setActiveCaseId(null);
   }
 
-  if (!coverage || !set) {
+  if (!set) {
     return <main className="min-h-screen p-10" style={{ background: palette.page, color: palette.muted }}>Loading evaluation suite…</main>;
   }
 
-  const corpusChecked = coverage.corpus_staleness.checked;
+  const corpusChecked = coverage?.corpus_staleness.checked;
 
   return (
     <main className="min-h-screen" style={{ background: palette.page, color: palette.ink }}>
@@ -869,6 +901,8 @@ export default function EvalDashboard() {
       </nav>
 
       <div className="mx-auto max-w-[1440px] space-y-4 px-4 py-4 md:px-8 md:py-6">
+        {/* The map stays mounted across set switches so its selection and zoom survive the coverage reload. */}
+        {coverage && <>
         <header className="flex flex-col justify-between gap-3 lg:flex-row lg:items-end">
           <div>
             <div className="flex flex-wrap items-center gap-2">
@@ -943,8 +977,17 @@ export default function EvalDashboard() {
             </div>
           </div>
         )}
+        </>}
 
-        <section className="rounded-xl border p-3" style={{ borderColor: palette.line, background: palette.panelSoft }} aria-label="Run configuration">
+        <WorkflowMap activeSet={set} running={running} onRunSet={(name) => {
+          runFromNode(name);
+          document.getElementById("eval-run-config")?.scrollIntoView?.({ behavior: "smooth" });
+        }} onSelectSet={(name) => {
+          if (!running && name !== set) chooseSet(name);
+        }} />
+
+        {!coverage ? <p className="text-sm" style={{ color: palette.muted }}>Loading evaluation suite…</p> : <>
+        <section id="eval-run-config" className="scroll-mt-4 rounded-xl border p-3" style={{ borderColor: palette.line, background: palette.panelSoft }} aria-label="Run configuration">
           <div className="grid gap-3 md:grid-cols-[180px_220px_minmax(220px,1fr)_auto] md:items-center">
             <label className="flex items-center gap-3">
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.1em]" style={{ color: palette.muted }}>Set</span>
@@ -954,20 +997,7 @@ export default function EvalDashboard() {
                 value={set}
                 disabled={running}
                 options={sets.map((name) => ({ value: name, label: formatScenario(name) }))}
-                onChange={(next) => {
-                  setCoverage(null);
-                  setSelectedScenario(null);
-                  setSelectedIds(new Set());
-                  setVerdictFilter("");
-                  setLanguageFilter("");
-                  setJudgementOnly(false);
-                  setError("");
-                  setOutcome(null);
-                  setMode("smoke");
-                  setValue("");
-                  setConfirmArmed(null);
-                  setSet(next);
-                }}
+                onChange={chooseSet}
               />
             </label>
             <label className="flex items-center gap-3">
@@ -1011,20 +1041,29 @@ export default function EvalDashboard() {
                 </p>
               )}
             </div>
-            <div className="font-mono text-xs" style={{ color: palette.muted }}>{estimatedCount} selected</div>
+            <div className="font-mono text-xs" style={{ color: palette.muted }} title={costText(costBasis, estimatedCount)}>
+              {estimatedCount} selected · {costBasis ? `~${formatUsd(costBasis.perCase * estimatedCount)}` : "cost unknown"}
+            </div>
           </div>
         </section>
 
-        {confirmArmed && (
+        {confirmArmed && !(confirmArmed === "node" && !coverage) && (
           <div className={BANNER} style={{ borderColor: palette.warning, background: palette.warningSoft }}>
             {(() => {
-              const count = confirmArmed === "picker" ? estimatedCount : confirmArmed.slice(4).split(",").length;
-              return routingCoverage
+              const count = confirmArmed === "picker" || confirmArmed === "node" ? estimatedCount : confirmArmed.slice(4).split(",").length;
+              const what = routingCoverage
                 ? `${count} queries each call the live router and incur token cost.`
                 : groundingCoverage
                 ? `${count} claims each call Jev, then the live grounding judge unless Jev clears the claim. The full set of ${coverage.total_cases} is up to ${coverage.total_cases} judge calls and incurs token cost.`
                 : `${count} cases run the live agent and LLM judge, take roughly 5–8 minutes, and incur token cost.`;
+              return `${what} ${costText(costBasis, count)}`;
             })()} Click <strong>Confirm</strong> to continue.
+            {confirmArmed === "node" && (
+              <span className="ml-3 inline-flex gap-2">
+                <button type="button" onClick={() => startRun("node", subset, estimatedCount)} disabled={running || missingSections.length > 0} className={BUTTON} style={{ background: palette.accent, color: palette.panel }}>Confirm</button>
+                <button type="button" onClick={() => setConfirmArmed(null)} className={`${PILL} font-semibold`} style={{ background: palette.panel }}>Dismiss</button>
+              </span>
+            )}
           </div>
         )}
 
@@ -1260,6 +1299,7 @@ export default function EvalDashboard() {
             </div>
           </div>
         </details>}
+        </>}
       </div>
     </main>
   );
