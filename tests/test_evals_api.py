@@ -8,6 +8,7 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 import api.evals as evals_api
+from api import auth
 
 
 def _dataset(tmp_path, *, smoke: bool = True):
@@ -32,8 +33,10 @@ def _client(monkeypatch, dataset_path, results_path):
     monkeypatch.setattr(evals_api, "DATASET_PATH", dataset_path)
     monkeypatch.setattr(evals_api, "RESULTS_PATH", results_path)
     evals_api.reset_active_run_for_tests()
+    monkeypatch.setenv("EVALS_ADMIN_USER_IDS", "admin")
     app = FastAPI()
     app.include_router(evals_api.router)
+    app.dependency_overrides[auth.current_user_id] = lambda: "admin"
     return TestClient(app)
 
 
@@ -459,8 +462,10 @@ def _routing_client(tmp_path, monkeypatch, results=None):
     monkeypatch.setattr(evals_api, "ROUTING_DATASET_PATH", dataset)
     monkeypatch.setattr(evals_api, "ROUTING_RESULTS_PATH", results_path)
     evals_api.reset_active_run_for_tests()
+    monkeypatch.setenv("EVALS_ADMIN_USER_IDS", "admin")
     app = FastAPI()
     app.include_router(evals_api.router)
+    app.dependency_overrides[auth.current_user_id] = lambda: "admin"
     return TestClient(app)
 
 
@@ -652,3 +657,61 @@ def test_workflow_lists_jev_first_where_it_runs(tmp_path, monkeypatch):
 
     assert nodes["router"]["models"][0] == "jev-test"
     assert "jev-test" not in nodes["grounding_check"]["models"]
+
+
+_GATED = [
+    ("post", "/evals/run", {"set": "grounding", "subset": "all"}),
+    ("post", "/evals/cancel", None),
+    ("get", "/evals/results", None),
+    ("get", "/evals/cases", None),
+]
+
+
+def _gated_client(monkeypatch, tmp_path, allowlist):
+    client = _client(monkeypatch, _dataset(tmp_path), tmp_path / "results.json")
+    client.app.dependency_overrides[auth.current_user_id] = lambda: "bob"
+    monkeypatch.delenv("EVALS_DATABASE_URL", raising=False)
+    if allowlist is None:
+        monkeypatch.delenv("EVALS_ADMIN_USER_IDS", raising=False)
+    else:
+        monkeypatch.setenv("EVALS_ADMIN_USER_IDS", allowlist)
+    return client
+
+
+def test_gated_routes_refuse_a_missing_token(tmp_path, monkeypatch):
+    monkeypatch.setenv("SUPABASE_URL", "https://project.supabase.co")
+    client = _client(monkeypatch, _dataset(tmp_path), tmp_path / "results.json")
+    client.app.dependency_overrides.clear()
+    for method, path, body in _GATED:
+        assert client.request(method, path, json=body).status_code == 401, path
+
+
+def test_gated_routes_refuse_a_user_off_the_allowlist(tmp_path, monkeypatch):
+    client = _gated_client(monkeypatch, tmp_path, "alice, carol")
+    for method, path, body in _GATED:
+        assert client.request(method, path, json=body).status_code == 403, path
+
+
+def test_gated_routes_fail_closed_when_the_allowlist_is_unset_or_blank(tmp_path, monkeypatch):
+    for allowlist in (None, "", " , "):
+        client = _gated_client(monkeypatch, tmp_path, allowlist)
+        for method, path, body in _GATED:
+            assert client.request(method, path, json=body).status_code == 403, (allowlist, path)
+
+
+def test_grounding_run_is_refused_for_a_stranger_without_the_eval_database(tmp_path, monkeypatch):
+    client = _gated_client(monkeypatch, tmp_path, "alice")
+    response = client.post("/evals/run", json={"set": "grounding", "subset": "all"})
+    assert response.status_code == 403
+
+
+def test_an_allowlisted_user_passes_the_gate(tmp_path, monkeypatch):
+    client = _gated_client(monkeypatch, tmp_path, "alice,bob")
+    assert client.post("/evals/cancel").json() == {"status": "no_active_run"}
+
+
+def test_public_routes_take_no_token(tmp_path, monkeypatch):
+    client = _client(monkeypatch, _dataset(tmp_path), tmp_path / "results.json")
+    client.app.dependency_overrides.clear()
+    assert client.get("/evals/sets").status_code == 200
+    assert client.get("/evals/workflow").status_code == 200

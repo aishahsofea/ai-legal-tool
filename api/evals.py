@@ -12,11 +12,12 @@ from threading import Lock
 from functools import cache
 from typing import Any, Callable
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel
 
 from agent.graph_meta import EDGE_LABELS, NODE_META
+from api.auth import current_user_id
 from api.eval_workflow import NODE_EVALS
 from evals.coverage import (
     aggregate_scenarios,
@@ -38,6 +39,14 @@ ROUTING_DATASET_PATH = ROOT / "evals" / "routing_dataset.json"
 ROUTING_RESULTS_PATH = ROOT / "evals" / "results" / "routing.json"
 
 router = APIRouter(prefix="/evals", tags=["evals"])
+
+
+def require_eval_admin(user_id: str = Depends(current_user_id)) -> str:
+    # Unset means nobody: a missing variable must fail closed (#238).
+    allowed = {u.strip() for u in os.getenv("EVALS_ADMIN_USER_IDS", "").split(",") if u.strip()}
+    if user_id not in allowed:
+        raise HTTPException(403, "Not allowed to use the evals API")
+    return user_id
 
 DEFAULT_SET = "end_to_end"
 
@@ -330,7 +339,7 @@ async def _readline_or_disconnect(
             read_task.cancel()
 
 
-@router.post("/run")
+@router.post("/run", dependencies=[Depends(require_eval_admin)])
 async def run_evals(req: EvalRunRequest, request: Request):
     eval_set = _get_set(req.set)
     _reserve_run()
@@ -441,7 +450,7 @@ async def run_evals(req: EvalRunRequest, request: Request):
     )
 
 
-@router.post("/cancel")
+@router.post("/cancel", dependencies=[Depends(require_eval_admin)])
 async def cancel_evals():
     with _active_lock:
         process = _active_process
@@ -454,7 +463,7 @@ async def cancel_evals():
     return {"status": "cancelled"}
 
 
-@router.get("/results")
+@router.get("/results", dependencies=[Depends(require_eval_admin)])
 def get_results(set: str = DEFAULT_SET):
     path = _get_set(set).results_path()
     if not path.exists():
@@ -462,7 +471,7 @@ def get_results(set: str = DEFAULT_SET):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-@router.get("/cases")
+@router.get("/cases", dependencies=[Depends(require_eval_admin)])
 def list_cases(set: str = DEFAULT_SET):
     eval_set = _get_set(set)
     cases = _load_cases(eval_set)
