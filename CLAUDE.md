@@ -34,7 +34,7 @@ Do NOT edit `docs/PRD.md`, `docs/agent-hardening-backlog.md`, `docs/adr/*`, or `
 
 ## Doc voice
 
-Living docs (`README.md`, `CONTRIBUTING.md`, `CONTEXT.md`, `docs/data-pipeline.md`, `docs/corpus-receipts.md`) and the frozen `docs/adr/*` records must read as plain English — short sentences, no jargon-stacking, no nested clauses. Same text serves human readers and agents; don't write a "technical" version and a "readable" version. Concrete over abstract: name the file, the flag, the command, not "the relevant configuration."
+Living docs (`README.md`, `CONTRIBUTING.md`, `CONTEXT.md`, `docs/data-pipeline.md`, `docs/corpus-receipts.md`, `docs/deployment.md`) and the frozen `docs/adr/*` records must read as plain English — short sentences, no jargon-stacking, no nested clauses. Same text serves human readers and agents; don't write a "technical" version and a "readable" version. Concrete over abstract: name the file, the flag, the command, not "the relevant configuration."
 
 That's the goal. These three checks are how you know you hit it — a rewrite that passes none of them is a reword, not a rewrite:
 
