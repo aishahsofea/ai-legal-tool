@@ -68,7 +68,8 @@ Names only; each is explained in the [environment variables](../CONTRIBUTING.md#
 - Evals: `EVALS_ADMIN_USER_IDS`.
 - Search: `TAVILY_API_KEY`.
 - Tracing: `LANGSMITH_TRACING`, `LANGSMITH_API_KEY`, `LANGSMITH_PROJECT`. `LANGCHAIN_TRACING_V2` and `LANGCHAIN_PROJECT` are older LangSmith names the repo does not read.
-- Optional, not set today: `EVALS_DATABASE_URL`, `TYPESAFE_API_KEY` and `JEV_MODEL` (Jev).
+- Jev: `TYPESAFE_API_KEY`, `JEV_MODEL`.
+- Optional, not set today: `EVALS_DATABASE_URL`.
 
 **Vercel** (frontend): values are built into the page, so changing one in the dashboard needs a redeploy.
 
