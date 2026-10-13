@@ -852,17 +852,21 @@ No preview or staging environments exist. GitHub Actions (`.github/workflows/eva
 
 ### Variables by service
 
-Names only; each is explained in the [environment variables](#2-environment-variables) tables. This list was copied from `.env.example` and `frontend/.env.example`, not the dashboards, so it is **unverified**. Compare it against both dashboards.
+Names only; each is explained in the [environment variables](#2-environment-variables) tables. Both lists were compared against the dashboards on 2026-10-13.
 
 **Railway** (API):
 
-- Required: `DATABASE_URL`, `SUPABASE_URL`, `FRONTEND_ORIGIN`, `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`.
+- Required by the code: `DATABASE_URL`, `SUPABASE_URL`, `FRONTEND_ORIGIN`, `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`.
 - Chat provider: `CHAT_BASE_URL` and `CHAT_API_KEY`. Set both, or `CHAT_API_KEY` is sent to `api.openai.com`.
-- Receipts: `CORPUS_CDN_BASE_URL`. Without it, non-local PDFs answer 503.
-- Evals: `EVALS_DATABASE_URL`, `EVALS_ADMIN_USER_IDS`.
-- Optional: `RECEIPT_DELIVERY_MODE`, `TYPESAFE_API_KEY` and `JEV_MODEL` (Jev), `TAVILY_API_KEY`, `LANGSMITH_*`.
+- Grounding check: `GROUNDING_BASE_URL`, `GROUNDING_API_KEY`, `GROUNDING_MODEL`.
+- Models: `ROUTER_MODEL`, `CONTEXTUALIZER_MODEL`, `CONVERSATIONAL_MODEL`, `SYNTHESISER_MODEL`, `RETRIEVAL_AGENT_MODEL`, `MEMORY_EXTRACT_MODEL`.
+- Feature flags: `AGENTIC_RETRIEVAL`, `CURRENCY_CHECK_ENABLED`, `WEB_COMMENTARY_ENABLED`. Commentary also needs `COMMENTARY_ALLOWLIST`.
+- Receipts: `CORPUS_CDN_BASE_URL`. Without it, non-local PDFs answer 503. Optional: `RECEIPT_DELIVERY_MODE`.
+- Evals: `EVALS_ADMIN_USER_IDS`.
+- Search and tracing: `TAVILY_API_KEY`, `LANGSMITH_TRACING`, `LANGSMITH_API_KEY`, `LANGSMITH_PROJECT`, `LANGCHAIN_TRACING_V2`, `LANGCHAIN_PROJECT`. The `LANGCHAIN_*` pair is the older LangSmith naming. The repo does not read it.
+- Optional, not set today: `EVALS_DATABASE_URL`, `TYPESAFE_API_KEY` and `JEV_MODEL` (Jev).
 
-**Vercel** (frontend): `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_EVALS`. The values are built into the page. Changing one in the dashboard needs a redeploy.
+**Vercel** (frontend): `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Optional, not set today: `NEXT_PUBLIC_EVALS=1`, which turns on the `/evals` page (it returns 404 without it). The values are built into the page. Changing one in the dashboard needs a redeploy.
 
 **Operator machine only** (never set on Railway): `CORPUS_S3_ENDPOINT_URL` and the AWS credentials for `python -m corpus upload`, `TESSDATA_PREFIX`, `DOWNLOAD_CONCURRENCY`.
 
