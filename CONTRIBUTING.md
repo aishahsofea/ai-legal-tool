@@ -795,6 +795,48 @@ Shell exports beat `.env` values, so you can override your local default in a si
 
 ---
 
+## Deployment
+
+Production runs on four services. Vercel serves the frontend, Railway runs the API, Supabase holds the database and handles sign-in, and Cloudflare R2 stores the receipt PDFs. Merging to `main` deploys Vercel and Railway through their GitHub integrations. Solid arrows below are runtime traffic. Dotted arrows are config or deploy triggers.
+
+```mermaid
+flowchart LR
+  USER["Browser"]
+  OPS["Operator laptop<br/>python -m corpus upload"]
+  GH["GitHub main"]
+  subgraph VERCEL["Vercel"]
+    FE["Next.js<br/>Root Directory = frontend"]
+  end
+  subgraph RAILWAY["Railway"]
+    API["FastAPI<br/>uvicorn api.main:app<br/>health: /health"]
+  end
+  subgraph SUPA["Supabase"]
+    AUTH["Auth"]
+    PG[("Postgres + pgvector")]
+  end
+  R2[("Cloudflare R2<br/>PDFs + sidecars")]
+  LLM["Model providers<br/>Nebius (CHAT_BASE_URL), Anthropic,<br/>OpenAI embeddings, Typesafe Jev"]
+
+  USER -->|page load| FE
+  USER -->|"/query, /receipts (CORS: FRONTEND_ORIGIN)"| API
+  USER -->|sign in| AUTH
+  API -->|"307 redirect to PDF (CORPUS_CDN_BASE_URL)"| USER
+  USER -->|"follows redirect, Range + ETag"| R2
+  FE -.->|"NEXT_PUBLIC_API_URL (build time)"| API
+  API -->|DATABASE_URL| PG
+  API -->|"verify token (SUPABASE_URL)"| AUTH
+  API -->|"HEAD check, sidecar reads"| R2
+  API --> LLM
+  OPS -->|"S3 PUT (CORPUS_S3_ENDPOINT_URL + AWS creds)"| R2
+  GH -.->|"merge auto-deploys"| FE
+  GH -.->|"merge auto-deploys"| API
+```
+
+- **Vercel** builds the Next.js app in `frontend/`. It serves the page only. The browser calls the API directly.
+- **Railway** runs the FastAPI app from `railway.toml`. It needs a long-running process because answers stream over SSE.
+- **Supabase** is Postgres with pgvector, and the auth provider. Detail is in [Production database](#production-database).
+- **Cloudflare R2** holds the receipt PDFs and highlight sidecars. Only five PDFs are in git, so the rest stay out of the Railway image.
+
 ## Production database
 
 Production reads the Supabase project named in Railway's `DATABASE_URL`. It is on the Pro plan, in
