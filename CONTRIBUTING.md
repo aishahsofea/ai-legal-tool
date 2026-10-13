@@ -839,7 +839,7 @@ flowchart LR
 
 ### Service settings
 
-Each service deploys itself from GitHub. The settings below live in the dashboards, not in the repo, so they must be checked by hand.
+Railway and Vercel deploy from GitHub. All four services have settings in their dashboards, not in the repo, so check them by hand.
 
 | Service | Deploys from | Trigger | Dashboard settings that must hold |
 |---|---|---|---|
@@ -849,6 +849,39 @@ Each service deploys itself from GitHub. The settings below live in the dashboar
 | Cloudflare R2 | Not deployed from the repo | `python -m corpus upload` from an operator machine | Bucket and custom domain. CORS and retention are set outside the repo. See [Citation Receipt assets and verification](#citation-receipt-assets-and-verification). |
 
 No preview or staging environments exist. GitHub Actions (`.github/workflows/evals.yml`) runs CI only. It does not deploy.
+
+### Variables by service
+
+Names only; each is explained in the [environment variables](#2-environment-variables) tables. This list was copied from `.env.example` and `frontend/.env.example`, not the dashboards, so it is **unverified**. Compare it against both dashboards.
+
+**Railway** (API):
+
+- Required: `DATABASE_URL`, `SUPABASE_URL`, `FRONTEND_ORIGIN`, `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`.
+- Chat provider: `CHAT_BASE_URL` and `CHAT_API_KEY`. Set both, or `CHAT_API_KEY` is sent to `api.openai.com`.
+- Receipts: `CORPUS_CDN_BASE_URL`. Without it, non-local PDFs answer 503.
+- Evals: `EVALS_DATABASE_URL`, `EVALS_ADMIN_USER_IDS`.
+- Optional: `RECEIPT_DELIVERY_MODE`, `TYPESAFE_API_KEY` and `JEV_MODEL` (Jev), `TAVILY_API_KEY`, `LANGSMITH_*`.
+
+**Vercel** (frontend): `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_EVALS`. The values are built into the page. Changing one in the dashboard needs a redeploy.
+
+**Operator machine only** (never set on Railway): `CORPUS_S3_ENDPOINT_URL` and the AWS credentials for `python -m corpus upload`, `TESSDATA_PREFIX`, `DOWNLOAD_CONCURRENCY`.
+
+### Receipt PDFs on R2
+
+The browser asks the API for `GET /receipts/{id}/pdf`. In the default `auto` mode:
+
+- For the five git-tracked PDFs, the API serves the bytes itself.
+- For any other document, it checks the R2 object, then answers `307` with an address under `CORPUS_CDN_BASE_URL`. The browser follows the redirect to R2. Without `CORPUS_CDN_BASE_URL`, these documents answer 503.
+
+With `RECEIPT_DELIVERY_MODE=proxy`, the API streams the bytes through Railway instead.
+
+The API reads highlight sidecars from R2. The browser never fetches them. Uploads run from an operator machine, so R2 upload credentials never go on Railway. CORS, retention and the boot report are in [Citation Receipt assets and verification](#citation-receipt-assets-and-verification).
+
+### Which database production reads
+
+Production reads the database in Railway's `DATABASE_URL`. Your local `.env` points at a different one. A load, a migration or a `psql` command run against the local value does not touch production. Disk, plan and index details are in [Production database](#production-database).
+
+The API applies `migrations/0002_threads.sql` on every start. If the database is down, the API still starts. Requests then fail with a 500, and the browser shows that 500 as a CORS error. See [3. Database schema](#3-database-schema).
 
 ## Production database
 
