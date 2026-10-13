@@ -795,6 +795,10 @@ Shell exports beat `.env` values, so you can override your local default in a si
 
 ---
 
+## Deployment
+
+How production is wired, its dashboard settings and its env vars by service: [docs/deployment.md](docs/deployment.md). Supabase detail stays in [Production database](#production-database).
+
 ## Production database
 
 Production reads the Supabase project named in Railway's `DATABASE_URL`. It is on the Pro plan, in

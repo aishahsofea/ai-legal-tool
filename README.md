@@ -6,7 +6,17 @@ A LangGraph agent that answers over a pgvector corpus of section-level chunks sc
 [AGC portal](https://lom.agc.gov.my). It cites every legal claim. It never gives legal advice.
 For anything client-specific, it hands off to a human lawyer.
 
-**Stack:** LangGraph · FastAPI (Railway) · Next.js (Vercel) · Postgres + pgvector (Supabase) · NVIDIA Nemotron on Nebius Token Factory · OpenAI `text-embedding-3-small`
+**Stack:**
+
+- LangGraph
+- FastAPI (Railway)
+- Next.js (Vercel)
+- Postgres + pgvector (Supabase)
+- PDFs on Cloudflare R2
+- NVIDIA Nemotron on Nebius Token Factory
+- OpenAI `text-embedding-3-small`
+
+How production is wired: [Deployment](docs/deployment.md).
 
 The hosted demo runs every chat model on open-weights NVIDIA Nemotron, served by Nebius Token Factory. Nemotron-3.5-Lightning (30B) handles the light steps: classifying the query, rewriting follow-ups, replying to small talk, and extracting memories. Nemotron-3-Ultra (550B) searches the statutes as an agent, writes the cited answer, and checks it against the sources (the grounding check). The chat UI's PROCESS panel names the model behind each step.
 
@@ -169,6 +179,7 @@ The server refuses stale corpora, blocks concurrent runs, and kills a run when i
 - **[CONTEXT.md](CONTEXT.md)** — domain language, supervisor rules, query-language behaviour, memory model
 - **[docs/data-pipeline.md](docs/data-pipeline.md)** — the five scrape → embed steps and the JSON each produces
 - **[docs/corpus-receipts.md](docs/corpus-receipts.md)** — immutable corpus lifecycle, storage, rollout, and rollback
+- **[docs/deployment.md](docs/deployment.md)** — how production runs: services, dashboard settings, env vars by service
 - **`docs/adr/`** — architecture decision records
 
 ### Eval harness
