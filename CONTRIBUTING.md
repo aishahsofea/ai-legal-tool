@@ -837,6 +837,19 @@ flowchart LR
 - **Supabase** is Postgres with pgvector, and the auth provider. Detail is in [Production database](#production-database).
 - **Cloudflare R2** holds the receipt PDFs and highlight sidecars. Only five PDFs are in git, so the rest stay out of the Railway image.
 
+### Service settings
+
+Each service deploys itself from GitHub. The settings below live in the dashboards, not in the repo, so they must be checked by hand.
+
+| Service | Deploys from | Trigger | Dashboard settings that must hold |
+|---|---|---|---|
+| Railway | This repo, branch `main` | Merge to `main` | Build and start come from `railway.toml`. Health check is `/health` with a 30 second timeout. No release command exists. |
+| Vercel | This repo, branch `main` | Merge to `main` | Root Directory is `frontend`. There is no root `vercel.json`, and an earlier root file broke the build ([#182](https://github.com/aishahsofea/ai-legal-tool/issues/182)). |
+| Supabase | Not deployed from the repo | None | Add the deployed frontend's `/auth/callback` to the redirect URLs. Steps are in [Sign-in (Supabase Auth)](#sign-in-supabase-auth). |
+| Cloudflare R2 | Not deployed from the repo | `python -m corpus upload` from an operator machine | Bucket and custom domain. CORS and retention are set outside the repo. See [Citation Receipt assets and verification](#citation-receipt-assets-and-verification). |
+
+No preview or staging environments exist. GitHub Actions (`.github/workflows/evals.yml`) runs CI only. It does not deploy.
+
 ## Production database
 
 Production reads the Supabase project named in Railway's `DATABASE_URL`. It is on the Pro plan, in
