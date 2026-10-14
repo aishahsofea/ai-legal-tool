@@ -42,24 +42,23 @@ class AgenticRetrieverNodeTests(unittest.TestCase):
         rows = [{"act_number": "709", "section_number": "5"}]
         out = {"chunks": rows, "tools": ["search_statutes"]}
         with patch("agent.retrieval.agent.run_retrieval_agent", return_value=out) as run:
-            result = retriever.agentic_retriever_node({
-                "query": "data privacy for employers",
-                "query_type": "topical",
-            })
-        run.assert_called_once_with("data privacy for employers", "", None)
+            state = {"query": "data privacy for employers", "query_type": "topical"}
+            result = retriever.agentic_retriever_node(state)
+        run.assert_called_once_with("data privacy for employers", "", None, state)
         self.assertEqual(result["retrieved_chunks"], rows)
         self.assertEqual(result["tool_trace"], ["search_statutes"])
 
     def test_forwards_standalone_query_and_feedback(self):
         out = {"chunks": [{"a": 1}], "tools": ["lookup_section"]}
         with patch("agent.retrieval.agent.run_retrieval_agent", return_value=out) as run:
-            retriever.agentic_retriever_node({
+            state = {
                 "query": "what about it?",
                 "standalone_query": "penalty under the Employment Act",
                 "retrieval_feedback": "previous search missed s.60",
                 "query_type": "topical",
-            })
-        run.assert_called_once_with("penalty under the Employment Act", "previous search missed s.60", None)
+            }
+            retriever.agentic_retriever_node(state)
+        run.assert_called_once_with("penalty under the Employment Act", "previous search missed s.60", None, state)
 
     def test_fails_open_to_deterministic_on_exception(self):
         det_rows = [{"act_number": "56", "section_number": "90A"}]

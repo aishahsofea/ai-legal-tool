@@ -8,13 +8,14 @@ import json
 import logging
 import os
 import re
+from functools import lru_cache
 from typing import Optional
 
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
 from agent.citation_keys import canonicalize_act_number, canonicalize_citation_key
-from agent.llm_factory import make_llm, structured_llm, system_content
+from agent.llm_factory import cheap_model_name, make_llm, structured_llm, system_content
 from agent.node_events import node_model_event
 from agent.query_policy import (
     _DISCLAIMER_BM,
@@ -38,12 +39,18 @@ _MODEL = os.getenv("SYNTHESISER_MODEL", "gpt-4.1")
 _THINKING_OFF_BODY = {"chat_template_kwargs": {"enable_thinking": False}}
 # Opt-in: Nebius's 8192 default cuts Lightning off mid-reasoning (#216).
 _MAX_TOKENS = int(v) if (v := os.getenv("SYNTHESISER_MAX_TOKENS")) else None
-_llm = make_llm(
-    _MODEL,
-    node="synthesiser",
-    max_tokens=_MAX_TOKENS,
-    extra_body=_THINKING_OFF_BODY if os.getenv("SYNTHESISER_THINKING", "").lower() == "off" else None,
-)
+
+
+def _make_synthesiser_llm(model_name: str):
+    return make_llm(
+        model_name,
+        node="synthesiser",
+        max_tokens=_MAX_TOKENS,
+        extra_body=_THINKING_OFF_BODY if os.getenv("SYNTHESISER_THINKING", "").lower() == "off" else None,
+    )
+
+
+_llm = _make_synthesiser_llm(_MODEL)
 
 
 class _CitationRef(BaseModel):
@@ -57,6 +64,12 @@ class _SynthesiserOutput(BaseModel):
 
 
 _structured_llm = structured_llm(_llm, _SynthesiserOutput, node="synthesiser", model_name=_MODEL)
+
+
+@lru_cache(maxsize=4)
+def _cheap_structured_llm(model_name: str):
+    """Built on first use so a flag-off deployment never lists the cheap model as bound."""
+    return structured_llm(_make_synthesiser_llm(model_name), _SynthesiserOutput, node="synthesiser", model_name=model_name)
 
 _SYSTEM_TEMPLATE = """You are a Malaysian legal research assistant. Your role is to answer research questions about Malaysian legislation by citing the relevant statute sections.
 
@@ -102,7 +115,7 @@ _LANGUAGE_INSTRUCTIONS = {
 }
 
 
-def _build_messages(state: AgentState) -> list[dict]:
+def _build_messages(state: AgentState, model_name: str = _MODEL) -> list[dict]:
     chunks = state["retrieved_chunks"]
     history = trim_history(state.get("history", []))
     response_language = state.get("response_language", "en")
@@ -180,7 +193,7 @@ Query: {state['query']}
 {closing_instruction}"""
 
     return [
-        {"role": "system", "content": system_content(system_prompt, _MODEL)},
+        {"role": "system", "content": system_content(system_prompt, model_name)},
         {"role": "user", "content": user_message},
     ]
 
@@ -288,18 +301,21 @@ def _finalise(result: _SynthesiserOutput, state: AgentState) -> dict:
 
 
 def _select_llm(state: AgentState):
+    cheap = cheap_model_name(state, "SYNTHESISER_CHEAP_MODEL")
+    if cheap:
+        return _cheap_structured_llm(cheap), cheap
     return _structured_llm, _MODEL
 
 
 def synthesiser_node(state: AgentState) -> dict:
     llm, model_name = _select_llm(state)
     with node_model_event("synthesiser", model_name):
-        result: _SynthesiserOutput = llm.invoke(_build_messages(state))
+        result: _SynthesiserOutput = llm.invoke(_build_messages(state, model_name))
     return _finalise(result, state)
 
 
 async def asynthesiser_node(state: AgentState) -> dict:
     llm, model_name = _select_llm(state)
     with node_model_event("synthesiser", model_name):
-        result: _SynthesiserOutput = await llm.ainvoke(_build_messages(state))
+        result: _SynthesiserOutput = await llm.ainvoke(_build_messages(state, model_name))
     return _finalise(result, state)

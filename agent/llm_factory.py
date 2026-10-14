@@ -22,6 +22,8 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_openai import ChatOpenAI
 from pydantic import ValidationError
 
+from agent.feature_flags import flag_enabled
+
 load_dotenv()
 
 logger = logging.getLogger(__name__)
@@ -104,6 +106,43 @@ def node_model_lists() -> dict[str, list[str]]:
 def node_models() -> dict[str, str]:
     """First model each node bound, for callers that assume one per node."""
     return {node: models[0] for node, models in _NODE_MODELS.items()}
+
+
+# Unset or invalid takes 1.0, the strictest value, so a bad setting never loosens the gate.
+_STRICTEST_CHEAP_THRESHOLD = 1.0
+
+
+def _cheap_threshold() -> float:
+    raw = os.getenv("CHEAP_MODEL_THRESHOLD")
+    if raw is None or not raw.strip():
+        return _STRICTEST_CHEAP_THRESHOLD
+    try:
+        value = float(raw)
+    except ValueError:
+        value = -1.0
+    if not 0.0 < value <= 1.0:
+        logger.warning("Invalid CHEAP_MODEL_THRESHOLD %r; using %s", raw, _STRICTEST_CHEAP_THRESHOLD)
+        return _STRICTEST_CHEAP_THRESHOLD
+    return value
+
+
+def use_cheap_model(state) -> bool:
+    """True only for a confident Jev `simple` first pass; anything else keeps the strong model."""
+    if not flag_enabled("CHEAP_MODEL_ROUTING"):
+        return False
+    if state.get("complexity") != "simple" or state.get("retry_count", 0) != 0:
+        return False
+    probability = state.get("complexity_probability")
+    if not isinstance(probability, (int, float)) or isinstance(probability, bool):
+        return False
+    return probability >= _cheap_threshold()
+
+
+def cheap_model_name(state, env_var: str) -> str | None:
+    """The node's cheap model when this turn qualifies and `env_var` names one, else None."""
+    if not use_cheap_model(state):
+        return None
+    return os.getenv(env_var, "").strip() or None
 
 
 class StructuredOutputError(RuntimeError):

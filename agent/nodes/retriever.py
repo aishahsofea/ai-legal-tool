@@ -61,7 +61,7 @@ def agentic_retriever_node(state: AgentState, config=None) -> dict:
     reference_metrics: dict = {}
     commentary: list[dict] = []
     try:
-        out = run_retrieval_agent(query, feedback, config)
+        out = run_retrieval_agent(query, feedback, config, state)
         rows, tools = out["chunks"], out["tools"]
         reference_trace = out.get("reference_trace", [])
         reference_metrics = out.get("reference_metrics", {})
