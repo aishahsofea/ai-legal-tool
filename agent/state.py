@@ -80,6 +80,8 @@ class AgentState(TypedDict):
     clarifying_question: str # set when query_type == "clarify"; drives the HITL interrupt (ADR 0015)
     clarified: bool          # True once this turn has asked one clarifying question — blocks a re-clarify loop
     response_language: str   # "en" | "bm" | "mixed"
+    complexity: str          # "simple" | "multi_provision"; Jev router only, unset on the LLM path
+    complexity_probability: float  # Jev's probability for `complexity`; unset with it
     retrieved_chunks: list[dict]
     draft_response: str
     citations: list[Citation]
