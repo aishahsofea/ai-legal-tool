@@ -217,6 +217,20 @@ class NodeModelRegistryTests(unittest.TestCase):
         snapshot["test_node_copy"] = "mutated"
         self.assertEqual(llm_factory.node_models()["test_node_copy"], "gpt-4.1")
 
+    def test_second_model_for_a_node_is_kept_in_order(self):
+        with patch.object(llm_factory, "ChatOpenAI"):
+            llm_factory.make_llm("strong-model", node="test_node_two")
+            llm_factory.make_llm("cheap-model", node="test_node_two")
+            llm_factory.make_llm("cheap-model", node="test_node_two")
+        self.assertEqual(llm_factory.node_model_lists()["test_node_two"], ["strong-model", "cheap-model"])
+        self.assertEqual(llm_factory.node_models()["test_node_two"], "strong-model")
+
+    def test_list_copy_is_not_live(self):
+        with patch.object(llm_factory, "ChatOpenAI"):
+            llm_factory.make_llm("gpt-4.1", node="test_node_list_copy")
+        llm_factory.node_model_lists()["test_node_list_copy"].append("mutated")
+        self.assertEqual(llm_factory.node_model_lists()["test_node_list_copy"], ["gpt-4.1"])
+
     def test_every_graph_node_registers_a_model(self):
         """The trace criterion in #59 is worthless if a node forgets its label."""
         import agent.graph  # noqa: F401  — imports every node module

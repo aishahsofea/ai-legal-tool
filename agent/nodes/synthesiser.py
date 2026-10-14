@@ -287,13 +287,19 @@ def _finalise(result: _SynthesiserOutput, state: AgentState) -> dict:
     }
 
 
+def _select_llm(state: AgentState):
+    return _structured_llm, _MODEL
+
+
 def synthesiser_node(state: AgentState) -> dict:
-    with node_model_event("synthesiser", _MODEL):
-        result: _SynthesiserOutput = _structured_llm.invoke(_build_messages(state))
+    llm, model_name = _select_llm(state)
+    with node_model_event("synthesiser", model_name):
+        result: _SynthesiserOutput = llm.invoke(_build_messages(state))
     return _finalise(result, state)
 
 
 async def asynthesiser_node(state: AgentState) -> dict:
-    with node_model_event("synthesiser", _MODEL):
-        result: _SynthesiserOutput = await _structured_llm.ainvoke(_build_messages(state))
+    llm, model_name = _select_llm(state)
+    with node_model_event("synthesiser", model_name):
+        result: _SynthesiserOutput = await llm.ainvoke(_build_messages(state))
     return _finalise(result, state)

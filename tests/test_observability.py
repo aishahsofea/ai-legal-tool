@@ -171,12 +171,18 @@ class ConfigTests(unittest.TestCase):
         self.assertNotIn("callbacks", _config("t1", "u1"))
 
     def test_per_node_model_on_metadata(self):
-        from agent.llm_factory import node_models
+        from agent.llm_factory import node_model_lists
         cfg = _config("t1", "u1")
-        models = node_models()
+        models = node_model_lists()
         self.assertIn("router", models)
-        for node, name in models.items():
-            self.assertEqual(cfg["metadata"][f"model_{node}"], name)
+        for node, names in models.items():
+            self.assertEqual(cfg["metadata"][f"model_{node}"], ", ".join(names))
+
+    def test_metadata_joins_two_models_for_one_node(self):
+        with patch("agent.query_lifecycle.node_model_lists", return_value={"synthesiser": ["strong", "cheap"], "router": ["one"]}):
+            cfg = _config("t1", "u1")
+        self.assertEqual(cfg["metadata"]["model_synthesiser"], "strong, cheap")
+        self.assertEqual(cfg["metadata"]["model_router"], "one")
 
     def test_model_keys_do_not_displace_flag_metadata(self):
         cfg = _config("t1", "u1")

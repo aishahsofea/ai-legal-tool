@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 # Filled in as each node builds its model. query_lifecycle stamps this onto the
 # LangSmith run, because a mixed-provider turn is unreadable afterwards without it.
-_NODE_MODELS: dict[str, str] = {}
+_NODE_MODELS: dict[str, list[str]] = {}
 
 # Set only by evals/usage.py, so the eval report can count json_mode retries
 # without agent/ importing evals/. Unset in production: one ContextVar read.
@@ -44,7 +44,9 @@ def make_llm(
     max_tokens: int | None = None,
 ):
     if node:
-        _NODE_MODELS[node] = model_name
+        models = _NODE_MODELS.setdefault(node, [])
+        if model_name not in models:
+            models.append(model_name)
     if model_name.startswith("claude-"):
         return ChatAnthropic(model=model_name, temperature=temperature)
     if model_name.startswith("gemini-"):
@@ -94,9 +96,14 @@ def make_llm(
     )
 
 
+def node_model_lists() -> dict[str, list[str]]:
+    """Every model each node bound, in registration order."""
+    return {node: list(models) for node, models in _NODE_MODELS.items()}
+
+
 def node_models() -> dict[str, str]:
-    """Model each node bound at import, keyed by node name."""
-    return dict(_NODE_MODELS)
+    """First model each node bound, for callers that assume one per node."""
+    return {node: models[0] for node, models in _NODE_MODELS.items()}
 
 
 class StructuredOutputError(RuntimeError):

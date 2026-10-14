@@ -12,7 +12,7 @@ from langgraph.types import Command
 
 from agent.feature_flags import flag_enabled
 from agent.graph import graph
-from agent.llm_factory import node_models
+from agent.llm_factory import node_model_lists
 from agent.memory.extractor import schedule_extraction
 from agent.memory.pruner import schedule_pruning
 from agent.observability import emit_feedback, root_run_id
@@ -80,7 +80,7 @@ def _config(
     # Per-node model on the trace. Nodes may sit on different providers at once
     # (CHAT_BASE_URL, issue #59), and a mixed run can't be read back without
     # knowing which model answered where. Flat keys so LangSmith can filter on them.
-    metadata.update({f"model_{node}": name for node, name in node_models().items()})
+    metadata.update({f"model_{node}": ", ".join(names) for node, names in node_model_lists().items()})
     config: dict = {
         "configurable": {"thread_id": thread_id, "user_id": user_id},
         "metadata": metadata,

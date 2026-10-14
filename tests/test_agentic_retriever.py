@@ -630,6 +630,30 @@ class ModelCallBudgetTests(unittest.TestCase):
         self.assertEqual(result["tools"], ["search_statutes"] * budget)
         self.assertEqual(result["chunks"], [self._row()])
 
+    def test_event_names_the_model_the_agent_was_built_with(self):
+        class _EmptyAgent:
+            def stream(self, _input, _config, **_kwargs):
+                yield "values", {"retrieved_chunks": [], "tool_trace": []}
+
+        for env_model in ("strong-model", "cheap-model"):
+            with self.subTest(model=env_model), \
+                 patch.dict(os.environ, {"RETRIEVAL_AGENT_MODEL": env_model}), \
+                 patch.object(retrieval_agent, "_build_retrieval_agent", return_value=_EmptyAgent()) as build, \
+                 patch.object(retrieval_agent, "node_model_event") as event:
+                retrieval_agent.run_retrieval_agent("wages")
+            event.assert_called_once_with("retrieval_agent", env_model)
+            self.assertEqual(build.call_args.args[2], env_model)
+
+    def test_cache_keeps_one_agent_per_model(self):
+        with patch.object(retrieval_agent, "make_llm", return_value=object()) as make, \
+             patch.object(retrieval_agent, "create_agent", side_effect=lambda *a, **k: object()):
+            first = retrieval_agent._build_retrieval_agent(False, False, "strong-model")
+            second = retrieval_agent._build_retrieval_agent(False, False, "cheap-model")
+            again = retrieval_agent._build_retrieval_agent(False, False, "strong-model")
+        self.assertIsNot(first, second)
+        self.assertIs(first, again)
+        self.assertEqual([c.args[0] for c in make.call_args_list], ["strong-model", "cheap-model"])
+
     def test_recursion_backstop_keeps_what_the_agent_already_found(self):
         """Lowering RETRIEVAL_RECURSION_LIMIT below the call budget is an operator
         mistake, not a reason to hand the caller nothing."""

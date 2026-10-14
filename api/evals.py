@@ -220,14 +220,14 @@ def list_sets():
 def _workflow() -> dict[str, Any]:
     from agent.embeddings import corpus_embedding_model, memory_embedding_model
     from agent.graph import build_graph
-    from agent.llm_factory import node_models
+    from agent.llm_factory import node_model_lists
     from agent.nodes import router_jev
     from agent.nodes.grounding_check import _jev_enabled as grounding_jev_enabled
 
     # No checkpointer or store, so building the graph opens no DB connection.
     graph = build_graph().get_graph()
     # Read after build_graph: each node registers its model when its module is imported.
-    models: dict[str, list[str]] = {node: [model] for node, model in node_models().items()}
+    models = node_model_lists()
     models["retriever"] = [corpus_embedding_model()]
     models["recall"] = models["recall_conversational"] = [memory_embedding_model()]
     # Jev runs before the LLM in these nodes, so it is listed first: call order.

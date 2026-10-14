@@ -645,6 +645,19 @@ def test_workflow_names_each_nodes_models(tmp_path, monkeypatch):
     assert nodes["supervisor"]["models"] == []
 
 
+def test_workflow_lists_both_models_of_a_two_model_node(tmp_path, monkeypatch):
+    from agent.llm_factory import node_model_lists
+
+    two = {**node_model_lists(), "synthesiser": ["strong", "cheap"]}
+    monkeypatch.setattr("agent.llm_factory.node_model_lists", lambda: two)
+    evals_api._workflow.cache_clear()
+    client = _client(monkeypatch, _dataset(tmp_path), tmp_path / "results.json")
+    nodes = {n["id"]: n for n in client.get("/evals/workflow").json()["nodes"]}
+    evals_api._workflow.cache_clear()
+
+    assert nodes["synthesiser"]["models"] == ["strong", "cheap"]
+
+
 def test_workflow_lists_jev_first_where_it_runs(tmp_path, monkeypatch):
     monkeypatch.setenv("TYPESAFE_API_KEY", "test")
     monkeypatch.setenv("JEV_MODEL", "jev-test")
