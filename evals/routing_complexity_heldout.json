@@ -1,0 +1,280 @@
+{
+  "schema_version": 1,
+  "notes": "Held-out set for the #243 Jev complexity question. Written after the complexity prompt was reworded from the rubric in docs/plan-243-cheap-model-routing.md, and never used to tune it. Queries avoid the topics in routing_dataset.json. Labels are proposed, not human-reviewed.",
+  "cases": [
+    {
+      "id": "heldout-cx-01",
+      "language": "en",
+      "query": "What does section 378 of the Penal Code say?",
+      "query_type": "statute_lookup",
+      "complexity": "simple",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-02",
+      "language": "en",
+      "query": "Quote section 4 of the Arbitration Act 2005.",
+      "query_type": "statute_lookup",
+      "complexity": "simple",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-03",
+      "language": "en",
+      "query": "When must an employer give an employee a written contract of service under the Employment Act?",
+      "query_type": "topical",
+      "complexity": "simple",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-04",
+      "language": "en",
+      "query": "How does the Copyright Act 1987 define a work of joint authorship?",
+      "query_type": "topical",
+      "complexity": "simple",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-05",
+      "language": "en",
+      "query": "What is the punishment for voluntarily causing hurt under the Penal Code?",
+      "query_type": "topical",
+      "complexity": "simple",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-06",
+      "language": "en",
+      "query": "Read section 99 of the Companies Act 2016.",
+      "query_type": "statute_lookup",
+      "complexity": "simple",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-07",
+      "language": "en",
+      "query": "Which Act governs the incorporation of companies in Malaysia?",
+      "query_type": "topical",
+      "complexity": "simple",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-08",
+      "language": "en",
+      "query": "Which Act regulates arbitration proceedings in Malaysia?",
+      "query_type": "topical",
+      "complexity": "simple",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-09",
+      "language": "bm",
+      "query": "Apakah yang dinyatakan oleh seksyen 354 Kanun Keseksaan?",
+      "query_type": "statute_lookup",
+      "complexity": "simple",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-10",
+      "language": "bm",
+      "query": "Berapa lamakah tempoh cuti bersalin yang diperuntukkan di bawah Akta Pekerjaan 1955?",
+      "query_type": "topical",
+      "complexity": "simple",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-11",
+      "language": "bm",
+      "query": "Tunjukkan teks seksyen 90 Akta Keterangan 1950.",
+      "query_type": "statute_lookup",
+      "complexity": "simple",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-12",
+      "language": "mixed",
+      "query": "boleh bagi saya text Section 322 Penal Code tak?",
+      "query_type": "statute_lookup",
+      "complexity": "simple",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-13",
+      "language": "mixed",
+      "query": "Section 10 Employment Act cakap apa pasal written contract of service?",
+      "query_type": "statute_lookup",
+      "complexity": "simple",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-14",
+      "language": "mixed",
+      "query": "macam mana Companies Act 2016 define 'related corporation'?",
+      "query_type": "topical",
+      "complexity": "simple",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-15",
+      "language": "en",
+      "query": "What about section 323?",
+      "query_type": "statute_lookup",
+      "complexity": "simple",
+      "source": "hand",
+      "review_status": "proposed",
+      "history": [
+        {
+          "role": "user",
+          "content": "What does section 322 of the Penal Code say?"
+        },
+        {
+          "role": "assistant",
+          "content": "Section 322 of the Penal Code 1936 defines voluntarily causing grievous hurt."
+        }
+      ],
+      "tags": [
+        "history"
+      ]
+    },
+    {
+      "id": "heldout-cx-16",
+      "language": "en",
+      "query": "List all offences under the Arbitration Act 2005.",
+      "query_type": "provision_extraction",
+      "complexity": "multi_provision",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-17",
+      "language": "en",
+      "query": "Show every provision in the Companies Act 2016 about winding up by the court.",
+      "query_type": "provision_extraction",
+      "complexity": "multi_provision",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-18",
+      "language": "en",
+      "query": "How do sections 378 and 379 of the Penal Code relate, and which one applies to a stolen vehicle?",
+      "query_type": "topical",
+      "complexity": "multi_provision",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-19",
+      "language": "en",
+      "query": "Does the Copyright Act 1987 apply to works made by foreign authors outside Malaysia?",
+      "query_type": "topical",
+      "complexity": "multi_provision",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-20",
+      "language": "en",
+      "query": "Which provisions could apply when a company director takes company money for personal use?",
+      "query_type": "topical",
+      "complexity": "multi_provision",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-21",
+      "language": "en",
+      "query": "Which laws regulate the sale of defective used cars?",
+      "query_type": "topical",
+      "complexity": "multi_provision",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-22",
+      "language": "en",
+      "query": "What must be proved, and what exceptions apply, for criminal breach of trust?",
+      "query_type": "topical",
+      "complexity": "multi_provision",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-23",
+      "language": "bm",
+      "query": "Senaraikan semua kuasa pengarah di bawah Akta Syarikat 2016.",
+      "query_type": "provision_extraction",
+      "complexity": "multi_provision",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-24",
+      "language": "bm",
+      "query": "Senaraikan semua kesalahan dalam Akta Hak Cipta 1987.",
+      "query_type": "provision_extraction",
+      "complexity": "multi_provision",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-25",
+      "language": "bm",
+      "query": "Adakah Akta Timbang Tara 2005 terpakai kepada timbang tara antarabangsa yang bertempat di luar Malaysia?",
+      "query_type": "topical",
+      "complexity": "multi_provision",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-26",
+      "language": "bm",
+      "query": "Apakah pertalian antara seksyen 34 dan seksyen 149 Kanun Keseksaan?",
+      "query_type": "topical",
+      "complexity": "multi_provision",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-27",
+      "language": "mixed",
+      "query": "Section 114 dan Section 90A Evidence Act, dua-dua boleh apply ke electronic evidence ke?",
+      "query_type": "topical",
+      "complexity": "multi_provision",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-28",
+      "language": "mixed",
+      "query": "law apa yang cover cyber bullying kat Malaysia?",
+      "query_type": "topical",
+      "complexity": "multi_provision",
+      "source": "hand",
+      "review_status": "proposed"
+    },
+    {
+      "id": "heldout-cx-29",
+      "language": "mixed",
+      "query": "tolong list semua powers court under Arbitration Act 2005.",
+      "query_type": "provision_extraction",
+      "complexity": "multi_provision",
+      "source": "hand",
+      "review_status": "proposed"
+    }
+  ]
+}

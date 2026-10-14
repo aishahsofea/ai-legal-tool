@@ -5,6 +5,8 @@ from collections import Counter, defaultdict
 from typing import Any
 
 LEGAL_TYPES = frozenset({"statute_lookup", "topical", "provision_extraction"})
+# Below this many labelled runs a class's accuracy is not a figure to act on.
+MIN_COMPLEXITY_N = 10
 
 
 def miss_direction(label: str, got: str) -> str | None:
@@ -39,6 +41,26 @@ def _grouped(entries: list[dict[str, Any]], keys) -> dict[str, dict[str, Any]]:
     return {key: _group(bucket) for key, bucket in sorted(buckets.items())}
 
 
+def _complexity(scored: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    """Per labelled class; only Jev answers carry a complexity, so the LLM router path scores `answered` 0."""
+    buckets: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for entry in scored:
+        if "label_complexity" in entry:
+            buckets[entry["label_complexity"]].append(entry)
+    out = {}
+    for label, entries in sorted(buckets.items()):
+        answered = [e for e in entries if "complexity" in e]
+        out[label] = {
+            "n": len(entries),
+            "answered": len(answered),
+            "accuracy": _rate(sum(e["complexity_match"] for e in answered), len(answered)),
+            "mean_probability": _rate(sum(e["complexity_probability"] for e in answered), len(answered)),
+            "confusion": dict(Counter(e["complexity"] for e in answered)),
+            "too_small": len(entries) < MIN_COMPLEXITY_N,
+        }
+    return out
+
+
 def _agreement(scored: list[dict[str, Any]], repeats: int) -> dict[str, Any] | None:
     if repeats <= 1:
         return None
@@ -67,6 +89,7 @@ def summarise(results: list[dict[str, Any]]) -> dict[str, Any]:
         "by_tag": _grouped(scored, lambda e: e.get("tags", [])),
         "by_language": _grouped(scored, lambda e: [e["label_language"]]),
         "by_query_type": _grouped(scored, lambda e: [e["label_type"]]),
+        "by_complexity": _complexity(scored),
         # A gate run must show zero `fallback` rows, or its numbers are the LLM router's.
         "by_path": {
             path: sum(e.get("route_path", "llm") == path for e in scored)

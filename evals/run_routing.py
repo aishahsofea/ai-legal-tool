@@ -64,6 +64,15 @@ def score_case(
         miss_direction=miss_direction(case["query_type"], got),
         route_path=out.get("route_path", "llm"),
     )
+    if label := case.get("complexity"):
+        entry["label_complexity"] = label
+        # The LLM router path leaves complexity unset; such a run is unanswered, not wrong.
+        if got_complexity := out.get("complexity"):
+            entry.update(
+                complexity=got_complexity,
+                complexity_probability=out["complexity_probability"],
+                complexity_match=got_complexity == label,
+            )
     return entry
 
 
@@ -107,6 +116,16 @@ def _print_group(title: str, groups: dict[str, dict[str, Any]]) -> None:
         print(f"  {name:<24} n={g['n']:<3} type {g['type_accuracy']:.1%}  lang {g['language_accuracy']:.1%}")
 
 
+def _print_complexity(groups: dict[str, dict[str, Any]]) -> None:
+    if not groups:
+        return
+    print("\nBy complexity (label)")
+    for name, g in groups.items():
+        flag = "  TOO SMALL TO TRUST" if g["too_small"] else ""
+        print(f"  {name:<18} n={g['n']:<3} answered={g['answered']:<3} acc {g['accuracy']:.1%}"
+              f"  mean p {g['mean_probability']:.3f}  got {g['confusion']}{flag}")
+
+
 def _print_summary(summary: dict[str, Any]) -> None:
     print(f"\nquery_type {summary['query_type_accuracy']:.1%}  language {summary['language_accuracy']:.1%}"
           f"  ({summary['total_cases']} cases, {summary['total_runs']} runs, {summary['errors']} errors)")
@@ -118,6 +137,7 @@ def _print_summary(summary: dict[str, Any]) -> None:
     _print_group("By tag", summary["by_tag"])
     _print_group("By language", summary["by_language"])
     _print_group("By query_type", summary["by_query_type"])
+    _print_complexity(summary["by_complexity"])
     print(f"\nRoute paths: {summary['by_path']}")
     print(f"Miss directions: {summary['miss_directions']}")
     if (agreement := summary["agreement"]) is not None:

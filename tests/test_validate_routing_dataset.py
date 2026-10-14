@@ -4,6 +4,7 @@ import unittest
 
 from evals.validate_routing_dataset import (
     DATASET_PATH,
+    LEGAL_TYPES,
     MIN_CASES,
     ROUTING_PATH,
     QUERY_TYPES,
@@ -15,10 +16,13 @@ DATASET_IDS = {c["id"] for c in json.loads(DATASET_PATH.read_text(encoding="utf-
 
 
 def _case(i: int, query_type: str, language: str) -> dict:
-    return {
+    case = {
         "id": f"c{i}", "language": language, "query": f"query {i}", "query_type": query_type,
         "source": "hand", "review_status": "proposed",
     }
+    if query_type in LEGAL_TYPES:
+        case["complexity"] = "simple"
+    return case
 
 
 def _valid_data() -> dict:
@@ -30,6 +34,13 @@ class RoutingDatasetValidatorTests(unittest.TestCase):
     def test_shipped_dataset_is_valid(self):
         data = json.loads(ROUTING_PATH.read_text(encoding="utf-8"))
         self.assertEqual(validate(data, DATASET_IDS), [])
+
+    def test_complexity_heldout_is_valid_and_disjoint_from_the_tuning_set(self):
+        heldout = json.loads((ROUTING_PATH.parent / "routing_complexity_heldout.json").read_text(encoding="utf-8"))
+        size_errors = ("need at least", "query_type ", "language ")
+        self.assertEqual([e for e in validate(heldout, DATASET_IDS) if not e.startswith(size_errors)], [])
+        tuning = {c["query"] for c in json.loads(ROUTING_PATH.read_text(encoding="utf-8"))["cases"]}
+        self.assertFalse(tuning & {c["query"] for c in heldout["cases"]})
 
     def test_minimal_valid_set_passes(self):
         self.assertEqual(validate(_valid_data(), DATASET_IDS), [])
@@ -80,6 +91,20 @@ class RoutingDatasetValidatorTests(unittest.TestCase):
         for c in data["cases"]:
             c["review_status"] = "reviewed"
         self.assertEqual(validate(copy.deepcopy(data), DATASET_IDS, require_reviewed=True), [])
+
+    def test_legal_case_needs_a_valid_complexity(self):
+        data = _valid_data()
+        legal = next(c for c in data["cases"] if c["query_type"] in LEGAL_TYPES)
+        del legal["complexity"]
+        self.assertTrue(any("needs complexity" in e for e in validate(data, DATASET_IDS)))
+        legal["complexity"] = "hard"
+        self.assertTrue(any("needs complexity" in e for e in validate(data, DATASET_IDS)))
+
+    def test_non_legal_case_must_not_carry_complexity(self):
+        data = _valid_data()
+        other = next(c for c in data["cases"] if c["query_type"] not in LEGAL_TYPES)
+        other["complexity"] = "simple"
+        self.assertTrue(any("only for legal" in e for e in validate(data, DATASET_IDS)))
 
     def test_review_table_escapes_pipes_and_shows_history(self):
         case = _case(0, "clarify", "en")

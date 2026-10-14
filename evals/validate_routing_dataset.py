@@ -12,6 +12,8 @@ DATASET_PATH = ROOT / "dataset.json"
 
 # "escalate" is absent on purpose: router.py decides it by regex before any model call.
 QUERY_TYPES = ("statute_lookup", "topical", "provision_extraction", "conversational", "clarify")
+LEGAL_TYPES = ("statute_lookup", "topical", "provision_extraction")
+COMPLEXITIES = ("simple", "multi_provision")
 LANGUAGES = ("en", "bm", "mixed")
 SOURCES = ("eval_dataset", "hand")
 TAGS = ("tie_break", "clarify_boundary", "history")
@@ -55,6 +57,12 @@ def validate(data: dict, dataset_ids: set[str], *, require_reviewed: bool = Fals
 
         if case.get("query_type") not in QUERY_TYPES:
             bad(f"query_type must be one of {QUERY_TYPES}")
+        # Only legal cases reach retrieval, so only they have a complexity to score.
+        if case.get("query_type") in LEGAL_TYPES:
+            if case.get("complexity") not in COMPLEXITIES:
+                bad(f"legal case needs complexity, one of {COMPLEXITIES}")
+        elif "complexity" in case:
+            bad("complexity is only for legal query types")
         if case.get("language") not in LANGUAGES:
             bad(f"language must be one of {LANGUAGES}")
         if case.get("review_status") not in REVIEW_STATUSES:
@@ -106,9 +114,10 @@ def review_table(cases: list[dict]) -> str:
             extra.append("history: " + " / ".join(f"{t['role']}: {t['content']}" for t in c["history"]))
         if c.get("note"):
             extra.append(c["note"])
+        label = c["query_type"] + (f"/{c['complexity']}" if "complexity" in c else "")
         mark = "☑" if c["review_status"] == "reviewed" else "☐"
         lines.append(
-            f"| {mark} | {c['id']} | {c['language']} | {c['query_type']} | {_md(c['query'])} | {_md(' — '.join(extra))} |"
+            f"| {mark} | {c['id']} | {c['language']} | {label} | {_md(c['query'])} | {_md(' — '.join(extra))} |"
         )
     return "\n".join(lines)
 
@@ -128,6 +137,7 @@ def main() -> int:
 
     errors = validate(data, dataset_ids, require_reviewed=args.require_reviewed)
     cases = data["cases"]
+    print(f"complexity {dict(Counter(c['complexity'] for c in cases if 'complexity' in c))}")
     print(f"{len(cases)} cases | types {dict(Counter(c['query_type'] for c in cases))} "
           f"| languages {dict(Counter(c['language'] for c in cases))} "
           f"| reviewed {sum(c['review_status'] == 'reviewed' for c in cases)}")

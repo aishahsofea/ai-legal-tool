@@ -173,3 +173,41 @@ def test_other_selectors():
 def test_report_records_usage_for_the_dashboard_cost_estimate(monkeypatch, tmp_path):
     _, data = _run(monkeypatch, tmp_path, _fake(), "--limit", "2")
     assert data["summary"]["usage"]["total"] == {"calls": 0, "input_tokens": 0, "output_tokens": 0, "reasoning_tokens": 0, "usd": 0.0}
+
+
+def _cx(case_id, label, got, p=0.9):
+    entry = _entry(case_id, "topical", "topical", label_complexity=label)
+    if got:
+        entry.update(complexity=got, complexity_probability=p, complexity_match=got == label)
+    return entry
+
+
+def test_score_case_scores_complexity_only_when_jev_answers():
+    case = next(c for c in _DATASET if c.get("complexity"))
+    llm = score_case(case, _fake(case["query_type"]), 0)
+    assert llm["label_complexity"] == case["complexity"]
+    assert "complexity" not in llm
+    jev = lambda c: {**_fake(c["query_type"])(c), "complexity": "multi_provision", "complexity_probability": 0.7}
+    entry = score_case(case, jev, 0)
+    assert (entry["complexity"], entry["complexity_probability"]) == ("multi_provision", 0.7)
+    assert entry["complexity_match"] == (case["complexity"] == "multi_provision")
+    clarify = next(c for c in _DATASET if "complexity" not in c)
+    assert "label_complexity" not in score_case(clarify, _fake(clarify["query_type"]), 0)
+
+
+def test_summary_complexity_per_class():
+    results = [_cx(f"s{i}", "simple", "simple" if i < 8 else "multi_provision", 0.8) for i in range(10)]
+    results += [_cx("m0", "multi_provision", "simple", 0.6), _cx("m1", "multi_provision", None)]
+    by = summarise(results)["by_complexity"]
+    assert by["simple"] == {
+        "n": 10, "answered": 10, "accuracy": 0.8, "mean_probability": 0.8,
+        "confusion": {"simple": 8, "multi_provision": 2}, "too_small": False}
+    assert by["multi_provision"]["n"] == 2
+    assert by["multi_provision"]["answered"] == 1
+    assert by["multi_provision"]["accuracy"] == 0.0
+    assert by["multi_provision"]["too_small"] is True
+
+
+def test_summary_complexity_empty_without_labels():
+    assert summarise([_entry("a", "topical", "topical")])["by_complexity"] == {}
+    assert summarise([])["by_complexity"] == {}
