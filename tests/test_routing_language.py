@@ -15,7 +15,7 @@ def _answers(language="bm", query_type="topical"):
 def test_jev_source_reads_both_choices_and_tokens():
     def fake_classify(state, questions, *, timeout):
         jev_client.usage_observer.get()("m", 10, 3)
-        assert set(questions) == {"query_type", "response_language"}
+        assert set(questions) == {"query_type", "response_language", "complexity"}
         assert "tolong semak seksyen 34" in state and "user: hi" in state
         return _answers("mixed")
 

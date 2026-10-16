@@ -22,13 +22,15 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_openai import ChatOpenAI
 from pydantic import ValidationError
 
+from agent.feature_flags import flag_enabled
+
 load_dotenv()
 
 logger = logging.getLogger(__name__)
 
 # Filled in as each node builds its model. query_lifecycle stamps this onto the
 # LangSmith run, because a mixed-provider turn is unreadable afterwards without it.
-_NODE_MODELS: dict[str, str] = {}
+_NODE_MODELS: dict[str, list[str]] = {}
 
 # Set only by evals/usage.py, so the eval report can count json_mode retries
 # without agent/ importing evals/. Unset in production: one ContextVar read.
@@ -44,7 +46,9 @@ def make_llm(
     max_tokens: int | None = None,
 ):
     if node:
-        _NODE_MODELS[node] = model_name
+        models = _NODE_MODELS.setdefault(node, [])
+        if model_name not in models:
+            models.append(model_name)
     if model_name.startswith("claude-"):
         return ChatAnthropic(model=model_name, temperature=temperature)
     if model_name.startswith("gemini-"):
@@ -94,9 +98,53 @@ def make_llm(
     )
 
 
+def node_model_lists() -> dict[str, list[str]]:
+    """Every model each node bound, in registration order."""
+    return {node: list(models) for node, models in _NODE_MODELS.items()}
+
+
 def node_models() -> dict[str, str]:
-    """Model each node bound at import, keyed by node name."""
-    return dict(_NODE_MODELS)
+    """First model each node bound, for callers that assume one per node."""
+    return {node: models[0] for node, models in _NODE_MODELS.items()}
+
+
+# 0.9 sent no multi_provision query to the cheap model across 103 labelled queries (#243).
+_DEFAULT_CHEAP_THRESHOLD = 0.9
+# An invalid setting takes 1.0, the strictest value, so a typo never loosens the gate.
+_STRICTEST_CHEAP_THRESHOLD = 1.0
+
+
+def _cheap_threshold() -> float:
+    raw = os.getenv("CHEAP_MODEL_THRESHOLD")
+    if raw is None or not raw.strip():
+        return _DEFAULT_CHEAP_THRESHOLD
+    try:
+        value = float(raw)
+    except ValueError:
+        value = -1.0
+    if not 0.0 < value <= 1.0:
+        logger.warning("Invalid CHEAP_MODEL_THRESHOLD %r; using %s", raw, _STRICTEST_CHEAP_THRESHOLD)
+        return _STRICTEST_CHEAP_THRESHOLD
+    return value
+
+
+def use_cheap_model(state) -> bool:
+    """True only for a confident Jev `simple` first pass; anything else keeps the strong model."""
+    if not flag_enabled("CHEAP_MODEL_ROUTING"):
+        return False
+    if state.get("complexity") != "simple" or state.get("retry_count", 0) != 0:
+        return False
+    probability = state.get("complexity_probability")
+    if not isinstance(probability, (int, float)) or isinstance(probability, bool):
+        return False
+    return probability >= _cheap_threshold()
+
+
+def cheap_model_name(state, env_var: str) -> str | None:
+    """The node's cheap model when this turn qualifies and `env_var` names one, else None."""
+    if not use_cheap_model(state):
+        return None
+    return os.getenv(env_var, "").strip() or None
 
 
 class StructuredOutputError(RuntimeError):

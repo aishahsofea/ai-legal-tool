@@ -23,7 +23,7 @@ from langchain.agents import create_agent
 from langchain.agents.middleware import ModelCallLimitMiddleware
 from langgraph.errors import GraphRecursionError
 
-from agent.llm_factory import make_llm, node_models
+from agent.llm_factory import cheap_model_name, make_llm
 from agent.node_events import node_model_event
 from agent.retrieval.reference_graph import (
     FollowOnceGuard,
@@ -158,12 +158,16 @@ class ReferenceRetrievalState(RetrievalState):
     reference_metrics: Annotated[dict, _merge_metrics]
 
 
-@lru_cache(maxsize=4)
-def _build_retrieval_agent(follow_enabled: bool, commentary_enabled: bool):
-    """maxsize=4 covers all four flag combinations — two independent flags means
-    two boolean params, and leaving the cache sized for one flag would silently
-    bind the wrong tool list for whichever combination evicted first."""
-    model = make_llm(os.getenv("RETRIEVAL_AGENT_MODEL", "gpt-4.1"), node="retrieval_agent")
+def _retrieval_model_name(state=None) -> str:
+    cheap = cheap_model_name(state or {}, "RETRIEVAL_AGENT_CHEAP_MODEL")
+    return cheap or os.getenv("RETRIEVAL_AGENT_MODEL", "gpt-4.1")
+
+
+@lru_cache(maxsize=8)
+def _build_retrieval_agent(follow_enabled: bool, commentary_enabled: bool, model_name: str):
+    """maxsize=8: four flag combinations times a strong and a cheap model, so no
+    combination evicts another and binds the wrong tool list or model."""
+    model = make_llm(model_name, node="retrieval_agent")
     tools = [search_statutes, lookup_section]
     system_prompt = _SYSTEM
     kwargs = {}
@@ -188,16 +192,17 @@ def _build_retrieval_agent(follow_enabled: bool, commentary_enabled: bool):
     )
 
 
-def get_retrieval_agent():
+def get_retrieval_agent(state=None):
     """Reads both flags per call, not at import, so flipping either dark launch
     takes effect without a restart."""
-    return _build_retrieval_agent(follow_references_enabled(), web_commentary_enabled())
+    return _build_retrieval_agent(follow_references_enabled(), web_commentary_enabled(), _retrieval_model_name(state))
 
 
-def run_retrieval_agent(query: str, feedback: str = "", config=None) -> dict:
+def run_retrieval_agent(query: str, feedback: str = "", config=None, state=None) -> dict:
     """Run the ReAct loop for one query.
 
     `feedback` comes from a re-retrieval pass so the agent can adjust its search.
+    `state` selects the cheap model when the turn qualifies (agent/llm_factory.py::use_cheap_model).
     `config` is the parent graph's RunnableConfig; forwarding it is what lets the
     tools' stream writes reach the parent's stream. Raises on failure — the caller
     in agent/nodes/retriever.py decides whether to fail open — except on a recursion
@@ -210,7 +215,8 @@ def run_retrieval_agent(query: str, feedback: str = "", config=None) -> dict:
     invoke_config = {**(config or {}), "recursion_limit": RECURSION_LIMIT, "run_name": "retrieval_agent"}
     follow_enabled = follow_references_enabled()
     commentary_enabled = web_commentary_enabled()
-    agent = _build_retrieval_agent(follow_enabled, commentary_enabled)
+    model_name = _retrieval_model_name(state)
+    agent = _build_retrieval_agent(follow_enabled, commentary_enabled, model_name)
     agent_input = {"messages": [{"role": "user", "content": request}]}
     context = (
         RetrievalReferenceContext(
@@ -242,9 +248,8 @@ def run_retrieval_agent(query: str, feedback: str = "", config=None) -> dict:
 
     # One event for the whole ReAct loop, not per internal call: the panel's
     # question is whether the retrieval agent ran and on what, and the individual
-    # tool calls already have their own rows. node_models() rather than the env
-    # var, so this reports what _build_retrieval_agent actually bound.
-    with node_model_event("retrieval_agent", node_models().get("retrieval_agent", "")):
+    # tool calls already have their own rows.
+    with node_model_event("retrieval_agent", model_name):
         try:
             for mode, chunk in agent.stream(agent_input, invoke_config, **stream_kwargs):
                 if mode == "custom":

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "notes": "Routing labels for the router's LLM path. query_type and response_language are the ground truth the router is scored against. 'escalate' is excluded: a regex in agent/nodes/router.py decides it before any model call. Cases with source=eval_dataset reuse a query from dataset.json (source_id); source=hand cases were written for this set. Every label was checked by a human (review_status=reviewed) on 2026-10-04.",
+  "notes": "Routing labels for the router's LLM path. query_type and response_language are the ground truth the router is scored against. 'escalate' is excluded: a regex in agent/nodes/router.py decides it before any model call. Cases with source=eval_dataset reuse a query from dataset.json (source_id); source=hand cases were written for this set. Every query_type and language label was checked by a human (review_status=reviewed) on 2026-10-04. Legal cases also carry a `complexity` label (simple, multi_provision; the Jev question's cross_act counts as multi_provision) added 2026-10-14 for the Jev complexity question and checked by a human the same day, against the rubric in docs/plan-243-cheap-model-routing.md.",
   "cases": [
     {
       "id": "route-penal-34-1",
@@ -9,7 +9,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "penal-34-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-penal-420-1",
@@ -18,7 +19,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "penal-420-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-penal-503-1",
@@ -27,7 +29,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "penal-503-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-penal-506-1",
@@ -36,7 +39,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "penal-506-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-employment-60a-1",
@@ -45,7 +49,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "employment-60a-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-companies-132-1",
@@ -54,7 +59,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "companies-132-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-bm-employment-60a-1",
@@ -63,7 +69,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "bm-employment-60a-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-bm-penal-34-1",
@@ -72,7 +79,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "bm-penal-34-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-bm-penal-420-1",
@@ -81,7 +89,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "bm-penal-420-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-bm-evidence-114a-1",
@@ -90,7 +99,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "bm-evidence-114a-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-bm-cpc-117-1",
@@ -99,7 +109,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "bm-cpc-117-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-bm-companies-213-1",
@@ -108,7 +119,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "bm-companies-213-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-mixed-penal-379-1",
@@ -117,7 +129,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "mixed-penal-379-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-mixed-evidence-65-1",
@@ -126,7 +139,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "mixed-evidence-65-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-mixed-pdpa-30-1",
@@ -135,7 +149,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "mixed-pdpa-30-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-mixed-companies-540-1",
@@ -144,7 +159,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "mixed-companies-540-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-mixed-arbitration-37-1",
@@ -153,7 +169,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "mixed-arbitration-37-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-mixed-copyright-36-1",
@@ -162,7 +179,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "mixed-copyright-36-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-mixed-consumer-32-1",
@@ -171,7 +189,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "mixed-consumer-32-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-mixed-cpc-173-1",
@@ -180,7 +199,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "mixed-cpc-173-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-mixed-employment-60-1",
@@ -189,7 +209,8 @@
       "query_type": "statute_lookup",
       "source": "eval_dataset",
       "source_id": "mixed-employment-60-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-evidence-90a-1",
@@ -198,7 +219,8 @@
       "query_type": "topical",
       "source": "eval_dataset",
       "source_id": "evidence-90a-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-evidence-73a-1",
@@ -207,7 +229,8 @@
       "query_type": "topical",
       "source": "eval_dataset",
       "source_id": "evidence-73a-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-evidence-114-1",
@@ -216,7 +239,8 @@
       "query_type": "topical",
       "source": "eval_dataset",
       "source_id": "evidence-114-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-pdpa-12-1",
@@ -225,7 +249,8 @@
       "query_type": "topical",
       "source": "eval_dataset",
       "source_id": "pdpa-12-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-pdpa-40-1",
@@ -234,7 +259,8 @@
       "query_type": "topical",
       "source": "eval_dataset",
       "source_id": "pdpa-40-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-employment-19-1",
@@ -243,7 +269,8 @@
       "query_type": "topical",
       "source": "eval_dataset",
       "source_id": "employment-19-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-penal-499-1",
@@ -252,7 +279,8 @@
       "query_type": "topical",
       "source": "eval_dataset",
       "source_id": "penal-499-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-penal-507a-1",
@@ -261,7 +289,8 @@
       "query_type": "topical",
       "source": "eval_dataset",
       "source_id": "penal-507a-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-bm-evidence-90a-1",
@@ -270,7 +299,8 @@
       "query_type": "topical",
       "source": "eval_dataset",
       "source_id": "bm-evidence-90a-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-bm-pdpa-12-1",
@@ -279,7 +309,8 @@
       "query_type": "topical",
       "source": "eval_dataset",
       "source_id": "bm-pdpa-12-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-bm-topical-umur-persaraan-1",
@@ -288,7 +319,8 @@
       "query_type": "topical",
       "source": "eval_dataset",
       "source_id": "bm-topical-umur-persaraan-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-bm-topical-buang-kerja-1",
@@ -297,7 +329,8 @@
       "query_type": "topical",
       "source": "eval_dataset",
       "source_id": "bm-topical-buang-kerja-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-bm-insufficient-gaji-minimum-1",
@@ -306,7 +339,8 @@
       "query_type": "topical",
       "source": "eval_dataset",
       "source_id": "bm-insufficient-gaji-minimum-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-mixed-pdpa-130-1",
@@ -315,7 +349,8 @@
       "query_type": "topical",
       "source": "eval_dataset",
       "source_id": "mixed-pdpa-130-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-mixed-osha-24-1",
@@ -324,7 +359,8 @@
       "query_type": "topical",
       "source": "eval_dataset",
       "source_id": "mixed-osha-24-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-mixed-insufficient-tenancy-1",
@@ -333,7 +369,8 @@
       "query_type": "topical",
       "source": "eval_dataset",
       "source_id": "mixed-insufficient-tenancy-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-ambiguous-pdpa-manual-files-1",
@@ -342,7 +379,8 @@
       "query_type": "topical",
       "source": "eval_dataset",
       "source_id": "ambiguous-pdpa-manual-files-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-multi-section-digital-crime-1",
@@ -351,7 +389,8 @@
       "query_type": "topical",
       "source": "eval_dataset",
       "source_id": "multi-section-digital-crime-1",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-hand-01",
@@ -359,7 +398,8 @@
       "query": "Show me section 90A of the Evidence Act 1950.",
       "query_type": "statute_lookup",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-hand-02",
@@ -367,7 +407,8 @@
       "query": "Quote section 415 of the Penal Code.",
       "query_type": "statute_lookup",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-hand-03",
@@ -375,7 +416,8 @@
       "query": "What does s 114A of the Evidence Act say?",
       "query_type": "statute_lookup",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-hand-04",
@@ -383,7 +425,8 @@
       "query": "Read out section 12 of the Personal Data Protection Act 2010.",
       "query_type": "statute_lookup",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-hand-05",
@@ -391,7 +434,8 @@
       "query": "Apakah yang dinyatakan dalam seksyen 12 Akta Perlindungan Data Peribadi 2010?",
       "query_type": "statute_lookup",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-hand-06",
@@ -399,7 +443,8 @@
       "query": "Sila bacakan seksyen 19 Akta Pekerjaan 1955.",
       "query_type": "statute_lookup",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-hand-07",
@@ -407,7 +452,8 @@
       "query": "boleh show Section 405 Penal Code punya text?",
       "query_type": "statute_lookup",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-hand-08",
@@ -415,7 +461,8 @@
       "query": "Which laws cover data privacy for employers in Malaysia?",
       "query_type": "topical",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-hand-09",
@@ -423,7 +470,8 @@
       "query": "What law governs non-compete clauses in employment contracts?",
       "query_type": "topical",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-hand-10",
@@ -431,7 +479,8 @@
       "query": "Which Acts deal with consumer refunds for defective goods?",
       "query_type": "topical",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-hand-11",
@@ -439,7 +488,8 @@
       "query": "Undang-undang apa yang mengawal pembatalan perjanjian sewa rumah?",
       "query_type": "topical",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-hand-12",
@@ -447,7 +497,8 @@
       "query": "Akta mana yang meliputi keselamatan di tempat kerja?",
       "query_type": "topical",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-hand-13",
@@ -455,7 +506,8 @@
       "query": "law apa yang govern online scams kat Malaysia?",
       "query_type": "topical",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-hand-14",
@@ -463,7 +515,8 @@
       "query": "which Act cover sexual harassment kat workplace?",
       "query_type": "topical",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-hand-15",
@@ -471,7 +524,8 @@
       "query": "List all penalty provisions in the PDPA.",
       "query_type": "provision_extraction",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-hand-16",
@@ -479,7 +533,8 @@
       "query": "Give me every offence section in the Consumer Protection Act 1999.",
       "query_type": "provision_extraction",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-hand-17",
@@ -487,7 +542,8 @@
       "query": "What are all the powers of the Commissioner under the Personal Data Protection Act?",
       "query_type": "provision_extraction",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-hand-18",
@@ -495,7 +551,8 @@
       "query": "List all the definitions in the interpretation section of the Companies Act 2016.",
       "query_type": "provision_extraction",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-hand-19",
@@ -503,7 +560,8 @@
       "query": "Show every provision in the Employment Act that deals with maternity leave.",
       "query_type": "provision_extraction",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-hand-20",
@@ -511,7 +569,8 @@
       "query": "Senaraikan semua peruntukan penalti dalam Akta Perlindungan Data Peribadi 2010.",
       "query_type": "provision_extraction",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-hand-21",
@@ -519,7 +578,8 @@
       "query": "Sila senaraikan semua kesalahan di bawah Akta Pekerjaan 1955.",
       "query_type": "provision_extraction",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-hand-22",
@@ -527,7 +587,8 @@
       "query": "Apakah semua kuasa Pesuruhjaya di bawah APDP?",
       "query_type": "provision_extraction",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-hand-23",
@@ -535,7 +596,8 @@
       "query": "Senaraikan semua peruntukan tafsiran dalam Akta Syarikat 2016.",
       "query_type": "provision_extraction",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-hand-24",
@@ -543,7 +605,8 @@
       "query": "list semua offence provisions dalam Arbitration Act 2005.",
       "query_type": "provision_extraction",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-hand-25",
@@ -551,7 +614,8 @@
       "query": "tolong senaraikan all penalty sections under OSHA 1994.",
       "query_type": "provision_extraction",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-hand-26",
@@ -559,7 +623,8 @@
       "query": "semua seksyen yang cover director's duties dalam Companies Act 2016, boleh list?",
       "query_type": "provision_extraction",
       "source": "hand",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-hand-27",
@@ -798,7 +863,8 @@
         "tie_break"
       ],
       "note": "Social opener, legal substance wins.",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-hand-51",
@@ -810,7 +876,8 @@
         "tie_break"
       ],
       "note": "Greeting plus a legal question.",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-hand-52",
@@ -822,7 +889,8 @@
         "tie_break"
       ],
       "note": "Thanks plus a named section.",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-hand-53",
@@ -834,7 +902,8 @@
         "tie_break"
       ],
       "note": "Greeting plus a named section.",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-hand-54",
@@ -868,7 +937,8 @@
         "history"
       ],
       "note": "Act recoverable from history, so no clarify.",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-hand-56",
@@ -890,7 +960,8 @@
         "history"
       ],
       "note": "Act and section recoverable from history.",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-hand-57",
@@ -912,7 +983,8 @@
         "history"
       ],
       "note": "Same query as the no-history clarify case, history flips the label.",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     },
     {
       "id": "route-hand-58",
@@ -934,7 +1006,8 @@
         "history"
       ],
       "note": "Topic recoverable from history.",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "multi_provision"
     },
     {
       "id": "route-hand-59",
@@ -979,7 +1052,8 @@
         "history"
       ],
       "note": "Contrast with the previous case: here the Act is in history.",
-      "review_status": "reviewed"
+      "review_status": "reviewed",
+      "complexity": "simple"
     }
   ]
 }

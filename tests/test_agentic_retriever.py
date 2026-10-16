@@ -42,24 +42,23 @@ class AgenticRetrieverNodeTests(unittest.TestCase):
         rows = [{"act_number": "709", "section_number": "5"}]
         out = {"chunks": rows, "tools": ["search_statutes"]}
         with patch("agent.retrieval.agent.run_retrieval_agent", return_value=out) as run:
-            result = retriever.agentic_retriever_node({
-                "query": "data privacy for employers",
-                "query_type": "topical",
-            })
-        run.assert_called_once_with("data privacy for employers", "", None)
+            state = {"query": "data privacy for employers", "query_type": "topical"}
+            result = retriever.agentic_retriever_node(state)
+        run.assert_called_once_with("data privacy for employers", "", None, state)
         self.assertEqual(result["retrieved_chunks"], rows)
         self.assertEqual(result["tool_trace"], ["search_statutes"])
 
     def test_forwards_standalone_query_and_feedback(self):
         out = {"chunks": [{"a": 1}], "tools": ["lookup_section"]}
         with patch("agent.retrieval.agent.run_retrieval_agent", return_value=out) as run:
-            retriever.agentic_retriever_node({
+            state = {
                 "query": "what about it?",
                 "standalone_query": "penalty under the Employment Act",
                 "retrieval_feedback": "previous search missed s.60",
                 "query_type": "topical",
-            })
-        run.assert_called_once_with("penalty under the Employment Act", "previous search missed s.60", None)
+            }
+            retriever.agentic_retriever_node(state)
+        run.assert_called_once_with("penalty under the Employment Act", "previous search missed s.60", None, state)
 
     def test_fails_open_to_deterministic_on_exception(self):
         det_rows = [{"act_number": "56", "section_number": "90A"}]
@@ -629,6 +628,30 @@ class ModelCallBudgetTests(unittest.TestCase):
 
         self.assertEqual(result["tools"], ["search_statutes"] * budget)
         self.assertEqual(result["chunks"], [self._row()])
+
+    def test_event_names_the_model_the_agent_was_built_with(self):
+        class _EmptyAgent:
+            def stream(self, _input, _config, **_kwargs):
+                yield "values", {"retrieved_chunks": [], "tool_trace": []}
+
+        for env_model in ("strong-model", "cheap-model"):
+            with self.subTest(model=env_model), \
+                 patch.dict(os.environ, {"RETRIEVAL_AGENT_MODEL": env_model}), \
+                 patch.object(retrieval_agent, "_build_retrieval_agent", return_value=_EmptyAgent()) as build, \
+                 patch.object(retrieval_agent, "node_model_event") as event:
+                retrieval_agent.run_retrieval_agent("wages")
+            event.assert_called_once_with("retrieval_agent", env_model)
+            self.assertEqual(build.call_args.args[2], env_model)
+
+    def test_cache_keeps_one_agent_per_model(self):
+        with patch.object(retrieval_agent, "make_llm", return_value=object()) as make, \
+             patch.object(retrieval_agent, "create_agent", side_effect=lambda *a, **k: object()):
+            first = retrieval_agent._build_retrieval_agent(False, False, "strong-model")
+            second = retrieval_agent._build_retrieval_agent(False, False, "cheap-model")
+            again = retrieval_agent._build_retrieval_agent(False, False, "strong-model")
+        self.assertIsNot(first, second)
+        self.assertIs(first, again)
+        self.assertEqual([c.args[0] for c in make.call_args_list], ["strong-model", "cheap-model"])
 
     def test_recursion_backstop_keeps_what_the_agent_already_found(self):
         """Lowering RETRIEVAL_RECURSION_LIMIT below the call budget is an operator

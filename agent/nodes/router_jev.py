@@ -17,6 +17,7 @@ _TIMEOUT_S = 2.0
 
 _QUERY_TYPES = ("statute_lookup", "topical", "provision_extraction", "conversational", "clarify")
 _LANGUAGES = ("en", "bm", "mixed")
+_COMPLEXITIES = ("simple", "multi_provision")
 
 # Wording is the one measured in evals/routing_language.py (#212 Phase 3). The `bm` and `mixed`
 # criteria were reworded against the dataset, so rewording them again invalidates that result.
@@ -52,6 +53,28 @@ QUESTIONS = {
                 "part of a name (\"Section 34\", \"offence\", \"penalty\", \"employee\", \"list\", \"personal data\"), "
                 "or English grammar around BM words (\"which Act cover this kat workplace\"). "
                 "An Act's English title inside a BM sentence does not count; an English common word does."
+            ),
+        },
+    },
+    "complexity": {
+        "type": "choice",
+        "instructions": (
+            "Count the sections the answer must cite, and the Acts they sit in. "
+            "Tie-break: if unsure, use multi_provision."
+        ),
+        "criteria": {
+            "simple": (
+                "the answer comes from one section, or one concept with one home: a named section or its text; "
+                "one concept in one section, such as stalking or when wages are due; the definitions list of an Act "
+                "(the interpretation section is one section); which Act covers a topic when one Act clearly owns it, "
+                "such as workplace safety; a follow-up that resolves to one section from the history."
+            ),
+            "multi_provision": (
+                "the answer needs two or more sections, or two or more Acts: all, every or list all of a kind "
+                "(penalties, offences, powers) in an Act; how provisions interact, or which provisions could apply; "
+                "a right that needs a sibling section, such as access and correction; whether an Act applies, "
+                "which needs the scope section and the definitions; which laws cover a topic when several Acts "
+                "plausibly do, such as data protection, workplace harassment or tenancy."
             ),
         },
     },
@@ -99,17 +122,28 @@ def _choice(answers: dict, name: str, allowed: tuple[str, ...]) -> tuple[str, di
     return choice, answer
 
 
+def _probability(answer: dict, choice: str, name: str) -> float:
+    try:
+        probability = float(answer["probabilities"][choice])
+    except (KeyError, TypeError, ValueError) as exc:
+        raise JevError(f"Jev response had no usable `{name}` probability: {exc!r}") from exc
+    if not 0.0 <= probability <= 1.0:
+        raise JevError(f"Jev returned an out-of-range `{name}` probability: {probability}")
+    return probability
+
+
 def jev_route(state: AgentState) -> dict | None:
-    """None when disabled. `query_type_probability` is for logging only; the caller must drop it."""
+    """None when disabled. `query_type_probability` is for logging only; the caller must drop it. A bad complexity answer also raises."""
     if not enabled():
         return None
     answers = jev_client.classify(_state_text(state), QUESTIONS, timeout=_TIMEOUT_S)
     query_type, type_answer = _choice(answers, "query_type", _QUERY_TYPES)
     language, _ = _choice(answers, "response_language", _LANGUAGES)
-    try:
-        probability = float(type_answer["probabilities"][query_type])
-    except (KeyError, TypeError, ValueError) as exc:
-        raise JevError(f"Jev response had no usable `query_type` probability: {exc!r}") from exc
-    if not 0.0 <= probability <= 1.0:
-        raise JevError(f"Jev returned an out-of-range probability: {probability}")
-    return {"query_type": query_type, "response_language": language, "query_type_probability": probability}
+    complexity, complexity_answer = _choice(answers, "complexity", _COMPLEXITIES)
+    return {
+        "query_type": query_type,
+        "response_language": language,
+        "query_type_probability": _probability(type_answer, query_type, "query_type"),
+        "complexity": complexity,
+        "complexity_probability": _probability(complexity_answer, complexity, "complexity"),
+    }

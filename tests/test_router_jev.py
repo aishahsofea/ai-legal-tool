@@ -13,10 +13,11 @@ def jev_on(monkeypatch):
     monkeypatch.setenv("JEV_MODEL", "jev-2026-01")
 
 
-def _answers(query_type="topical", language="en", probability=0.9):
+def _answers(query_type="topical", language="en", probability=0.9, complexity="simple", complexity_probability=0.85):
     return {
         "query_type": {"choice": query_type, "probabilities": {query_type: probability}},
         "response_language": {"choice": language, "probabilities": {language: 0.8}},
+        "complexity": {"choice": complexity, "probabilities": {complexity: complexity_probability}},
     }
 
 
@@ -30,8 +31,14 @@ def _route(answers, state=None):
 
 
 def test_returns_type_language_and_probability(jev_on):
-    out, _ = _route(_answers("statute_lookup", "bm", 0.77))
-    assert out == {"query_type": "statute_lookup", "response_language": "bm", "query_type_probability": 0.77}
+    out, _ = _route(_answers("statute_lookup", "bm", 0.77, "multi_provision", 0.61))
+    assert out == {
+        "query_type": "statute_lookup",
+        "response_language": "bm",
+        "query_type_probability": 0.77,
+        "complexity": "multi_provision",
+        "complexity_probability": 0.61,
+    }
 
 
 def test_sends_history_and_query_with_short_timeout(jev_on):
@@ -88,6 +95,13 @@ def test_client_error_propagates(jev_on):
         {"query_type": {"choice": "topical"}, "response_language": {"choice": "en"}},
         _answers(probability=1.5),
         _answers(probability="high"),
+        _answers(complexity="hard"),
+        _answers(complexity_probability=1.5),
+        _answers(complexity_probability=-0.1),
+        _answers(complexity_probability="high"),
+        {**_answers(), "complexity": {"choice": "simple"}},
+        {k: v for k, v in _answers().items() if k != "complexity"},
+        {**_answers(), "complexity": None},
         {"query_type": None, "response_language": None},
     ],
 )
@@ -159,7 +173,13 @@ def _llm_out(query_type="topical", language="en"):
 
 
 def _jev_out(query_type="topical", language="bm", probability=0.9):
-    return {"query_type": query_type, "response_language": language, "query_type_probability": probability}
+    return {
+        "query_type": query_type,
+        "response_language": language,
+        "query_type_probability": probability,
+        "complexity": "simple",
+        "complexity_probability": 0.85,
+    }
 
 
 def _run(node, state):
@@ -190,10 +210,15 @@ def llm():
         yield mock
 
 
-def test_jev_result_skips_llm_and_drops_probability(jev_on, llm, node):
+def test_jev_result_skips_llm_and_drops_query_type_probability(jev_on, llm, node):
     with patch("agent.jev_client.classify", return_value=_answers("topical", "bm", 0.9)):
         out, paths = _run(node, _state())
-    assert out == {"query_type": "topical", "response_language": "bm"}
+    assert out == {
+        "query_type": "topical",
+        "response_language": "bm",
+        "complexity": "simple",
+        "complexity_probability": 0.85,
+    }
     assert paths == ["jev"]
     llm.invoke.assert_not_called()
 
@@ -202,7 +227,7 @@ def test_jev_probability_logged(jev_on, llm, node, caplog):
     with caplog.at_level(logging.INFO, logger="agent.nodes.router"):
         with patch("agent.jev_client.classify", return_value=_answers("topical", "en", 0.912)):
             _run(node, _state())
-    assert "topical p=0.912" in caplog.text
+    assert "topical p=0.912, simple p=0.850" in caplog.text
 
 
 def test_jev_error_falls_back_to_llm(jev_on, llm, node, caplog):
@@ -211,6 +236,13 @@ def test_jev_error_falls_back_to_llm(jev_on, llm, node, caplog):
     assert out == {"query_type": "statute_lookup", "response_language": "en"}
     assert paths == ["fallback"]
     assert "falling back" in caplog.text
+
+
+def test_bad_complexity_falls_back_to_llm_with_fields_unset(jev_on, llm, node):
+    with patch("agent.jev_client.classify", return_value=_answers(complexity="hard")):
+        out, paths = _run(node, _state())
+    assert "complexity" not in out and "complexity_probability" not in out
+    assert paths == ["fallback"]
 
 
 @pytest.mark.parametrize("missing", ["TYPESAFE_API_KEY", "JEV_MODEL"])
@@ -259,7 +291,13 @@ def test_jev_clarify_gets_question_from_writer(jev_on, llm, node):
 
         writer.ainvoke = ainvoke
         out, _ = _run(node, _state())
-    assert out == {"query_type": "clarify", "response_language": "en", "clarifying_question": "Which Act?"}
+    assert out == {
+        "query_type": "clarify",
+        "response_language": "en",
+        "complexity": "simple",
+        "complexity_probability": 0.85,
+        "clarifying_question": "Which Act?",
+    }
 
 
 def test_jev_clarify_writer_failure_gives_empty_question(jev_on, llm, node):

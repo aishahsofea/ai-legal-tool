@@ -1,6 +1,6 @@
 import os
 import unittest
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 os.environ.setdefault("ANTHROPIC_API_KEY", "test-key")
 os.environ.setdefault("OPENAI_API_KEY", "test-key")
@@ -37,6 +37,19 @@ class SynthesiserDisclaimerTests(unittest.TestCase):
                 "history": [],
                 "response_language": response_language,
             })
+
+    def test_event_names_the_model_the_selector_chose(self):
+        output = _SynthesiserOutput(answer="Section 34 applies.", citation_refs=[])
+        chosen = MagicMock()
+        chosen.invoke.return_value = output
+        with patch.object(synthesiser, "_select_llm", return_value=(chosen, "cheap-model")), \
+             patch.object(synthesiser, "node_model_event") as event:
+            synthesiser.synthesiser_node({"query": "q", "retrieved_chunks": [_CHUNK], "history": []})
+        event.assert_called_once_with("synthesiser", "cheap-model")
+        chosen.invoke.assert_called_once()
+
+    def test_default_selection_is_the_strong_model(self):
+        self.assertEqual(synthesiser._select_llm({}), (synthesiser._structured_llm, synthesiser._MODEL))
 
     def test_en_response_uses_english_disclaimer(self):
         result = self._run_node("en", answer="Section 34 of the Penal Code provides for joint liability.")

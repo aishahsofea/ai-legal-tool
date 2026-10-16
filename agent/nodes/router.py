@@ -151,8 +151,16 @@ def _result(result: _RouterOutput) -> dict:
 
 
 def _jev_result(jev: dict, question: str | None = None) -> dict:
-    logger.info("router jev: %s p=%.3f", jev["query_type"], jev["query_type_probability"])
-    out = {"query_type": jev["query_type"], "response_language": jev["response_language"]}
+    logger.info(
+        "router jev: %s p=%.3f, %s p=%.3f",
+        jev["query_type"], jev["query_type_probability"], jev["complexity"], jev["complexity_probability"],
+    )
+    out = {
+        "query_type": jev["query_type"],
+        "response_language": jev["response_language"],
+        "complexity": jev["complexity"],
+        "complexity_probability": jev["complexity_probability"],
+    }
     if jev["query_type"] == "clarify":
         out["clarifying_question"] = question or ""
     return out
