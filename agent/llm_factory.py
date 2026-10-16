@@ -108,14 +108,16 @@ def node_models() -> dict[str, str]:
     return {node: models[0] for node, models in _NODE_MODELS.items()}
 
 
-# Unset or invalid takes 1.0, the strictest value, so a bad setting never loosens the gate.
+# 0.9 sent no multi_provision query to the cheap model across 103 labelled queries (#243).
+_DEFAULT_CHEAP_THRESHOLD = 0.9
+# An invalid setting takes 1.0, the strictest value, so a typo never loosens the gate.
 _STRICTEST_CHEAP_THRESHOLD = 1.0
 
 
 def _cheap_threshold() -> float:
     raw = os.getenv("CHEAP_MODEL_THRESHOLD")
     if raw is None or not raw.strip():
-        return _STRICTEST_CHEAP_THRESHOLD
+        return _DEFAULT_CHEAP_THRESHOLD
     try:
         value = float(raw)
     except ValueError:

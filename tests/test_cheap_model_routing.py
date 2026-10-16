@@ -54,10 +54,11 @@ class UseCheapModelTests(unittest.TestCase):
         with _env():
             self.assertFalse(llm_factory.use_cheap_model({**_SIMPLE, "retry_count": 1}))
 
-    def test_unset_threshold_takes_strictest(self):
-        with _env(CHEAP_MODEL_THRESHOLD=None):
-            self.assertFalse(llm_factory.use_cheap_model({**_SIMPLE, "complexity_probability": 0.99}))
-            self.assertTrue(llm_factory.use_cheap_model({**_SIMPLE, "complexity_probability": 1.0}))
+    def test_unset_threshold_takes_default(self):
+        for raw in (None, "  "):
+            with self.subTest(raw), _env(CHEAP_MODEL_THRESHOLD=raw):
+                self.assertFalse(llm_factory.use_cheap_model({**_SIMPLE, "complexity_probability": 0.89}))
+                self.assertTrue(llm_factory.use_cheap_model({**_SIMPLE, "complexity_probability": 0.9}))
 
     def test_invalid_threshold_takes_strictest(self):
         for bad in ("abc", "0", "-1", "1.5"):
