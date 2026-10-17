@@ -143,7 +143,7 @@
   display: none;
 }
 
-.conversation-header-export-icon {
+.conversation-header-share-icon {
   display: inline;
 }
 
@@ -222,16 +222,15 @@
 }
 
 @container workspace (width < 700px) {
-  .conversation-header-secondary-action,
-  .conversation-header-export-label {
+  .conversation-header-share-label {
     display: none;
   }
 
-  .conversation-header-export-icon {
+  .conversation-header-share-icon {
     display: inline;
   }
 
-  .conversation-header-export {
+  .conversation-header-share {
     width: 32px;
     min-width: 32px;
     padding-inline: 0;

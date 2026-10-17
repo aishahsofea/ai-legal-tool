@@ -183,6 +183,7 @@ function WorkspaceInner({ session }: { session: Session }) {
         <main className="workspace-main flex min-h-0 min-w-0 flex-col bg-(--canvas)">
           <ConversationHeader
             title={activeThread?.title || "New thread"}
+            messages={messages}
             sidebarCollapsed={sidebarCollapsed}
             onToggleSidebar={toggleSidebar}
           />

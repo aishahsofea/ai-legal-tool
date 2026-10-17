@@ -1,13 +1,20 @@
-import { Mono, OutlineButton } from "@/components/chamber";
+import { Mono } from "@/components/chamber";
 import { PrimaryButton } from "@/components/PrimaryButton";
+import { threadMarkdown } from "@/lib/threadMarkdown";
+import { useShareText } from "@/lib/useShareText";
+import type { Message } from "./types";
 
 type Props = {
   title: string;
+  messages?: Message[];
   sidebarCollapsed?: boolean;
   onToggleSidebar?: () => void;
 };
 
-export function ConversationHeader({ title, sidebarCollapsed = false, onToggleSidebar }: Props) {
+export function ConversationHeader({ title, messages = [], sidebarCollapsed = false, onToggleSidebar }: Props) {
+  const { copied, share } = useShareText();
+  const hasContent = messages.some((m) => m.content);
+
   return (
     <header className="conversation-header flex min-h-14 items-center justify-between gap-3 border-b border-(--line) bg-(--surface) px-4 py-2 md:px-5">
       <div className="flex min-w-0 items-baseline gap-3">
@@ -27,11 +34,17 @@ export function ConversationHeader({ title, sidebarCollapsed = false, onToggleSi
         <h1 className="truncate font-serif text-base font-light tracking-tight text-(--text)">{title}</h1>
       </div>
       <div className="conversation-header-actions flex shrink-0 items-center gap-2" role="group" aria-label="Thread actions">
-        <OutlineButton className="conversation-header-secondary-action shrink-0 whitespace-nowrap" disabled title="Coming soon" aria-label="Highlights">Highlights</OutlineButton>
-        <OutlineButton className="conversation-header-secondary-action shrink-0 whitespace-nowrap" disabled title="Coming soon" aria-label="Memo">Memo</OutlineButton>
-        <PrimaryButton size="compact" type="button" disabled title="Coming soon" aria-label="Export thread" className="conversation-header-export shrink-0 gap-1">
-          <span className="conversation-header-export-label">Export</span>
-          <span className="conversation-header-export-icon" aria-hidden="true">↗</span>
+        <PrimaryButton
+          size="compact"
+          type="button"
+          disabled={!hasContent}
+          onClick={() => void share(title, threadMarkdown(title, messages))}
+          aria-label="Share thread"
+          className="conversation-header-share shrink-0 gap-1"
+        >
+          <span className="conversation-header-share-label">{copied ? "Copied" : "Share"}</span>
+          <span className="conversation-header-share-icon" aria-hidden="true">↗</span>
+          <span className="sr-only" aria-live="polite">{copied ? "Copied" : ""}</span>
         </PrimaryButton>
       </div>
     </header>

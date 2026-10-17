@@ -1,7 +1,8 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { ConversationHeader } from "./ConversationHeader";
+import type { Message } from "./types";
 
 describe("ConversationHeader sidebar toggle", () => {
   it("renders no toggle without onToggleSidebar", () => {
@@ -29,5 +30,39 @@ describe("ConversationHeader sidebar toggle", () => {
     button.focus();
     await userEvent.keyboard("{Enter}");
     expect(onToggle).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe("ConversationHeader share", () => {
+  const messages = [
+    { id: "1", role: "user", content: "What is s 3?" },
+    { id: "2", role: "assistant", content: "Section 3 says X." },
+  ] as Message[];
+
+  afterEach(() => {
+    Object.assign(navigator, { share: undefined });
+  });
+
+  it("has no Coming soon title or removed stubs", () => {
+    const { container } = render(<ConversationHeader title="T" messages={messages} />);
+    expect(container.querySelector('[title="Coming soon"]')).toBeNull();
+    expect(screen.queryByRole("button", { name: /highlights|memo|export/i })).toBeNull();
+  });
+
+  it("is disabled with no messages", () => {
+    render(<ConversationHeader title="T" messages={[]} />);
+    expect(screen.getByRole("button", { name: "Share thread" })).toBeDisabled();
+  });
+
+  it("copies thread markdown when navigator.share is missing", async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.assign(navigator, { share: undefined, clipboard: { writeText } });
+    render(<ConversationHeader title="My thread" messages={messages} />);
+    fireEvent.click(screen.getByRole("button", { name: "Share thread" }));
+    await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
+    const text = writeText.mock.calls[0][0] as string;
+    expect(text).toContain("# My thread");
+    expect(text).toContain("What is s 3?");
+    expect(text).toContain("Section 3 says X.");
   });
 });
