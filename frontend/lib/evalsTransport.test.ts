@@ -13,13 +13,19 @@ import {
   streamEvalRun,
 } from "./evalsTransport";
 
+const auth = vi.hoisted(() => ({ headers: {} as Record<string, string> }));
+vi.mock("./supabaseClient", () => ({ authHeaders: async () => auth.headers }));
+
 function mockFetch(body: unknown, status = 200) {
   const fn = vi.fn().mockResolvedValue(new Response(JSON.stringify(body), { status }));
   vi.stubGlobal("fetch", fn);
   return fn;
 }
 
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  vi.unstubAllGlobals();
+  auth.headers = {};
+});
 
 describe("evalsTransport set routing", () => {
   it("fetchEvalSets reads the registry", async () => {
@@ -40,6 +46,13 @@ describe("evalsTransport set routing", () => {
     expect(String(fn.mock.calls[0][0])).toContain("/evals/coverage?set=end_to_end");
     mockFetch({ available: false }, 404);
     expect(await fetchEvalResults("end_to_end")).toBeNull();
+  });
+
+  it("sends the auth header with eval requests", async () => {
+    auth.headers = { Authorization: "Bearer token" };
+    const fn = mockFetch({});
+    await fetchEvalResults("end_to_end");
+    expect(fn.mock.calls[0][1].headers).toMatchObject({ Authorization: "Bearer token" });
   });
 
   it("streamEvalRun posts the set with the subset", async () => {
