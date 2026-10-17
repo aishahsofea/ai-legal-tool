@@ -1,10 +1,28 @@
 import { Mono, OutlineButton } from "@/components/chamber";
 import { PrimaryButton } from "@/components/PrimaryButton";
 
-export function ConversationHeader({ title }: { title: string }) {
+type Props = {
+  title: string;
+  sidebarCollapsed?: boolean;
+  onToggleSidebar?: () => void;
+};
+
+export function ConversationHeader({ title, sidebarCollapsed = false, onToggleSidebar }: Props) {
   return (
     <header className="conversation-header flex min-h-14 items-center justify-between gap-3 border-b border-(--line) bg-(--surface) px-4 py-2 md:px-5">
       <div className="flex min-w-0 items-baseline gap-3">
+        {onToggleSidebar && (
+          <button
+            type="button"
+            onClick={onToggleSidebar}
+            aria-controls="workspace-thread-sidebar"
+            aria-expanded={!sidebarCollapsed}
+            aria-label={sidebarCollapsed ? "Show thread list" : "Hide thread list"}
+            className="conversation-header-sidebar-toggle shrink-0 self-center rounded px-1.5 text-(--text-subtle) hover:text-(--text) max-md:hidden"
+          >
+            <span aria-hidden="true">{sidebarCollapsed ? "»" : "«"}</span>
+          </button>
+        )}
         <Mono className="conversation-header-kicker shrink-0 text-(--text-subtle)">THREAD /</Mono>
         <h1 className="truncate font-serif text-base font-light tracking-tight text-(--text)">{title}</h1>
       </div>
