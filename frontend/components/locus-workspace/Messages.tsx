@@ -1,4 +1,6 @@
+import { useRef } from "react";
 import ReactMarkdown from "react-markdown";
+import { useCopyToClipboard } from "@/lib/useCopyToClipboard";
 import remarkGfm from "remark-gfm";
 import { Mono, OutlineButton } from "@/components/chamber";
 import { StatusIndicator } from "@/components/StatusIndicator";
@@ -17,6 +19,17 @@ type OpenReceipt = (citation: Citation, evidenceIndex: number, opener: HTMLEleme
 // is its only identifier. Falling back to it keeps the rendered key non-blank.
 function citationMarker(citation: { section_number: string; path?: string }) {
   return citation.section_number || citation.path || "";
+}
+
+function CopyButton({ getText, label }: { getText: () => string; label: string }) {
+  const { copied, copy } = useCopyToClipboard();
+
+  return (
+    <OutlineButton aria-label={label} onClick={() => void copy(getText())}>
+      {copied ? "Copied" : "Copy"}
+      <span className="sr-only" aria-live="polite">{copied ? "Copied" : ""}</span>
+    </OutlineButton>
+  );
 }
 
 function SourceMapLink({ citation, index, messageId }: { citation: CitationList[number]; index: number; messageId: string }) {
@@ -263,6 +276,8 @@ export function AssistantMessage({
   nodeRuns: NodeRun[];
   onOpenReceipt: OpenReceipt;
 }) {
+  const bodyRef = useRef<HTMLDivElement>(null);
+
   return (
     <article className="space-y-3">
       <div className="flex flex-wrap items-center gap-2 text-(--text-subtle)">
@@ -279,7 +294,7 @@ export function AssistantMessage({
 
       {message.citations && message.citations.length > 0 && <InlineSourceSummary citations={message.citations} messageId={message.id} />}
 
-      <div className="chamber-max-content chamber-reading-flow space-y-3 text-sm leading-6 text-(--text)">
+      <div ref={bodyRef} className="chamber-max-content chamber-reading-flow space-y-3 text-sm leading-6 text-(--text)">
         {message.content ? (
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
@@ -297,11 +312,11 @@ export function AssistantMessage({
 
       {message.commentary && message.commentary.length > 0 && <CommentaryNotes commentary={message.commentary} />}
 
-      <div className="flex flex-wrap gap-2 border-t border-(--line-soft) pt-4" role="group" aria-label="Message actions">
-        <OutlineButton disabled title="Coming soon" aria-label="Save as memo"><span className="hidden sm:inline">Save as memo</span><span className="sm:hidden">Save</span></OutlineButton>
-        <OutlineButton disabled title="Coming soon" aria-label="Highlight passage"><span className="hidden sm:inline">Highlight passage</span><span className="sm:hidden">Mark</span></OutlineButton>
-        <OutlineButton disabled title="Coming soon" aria-label="Cite all"><span className="hidden sm:inline">Cite all</span><span className="sm:hidden">Cite</span></OutlineButton>
-      </div>
+      {message.content && (
+        <div className="flex flex-wrap gap-2 border-t border-(--line-soft) pt-4" role="group" aria-label="Message actions">
+          <CopyButton label="Copy response" getText={() => bodyRef.current?.innerText ?? bodyRef.current?.textContent ?? ""} />
+        </div>
+      )}
     </article>
   );
 }
@@ -314,6 +329,7 @@ export function UserMessage({ message }: { message: Message }) {
         <div className="rounded-xl border border-(--accent-line) bg-(--accent-soft) px-3 py-2 font-serif text-sm font-light leading-6 tracking-tight text-(--text) shadow-[var(--shadow-soft)]">
           <span className="whitespace-pre-wrap">{message.content}</span>
         </div>
+        <CopyButton label="Copy message" getText={() => message.content} />
       </div>
     </article>
   );
