@@ -1,9 +1,13 @@
+import { useRef } from "react";
 import ReactMarkdown from "react-markdown";
+import { useCopyToClipboard } from "@/lib/useCopyToClipboard";
+import { useShareText } from "@/lib/useShareText";
+import { responseMarkdown } from "@/lib/threadMarkdown";
 import remarkGfm from "remark-gfm";
 import { Mono, OutlineButton } from "@/components/chamber";
 import { StatusIndicator } from "@/components/StatusIndicator";
 import { createMarkdownComponents } from "./markdown";
-import { formatSourceTitle, scopedId, sourceMapId, sourceRefId } from "./citationRefs";
+import { amendmentNotice, citationMarker, formatSourceTitle, repealWarning, scopedId, sourceMapId, sourceRefId } from "./citationRefs";
 import { rehypeCitationLinks } from "./rehypeCitationLinks";
 import type { Message } from "./types";
 import type { Citation, NodeRun } from "@/lib/useQuery";
@@ -13,10 +17,26 @@ const SOURCE_MAP_VISIBLE_LIMIT = 6;
 type CitationList = NonNullable<Message["citations"]>;
 type OpenReceipt = (citation: Citation, evidenceIndex: number, opener: HTMLElement) => void;
 
-// A schedule citation's section_number is empty (ADR 0018) - path ("sched.2/art.1")
-// is its only identifier. Falling back to it keeps the rendered key non-blank.
-function citationMarker(citation: { section_number: string; path?: string }) {
-  return citation.section_number || citation.path || "";
+function CopyButton({ getText, label }: { getText: () => string; label: string }) {
+  const { copied, copy } = useCopyToClipboard();
+
+  return (
+    <OutlineButton aria-label={label} onClick={() => void copy(getText())}>
+      {copied ? "Copied" : "Copy"}
+      <span className="sr-only" aria-live="polite">{copied ? "Copied" : ""}</span>
+    </OutlineButton>
+  );
+}
+
+function ShareButton({ message }: { message: Message }) {
+  const { copied, share } = useShareText();
+
+  return (
+    <OutlineButton aria-label="Share response" onClick={() => void share("Locus answer", responseMarkdown(message))}>
+      {copied ? "Copied" : "Share"}
+      <span className="sr-only" aria-live="polite">{copied ? "Copied" : ""}</span>
+    </OutlineButton>
+  );
 }
 
 function SourceMapLink({ citation, index, messageId }: { citation: CitationList[number]; index: number; messageId: string }) {
@@ -66,7 +86,7 @@ function InlineSourceSummary({ citations, messageId }: { citations: CitationList
 
 function RepealBadge({ citation, label }: { citation: CitationList[number]; label: NonNullable<Message["currency_labels"]>[number] }) {
   if (label.label === "repealed") {
-    const warning = `Act ${citation.act_number} carries a repeal record dated ${label.as_of_date}. This does not mean Section ${citationMarker(citation)} itself is void — open the repeal record to check.`;
+    const warning = repealWarning(citation, label);
     return (
       <a
         href={label.detail_url}
@@ -82,7 +102,7 @@ function RepealBadge({ citation, label }: { citation: CitationList[number]; labe
   }
 
   if (label.label === "superseded") {
-    const notice = `Act ${citation.act_number} has been amended since the reprint we indexed (${label.as_of_date}). This does not mean Section ${citationMarker(citation)} itself changed — open the amendment to check.`;
+    const notice = amendmentNotice(citation, label);
     return (
       <a
         href={label.detail_url}
@@ -263,6 +283,8 @@ export function AssistantMessage({
   nodeRuns: NodeRun[];
   onOpenReceipt: OpenReceipt;
 }) {
+  const bodyRef = useRef<HTMLDivElement>(null);
+
   return (
     <article className="space-y-3">
       <div className="flex flex-wrap items-center gap-2 text-(--text-subtle)">
@@ -279,7 +301,7 @@ export function AssistantMessage({
 
       {message.citations && message.citations.length > 0 && <InlineSourceSummary citations={message.citations} messageId={message.id} />}
 
-      <div className="chamber-max-content chamber-reading-flow space-y-3 text-sm leading-6 text-(--text)">
+      <div ref={bodyRef} className="chamber-max-content chamber-reading-flow space-y-3 text-sm leading-6 text-(--text)">
         {message.content ? (
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
@@ -297,11 +319,12 @@ export function AssistantMessage({
 
       {message.commentary && message.commentary.length > 0 && <CommentaryNotes commentary={message.commentary} />}
 
-      <div className="flex flex-wrap gap-2 border-t border-(--line-soft) pt-4" role="group" aria-label="Message actions">
-        <OutlineButton disabled title="Coming soon" aria-label="Save as memo"><span className="hidden sm:inline">Save as memo</span><span className="sm:hidden">Save</span></OutlineButton>
-        <OutlineButton disabled title="Coming soon" aria-label="Highlight passage"><span className="hidden sm:inline">Highlight passage</span><span className="sm:hidden">Mark</span></OutlineButton>
-        <OutlineButton disabled title="Coming soon" aria-label="Cite all"><span className="hidden sm:inline">Cite all</span><span className="sm:hidden">Cite</span></OutlineButton>
-      </div>
+      {message.content && (
+        <div className="flex flex-wrap gap-2 border-t border-(--line-soft) pt-4" role="group" aria-label="Message actions">
+          <CopyButton label="Copy response" getText={() => bodyRef.current?.innerText ?? bodyRef.current?.textContent ?? ""} />
+          <ShareButton message={message} />
+        </div>
+      )}
     </article>
   );
 }
@@ -314,6 +337,7 @@ export function UserMessage({ message }: { message: Message }) {
         <div className="rounded-xl border border-(--accent-line) bg-(--accent-soft) px-3 py-2 font-serif text-sm font-light leading-6 tracking-tight text-(--text) shadow-[var(--shadow-soft)]">
           <span className="whitespace-pre-wrap">{message.content}</span>
         </div>
+        <CopyButton label="Copy message" getText={() => message.content} />
       </div>
     </article>
   );

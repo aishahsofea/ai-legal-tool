@@ -21,11 +21,13 @@ import {
 } from "@/components/conversation";
 import { useResearchThreads } from "@/lib/useResearchThreads";
 import { useSession } from "@/lib/useSession";
+import { useSidebarCollapsed } from "@/lib/useSidebarCollapsed";
 import { getSupabase } from "@/lib/supabaseClient";
 import type { Session } from "@supabase/supabase-js";
 import type { Citation } from "@/lib/useQuery";
 import {
   DEFAULT_RECEIPT_PANE_WIDTH,
+  WORKSPACE_SIDEBAR_WIDTH,
   ReceiptPaneResizer,
   clampReceiptPaneWidth,
 } from "@/components/locus-workspace/ReceiptPaneResizer";
@@ -98,7 +100,9 @@ function WorkspaceInner({ session }: { session: Session }) {
     getServerDesktopReceiptPaneSnapshot,
   );
   const account = accountLabels(session);
-  const clampedReceiptPaneWidth = clampReceiptPaneWidth(receiptPaneWidth, viewportWidth);
+  const [sidebarCollapsed, toggleSidebar] = useSidebarCollapsed();
+  const sidebarWidth = sidebarCollapsed ? 0 : WORKSPACE_SIDEBAR_WIDTH;
+  const clampedReceiptPaneWidth = clampReceiptPaneWidth(receiptPaneWidth, viewportWidth, sidebarWidth);
   const {
     threads,
     activeThread,
@@ -163,7 +167,7 @@ function WorkspaceInner({ session }: { session: Session }) {
         <QueryPrefill setInput={setInput} />
       </Suspense>
       <div
-        className={`chamber-grid-app grid h-full grid-cols-1 ${receiptSelection ? "receipt-open" : ""}`}
+        className={`chamber-grid-app grid h-full grid-cols-1 ${receiptSelection ? "receipt-open" : ""} ${sidebarCollapsed ? "sidebar-collapsed" : ""}`}
         style={receiptSelection ? ({ "--receipt-pane-width": `${clampedReceiptPaneWidth}px` } as CSSProperties) : undefined}
       >
         <ThreadSidebar
@@ -177,7 +181,12 @@ function WorkspaceInner({ session }: { session: Session }) {
         />
 
         <main className="workspace-main flex min-h-0 min-w-0 flex-col bg-(--canvas)">
-          <ConversationHeader title={activeThread?.title || "New thread"} />
+          <ConversationHeader
+            title={activeThread?.title || "New thread"}
+            messages={messages}
+            sidebarCollapsed={sidebarCollapsed}
+            onToggleSidebar={toggleSidebar}
+          />
 
           <div className="flex-1 overflow-y-auto px-4 py-6 md:px-6 lg:px-8">
             <div className="chamber-full-content flex w-full flex-col gap-6">
@@ -231,6 +240,7 @@ function WorkspaceInner({ session }: { session: Session }) {
             <ReceiptPaneResizer
               width={clampedReceiptPaneWidth}
               viewportWidth={viewportWidth}
+              sidebarWidth={sidebarWidth}
               onResize={resizeReceiptPane}
               onDraggingChange={setIsResizingReceipt}
             />

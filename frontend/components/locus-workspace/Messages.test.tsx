@@ -1,7 +1,8 @@
-import { cleanup, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { VERIFY_CAVEAT } from "@/lib/threadMarkdown";
 import type { Message } from "./types";
-import { AssistantMessage } from "./Messages";
+import { AssistantMessage, UserMessage } from "./Messages";
 
 vi.mock("react-pdf", () => ({
   pdfjs: { GlobalWorkerOptions: { workerSrc: "" } },
@@ -28,20 +29,20 @@ const BODY_CITATION: NonNullable<Message["citations"]>[number] = {
   page_number: 12,
 };
 
-function renderMessage(citations: Message["citations"]) {
+function renderMessage(citations: Message["citations"], content = "Article 1 applies.", isLoading = false) {
   return render(
     <AssistantMessage
       message={{
         id: "m1",
         role: "assistant",
-        content: "Article 1 applies.",
+        content,
         createdAt: "10:30",
         citations,
         currency_labels: [],
       }}
       citedCountLabel="1 source"
       status=""
-      isLoading={false}
+      isLoading={isLoading}
       isTail
       reasoningOpen={false}
       onToggleReasoning={() => {}}
@@ -52,7 +53,73 @@ function renderMessage(citations: Message["citations"]) {
   );
 }
 
+const writeText = vi.fn().mockResolvedValue(undefined);
+
+beforeEach(() => {
+  writeText.mockClear();
+  Object.defineProperty(navigator, "clipboard", { value: { writeText }, configurable: true });
+});
+
 afterEach(cleanup);
+
+describe("copy controls", () => {
+  it("copies only the answer text of a response", async () => {
+    renderMessage([BODY_CITATION], "Section **90A** applies.");
+    fireEvent.click(screen.getByRole("button", { name: "Copy response" }));
+    await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
+    const copied = writeText.mock.calls[0][0] as string;
+    expect(copied).toContain("Section 90A applies.");
+    expect(copied).not.toContain("SOURCES USED");
+    expect(copied).not.toContain("SOURCE MAP");
+  });
+
+  it("shows Copied after a successful copy", async () => {
+    renderMessage([], "Answer.");
+    fireEvent.click(screen.getByRole("button", { name: "Copy response" }));
+    await waitFor(() => expect(screen.getAllByText("Copied").length).toBeGreaterThan(0));
+  });
+
+  it("copies a user message verbatim, newlines included", async () => {
+    render(<UserMessage message={{ id: "u1", role: "user", content: "line one\nline two", createdAt: "10:29" }} />);
+    fireEvent.click(screen.getByRole("button", { name: "Copy message" }));
+    await waitFor(() => expect(writeText).toHaveBeenCalledWith("line one\nline two"));
+  });
+
+  it("renders no Copy button on an empty streaming placeholder", () => {
+    renderMessage([], "", true);
+    expect(screen.queryByRole("button", { name: "Copy response" })).toBeNull();
+    expect(screen.queryByRole("group", { name: "Message actions" })).toBeNull();
+  });
+
+  it("no longer renders the stub actions", () => {
+    renderMessage([], "Answer.");
+    for (const label of ["Save as memo", "Highlight passage", "Cite all"]) {
+      expect(screen.queryByRole("button", { name: label })).toBeNull();
+    }
+  });
+});
+
+describe("share control", () => {
+  afterEach(() => {
+    Object.defineProperty(navigator, "share", { value: undefined, configurable: true });
+  });
+
+  it("copies the response Markdown when navigator.share is missing", async () => {
+    renderMessage([BODY_CITATION], "Section 90A applies.");
+    fireEvent.click(screen.getByRole("button", { name: "Share response" }));
+    await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
+    const shared = writeText.mock.calls[0][0] as string;
+    expect(shared).toContain("Section 90A applies.");
+    expect(shared).toContain("**Sources**");
+    expect(shared).toContain(VERIFY_CAVEAT);
+    await waitFor(() => expect(screen.getAllByText("Copied").length).toBeGreaterThan(0));
+  });
+
+  it("renders no Share button on an empty streaming placeholder", () => {
+    renderMessage([], "", true);
+    expect(screen.queryByRole("button", { name: "Share response" })).toBeNull();
+  });
+});
 
 describe("citation key rendering (#171)", () => {
   it("renders a Schedule citation's path in the source map badge, not a blank key", () => {

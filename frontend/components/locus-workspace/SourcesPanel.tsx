@@ -47,13 +47,6 @@ export function SourcesPanel({
         <div className="mt-2 font-serif text-base font-light tracking-tight text-(--text)">
           {label}
         </div>
-        <OutlineButton
-          disabled
-          title="Coming soon"
-          className="mt-2 font-mono uppercase tracking-widest"
-        >
-          Filter
-        </OutlineButton>
       </div>
 
       {activeSource ? (
