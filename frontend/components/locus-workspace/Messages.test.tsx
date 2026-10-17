@@ -1,5 +1,6 @@
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { VERIFY_CAVEAT } from "@/lib/threadMarkdown";
 import type { Message } from "./types";
 import { AssistantMessage, UserMessage } from "./Messages";
 
@@ -95,6 +96,28 @@ describe("copy controls", () => {
     for (const label of ["Save as memo", "Highlight passage", "Cite all"]) {
       expect(screen.queryByRole("button", { name: label })).toBeNull();
     }
+  });
+});
+
+describe("share control", () => {
+  afterEach(() => {
+    Object.defineProperty(navigator, "share", { value: undefined, configurable: true });
+  });
+
+  it("copies the response Markdown when navigator.share is missing", async () => {
+    renderMessage([BODY_CITATION], "Section 90A applies.");
+    fireEvent.click(screen.getByRole("button", { name: "Share response" }));
+    await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
+    const shared = writeText.mock.calls[0][0] as string;
+    expect(shared).toContain("Section 90A applies.");
+    expect(shared).toContain("**Sources**");
+    expect(shared).toContain(VERIFY_CAVEAT);
+    await waitFor(() => expect(screen.getAllByText("Copied").length).toBeGreaterThan(0));
+  });
+
+  it("renders no Share button on an empty streaming placeholder", () => {
+    renderMessage([], "", true);
+    expect(screen.queryByRole("button", { name: "Share response" })).toBeNull();
   });
 });
 

@@ -1,6 +1,8 @@
 import { useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import { useCopyToClipboard } from "@/lib/useCopyToClipboard";
+import { useShareText } from "@/lib/useShareText";
+import { responseMarkdown } from "@/lib/threadMarkdown";
 import remarkGfm from "remark-gfm";
 import { Mono, OutlineButton } from "@/components/chamber";
 import { StatusIndicator } from "@/components/StatusIndicator";
@@ -21,6 +23,17 @@ function CopyButton({ getText, label }: { getText: () => string; label: string }
   return (
     <OutlineButton aria-label={label} onClick={() => void copy(getText())}>
       {copied ? "Copied" : "Copy"}
+      <span className="sr-only" aria-live="polite">{copied ? "Copied" : ""}</span>
+    </OutlineButton>
+  );
+}
+
+function ShareButton({ message }: { message: Message }) {
+  const { copied, share } = useShareText();
+
+  return (
+    <OutlineButton aria-label="Share response" onClick={() => void share("Locus answer", responseMarkdown(message))}>
+      {copied ? "Copied" : "Share"}
       <span className="sr-only" aria-live="polite">{copied ? "Copied" : ""}</span>
     </OutlineButton>
   );
@@ -309,6 +322,7 @@ export function AssistantMessage({
       {message.content && (
         <div className="flex flex-wrap gap-2 border-t border-(--line-soft) pt-4" role="group" aria-label="Message actions">
           <CopyButton label="Copy response" getText={() => bodyRef.current?.innerText ?? bodyRef.current?.textContent ?? ""} />
+          <ShareButton message={message} />
         </div>
       )}
     </article>
