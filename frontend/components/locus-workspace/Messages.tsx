@@ -5,7 +5,7 @@ import remarkGfm from "remark-gfm";
 import { Mono, OutlineButton } from "@/components/chamber";
 import { StatusIndicator } from "@/components/StatusIndicator";
 import { createMarkdownComponents } from "./markdown";
-import { formatSourceTitle, scopedId, sourceMapId, sourceRefId } from "./citationRefs";
+import { amendmentNotice, citationMarker, formatSourceTitle, repealWarning, scopedId, sourceMapId, sourceRefId } from "./citationRefs";
 import { rehypeCitationLinks } from "./rehypeCitationLinks";
 import type { Message } from "./types";
 import type { Citation, NodeRun } from "@/lib/useQuery";
@@ -14,12 +14,6 @@ const SOURCE_MAP_VISIBLE_LIMIT = 6;
 
 type CitationList = NonNullable<Message["citations"]>;
 type OpenReceipt = (citation: Citation, evidenceIndex: number, opener: HTMLElement) => void;
-
-// A schedule citation's section_number is empty (ADR 0018) - path ("sched.2/art.1")
-// is its only identifier. Falling back to it keeps the rendered key non-blank.
-function citationMarker(citation: { section_number: string; path?: string }) {
-  return citation.section_number || citation.path || "";
-}
 
 function CopyButton({ getText, label }: { getText: () => string; label: string }) {
   const { copied, copy } = useCopyToClipboard();
@@ -79,7 +73,7 @@ function InlineSourceSummary({ citations, messageId }: { citations: CitationList
 
 function RepealBadge({ citation, label }: { citation: CitationList[number]; label: NonNullable<Message["currency_labels"]>[number] }) {
   if (label.label === "repealed") {
-    const warning = `Act ${citation.act_number} carries a repeal record dated ${label.as_of_date}. This does not mean Section ${citationMarker(citation)} itself is void — open the repeal record to check.`;
+    const warning = repealWarning(citation, label);
     return (
       <a
         href={label.detail_url}
@@ -95,7 +89,7 @@ function RepealBadge({ citation, label }: { citation: CitationList[number]; labe
   }
 
   if (label.label === "superseded") {
-    const notice = `Act ${citation.act_number} has been amended since the reprint we indexed (${label.as_of_date}). This does not mean Section ${citationMarker(citation)} itself changed — open the amendment to check.`;
+    const notice = amendmentNotice(citation, label);
     return (
       <a
         href={label.detail_url}
