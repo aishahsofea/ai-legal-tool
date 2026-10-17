@@ -20,6 +20,26 @@ describe("receipt pane sizing", () => {
     expect(DEFAULT_RECEIPT_PANE_WIDTH).toBeGreaterThan(MIN_RECEIPT_PANE_WIDTH);
   });
 
+  it("gives the receipt pane the sidebar's width back when the sidebar is 0", () => {
+    expect(clampReceiptPaneWidth(900, 1100)).toBe(440);
+    expect(clampReceiptPaneWidth(900, 1100, 0)).toBe(672);
+    expect(clampReceiptPaneWidth(900, 1300, 0)).toBe(MAX_RECEIPT_PANE_WIDTH);
+    expect(defaultReceiptPaneWidth(1100)).toBe(440);
+    expect(defaultReceiptPaneWidth(1100, 0)).toBe(590);
+  });
+
+  it("uses the sidebarWidth prop for its limits and reset", async () => {
+    render(<ReceiptPaneResizer
+      width={550}
+      viewportWidth={1100}
+      sidebarWidth={0}
+      onResize={() => {}}
+      onDraggingChange={() => {}}
+    />);
+    const separator = screen.getByRole("separator", { name: "Resize Citation Receipt" });
+    expect(separator).toHaveAttribute("aria-valuemax", "672");
+  });
+
   it("supports keyboard resizing, limits, and reset", async () => {
     function Harness() {
       const [width, setWidth] = useState(550);

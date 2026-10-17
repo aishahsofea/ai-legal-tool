@@ -12,38 +12,40 @@ export const DEFAULT_RECEIPT_PANE_WIDTH = 640;
 const KEYBOARD_RESIZE_STEP = 32;
 const DEFAULT_RECEIPT_RATIO = 0.54;
 
-export function maxReceiptPaneWidth(viewportWidth: number) {
-  const available = viewportWidth - WORKSPACE_SIDEBAR_WIDTH - RECEIPT_RESIZER_WIDTH - MIN_CHAT_PANE_WIDTH;
+export function maxReceiptPaneWidth(viewportWidth: number, sidebarWidth = WORKSPACE_SIDEBAR_WIDTH) {
+  const available = viewportWidth - sidebarWidth - RECEIPT_RESIZER_WIDTH - MIN_CHAT_PANE_WIDTH;
   return Math.max(MIN_RECEIPT_PANE_WIDTH, Math.min(MAX_RECEIPT_PANE_WIDTH, available));
 }
 
-export function clampReceiptPaneWidth(width: number, viewportWidth: number) {
-  return Math.round(Math.min(maxReceiptPaneWidth(viewportWidth), Math.max(MIN_RECEIPT_PANE_WIDTH, width)));
+export function clampReceiptPaneWidth(width: number, viewportWidth: number, sidebarWidth = WORKSPACE_SIDEBAR_WIDTH) {
+  return Math.round(Math.min(maxReceiptPaneWidth(viewportWidth, sidebarWidth), Math.max(MIN_RECEIPT_PANE_WIDTH, width)));
 }
 
-export function defaultReceiptPaneWidth(viewportWidth: number) {
+export function defaultReceiptPaneWidth(viewportWidth: number, sidebarWidth = WORKSPACE_SIDEBAR_WIDTH) {
   if (!Number.isFinite(viewportWidth) || viewportWidth <= 0) return DEFAULT_RECEIPT_PANE_WIDTH;
-  const workspaceWidth = viewportWidth - WORKSPACE_SIDEBAR_WIDTH - RECEIPT_RESIZER_WIDTH;
-  return clampReceiptPaneWidth(workspaceWidth * DEFAULT_RECEIPT_RATIO, viewportWidth);
+  const workspaceWidth = viewportWidth - sidebarWidth - RECEIPT_RESIZER_WIDTH;
+  return clampReceiptPaneWidth(workspaceWidth * DEFAULT_RECEIPT_RATIO, viewportWidth, sidebarWidth);
 }
 
 export function ReceiptPaneResizer({
   width,
   viewportWidth,
+  sidebarWidth = WORKSPACE_SIDEBAR_WIDTH,
   onResize,
   onDraggingChange,
 }: {
   width: number;
   viewportWidth: number;
+  sidebarWidth?: number;
   onResize: (width: number, commit: boolean) => void;
   onDraggingChange: (dragging: boolean) => void;
 }) {
   const activePointer = useRef<number | null>(null);
   const lastWidth = useRef(width);
-  const maximum = maxReceiptPaneWidth(viewportWidth);
+  const maximum = maxReceiptPaneWidth(viewportWidth, sidebarWidth);
 
   const resizeTo = (nextWidth: number, commit: boolean) => {
-    const clamped = clampReceiptPaneWidth(nextWidth, viewportWidth);
+    const clamped = clampReceiptPaneWidth(nextWidth, viewportWidth, sidebarWidth);
     lastWidth.current = clamped;
     onResize(clamped, commit);
   };
@@ -92,7 +94,7 @@ export function ReceiptPaneResizer({
       aria-valuenow={width}
       tabIndex={0}
       title="Drag to resize · double-click to reset"
-      onDoubleClick={() => resizeTo(defaultReceiptPaneWidth(viewportWidth), true)}
+      onDoubleClick={() => resizeTo(defaultReceiptPaneWidth(viewportWidth, sidebarWidth), true)}
       onKeyDown={handleKeyDown}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
