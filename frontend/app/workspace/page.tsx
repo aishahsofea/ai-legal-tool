@@ -180,7 +180,7 @@ function WorkspaceInner({ session }: { session: Session }) {
           onSignOut={() => void getSupabase().auth.signOut()}
         />
 
-        <main className="workspace-main flex min-h-0 min-w-0 flex-col bg-(--canvas)">
+        <main className="workspace-main flex min-h-0 min-w-0 flex-col overflow-hidden bg-(--canvas)">
           <ConversationHeader
             title={activeThread?.title || "New thread"}
             messages={messages}
