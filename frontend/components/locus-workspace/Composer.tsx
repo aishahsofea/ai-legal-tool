@@ -45,7 +45,7 @@ export function Composer({
           }}
           placeholder="Ask a follow-up, or paste a clause…"
           disabled={isLoading}
-          className="max-h-[136px] min-w-0 resize-none overflow-y-auto bg-transparent px-3 py-2 text-sm leading-5 text-(--text) outline-none placeholder:text-(--text-subtle) disabled:opacity-50"
+          className="max-h-[min(136px,20dvh)] min-w-0 resize-none overflow-y-auto bg-transparent px-3 py-2 text-sm leading-5 text-(--text) outline-none placeholder:text-(--text-subtle) disabled:opacity-50"
         />
         <button type="button" aria-label="Upload" title="Upload document" className="h-full w-10 cursor-pointer self-stretch border-l border-(--line) text-(--text-subtle) transition-colors duration-200 hover:bg-(--accent-tint) hover:text-(--accent) active:opacity-80 max-sm:hidden">
           ▤

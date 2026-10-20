@@ -180,7 +180,7 @@ function WorkspaceInner({ session }: { session: Session }) {
           onSignOut={() => void getSupabase().auth.signOut()}
         />
 
-        <main className="workspace-main flex min-h-0 min-w-0 flex-col bg-(--canvas)">
+        <main className="workspace-main flex min-h-0 min-w-0 flex-col overflow-hidden bg-(--canvas)">
           <ConversationHeader
             title={activeThread?.title || "New thread"}
             messages={messages}
@@ -188,7 +188,7 @@ function WorkspaceInner({ session }: { session: Session }) {
             onToggleSidebar={toggleSidebar}
           />
 
-          <div className="flex-1 overflow-y-auto px-4 py-6 md:px-6 lg:px-8">
+          <div className="relative flex-1 overflow-y-auto px-4 py-6 md:px-6 lg:px-8">
             <div className="chamber-full-content flex w-full flex-col gap-6">
               {loadError && (
                 <div className="rounded-xl border border-(--accent-line) bg-(--danger-soft) px-4 py-3 text-sm text-(--danger)" role="alert">

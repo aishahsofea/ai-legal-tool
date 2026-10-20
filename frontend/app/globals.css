@@ -152,8 +152,13 @@
   user-select: none;
 }
 
+.chamber-grid-app { grid-template-rows: auto minmax(0, 1fr); }
+
 @media (min-width: 768px) {
-  .chamber-grid-app { grid-template-columns: 256px minmax(0, 1fr); }
+  .chamber-grid-app {
+    grid-template-rows: minmax(0, 1fr);
+    grid-template-columns: 256px minmax(0, 1fr);
+  }
   .sidebar-collapsed.chamber-grid-app { grid-template-columns: minmax(0, 1fr); }
   .sidebar-collapsed .workspace-sidebar { display: none; }
 }
@@ -253,7 +258,7 @@ html {
 
 body {
   margin: 0;
-  min-height: 100vh;
+  min-height: 100dvh;
   background: linear-gradient(180deg, var(--surface) 0, var(--canvas) 640px);
   color: var(--text);
   font-family: var(--font-inter), system-ui, sans-serif;
