@@ -5,7 +5,7 @@ import pytest
 
 from agent.graph_meta import EDGE_LABELS, NODE_META
 from agent.state import AgentState
-from scripts.render_graph_map import _field_table, render
+from scripts.render_graph_map import CONTRIBUTING, _field_table, current_block, render
 
 
 @pytest.fixture(params=["0", "1"], autouse=True)
@@ -60,3 +60,9 @@ def test_unwritten_field_is_input(monkeypatch):
     monkeypatch.setitem(NODE_META, "clarify", replace(clarify, writes=writes))
     row = next(l for l in _field_table().splitlines() if l.startswith("| `query` |"))
     assert "(input)" in row
+
+
+def test_contributing_graph_map_is_current():
+    assert current_block(CONTRIBUTING.read_text()) == render(), (
+        "Graph map is stale: run python -m scripts.render_graph_map"
+    )
