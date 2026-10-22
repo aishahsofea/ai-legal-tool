@@ -27,10 +27,7 @@ flowchart TB
   API["api/main.py (+ routers)"]
   FE["frontend/ (app, lib, components)"]
   LIFE["agent/query_lifecycle.py + graph.py"]
-  ROUTE["router / clarify / contextualize"]
-  RETR["retriever (agent/retrieval/)"]
-  SYNTH["synthesiser"]
-  VERIFY["citation_validator → grounding_check → currency_check → supervisor"]
+  GRAPH["agent graph (agent/nodes/, agent/retrieval/)"]
   EVALS["evals/"]
 
   SRC -->|"PDFs + manifest"| CORPUS
@@ -42,16 +39,10 @@ flowchart TB
   API -->|"/receipts/*"| RCPT
   API -->|"/reference-graph/*"| REFG
   API -->|"/evals/* subprocess"| EVALS
-  LIFE --> ROUTE
-  ROUTE --> RETR
-  PG -->|"search"| RETR
-  REFG -->|"follow references"| RETR
-  RETR --> SYNTH
-  RCPT -->|"receipt on citation"| SYNTH
-  RCPT -->|"evidence locator"| VERIFY
-  SYNTH --> VERIFY
-  VERIFY -->|"retry: re-draft"| SYNTH
-  VERIFY -->|"retry: re-retrieve"| RETR
+  LIFE --> GRAPH
+  PG -->|"search"| GRAPH
+  REFG -->|"follow references"| GRAPH
+  RCPT -->|"receipt on citation, evidence locator"| GRAPH
   EVALS -->|"graph.invoke"| LIFE
 ```
 
@@ -65,16 +56,12 @@ flowchart TB
 | API | `api/main.py`, `api/*.py` | an endpoint or SSE event shape | HTTP entry points, SSE streaming, and the receipts, reference-graph, and evals routers. |
 | FE | `frontend/lib/`, `frontend/app/workspace/` | the chat UI, receipt viewer, graph explorer | Calls the API. Shows chat, citations, and receipts. |
 | LIFE | `agent/query_lifecycle.py`, `agent/graph.py` | graph wiring, cancel/resume, streaming | Runs the compiled LangGraph and turns it into stream events. |
-| ROUTE | `agent/nodes/router.py`, `router_jev.py`, `clarify.py`, `contextualize.py` | query classification, clarification | `router.py` classifies the query. `router_jev.py` is the Jev first pass (see `ROUTER_JEV_ENABLED`). `clarify.py` asks the user a question. `contextualize.py` rewrites the query to stand alone. |
-| RETR | `agent/nodes/retriever.py`, `agent/retrieval/` | search, tools, reference following | Fetches chunks by search. With `AGENTIC_RETRIEVAL` on, a ReAct agent runs the search instead. |
-| SYNTH | `agent/nodes/synthesiser.py` | the answer prompt, citation building | Drafts the answer and attaches a receipt to each citation. |
-| VERIFY | `agent/nodes/{citation_validator,grounding_check,currency_check,supervisor}.py` | validation, repeal labels, retry rules | `citation_validator` checks citations. `grounding_check` checks claims against sources. `currency_check` labels repealed or amended Acts. `supervisor` retries or finishes. |
+| GRAPH | `agent/nodes/`, `agent/retrieval/` | query classification, clarification, search, the answer prompt, validation, retry rules | `router.py` classifies the query. `router_jev.py` is the Jev first pass (see `ROUTER_JEV_ENABLED`). `clarify.py` asks the user a question. `contextualize.py` rewrites the query to stand alone. `retriever.py` fetches chunks by search; with `AGENTIC_RETRIEVAL` on, a ReAct agent in `agent/retrieval/` runs the search instead. `synthesiser.py` drafts the answer and attaches a receipt to each citation. `citation_validator.py` checks citations. `grounding_check.py` checks claims against sources. `currency_check.py` labels repealed or amended Acts. `supervisor.py` retries or finishes. Nodes, edges and state: [Graph map](#graph-map). |
 | EVALS | `evals/`, `evals/dataset.json` | behaviour the evals measure | Runs datasets through the graph with assertions and a judge. |
 
 Not on the map:
 
-- **Graph branches:** `escalate`, `conversational`, `recall_conversational`, the `clarify` interrupt loop, `start_turn`, `record_turn`. See [README.md](README.md#how-it-works).
-- **Semantic Memory:** `agent/memory/`, the `recall` node, the checkpointer and store.
+- **Semantic Memory:** `agent/memory/`, the checkpointer and store.
 - **Helper modules:** `agent/web_search.py`, `llm_factory.py`, `feature_flags.py`, `observability.py`, `citation_keys.py`, `query_policy.py`.
 - **Scraper-to-agent file link:** `citation_validator` and `currency_check` read Act metadata through `scraper/act_paths`, not the DB.
 - **Evals to retrieval:** `evals/assertions.py` imports `agent.retrieval.search`.
