@@ -59,7 +59,7 @@ NODE_META: dict[str, NodeMeta] = {
     ),
     "recall_conversational": NodeMeta(
         "deterministic",
-        "Same code as recall, feeding small talk. Reads remembered user preferences. Fails open.",
+        "Same code as recall, feeding conversational.",
         ("query", "standalone_query"),
         ("recalled_memory",),
         2, 4,

@@ -56,7 +56,7 @@ flowchart TB
 | API | `api/main.py`, `api/*.py` | an endpoint or SSE event shape | HTTP entry points, SSE streaming, and the receipts, reference-graph, and evals routers. |
 | FE | `frontend/lib/`, `frontend/app/workspace/` | the chat UI, receipt viewer, graph explorer | Calls the API. Shows chat, citations, and receipts. |
 | LIFE | `agent/query_lifecycle.py`, `agent/graph.py` | graph wiring, cancel/resume, streaming | Runs the compiled LangGraph and turns it into stream events. |
-| GRAPH | `agent/nodes/`, `agent/retrieval/` | query classification, clarification, search, the answer prompt, validation, retry rules | `router.py` classifies the query. `router_jev.py` is the Jev first pass (see `ROUTER_JEV_ENABLED`). `clarify.py` asks the user a question. `contextualize.py` rewrites the query to stand alone. `retriever.py` fetches chunks by search; with `AGENTIC_RETRIEVAL` on, a ReAct agent in `agent/retrieval/` runs the search instead. `synthesiser.py` drafts the answer and attaches a receipt to each citation. `citation_validator.py` checks citations. `grounding_check.py` checks claims against sources. `currency_check.py` labels repealed or amended Acts. `supervisor.py` retries or finishes. Nodes, edges and state: [Graph map](#graph-map). |
+| GRAPH | `agent/nodes/`, `agent/retrieval/` | query classification, clarification, search, the answer prompt, validation, retry rules | Classifies, searches, drafts and checks each answer. `router_jev.py` is the router's Jev first pass (see `ROUTER_JEV_ENABLED`). With `AGENTIC_RETRIEVAL` on, a ReAct agent in `agent/retrieval/` runs the search. `synthesiser.py` attaches a receipt to each citation. Each node in turn: [Graph map](#graph-map). |
 | EVALS | `evals/`, `evals/dataset.json` | behaviour the evals measure | Runs datasets through the graph with assertions and a judge. |
 
 Not on the map:
@@ -141,7 +141,7 @@ flowchart TB
 | `escalate` | deterministic | — | `final_response` | Fixed escalation text. No LLM, no retrieval. |
 | `clarify` | control | `query`, `clarifying_question` | `query`, `clarifying_question`, `clarified`, `query_type` | interrupt() pauses for the user, merges the answer into query, then back to router. Max once per turn. |
 | `contextualize` | llm | `query`, `history` | `standalone_query` | Rewrites a follow-up into a standalone query using history. |
-| `recall_conversational` | deterministic | `query`, `standalone_query` | `recalled_memory` | Same code as recall, feeding small talk. Reads remembered user preferences. Fails open. |
+| `recall_conversational` | deterministic | `query`, `standalone_query` | `recalled_memory` | Same code as recall, feeding conversational. |
 | `conversational` | llm | `query`, `history`, `recalled_memory`, `response_language` | `draft_response`, `final_response` | Small-talk answer, no retrieval. |
 | `retriever` | deterministic | `query`, `standalone_query`, `query_type`, `retrieval_feedback` | `retrieved_chunks`, `tool_trace`, `reference_trace`, `reference_metrics`, `commentary` | Searches chunks. Becomes a ReAct tool-calling LLM agent when AGENTIC_RETRIEVAL is on; same node id and edges. |
 | `recall` | deterministic | `query`, `standalone_query` | `recalled_memory` | Reads remembered user preferences. Fails open. |
