@@ -31,6 +31,7 @@ import {
   ReceiptPaneResizer,
   clampReceiptPaneWidth,
 } from "@/components/locus-workspace/ReceiptPaneResizer";
+import { SidebarCollapseHandle } from "@/components/locus-workspace/SidebarCollapseHandle";
 
 const CitationReceiptViewer = dynamic(
   () => import("@/components/locus-workspace/CitationReceiptViewer").then((module) => module.CitationReceiptViewer),
@@ -93,6 +94,7 @@ function WorkspaceInner({ session }: { session: Session }) {
   const [receiptSelection, setReceiptSelection] = useState<ReceiptSelection | null>(null);
   const [receiptPaneWidth, setReceiptPaneWidth] = useState(DEFAULT_RECEIPT_PANE_WIDTH);
   const [isResizingReceipt, setIsResizingReceipt] = useState(false);
+  const [isDraggingSidebar, setIsDraggingSidebar] = useState(false);
   const viewportWidth = useSyncExternalStore(subscribeViewport, getViewportWidth, getServerViewportWidth);
   const isDesktopReceiptPane = useSyncExternalStore(
     subscribeDesktopReceiptPane,
@@ -100,7 +102,7 @@ function WorkspaceInner({ session }: { session: Session }) {
     getServerDesktopReceiptPaneSnapshot,
   );
   const account = accountLabels(session);
-  const [sidebarCollapsed, toggleSidebar] = useSidebarCollapsed();
+  const [sidebarCollapsed, toggleSidebar, setSidebarCollapsed] = useSidebarCollapsed();
   const sidebarWidth = sidebarCollapsed ? 0 : WORKSPACE_SIDEBAR_WIDTH;
   const clampedReceiptPaneWidth = clampReceiptPaneWidth(receiptPaneWidth, viewportWidth, sidebarWidth);
   const {
@@ -162,7 +164,7 @@ function WorkspaceInner({ session }: { session: Session }) {
   }, [isLoading, receiptSelection, stopQuery]);
 
   return (
-    <div className={`h-dvh overflow-hidden bg-(--canvas) text-(--text) ${isResizingReceipt ? "is-resizing-receipt" : ""}`}>
+    <div className={`h-dvh overflow-hidden bg-(--canvas) text-(--text) ${isResizingReceipt ? "is-resizing-receipt" : ""} ${isDraggingSidebar ? "is-resizing-sidebar" : ""}`}>
       <Suspense>
         <QueryPrefill setInput={setInput} />
       </Suspense>
@@ -180,12 +182,17 @@ function WorkspaceInner({ session }: { session: Session }) {
           onSignOut={() => void getSupabase().auth.signOut()}
         />
 
-        <main className="workspace-main flex min-h-0 min-w-0 flex-col overflow-hidden bg-(--canvas)">
+        <main className="workspace-main relative flex min-h-0 min-w-0 flex-col overflow-hidden bg-(--canvas)">
           <ConversationHeader
             title={activeThread?.title || "New thread"}
             messages={messages}
             sidebarCollapsed={sidebarCollapsed}
             onToggleSidebar={toggleSidebar}
+          />
+          <SidebarCollapseHandle
+            collapsed={sidebarCollapsed}
+            onCollapsedChange={setSidebarCollapsed}
+            onDraggingChange={setIsDraggingSidebar}
           />
 
           <div className="relative flex-1 overflow-y-auto px-4 py-6 md:px-6 lg:px-8">

@@ -143,9 +143,14 @@
   display: none;
 }
 
-.is-resizing-receipt {
+.is-resizing-receipt,
+.is-resizing-sidebar {
   cursor: col-resize;
   user-select: none;
+}
+
+.workspace-sidebar-handle {
+  display: none;
 }
 
 .chamber-grid-app { grid-template-rows: auto minmax(0, 1fr); }
@@ -157,6 +162,31 @@
   }
   .sidebar-collapsed.chamber-grid-app { grid-template-columns: minmax(0, 1fr); }
   .sidebar-collapsed .workspace-sidebar { display: none; }
+
+  .workspace-sidebar-handle {
+    display: flex;
+    position: absolute;
+    inset-block: 0;
+    left: 0;
+    width: 8px;
+    z-index: 10;
+    cursor: col-resize;
+    touch-action: none;
+    justify-content: flex-start;
+  }
+
+  .workspace-sidebar-handle > span {
+    width: 1px;
+    background: var(--line);
+    transition: background-color 160ms ease, width 160ms ease;
+  }
+
+  .workspace-sidebar-handle:hover > span,
+  .workspace-sidebar-handle:focus-visible > span,
+  .workspace-sidebar-handle[data-preview] > span {
+    width: 2px;
+    background: var(--accent);
+  }
 }
 
 @media (min-width: 1200px) {
