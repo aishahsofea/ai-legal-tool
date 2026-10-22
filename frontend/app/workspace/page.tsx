@@ -104,7 +104,7 @@ function WorkspaceInner({ session }: { session: Session }) {
     getServerDesktopReceiptPaneSnapshot,
   );
   const account = accountLabels(session);
-  const [sidebarCollapsed, toggleSidebar, setSidebarCollapsed] = useSidebarCollapsed();
+  const [sidebarCollapsed, , setSidebarCollapsed] = useSidebarCollapsed();
   const sidebarWidth = sidebarCollapsed ? 0 : sidebarPaneWidth;
   const clampedReceiptPaneWidth = clampReceiptPaneWidth(receiptPaneWidth, viewportWidth, sidebarWidth);
   const {
@@ -162,6 +162,20 @@ function WorkspaceInner({ session }: { session: Session }) {
     if (commit) window.localStorage.setItem(SIDEBAR_WIDTH_STORAGE_KEY, String(width));
   }, []);
 
+  // A drag-to-collapse leaves the width near MIN, so reopening always starts from the default.
+  const changeSidebarCollapsed = useCallback(
+    (next: boolean) => {
+      if (!next && sidebarCollapsed) resizeSidebar(WORKSPACE_SIDEBAR_WIDTH, true);
+      setSidebarCollapsed(next);
+    },
+    [sidebarCollapsed, resizeSidebar, setSidebarCollapsed],
+  );
+
+  const toggleSidebarCollapsed = useCallback(
+    () => changeSidebarCollapsed(!sidebarCollapsed),
+    [sidebarCollapsed, changeSidebarCollapsed],
+  );
+
   const resizeReceiptPane = useCallback((width: number, commit: boolean) => {
     setReceiptPaneWidth(width);
     if (commit) window.localStorage.setItem(RECEIPT_WIDTH_STORAGE_KEY, String(width));
@@ -204,13 +218,13 @@ function WorkspaceInner({ session }: { session: Session }) {
             title={activeThread?.title || "New thread"}
             messages={messages}
             sidebarCollapsed={sidebarCollapsed}
-            onToggleSidebar={toggleSidebar}
+            onToggleSidebar={toggleSidebarCollapsed}
           />
           <SidebarResizeHandle
             width={sidebarPaneWidth}
             collapsed={sidebarCollapsed}
             onResize={resizeSidebar}
-            onCollapsedChange={setSidebarCollapsed}
+            onCollapsedChange={changeSidebarCollapsed}
             onDraggingChange={setIsDraggingSidebar}
           />
 

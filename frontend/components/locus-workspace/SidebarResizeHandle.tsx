@@ -5,7 +5,7 @@ import { WORKSPACE_SIDEBAR_WIDTH } from "./ReceiptPaneResizer";
 
 export const MIN_SIDEBAR_WIDTH = 40;
 export const MAX_SIDEBAR_WIDTH = WORKSPACE_SIDEBAR_WIDTH;
-// Below MIN so the width sticks at MIN briefly before the sidebar snaps shut.
+// Above MIN so a drag snaps shut first; MIN is only the keyboard's floor.
 export const SIDEBAR_COLLAPSE_THRESHOLD = 80;
 
 const KEYBOARD_RESIZE_STEP = 16;

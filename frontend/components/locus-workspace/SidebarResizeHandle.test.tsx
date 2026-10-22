@@ -32,15 +32,15 @@ function drag(separator: HTMLElement, startX: number, ...moves: number[]) {
 
 describe("clampSidebarWidth", () => {
   it("keeps the width between the bounds", () => {
-    expect(clampSidebarWidth(50)).toBe(MIN_SIDEBAR_WIDTH);
+    expect(clampSidebarWidth(MIN_SIDEBAR_WIDTH - 10)).toBe(MIN_SIDEBAR_WIDTH);
     expect(clampSidebarWidth(230.4)).toBe(230);
     expect(clampSidebarWidth(9999)).toBe(MAX_SIDEBAR_WIDTH);
   });
 });
 
 describe("SidebarResizeHandle", () => {
-  it("collapses below the min width", () => {
-    expect(SIDEBAR_COLLAPSE_THRESHOLD).toBeLessThan(MIN_SIDEBAR_WIDTH);
+  it("collapses a drag before it reaches the min width", () => {
+    expect(SIDEBAR_COLLAPSE_THRESHOLD).toBeGreaterThan(MIN_SIDEBAR_WIDTH);
   });
 
   it("never widens past the default width", () => {
@@ -53,10 +53,10 @@ describe("SidebarResizeHandle", () => {
     expect(onResize.mock.calls).toEqual([[236, false], [216, false], [216, true]]);
   });
 
-  it("clamps the dragged width to the bounds", () => {
+  it("clamps the dragged width to the max", () => {
     const { separator, onResize } = setup(false);
-    drag(separator, 256, 900, 150);
-    expect(onResize.mock.calls).toEqual([[MAX_SIDEBAR_WIDTH, false], [MIN_SIDEBAR_WIDTH, false], [MIN_SIDEBAR_WIDTH, true]]);
+    drag(separator, 256, 900);
+    expect(onResize.mock.calls).toEqual([[MAX_SIDEBAR_WIDTH, false], [MAX_SIDEBAR_WIDTH, true]]);
   });
 
   it("collapses once the edge crosses the threshold and keeps the last expanded width", () => {
