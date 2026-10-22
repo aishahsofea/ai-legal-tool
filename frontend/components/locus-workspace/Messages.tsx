@@ -6,6 +6,7 @@ import { responseMarkdown } from "@/lib/threadMarkdown";
 import remarkGfm from "remark-gfm";
 import { Mono, OutlineButton } from "@/components/chamber";
 import { StatusIndicator } from "@/components/StatusIndicator";
+import { Check, Copy, Share } from "@/components/icons";
 import { createMarkdownComponents } from "./markdown";
 import { amendmentNotice, citationMarker, formatSourceTitle, repealWarning, scopedId, sourceMapId, sourceRefId } from "./citationRefs";
 import { rehypeCitationLinks } from "./rehypeCitationLinks";
@@ -21,8 +22,8 @@ function CopyButton({ getText, label }: { getText: () => string; label: string }
   const { copied, copy } = useCopyToClipboard();
 
   return (
-    <OutlineButton aria-label={label} onClick={() => void copy(getText())}>
-      {copied ? "Copied" : "Copy"}
+    <OutlineButton aria-label={label} title={copied ? "Copied" : label} className="min-w-8 px-1!" onClick={() => void copy(getText())}>
+      {copied ? <Check /> : <Copy />}
       <span className="sr-only" aria-live="polite">{copied ? "Copied" : ""}</span>
     </OutlineButton>
   );
@@ -32,8 +33,8 @@ function ShareButton({ message }: { message: Message }) {
   const { copied, share } = useShareText();
 
   return (
-    <OutlineButton aria-label="Share response" onClick={() => void share("Locus answer", responseMarkdown(message))}>
-      {copied ? "Copied" : "Share"}
+    <OutlineButton aria-label="Share response" title={copied ? "Copied" : "Share response"} className="min-w-8 px-1!" onClick={() => void share("Locus answer", responseMarkdown(message))}>
+      {copied ? <Check /> : <Share />}
       <span className="sr-only" aria-live="polite">{copied ? "Copied" : ""}</span>
     </OutlineButton>
   );
