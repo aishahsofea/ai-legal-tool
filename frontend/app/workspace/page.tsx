@@ -31,6 +31,7 @@ import {
   ReceiptPaneResizer,
   clampReceiptPaneWidth,
 } from "@/components/locus-workspace/ReceiptPaneResizer";
+import { SidebarResizeHandle, clampSidebarWidth } from "@/components/locus-workspace/SidebarResizeHandle";
 
 const CitationReceiptViewer = dynamic(
   () => import("@/components/locus-workspace/CitationReceiptViewer").then((module) => module.CitationReceiptViewer),
@@ -45,6 +46,7 @@ type ReceiptSelection = {
 
 const DESKTOP_RECEIPT_QUERY = "(min-width: 1200px)";
 const RECEIPT_WIDTH_STORAGE_KEY = "locus.receipt-pane-width.v1";
+const SIDEBAR_WIDTH_STORAGE_KEY = "locus.sidebar-width.v1";
 
 function subscribeViewport(callback: () => void) {
   window.addEventListener("resize", callback);
@@ -93,6 +95,8 @@ function WorkspaceInner({ session }: { session: Session }) {
   const [receiptSelection, setReceiptSelection] = useState<ReceiptSelection | null>(null);
   const [receiptPaneWidth, setReceiptPaneWidth] = useState(DEFAULT_RECEIPT_PANE_WIDTH);
   const [isResizingReceipt, setIsResizingReceipt] = useState(false);
+  const [isDraggingSidebar, setIsDraggingSidebar] = useState(false);
+  const [sidebarPaneWidth, setSidebarPaneWidth] = useState(WORKSPACE_SIDEBAR_WIDTH);
   const viewportWidth = useSyncExternalStore(subscribeViewport, getViewportWidth, getServerViewportWidth);
   const isDesktopReceiptPane = useSyncExternalStore(
     subscribeDesktopReceiptPane,
@@ -100,8 +104,8 @@ function WorkspaceInner({ session }: { session: Session }) {
     getServerDesktopReceiptPaneSnapshot,
   );
   const account = accountLabels(session);
-  const [sidebarCollapsed, toggleSidebar] = useSidebarCollapsed();
-  const sidebarWidth = sidebarCollapsed ? 0 : WORKSPACE_SIDEBAR_WIDTH;
+  const [sidebarCollapsed, , setSidebarCollapsed] = useSidebarCollapsed();
+  const sidebarWidth = sidebarCollapsed ? 0 : sidebarPaneWidth;
   const clampedReceiptPaneWidth = clampReceiptPaneWidth(receiptPaneWidth, viewportWidth, sidebarWidth);
   const {
     threads,
@@ -146,6 +150,32 @@ function WorkspaceInner({ session }: { session: Session }) {
     setReceiptPaneWidth(clampReceiptPaneWidth(storedWidth, window.innerWidth));
   }, []);
 
+  useEffect(() => {
+    const storedWidth = Number.parseInt(window.localStorage.getItem(SIDEBAR_WIDTH_STORAGE_KEY) ?? "", 10);
+    if (!Number.isFinite(storedWidth)) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrate the user's last committed sidebar size after mount.
+    setSidebarPaneWidth(clampSidebarWidth(storedWidth));
+  }, []);
+
+  const resizeSidebar = useCallback((width: number, commit: boolean) => {
+    setSidebarPaneWidth(width);
+    if (commit) window.localStorage.setItem(SIDEBAR_WIDTH_STORAGE_KEY, String(width));
+  }, []);
+
+  // A drag-to-collapse leaves the width near MIN, so reopening always starts from the default.
+  const changeSidebarCollapsed = useCallback(
+    (next: boolean) => {
+      if (!next && sidebarCollapsed) resizeSidebar(WORKSPACE_SIDEBAR_WIDTH, true);
+      setSidebarCollapsed(next);
+    },
+    [sidebarCollapsed, resizeSidebar, setSidebarCollapsed],
+  );
+
+  const toggleSidebarCollapsed = useCallback(
+    () => changeSidebarCollapsed(!sidebarCollapsed),
+    [sidebarCollapsed, changeSidebarCollapsed],
+  );
+
   const resizeReceiptPane = useCallback((width: number, commit: boolean) => {
     setReceiptPaneWidth(width);
     if (commit) window.localStorage.setItem(RECEIPT_WIDTH_STORAGE_KEY, String(width));
@@ -162,13 +192,16 @@ function WorkspaceInner({ session }: { session: Session }) {
   }, [isLoading, receiptSelection, stopQuery]);
 
   return (
-    <div className={`h-dvh overflow-hidden bg-(--canvas) text-(--text) ${isResizingReceipt ? "is-resizing-receipt" : ""}`}>
+    <div className={`h-dvh overflow-hidden bg-(--canvas) text-(--text) ${isResizingReceipt ? "is-resizing-receipt" : ""} ${isDraggingSidebar ? "is-resizing-sidebar" : ""}`}>
       <Suspense>
         <QueryPrefill setInput={setInput} />
       </Suspense>
       <div
         className={`chamber-grid-app grid h-full grid-cols-1 ${receiptSelection ? "receipt-open" : ""} ${sidebarCollapsed ? "sidebar-collapsed" : ""}`}
-        style={receiptSelection ? ({ "--receipt-pane-width": `${clampedReceiptPaneWidth}px` } as CSSProperties) : undefined}
+        style={{
+          "--sidebar-width": `${sidebarPaneWidth}px`,
+          ...(receiptSelection && { "--receipt-pane-width": `${clampedReceiptPaneWidth}px` }),
+        } as CSSProperties}
       >
         <ThreadSidebar
           threads={threads}
@@ -180,12 +213,19 @@ function WorkspaceInner({ session }: { session: Session }) {
           onSignOut={() => void getSupabase().auth.signOut()}
         />
 
-        <main className="workspace-main flex min-h-0 min-w-0 flex-col overflow-hidden bg-(--canvas)">
+        <main className="workspace-main relative flex min-h-0 min-w-0 flex-col overflow-hidden bg-(--canvas)">
           <ConversationHeader
             title={activeThread?.title || "New thread"}
             messages={messages}
             sidebarCollapsed={sidebarCollapsed}
-            onToggleSidebar={toggleSidebar}
+            onToggleSidebar={toggleSidebarCollapsed}
+          />
+          <SidebarResizeHandle
+            width={sidebarPaneWidth}
+            collapsed={sidebarCollapsed}
+            onResize={resizeSidebar}
+            onCollapsedChange={changeSidebarCollapsed}
+            onDraggingChange={setIsDraggingSidebar}
           />
 
           <div className="relative flex-1 overflow-y-auto px-4 py-6 md:px-6 lg:px-8">

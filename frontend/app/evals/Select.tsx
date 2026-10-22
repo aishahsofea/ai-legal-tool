@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
-import { ChevronDown } from "./icons";
+import { ChevronDown } from "@/components/icons";
 import { palette } from "./palette";
 
 export type SelectOption = { value: string; label: string };

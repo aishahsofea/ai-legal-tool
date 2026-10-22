@@ -99,6 +99,53 @@ describe("copy controls", () => {
   });
 });
 
+describe("icon buttons", () => {
+  afterEach(() => {
+    Object.defineProperty(navigator, "share", { value: undefined, configurable: true });
+  });
+
+  it("shows a copy icon, no visible word, and a title", () => {
+    renderMessage([], "Answer.");
+    const button = screen.getByRole("button", { name: "Copy response" });
+    expect(button.querySelector('svg[data-icon="copy"]')).not.toBeNull();
+    expect(button.textContent).toBe("");
+    expect(button.getAttribute("title")).toBe("Copy response");
+  });
+
+  it("shows a share icon, no visible word, and a title", () => {
+    renderMessage([], "Answer.");
+    const button = screen.getByRole("button", { name: "Share response" });
+    expect(button.querySelector('svg[data-icon="share"]')).not.toBeNull();
+    expect(button.textContent).toBe("");
+    expect(button.getAttribute("title")).toBe("Share response");
+  });
+
+  it("swaps the copy icon for a check and retitles after click", async () => {
+    render(<UserMessage message={{ id: "u1", role: "user", content: "hi", createdAt: "10:29" }} />);
+    const button = screen.getByRole("button", { name: "Copy message" });
+    fireEvent.click(button);
+    await waitFor(() => expect(button.querySelector('svg[data-icon="check"]')).not.toBeNull());
+    expect(button.getAttribute("title")).toBe("Copied");
+    expect(button.querySelector('svg[data-icon="copy"]')).toBeNull();
+  });
+
+  it("swaps the share icon for a check and retitles after click", async () => {
+    renderMessage([], "Answer.");
+    const button = screen.getByRole("button", { name: "Share response" });
+    fireEvent.click(button);
+    await waitFor(() => expect(button.querySelector('svg[data-icon="check"]')).not.toBeNull());
+    expect(button.getAttribute("title")).toBe("Copied");
+  });
+});
+
+describe("user message selection", () => {
+  it("bubble overrides the selection colour so highlight shows on its background", () => {
+    render(<UserMessage message={{ id: "u1", role: "user", content: "select me", createdAt: "10:29" }} />);
+    const bubble = screen.getByText("select me").parentElement;
+    expect(bubble?.className).toContain("selection:bg-(--accent-line)");
+  });
+});
+
 describe("share control", () => {
   afterEach(() => {
     Object.defineProperty(navigator, "share", { value: undefined, configurable: true });

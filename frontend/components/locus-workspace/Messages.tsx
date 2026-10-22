@@ -4,8 +4,9 @@ import { useCopyToClipboard } from "@/lib/useCopyToClipboard";
 import { useShareText } from "@/lib/useShareText";
 import { responseMarkdown } from "@/lib/threadMarkdown";
 import remarkGfm from "remark-gfm";
-import { Mono, OutlineButton } from "@/components/chamber";
+import { IconButton, Mono } from "@/components/chamber";
 import { StatusIndicator } from "@/components/StatusIndicator";
+import { Check, Copy, Share } from "@/components/icons";
 import { createMarkdownComponents } from "./markdown";
 import { amendmentNotice, citationMarker, formatSourceTitle, repealWarning, scopedId, sourceMapId, sourceRefId } from "./citationRefs";
 import { rehypeCitationLinks } from "./rehypeCitationLinks";
@@ -21,10 +22,10 @@ function CopyButton({ getText, label }: { getText: () => string; label: string }
   const { copied, copy } = useCopyToClipboard();
 
   return (
-    <OutlineButton aria-label={label} onClick={() => void copy(getText())}>
-      {copied ? "Copied" : "Copy"}
+    <IconButton aria-label={label} title={copied ? "Copied" : label} onClick={() => void copy(getText())}>
+      {copied ? <Check /> : <Copy />}
       <span className="sr-only" aria-live="polite">{copied ? "Copied" : ""}</span>
-    </OutlineButton>
+    </IconButton>
   );
 }
 
@@ -32,10 +33,10 @@ function ShareButton({ message }: { message: Message }) {
   const { copied, share } = useShareText();
 
   return (
-    <OutlineButton aria-label="Share response" onClick={() => void share("Locus answer", responseMarkdown(message))}>
-      {copied ? "Copied" : "Share"}
+    <IconButton aria-label="Share response" title={copied ? "Copied" : "Share response"} onClick={() => void share("Locus answer", responseMarkdown(message))}>
+      {copied ? <Check /> : <Share />}
       <span className="sr-only" aria-live="polite">{copied ? "Copied" : ""}</span>
-    </OutlineButton>
+    </IconButton>
   );
 }
 
@@ -320,7 +321,7 @@ export function AssistantMessage({
       {message.commentary && message.commentary.length > 0 && <CommentaryNotes commentary={message.commentary} />}
 
       {message.content && (
-        <div className="flex flex-wrap gap-2 border-t border-(--line-soft) pt-4" role="group" aria-label="Message actions">
+        <div className="-ml-2 flex flex-wrap gap-0.5" role="group" aria-label="Message actions">
           <CopyButton label="Copy response" getText={() => bodyRef.current?.innerText ?? bodyRef.current?.textContent ?? ""} />
           <ShareButton message={message} />
         </div>
@@ -334,7 +335,7 @@ export function UserMessage({ message }: { message: Message }) {
     <article className="flex w-full justify-end">
       <div className="flex max-w-[640px] flex-col items-end gap-2 sm:max-w-[72%]">
         <div className="font-mono text-[10px] uppercase tracking-[0.12em] text-(--text-subtle)">YOU · {message.createdAt}</div>
-        <div className="rounded-xl border border-(--accent-line) bg-(--accent-soft) px-3 py-2 font-serif text-sm font-light leading-6 tracking-tight text-(--text) shadow-[var(--shadow-soft)]">
+        <div className="rounded-xl border border-(--accent-line) bg-(--accent-soft) px-3 py-2 font-serif text-sm font-light leading-6 tracking-tight text-(--text) shadow-[var(--shadow-soft)] selection:bg-(--accent-line)!">
           <span className="whitespace-pre-wrap">{message.content}</span>
         </div>
         <CopyButton label="Copy message" getText={() => message.content} />

@@ -123,4 +123,28 @@ test.describe("sidebar collapsed", () => {
       await expectContained(page, "sidebar collapsed");
     });
   }
+
+  test("drag handle collapses, persists and expands", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await signIn(page);
+    await page.goto("/workspace");
+    await page.locator("main.workspace-main textarea").waitFor();
+    const handle = page.locator("[role=separator][aria-controls=workspace-thread-sidebar]");
+    const sidebar = page.locator("#workspace-thread-sidebar");
+    const drag = async (dx: number) => {
+      const box = (await handle.boundingBox())!;
+      const x = box.x + box.width / 2;
+      const y = box.y + box.height / 2;
+      await page.mouse.move(x, y);
+      await page.mouse.down();
+      await page.mouse.move(x + dx, y, { steps: 5 });
+      await page.mouse.up();
+    };
+    await drag(-100);
+    await expect(sidebar).toBeHidden();
+    await page.reload();
+    await expect(sidebar).toBeHidden();
+    await drag(100);
+    await expect(sidebar).toBeVisible();
+  });
 });

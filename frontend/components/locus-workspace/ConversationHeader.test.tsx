@@ -21,6 +21,18 @@ describe("ConversationHeader sidebar toggle", () => {
     expect(button).toHaveAttribute("aria-expanded", "false");
   });
 
+  it("shows a panel icon and a title matching its state", () => {
+    const { rerender } = render(<ConversationHeader title="T" onToggleSidebar={() => {}} />);
+    let button = screen.getByRole("button", { name: "Hide thread list" });
+    expect(button.querySelector('svg[data-icon="panel-left"]')).not.toBeNull();
+    expect(button).toHaveAttribute("title", "Hide thread list");
+    expect(button.textContent).not.toMatch(/[«»]/);
+
+    rerender(<ConversationHeader title="T" sidebarCollapsed onToggleSidebar={() => {}} />);
+    button = screen.getByRole("button", { name: "Show thread list" });
+    expect(button).toHaveAttribute("title", "Show thread list");
+  });
+
   it("fires onToggleSidebar on click and keyboard activation", async () => {
     const onToggle = vi.fn();
     render(<ConversationHeader title="T" onToggleSidebar={onToggle} />);
@@ -52,6 +64,18 @@ describe("ConversationHeader share", () => {
   it("is disabled with no messages", () => {
     render(<ConversationHeader title="T" messages={[]} />);
     expect(screen.getByRole("button", { name: "Share thread" })).toBeDisabled();
+  });
+
+  it("is an icon button with a tooltip and a check once copied", async () => {
+    Object.assign(navigator, { share: undefined, clipboard: { writeText: vi.fn().mockResolvedValue(undefined) } });
+    render(<ConversationHeader title="T" messages={messages} />);
+    const button = screen.getByRole("button", { name: "Share thread" });
+    expect(button).toHaveAttribute("title", "Share thread");
+    expect(button.textContent).not.toContain("Share");
+    expect(button.querySelector('svg[data-icon="share"]')).not.toBeNull();
+    fireEvent.click(button);
+    await waitFor(() => expect(button.querySelector('svg[data-icon="check"]')).not.toBeNull());
+    expect(button).toHaveAttribute("title", "Copied");
   });
 
   it("copies thread markdown when navigator.share is missing", async () => {

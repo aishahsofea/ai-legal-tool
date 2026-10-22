@@ -30,7 +30,7 @@ import {
   type RoutingSummary,
 } from "@/lib/evalsTransport";
 import { palette } from "./palette";
-import { Play, Spinner, Stop } from "./icons";
+import { Play, Spinner, Stop } from "@/components/icons";
 import { costBasisOf, costText, defaultMode, formatUsd, modesFor, routingEstimate, setKindOf, type CostBasis, type PickerMode, type SetKind } from "./evalSets";
 import { Pager } from "./Pager";
 import { Select } from "./Select";

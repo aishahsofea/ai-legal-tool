@@ -1,11 +1,10 @@
 import { type ButtonHTMLAttributes, type ReactNode } from "react";
 
-type PrimaryButtonSize = "default" | "compact" | "icon";
+type PrimaryButtonSize = "default" | "compact";
 
 const sizeClasses: Record<PrimaryButtonSize, string> = {
   default: "min-h-10 rounded-xl px-4 py-2 text-xs leading-4",
   compact: "min-h-8 rounded-lg px-3 py-1 text-xs leading-4",
-  icon: "min-h-8 min-w-8 rounded-lg p-1 text-xs leading-4",
 };
 
 export function PrimaryButton({

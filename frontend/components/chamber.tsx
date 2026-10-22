@@ -62,6 +62,21 @@ export function OutlineButton({
   );
 }
 
+export function IconButton({
+  className = "",
+  children,
+  ...props
+}: ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button
+      {...props}
+      className={`inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-(--text-subtle) transition-colors duration-150 hover:bg-(--line-soft) hover:text-(--text) active:opacity-80 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-(--text-subtle) ${className}`}
+    >
+      {children}
+    </button>
+  );
+}
+
 export function PillButton({
   className = "",
   children,
