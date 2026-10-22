@@ -158,7 +158,7 @@
 @media (min-width: 768px) {
   .chamber-grid-app {
     grid-template-rows: minmax(0, 1fr);
-    grid-template-columns: 256px minmax(0, 1fr);
+    grid-template-columns: var(--sidebar-width, 256px) minmax(0, 1fr);
   }
   .sidebar-collapsed.chamber-grid-app { grid-template-columns: minmax(0, 1fr); }
   .sidebar-collapsed .workspace-sidebar { display: none; }
@@ -183,7 +183,7 @@
 
   .workspace-sidebar-handle:hover > span,
   .workspace-sidebar-handle:focus-visible > span,
-  .workspace-sidebar-handle[data-preview] > span {
+  .is-resizing-sidebar .workspace-sidebar-handle > span {
     width: 2px;
     background: var(--accent);
   }
@@ -191,7 +191,7 @@
 
 @media (min-width: 1200px) {
   .receipt-open.chamber-grid-app {
-    grid-template-columns: 256px minmax(420px, 1fr) 8px var(--receipt-pane-width, 640px);
+    grid-template-columns: var(--sidebar-width, 256px) minmax(420px, 1fr) 8px var(--receipt-pane-width, 640px);
   }
 
   .receipt-open .workspace-main {
