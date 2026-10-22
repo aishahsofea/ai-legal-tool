@@ -1,10 +1,4 @@
-"""LangGraph agent graph for the Malaysian Legal Research Assistant.
-
-The graph owns the full query lifecycle, including bounded retries:
-router → retriever → synthesiser → citation_validator → grounding_check → currency_check → supervisor
-                                      ↑                                                  ↓
-                                      └────────────── retry when violations ────────────┘
-"""
+"""LangGraph agent graph; nodes, edges and state are mapped in CONTRIBUTING.md#graph-map."""
 import atexit
 import contextlib
 import os

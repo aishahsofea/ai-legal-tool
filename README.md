@@ -67,6 +67,8 @@ query + thread_id (EN / BM / mixed)
   → record_turn          append the turn to checkpointed history
 ```
 
+Full node, edge and state map: [CONTRIBUTING.md](CONTRIBUTING.md#graph-map).
+
 <details>
 <summary><strong>Short-circuits &amp; retry routing</strong></summary>
 
@@ -176,6 +178,7 @@ The server refuses stale corpora, blocks concurrent runs, and kills a run when i
 
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** — local setup, env vars & feature flags, running evals, model overrides
 - **[Architecture map](CONTRIBUTING.md#architecture-map)** — which directory owns what, and when to read it
+- **[Graph map](CONTRIBUTING.md#graph-map)** — every agent node and edge, and which node writes each state field
 - **[CONTEXT.md](CONTEXT.md)** — domain language, supervisor rules, query-language behaviour, memory model
 - **[docs/data-pipeline.md](docs/data-pipeline.md)** — the five scrape → embed steps and the JSON each produces
 - **[docs/corpus-receipts.md](docs/corpus-receipts.md)** — immutable corpus lifecycle, storage, rollout, and rollback
