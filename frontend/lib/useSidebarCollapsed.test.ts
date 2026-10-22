@@ -31,6 +31,23 @@ describe("useSidebarCollapsed", () => {
     expect(window.localStorage.getItem(KEY)).toBe("0");
   });
 
+  it("sets an exact state and persists it", () => {
+    const { result } = renderHook(() => useSidebarCollapsed());
+    act(() => result.current[2](true));
+    expect(result.current[0]).toBe(true);
+    expect(window.localStorage.getItem(KEY)).toBe("1");
+    act(() => result.current[2](false));
+    expect(result.current[0]).toBe(false);
+    expect(window.localStorage.getItem(KEY)).toBe("0");
+  });
+
+  it("persists even when the value is unchanged", () => {
+    const { result } = renderHook(() => useSidebarCollapsed());
+    act(() => result.current[2](false));
+    expect(result.current[0]).toBe(false);
+    expect(window.localStorage.getItem(KEY)).toBe("0");
+  });
+
   it("does not throw when localStorage throws", () => {
     vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
       throw new Error("denied");
