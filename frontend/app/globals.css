@@ -280,13 +280,13 @@ body {
   color: var(--text);
 }
 
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-/* In the base layer so a button's own text-* and font-* classes can override it. */
+/* In the base layer so an element's own outline-* and text-*/font-* classes can override it. */
 @layer base {
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
   button,
   input,
   textarea,
