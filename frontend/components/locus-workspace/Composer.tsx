@@ -26,7 +26,7 @@ export function Composer({
 
   return (
     <div className="border-t border-(--line) bg-(--surface-soft) px-4 pb-3 pt-3 md:px-6 lg:px-8">
-      <form onSubmit={onSubmit} className="chamber-full-input chamber-focus-within grid min-h-12 w-full items-end grid-cols-[auto_minmax(0,1fr)_auto_auto] overflow-hidden rounded-xl border border-(--line) bg-(--surface) shadow-[var(--shadow-raised)] max-sm:grid-cols-[minmax(0,1fr)_48px]">
+      <form onSubmit={onSubmit} className="chamber-full-input chamber-focus-within grid min-h-12 w-full items-center grid-cols-[auto_minmax(0,1fr)_auto_auto] overflow-hidden rounded-xl border border-(--line) bg-(--surface) shadow-[var(--shadow-raised)] max-sm:grid-cols-[minmax(0,1fr)_48px]">
         <span className="flex items-center self-stretch border-r border-(--line) px-4 text-(--accent) max-sm:hidden">
           <Mono>ASK ›</Mono>
         </span>
