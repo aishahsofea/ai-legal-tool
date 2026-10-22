@@ -143,10 +143,6 @@
   display: none;
 }
 
-.conversation-header-share-icon {
-  display: inline;
-}
-
 .is-resizing-receipt {
   cursor: col-resize;
   user-select: none;
@@ -223,22 +219,6 @@
     width: 100%;
     height: 100%;
     box-shadow: none;
-  }
-}
-
-@container workspace (width < 700px) {
-  .conversation-header-share-label {
-    display: none;
-  }
-
-  .conversation-header-share-icon {
-    display: inline;
-  }
-
-  .conversation-header-share {
-    width: 32px;
-    min-width: 32px;
-    padding-inline: 0;
   }
 }
 
