@@ -33,7 +33,7 @@ NODE_META: dict[str, NodeMeta] = {
         "llm",
         "Regex escalation check first (no LLM). Otherwise an LLM classifies the query and detects its language.",
         ("query", "history"),
-        ("query_type", "response_language", "clarifying_question"),
+        ("query_type", "response_language", "clarifying_question", "complexity", "complexity_probability"),
         1, 2,
     ),
     "escalate": NodeMeta(
@@ -47,7 +47,7 @@ NODE_META: dict[str, NodeMeta] = {
         "control",
         "interrupt() pauses for the user, merges the answer into query, then back to router. Max once per turn.",
         ("query", "clarifying_question"),
-        ("query", "clarifying_question", "clarified"),
+        ("query", "clarifying_question", "clarified", "query_type"),
         2, 1,
     ),
     "contextualize": NodeMeta(
@@ -103,7 +103,7 @@ NODE_META: dict[str, NodeMeta] = {
         "llm",
         "LLM judge. Does the cited text support each claim? Fails open, counted in grounding_metrics.",
         ("draft_response", "citations", "retrieved_chunks", "violations", "evidence_violations", "grounding_metrics"),
-        ("violations", "evidence_violations", "grounding_metrics"),
+        ("violations", "evidence_violations", "grounding_metrics", "citations"),
         7, 2,
     ),
     "currency_check": NodeMeta(
@@ -117,7 +117,7 @@ NODE_META: dict[str, NodeMeta] = {
         "deterministic",
         "Regex policy rules (advice phrases, citation present, disclaimer). Routes to retry or finish.",
         ("draft_response", "violations", "retry_count"),
-        ("violations",),
+        ("violations", "final_response"),
         9, 2,
     ),
     "increment_retry": NodeMeta(
