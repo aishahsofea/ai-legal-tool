@@ -49,21 +49,20 @@ Then `cd frontend && npm install && npm run dev` for the chat UI at `localhost:3
 
 ## How it works
 
-A query carries a `thread_id` and flows through a LangGraph graph: classified, retrieved
-against, drafted, then checked for citations, grounding, and policy before it reaches the user.
+Each query carries a `thread_id` and runs through this LangGraph graph before the answer reaches the user:
 
 ```text
 query + thread_id (EN / BM / mixed)
   → start_turn           load thread history, reset per-turn scratch state
-  → router               classify, Jev first pass with LLM fallback (or short-circuit: escalate → hand-off, conversational → warm reply, clarify → ask the user)
+  → router               classify the query: Jev classifier first, LLM fallback
   → contextualize        rewrite an elliptical follow-up into a standalone query
-  → retriever            pgvector section search (or ReAct search/lookup; optionally one selective published-reference hop)
+  → retriever            pgvector section search, or a ReAct agent when AGENTIC_RETRIEVAL is on
   → recall               surface saved practitioner preferences as framing hints (optional)
   → synthesiser          draft the answer with citations (act, section, page deep-link)
   → citation_validator   reject citations absent from the retrieved sources
-  → grounding_check      flag unsupported claims; retain only deterministically verified Evidence Spans
-  → currency_check       flag a cited Act that's been repealed, or amended since the reprint we indexed
-  → supervisor           enforce policy — retries once on a violation
+  → grounding_check      flag unsupported claims, keep only verified Evidence Spans
+  → currency_check       label each cited Act repealed, superseded, current_as_indexed or unknown
+  → supervisor           enforce policy, retry once on a violation
   → record_turn          append the turn to checkpointed history
 ```
 
@@ -72,18 +71,26 @@ Full node, edge and state map: [CONTRIBUTING.md](CONTRIBUTING.md#graph-map).
 <details>
 <summary><strong>Short-circuits &amp; retry routing</strong></summary>
 
-Three paths skip the full pipeline:
+Three router outcomes end the turn early:
 
-- **escalate** — a client-specific query ("am I liable…", "my client…") jumps straight to `record_turn` with a fixed human hand-off message.
-- **conversational** — an unambiguously non-legal message (greeting, name, thanks, "what can you do?") passes through `recall` then answers with a short, warm reply — no retrieval, no supervisor, no citations, no disclaimer.
-- **clarify** — an un-actionable legal query (a section with no Act) routes to a `clarify` node that pauses the graph with LangGraph's `interrupt()`, asks the user a question, and resumes on `POST /resume` (once per turn). See ADR 0015.
-- **retry** — a `supervisor` violation with a retry remaining (`MAX_RETRIES=1`) loops back before re-running the checks.
+- **escalate**: a client-specific query ("am I liable…", "my client…") goes through `escalate` straight to `record_turn` with a fixed message referring the user to a qualified Malaysian lawyer.
+- **conversational**: an unambiguously non-legal message (greeting, name, thanks, "what can you do?") gets a short, warm reply. It passes through `recall_conversational`, a second copy of `recall`, then `conversational`. No retrieval, no supervisor, no citations, no disclaimer.
+- **clarify**: an un-actionable legal query (a section with no Act) routes to the `clarify` node. It pauses the graph with LangGraph's `interrupt()`, at most once per turn, and asks the user a question. The graph resumes on `POST /resume`. See ADR 0015.
 
-The single retry splits on what went wrong. A policy/phrasing violation (advice phrase, missing disclaimer) loops back to `synthesiser` to re-draft against the same chunks. An evidence violation (an uncited claim, or a citation not in the sources) instead routes to `retry_retrieve` — but only when `AGENTIC_RETRIEVAL` is on — which re-runs the retrieval agent with feedback about the gap. An evidence gap that survives re-retrieval fails closed to the safe fallback.
+`supervisor` allows one retry (`MAX_RETRIES=1`). The retry re-runs the checks, and its path depends on what went wrong:
+
+- **Policy or phrasing violation** (advice phrase, missing disclaimer): `increment_retry` loops back to `synthesiser`, which re-drafts against the same chunks.
+- **Evidence violation** (an uncited claim, or a citation not in the sources):
+  - `AGENTIC_RETRIEVAL` on: `retry_retrieve` re-runs the retrieval agent with feedback about the gap.
+  - `AGENTIC_RETRIEVAL` off: re-drafts via `increment_retry`, because the deterministic retriever would only repeat the same search.
+
+If any violation remains after the retry, including an evidence gap that survives re-retrieval, the turn fails closed: `record_turn` sends `FINAL_FAILURE_RESPONSE` (`agent/query_policy.py`) instead of the draft.
 
 </details>
 
-See [CONTEXT.md](CONTEXT.md) for the domain model and supervisor rules, and `docs/adr/` for the design decisions behind these (ADR 0008 history budget · 0010/0012 semantic memory · 0013 agentic retrieval · 0014 barge-in · 0015 clarify interrupt).
+The ReAct retriever calls `search_statutes` and `lookup_section`. It may also follow one cross-reference to another provision, a selective, optional [Reference Follow Operation](CONTEXT.md#reference-graph). [Evidence Span](CONTEXT.md#provenance-and-citation-receipts) and [Currency Label](CONTEXT.md#currency-and-timeline) are defined in CONTEXT.md.
+
+[CONTEXT.md](CONTEXT.md) defines the domain model and supervisor rules. Design decisions live in `docs/adr/`: ADR 0008 history budget, 0010/0012 semantic memory, 0013 agentic retrieval, 0014 barge-in, 0015 clarify interrupt.
 
 ## API
 
