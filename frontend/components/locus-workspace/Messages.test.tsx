@@ -138,6 +138,14 @@ describe("icon buttons", () => {
   });
 });
 
+describe("user message selection", () => {
+  it("bubble overrides the selection colour so highlight shows on its background", () => {
+    render(<UserMessage message={{ id: "u1", role: "user", content: "select me", createdAt: "10:29" }} />);
+    const bubble = screen.getByText("select me").parentElement;
+    expect(bubble?.className).toContain("selection:bg-(--accent-line)");
+  });
+});
+
 describe("share control", () => {
   afterEach(() => {
     Object.defineProperty(navigator, "share", { value: undefined, configurable: true });

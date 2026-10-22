@@ -335,7 +335,7 @@ export function UserMessage({ message }: { message: Message }) {
     <article className="flex w-full justify-end">
       <div className="flex max-w-[640px] flex-col items-end gap-2 sm:max-w-[72%]">
         <div className="font-mono text-[10px] uppercase tracking-[0.12em] text-(--text-subtle)">YOU · {message.createdAt}</div>
-        <div className="rounded-xl border border-(--accent-line) bg-(--accent-soft) px-3 py-2 font-serif text-sm font-light leading-6 tracking-tight text-(--text) shadow-[var(--shadow-soft)]">
+        <div className="rounded-xl border border-(--accent-line) bg-(--accent-soft) px-3 py-2 font-serif text-sm font-light leading-6 tracking-tight text-(--text) shadow-[var(--shadow-soft)] selection:bg-(--accent-line)">
           <span className="whitespace-pre-wrap">{message.content}</span>
         </div>
         <CopyButton label="Copy message" getText={() => message.content} />
