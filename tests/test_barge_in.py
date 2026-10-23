@@ -9,25 +9,43 @@ Covers the three things a "press Esc" barge-in must guarantee:
 
 The async path (graph.astream) drives the ASYNC node twins, so the LLM nodes are
 patched via their `a*_node` names in agent.graph.
+
+The contract runs on MemorySaver always, and on the pooled AsyncPostgresSaver when
+TEST_DATABASE_URL is set (#262).
 """
 import asyncio
+import os
 import unittest
-from contextlib import ExitStack
+import uuid
+from contextlib import AsyncExitStack, ExitStack
+from unittest.mock import patch
 
 from langgraph.checkpoint.memory import MemorySaver
 
 from agent import query_lifecycle
-from agent.graph import build_graph
+from agent.graph import build_graph, lifespan_graph
 from tests._graph_helpers import patch_async_happy_path
+
+TEST_DATABASE_URL = os.environ.get("TEST_DATABASE_URL")
 
 
 def _config(thread_id: str) -> dict:
     return {"configurable": {"thread_id": thread_id, "user_id": None}}
 
 
-class BargeInTests(unittest.IsolatedAsyncioTestCase):
+class _BargeInContract(unittest.IsolatedAsyncioTestCase):
+    """Subclasses supply the checkpointer via _open_checkpointer."""
+
+    __test__ = False
+
+    async def _open_checkpointer(self):
+        raise NotImplementedError
+
     async def asyncSetUp(self):
         self._saved_graph = query_lifecycle.graph
+        self.checkpointer = await self._open_checkpointer()
+        # Postgres keeps state between runs, so every thread id is unique per test.
+        self.suffix = uuid.uuid4().hex
 
     async def asyncTearDown(self):
         query_lifecycle.graph = self._saved_graph
@@ -46,10 +64,10 @@ class BargeInTests(unittest.IsolatedAsyncioTestCase):
             await release.wait()
             return {"draft_response": "Section 1 of Example Act applies.", "citations": []}
 
-        thread = "barge-1"
+        thread = f"barge-1-{self.suffix}"
         with ExitStack() as stack:
             patch_async_happy_path(stack, blocking_synth)
-            query_lifecycle.set_graph(build_graph(MemorySaver()))
+            query_lifecycle.set_graph(build_graph(self.checkpointer))
 
             events: list = []
             consumer = asyncio.create_task(self._drain(thread, "first question", events))
@@ -67,8 +85,8 @@ class BargeInTests(unittest.IsolatedAsyncioTestCase):
         # The crux: cancel mid-synthesiser, then send a NEW prompt on the SAME thread.
         # History must contain ONLY the second turn — the pending checkpoint task from
         # the aborted turn must neither resume nor duplicate.
-        checkpointer = MemorySaver()
-        thread = "barge-2"
+        checkpointer = self.checkpointer
+        thread = f"barge-2-{self.suffix}"
         config = _config(thread)
 
         reached = asyncio.Event()
@@ -100,7 +118,7 @@ class BargeInTests(unittest.IsolatedAsyncioTestCase):
             await self._drain(thread, "real question", events2)
 
         self.assertIn("response", [e.get("type") for e in events2])
-        history = graph2.get_state(config).values["history"]
+        history = (await graph2.aget_state(config)).values["history"]
         # Exactly one turn — the aborted turn left no trace and did not resume.
         self.assertEqual(len(history), 2)
         self.assertEqual(history[0], {"role": "user", "content": "real question"})
@@ -119,10 +137,10 @@ class BargeInTests(unittest.IsolatedAsyncioTestCase):
             await release.wait()
             return {"draft_response": "first", "citations": []}
 
-        thread = "barge-3"
+        thread = f"barge-3-{self.suffix}"
         with ExitStack() as stack:
             patch_async_happy_path(stack, first_synth)
-            query_lifecycle.set_graph(build_graph(MemorySaver()))
+            query_lifecycle.set_graph(build_graph(self.checkpointer))
             events1: list = []
             first = asyncio.create_task(self._drain(thread, "q1", events1))
             await asyncio.wait_for(reached1.wait(), timeout=5)
@@ -137,6 +155,29 @@ class BargeInTests(unittest.IsolatedAsyncioTestCase):
             self.assertNotIn("response", [e.get("type") for e in events1])
             await asyncio.wait_for(second, timeout=5)
             self.assertIn("response", [e.get("type") for e in events2])
+
+
+class MemorySaverBargeInTests(_BargeInContract):
+    __test__ = True
+
+    async def _open_checkpointer(self):
+        return MemorySaver()
+
+
+@unittest.skipUnless(TEST_DATABASE_URL, "needs TEST_DATABASE_URL pointing at a disposable Postgres")
+class PooledPostgresBargeInTests(_BargeInContract):
+    __test__ = True
+
+    async def _open_checkpointer(self):
+        # tests/conftest.py forces CHECKPOINTER=memory; undo it so lifespan_graph opens Postgres.
+        env = patch.dict(os.environ, {"DATABASE_URL": TEST_DATABASE_URL})
+        env.start()
+        self.addCleanup(env.stop)
+        os.environ.pop("CHECKPOINTER", None)
+        lifespan = AsyncExitStack()
+        self.addAsyncCleanup(lifespan.aclose)
+        graph = await lifespan.enter_async_context(lifespan_graph())
+        return graph.checkpointer
 
 
 if __name__ == "__main__":
