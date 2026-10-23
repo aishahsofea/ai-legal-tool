@@ -13,30 +13,16 @@ patched via their `a*_node` names in agent.graph.
 import asyncio
 import unittest
 from contextlib import ExitStack
-from unittest.mock import patch
 
 from langgraph.checkpoint.memory import MemorySaver
 
 from agent import query_lifecycle
 from agent.graph import build_graph
+from tests._graph_helpers import patch_async_happy_path
 
 
 def _config(thread_id: str) -> dict:
     return {"configurable": {"thread_id": thread_id, "user_id": None}}
-
-
-def _patch_async_happy_path(stack: ExitStack, asynthesiser) -> None:
-    """Topical happy path for the ASYNC (astream) execution: classify topical,
-    retrieve nothing, pass every check. synthesiser is supplied by the caller so a
-    test can make it block. Sync-only nodes (retriever/citation/supervisor) run
-    their sync func in a threadpool during astream, so they are patched by base name."""
-    stack.enter_context(patch("agent.graph.arouter_node", side_effect=lambda s: {"query_type": "topical"}))
-    stack.enter_context(patch("agent.graph.acontextualize_node", side_effect=lambda s: {"standalone_query": ""}))
-    stack.enter_context(patch("agent.graph.agrounding_check_node", side_effect=lambda s: {"violations": []}))
-    stack.enter_context(patch("agent.graph.retriever_node", return_value={"retrieved_chunks": []}))
-    stack.enter_context(patch("agent.graph.citation_validator_node", return_value={"violations": []}))
-    stack.enter_context(patch("agent.graph.supervisor_node", side_effect=lambda s: {"violations": [], "final_response": s["draft_response"]}))
-    stack.enter_context(patch("agent.graph.asynthesiser_node", side_effect=asynthesiser))
 
 
 class BargeInTests(unittest.IsolatedAsyncioTestCase):
@@ -62,7 +48,7 @@ class BargeInTests(unittest.IsolatedAsyncioTestCase):
 
         thread = "barge-1"
         with ExitStack() as stack:
-            _patch_async_happy_path(stack, blocking_synth)
+            patch_async_happy_path(stack, blocking_synth)
             query_lifecycle.set_graph(build_graph(MemorySaver()))
 
             events: list = []
@@ -94,7 +80,7 @@ class BargeInTests(unittest.IsolatedAsyncioTestCase):
             return {"draft_response": "abandoned", "citations": []}
 
         with ExitStack() as stack:
-            _patch_async_happy_path(stack, blocking_synth)
+            patch_async_happy_path(stack, blocking_synth)
             query_lifecycle.set_graph(build_graph(checkpointer))
             events: list = []
             consumer = asyncio.create_task(self._drain(thread, "aborted question", events))
@@ -107,7 +93,7 @@ class BargeInTests(unittest.IsolatedAsyncioTestCase):
             return {"draft_response": "Section 5 of Example Act applies. This does not constitute legal advice.", "citations": []}
 
         with ExitStack() as stack:
-            _patch_async_happy_path(stack, good_synth)
+            patch_async_happy_path(stack, good_synth)
             graph2 = build_graph(checkpointer)
             query_lifecycle.set_graph(graph2)
             events2: list = []
@@ -135,7 +121,7 @@ class BargeInTests(unittest.IsolatedAsyncioTestCase):
 
         thread = "barge-3"
         with ExitStack() as stack:
-            _patch_async_happy_path(stack, first_synth)
+            patch_async_happy_path(stack, first_synth)
             query_lifecycle.set_graph(build_graph(MemorySaver()))
             events1: list = []
             first = asyncio.create_task(self._drain(thread, "q1", events1))

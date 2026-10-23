@@ -300,16 +300,13 @@ def build_graph(checkpointer=None, store=None) -> StateGraph:
 graph = None
 
 
+# Shares the Supabase session-pooler cap with the per-call psycopg2 connections.
+_POOL_MAX_SIZE = 4
+
+
 @contextlib.asynccontextmanager
 async def lifespan_graph():
-    """Async context manager yielding a graph for the FastAPI app's lifetime.
-
-    `graph.astream()` needs a checkpointer with async support (`aget_tuple`/`aput`),
-    which the sync `PostgresSaver` above does not implement. `AsyncPostgresSaver`'s
-    connection is bound to the event loop it is created on, so it must be opened from
-    within the server's running loop (e.g. a FastAPI lifespan handler) rather than at
-    module-import time.
-    """
+    """Yield a graph backed by an async Postgres pool, which must open inside the server's running event loop."""
     db_url = os.getenv("DATABASE_URL")
     if not db_url or os.getenv("CHECKPOINTER", "").lower() == "memory":
         yield build_graph(MemorySaver(), InMemoryStore(index=_STORE_INDEX))
@@ -317,11 +314,20 @@ async def lifespan_graph():
 
     from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
     from langgraph.store.postgres.aio import AsyncPostgresStore
-    # Both bind to the running loop, so both are opened here (not at import time).
-    async with (
-        AsyncPostgresSaver.from_conn_string(db_url) as cp,
-        AsyncPostgresStore.from_conn_string(db_url, index=_STORE_INDEX) as store,
-    ):
+    from psycopg.rows import dict_row
+    from psycopg_pool import AsyncConnectionPool
+    # Same kwargs as from_conn_string in the installed langgraph-checkpoint-postgres (aio.py).
+    pool = AsyncConnectionPool(
+        db_url,
+        open=False,
+        min_size=1,
+        max_size=_POOL_MAX_SIZE,
+        kwargs={"autocommit": True, "prepare_threshold": 0, "row_factory": dict_row},
+        check=AsyncConnectionPool.check_connection,
+    )
+    async with pool:
+        cp = AsyncPostgresSaver(conn=pool)
+        store = AsyncPostgresStore(conn=pool, index=_STORE_INDEX)
         await cp.setup()
         await store.setup()
         yield build_graph(cp, store)

@@ -17,6 +17,8 @@ langgraph>=1.2,<1.3
 langgraph-checkpoint-postgres>=3.1,<4
 # The checkpointer imports psycopg 3, which needs libpq. The deploy image has none, so bundle it.
 psycopg[binary]>=3.2,<4
+# agent/graph.py pools the async checkpointer and store connections with it.
+psycopg-pool>=3.2,<4
 langchain>=1.3,<2
 langchain-core>=1.4,<2
 langchain-anthropic>=1.4,<2
