@@ -2,8 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { stashPendingQuery, withQuery } from "@/lib/pendingQuery";
 import { getSupabase } from "@/lib/supabaseClient";
 import { useSession } from "@/lib/useSession";
+
+const currentQuery = () => new URLSearchParams(window.location.search).get("q");
 
 export default function Login() {
   const router = useRouter();
@@ -11,11 +14,12 @@ export default function Login() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (session) router.replace("/workspace");
+    if (session) router.replace(withQuery("/workspace", currentQuery()));
   }, [session, router]);
 
   const signIn = async () => {
     setError(null);
+    stashPendingQuery(currentQuery());
     const { error } = await getSupabase().auth.signInWithOAuth({
       provider: "github",
       options: { redirectTo: `${window.location.origin}/auth/callback` },
