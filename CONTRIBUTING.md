@@ -954,6 +954,19 @@ a paid organization Nano bills at the Micro price. So the price is `$25 + (unpau
 Paused projects are free. The spend cap is on by default and should stay on, but it covers disk
 overage, egress and monthly active users — never compute.
 
+**Connection budget.** The chat checkpointer and store share one pool of `_POOL_MAX_SIZE`
+connections (4, in `agent/graph.py`). The pool replaces a connection that is closed or left busy by
+a cancelled turn. Every other connection is one per call and is closed after it: retrieval
+(`agent/retrieval/search.py:55`, `:369`, `:445`) and the threads store (`api/threads_store.py:19`).
+Eval and CLI jobs connect too. Count the per-call ones per concurrent turn, then add 4.
+
+The session-pooler cap is on the Supabase dashboard, under Database Settings. Check that 4 plus the
+per-call connections of your busiest turns stays under it, with headroom. If the cap is below that,
+lower `_POOL_MAX_SIZE`. 4 is a first guess, not a measured number.
+
+If chat fails with `another command is already in progress` or `server closed the connection`, the
+pool should already have recovered. If errors continue, redeploy and reopen #262.
+
 ADR 0021 records why this is a paid plan and what was not measured.
 
 ## Utility commands
