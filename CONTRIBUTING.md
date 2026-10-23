@@ -956,13 +956,16 @@ overage, egress and monthly active users — never compute.
 
 **Connection budget.** The chat checkpointer and store share one pool of `_POOL_MAX_SIZE`
 connections (4, in `agent/graph.py`). The pool replaces a connection that is closed or left busy by
-a cancelled turn. Every other connection is one per call and is closed after it: retrieval
+a cancelled turn. All other connections are opened per call and closed after it: retrieval
 (`agent/retrieval/search.py:55`, `:369`, `:445`) and the threads store (`api/threads_store.py:19`).
-Eval and CLI jobs connect too. Count the per-call ones per concurrent turn, then add 4.
+Eval and CLI jobs also connect. A turn holds about 2 per-call connections at peak.
 
-The session-pooler cap is on the Supabase dashboard, under Database Settings. Check that 4 plus the
-per-call connections of your busiest turns stays under it, with headroom. If the cap is below that,
-lower `_POOL_MAX_SIZE`. 4 is a first guess, not a measured number.
+The limit is the Supavisor pool size: 15 on Micro (Supabase dashboard, Database Settings). It caps
+real Postgres connections per user and database. In session mode (port 5432) each client holds one
+for its whole life. Do not budget against the 200 "Max client connections" figure.
+
+Keep 4 + 2n under 15, where n is concurrent turns. That allows 5. Plan for 4, to leave room for
+`psql` and evals. If you leave Micro or run more turns at once, lower `_POOL_MAX_SIZE`.
 
 If chat fails with `another command is already in progress` or `server closed the connection`, the
 pool should already have recovered. If errors continue, redeploy and reopen #262.
