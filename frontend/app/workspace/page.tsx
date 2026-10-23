@@ -19,6 +19,7 @@ import {
   ThreadSidebar,
   UserMessage,
 } from "@/components/conversation";
+import { withQuery } from "@/lib/pendingQuery";
 import { useResearchThreads } from "@/lib/useResearchThreads";
 import { useSession } from "@/lib/useSession";
 import { useSidebarCollapsed } from "@/lib/useSidebarCollapsed";
@@ -303,7 +304,7 @@ export default function Workspace() {
   const session = useSession();
 
   useEffect(() => {
-    if (session === null) router.replace("/login");
+    if (session === null) router.replace(withQuery("/login", new URLSearchParams(window.location.search).get("q")));
   }, [session, router]);
 
   return session ? <WorkspaceInner session={session} /> : null;
