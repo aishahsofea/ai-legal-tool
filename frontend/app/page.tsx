@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ExampleAnswer } from "@/components/landing/ExampleAnswer";
+import { EXAMPLE_MESSAGES, EXAMPLE_META } from "@/lib/fixtures/exampleAnswer";
 
 const SAMPLES = [
   {
@@ -186,6 +188,10 @@ export default function Landing() {
               </div>
             ))}
           </div>
+        </section>
+
+        <section className="border-b border-(--line) py-16 lg:py-20">
+          <ExampleAnswer meta={EXAMPLE_META} messages={EXAMPLE_MESSAGES} />
         </section>
 
         <section id="capabilities" className="border-b border-(--line) py-16 lg:py-20">
