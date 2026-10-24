@@ -90,6 +90,7 @@ export function useResearchThreads() {
   const [loadingThreadId, setLoadingThreadId] = useState<string | null>(null);
   const selectRequestRef = useRef(0);
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null);
+  const activeThreadIdRef = useRef<string | null>(null);
   const [pendingThreadId, setPendingThreadId] = useState<string | null>(null);
   const [input, setInput] = useState("");
   const [reasoningOpen, setReasoningOpen] = useState(false);
@@ -134,6 +135,10 @@ export function useResearchThreads() {
   }, [syncActiveFlags]);
 
   useEffect(() => {
+    activeThreadIdRef.current = activeThreadId;
+  }, [activeThreadId]);
+
+  useEffect(() => {
     let cancelled = false;
     fetchThreads()
       .then((items) => {
@@ -173,7 +178,7 @@ export function useResearchThreads() {
           if (request === selectRequestRef.current) {
             setLoadingThreadId(null);
             setLoadError("Could not open that thread.");
-            setThreads((prev) => syncActiveFlags(prev, activeThreadId));
+            setThreads((prev) => syncActiveFlags(prev, activeThreadIdRef.current));
           }
           return;
         }
@@ -189,7 +194,7 @@ export function useResearchThreads() {
         syncActiveFlags(prev.map((thread) => (restored && thread.id === threadId ? restored : thread)), threadId),
       );
     },
-    [activeThreadId, loadingThreadId, syncActiveFlags, threads],
+    [loadingThreadId, syncActiveFlags, threads],
   );
 
   const submitQuery = useCallback(
@@ -282,7 +287,7 @@ export function useResearchThreads() {
     if (remaining.length === 0) {
       // Barge-in on the first turn of a fresh thread: drop the empty thread and
       // return to the empty state with the question waiting in the composer.
-      setThreads((prev) => syncActiveFlags(prev.filter((t) => t.id !== activeThreadId), null));
+      setThreads((prev) => syncActiveFlags(prev.filter((t) => t.id !== activeThreadId), loadingThreadId));
       setActiveThreadId(null);
       return;
     }
@@ -294,7 +299,7 @@ export function useResearchThreads() {
           : t,
       ),
     );
-  }, [activeThreadId, cancel, syncActiveFlags, threads]);
+  }, [activeThreadId, cancel, loadingThreadId, syncActiveFlags, threads]);
 
   useEffect(() => {
     if (!status || !pendingThreadId) return;

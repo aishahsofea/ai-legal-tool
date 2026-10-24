@@ -263,6 +263,22 @@ describe("opening a thread", () => {
     expect(result.current.activeThreadId).toBeNull();
   });
 
+  it("stopQuery during a load keeps the loading row active", async () => {
+    deferFetchThread();
+    const { result } = await mountWithTwoThreads();
+    await act(async () => {
+      await result.current.submitQuery("first question");
+    });
+    act(() => {
+      void result.current.selectThread("t1");
+    });
+
+    act(() => result.current.stopQuery());
+
+    expect(result.current.loadingThreadId).toBe("t1");
+    expect(result.current.threads.find((t) => t.id === "t1")?.active).toBe(true);
+  });
+
   it("already-loaded thread switches without loading", async () => {
     const pending = deferFetchThread();
     const { result } = await mountWithTwoThreads();
