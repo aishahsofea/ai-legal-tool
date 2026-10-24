@@ -98,6 +98,27 @@ test("clicking A then B only ever shows B", async ({ page }) => {
   await expect(page.getByText(QUESTIONS.t1)).toBeHidden();
 });
 
+test("while a thread loads, Send and Share are disabled and the input stays editable", async ({ page }) => {
+  const threads = await open(page);
+  await row(page, LISTED[0].title).click();
+  await threads.requested("t1");
+  await threads.release("t1");
+  await expect(page.getByText(QUESTIONS.t1)).toBeVisible();
+  await expect(page.getByRole("button", { name: "Share thread" })).toBeEnabled();
+
+  await row(page, LISTED[1].title).click();
+  await threads.requested("t2");
+  const input = page.getByRole("textbox");
+  await input.fill("typed while loading");
+  await expect(input).toHaveValue("typed while loading");
+  await expect(page.getByRole("button", { name: "Send message" })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Share thread" })).toBeDisabled();
+
+  await threads.release("t2");
+  await expect(page.getByText(QUESTIONS.t2)).toBeVisible();
+  await expect(page.getByRole("button", { name: "Send message" })).toBeEnabled();
+});
+
 test("an already-loaded thread switches with no loader", async ({ page }) => {
   const threads = await open(page);
   await row(page, LISTED[0].title).click();
