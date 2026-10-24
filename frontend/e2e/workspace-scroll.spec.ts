@@ -110,16 +110,20 @@ test.describe("sidebar collapsed", () => {
     await page.locator("main.workspace-main textarea").waitFor();
     const handle = page.locator("[role=separator][aria-controls=workspace-thread-sidebar]");
     const sidebar = page.locator("#workspace-thread-sidebar");
-    const drag = async (dx: number) => {
+    const dragTo = async (targetX: number) => {
       const box = (await handle.boundingBox())!;
       const x = box.x + box.width / 2;
       const y = box.y + box.height / 2;
       await page.mouse.move(x, y);
       await page.mouse.down();
-      await page.mouse.move(x + dx, y, { steps: 5 });
+      await page.mouse.move(targetX, y, { steps: 5 });
       await page.mouse.up();
     };
-    await drag(-100);
+    const drag = async (dx: number) => {
+      const box = (await handle.boundingBox())!;
+      await dragTo(box.x + box.width / 2 + dx);
+    };
+    await dragTo(40);
     await expect(sidebar).toBeHidden();
     await page.reload();
     await expect(sidebar).toBeHidden();
