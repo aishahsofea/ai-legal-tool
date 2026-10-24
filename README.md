@@ -2,6 +2,8 @@
 
 > Ask about Malaysian legislation in English, Bahasa Malaysia, or a mix of both — and get an answer grounded in the actual statute text, with citations that deep-link to the exact page of the official PDF.
 
+Malaysian practitioners, pupils and paralegals check statutes on the AGC portal, where Acts are PDFs and some are scans. The PDF reprint of an Act can be out of date once an amendment passes. This tool finds the section, cites it to the page, and labels each Act repealed, superseded, current as indexed, or unknown.
+
 A LangGraph agent that answers over a pgvector corpus of section-level chunks scraped from the
 [AGC portal](https://lom.agc.gov.my). It cites every legal claim. It never gives legal advice.
 For anything client-specific, it hands off to a human lawyer.
@@ -15,6 +17,7 @@ For anything client-specific, it hands off to a human lawyer.
 - PDFs on Cloudflare R2
 - NVIDIA Nemotron on Nebius Token Factory
 - OpenAI `text-embedding-3-small`
+- Tavily: web search for [Commentary Notes](CONTEXT.md#language) (needs `TAVILY_API_KEY`)
 
 How production is wired: [Deployment](docs/deployment.md).
 
