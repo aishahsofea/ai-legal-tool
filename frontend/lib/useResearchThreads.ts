@@ -86,6 +86,7 @@ function restoredThread(stored: StoredThread): ResearchThread {
 export function useResearchThreads() {
   const [threads, setThreads] = useState<ResearchThread[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [threadListStatus, setThreadListStatus] = useState<"loading" | "ready" | "failed">("loading");
   const selectRequestRef = useRef(0);
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null);
   const [pendingThreadId, setPendingThreadId] = useState<string | null>(null);
@@ -135,9 +136,12 @@ export function useResearchThreads() {
           const known = new Set(prev.map((thread) => thread.id));
           return [...prev, ...items.filter((item) => !known.has(item.id)).map(listedThread)];
         });
+        setThreadListStatus("ready");
       })
       .catch(() => {
-        if (!cancelled) setLoadError("Could not load your threads.");
+        if (cancelled) return;
+        setLoadError("Could not load your threads.");
+        setThreadListStatus("failed");
       });
     return () => {
       cancelled = true;
@@ -383,6 +387,7 @@ export function useResearchThreads() {
     isLoading,
     error,
     loadError,
+    threadListStatus,
     status,
     setInput,
     setReasoningOpen,

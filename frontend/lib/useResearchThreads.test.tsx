@@ -61,6 +61,35 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
+describe("thread list status", () => {
+  it("list status is loading until the fetch resolves", async () => {
+    let resolve!: (items: (typeof LISTED)[]) => void;
+    vi.mocked(fetchThreads).mockReturnValue(new Promise((r) => (resolve = r)));
+    const { result } = renderHook(() => useResearchThreads());
+
+    expect(result.current.threadListStatus).toBe("loading");
+    await act(async () => resolve([LISTED]));
+
+    expect(result.current.threadListStatus).toBe("ready");
+  });
+
+  it("list status is ready with an empty list", async () => {
+    vi.mocked(fetchThreads).mockResolvedValue([]);
+    const { result } = renderHook(() => useResearchThreads());
+
+    await waitFor(() => expect(result.current.threadListStatus).toBe("ready"));
+    expect(result.current.threads).toEqual([]);
+  });
+
+  it("list status is failed on rejection", async () => {
+    vi.mocked(fetchThreads).mockRejectedValue(new Error("HTTP 500"));
+    const { result } = renderHook(() => useResearchThreads());
+
+    await waitFor(() => expect(result.current.threadListStatus).toBe("failed"));
+    expect(result.current.loadError).toBe("Could not load your threads.");
+  });
+});
+
 describe("restoring threads", () => {
   it("lists the server's threads on mount without loading their turns", async () => {
     stubServer();
