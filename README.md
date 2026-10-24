@@ -21,7 +21,7 @@ For anything client-specific, it hands off to a human lawyer.
 
 How production is wired: [Deployment](docs/deployment.md).
 
-The hosted demo runs every chat model on open-weights NVIDIA Nemotron, served by Nebius Token Factory. Nemotron-3.5-Lightning (30B) handles the light steps: classifying the query, rewriting follow-ups, replying to small talk, and extracting memories. Nemotron-3-Ultra (550B) searches the statutes as an agent, writes the cited answer, and checks it against the sources (the grounding check). The chat UI's PROCESS panel names the model behind each step.
+The hosted demo runs every chat model on open-weights NVIDIA Nemotron, served by Nebius Token Factory. Nemotron-3.5-Lightning (30B) handles the light steps: classifying the query, rewriting follow-ups, replying to small talk, and extracting memories. Nemotron-3-Ultra (550B) searches the statutes as an agent, writes the cited answer, and checks it against the sources (the grounding check). The chat UI's PROCESS panel names the model behind each step. Measured over 5 three-turn threads, Lightning is about 3x cheaper per light step, but light steps are a small share of the cost, so the total saving was within noise ([#266](https://github.com/aishahsofea/ai-legal-tool/issues/266)).
 
 Out of the box, the code uses the GPT-4.1 family, plus Claude for the grounding check. Nemotron comes from config: `CHAT_BASE_URL` points the chat models at Nebius, or at any OpenAI-compatible endpoint. Any step can also run on a Claude or Gemini model. [Model overrides](CONTRIBUTING.md#model-overrides) has the default and the setting for every step and for embeddings. Chat models go through `agent/llm_factory.py` and embeddings through `agent/embeddings.py`. Claude runs the eval judge.
 
