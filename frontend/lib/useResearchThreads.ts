@@ -52,7 +52,7 @@ function countUniqueSources(citations: Citation[]) {
   return new Set(citations.map(citationKey)).size;
 }
 
-function summarizeSources(citations: Citation[]) {
+export function summarizeSources(citations: Citation[]) {
   const citedCount = citations.length;
   const sourceCount = countUniqueSources(citations);
   return `${citedCount} citation${citedCount === 1 ? "" : "s"} · ${sourceCount} source${sourceCount === 1 ? "" : "s"}`;

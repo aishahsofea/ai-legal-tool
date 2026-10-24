@@ -1,0 +1,148 @@
+{
+    "id": "0571e4d2-5b31-43dc-b8bf-cdc6c5456a75",
+    "title": "find me the law on public defamation",
+    "created_at": "2026-10-24T05:41:02.590970+00:00",
+    "updated_at": "2026-10-24T05:41:59.651465+00:00",
+    "messages": [
+        {
+            "role": "user",
+            "content": "find me the law on public defamation"
+        },
+        {
+            "role": "assistant",
+            "content": "Malaysian law addresses defamation through both civil and criminal provisions. The Defamation Act 1957 governs civil liability and privileges for certain publications, while the Penal Code creates criminal offences for defamation and related publication offences. The Printing Presses and Publications Act 1984 adds a specific offence for maliciously publishing false news.\n\n---\n*This information is for legal research only and does not constitute legal advice. Please consult a qualified Malaysian lawyer for advice on your specific situation.*",
+            "citations": [
+                {
+                    "path": "s.11",
+                    "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 286.pdf#page=10",
+                    "receipt": {
+                        "evidence": [],
+                        "document_id": "act-286-en-sha256-0462ae0b402c55589b3d0bff68bebf75c6626ec96d468d427a9fbb021bee00f8",
+                        "extraction_id": "extraction-sha256-4a3996b7d03a2e86599406a7470282ac38cba713550f0f4401783e905c29e373"
+                    },
+                    "act_title": "DEFAMATION ACT 1957",
+                    "act_number": "286",
+                    "page_number": 10,
+                    "section_number": "11"
+                },
+                {
+                    "path": "s.12",
+                    "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 286.pdf#page=10",
+                    "receipt": {
+                        "evidence": [],
+                        "document_id": "act-286-en-sha256-0462ae0b402c55589b3d0bff68bebf75c6626ec96d468d427a9fbb021bee00f8",
+                        "extraction_id": "extraction-sha256-4a3996b7d03a2e86599406a7470282ac38cba713550f0f4401783e905c29e373"
+                    },
+                    "act_title": "DEFAMATION ACT 1957",
+                    "act_number": "286",
+                    "page_number": 10,
+                    "section_number": "12"
+                },
+                {
+                    "path": "sched.1/para.1",
+                    "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 286.pdf#page=14",
+                    "receipt": {
+                        "evidence": [],
+                        "document_id": "act-286-en-sha256-0462ae0b402c55589b3d0bff68bebf75c6626ec96d468d427a9fbb021bee00f8",
+                        "extraction_id": "extraction-sha256-4a3996b7d03a2e86599406a7470282ac38cba713550f0f4401783e905c29e373"
+                    },
+                    "act_title": "DEFAMATION ACT 1957",
+                    "act_number": "286",
+                    "page_number": 14,
+                    "section_number": ""
+                },
+                {
+                    "path": "s.499",
+                    "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1823715_BI/Act 574 Project 2 Final.pdf#page=259",
+                    "receipt": {
+                        "evidence": [],
+                        "document_id": "act-574-en-sha256-89c0f2f6f13f20c0b085a0de404d3d056de92374c9f300704d42c50800a77fa0",
+                        "extraction_id": "extraction-sha256-a7585dea7e12e37c6983a4bfc897c80d9175e70755d7ec520658cb058818d6d4"
+                    },
+                    "act_title": "PENAL CODE",
+                    "act_number": "574",
+                    "page_number": 259,
+                    "section_number": "499"
+                },
+                {
+                    "path": "s.500",
+                    "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1823715_BI/Act 574 Project 2 Final.pdf#page=263",
+                    "receipt": {
+                        "evidence": [],
+                        "document_id": "act-574-en-sha256-89c0f2f6f13f20c0b085a0de404d3d056de92374c9f300704d42c50800a77fa0",
+                        "extraction_id": "extraction-sha256-a7585dea7e12e37c6983a4bfc897c80d9175e70755d7ec520658cb058818d6d4"
+                    },
+                    "act_title": "PENAL CODE",
+                    "act_number": "574",
+                    "page_number": 263,
+                    "section_number": "500"
+                },
+                {
+                    "path": "s.501",
+                    "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1823715_BI/Act 574 Project 2 Final.pdf#page=263",
+                    "receipt": {
+                        "evidence": [],
+                        "document_id": "act-574-en-sha256-89c0f2f6f13f20c0b085a0de404d3d056de92374c9f300704d42c50800a77fa0",
+                        "extraction_id": "extraction-sha256-a7585dea7e12e37c6983a4bfc897c80d9175e70755d7ec520658cb058818d6d4"
+                    },
+                    "act_title": "PENAL CODE",
+                    "act_number": "574",
+                    "page_number": 263,
+                    "section_number": "501"
+                },
+                {
+                    "path": "s.124I",
+                    "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/1823715_BI/Act 574 Project 2 Final.pdf#page=81",
+                    "receipt": {
+                        "evidence": [],
+                        "document_id": "act-574-en-sha256-89c0f2f6f13f20c0b085a0de404d3d056de92374c9f300704d42c50800a77fa0",
+                        "extraction_id": "extraction-sha256-a7585dea7e12e37c6983a4bfc897c80d9175e70755d7ec520658cb058818d6d4"
+                    },
+                    "act_title": "PENAL CODE",
+                    "act_number": "574",
+                    "page_number": 81,
+                    "section_number": "124I"
+                },
+                {
+                    "path": "s.8A",
+                    "pdf_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act 301 - Printing Presses And Publications Act 1984.pdf#page=12",
+                    "receipt": {
+                        "evidence": [
+                            {
+                                "claim": "The Printing Presses and Publications Act 1984 adds a specific offence for maliciously publishing false news.",
+                                "quote": "8A. (1) Where in any publication there is maliciously published any false news, the printer, publisher, editor and the writer thereof shall be guilty of an offence and shall, on conviction, be liable to imprisonment for a term not exceeding three years or to a fine not exceeding twenty thousand ringgit or to both."
+                            }
+                        ],
+                        "document_id": "act-301-en-sha256-1281860625f04c4766a59b23046588aa6e1e63b352cc854742bb19d4626785cb",
+                        "extraction_id": "extraction-sha256-9eba1b2823177a8af6c923cc05468081a38611429f4ae3e39e7accbcdfeca36e"
+                    },
+                    "act_title": "*PRINTING PRESSES AND PUBLICATIONS ACT 1984",
+                    "act_number": "301",
+                    "page_number": 12,
+                    "section_number": "8A"
+                }
+            ],
+            "commentary": [],
+            "currency_labels": [
+                {
+                    "label": "current_as_indexed",
+                    "act_number": "286",
+                    "as_of_date": "",
+                    "detail_url": ""
+                },
+                {
+                    "label": "superseded",
+                    "act_number": "574",
+                    "as_of_date": "01/05/2025",
+                    "detail_url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2731052_BI/Penal Code (Amendment) Act 2025 A1750.pdf"
+                },
+                {
+                    "label": "current_as_indexed",
+                    "act_number": "301",
+                    "as_of_date": "",
+                    "detail_url": ""
+                }
+            ]
+        }
+    ]
+}
