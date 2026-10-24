@@ -90,6 +90,188 @@ describe("thread list status", () => {
   });
 });
 
+describe("opening a thread", () => {
+  const LISTED_2 = { id: "t2", title: "Overtime pay", created_at: "2026-10-03T10:00:00Z", updated_at: "2026-10-04T10:00:00Z" };
+
+  function stored(item: typeof LISTED, question: string) {
+    return { ...item, messages: [{ role: "user" as const, content: question }] };
+  }
+
+  function deferFetchThread() {
+    const pending: Record<string, { resolve: (v: ReturnType<typeof stored>) => void; reject: (e: Error) => void }> = {};
+    vi.mocked(fetchThread).mockImplementation(
+      (id: string) => new Promise((resolve, reject) => (pending[id] = { resolve, reject })),
+    );
+    return pending;
+  }
+
+  async function mountWithTwoThreads() {
+    vi.mocked(fetchThreads).mockResolvedValue([LISTED, LISTED_2]);
+    const hook = renderHook(() => useResearchThreads());
+    await waitFor(() => expect(hook.result.current.threads).toHaveLength(2));
+    return hook;
+  }
+
+  it("marks the clicked thread loading and active before the fetch resolves", async () => {
+    const pending = deferFetchThread();
+    const { result } = await mountWithTwoThreads();
+
+    let selecting!: Promise<void>;
+    act(() => {
+      selecting = result.current.selectThread("t1");
+    });
+
+    expect(result.current.loadingThreadId).toBe("t1");
+    expect(result.current.loadingThread?.title).toBe("Maternity leave");
+    expect(result.current.threads.find((t) => t.id === "t1")?.active).toBe(true);
+    expect(result.current.activeThreadId).toBeNull();
+    expect(result.current.messages).toEqual([]);
+
+    await act(async () => {
+      pending.t1.resolve(stored(LISTED, "Q1"));
+      await selecting;
+    });
+
+    expect(result.current.loadingThreadId).toBeNull();
+    expect(result.current.activeThreadId).toBe("t1");
+    expect(result.current.messages.map((m) => m.content)).toEqual(["Q1"]);
+  });
+
+  it("superseded click never activates", async () => {
+    const pending = deferFetchThread();
+    const { result } = await mountWithTwoThreads();
+
+    let first!: Promise<void>;
+    let second!: Promise<void>;
+    act(() => {
+      first = result.current.selectThread("t1");
+    });
+    act(() => {
+      second = result.current.selectThread("t2");
+    });
+
+    await act(async () => {
+      pending.t1.resolve(stored(LISTED, "Q1"));
+      await first;
+    });
+    expect(result.current.activeThreadId).toBeNull();
+    expect(result.current.loadingThreadId).toBe("t2");
+
+    await act(async () => {
+      pending.t2.resolve(stored(LISTED_2, "Q2"));
+      await second;
+    });
+    expect(result.current.activeThreadId).toBe("t2");
+    expect(result.current.loadingThreadId).toBeNull();
+  });
+
+  it("failed select clears loading and shows the error", async () => {
+    const pending = deferFetchThread();
+    const { result } = await mountWithTwoThreads();
+    let opening!: Promise<void>;
+    act(() => {
+      opening = result.current.selectThread("t1");
+    });
+    await act(async () => {
+      pending.t1.resolve(stored(LISTED, "Q1"));
+      await opening;
+    });
+
+    let failing!: Promise<void>;
+    act(() => {
+      failing = result.current.selectThread("t2");
+    });
+    expect(result.current.threads.find((t) => t.id === "t2")?.active).toBe(true);
+    await act(async () => {
+      pending.t2.reject(new Error("HTTP 500"));
+      await failing;
+    });
+
+    expect(result.current.loadingThreadId).toBeNull();
+    expect(result.current.loadError).toBe("Could not open that thread.");
+    expect(result.current.activeThreadId).toBe("t1");
+    expect(result.current.threads.map((t) => t.active)).toEqual([true, false]);
+  });
+
+  it("a new select clears the previous error", async () => {
+    const pending = deferFetchThread();
+    const { result } = await mountWithTwoThreads();
+    let failing!: Promise<void>;
+    act(() => {
+      failing = result.current.selectThread("t1");
+    });
+    await act(async () => {
+      pending.t1.reject(new Error("HTTP 500"));
+      await failing;
+    });
+    expect(result.current.loadError).toBe("Could not open that thread.");
+
+    act(() => {
+      void result.current.selectThread("t2");
+    });
+
+    expect(result.current.loadError).toBeNull();
+  });
+
+  it("repeat click on the loading thread fetches once", async () => {
+    deferFetchThread();
+    const { result } = await mountWithTwoThreads();
+
+    act(() => {
+      void result.current.selectThread("t1");
+    });
+    act(() => {
+      void result.current.selectThread("t1");
+    });
+
+    expect(fetchThread).toHaveBeenCalledTimes(1);
+  });
+
+  it("newThread during a fetch drops it", async () => {
+    const pending = deferFetchThread();
+    const { result } = await mountWithTwoThreads();
+    let selecting!: Promise<void>;
+    act(() => {
+      selecting = result.current.selectThread("t1");
+    });
+
+    act(() => result.current.newThread());
+    expect(result.current.loadingThreadId).toBeNull();
+
+    await act(async () => {
+      pending.t1.resolve(stored(LISTED, "Q1"));
+      await selecting;
+    });
+    expect(result.current.activeThreadId).toBeNull();
+  });
+
+  it("already-loaded thread switches without loading", async () => {
+    const pending = deferFetchThread();
+    const { result } = await mountWithTwoThreads();
+    let opening!: Promise<void>;
+    act(() => {
+      opening = result.current.selectThread("t1");
+    });
+    await act(async () => {
+      pending.t1.resolve(stored(LISTED, "Q1"));
+      await opening;
+    });
+    act(() => result.current.newThread());
+
+    let reselecting!: Promise<void>;
+    act(() => {
+      reselecting = result.current.selectThread("t1");
+    });
+
+    expect(result.current.loadingThreadId).toBeNull();
+    await act(async () => {
+      await reselecting;
+    });
+    expect(result.current.activeThreadId).toBe("t1");
+    expect(fetchThread).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe("restoring threads", () => {
   it("lists the server's threads on mount without loading their turns", async () => {
     stubServer();

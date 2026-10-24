@@ -87,6 +87,7 @@ export function useResearchThreads() {
   const [threads, setThreads] = useState<ResearchThread[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [threadListStatus, setThreadListStatus] = useState<"loading" | "ready" | "failed">("loading");
+  const [loadingThreadId, setLoadingThreadId] = useState<string | null>(null);
   const selectRequestRef = useRef(0);
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null);
   const [pendingThreadId, setPendingThreadId] = useState<string | null>(null);
@@ -99,6 +100,11 @@ export function useResearchThreads() {
   const activeThread = useMemo(
     () => threads.find((thread) => thread.id === activeThreadId) ?? null,
     [threads, activeThreadId],
+  );
+
+  const loadingThread = useMemo(
+    () => threads.find((thread) => thread.id === loadingThreadId) ?? null,
+    [threads, loadingThreadId],
   );
 
   const messages = activeThread?.messages ?? [];
@@ -117,6 +123,7 @@ export function useResearchThreads() {
 
   const newThread = useCallback(() => {
     selectRequestRef.current++;
+    setLoadingThreadId(null);
     setInput("");
     setReasoningOpen(false);
     setActiveSourceIndex(0);
@@ -151,21 +158,29 @@ export function useResearchThreads() {
   const selectThread = useCallback(
     async (threadId: string) => {
       const selectedThread = threads.find((thread) => thread.id === threadId);
-      if (!selectedThread) return;
+      if (!selectedThread || threadId === loadingThreadId) return;
 
       // Only the latest click may activate: a slow earlier fetch must not win.
       const request = ++selectRequestRef.current;
       let restored: ResearchThread | null = null;
       if (!selectedThread.loaded) {
+        setLoadingThreadId(threadId);
+        setLoadError(null);
+        setThreads((prev) => syncActiveFlags(prev, threadId));
         try {
           restored = restoredThread(await fetchThread(threadId));
         } catch {
-          if (request === selectRequestRef.current) setLoadError("Could not open that thread.");
+          if (request === selectRequestRef.current) {
+            setLoadingThreadId(null);
+            setLoadError("Could not open that thread.");
+            setThreads((prev) => syncActiveFlags(prev, activeThreadId));
+          }
           return;
         }
         if (request !== selectRequestRef.current) return;
       }
 
+      setLoadingThreadId(null);
       setLoadError(null);
       setActiveThreadId(threadId);
       setActiveSourceIndex(0);
@@ -174,7 +189,7 @@ export function useResearchThreads() {
         syncActiveFlags(prev.map((thread) => (restored && thread.id === threadId ? restored : thread)), threadId),
       );
     },
-    [syncActiveFlags, threads],
+    [activeThreadId, loadingThreadId, syncActiveFlags, threads],
   );
 
   const submitQuery = useCallback(
@@ -374,6 +389,8 @@ export function useResearchThreads() {
     threads,
     activeThreadId,
     activeThread,
+    loadingThreadId,
+    loadingThread,
     messages,
     statusHistory,
     nodeRuns: threadNodeRuns,
