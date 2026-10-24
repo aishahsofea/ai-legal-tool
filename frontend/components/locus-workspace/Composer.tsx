@@ -8,12 +8,14 @@ export function Composer({
   onSubmit,
   onStop,
   isLoading,
+  sendDisabled = false,
 }: {
   input: string;
   onInput: (value: string) => void;
   onSubmit: (e: FormEvent) => void;
   onStop: () => void;
   isLoading: boolean;
+  sendDisabled?: boolean;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -55,7 +57,7 @@ export function Composer({
             <span className="hidden sm:inline">STOP ■</span><span className="sm:hidden">■</span>
           </PrimaryButton>
         ) : (
-          <PrimaryButton size="compact" type="submit" aria-label="Send message" disabled={!input.trim()} className="h-full self-stretch rounded-none disabled:cursor-not-allowed disabled:opacity-40 max-sm:w-12 max-sm:min-w-12 max-sm:px-0">
+          <PrimaryButton size="compact" type="submit" aria-label="Send message" disabled={!input.trim() || sendDisabled} className="h-full self-stretch rounded-none disabled:cursor-not-allowed disabled:opacity-40 max-sm:w-12 max-sm:min-w-12 max-sm:px-0">
             <span className="hidden sm:inline">SEND →</span><span className="sm:hidden">↵</span>
           </PrimaryButton>
         )}

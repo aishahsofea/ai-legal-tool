@@ -17,9 +17,11 @@ vi.mock("@/lib/threadsTransport", () => ({
   fetchThread: vi.fn(),
 }));
 
+const { submit } = vi.hoisted(() => ({ submit: vi.fn() }));
+
 vi.mock("@/lib/useQuery", () => ({
   useQuery: () => ({
-    submit: vi.fn(),
+    submit,
     resume: vi.fn(),
     cancel: vi.fn(),
     status: "",
@@ -111,6 +113,22 @@ describe("opening a thread", () => {
     await waitFor(() => expect(hook.result.current.threads).toHaveLength(2));
     return hook;
   }
+
+  it("blocks sending while a thread loads and keeps the typed text", async () => {
+    deferFetchThread();
+    const { result } = await mountWithTwoThreads();
+
+    act(() => {
+      result.current.setInput("draft question");
+      void result.current.selectThread("t1");
+    });
+    await act(async () => {
+      await result.current.submitQuery("x");
+    });
+
+    expect(submit).not.toHaveBeenCalled();
+    expect(result.current.input).toBe("draft question");
+  });
 
   it("marks the clicked thread loading and active before the fetch resolves", async () => {
     const pending = deferFetchThread();

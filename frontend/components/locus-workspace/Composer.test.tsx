@@ -75,3 +75,17 @@ it("disables the field while loading", () => {
   expect(field).toBeDisabled();
   expect(field).toHaveAttribute("placeholder", PLACEHOLDER);
 });
+
+it("disables Send but keeps the textarea editable when sendDisabled", async () => {
+  function Harness() {
+    const [input, setInput] = useState("");
+    return <Composer input={input} onInput={setInput} onSubmit={() => {}} onStop={() => {}} isLoading={false} sendDisabled />;
+  }
+
+  render(<Harness />);
+  const field = screen.getByLabelText("Message");
+  await userEvent.type(field, "Section 60A");
+
+  expect(field).toHaveValue("Section 60A");
+  expect(screen.getByRole("button", { name: "Send message" })).toBeDisabled();
+});

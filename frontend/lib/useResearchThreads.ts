@@ -195,7 +195,7 @@ export function useResearchThreads() {
   const submitQuery = useCallback(
     async (query: string) => {
       const trimmed = query.trim();
-      if (!trimmed || isLoading) return;
+      if (!trimmed || isLoading || loadingThreadId) return;
 
       const targetThreadId = activeThreadId ?? makeId();
       const selectedThread = threads.find((thread) => thread.id === targetThreadId) ?? null;
@@ -252,7 +252,7 @@ export function useResearchThreads() {
         await submit(trimmed, targetThreadId);
       }
     },
-    [activeThreadId, isLoading, pendingQuestion, resume, submit, syncActiveFlags, threads],
+    [activeThreadId, isLoading, loadingThreadId, pendingQuestion, resume, submit, syncActiveFlags, threads],
   );
 
   // Barge-in: stop the in-flight turn on the active thread (Stop button / Esc)
