@@ -1,9 +1,11 @@
 import { Mark, ThreadRow } from "@/components/chamber";
 import { PrimaryButton } from "@/components/PrimaryButton";
+import { ThreadSkeletonRows } from "./ThreadSkeletonRows";
 import type { ThreadSummary } from "./types";
 
 export function ThreadSidebar({
   threads,
+  listStatus,
   onNewThread,
   onSelectThread,
   userName,
@@ -12,6 +14,7 @@ export function ThreadSidebar({
   switchingDisabled = false,
 }: {
   threads: ThreadSummary[];
+  listStatus: "loading" | "ready" | "failed";
   onNewThread: () => void;
   onSelectThread: (threadId: string) => void | Promise<void>;
   userName: string;
@@ -29,19 +32,23 @@ export function ThreadSidebar({
       </div>
 
       <div className="flex flex-1 flex-col gap-2 overflow-y-auto px-2 py-2 max-md:flex-row max-md:overflow-x-auto max-md:overflow-y-hidden">
-        {threads.length > 0 ? (
-          threads.map((thread) => (
-            <ThreadRow
-              key={thread.id}
-              title={thread.title}
-              meta={thread.meta}
-              active={thread.active}
-              disabled={switchingDisabled && !thread.active}
-              onClick={() => onSelectThread(thread.id)}
-            />
-          ))
+        {threads.map((thread) => (
+          <ThreadRow
+            key={thread.id}
+            title={thread.title}
+            meta={thread.meta}
+            active={thread.active}
+            disabled={switchingDisabled && !thread.active}
+            onClick={() => onSelectThread(thread.id)}
+          />
+        ))}
+        {listStatus === "loading" ? (
+          <ThreadSkeletonRows />
         ) : (
-          <div className="px-3 py-3 font-mono text-[10px] uppercase tracking-[0.12em] text-(--text-subtle)">No threads yet</div>
+          listStatus === "ready" &&
+          threads.length === 0 && (
+            <div className="px-3 py-3 font-mono text-[10px] uppercase tracking-[0.12em] text-(--text-subtle)">No threads yet</div>
+          )
         )}
       </div>
 

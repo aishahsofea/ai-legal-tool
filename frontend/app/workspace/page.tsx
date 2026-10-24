@@ -16,6 +16,7 @@ import {
   ConversationHeader,
   EmptyState,
   AssistantMessage,
+  ThreadLoader,
   ThreadSidebar,
   UserMessage,
 } from "@/components/conversation";
@@ -111,6 +112,9 @@ function WorkspaceInner({ session }: { session: Session }) {
   const {
     threads,
     activeThread,
+    loadingThread,
+    loadingThreadId,
+    threadListStatus,
     messages,
     statusHistory,
     nodeRuns,
@@ -206,6 +210,7 @@ function WorkspaceInner({ session }: { session: Session }) {
       >
         <ThreadSidebar
           threads={threads}
+          listStatus={threadListStatus}
           onNewThread={newThread}
           onSelectThread={selectThread}
           switchingDisabled={false}
@@ -216,8 +221,8 @@ function WorkspaceInner({ session }: { session: Session }) {
 
         <main className="workspace-main relative flex min-h-0 min-w-0 flex-col overflow-hidden bg-(--canvas)">
           <ConversationHeader
-            title={activeThread?.title || "New thread"}
-            messages={messages}
+            title={(loadingThread ?? activeThread)?.title || "New thread"}
+            messages={loadingThreadId ? [] : messages}
             sidebarCollapsed={sidebarCollapsed}
             onToggleSidebar={toggleSidebarCollapsed}
           />
@@ -237,43 +242,49 @@ function WorkspaceInner({ session }: { session: Session }) {
                 </div>
               )}
 
-              {messages.length === 0 && <EmptyState onQuery={setInput} />}
+              {loadingThreadId ? (
+                <ThreadLoader />
+              ) : (
+                <>
+                {messages.length === 0 && <EmptyState onQuery={setInput} />}
 
-              {messages.map((msg, i) => {
-                const isAssistant = msg.role === "assistant";
-                const isTail = i === messages.length - 1;
+                {messages.map((msg, i) => {
+                  const isAssistant = msg.role === "assistant";
+                  const isTail = i === messages.length - 1;
 
-                return (
-                  <div key={msg.id} className="space-y-3">
-                    {isAssistant ? (
-                      <AssistantMessage
-                        message={msg}
-                        citedCountLabel={citedCountLabel}
-                        status={status}
-                        isLoading={isLoading}
-                        isTail={isTail}
-                        reasoningOpen={reasoningOpen}
-                        onToggleReasoning={() => setReasoningOpen((open) => !open)}
-                        statusHistory={statusHistory}
-                        nodeRuns={nodeRuns}
-                        onOpenReceipt={openReceipt}
-                      />
-                    ) : (
-                      <UserMessage message={msg} />
-                    )}
+                  return (
+                    <div key={msg.id} className="space-y-3">
+                      {isAssistant ? (
+                        <AssistantMessage
+                          message={msg}
+                          citedCountLabel={citedCountLabel}
+                          status={status}
+                          isLoading={isLoading}
+                          isTail={isTail}
+                          reasoningOpen={reasoningOpen}
+                          onToggleReasoning={() => setReasoningOpen((open) => !open)}
+                          statusHistory={statusHistory}
+                          nodeRuns={nodeRuns}
+                          onOpenReceipt={openReceipt}
+                        />
+                      ) : (
+                        <UserMessage message={msg} />
+                      )}
 
-                    {error && isTail && (
-                      <div className="rounded-xl border border-(--accent-line) bg-(--danger-soft) px-4 py-3 text-sm text-(--danger)" role="alert">
-                        {error}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+                      {error && isTail && (
+                        <div className="rounded-xl border border-(--accent-line) bg-(--danger-soft) px-4 py-3 text-sm text-(--danger)" role="alert">
+                          {error}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+                </>
+              )}
             </div>
           </div>
 
-          <Composer input={input} onInput={setInput} onSubmit={handleSubmit} onStop={stopQuery} isLoading={isLoading} />
+          <Composer input={input} onInput={setInput} onSubmit={handleSubmit} onStop={stopQuery} isLoading={isLoading} sendDisabled={loadingThreadId !== null} />
         </main>
 
         {receiptSelection && (
