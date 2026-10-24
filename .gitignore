@@ -75,3 +75,4 @@ data/reference_graph/**/.work/
 
 # Saved per-set eval results from live runs (evals/results.json is already ignored by evals/results*.json above)
 evals/results/
+node_modules/
