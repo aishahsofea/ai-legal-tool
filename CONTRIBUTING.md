@@ -510,7 +510,7 @@ Rollback is immediate: set `FOLLOW_REFERENCES_ENABLED=off`, restart workers, and
 
 `data/pdfs/manifest.json` is generated, never hand-edited. A changed PDF hash creates a new staged `document_id`; the previous bytes stay addressable, and the active mapping doesn't move until the new extraction is embedded and explicitly activated. See [docs/data-pipeline.md](docs/data-pipeline.md) (Step 3) for how a PDF gets registered, and [docs/corpus-receipts.md](docs/corpus-receipts.md) for the full identity lifecycle.
 
-The landing page example answer is a saved production thread, [`frontend/lib/fixtures/example-thread.json`](frontend/lib/fixtures/example-thread.json). It records an `extraction_id`. After a re-extraction, re-capture `GET /threads/<id>` into that file.
+The example answer on the landing page is a saved production thread: [`frontend/lib/fixtures/example-thread.json`](frontend/lib/fixtures/example-thread.json). The file records the `extraction_id` it was captured from. After a re-extraction, re-capture `GET /threads/<id>` for that thread into the file.
 
 Corpus lifecycle commands:
 
