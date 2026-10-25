@@ -401,7 +401,7 @@ export function ReferenceGraphExplorer({
   const currentState = state();
 
   return (
-    <section className="flex min-h-0 flex-1 flex-col" aria-label="Statutory reference graph">
+    <section className="flex flex-1 flex-col md:min-h-0" aria-label="Statutory reference graph">
       <div className="flex flex-wrap items-center gap-2 border-b border-(--line) bg-(--surface-soft) px-4 py-2">
         <div role="group" aria-label="Graph layout" className="flex items-center gap-1">
           <span aria-hidden="true" className="font-mono text-[10px] uppercase text-(--text-subtle)">Layout</span>
@@ -452,9 +452,9 @@ export function ReferenceGraphExplorer({
       {error && <p className="p-4 text-sm text-(--danger)" role="alert">{error}</p>}
       {!loading && !error && resultStatus !== "available" && <p className="p-4 text-sm text-(--text-muted)" role="status">{graphMessage(resultStatus ?? "graph_unavailable")}</p>}
       {!loading && resultStatus === "available" && (
-        <div className="grid min-h-0 flex-1 grid-rows-[minmax(220px,1fr)_auto]">
-          <div ref={containerRef} data-testid="reference-graph-canvas" className="min-h-[220px] border-b border-(--line)" />
-          <aside className="max-h-64 overflow-auto p-4" aria-label="Selected reference evidence">
+        <div className="grid flex-1 md:min-h-0 md:grid-rows-[minmax(220px,1fr)_auto]">
+          <div ref={containerRef} data-testid="reference-graph-canvas" className="min-h-[55dvh] border-b md:min-h-[220px] border-(--line)" />
+          <aside className="p-4 md:max-h-64 md:overflow-auto" aria-label="Selected reference evidence">
             <p className="font-mono text-[10px] uppercase tracking-wide text-(--text-subtle)">{selectedNode?.label ?? (selected ? "Not indexed" : "Select a provision")}</p>
             {selectedGroups.length === 0 && <p className="mt-2 text-sm text-(--text-muted)">No direct references.</p>}
             {selectedGroups.map((group) => (
