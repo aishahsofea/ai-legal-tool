@@ -120,6 +120,19 @@
   overflow: hidden;
 }
 
+.citation-receipt-layer[data-contained="true"] {
+  position: absolute;
+  overflow: visible;
+}
+
+.citation-receipt-layer[data-contained="true"] .citation-receipt-panel {
+  position: sticky;
+  top: 0;
+  bottom: auto;
+  height: min(100svh, 100%);
+  margin-left: auto;
+}
+
 .citation-receipt-backdrop {
   position: absolute;
   inset: 0;

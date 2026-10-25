@@ -40,7 +40,7 @@ export function ExampleAnswer({
   }, [receiptSelection]);
 
   return (
-    <div className="space-y-4">
+    <div className="relative space-y-4">
       <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-(--text-subtle)">Saved example · produced {meta.producedOn}</p>
       {messages.map((message) =>
         message.role === "assistant" ? (
@@ -67,6 +67,7 @@ export function ExampleAnswer({
           citation={receiptSelection.citation}
           initialEvidenceIndex={receiptSelection.evidenceIndex}
           modal
+          contained
           onClose={closeReceipt}
         />
       )}

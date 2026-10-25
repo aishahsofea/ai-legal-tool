@@ -67,11 +67,13 @@ export function CitationReceiptViewer({
   citation,
   initialEvidenceIndex = 0,
   modal = true,
+  contained = false,
   onClose,
 }: {
   citation: Citation;
   initialEvidenceIndex?: number;
   modal?: boolean;
+  contained?: boolean;
   onClose: () => void;
 }) {
   const receipt = citation.receipt;
@@ -162,6 +164,7 @@ export function CitationReceiptViewer({
   return (
     <div
       className="citation-receipt-layer fixed inset-0 z-50 min-h-0 min-w-0"
+      data-contained={contained ? "true" : undefined}
       data-mode={modal ? "sheet" : "pane"}
       data-testid="receipt-layer"
       aria-live="off"

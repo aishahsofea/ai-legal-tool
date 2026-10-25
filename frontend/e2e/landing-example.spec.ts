@@ -18,12 +18,12 @@ test("signed-out landing shows the saved answer and opens a receipt without /que
   await expect(dialog).toBeVisible();
   await expect(dialog).toHaveAttribute("aria-modal", "true");
   await expect(dialog.getByText(/No verified passage/)).toHaveCount(0);
-  const box = await dialog.boundingBox();
-  const viewport = page.viewportSize()!;
-  expect(box!.x).toBeGreaterThanOrEqual(0);
-  expect(box!.y).toBeGreaterThanOrEqual(0);
-  expect(box!.x + box!.width).toBeLessThanOrEqual(viewport.width);
-  expect(box!.y + box!.height).toBeLessThanOrEqual(viewport.height);
+  const box = (await dialog.boundingBox())!;
+  const layer = (await page.getByTestId("receipt-layer").boundingBox())!;
+  expect(box.x).toBeGreaterThanOrEqual(layer.x);
+  expect(box.y).toBeGreaterThanOrEqual(layer.y);
+  expect(box.x + box.width).toBeLessThanOrEqual(layer.x + layer.width + 1);
+  expect(box.y + box.height).toBeLessThanOrEqual(layer.y + layer.height + 1);
 
   expect(requests.filter((url) => /\/query/.test(url))).toEqual([]);
   expect(new URL(page.url()).pathname).toBe("/");
@@ -66,12 +66,31 @@ test("on desktop the receipt opens as a right-side panel and leaves the answer v
   await page.goto("/");
   await page.getByRole("button", { name: /Open Citation Receipt 8:/ }).click();
   const box = (await page.getByRole("dialog").boundingBox())!;
+  const layer = (await page.getByTestId("receipt-layer").boundingBox())!;
   expect(box.width).toBeLessThan(1280 * 0.6);
-  expect(box.x + box.width).toBeCloseTo(1280, 0);
+  expect(box.x + box.width).toBeCloseTo(layer.x + layer.width, 0);
   expect(box.x).toBeGreaterThan(400);
 });
 
-test("on a phone the receipt stays full width", async ({ page }) => {
+test("the landing receipt stays in its section and is gone when scrolled past it", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.route("**/receipts/*/locate", (route) => route.fulfill({ status: 404, json: { detail: "stub" } }));
+  await page.route("**/receipts/*/pdf", (route) => route.fulfill({ status: 404, body: "" }));
+
+  await page.goto("/");
+  await page.getByRole("button", { name: /Open Citation Receipt 8:/ }).click();
+  const dialog = page.getByRole("dialog");
+  await expect(dialog).toBeVisible();
+  await page.evaluate(() => {
+    const layer = document.querySelector("[data-testid=receipt-layer]")!;
+    window.scrollTo(0, layer.getBoundingClientRect().top + window.scrollY + 200);
+  });
+  await expect.poll(async () => (await dialog.boundingBox())!.y).toBeCloseTo(0, 0);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect(dialog).not.toBeInViewport();
+});
+
+test("on a phone the receipt stays full width",async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 700 });
   await page.route("**/receipts/*/locate", (route) => route.fulfill({ status: 404, json: { detail: "stub" } }));
   await page.route("**/receipts/*/pdf", (route) => route.fulfill({ status: 404, body: "" }));
@@ -79,6 +98,7 @@ test("on a phone the receipt stays full width", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: /Open Citation Receipt 8:/ }).click();
   const box = (await page.getByRole("dialog").boundingBox())!;
-  expect(box.x).toBeCloseTo(0, 0);
-  expect(box.width).toBeCloseTo(375, 0);
+  const layer = (await page.getByTestId("receipt-layer").boundingBox())!;
+  expect(box.x).toBeCloseTo(layer.x, 0);
+  expect(box.width).toBeCloseTo(layer.width, 0);
 });
