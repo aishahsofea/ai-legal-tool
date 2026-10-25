@@ -1,5 +1,5 @@
 import { Citation } from "@/lib/useQuery";
-import { type ButtonHTMLAttributes, type ReactNode } from "react";
+import { type ButtonHTMLAttributes, type ReactNode, useState } from "react";
 
 export function Mono({
   children,
@@ -98,32 +98,70 @@ export function ThreadRow({
   active = false,
   disabled = false,
   onClick,
+  onDelete,
+  deleteDisabled = false,
 }: {
   title: string;
   meta: string;
   active?: boolean;
   disabled?: boolean;
   onClick?: () => void;
+  onDelete?: () => void;
+  deleteDisabled?: boolean;
 }) {
+  const [confirming, setConfirming] = useState(false);
+  const smallButton =
+    "cursor-pointer rounded-md px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors duration-150 hover:bg-(--line-soft) hover:text-(--text)";
   return (
-    <button
-      type="button"
-      disabled={disabled}
-      onClick={onClick}
-      className={`flex w-full cursor-pointer items-stretch gap-2 rounded-lg px-3 py-2 text-left transition-colors duration-200 hover:bg-(--surface) active:opacity-80 disabled:cursor-not-allowed disabled:opacity-50 max-md:min-w-[224px] ${
-        active ? "bg-(--surface) shadow-[var(--shadow-soft)]" : "bg-transparent"
-      }`}
-    >
-      <span
-        className={`w-[2px] shrink-0 rounded-full ${active ? "bg-(--accent)" : "bg-transparent"}`}
-      />
-      <div className="min-w-0">
-        <div className="truncate text-sm leading-5 text-(--text)">{title}</div>
-        <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.12em] text-(--text-subtle)">
-          {meta}
+    <div className="group relative max-md:min-w-[224px]">
+      <button
+        type="button"
+        disabled={disabled}
+        onClick={onClick}
+        className={`flex w-full cursor-pointer items-stretch gap-2 rounded-lg px-3 py-2 text-left transition-colors duration-200 hover:bg-(--surface) active:opacity-80 disabled:cursor-not-allowed disabled:opacity-50 ${
+          onDelete ? "pr-10" : ""
+        } ${active ? "bg-(--surface) shadow-[var(--shadow-soft)]" : "bg-transparent"}`}
+      >
+        <span
+          className={`w-[2px] shrink-0 rounded-full ${active ? "bg-(--accent)" : "bg-transparent"}`}
+        />
+        <div className="min-w-0">
+          <div className="truncate text-sm leading-5 text-(--text)">{title}</div>
+          <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.12em] text-(--text-subtle)">
+            {meta}
+          </div>
         </div>
-      </div>
-    </button>
+      </button>
+      {onDelete &&
+        (confirming ? (
+          <div className="absolute right-1 top-1/2 flex -translate-y-1/2 items-center gap-1 rounded-md bg-(--surface) px-1 text-(--text-subtle)">
+            <span className="font-mono text-[10px] uppercase tracking-[0.12em]">Delete?</span>
+            <button
+              type="button"
+              onClick={() => {
+                setConfirming(false);
+                onDelete();
+              }}
+              className={`${smallButton} text-(--text)`}
+            >
+              Yes
+            </button>
+            <button type="button" onClick={() => setConfirming(false)} className={smallButton}>
+              No
+            </button>
+          </div>
+        ) : (
+          <IconButton
+            type="button"
+            aria-label={`Delete thread ${title}`}
+            disabled={deleteDisabled}
+            onClick={() => setConfirming(true)}
+            className="absolute right-1 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 focus-visible:opacity-100 max-md:opacity-100"
+          >
+            <span aria-hidden="true">✕</span>
+          </IconButton>
+        ))}
+    </div>
   );
 }
 

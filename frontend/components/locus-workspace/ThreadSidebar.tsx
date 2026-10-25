@@ -8,6 +8,8 @@ export function ThreadSidebar({
   listStatus,
   onNewThread,
   onSelectThread,
+  onDeleteThread,
+  pendingThreadId = null,
   userName,
   userSubtitle,
   onSignOut,
@@ -17,6 +19,8 @@ export function ThreadSidebar({
   listStatus: "loading" | "ready" | "failed";
   onNewThread: () => void;
   onSelectThread: (threadId: string) => void | Promise<void>;
+  onDeleteThread?: (threadId: string) => void | Promise<void>;
+  pendingThreadId?: string | null;
   userName: string;
   userSubtitle?: string;
   onSignOut: () => void;
@@ -40,6 +44,8 @@ export function ThreadSidebar({
             active={thread.active}
             disabled={switchingDisabled && !thread.active}
             onClick={() => onSelectThread(thread.id)}
+            onDelete={onDeleteThread && (() => void onDeleteThread(thread.id))}
+            deleteDisabled={thread.id === pendingThreadId}
           />
         ))}
         {listStatus === "loading" ? (
