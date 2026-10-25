@@ -8,7 +8,7 @@ const mocks = vi.hoisted(() => ({
   fetchComparison: vi.fn(),
   fetchSnapshots: vi.fn(),
   nodeTap: { current: undefined as ((event: { target: { id: () => string } }) => void) | undefined },
-  cytoscapeOptions: { current: undefined as { elements?: Array<{ data: { id: string; label?: string }; position?: { x: number; y: number } }> } | undefined },
+  cytoscapeOptions: { current: undefined as { elements?: Array<{ data: { id: string; label?: string; source?: string }; position?: { x: number; y: number } }> } | undefined },
   destroy: vi.fn(),
 }));
 
@@ -163,6 +163,30 @@ describe("reference graph explorer", () => {
       const after = mocks.cytoscapeOptions.current?.elements?.filter((item) => item.position).map((item) => [item.data.id, item.position]);
       expect(after).toEqual(before);
     });
+  });
+
+  it("groups repeated mentions of one source-target pair into one row and one edge", async () => {
+    const source = "act:265/section:100/subsection:3";
+    const target = "act:265/section:60D";
+    const mention = (id: string, page: number) => ({
+      ...edge(id, "section 60D", page), source_provision_id: source, target_provision_id: target,
+    });
+    mocks.fetchSnapshots.mockResolvedValue(snapshots());
+    mocks.fetchNeighborhood.mockResolvedValue({
+      status: "available", document_id: documentId, focus_provision_id: target,
+      nodes: [node(target, "v1", "Section 60D"), node(source, "v2", "Section 100(3)")],
+      edges: [mention("edge:a", 100), mention("edge:b", 101)],
+    });
+    render(<ReferenceGraphExplorer documentId={documentId} focusProvisionId={target} />);
+
+    await screen.findByTestId("reference-graph-canvas");
+    expect(screen.getAllByRole("article")).toHaveLength(1);
+    expect(screen.getByText("2 mentions")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Open base receipt page 100" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Open base receipt page 101" })).toBeInTheDocument();
+    await waitFor(() => expect(mocks.cytoscapeOptions.current).toBeDefined());
+    const edges = mocks.cytoscapeOptions.current?.elements?.filter((item) => "source" in item.data);
+    expect(edges).toHaveLength(1);
   });
 
   it("computes deterministic preset positions independent of input order", () => {

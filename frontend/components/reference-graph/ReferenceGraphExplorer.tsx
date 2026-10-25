@@ -34,6 +34,20 @@ type DisplayNode = {
   presence: "base" | "compare" | "both" | "boundary";
 };
 
+type ReferenceGroup = { key: string; references: LogicalReference[] };
+
+function groupReferences(references: LogicalReference[]): ReferenceGroup[] {
+  const groups = new Map<string, ReferenceGroup>();
+  references.forEach((reference) => {
+    const { source_provision_id: source, target_provision_id: target } = reference.logical_key;
+    const key = `${source}|${target}|${reference.status}`;
+    const group = groups.get(key);
+    if (group) group.references.push(reference);
+    else groups.set(key, { key, references: [reference] });
+  });
+  return [...groups.values()];
+}
+
 function graphMessage(status: Neighborhood["status"] | GraphComparison["status"]) {
   if (status === "not_indexed") return "Reference graph not yet indexed for this snapshot.";
   if (status === "not_indexed_base") return "Reference graph not yet indexed for the base snapshot.";
@@ -224,7 +238,7 @@ export function ReferenceGraphExplorer({
       label: `${shortId(id)}\nNot indexed in this snapshot`,
       presence: "boundary",
     }));
-    return { nodes, references, activeReferences };
+    return { nodes, references, activeReferences, groups: groupReferences(activeReferences) };
   }, [comparison, neighborhood, view]);
 
   const unionGeometry = useMemo(() => {
@@ -271,7 +285,7 @@ export function ReferenceGraphExplorer({
     let cancelled = false;
     void import("cytoscape").then(({ default: cytoscape }) => {
       if (cancelled || !containerRef.current) return;
-      const edgeElements = display.activeReferences.flatMap((reference) => {
+      const edgeElements = display.groups.flatMap(({ references: [reference] }) => {
         const edge = view === "base" ? reference.base_edge
           : view === "compare" ? reference.compare_edge
             : reference.compare_edge ?? reference.base_edge;
@@ -371,7 +385,7 @@ export function ReferenceGraphExplorer({
     emit({ compareDocumentId: next, view: nextView }, "replace");
   };
 
-  const selectedReferences = display.activeReferences.filter((reference) => (
+  const selectedGroups = display.groups.filter(({ references: [reference] }) => (
     reference.logical_key.source_provision_id === selected || reference.logical_key.target_provision_id === selected
   ));
   const selectedNode = display.nodes.find((node) => node.provision_id === selected);
@@ -431,11 +445,11 @@ export function ReferenceGraphExplorer({
           <div ref={containerRef} data-testid="reference-graph-canvas" className="min-h-[220px] border-b border-(--line)" />
           <aside className="max-h-64 overflow-auto p-4" aria-label="Selected reference evidence">
             <p className="font-mono text-[10px] uppercase tracking-wide text-(--text-subtle)">{selectedNode?.label ?? (selected ? "Not indexed" : "Select a provision")}</p>
-            {selectedReferences.length === 0 && <p className="mt-2 text-sm text-(--text-muted)">No direct references.</p>}
-            {selectedReferences.map((reference) => (
+            {selectedGroups.length === 0 && <p className="mt-2 text-sm text-(--text-muted)">No direct references.</p>}
+            {selectedGroups.map((group) => (
               <ComparisonEvidence
-                key={reference.logical_reference_id}
-                reference={reference}
+                key={group.key}
+                references={group.references}
                 baseDocumentId={baseDocument}
                 compareDocumentId={compareDocument}
                 view={view}
@@ -460,23 +474,29 @@ function EvidenceBlock({ edge, documentId, label }: { edge: GraphEdge; documentI
 }
 
 function ComparisonEvidence({
-  reference,
+  references,
   baseDocumentId,
   compareDocumentId,
   view,
 }: {
-  reference: LogicalReference;
+  references: LogicalReference[];
   baseDocumentId: string;
   compareDocumentId: string;
   view: GraphView;
 }) {
   const statusCue: Record<ComparisonEdgeStatus, string> = { added: "＋ Added", removed: "− Removed", unchanged: "= Unchanged" };
+  const [first] = references;
   return (
     <article className="mt-3 rounded border border-(--line) bg-(--surface) p-3 text-xs">
-      <p className="font-mono text-[10px] text-(--accent)">{shortId(reference.logical_key.source_provision_id)} → {shortId(reference.logical_key.target_provision_id)}</p>
-      {compareDocumentId && <p className="mt-1 font-mono text-[10px] uppercase">{statusCue[reference.status]} · occurrence {reference.occurrence_ordinal}</p>}
-      {(view === "base" || view === "overlay") && reference.base_edge && <EvidenceBlock edge={reference.base_edge} documentId={baseDocumentId} label="Base" />}
-      {(view === "compare" || view === "overlay") && reference.compare_edge && <EvidenceBlock edge={reference.compare_edge} documentId={compareDocumentId} label="Comparison" />}
+      <p className="font-mono text-[10px] text-(--accent)">{shortId(first.logical_key.source_provision_id)} → {shortId(first.logical_key.target_provision_id)}</p>
+      {references.length > 1 && <p className="mt-1 font-mono text-[10px] uppercase">{references.length} mentions</p>}
+      {references.map((reference) => (
+        <div key={reference.logical_reference_id}>
+          {compareDocumentId && <p className="mt-1 font-mono text-[10px] uppercase">{statusCue[reference.status]} · occurrence {reference.occurrence_ordinal}</p>}
+          {(view === "base" || view === "overlay") && reference.base_edge && <EvidenceBlock edge={reference.base_edge} documentId={baseDocumentId} label="Base" />}
+          {(view === "compare" || view === "overlay") && reference.compare_edge && <EvidenceBlock edge={reference.compare_edge} documentId={compareDocumentId} label="Comparison" />}
+        </div>
+      ))}
     </article>
   );
 }
