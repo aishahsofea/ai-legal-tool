@@ -306,7 +306,9 @@ button:disabled,
 }
 
 @media (width < 768px) {
-  .landing-grid-nav { grid-template-columns: 1fr auto; }
+  .landing-grid-nav { grid-template-columns: 1fr auto; height: auto; row-gap: 4px; padding-bottom: 8px; }
+  .landing-grid-nav > :first-child { padding-top: 8px; }
+  .landing-grid-nav > .landing-nav-row { grid-column: 1 / -1; grid-row: 2; padding: 4px 0; }
   .landing-grid-prompt { grid-template-columns: 1fr auto; }
   .landing-grid-prompt > :first-child { display: none; }
   .landing-grid-trust { grid-template-columns: 1fr 1fr; }

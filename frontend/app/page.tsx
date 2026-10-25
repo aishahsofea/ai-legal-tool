@@ -106,21 +106,20 @@ export default function Landing() {
           <span className="text-xs font-semibold tracking-[0.24em] text-(--text)">LOCUS</span>
         </div>
 
-        <nav className="hidden items-center justify-center gap-8 md:flex" aria-label="Primary navigation">
+        <nav
+          className="landing-nav-row flex items-center gap-8 overflow-x-auto whitespace-nowrap md:justify-center"
+          aria-label="Primary navigation"
+        >
           <a href="#capabilities" className="text-sm text-(--text-muted) no-underline transition-colors duration-200 hover:text-(--accent)">Capabilities</a>
-          <a href="#faq" className="text-sm text-(--text-muted) no-underline transition-colors duration-200 hover:text-(--accent)">Coverage</a>
           <a href="#faq" className="text-sm text-(--text-muted) no-underline transition-colors duration-200 hover:text-(--accent)">Method</a>
         </nav>
 
-        <div className="flex items-center justify-end gap-4">
-          <Link href="/workspace" className="hidden text-sm text-(--text-muted) no-underline transition-colors duration-200 hover:text-(--text) sm:block">
-            Sign in
-          </Link>
+        <div className="flex items-center justify-end">
           <Link
             href="/workspace"
             className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-(--accent) px-4 py-2 text-xs font-semibold tracking-[0.04em] text-(--surface) no-underline shadow-[var(--shadow-soft)] transition-colors duration-200 hover:bg-(--accent-deep)"
           >
-            Request access <span aria-hidden="true">→</span>
+            Sign in <span aria-hidden="true">→</span>
           </Link>
         </div>
       </header>
@@ -129,8 +128,6 @@ export default function Landing() {
         <section className="border-b border-(--line) py-16 lg:py-20">
           <div className="mb-8 flex flex-wrap items-center gap-3 text-(--text-subtle)">
             <span className="font-mono text-xs tracking-[0.12em]">MALAYSIA / FEDERAL ACTS</span>
-            <span className="h-px w-8 bg-(--line)" />
-            <span className="font-mono text-xs tracking-[0.12em]">PRIVATE BETA</span>
           </div>
 
           <h1 className="m-0 mb-6 max-w-[18ch] font-serif text-[clamp(40px,6vw,72px)] font-light leading-[1.04] tracking-[-0.03em] text-(--text)">
