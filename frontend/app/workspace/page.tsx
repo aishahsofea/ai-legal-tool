@@ -125,6 +125,8 @@ function WorkspaceInner({ session }: { session: Session }) {
     isLoading,
     error,
     loadError,
+    sessionEnded,
+    lastUserQuery,
     status,
     setInput,
     setReasoningOpen,
@@ -134,6 +136,17 @@ function WorkspaceInner({ session }: { session: Session }) {
     submitQuery,
     stopQuery,
   } = useResearchThreads();
+
+  const router = useRouter();
+
+  // scope "local" clears the stored session without a server call, so /login doesn't bounce back here.
+  const signInAgain = async () => {
+    const q = input.trim() || lastUserQuery;
+    // Workspace redirects to /login on signOut using the URL's q, so put the query there first.
+    window.history.replaceState(null, "", withQuery("/workspace", q));
+    await getSupabase().auth.signOut({ scope: "local" });
+    router.replace(withQuery("/login", q));
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -240,6 +253,15 @@ function WorkspaceInner({ session }: { session: Session }) {
 
           <div className="relative flex-1 overflow-y-auto px-4 py-6 md:px-6 lg:px-8">
             <div className="chamber-full-content flex w-full flex-col gap-6">
+              {sessionEnded && (
+                <div className="flex items-center justify-between gap-3 rounded-xl border border-(--accent-line) bg-(--danger-soft) px-4 py-3 text-sm text-(--danger)" role="alert">
+                  <span>Your session has ended.</span>
+                  <button type="button" onClick={() => void signInAgain()} className="rounded-lg border border-(--accent-line) px-3 py-1 font-medium">
+                    Sign in
+                  </button>
+                </div>
+              )}
+
               {loadError && (
                 <div className="rounded-xl border border-(--accent-line) bg-(--danger-soft) px-4 py-3 text-sm text-(--danger)" role="alert">
                   {loadError}
@@ -275,7 +297,7 @@ function WorkspaceInner({ session }: { session: Session }) {
                         <UserMessage message={msg} />
                       )}
 
-                      {error && isTail && (
+                      {error && isTail && !sessionEnded && (
                         <div className="rounded-xl border border-(--accent-line) bg-(--danger-soft) px-4 py-3 text-sm text-(--danger)" role="alert">
                           {error}
                         </div>
