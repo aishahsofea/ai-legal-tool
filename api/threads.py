@@ -1,13 +1,16 @@
-"""Read-only thread history for the signed-in user (ADR 0022)."""
+"""Thread history for the signed-in user, plus owner-only delete (ADR 0022)."""
 from __future__ import annotations
 
 import asyncio
+import logging
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 
+from agent import query_lifecycle
 from api import threads_store
 from api.auth import current_user_id
 
+logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/threads")
 
 
@@ -37,3 +40,18 @@ async def get_thread(thread_id: str, user_id: str = Depends(current_user_id)):
         raise HTTPException(404, "Thread not found")
     turns = thread.pop("turns")
     return {**thread, "messages": _messages(turns)}
+
+
+@router.delete("/{thread_id}", status_code=204)
+async def delete_thread(thread_id: str, request: Request, user_id: str = Depends(current_user_id)):
+    # Same 404 rule as main._require_owner; importing main here would be a cycle.
+    if not await asyncio.to_thread(threads_store.owns, thread_id, user_id):
+        raise HTTPException(404, "Thread not found")
+    await request.app.state.agent_runtime.ensure_started()
+    try:
+        await query_lifecycle.delete_checkpoint(thread_id)
+    except Exception:
+        # Delete fails closed, unlike writes (ADR 0022): keep the row so a retry still passes the owner check.
+        logger.exception("checkpoint delete failed for thread=%r", thread_id)
+        raise HTTPException(500, "Could not delete thread")
+    await asyncio.to_thread(threads_store.delete_thread, thread_id, user_id)
