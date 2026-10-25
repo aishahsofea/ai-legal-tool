@@ -108,3 +108,10 @@ describe("ConversationHeader sign out", () => {
     expect(onSignOut).toHaveBeenCalledTimes(1);
   });
 });
+
+describe("ConversationHeader home link", () => {
+  it("links to the landing page", () => {
+    render(<ConversationHeader title="T" />);
+    expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/");
+  });
+});
