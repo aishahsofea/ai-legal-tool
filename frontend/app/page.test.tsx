@@ -1,9 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { EXAMPLE_MESSAGES, EXAMPLE_META } from "@/lib/fixtures/exampleAnswer";
 import Landing from "./page";
 
-vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
+const { push } = vi.hoisted(() => ({ push: vi.fn() }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ push }) }));
 vi.mock("react-pdf", () => ({
   pdfjs: { GlobalWorkerOptions: { workerSrc: "" } },
   Document: () => null,
@@ -24,6 +25,14 @@ describe("Landing saved example", () => {
     for (const citation of citations) {
       expect(screen.getAllByText(citation.act_title.replace(/^\*/, ""), { exact: false }).length).toBeGreaterThan(0);
     }
+  });
+
+  it("sends a suggested chip to the workspace with its query", () => {
+    render(<Landing />);
+    fireEvent.click(screen.getByRole("button", { name: "EA 1955 on gig workers" }));
+    expect(push).toHaveBeenCalledWith(
+      `/workspace?q=${encodeURIComponent("Does the Employment Act 1955 apply to gig workers after the 2022 amendments?")}`,
+    );
   });
 
   it("makes no /query request on mount", () => {

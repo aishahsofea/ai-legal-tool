@@ -36,6 +36,28 @@ test.describe("landing header at 375px", () => {
     await page.waitForURL(/\/login/);
   });
 
+  test("placeholder fits inside the input", async ({ page }) => {
+    await page.goto("/");
+    const fit = await page.getByLabel("Legal research question").evaluate((el) => {
+      const input = el as HTMLInputElement;
+      const style = getComputedStyle(input);
+      const ctx = document.createElement("canvas").getContext("2d")!;
+      ctx.font = style.font;
+      const available = input.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+      return { text: ctx.measureText(input.placeholder).width, available };
+    });
+    expect(fit.text).toBeLessThanOrEqual(fit.available);
+  });
+
+  test("a chip while signed out ends on /login with its query", async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("button", { name: "Section 57 frustration" }).click();
+    await page.waitForURL(/\/login\?q=/);
+    expect(new URL(page.url()).searchParams.get("q")).toBe(
+      "How does Section 57 of the Contracts Act 1950 address frustration?",
+    );
+  });
+
   test("no Request access, no PRIVATE BETA, no horizontal overflow", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByText("Request access")).toHaveCount(0);

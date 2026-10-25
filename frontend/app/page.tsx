@@ -148,7 +148,7 @@ export default function Landing() {
             </div>
             <input
               className="border-none bg-transparent px-4 py-4 text-sm text-(--text) outline-none placeholder:text-(--text-subtle)"
-              placeholder="Begin with an Act, section, or research question…"
+              placeholder="Ask about an Act…"
               aria-label="Legal research question"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
@@ -169,7 +169,7 @@ export default function Landing() {
               <button
                 type="button"
                 key={label}
-                onClick={() => setQuery(suggestedQuery)}
+                onClick={() => router.push(`/workspace?q=${encodeURIComponent(suggestedQuery)}`)}
                 className="min-h-9 rounded-full border border-(--line) bg-(--surface) px-3 py-2 text-xs text-(--text-muted) transition-colors duration-200 hover:border-(--accent-line) hover:bg-(--accent-tint) hover:text-(--accent)"
               >
                 {label}
