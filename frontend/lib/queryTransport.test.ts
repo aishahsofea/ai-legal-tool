@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { HttpError } from "./httpError";
 import { cancelQuery, streamQuery, streamResume, type QueryEvent } from "./queryTransport";
 
 vi.mock("@/lib/supabaseClient", () => ({
@@ -135,5 +136,15 @@ describe("auth", () => {
     const { headers, body } = sentRequest();
     expect(headers.Authorization).toBe("Bearer test-token");
     expect(body).not.toHaveProperty("user_id");
+  });
+});
+
+describe("http errors", () => {
+  it("streamQuery rejects with an HttpError carrying the status", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => ({ ok: false, status: 401 }) as unknown as Response));
+    const err = await streamQuery("q", "t1").next().catch((e: unknown) => e);
+    expect(err).toBeInstanceOf(HttpError);
+    expect((err as HttpError).status).toBe(401);
+    expect((err as HttpError).message).toBe("HTTP 401");
   });
 });

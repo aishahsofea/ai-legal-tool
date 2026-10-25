@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { HttpError } from "./httpError";
 import { deleteThread, fetchThread, fetchThreads } from "./threadsTransport";
 
 vi.mock("@/lib/supabaseClient", () => ({
@@ -60,5 +61,19 @@ describe("deleteThread", () => {
   it("rejects on 500", async () => {
     stubFetch({}, false, 500);
     await expect(deleteThread("t1")).rejects.toThrow("HTTP 500");
+  });
+});
+
+describe("401 handling", () => {
+  it.each([
+    ["fetchThreads", () => fetchThreads()],
+    ["fetchThread", () => fetchThread("t1")],
+    ["deleteThread", () => deleteThread("t1")],
+  ])("%s rejects with an HttpError carrying the status", async (_name, call) => {
+    stubFetch({}, false, 401);
+    const err = await call().catch((e: unknown) => e);
+    expect(err).toBeInstanceOf(HttpError);
+    expect((err as HttpError).status).toBe(401);
+    expect((err as HttpError).message).toBe("HTTP 401");
   });
 });
