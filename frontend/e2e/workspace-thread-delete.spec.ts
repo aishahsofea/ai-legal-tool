@@ -65,6 +65,21 @@ test("delete asks in a centred modal over the page, and Cancel sends nothing", a
   expect(deletes).toEqual([]);
 });
 
+test("on a phone the modal keeps a 16px gutter and its buttons share one row", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await open(page);
+  await deleteButton(page, LISTED[0].title).click();
+
+  const dialog = page.getByRole("dialog", { name: "Delete thread?" });
+  const box = (await dialog.boundingBox())!;
+  expect(box.x).toBeGreaterThanOrEqual(16);
+  expect(box.x + box.width).toBeLessThanOrEqual(390 - 16);
+  const cancel = (await dialog.getByRole("button", { name: "Cancel" }).boundingBox())!;
+  const confirm = (await dialog.getByRole("button", { name: "Delete" }).boundingBox())!;
+  expect(Math.abs(cancel.y - confirm.y)).toBeLessThan(2);
+  expect(confirm.x).toBeGreaterThan(cancel.x + cancel.width);
+});
+
 test("Escape dismisses the delete modal", async ({ page }) => {
   const { deletes } = await open(page);
   await deleteButton(page, LISTED[0].title).click();
