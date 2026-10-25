@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { expect, it, vi } from "vitest";
 import { ThreadSidebar } from "./ThreadSidebar";
 import type { ThreadSummary } from "./types";
@@ -62,30 +62,62 @@ function renderWithDelete(onDeleteThread = vi.fn(), pendingThreadId: string | nu
   return { onDeleteThread, onSelectThread };
 }
 
-it("delete click shows Yes/No and does not delete yet", () => {
+it("delete click opens a modal dialog and does not delete yet", () => {
   const { onDeleteThread } = renderWithDelete();
   fireEvent.click(screen.getByRole("button", { name: "Delete thread First question" }));
-  expect(screen.getByText("Delete?")).toBeInTheDocument();
-  expect(screen.getByRole("button", { name: "Yes" })).toBeInTheDocument();
-  expect(screen.getByRole("button", { name: "No" })).toBeInTheDocument();
+  const dialog = screen.getByRole("dialog", { name: "Delete thread?" });
+  expect(dialog).toHaveAttribute("aria-modal", "true");
+  expect(within(dialog).getByText(/First question/)).toBeInTheDocument();
+  expect(within(dialog).getByRole("button", { name: "Cancel" })).toBeInTheDocument();
+  expect(within(dialog).getByRole("button", { name: "Delete" })).toBeInTheDocument();
   expect(onDeleteThread).not.toHaveBeenCalled();
 });
 
-it("No restores the row without deleting", () => {
+it("the dialog is not inside the sidebar row", () => {
+  renderWithDelete();
+  fireEvent.click(screen.getByRole("button", { name: "Delete thread First question" }));
+  expect(screen.getByRole("dialog").closest("#workspace-thread-sidebar")).toBeNull();
+});
+
+it("the delete control is a trash icon, not a cross", () => {
+  renderWithDelete();
+  const button = screen.getByRole("button", { name: "Delete thread First question" });
+  expect(button.querySelector('svg[data-icon="trash"]')).not.toBeNull();
+  expect(button).not.toHaveTextContent("✕");
+});
+
+it("Cancel closes the dialog without deleting", () => {
   const { onDeleteThread } = renderWithDelete();
   fireEvent.click(screen.getByRole("button", { name: "Delete thread First question" }));
-  fireEvent.click(screen.getByRole("button", { name: "No" }));
-  expect(screen.queryByText("Delete?")).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   expect(screen.getByText("First question")).toBeInTheDocument();
   expect(onDeleteThread).not.toHaveBeenCalled();
 });
 
-it("Yes deletes that thread id", () => {
+it("Escape closes the dialog without deleting", () => {
+  const { onDeleteThread } = renderWithDelete();
+  fireEvent.click(screen.getByRole("button", { name: "Delete thread First question" }));
+  fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" });
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  expect(onDeleteThread).not.toHaveBeenCalled();
+});
+
+it("clicking the backdrop closes the dialog without deleting", () => {
+  const { onDeleteThread } = renderWithDelete();
+  fireEvent.click(screen.getByRole("button", { name: "Delete thread First question" }));
+  fireEvent.click(screen.getByTestId("delete-dialog-backdrop"));
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  expect(onDeleteThread).not.toHaveBeenCalled();
+});
+
+it("Delete in the dialog deletes that thread id and closes it", () => {
   const { onDeleteThread } = renderWithDelete();
   fireEvent.click(screen.getByRole("button", { name: "Delete thread Second question" }));
-  fireEvent.click(screen.getByRole("button", { name: "Yes" }));
+  fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Delete" }));
   expect(onDeleteThread).toHaveBeenCalledTimes(1);
   expect(onDeleteThread).toHaveBeenCalledWith("t2");
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 });
 
 it("pending row delete button is disabled", () => {

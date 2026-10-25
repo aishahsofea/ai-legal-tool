@@ -47,13 +47,40 @@ const row = (page: Page, title: string) => page.getByRole("button", { name: new 
 const deleteButton = (page: Page, title: string) =>
   page.getByRole("button", { name: `Delete thread ${title}` });
 
+test("delete asks in a centred modal over the page, and Cancel sends nothing", async ({ page }) => {
+  const { deletes } = await open(page);
+  await deleteButton(page, LISTED[0].title).click();
+
+  const dialog = page.getByRole("dialog", { name: "Delete thread?" });
+  await expect(dialog).toBeVisible();
+  const box = (await dialog.boundingBox())!;
+  const viewport = page.viewportSize()!;
+  expect(Math.abs(box.x + box.width / 2 - viewport.width / 2)).toBeLessThan(2);
+  expect(Math.abs(box.y + box.height / 2 - viewport.height / 2)).toBeLessThan(2);
+  await expect(page.getByTestId("delete-dialog-backdrop")).toHaveCSS("position", "fixed");
+
+  await dialog.getByRole("button", { name: "Cancel" }).click();
+  await expect(dialog).toBeHidden();
+  await expect(row(page, LISTED[0].title)).toBeVisible();
+  expect(deletes).toEqual([]);
+});
+
+test("Escape dismisses the delete modal", async ({ page }) => {
+  const { deletes } = await open(page);
+  await deleteButton(page, LISTED[0].title).click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).toBeHidden();
+  expect(deletes).toEqual([]);
+});
+
 test("deleting the open thread removes the row and shows the empty workspace", async ({ page }) => {
   const { deletes } = await open(page);
   await row(page, LISTED[0].title).click();
   await expect(page.getByText(QUESTION)).toBeVisible();
 
   await deleteButton(page, LISTED[0].title).click();
-  await page.getByRole("button", { name: "Yes" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Delete" }).click();
 
   await expect(deleteButton(page, LISTED[0].title)).toBeHidden();
   await expect(page.getByText(LISTED[0].title)).toBeHidden();
@@ -66,7 +93,7 @@ test("deleting the open thread removes the row and shows the empty workspace", a
 test("a deleted thread stays gone after reload", async ({ page }) => {
   await open(page);
   await deleteButton(page, LISTED[0].title).click();
-  await page.getByRole("button", { name: "Yes" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Delete" }).click();
   await expect(page.getByText(LISTED[0].title)).toBeHidden();
 
   await page.reload();
@@ -92,7 +119,7 @@ test("on mobile the delete button is visible without hover", async ({ page }) =>
 test("a failed delete keeps the row and shows the error", async ({ page }) => {
   const { deletes } = await open(page, 500);
   await deleteButton(page, LISTED[0].title).click();
-  await page.getByRole("button", { name: "Yes" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Delete" }).click();
 
   await expect(page.getByRole("alert").filter({ hasText: "Could not delete that thread." })).toBeVisible();
   await expect(row(page, LISTED[0].title)).toBeVisible();

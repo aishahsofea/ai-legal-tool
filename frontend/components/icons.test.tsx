@@ -1,12 +1,13 @@
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { Check, Copy, PanelLeft, Share } from "@/components/icons";
+import { Check, Copy, PanelLeft, Share, Trash } from "@/components/icons";
 
 describe("icons", () => {
   it.each([
     ["copy", Copy],
     ["check", Check],
     ["share", Share],
+    ["trash", Trash],
     ["panel-left", PanelLeft],
   ])("%s renders a hidden svg tagged data-icon", (name, Icon) => {
     const { container } = render(<Icon className="x" />);

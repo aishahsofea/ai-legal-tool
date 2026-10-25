@@ -1,5 +1,7 @@
 import { Citation } from "@/lib/useQuery";
-import { type ButtonHTMLAttributes, type ReactNode, useState } from "react";
+import { type ButtonHTMLAttributes, type ReactNode, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { Trash } from "@/components/icons";
 
 export function Mono({
   children,
@@ -110,8 +112,6 @@ export function ThreadRow({
   deleteDisabled?: boolean;
 }) {
   const [confirming, setConfirming] = useState(false);
-  const smallButton =
-    "cursor-pointer rounded-md px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors duration-150 hover:bg-(--line-soft) hover:text-(--text)";
   return (
     <div className="group relative max-md:min-w-[224px]">
       <button
@@ -132,36 +132,79 @@ export function ThreadRow({
           </div>
         </div>
       </button>
-      {onDelete &&
-        (confirming ? (
-          <div className="absolute right-1 top-1/2 flex -translate-y-1/2 items-center gap-1 rounded-md bg-(--surface) px-1 text-(--text-subtle)">
-            <span className="font-mono text-[10px] uppercase tracking-[0.12em]">Delete?</span>
-            <button
-              type="button"
-              onClick={() => {
-                setConfirming(false);
-                onDelete();
-              }}
-              className={`${smallButton} text-(--text)`}
-            >
-              Yes
-            </button>
-            <button type="button" onClick={() => setConfirming(false)} className={smallButton}>
-              No
-            </button>
-          </div>
-        ) : (
-          <IconButton
-            type="button"
-            aria-label={`Delete thread ${title}`}
-            disabled={deleteDisabled}
-            onClick={() => setConfirming(true)}
-            className="absolute right-1 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 focus-visible:opacity-100 max-md:opacity-100"
-          >
-            <span aria-hidden="true">✕</span>
-          </IconButton>
-        ))}
+      {onDelete && (
+        <IconButton
+          type="button"
+          aria-label={`Delete thread ${title}`}
+          disabled={deleteDisabled}
+          onClick={() => setConfirming(true)}
+          className="absolute right-1 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 focus-visible:opacity-100 max-md:opacity-100"
+        >
+          <Trash />
+        </IconButton>
+      )}
+      {onDelete && confirming && (
+        <DeleteThreadDialog
+          title={title}
+          onCancel={() => setConfirming(false)}
+          onConfirm={() => {
+            setConfirming(false);
+            onDelete();
+          }}
+        />
+      )}
     </div>
+  );
+}
+
+function DeleteThreadDialog({
+  title,
+  onCancel,
+  onConfirm,
+}: {
+  title: string;
+  onCancel: () => void;
+  onConfirm: () => void;
+}) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useEffect(() => dialogRef.current?.querySelector("button")?.focus(), []);
+  // Portaled to body so the sidebar's overflow and stacking can't clip or cover it.
+  return createPortal(
+    <div
+      data-testid="delete-dialog-backdrop"
+      onClick={onCancel}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+    >
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="delete-thread-title"
+        onClick={(event) => event.stopPropagation()}
+        onKeyDown={(event) => event.key === "Escape" && onCancel()}
+        className="w-full max-w-sm rounded-xl border border-(--line) bg-(--surface) p-5 shadow-[var(--shadow-raised)]"
+      >
+        <h2 id="delete-thread-title" className="text-base font-medium text-(--text)">
+          Delete thread?
+        </h2>
+        <p className="mt-2 text-sm leading-5 text-(--text-muted)">
+          “{title}” and its messages will be permanently deleted. This can’t be undone.
+        </p>
+        <div className="mt-5 flex justify-end gap-2">
+          <OutlineButton type="button" onClick={onCancel} className="min-h-9 px-4 text-sm">
+            Cancel
+          </OutlineButton>
+          <button
+            type="button"
+            onClick={onConfirm}
+            className="min-h-9 cursor-pointer rounded-lg bg-(--danger) px-4 text-sm text-white transition-opacity duration-200 hover:opacity-90 active:opacity-80"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>,
+    document.body,
   );
 }
 
