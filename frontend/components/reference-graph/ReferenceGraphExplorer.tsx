@@ -327,6 +327,17 @@ export function ReferenceGraphExplorer({
     return () => { cancelled = true; cyRef.current?.destroy(); cyRef.current = null; };
   }, [comparison, display, neighborhood, positions, view]);
 
+  const [seenFocusProp, setSeenFocusProp] = useState(focusProvisionId);
+  if (seenFocusProp !== focusProvisionId) {
+    setSeenFocusProp(focusProvisionId);
+    if (focusProvisionId !== focus) {
+      setLoading(true);
+      setError("");
+      setFocus(focusProvisionId);
+      setSelected(focusProvisionId);
+    }
+  }
+
   const emit = (next: Partial<GraphRouteState>, historyMode: "push" | "replace") => {
     onStateChange?.(state(next), historyMode);
   };
@@ -348,16 +359,13 @@ export function ReferenceGraphExplorer({
     if (display.nodes.some((node) => node.provision_id === selected)) navigate(selected, true);
   };
   const back = () => {
-    if (onStateChange && typeof window !== "undefined") {
-      window.history.back();
-      return;
-    }
     const previous = history.at(-1);
     if (!previous) return;
     setHistory((items) => items.slice(0, -1));
     beginLoad();
     setFocus(previous);
     setSelected(previous);
+    emit({ focusProvisionId: previous }, "replace");
   };
   const changeLayout = (next: GraphLayout) => {
     setLayout(next);
@@ -395,8 +403,11 @@ export function ReferenceGraphExplorer({
   return (
     <section className="flex min-h-0 flex-1 flex-col" aria-label="Statutory reference graph">
       <div className="flex flex-wrap items-center gap-2 border-b border-(--line) bg-(--surface-soft) px-4 py-2">
-        <button type="button" onClick={() => changeLayout("explore")} aria-pressed={layout === "explore"} className="rounded border border-(--line) px-2 py-1 text-xs">Explore</button>
-        <button type="button" onClick={() => changeLayout("trace")} aria-pressed={layout === "trace"} className="rounded border border-(--line) px-2 py-1 text-xs">Trace</button>
+        <div role="group" aria-label="Graph layout" className="flex items-center gap-1">
+          <span aria-hidden="true" className="font-mono text-[10px] uppercase text-(--text-subtle)">Layout</span>
+          <button type="button" onClick={() => changeLayout("explore")} aria-pressed={layout === "explore"} className="rounded border border-(--line) px-2 py-1 text-xs">Explore</button>
+          <button type="button" onClick={() => changeLayout("trace")} aria-pressed={layout === "trace"} className="rounded border border-(--line) px-2 py-1 text-xs">Trace</button>
+        </div>
         {compareDocument && (
           <div role="group" aria-label="Snapshot graph view" className="flex gap-1">
             {(["base", "compare", "overlay"] as GraphView[]).map((item) => (
@@ -404,8 +415,8 @@ export function ReferenceGraphExplorer({
             ))}
           </div>
         )}
-        <button type="button" onClick={focusHere} disabled={!selectedNode || selected === focus} className="rounded border border-(--line) px-2 py-1 text-xs disabled:opacity-40">Focus here</button>
-        <button type="button" onClick={back} disabled={!onStateChange && history.length === 0} className="rounded border border-(--line) px-2 py-1 text-xs disabled:opacity-40">Back</button>
+        <button type="button" onClick={focusHere} disabled={!selectedNode || selected === focus} className="rounded border border-(--line) px-2 py-1 text-xs disabled:opacity-40">Focus on selected</button>
+        <button type="button" onClick={back} disabled={history.length === 0} className="rounded border border-(--line) px-2 py-1 text-xs disabled:opacity-40">Previous section</button>
         {!onStateChange && <a href={serializeReferenceGraphState(currentState)} className="rounded border border-(--line) px-2 py-1 text-xs underline">Open larger</a>}
         <span className="ml-auto font-mono text-[10px] text-(--text-subtle)">1 hop · {shortId(focus)}</span>
       </div>

@@ -35,7 +35,7 @@ function ReferenceGraphPageInner() {
         <h1 className="mt-1 font-serif text-2xl font-light">Statutory reference graph</h1>
       </header>
       <ReferenceGraphExplorer
-        key={`${documentId}:${compareDocumentId}:${focus}:${layout}:${view}`}
+        key={`${documentId}:${compareDocumentId}:${layout}:${view}`}
         documentId={documentId}
         compareDocumentId={compareDocumentId}
         focusProvisionId={focus}
