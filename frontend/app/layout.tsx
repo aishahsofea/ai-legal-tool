@@ -18,7 +18,7 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Locus",
+  title: { default: "Locus", template: "%s · Locus" },
   description: "Locus is an AI legal research instrument grounded in Malaysian Federal legislation.",
 };
 
