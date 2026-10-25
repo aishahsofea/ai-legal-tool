@@ -1,5 +1,5 @@
 import { IconButton, Mono } from "@/components/chamber";
-import { Check, PanelLeft, Share } from "@/components/icons";
+import { Check, PanelLeft, Share, SignOut } from "@/components/icons";
 import { threadMarkdown } from "@/lib/threadMarkdown";
 import { useShareText } from "@/lib/useShareText";
 import type { Message } from "./types";
@@ -9,9 +9,10 @@ type Props = {
   messages?: Message[];
   sidebarCollapsed?: boolean;
   onToggleSidebar?: () => void;
+  onSignOut?: () => void;
 };
 
-export function ConversationHeader({ title, messages = [], sidebarCollapsed = false, onToggleSidebar }: Props) {
+export function ConversationHeader({ title, messages = [], sidebarCollapsed = false, onToggleSidebar, onSignOut }: Props) {
   const { copied, share } = useShareText();
   const hasContent = messages.some((m) => m.content);
 
@@ -26,7 +27,7 @@ export function ConversationHeader({ title, messages = [], sidebarCollapsed = fa
             aria-expanded={!sidebarCollapsed}
             aria-label={sidebarCollapsed ? "Show thread list" : "Hide thread list"}
             title={sidebarCollapsed ? "Show thread list" : "Hide thread list"}
-            className="conversation-header-sidebar-toggle self-center max-md:hidden"
+            className="conversation-header-sidebar-toggle self-center"
           >
             <PanelLeft />
           </IconButton>
@@ -41,10 +42,16 @@ export function ConversationHeader({ title, messages = [], sidebarCollapsed = fa
           onClick={() => void share(title, threadMarkdown(title, messages))}
           aria-label="Share thread"
           title={copied ? "Copied" : "Share thread"}
+          className={copied ? "w-auto! gap-1 px-2" : ""}
         >
           {copied ? <Check /> : <Share />}
-          <span className="sr-only" aria-live="polite">{copied ? "Copied" : ""}</span>
+          <span aria-live="polite" className={copied ? "font-mono text-xs uppercase tracking-widest" : "sr-only"}>{copied ? "Copied" : ""}</span>
         </IconButton>
+        {onSignOut && (
+          <IconButton type="button" onClick={onSignOut} aria-label="Sign out" title="Sign out">
+            <SignOut />
+          </IconButton>
+        )}
       </div>
     </header>
   );

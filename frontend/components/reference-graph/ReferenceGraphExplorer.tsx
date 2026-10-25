@@ -34,6 +34,20 @@ type DisplayNode = {
   presence: "base" | "compare" | "both" | "boundary";
 };
 
+type ReferenceGroup = { key: string; references: LogicalReference[] };
+
+function groupReferences(references: LogicalReference[]): ReferenceGroup[] {
+  const groups = new Map<string, ReferenceGroup>();
+  references.forEach((reference) => {
+    const { source_provision_id: source, target_provision_id: target } = reference.logical_key;
+    const key = `${source}|${target}|${reference.status}`;
+    const group = groups.get(key);
+    if (group) group.references.push(reference);
+    else groups.set(key, { key, references: [reference] });
+  });
+  return [...groups.values()];
+}
+
 function graphMessage(status: Neighborhood["status"] | GraphComparison["status"]) {
   if (status === "not_indexed") return "Reference graph not yet indexed for this snapshot.";
   if (status === "not_indexed_base") return "Reference graph not yet indexed for the base snapshot.";
@@ -224,7 +238,7 @@ export function ReferenceGraphExplorer({
       label: `${shortId(id)}\nNot indexed in this snapshot`,
       presence: "boundary",
     }));
-    return { nodes, references, activeReferences };
+    return { nodes, references, activeReferences, groups: groupReferences(activeReferences) };
   }, [comparison, neighborhood, view]);
 
   const unionGeometry = useMemo(() => {
@@ -271,7 +285,7 @@ export function ReferenceGraphExplorer({
     let cancelled = false;
     void import("cytoscape").then(({ default: cytoscape }) => {
       if (cancelled || !containerRef.current) return;
-      const edgeElements = display.activeReferences.flatMap((reference) => {
+      const edgeElements = display.groups.flatMap(({ references: [reference] }) => {
         const edge = view === "base" ? reference.base_edge
           : view === "compare" ? reference.compare_edge
             : reference.compare_edge ?? reference.base_edge;
@@ -313,6 +327,18 @@ export function ReferenceGraphExplorer({
     return () => { cancelled = true; cyRef.current?.destroy(); cyRef.current = null; };
   }, [comparison, display, neighborhood, positions, view]);
 
+  const [seenFocusProp, setSeenFocusProp] = useState(focusProvisionId);
+  if (seenFocusProp !== focusProvisionId) {
+    setSeenFocusProp(focusProvisionId);
+    if (focusProvisionId !== focus) {
+      if (history.at(-1) === focusProvisionId) setHistory((items) => items.slice(0, -1));
+      setLoading(true);
+      setError("");
+      setFocus(focusProvisionId);
+      setSelected(focusProvisionId);
+    }
+  }
+
   const emit = (next: Partial<GraphRouteState>, historyMode: "push" | "replace") => {
     onStateChange?.(state(next), historyMode);
   };
@@ -334,16 +360,16 @@ export function ReferenceGraphExplorer({
     if (display.nodes.some((node) => node.provision_id === selected)) navigate(selected, true);
   };
   const back = () => {
-    if (onStateChange && typeof window !== "undefined") {
-      window.history.back();
+    const previous = history.findLast((item) => item !== focus);
+    if (!previous) {
+      setHistory([]);
       return;
     }
-    const previous = history.at(-1);
-    if (!previous) return;
-    setHistory((items) => items.slice(0, -1));
+    setHistory((items) => items.slice(0, items.lastIndexOf(previous)));
     beginLoad();
     setFocus(previous);
     setSelected(previous);
+    emit({ focusProvisionId: previous }, "replace");
   };
   const changeLayout = (next: GraphLayout) => {
     setLayout(next);
@@ -371,7 +397,7 @@ export function ReferenceGraphExplorer({
     emit({ compareDocumentId: next, view: nextView }, "replace");
   };
 
-  const selectedReferences = display.activeReferences.filter((reference) => (
+  const selectedGroups = display.groups.filter(({ references: [reference] }) => (
     reference.logical_key.source_provision_id === selected || reference.logical_key.target_provision_id === selected
   ));
   const selectedNode = display.nodes.find((node) => node.provision_id === selected);
@@ -379,10 +405,13 @@ export function ReferenceGraphExplorer({
   const currentState = state();
 
   return (
-    <section className="flex min-h-0 flex-1 flex-col" aria-label="Statutory reference graph">
+    <section className="flex flex-1 flex-col md:min-h-0" aria-label="Statutory reference graph">
       <div className="flex flex-wrap items-center gap-2 border-b border-(--line) bg-(--surface-soft) px-4 py-2">
-        <button type="button" onClick={() => changeLayout("explore")} aria-pressed={layout === "explore"} className="rounded border border-(--line) px-2 py-1 text-xs">Explore</button>
-        <button type="button" onClick={() => changeLayout("trace")} aria-pressed={layout === "trace"} className="rounded border border-(--line) px-2 py-1 text-xs">Trace</button>
+        <div role="group" aria-label="Graph layout" className="flex items-center gap-1">
+          <span aria-hidden="true" className="font-mono text-[10px] uppercase text-(--text-subtle)">Layout</span>
+          <button type="button" onClick={() => changeLayout("explore")} aria-pressed={layout === "explore"} className="rounded border border-(--line) px-2 py-1 text-xs">Explore</button>
+          <button type="button" onClick={() => changeLayout("trace")} aria-pressed={layout === "trace"} className="rounded border border-(--line) px-2 py-1 text-xs">Trace</button>
+        </div>
         {compareDocument && (
           <div role="group" aria-label="Snapshot graph view" className="flex gap-1">
             {(["base", "compare", "overlay"] as GraphView[]).map((item) => (
@@ -390,8 +419,8 @@ export function ReferenceGraphExplorer({
             ))}
           </div>
         )}
-        <button type="button" onClick={focusHere} disabled={!selectedNode || selected === focus} className="rounded border border-(--line) px-2 py-1 text-xs disabled:opacity-40">Focus here</button>
-        <button type="button" onClick={back} disabled={!onStateChange && history.length === 0} className="rounded border border-(--line) px-2 py-1 text-xs disabled:opacity-40">Back</button>
+        <button type="button" onClick={focusHere} disabled={!selectedNode || selected === focus} className="rounded border border-(--line) px-2 py-1 text-xs disabled:opacity-40">Focus on selected</button>
+        <button type="button" onClick={back} disabled={history.length === 0} className="rounded border border-(--line) px-2 py-1 text-xs disabled:opacity-40">Previous section</button>
         {!onStateChange && <a href={serializeReferenceGraphState(currentState)} className="rounded border border-(--line) px-2 py-1 text-xs underline">Open larger</a>}
         <span className="ml-auto font-mono text-[10px] text-(--text-subtle)">1 hop · {shortId(focus)}</span>
       </div>
@@ -427,15 +456,15 @@ export function ReferenceGraphExplorer({
       {error && <p className="p-4 text-sm text-(--danger)" role="alert">{error}</p>}
       {!loading && !error && resultStatus !== "available" && <p className="p-4 text-sm text-(--text-muted)" role="status">{graphMessage(resultStatus ?? "graph_unavailable")}</p>}
       {!loading && resultStatus === "available" && (
-        <div className="grid min-h-0 flex-1 grid-rows-[minmax(220px,1fr)_auto]">
-          <div ref={containerRef} data-testid="reference-graph-canvas" className="min-h-[220px] border-b border-(--line)" />
-          <aside className="max-h-64 overflow-auto p-4" aria-label="Selected reference evidence">
+        <div className="grid flex-1 md:min-h-0 md:grid-rows-[minmax(220px,1fr)_auto]">
+          <div ref={containerRef} data-testid="reference-graph-canvas" className="min-h-[55dvh] border-b md:min-h-[220px] border-(--line)" />
+          <aside className="p-4 md:max-h-64 md:overflow-auto" aria-label="Selected reference evidence">
             <p className="font-mono text-[10px] uppercase tracking-wide text-(--text-subtle)">{selectedNode?.label ?? (selected ? "Not indexed" : "Select a provision")}</p>
-            {selectedReferences.length === 0 && <p className="mt-2 text-sm text-(--text-muted)">No direct references.</p>}
-            {selectedReferences.map((reference) => (
+            {selectedGroups.length === 0 && <p className="mt-2 text-sm text-(--text-muted)">No direct references.</p>}
+            {selectedGroups.map((group) => (
               <ComparisonEvidence
-                key={reference.logical_reference_id}
-                reference={reference}
+                key={group.key}
+                references={group.references}
                 baseDocumentId={baseDocument}
                 compareDocumentId={compareDocument}
                 view={view}
@@ -460,23 +489,29 @@ function EvidenceBlock({ edge, documentId, label }: { edge: GraphEdge; documentI
 }
 
 function ComparisonEvidence({
-  reference,
+  references,
   baseDocumentId,
   compareDocumentId,
   view,
 }: {
-  reference: LogicalReference;
+  references: LogicalReference[];
   baseDocumentId: string;
   compareDocumentId: string;
   view: GraphView;
 }) {
   const statusCue: Record<ComparisonEdgeStatus, string> = { added: "＋ Added", removed: "− Removed", unchanged: "= Unchanged" };
+  const [first] = references;
   return (
     <article className="mt-3 rounded border border-(--line) bg-(--surface) p-3 text-xs">
-      <p className="font-mono text-[10px] text-(--accent)">{shortId(reference.logical_key.source_provision_id)} → {shortId(reference.logical_key.target_provision_id)}</p>
-      {compareDocumentId && <p className="mt-1 font-mono text-[10px] uppercase">{statusCue[reference.status]} · occurrence {reference.occurrence_ordinal}</p>}
-      {(view === "base" || view === "overlay") && reference.base_edge && <EvidenceBlock edge={reference.base_edge} documentId={baseDocumentId} label="Base" />}
-      {(view === "compare" || view === "overlay") && reference.compare_edge && <EvidenceBlock edge={reference.compare_edge} documentId={compareDocumentId} label="Comparison" />}
+      <p className="font-mono text-[10px] text-(--accent)">{shortId(first.logical_key.source_provision_id)} → {shortId(first.logical_key.target_provision_id)}</p>
+      {references.length > 1 && <p className="mt-1 font-mono text-[10px] uppercase">{references.length} mentions</p>}
+      {references.map((reference) => (
+        <div key={reference.logical_reference_id}>
+          {compareDocumentId && <p className="mt-1 font-mono text-[10px] uppercase">{statusCue[reference.status]} · occurrence {reference.occurrence_ordinal}</p>}
+          {(view === "base" || view === "overlay") && reference.base_edge && <EvidenceBlock edge={reference.base_edge} documentId={baseDocumentId} label="Base" />}
+          {(view === "compare" || view === "overlay") && reference.compare_edge && <EvidenceBlock edge={reference.compare_edge} documentId={compareDocumentId} label="Comparison" />}
+        </div>
+      ))}
     </article>
   );
 }

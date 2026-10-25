@@ -1,3 +1,4 @@
+import { HttpError } from "@/lib/httpError";
 import { authHeaders } from "@/lib/supabaseClient";
 
 export interface Message {
@@ -202,7 +203,7 @@ export async function* parseSseStream<T>(
 
 async function* streamFromResponse(res: Response, signal?: AbortSignal): AsyncGenerator<QueryEvent> {
   if (!res.ok) {
-    throw new Error(`HTTP ${res.status}`);
+    throw new HttpError(`HTTP ${res.status}`, res.status);
   }
   if (!res.body) {
     throw new Error("No response body");

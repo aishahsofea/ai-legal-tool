@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fixedPresetPositions, ReferenceGraphExplorer } from "./ReferenceGraphExplorer";
@@ -8,7 +8,7 @@ const mocks = vi.hoisted(() => ({
   fetchComparison: vi.fn(),
   fetchSnapshots: vi.fn(),
   nodeTap: { current: undefined as ((event: { target: { id: () => string } }) => void) | undefined },
-  cytoscapeOptions: { current: undefined as { elements?: Array<{ data: { id: string; label?: string }; position?: { x: number; y: number } }> } | undefined },
+  cytoscapeOptions: { current: undefined as { elements?: Array<{ data: { id: string; label?: string; source?: string }; position?: { x: number; y: number } }> } | undefined },
   destroy: vi.fn(),
 }));
 
@@ -82,7 +82,7 @@ describe("reference graph explorer", () => {
 
     await waitFor(() => expect(mocks.nodeTap.current).toBeTypeOf("function"));
     mocks.nodeTap.current?.({ target: { id: () => "act:265/section:4" } });
-    await userEvent.click(screen.getByRole("button", { name: "Focus here" }));
+    await userEvent.click(screen.getByRole("button", { name: "Focus on selected" }));
     await waitFor(() => expect(mocks.fetchNeighborhood).toHaveBeenCalledWith(documentId, "act:265/section:4", expect.any(AbortSignal)));
     expect(onStateChange).toHaveBeenCalledWith(expect.objectContaining({ focusProvisionId: "act:265/section:4" }), "push");
   });
@@ -165,6 +165,30 @@ describe("reference graph explorer", () => {
     });
   });
 
+  it("groups repeated mentions of one source-target pair into one row and one edge", async () => {
+    const source = "act:265/section:100/subsection:3";
+    const target = "act:265/section:60D";
+    const mention = (id: string, page: number) => ({
+      ...edge(id, "section 60D", page), source_provision_id: source, target_provision_id: target,
+    });
+    mocks.fetchSnapshots.mockResolvedValue(snapshots());
+    mocks.fetchNeighborhood.mockResolvedValue({
+      status: "available", document_id: documentId, focus_provision_id: target,
+      nodes: [node(target, "v1", "Section 60D"), node(source, "v2", "Section 100(3)")],
+      edges: [mention("edge:a", 100), mention("edge:b", 101)],
+    });
+    render(<ReferenceGraphExplorer documentId={documentId} focusProvisionId={target} />);
+
+    await screen.findByTestId("reference-graph-canvas");
+    expect(screen.getAllByRole("article")).toHaveLength(1);
+    expect(screen.getByText("2 mentions")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Open base receipt page 100" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Open base receipt page 101" })).toBeInTheDocument();
+    await waitFor(() => expect(mocks.cytoscapeOptions.current).toBeDefined());
+    const edges = mocks.cytoscapeOptions.current?.elements?.filter((item) => "source" in item.data);
+    expect(edges).toHaveLength(1);
+  });
+
   it("computes deterministic preset positions independent of input order", () => {
     const references = [{ source: focus, target: "act:265/section:4" }];
     expect(fixedPresetPositions([focus, "act:265/section:4"], focus, "trace", references)).toEqual(
@@ -184,18 +208,77 @@ describe("reference graph explorer", () => {
     expect(screen.queryByTestId("reference-graph-canvas")).not.toBeInTheDocument();
   });
 
-  it("delegates Back to browser history in route-controlled mode", async () => {
+  it("keeps Previous section inside the explorer's own history in route-controlled mode", async () => {
+    mocks.fetchSnapshots.mockResolvedValue(snapshots());
+    mocks.fetchNeighborhood.mockResolvedValue({
+      status: "available", document_id: documentId, focus_provision_id: focus,
+      nodes: [node(focus, "v1", "Section 60D"), node("act:265/section:4", "v2", "Section 4")],
+      edges: [edge("edge:1", "section 4", 60)],
+    });
+    const historyBack = vi.spyOn(window.history, "back").mockImplementation(() => undefined);
+    render(<ReferenceGraphExplorer documentId={documentId} focusProvisionId={focus} onStateChange={vi.fn()} />);
+    await screen.findByTestId("reference-graph-canvas");
+    const previous = screen.getByRole("button", { name: "Previous section" });
+    expect(previous).toBeDisabled();
+
+    await waitFor(() => expect(mocks.nodeTap.current).toBeTypeOf("function"));
+    mocks.nodeTap.current?.({ target: { id: () => "act:265/section:4" } });
+    await userEvent.click(screen.getByRole("button", { name: "Focus on selected" }));
+    expect(await screen.findByText("1 hop · section:4")).toBeInTheDocument();
+    expect(previous).toBeEnabled();
+
+    await userEvent.click(previous);
+    expect(await screen.findByText("1 hop · section:60D")).toBeInTheDocument();
+    expect(historyBack).not.toHaveBeenCalled();
+    expect(previous).toBeDisabled();
+    historyBack.mockRestore();
+  });
+
+  it("groups the layout buttons under a Graph layout label", async () => {
     mocks.fetchSnapshots.mockResolvedValue(snapshots());
     mocks.fetchNeighborhood.mockResolvedValue({
       status: "available", document_id: documentId, focus_provision_id: focus,
       nodes: [node(focus, "v1", "Section 60D")], edges: [],
     });
-    const historyBack = vi.spyOn(window.history, "back").mockImplementation(() => undefined);
-    render(<ReferenceGraphExplorer documentId={documentId} focusProvisionId={focus} onStateChange={vi.fn()} />);
+    render(<ReferenceGraphExplorer documentId={documentId} focusProvisionId={focus} />);
+    const group = await screen.findByRole("group", { name: "Graph layout" });
+    expect(group).toHaveTextContent("Layout");
+    expect(within(group).getByRole("button", { name: "Explore" })).toBeInTheDocument();
+    expect(within(group).getByRole("button", { name: "Trace" })).toBeInTheDocument();
+  });
+
+  it("refocuses without adding history when the focus prop changes", async () => {
+    mocks.fetchSnapshots.mockResolvedValue(snapshots());
+    mocks.fetchNeighborhood.mockResolvedValue({
+      status: "available", document_id: documentId, focus_provision_id: focus,
+      nodes: [node(focus, "v1", "Section 60D"), node("act:265/section:4", "v2", "Section 4")],
+      edges: [edge("edge:1", "section 4", 60)],
+    });
+    const rendered = render(<ReferenceGraphExplorer documentId={documentId} focusProvisionId={focus} onStateChange={vi.fn()} />);
     await screen.findByTestId("reference-graph-canvas");
-    await userEvent.click(screen.getByRole("button", { name: "Back" }));
-    expect(historyBack).toHaveBeenCalledOnce();
-    historyBack.mockRestore();
+    rendered.rerender(<ReferenceGraphExplorer documentId={documentId} focusProvisionId="act:265/section:4" onStateChange={vi.fn()} />);
+    expect(await screen.findByText("1 hop · section:4")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Previous section" })).toBeDisabled();
+  });
+
+  it("drops the matching history entry when browser Back changes the focus prop", async () => {
+    mocks.fetchSnapshots.mockResolvedValue(snapshots());
+    mocks.fetchNeighborhood.mockResolvedValue({
+      status: "available", document_id: documentId, focus_provision_id: focus,
+      nodes: [node(focus, "v1", "Section 60D"), node("act:265/section:4", "v2", "Section 4")],
+      edges: [edge("edge:1", "section 4", 60)],
+    });
+    const other = "act:265/section:4";
+    const rendered = render(<ReferenceGraphExplorer documentId={documentId} focusProvisionId={focus} onStateChange={vi.fn()} />);
+    await screen.findByTestId("reference-graph-canvas");
+    await waitFor(() => expect(mocks.nodeTap.current).toBeTypeOf("function"));
+    mocks.nodeTap.current?.({ target: { id: () => other } });
+    await userEvent.click(screen.getByRole("button", { name: "Focus on selected" }));
+    expect(await screen.findByText("1 hop · section:4")).toBeInTheDocument();
+    rendered.rerender(<ReferenceGraphExplorer documentId={documentId} focusProvisionId={other} onStateChange={vi.fn()} />);
+    rendered.rerender(<ReferenceGraphExplorer documentId={documentId} focusProvisionId={focus} onStateChange={vi.fn()} />);
+    expect(await screen.findByText("1 hop · section:60D")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Previous section" })).toBeDisabled();
   });
 
   it("destroys the lazy Cytoscape instance on unmount", async () => {

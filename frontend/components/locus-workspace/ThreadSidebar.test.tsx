@@ -131,3 +131,8 @@ it("clicking the title still selects the thread", () => {
   fireEvent.click(screen.getByText("First question"));
   expect(onSelectThread).toHaveBeenCalledWith("t1");
 });
+
+it("the Locus logo links to the landing page", () => {
+  renderSidebar("ready");
+  expect(screen.getByRole("link", { name: "Locus home" })).toHaveAttribute("href", "/");
+});

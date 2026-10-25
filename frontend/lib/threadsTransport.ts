@@ -1,4 +1,5 @@
 import { API_URL, type Citation, type CommentaryNote, type CurrencyLabel } from "@/lib/queryTransport";
+import { HttpError } from "@/lib/httpError";
 import { authHeaders } from "@/lib/supabaseClient";
 
 export interface ThreadListItem {
@@ -22,7 +23,7 @@ export interface StoredThread extends ThreadListItem {
 
 async function getJson<T>(path: string): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, { headers: await authHeaders() });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  if (!res.ok) throw new HttpError(`HTTP ${res.status}`, res.status);
   return res.json() as Promise<T>;
 }
 
@@ -36,7 +37,7 @@ export async function deleteThread(threadId: string): Promise<void> {
     headers: await authHeaders(),
   });
   // 404 means already gone, which is the outcome the caller wanted
-  if (!res.ok && res.status !== 404) throw new Error(`HTTP ${res.status}`);
+  if (!res.ok && res.status !== 404) throw new HttpError(`HTTP ${res.status}`, res.status);
 }
 
 export function fetchThread(threadId: string): Promise<StoredThread> {

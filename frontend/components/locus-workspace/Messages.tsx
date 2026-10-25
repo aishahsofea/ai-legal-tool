@@ -33,9 +33,9 @@ function ShareButton({ message }: { message: Message }) {
   const { copied, share } = useShareText();
 
   return (
-    <IconButton aria-label="Share response" title={copied ? "Copied" : "Share response"} onClick={() => void share("Locus answer", responseMarkdown(message))}>
+    <IconButton aria-label="Share response" title={copied ? "Copied" : "Share response"} className={copied ? "w-auto! gap-1 px-2" : ""} onClick={() => void share("Locus answer", responseMarkdown(message))}>
       {copied ? <Check /> : <Share />}
-      <span className="sr-only" aria-live="polite">{copied ? "Copied" : ""}</span>
+      <span aria-live="polite" className={copied ? "font-mono text-xs uppercase tracking-widest" : "sr-only"}>{copied ? "Copied" : ""}</span>
     </IconButton>
   );
 }

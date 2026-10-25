@@ -29,13 +29,15 @@ function ReferenceGraphPageInner() {
   }, []);
 
   return (
-    <main className="flex h-dvh min-h-0 flex-col bg-(--canvas) text-(--text)">
+    <main className="flex min-h-dvh flex-col md:h-dvh md:min-h-0 bg-(--canvas) text-(--text)">
       <header className="border-b border-(--line) px-5 py-4">
-        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-(--accent)">Employment Act 1955</p>
+        {documentId === DOCUMENT_ID && (
+          <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-(--accent)">Employment Act 1955</p>
+        )}
         <h1 className="mt-1 font-serif text-2xl font-light">Statutory reference graph</h1>
       </header>
       <ReferenceGraphExplorer
-        key={`${documentId}:${compareDocumentId}:${focus}:${layout}:${view}`}
+        key={`${documentId}:${compareDocumentId}:${layout}:${view}`}
         documentId={documentId}
         compareDocumentId={compareDocumentId}
         focusProvisionId={focus}

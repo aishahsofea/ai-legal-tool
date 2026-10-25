@@ -135,6 +135,8 @@ describe("icon buttons", () => {
     fireEvent.click(button);
     await waitFor(() => expect(button.querySelector('svg[data-icon="check"]')).not.toBeNull());
     expect(button.getAttribute("title")).toBe("Copied");
+    expect(button.textContent).toBe("Copied");
+    expect(screen.getByText("Copied")).not.toHaveClass("sr-only");
   });
 });
 

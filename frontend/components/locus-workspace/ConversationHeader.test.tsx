@@ -76,6 +76,8 @@ describe("ConversationHeader share", () => {
     fireEvent.click(button);
     await waitFor(() => expect(button.querySelector('svg[data-icon="check"]')).not.toBeNull());
     expect(button).toHaveAttribute("title", "Copied");
+    expect(button.textContent).toBe("Copied");
+    expect(screen.getByText("Copied")).not.toHaveClass("sr-only");
   });
 
   it("copies thread markdown when navigator.share is missing", async () => {
@@ -88,5 +90,28 @@ describe("ConversationHeader share", () => {
     expect(text).toContain("# My thread");
     expect(text).toContain("What is s 3?");
     expect(text).toContain("Section 3 says X.");
+  });
+});
+
+describe("ConversationHeader sign out", () => {
+  it("renders no Sign out button without onSignOut", () => {
+    render(<ConversationHeader title="T" />);
+    expect(screen.queryByRole("button", { name: "Sign out" })).toBeNull();
+  });
+
+  it("renders a Sign out button that calls onSignOut", async () => {
+    const onSignOut = vi.fn();
+    render(<ConversationHeader title="T" onSignOut={onSignOut} />);
+    const button = screen.getByRole("button", { name: "Sign out" });
+    expect(button).toHaveAttribute("title", "Sign out");
+    await userEvent.click(button);
+    expect(onSignOut).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("ConversationHeader home link", () => {
+  it("has no Home icon link; the sidebar logo goes home", () => {
+    render(<ConversationHeader title="T" />);
+    expect(screen.queryByRole("link", { name: "Home" })).toBeNull();
   });
 });

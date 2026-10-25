@@ -1,0 +1,1 @@
+- Every signed-in page keeps a visible link back to `/`.

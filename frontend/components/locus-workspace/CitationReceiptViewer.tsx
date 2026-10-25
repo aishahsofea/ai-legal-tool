@@ -55,7 +55,9 @@ function useContainerWidth() {
 
 function resultMessage(result: LocatorResult | null, hasEvidence: boolean) {
   if (!result) return "";
-  if (!hasEvidence) return "No verified passage was available.";
+  if (!hasEvidence) {
+    return `No verified passage for this citation. Showing PDF page ${result.fallback_page}, the citation's stored start page. It has not been checked against the cited section.`;
+  }
   if (result.status === "not_found") return "Exact passage could not be pinpointed.";
   if (result.status === "ambiguous") return "The passage appeared more than once, so no unique match was selected.";
   return "Verified passage located. Highlighted words match the supporting quote.";
@@ -65,11 +67,13 @@ export function CitationReceiptViewer({
   citation,
   initialEvidenceIndex = 0,
   modal = true,
+  contained = false,
   onClose,
 }: {
   citation: Citation;
   initialEvidenceIndex?: number;
   modal?: boolean;
+  contained?: boolean;
   onClose: () => void;
 }) {
   const receipt = citation.receipt;
@@ -160,6 +164,7 @@ export function CitationReceiptViewer({
   return (
     <div
       className="citation-receipt-layer fixed inset-0 z-50 min-h-0 min-w-0"
+      data-contained={contained ? "true" : undefined}
       data-mode={modal ? "sheet" : "pane"}
       data-testid="receipt-layer"
       aria-live="off"
