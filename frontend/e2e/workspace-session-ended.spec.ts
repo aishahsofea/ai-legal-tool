@@ -9,6 +9,11 @@ const authKeys = (page: Page) =>
 
 test("401 from /threads shows the banner, and Sign in leaves without looping", async ({ page }) => {
   await signIn(page);
+  const logoutCalls: string[] = [];
+  await page.route("**/auth/v1/logout*", (route) => {
+    logoutCalls.push(route.request().url());
+    return route.fulfill({ status: 204 });
+  });
   await page.route("**/threads", (route) => route.fulfill({ status: 401, body: "no" }));
   await page.goto("/workspace");
 
@@ -20,6 +25,7 @@ test("401 from /threads shows the banner, and Sign in leaves without looping", a
   await page.waitForTimeout(2000);
   expect(new URL(page.url()).pathname).toBe("/login");
   expect(await authKeys(page)).toEqual([]);
+  expect(logoutCalls.map((u) => new URL(u).searchParams.get("scope"))).toEqual(["local"]);
 });
 
 test("401 from the query keeps the question and carries it to /login", async ({ page }) => {

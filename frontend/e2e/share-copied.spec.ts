@@ -36,8 +36,8 @@ async function expectCopiedLabel(page: import("@playwright/test").Page, name: st
   const label = button.getByText("Copied");
   await expect(label).toBeVisible();
   const box = (await label.boundingBox())!;
-  expect(box.width).toBeGreaterThan(0);
-  expect(box.height).toBeGreaterThan(0);
+  expect(box.width).toBeGreaterThan(30);
+  expect(box.height).toBeGreaterThan(8);
 }
 
 test("Share thread shows Copied and copies the thread", async ({ page }) => {
