@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { AssistantMessage } from "@/components/locus-workspace";
 import type { Citation } from "@/lib/queryTransport";
-import { fetchThread, fetchThreads } from "@/lib/threadsTransport";
+import { deleteThread, fetchThread, fetchThreads } from "@/lib/threadsTransport";
 import { useResearchThreads } from "./useResearchThreads";
 
 vi.mock("react-pdf", () => ({
@@ -15,6 +15,7 @@ vi.mock("react-pdf", () => ({
 vi.mock("@/lib/threadsTransport", () => ({
   fetchThreads: vi.fn(),
   fetchThread: vi.fn(),
+  deleteThread: vi.fn(),
 }));
 
 const { submit } = vi.hoisted(() => ({ submit: vi.fn() }));
@@ -380,5 +381,67 @@ describe("restoring threads", () => {
 
     expect(result.current.activeThreadId).toBeNull();
     expect(result.current.loadError).toBe("Could not open that thread.");
+  });
+});
+
+describe("deleting a thread", () => {
+  const LISTED_2 = { id: "t2", title: "Overtime pay", created_at: "2026-10-03T10:00:00Z", updated_at: "2026-10-04T10:00:00Z" };
+
+  async function mountWithTwoThreads() {
+    stubServer();
+    vi.mocked(fetchThreads).mockResolvedValue([LISTED, LISTED_2]);
+    vi.mocked(deleteThread).mockResolvedValue(undefined);
+    const hook = renderHook(() => useResearchThreads());
+    await waitFor(() => expect(hook.result.current.threads).toHaveLength(2));
+    return hook;
+  }
+
+  it("removes only the deleted inactive row and keeps the active thread", async () => {
+    const { result } = await mountWithTwoThreads();
+    await act(async () => result.current.selectThread("t1"));
+
+    await act(async () => result.current.deleteThread("t2"));
+
+    expect(deleteThread).toHaveBeenCalledWith("t2");
+    expect(result.current.threads.map((t) => t.id)).toEqual(["t1"]);
+    expect(result.current.activeThreadId).toBe("t1");
+  });
+
+  it("deleting the active thread returns to the empty state", async () => {
+    const { result } = await mountWithTwoThreads();
+    await act(async () => result.current.selectThread("t1"));
+    expect(result.current.messages.length).toBeGreaterThan(0);
+
+    await act(async () => result.current.deleteThread("t1"));
+
+    expect(result.current.threads.map((t) => t.id)).toEqual(["t2"]);
+    expect(result.current.activeThread).toBeNull();
+    expect(result.current.messages).toEqual([]);
+  });
+
+  it("a fetch still pending for the deleted thread cannot bring it back", async () => {
+    const { result } = await mountWithTwoThreads();
+    let resolveFetch!: (v: Awaited<ReturnType<typeof fetchThread>>) => void;
+    vi.mocked(fetchThread).mockImplementation(() => new Promise((r) => (resolveFetch = r)));
+    act(() => {
+      void result.current.selectThread("t1");
+    });
+
+    await act(async () => result.current.deleteThread("t1"));
+    await act(async () => resolveFetch({ ...LISTED, messages: [{ role: "user", content: "q" }] }));
+
+    expect(result.current.threads.map((t) => t.id)).toEqual(["t2"]);
+    expect(result.current.activeThreadId).toBeNull();
+    expect(result.current.loadingThreadId).toBeNull();
+  });
+
+  it("a rejected delete keeps the row and sets the error", async () => {
+    const { result } = await mountWithTwoThreads();
+    vi.mocked(deleteThread).mockRejectedValue(new Error("HTTP 500"));
+
+    await act(async () => result.current.deleteThread("t2"));
+
+    expect(result.current.threads.map((t) => t.id)).toEqual(["t1", "t2"]);
+    expect(result.current.loadError).toBe("Could not delete that thread.");
   });
 });

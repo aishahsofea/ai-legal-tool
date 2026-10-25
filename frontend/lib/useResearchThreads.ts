@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useQuery, type Citation, type NodeRun } from "@/lib/useQuery";
 import type { Message as ThreadMessage, ThreadSummary } from "@/components/conversation";
-import { fetchThread, fetchThreads, type StoredThread, type ThreadListItem } from "@/lib/threadsTransport";
+import { deleteThread as deleteThreadRequest, fetchThread, fetchThreads, type StoredThread, type ThreadListItem } from "@/lib/threadsTransport";
 
 type ResearchThread = ThreadSummary & {
   // False for a thread known only from GET /threads; its turns load on first select.
@@ -133,6 +133,34 @@ export function useResearchThreads() {
     lastStatusRef.current = null;
     setThreads((prev) => syncActiveFlags(prev, null));
   }, [syncActiveFlags]);
+
+  const deleteThread = useCallback(
+    async (threadId: string) => {
+      try {
+        await deleteThreadRequest(threadId);
+      } catch {
+        setLoadError("Could not delete that thread.");
+        return;
+      }
+
+      const wasSelected = threadId === activeThreadId || threadId === loadingThreadId;
+      if (wasSelected) {
+        // Invalidates a still-pending select so its fetch cannot resurrect the row.
+        selectRequestRef.current++;
+        setLoadingThreadId(null);
+        setActiveThreadId(null);
+        setInput("");
+        setActiveSourceIndex(0);
+        setReasoningOpen(false);
+        lastStatusRef.current = null;
+      }
+      setLoadError(null);
+      setThreads((prev) =>
+        syncActiveFlags(prev.filter((thread) => thread.id !== threadId), wasSelected ? null : activeThreadId),
+      );
+    },
+    [activeThreadId, loadingThreadId, syncActiveFlags],
+  );
 
   useEffect(() => {
     activeThreadIdRef.current = activeThreadId;
@@ -409,6 +437,7 @@ export function useResearchThreads() {
     isLoading,
     error,
     loadError,
+    pendingThreadId,
     threadListStatus,
     status,
     setInput,
@@ -416,6 +445,7 @@ export function useResearchThreads() {
     setActiveSourceIndex,
     newThread,
     selectThread,
+    deleteThread,
     submitQuery,
     stopQuery,
   };
