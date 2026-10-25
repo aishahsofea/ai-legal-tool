@@ -70,3 +70,15 @@ test("on desktop the receipt opens as a right-side panel and leaves the answer v
   expect(box.x + box.width).toBeCloseTo(1280, 0);
   expect(box.x).toBeGreaterThan(400);
 });
+
+test("on a phone the receipt stays full width", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 700 });
+  await page.route("**/receipts/*/locate", (route) => route.fulfill({ status: 404, json: { detail: "stub" } }));
+  await page.route("**/receipts/*/pdf", (route) => route.fulfill({ status: 404, body: "" }));
+
+  await page.goto("/");
+  await page.getByRole("button", { name: /Open Citation Receipt 8:/ }).click();
+  const box = (await page.getByRole("dialog").boundingBox())!;
+  expect(box.x).toBeCloseTo(0, 0);
+  expect(box.width).toBeCloseTo(375, 0);
+});
