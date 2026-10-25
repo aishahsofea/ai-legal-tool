@@ -41,3 +41,11 @@ def test_other_origin_does_not():
         health = client.get("/health", headers={"Origin": "https://evil.example"})
     assert "access-control-allow-origin" not in response.headers
     assert "access-control-allow-origin" not in health.headers
+
+
+def test_preflight_allows_delete():
+    headers = {"Origin": "http://localhost:3000", "Access-Control-Request-Method": "DELETE",
+               "Access-Control-Request-Headers": "authorization"}
+    with TestClient(main.app) as client:
+        response = client.options("/threads/x", headers=headers)
+    assert "DELETE" in response.headers["access-control-allow-methods"]

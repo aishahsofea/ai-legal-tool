@@ -34,6 +34,7 @@ Endpoints:
   POST /cancel       { thread_id }                   — barge-in: stop the in-flight turn; bearer token
   GET  /threads                                     — caller's threads, newest first; bearer token
   GET  /threads/{thread_id}                         — one thread's messages with citations; bearer token
+  DELETE /threads/{thread_id}                       — delete a thread and its checkpoint; 204; bearer token
   /query, /resume, /cancel and /threads return 401 without a valid token and 404 for another user's thread.
   GET|HEAD /receipts/{document_id}/pdf              — verified immutable bytes/redirect
   POST /receipts/{document_id}/locate               — locate one verified Evidence Span
@@ -150,7 +151,7 @@ def _allowed_origins() -> list[str]:
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_allowed_origins(),
-    allow_methods=["POST", "GET", "HEAD", "OPTIONS"],
+    allow_methods=["POST", "GET", "HEAD", "DELETE", "OPTIONS"],
     allow_headers=["*"],
     expose_headers=["Accept-Ranges", "Content-Length", "Content-Range", "ETag", "Location"],
 )

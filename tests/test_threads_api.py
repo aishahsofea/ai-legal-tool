@@ -11,6 +11,7 @@ CITATION = {"act_number": "265", "section_number": "60A", "receipt": RECEIPT}
 
 class FakeThreads:
     def __init__(self):
+        self.calls = []
         self.threads = {
             "a-old": {"user_id": "alice", "title": "Old", "updated_at": "2026-10-01"},
             "a-new": {"user_id": "alice", "title": "New", "updated_at": "2026-10-02"},
@@ -35,6 +36,18 @@ class FakeThreads:
             return None
         return {"id": thread_id, "title": thread["title"], "turns": self.turns.get(thread_id, [])}
 
+    def owns(self, thread_id, user_id):
+        thread = self.threads.get(thread_id)
+        return thread is not None and thread["user_id"] == user_id
+
+    def delete_thread(self, thread_id, user_id):
+        if not self.owns(thread_id, user_id):
+            return False
+        del self.threads[thread_id]
+        self.turns.pop(thread_id, None)
+        self.calls.append(("row", thread_id))
+        return True
+
 
 def _token_is_user(credentials: HTTPAuthorizationCredentials | None = Depends(auth._bearer)) -> str:
     return credentials.credentials
@@ -45,6 +58,16 @@ def store(monkeypatch):
     fake = FakeThreads()
     monkeypatch.setattr(threads.threads_store, "list_threads", fake.list_threads)
     monkeypatch.setattr(threads.threads_store, "get_thread", fake.get_thread)
+    monkeypatch.setattr(threads.threads_store, "owns", fake.owns)
+    monkeypatch.setattr(threads.threads_store, "delete_thread", fake.delete_thread)
+
+    async def delete_checkpoint(thread_id):
+        fake.calls.append(("checkpoint", thread_id))
+        if fake.checkpoint_error:
+            raise fake.checkpoint_error
+
+    fake.checkpoint_error = None
+    monkeypatch.setattr(threads.query_lifecycle, "delete_checkpoint", delete_checkpoint)
     return fake
 
 
@@ -94,3 +117,37 @@ def test_thread_with_no_completed_turns_has_no_messages(client, as_user):
 @pytest.mark.parametrize("thread_id", ["a-new", "missing"], ids=["foreign", "missing"])
 def test_foreign_or_missing_thread_is_404(client, as_user, thread_id):
     assert client.get(f"/threads/{thread_id}", headers=as_user("bob")).status_code == 404
+
+
+def test_owner_delete_is_204_and_removes_checkpoint_before_row(client, as_user, store):
+    headers = as_user("alice")
+    assert client.delete("/threads/a-new", headers=headers).status_code == 204
+    assert client.get("/threads/a-new", headers=headers).status_code == 404
+    assert [t["id"] for t in client.get("/threads", headers=headers).json()] == ["a-old"]
+    assert store.calls == [("checkpoint", "a-new"), ("row", "a-new")]
+
+
+@pytest.mark.parametrize("headers", [{}, {"Authorization": "Bearer not-a-jwt"}], ids=["missing", "bad"])
+def test_delete_refuses_a_missing_or_bad_token(monkeypatch, client, store, headers):
+    monkeypatch.setenv("SUPABASE_URL", "https://project.supabase.co")
+    assert client.delete("/threads/a-new", headers=headers).status_code == 401
+    assert store.calls == []
+
+
+def test_foreign_delete_is_404_and_touches_nothing(client, as_user, store):
+    assert client.delete("/threads/a-new", headers=as_user("bob")).status_code == 404
+    assert store.calls == []
+    assert client.get("/threads/a-new", headers=as_user("alice")).status_code == 200
+
+
+def test_missing_delete_is_404(client, as_user, store):
+    assert client.delete("/threads/missing", headers=as_user("alice")).status_code == 404
+    assert store.calls == []
+
+
+def test_checkpoint_failure_is_500_and_keeps_the_row(client, as_user, store):
+    store.checkpoint_error = RuntimeError("pool closed")
+    headers = as_user("alice")
+    assert client.delete("/threads/a-new", headers=headers).status_code == 500
+    assert client.get("/threads/a-new", headers=headers).status_code == 200
+    assert store.calls == [("checkpoint", "a-new")]

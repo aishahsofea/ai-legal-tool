@@ -30,6 +30,15 @@ export function fetchThreads(): Promise<ThreadListItem[]> {
   return getJson("/threads");
 }
 
+export async function deleteThread(threadId: string): Promise<void> {
+  const res = await fetch(`${API_URL}/threads/${encodeURIComponent(threadId)}`, {
+    method: "DELETE",
+    headers: await authHeaders(),
+  });
+  // 404 means already gone, which is the outcome the caller wanted
+  if (!res.ok && res.status !== 404) throw new Error(`HTTP ${res.status}`);
+}
+
 export function fetchThread(threadId: string): Promise<StoredThread> {
   return getJson(`/threads/${encodeURIComponent(threadId)}`);
 }

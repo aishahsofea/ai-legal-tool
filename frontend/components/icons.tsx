@@ -26,6 +26,14 @@ export function Check({ className }: IconProps) {
   );
 }
 
+export function Trash({ className }: IconProps) {
+  return (
+    <svg data-icon="trash" className={className} width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M2.5 4h11M6 4V2.5h4V4M4 4l.6 9a1 1 0 0 0 1 .9h4.8a1 1 0 0 0 1-.9L12 4M6.75 6.75v4M9.25 6.75v4" />
+    </svg>
+  );
+}
+
 export function Share({ className }: IconProps) {
   return (
     <svg data-icon="share" className={className} width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

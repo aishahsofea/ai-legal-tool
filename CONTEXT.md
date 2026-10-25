@@ -240,6 +240,7 @@ _Avoid_: account, session (a session is one thread; a **Practitioner** spans man
 One conversation, named by a `thread_id`, owned by one **Practitioner**. The sidebar lists a practitioner's threads, newest first.
 - Another user's `thread_id` returns 404, the same as a missing one.
 - Stored in the `threads` table, apart from the LangGraph checkpoint (ADR 0022).
+- The owner can delete a thread. **Semantic Memory** is kept. Details: [CONTRIBUTING.md](CONTRIBUTING.md#5-start-the-api).
 
 _Avoid_: session, chat
 

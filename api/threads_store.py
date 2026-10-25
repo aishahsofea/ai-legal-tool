@@ -55,6 +55,13 @@ def owns(thread_id: str, user_id: str) -> bool:
         return cursor.fetchone() is not None
 
 
+def delete_thread(thread_id: str, user_id: str) -> bool:
+    """Delete the owner's thread; its turns go through ON DELETE CASCADE."""
+    with closing(_connect()) as connection, connection, connection.cursor() as cursor:
+        cursor.execute("DELETE FROM threads WHERE id = %s AND user_id = %s RETURNING id", (thread_id, user_id))
+        return cursor.fetchone() is not None
+
+
 def append_turn(
     thread_id: str,
     query: str,

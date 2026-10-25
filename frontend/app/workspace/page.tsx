@@ -114,6 +114,7 @@ function WorkspaceInner({ session }: { session: Session }) {
     activeThread,
     loadingThread,
     loadingThreadId,
+    pendingThreadId,
     threadListStatus,
     messages,
     statusHistory,
@@ -129,6 +130,7 @@ function WorkspaceInner({ session }: { session: Session }) {
     setReasoningOpen,
     newThread,
     selectThread,
+    deleteThread,
     submitQuery,
     stopQuery,
   } = useResearchThreads();
@@ -213,6 +215,8 @@ function WorkspaceInner({ session }: { session: Session }) {
           listStatus={threadListStatus}
           onNewThread={newThread}
           onSelectThread={selectThread}
+          onDeleteThread={deleteThread}
+          pendingThreadId={pendingThreadId}
           switchingDisabled={false}
           userName={account.name}
           userSubtitle={account.subtitle}

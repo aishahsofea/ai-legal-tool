@@ -54,7 +54,7 @@ async function open(page: Page) {
   return threads;
 }
 
-const row = (page: Page, title: string) => page.getByRole("button", { name: title });
+const row = (page: Page, title: string) => page.getByRole("button", { name: new RegExp(`^${title}`) });
 
 test("opening an unloaded thread shows its row, title and loader before the fetch returns", async ({ page }) => {
   const threads = await open(page);
