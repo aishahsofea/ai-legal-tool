@@ -331,6 +331,7 @@ export function ReferenceGraphExplorer({
   if (seenFocusProp !== focusProvisionId) {
     setSeenFocusProp(focusProvisionId);
     if (focusProvisionId !== focus) {
+      if (history.at(-1) === focusProvisionId) setHistory((items) => items.slice(0, -1));
       setLoading(true);
       setError("");
       setFocus(focusProvisionId);
@@ -359,9 +360,12 @@ export function ReferenceGraphExplorer({
     if (display.nodes.some((node) => node.provision_id === selected)) navigate(selected, true);
   };
   const back = () => {
-    const previous = history.at(-1);
-    if (!previous) return;
-    setHistory((items) => items.slice(0, -1));
+    const previous = history.findLast((item) => item !== focus);
+    if (!previous) {
+      setHistory([]);
+      return;
+    }
+    setHistory((items) => items.slice(0, items.lastIndexOf(previous)));
     beginLoad();
     setFocus(previous);
     setSelected(previous);
