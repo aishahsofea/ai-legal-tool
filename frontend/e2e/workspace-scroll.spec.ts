@@ -123,6 +123,10 @@ test.describe("sidebar collapsed", () => {
       const box = (await handle.boundingBox())!;
       await dragTo(box.x + box.width / 2 + dx);
     };
+    const startWidth = (await sidebar.boundingBox())!.width;
+    await drag(-100);
+    await expect(sidebar).toBeVisible();
+    await expect.poll(async () => (await sidebar.boundingBox())!.width).toBeLessThan(startWidth);
     await dragTo(40);
     await expect(sidebar).toBeHidden();
     await page.reload();
