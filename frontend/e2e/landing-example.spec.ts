@@ -57,3 +57,16 @@ test("receipt without evidence names the unchecked fallback page", async ({ page
   await expect(dialog.getByText(/Showing PDF page 259/)).toBeVisible();
   await expect(dialog.getByText(/not been checked/)).toBeVisible();
 });
+
+test("on desktop the receipt opens as a right-side panel and leaves the answer visible", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.route("**/receipts/*/locate", (route) => route.fulfill({ status: 404, json: { detail: "stub" } }));
+  await page.route("**/receipts/*/pdf", (route) => route.fulfill({ status: 404, body: "" }));
+
+  await page.goto("/");
+  await page.getByRole("button", { name: /Open Citation Receipt 8:/ }).click();
+  const box = (await page.getByRole("dialog").boundingBox())!;
+  expect(box.width).toBeLessThan(1280 * 0.6);
+  expect(box.x + box.width).toBeCloseTo(1280, 0);
+  expect(box.x).toBeGreaterThan(400);
+});
