@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { HttpError } from "@/lib/httpError";
 import { cancelQuery, streamQuery, streamResume, type Citation, type CommentaryNote, type CurrencyLabel, type NodeRun, type QueryEvent } from "@/lib/queryTransport";
 
 export { type Citation, type CommentaryNote, type CurrencyLabel, type Message, type NodeRun } from "@/lib/queryTransport";
@@ -14,6 +15,7 @@ export interface QueryState {
   nodeRuns: NodeRun[];
   isLoading: boolean;
   error: string | null;
+  errorStatus: number | null;
   // Set when the graph pauses to ask a clarifying question (ADR 0015). While non-null,
   // the next user message is the ANSWER and must be sent via resume(), not a new turn.
   pendingQuestion: string | null;
@@ -28,6 +30,7 @@ const IDLE: QueryState = {
   nodeRuns: [],
   isLoading: false,
   error: null,
+  errorStatus: null,
   pendingQuestion: null,
 };
 
@@ -94,6 +97,7 @@ export function useQuery() {
         setState((s) => ({
           ...s,
           error: err instanceof Error ? err.message : "Unknown error",
+          errorStatus: err instanceof HttpError ? err.status : null,
           isLoading: false,
           status: "",
         }));

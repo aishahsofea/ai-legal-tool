@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/set-state-in-effect -- stream events arrive through hook state and are committed into thread history here. */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { HttpError } from "@/lib/httpError";
 import { useQuery, type Citation, type NodeRun } from "@/lib/useQuery";
 import type { Message as ThreadMessage, ThreadSummary } from "@/components/conversation";
 import { deleteThread as deleteThreadRequest, fetchThread, fetchThreads, type StoredThread, type ThreadListItem } from "@/lib/threadsTransport";
@@ -83,9 +84,12 @@ function restoredThread(stored: StoredThread): ResearchThread {
   return { ...listedThread(stored), loaded: true, messages, citations, meta: summarizeSources(citations) };
 }
 
+const isUnauthorized = (err: unknown) => err instanceof HttpError && err.status === 401;
+
 export function useResearchThreads() {
   const [threads, setThreads] = useState<ResearchThread[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [sessionEnded, setSessionEnded] = useState(false);
   const [threadListStatus, setThreadListStatus] = useState<"loading" | "ready" | "failed">("loading");
   const [loadingThreadId, setLoadingThreadId] = useState<string | null>(null);
   const selectRequestRef = useRef(0);
@@ -96,7 +100,7 @@ export function useResearchThreads() {
   const [reasoningOpen, setReasoningOpen] = useState(false);
   const [activeSourceIndex, setActiveSourceIndex] = useState(0);
   const lastStatusRef = useRef<string | null>(null);
-  const { submit, resume, cancel, status, response, citations, commentary, currency_labels, nodeRuns, isLoading, error, pendingQuestion } = useQuery();
+  const { submit, resume, cancel, status, response, citations, commentary, currency_labels, nodeRuns, isLoading, error, errorStatus, pendingQuestion } = useQuery();
 
   const activeThread = useMemo(
     () => threads.find((thread) => thread.id === activeThreadId) ?? null,
@@ -114,6 +118,7 @@ export function useResearchThreads() {
   const sources = activeThread?.citations ?? [];
   const activeSource = sources[activeSourceIndex] ?? null;
   const assistantMessage = [...messages].reverse().find((message) => message.role === "assistant") ?? null;
+  const lastUserQuery = [...messages].reverse().find((message) => message.role === "user")?.content ?? "";
   const citedCountLabel = summarizeSources(sources);
 
   const syncActiveFlags = useCallback(
@@ -138,8 +143,9 @@ export function useResearchThreads() {
     async (threadId: string) => {
       try {
         await deleteThreadRequest(threadId);
-      } catch {
-        setLoadError("Could not delete that thread.");
+      } catch (err) {
+        if (isUnauthorized(err)) setSessionEnded(true);
+        else setLoadError("Could not delete that thread.");
         return;
       }
 
@@ -178,9 +184,10 @@ export function useResearchThreads() {
         });
         setThreadListStatus("ready");
       })
-      .catch(() => {
+      .catch((err) => {
         if (cancelled) return;
-        setLoadError("Could not load your threads.");
+        if (isUnauthorized(err)) setSessionEnded(true);
+        else setLoadError("Could not load your threads.");
         setThreadListStatus("failed");
       });
     return () => {
@@ -202,10 +209,11 @@ export function useResearchThreads() {
         setThreads((prev) => syncActiveFlags(prev, threadId));
         try {
           restored = restoredThread(await fetchThread(threadId));
-        } catch {
+        } catch (err) {
           if (request === selectRequestRef.current) {
             setLoadingThreadId(null);
-            setLoadError("Could not open that thread.");
+            if (isUnauthorized(err)) setSessionEnded(true);
+            else setLoadError("Could not open that thread.");
             setThreads((prev) => syncActiveFlags(prev, activeThreadIdRef.current));
           }
           return;
@@ -416,7 +424,8 @@ export function useResearchThreads() {
   useEffect(() => {
     if (!error) return;
     setPendingThreadId(null);
-  }, [error]);
+    if (errorStatus === 401) setSessionEnded(true);
+  }, [error, errorStatus]);
 
   return {
     threads,
@@ -435,8 +444,10 @@ export function useResearchThreads() {
     input,
     reasoningOpen,
     isLoading,
-    error,
+    error: errorStatus === 401 ? null : error,
     loadError,
+    sessionEnded,
+    lastUserQuery,
     pendingThreadId,
     threadListStatus,
     status,

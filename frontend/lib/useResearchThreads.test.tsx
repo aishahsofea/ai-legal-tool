@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { AssistantMessage } from "@/components/locus-workspace";
 import type { Citation } from "@/lib/queryTransport";
+import { HttpError } from "@/lib/httpError";
 import { deleteThread, fetchThread, fetchThreads } from "@/lib/threadsTransport";
 import { useResearchThreads } from "./useResearchThreads";
 
@@ -18,7 +19,10 @@ vi.mock("@/lib/threadsTransport", () => ({
   deleteThread: vi.fn(),
 }));
 
-const { submit } = vi.hoisted(() => ({ submit: vi.fn() }));
+const { submit, queryState } = vi.hoisted(() => ({
+  submit: vi.fn(),
+  queryState: { error: null as string | null, errorStatus: null as number | null },
+}));
 
 vi.mock("@/lib/useQuery", () => ({
   useQuery: () => ({
@@ -32,7 +36,8 @@ vi.mock("@/lib/useQuery", () => ({
     currency_labels: [],
     nodeRuns: [],
     isLoading: false,
-    error: null,
+    error: queryState.error,
+    errorStatus: queryState.errorStatus,
     pendingQuestion: null,
   }),
 }));
@@ -61,6 +66,8 @@ function stubServer() {
 
 afterEach(() => {
   cleanup();
+  queryState.error = null;
+  queryState.errorStatus = null;
   vi.clearAllMocks();
 });
 
@@ -443,5 +450,63 @@ describe("deleting a thread", () => {
 
     expect(result.current.threads.map((t) => t.id)).toEqual(["t1", "t2"]);
     expect(result.current.loadError).toBe("Could not delete that thread.");
+  });
+});
+
+describe("session ended", () => {
+  it("a 401 from the thread list sets sessionEnded without a load error", async () => {
+    vi.mocked(fetchThreads).mockRejectedValue(new HttpError("HTTP 401", 401));
+    const { result } = renderHook(() => useResearchThreads());
+
+    await waitFor(() => expect(result.current.sessionEnded).toBe(true));
+    expect(result.current.loadError).toBeNull();
+  });
+
+  it("a 500 from the thread list is still a load error", async () => {
+    vi.mocked(fetchThreads).mockRejectedValue(new HttpError("HTTP 500", 500));
+    const { result } = renderHook(() => useResearchThreads());
+
+    await waitFor(() => expect(result.current.loadError).toBe("Could not load your threads."));
+    expect(result.current.sessionEnded).toBe(false);
+  });
+
+  it("a 401 opening a thread sets sessionEnded without a load error", async () => {
+    vi.mocked(fetchThreads).mockResolvedValue([LISTED]);
+    vi.mocked(fetchThread).mockRejectedValue(new HttpError("HTTP 401", 401));
+    const { result } = renderHook(() => useResearchThreads());
+    await waitFor(() => expect(result.current.threads).toHaveLength(1));
+
+    await act(async () => result.current.selectThread("t1"));
+
+    expect(result.current.sessionEnded).toBe(true);
+    expect(result.current.loadError).toBeNull();
+  });
+
+  it("a 401 deleting a thread sets sessionEnded without a load error", async () => {
+    vi.mocked(fetchThreads).mockResolvedValue([LISTED]);
+    vi.mocked(deleteThread).mockRejectedValue(new HttpError("HTTP 401", 401));
+    const { result } = renderHook(() => useResearchThreads());
+    await waitFor(() => expect(result.current.threads).toHaveLength(1));
+
+    await act(async () => result.current.deleteThread("t1"));
+
+    expect(result.current.sessionEnded).toBe(true);
+    expect(result.current.loadError).toBeNull();
+  });
+
+  it("a 401 from the query keeps the user turn and hides the HTTP error", async () => {
+    vi.mocked(fetchThreads).mockResolvedValue([]);
+    const { result, rerender } = renderHook(() => useResearchThreads());
+    await waitFor(() => expect(result.current.threadListStatus).toBe("ready"));
+
+    await act(async () => result.current.submitQuery("Is overtime paid?"));
+    queryState.error = "HTTP 401";
+    queryState.errorStatus = 401;
+    rerender();
+
+    await waitFor(() => expect(result.current.sessionEnded).toBe(true));
+    expect(result.current.error).toBeNull();
+    expect(result.current.messages[0]).toMatchObject({ role: "user", content: "Is overtime paid?" });
+    expect(result.current.lastUserQuery).toBe("Is overtime paid?");
   });
 });
