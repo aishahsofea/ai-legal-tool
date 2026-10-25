@@ -238,7 +238,11 @@ describe("CitationReceiptViewer", () => {
     vi.stubGlobal("fetch", vi.fn(() => response(located("not_found"))));
     render(<CitationReceiptViewer citation={emptyCitation} onClose={() => {}} />);
 
-    expect(await screen.findByText("No verified passage was available.")).toBeInTheDocument();
+    expect(
+      await screen.findByText(
+        "No verified passage for this citation. Showing PDF page 3, the citation's stored start page. It has not been checked against the cited section.",
+      ),
+    ).toBeInTheDocument();
     expect(screen.queryByTestId("receipt-highlight")).not.toBeInTheDocument();
   });
 
