@@ -81,6 +81,54 @@ class _BargeInContract(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn("response", [e.get("type") for e in events])
         self.assertNotIn(thread, query_lifecycle._active_runs)
 
+    async def test_delete_removes_checkpoint(self):
+        thread = f"delete-1-{self.suffix}"
+
+        async def good_synth(state):
+            return {"draft_response": "Section 1 of Example Act applies. This does not constitute legal advice.", "citations": []}
+
+        with ExitStack() as stack:
+            patch_async_happy_path(stack, good_synth)
+            query_lifecycle.set_graph(build_graph(self.checkpointer))
+            await self._drain(thread, "a question", [])
+            self.assertIsNotNone(await self.checkpointer.aget_tuple(_config(thread)))
+
+            await query_lifecycle.delete_checkpoint(thread)
+
+        self.assertIsNone(await self.checkpointer.aget_tuple(_config(thread)))
+
+    async def test_cancel_then_delete_leaves_no_checkpoint_and_pool_works(self):
+        reached = asyncio.Event()
+        release = asyncio.Event()  # never set → synthesiser blocks until cancelled
+
+        async def blocking_synth(state):
+            reached.set()
+            await release.wait()
+            return {"draft_response": "abandoned", "citations": []}
+
+        thread = f"delete-2-{self.suffix}"
+        with ExitStack() as stack:
+            patch_async_happy_path(stack, blocking_synth)
+            query_lifecycle.set_graph(build_graph(self.checkpointer))
+            consumer = asyncio.create_task(self._drain(thread, "first question", []))
+            await asyncio.wait_for(reached.wait(), timeout=5)
+
+            await asyncio.wait_for(query_lifecycle.delete_checkpoint(thread), timeout=5)
+            await asyncio.wait_for(consumer, timeout=5)
+
+        self.assertIsNone(await self.checkpointer.aget_tuple(_config(thread)))
+        self.assertNotIn(thread, query_lifecycle._active_runs)
+
+        async def good_synth(state):
+            return {"draft_response": "Section 5 of Example Act applies. This does not constitute legal advice.", "citations": []}
+
+        with ExitStack() as stack:
+            patch_async_happy_path(stack, good_synth)
+            query_lifecycle.set_graph(build_graph(self.checkpointer))
+            events: list = []
+            await self._drain(f"delete-3-{self.suffix}", "fresh question", events)
+        self.assertIn("response", [e.get("type") for e in events])
+
     async def test_abandoned_turn_leaves_history_clean_for_next_prompt(self):
         # The crux: cancel mid-synthesiser, then send a NEW prompt on the SAME thread.
         # History must contain ONLY the second turn — the pending checkpoint task from

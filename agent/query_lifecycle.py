@@ -325,6 +325,12 @@ async def _cancel_active(thread_id: str) -> None:
             await task
 
 
+async def delete_checkpoint(thread_id: str) -> None:
+    """Cancel any run, then drop every checkpoint row; errors propagate so the caller can fail closed."""
+    await _cancel_active(thread_id)
+    await _active_graph().checkpointer.adelete_thread(thread_id)
+
+
 def cancel_thread(thread_id: str) -> bool:
     """Cancel the in-flight streaming run for a thread from a separate request
     (POST /cancel). Returns True if a run was cancelled. A client that simply
