@@ -27,15 +27,15 @@ export function ThreadSidebar({
   switchingDisabled?: boolean;
 }) {
   return (
-    <aside id="workspace-thread-sidebar" className="workspace-sidebar flex min-h-0 min-w-0 flex-col border-r border-(--line) bg-(--surface-soft) max-md:max-h-[168px] max-md:border-b max-md:border-r-0">
-      <div className="border-b border-(--line) px-3 py-3 max-md:flex max-md:items-center max-md:justify-between max-md:gap-3">
+    <aside id="workspace-thread-sidebar" className="workspace-sidebar flex min-h-0 min-w-0 flex-col border-r border-(--line) bg-(--surface-soft)">
+      <div className="border-b border-(--line) px-3 py-3">
         <Mark />
-        <PrimaryButton onClick={onNewThread} leading="＋" className="mt-3 flex w-full items-center justify-center gap-2 max-md:mt-0 max-md:w-auto">
+        <PrimaryButton onClick={onNewThread} leading="＋" className="mt-3 flex w-full items-center justify-center gap-2">
           New thread
         </PrimaryButton>
       </div>
 
-      <div className="flex flex-1 flex-col gap-2 overflow-y-auto px-2 py-2 max-md:flex-row max-md:overflow-x-auto max-md:overflow-y-hidden">
+      <div className="flex flex-1 flex-col gap-2 overflow-y-auto px-2 py-2">
         {threads.map((thread) => (
           <ThreadRow
             key={thread.id}

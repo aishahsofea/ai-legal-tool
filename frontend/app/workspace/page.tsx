@@ -46,6 +46,7 @@ type ReceiptSelection = {
   opener: HTMLElement;
 };
 
+const PHONE_MAX_WIDTH = 768;
 const DESKTOP_RECEIPT_QUERY = "(min-width: 1200px)";
 const RECEIPT_WIDTH_STORAGE_KEY = "locus.receipt-pane-width.v1";
 const SIDEBAR_WIDTH_STORAGE_KEY = "locus.sidebar-width.v1";
@@ -107,6 +108,8 @@ function WorkspaceInner({ session }: { session: Session }) {
   );
   const account = accountLabels(session);
   const [sidebarCollapsed, , setSidebarCollapsed] = useSidebarCollapsed();
+  const [phoneDrawerOpen, setPhoneDrawerOpen] = useState(false);
+  const isPhone = viewportWidth < PHONE_MAX_WIDTH;
   const sidebarWidth = sidebarCollapsed ? 0 : sidebarPaneWidth;
   const clampedReceiptPaneWidth = clampReceiptPaneWidth(receiptPaneWidth, viewportWidth, sidebarWidth);
   const {
@@ -198,6 +201,30 @@ function WorkspaceInner({ session }: { session: Session }) {
     [sidebarCollapsed, changeSidebarCollapsed],
   );
 
+  const toggleSidebar = useCallback(
+    () => (isPhone ? setPhoneDrawerOpen((open) => !open) : toggleSidebarCollapsed()),
+    [isPhone, toggleSidebarCollapsed],
+  );
+
+  const startNewThread = () => {
+    setPhoneDrawerOpen(false);
+    newThread();
+  };
+
+  const chooseThread = (threadId: string) => {
+    setPhoneDrawerOpen(false);
+    return selectThread(threadId);
+  };
+
+  useEffect(() => {
+    if (!phoneDrawerOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setPhoneDrawerOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [phoneDrawerOpen]);
+
   const resizeReceiptPane = useCallback((width: number, commit: boolean) => {
     setReceiptPaneWidth(width);
     if (commit) window.localStorage.setItem(RECEIPT_WIDTH_STORAGE_KEY, String(width));
@@ -219,7 +246,7 @@ function WorkspaceInner({ session }: { session: Session }) {
         <QueryPrefill setInput={setInput} />
       </Suspense>
       <div
-        className={`chamber-grid-app grid h-full grid-cols-1 ${receiptSelection ? "receipt-open" : ""} ${sidebarCollapsed ? "sidebar-collapsed" : ""}`}
+        className={`chamber-grid-app grid h-full grid-cols-1 ${receiptSelection ? "receipt-open" : ""} ${sidebarCollapsed ? "sidebar-collapsed" : ""} ${phoneDrawerOpen ? "sidebar-drawer-open" : ""}`}
         style={{
           "--sidebar-width": `${sidebarPaneWidth}px`,
           ...(receiptSelection && { "--receipt-pane-width": `${clampedReceiptPaneWidth}px` }),
@@ -228,8 +255,8 @@ function WorkspaceInner({ session }: { session: Session }) {
         <ThreadSidebar
           threads={threads}
           listStatus={threadListStatus}
-          onNewThread={newThread}
-          onSelectThread={selectThread}
+          onNewThread={startNewThread}
+          onSelectThread={chooseThread}
           onDeleteThread={deleteThread}
           pendingThreadId={pendingThreadId}
           switchingDisabled={false}
@@ -238,12 +265,20 @@ function WorkspaceInner({ session }: { session: Session }) {
           onSignOut={signOut}
         />
 
+        {isPhone && phoneDrawerOpen && (
+          <div
+            data-testid="sidebar-backdrop"
+            className="workspace-sidebar-backdrop"
+            onClick={() => setPhoneDrawerOpen(false)}
+          />
+        )}
+
         <main className="workspace-main relative flex min-h-0 min-w-0 flex-col overflow-hidden bg-(--canvas)">
           <ConversationHeader
             title={(loadingThread ?? activeThread)?.title || "New thread"}
             messages={loadingThreadId ? [] : messages}
-            sidebarCollapsed={sidebarCollapsed}
-            onToggleSidebar={toggleSidebarCollapsed}
+            sidebarCollapsed={isPhone ? !phoneDrawerOpen : sidebarCollapsed}
+            onToggleSidebar={toggleSidebar}
             onSignOut={signOut}
           />
           <SidebarResizeHandle

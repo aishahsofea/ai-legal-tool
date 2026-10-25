@@ -27,7 +27,7 @@ export function ConversationHeader({ title, messages = [], sidebarCollapsed = fa
             aria-expanded={!sidebarCollapsed}
             aria-label={sidebarCollapsed ? "Show thread list" : "Hide thread list"}
             title={sidebarCollapsed ? "Show thread list" : "Hide thread list"}
-            className="conversation-header-sidebar-toggle self-center max-md:hidden"
+            className="conversation-header-sidebar-toggle self-center"
           >
             <PanelLeft />
           </IconButton>

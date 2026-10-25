@@ -68,6 +68,7 @@ test("delete asks in a centred modal over the page, and Cancel sends nothing", a
 test("on a phone the modal keeps a 16px gutter and its buttons share one row", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await open(page);
+  await page.getByRole("button", { name: "Show thread list" }).click();
   await deleteButton(page, LISTED[0].title).click();
 
   const dialog = page.getByRole("dialog", { name: "Delete thread?" });
@@ -128,6 +129,7 @@ test("on desktop the delete button is hidden until the row is hovered", async ({
 test("on mobile the delete button is visible without hover", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await open(page);
+  await page.getByRole("button", { name: "Show thread list" }).click();
   await expect(deleteButton(page, LISTED[0].title)).toHaveCSS("opacity", "1");
 });
 

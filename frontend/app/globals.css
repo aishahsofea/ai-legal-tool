@@ -300,6 +300,13 @@ button:disabled,
 }
 
 @media (width < 768px) {
+  .workspace-sidebar {
+    position: fixed; inset: 0 auto 0 0; z-index: 40; width: 85vw; max-width: 85vw; height: 100dvh;
+    transform: translateX(-100%); visibility: hidden;
+    transition: transform 200ms ease, visibility 0s linear 200ms;
+  }
+  .sidebar-drawer-open .workspace-sidebar { transform: none; visibility: visible; transition-delay: 0s; }
+  .workspace-sidebar-backdrop { position: fixed; inset: 0; z-index: 30; background: rgb(0 0 0 / 0.4); }
   .landing-grid-nav { grid-template-columns: 1fr auto; height: auto; row-gap: 4px; padding-bottom: 8px; }
   .landing-grid-nav > :first-child { padding-top: 8px; }
   .landing-grid-nav > .landing-nav-row { grid-column: 1 / -1; grid-row: 2; padding: 4px 0; }
