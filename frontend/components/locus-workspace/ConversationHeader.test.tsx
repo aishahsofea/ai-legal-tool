@@ -110,8 +110,8 @@ describe("ConversationHeader sign out", () => {
 });
 
 describe("ConversationHeader home link", () => {
-  it("links to the landing page", () => {
+  it("has no Home icon link; the sidebar logo goes home", () => {
     render(<ConversationHeader title="T" />);
-    expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/");
+    expect(screen.queryByRole("link", { name: "Home" })).toBeNull();
   });
 });

@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { IconButton, Mono } from "@/components/chamber";
-import { Check, Home, PanelLeft, Share, SignOut } from "@/components/icons";
+import { Check, PanelLeft, Share, SignOut } from "@/components/icons";
 import { threadMarkdown } from "@/lib/threadMarkdown";
 import { useShareText } from "@/lib/useShareText";
 import type { Message } from "./types";
@@ -20,14 +19,6 @@ export function ConversationHeader({ title, messages = [], sidebarCollapsed = fa
   return (
     <header className="conversation-header flex min-h-14 items-center justify-between gap-3 border-b border-(--line) bg-(--surface) px-4 py-2 md:px-5">
       <div className="flex min-w-0 items-baseline gap-3">
-        <Link
-          href="/"
-          aria-label="Home"
-          title="Home"
-          className="inline-flex size-8 shrink-0 items-center justify-center self-center rounded-md text-(--text-subtle) transition-colors duration-150 hover:bg-(--line-soft) hover:text-(--text)"
-        >
-          <Home />
-        </Link>
         {onToggleSidebar && (
           <IconButton
             type="button"

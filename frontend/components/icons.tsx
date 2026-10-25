@@ -87,11 +87,3 @@ export function SignOut({ className }: IconProps) {
     </svg>
   );
 }
-
-export function Home({ className }: IconProps) {
-  return (
-    <svg data-icon="home" className={className} width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M2.5 7.5L8 3l5.5 4.5M4 6.5v6h8v-6" />
-    </svg>
-  );
-}

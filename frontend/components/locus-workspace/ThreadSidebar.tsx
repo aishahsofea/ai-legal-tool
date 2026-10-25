@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Mark, ThreadRow } from "@/components/chamber";
 import { PrimaryButton } from "@/components/PrimaryButton";
 import { ThreadSkeletonRows } from "./ThreadSkeletonRows";
@@ -29,7 +30,9 @@ export function ThreadSidebar({
   return (
     <aside id="workspace-thread-sidebar" className="workspace-sidebar flex min-h-0 min-w-0 flex-col border-r border-(--line) bg-(--surface-soft)">
       <div className="border-b border-(--line) px-3 py-3">
-        <Mark />
+        <Link href="/" aria-label="Locus home" className="inline-block">
+          <Mark />
+        </Link>
         <PrimaryButton onClick={onNewThread} leading="＋" className="mt-3 flex w-full items-center justify-center gap-2">
           New thread
         </PrimaryButton>
