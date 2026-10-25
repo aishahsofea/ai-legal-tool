@@ -28,7 +28,7 @@ export function Composer({
 
   return (
     <div className="border-t border-(--line) bg-(--surface-soft) px-4 pb-3 pt-3 md:px-6 lg:px-8">
-      <form onSubmit={onSubmit} className="chamber-full-input chamber-focus-within grid min-h-12 w-full items-center grid-cols-[auto_minmax(0,1fr)_auto_auto] overflow-hidden rounded-xl border border-(--line) bg-(--surface) shadow-[var(--shadow-raised)] max-sm:grid-cols-[minmax(0,1fr)_48px]">
+      <form onSubmit={onSubmit} className="chamber-full-input chamber-focus-within grid min-h-12 w-full items-center grid-cols-[auto_minmax(0,1fr)_auto] overflow-hidden rounded-xl border border-(--line) bg-(--surface) shadow-[var(--shadow-raised)] max-sm:grid-cols-[minmax(0,1fr)_48px]">
         <span className="flex items-center self-stretch border-r border-(--line) px-4 text-(--accent) max-sm:hidden">
           <Mono>ASK ›</Mono>
         </span>
@@ -49,9 +49,6 @@ export function Composer({
           disabled={isLoading}
           className="max-h-[min(136px,20dvh)] min-w-0 resize-none overflow-y-auto bg-transparent px-3 py-2 text-sm leading-5 text-(--text) outline-none placeholder:text-(--text-subtle) disabled:opacity-50"
         />
-        <button type="button" aria-label="Upload" title="Upload document" className="h-full w-10 cursor-pointer self-stretch border-l border-(--line) text-(--text-subtle) transition-colors duration-200 hover:bg-(--accent-tint) hover:text-(--accent) active:opacity-80 max-sm:hidden">
-          ▤
-        </button>
         {isLoading ? (
           <PrimaryButton size="compact" type="button" onClick={onStop} aria-label="Stop generating" title="Stop (Esc)" className="h-full self-stretch rounded-none max-sm:w-12 max-sm:min-w-12 max-sm:px-0">
             <span className="hidden sm:inline">STOP ■</span><span className="sm:hidden">■</span>
@@ -63,9 +60,8 @@ export function Composer({
         )}
       </form>
 
-      <div className="chamber-full-input mt-2 flex w-full justify-between gap-2 px-2 font-mono text-[10px] uppercase tracking-[0.12em] text-(--text-subtle)">
-        <span className="max-sm:hidden">DROP A BRIEF OR CONTRACT TO ADD IT TO THE THREAD</span>
-        <span className="shrink-0">{isLoading ? "ESC STOP · EDIT" : "⇧⏎ NEWLINE"}</span>
+      <div className="chamber-full-input mt-2 flex w-full justify-end gap-2 px-2 font-mono text-[10px] uppercase tracking-[0.12em] text-(--text-subtle)">
+        <span className={isLoading ? "shrink-0" : "shrink-0 max-sm:hidden"}>{isLoading ? "ESC STOP · EDIT" : "⇧⏎ NEWLINE"}</span>
       </div>
     </div>
   );

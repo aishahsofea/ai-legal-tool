@@ -76,6 +76,12 @@ it("disables the field while loading", () => {
   expect(field).toHaveAttribute("placeholder", PLACEHOLDER);
 });
 
+it("offers no upload control and no drop-a-brief hint", () => {
+  renderComposer();
+  expect(screen.queryByRole("button", { name: /upload/i })).toBeNull();
+  expect(screen.queryByText(/drop a brief/i)).toBeNull();
+});
+
 it("disables Send but keeps the textarea editable when sendDisabled", async () => {
   function Harness() {
     const [input, setInput] = useState("");
