@@ -122,7 +122,7 @@ data: {"type": "done"}
 ```
 
 - **`response`** carries `content`, `violations`, and `citations`. Each citation has `act_number`, `act_title`, `section_number`, `pdf_url` (the official AGC fallback), and `page_number` — a schedule provision has `path` instead of `section_number` (e.g. `sched.2/para.1`, see [CONTEXT.md](CONTEXT.md#language)). A provenance-backed citation also has `receipt: { document_id, extraction_id, evidence: [{ claim, quote }] }`; legacy/unavailable rows omit it. It also carries `commentary` (a list of **Commentary Notes**) and `currency_labels` (a list of **Currency Labels**) — see [CONTEXT.md](CONTEXT.md#language) for both. Each is present only when the turn found at least one, omitted (not `[]`) the rest of the time. Flags: [CONTRIBUTING.md](CONTRIBUTING.md#2-environment-variables).
-- **Auth.** `/query`, `/resume`, `/cancel` and `/threads` need `Authorization: Bearer <Supabase access token>`. No token: 401. Another user's `thread_id`: 404. Details and setup: [CONTRIBUTING.md](CONTRIBUTING.md#sign-in-supabase-auth).
+- **Auth.** `/query`, `/resume`, `/cancel` and `/threads` (including `DELETE`) need `Authorization: Bearer <Supabase access token>`. No token: 401. Another user's `thread_id`: 404. Details and setup: [CONTRIBUTING.md](CONTRIBUTING.md#sign-in-supabase-auth).
 - **CORS.** Browser origins come from `FRONTEND_ORIGIN`. See [CONTRIBUTING.md](CONTRIBUTING.md#2-environment-variables).
 - **`tool_call`** (`name`, `summary`) fires only on the agentic-retrieval path, once per retrieval tool call; the frontend renders these in the collapsible PROCESS panel.
 - **`node`** (`name`, `model`, `duration_ms`) fires once per model call, in execution order. A retry emits a second synthesiser row, and a node that short-circuits before its model emits none. The PROCESS panel lists them under MODELS, so a run split across providers says which model answered where. Never carries prompt text, user content, or token counts.
@@ -177,7 +177,7 @@ The server refuses stale corpora, blocks concurrent runs, and kills a run when i
 
 ### Threads
 
-`GET /threads` lists the signed-in user's saved threads, newest first. `GET /threads/{thread_id}` returns that thread's `messages`: each assistant message carries its `citations`, `commentary` and `currency_labels`, so receipts open after a reload. Only completed turns are saved. See ADR 0022.
+`GET /threads` lists the signed-in user's saved threads, newest first. `GET /threads/{thread_id}` returns that thread's `messages`: each assistant message carries its `citations`, `commentary` and `currency_labels`, so receipts open after a reload. Only completed turns are saved. See ADR 0022. `DELETE /threads/{thread_id}` lets the owner delete a thread: [CONTRIBUTING.md](CONTRIBUTING.md#5-start-the-api).
 
 ### Memory
 
@@ -232,7 +232,7 @@ ai-legal-tool/
 ├── api/
 │   ├── main.py         # FastAPI app: query/resume/cancel + feature routers
 │   ├── auth.py         # Supabase access-token check (current_user_id)
-│   ├── threads.py      # GET /threads, GET /threads/{id}
+│   ├── threads.py      # GET /threads, GET and DELETE /threads/{id}
 │   ├── threads_store.py # thread ownership and saved turns (psycopg2)
 │   ├── receipts.py     # immutable PDF delivery + strict on-demand locator API
 │   └── evals.py        # eval coverage, isolated subprocess SSE, cancellation, saved results

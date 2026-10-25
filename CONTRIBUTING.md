@@ -402,6 +402,7 @@ Endpoints. `/query`, `/resume`, `/cancel` and `/threads` need `Authorization: Be
 - `POST /cancel { thread_id }` — barge-in: stop the in-flight turn for a thread (ADR 0014)
 - `GET /threads` — the signed-in user's saved threads, newest first
 - `GET /threads/{thread_id}` — that thread's messages, with citations, commentary and currency labels
+- `DELETE /threads/{thread_id}` — delete one of the signed-in user's threads. Returns 204. No token or a bad token: 401. A missing id or another user's id: 404. Order: cancel any in-flight run, remove the LangGraph checkpoint, then remove the row and its turns. If the checkpoint delete fails, it returns 500 and keeps the row, so a retry works. Saving a turn ignores store failures (ADR 0022); delete does not. A deleted id is not blocked: any signed-in user who knows it can start a new thread with it. Semantic Memory is not touched.
 - `GET|HEAD /receipts/{document_id}/pdf` — serve, proxy, or redirect one verified immutable Receipt Document (ETag/304, ranges supported)
 - `POST /receipts/{document_id}/locate { evidence_quote?, start_page, extraction_id? }` — locate one Evidence Span against the exact extraction sidecar
 - `POST /receipts/telemetry` — accepts a small allowlisted, quote-free frontend failure event
