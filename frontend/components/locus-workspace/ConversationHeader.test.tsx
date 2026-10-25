@@ -76,6 +76,8 @@ describe("ConversationHeader share", () => {
     fireEvent.click(button);
     await waitFor(() => expect(button.querySelector('svg[data-icon="check"]')).not.toBeNull());
     expect(button).toHaveAttribute("title", "Copied");
+    expect(button.textContent).toBe("Copied");
+    expect(screen.getByText("Copied")).not.toHaveClass("sr-only");
   });
 
   it("copies thread markdown when navigator.share is missing", async () => {

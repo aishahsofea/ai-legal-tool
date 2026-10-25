@@ -41,9 +41,10 @@ export function ConversationHeader({ title, messages = [], sidebarCollapsed = fa
           onClick={() => void share(title, threadMarkdown(title, messages))}
           aria-label="Share thread"
           title={copied ? "Copied" : "Share thread"}
+          className={copied ? "w-auto! gap-1 px-2" : ""}
         >
           {copied ? <Check /> : <Share />}
-          <span className="sr-only" aria-live="polite">{copied ? "Copied" : ""}</span>
+          <span aria-live="polite" className={copied ? "font-mono text-xs uppercase tracking-widest" : "sr-only"}>{copied ? "Copied" : ""}</span>
         </IconButton>
       </div>
     </header>
