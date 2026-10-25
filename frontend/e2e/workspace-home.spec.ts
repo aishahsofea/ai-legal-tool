@@ -6,6 +6,7 @@ test("the Locus logo leaves the workspace for the landing page on desktop", asyn
   await signIn(page);
   await page.goto("/workspace");
 
+  await expect(page.getByRole("button", { name: "Hide thread list" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Home", exact: true })).toHaveCount(0);
   await page.getByRole("link", { name: "Locus home" }).click();
   await expect(page).toHaveURL(/\/$/);
