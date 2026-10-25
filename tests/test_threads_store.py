@@ -93,3 +93,29 @@ def test_get_thread_hides_a_foreign_thread():
 def test_append_to_unknown_thread_raises():
     with pytest.raises(LookupError):
         threads_store.append_turn("missing", "q", "r", [])
+
+
+def _turn_count(thread_id):
+    with closing(threads_store._connect()) as connection, connection, connection.cursor() as cursor:
+        cursor.execute("SELECT count(*) FROM thread_turns WHERE thread_id = %s", (thread_id,))
+        return cursor.fetchone()[0]
+
+
+def test_owner_delete_removes_thread_and_its_turns():
+    threads_store.claim_thread("t1", "alice", "Q")
+    threads_store.append_turn("t1", "q", "r", [])
+    assert threads_store.delete_thread("t1", "alice") is True
+    assert threads_store.get_thread("t1", "alice") is None
+    assert _turn_count("t1") == 0
+
+
+def test_non_owner_delete_leaves_thread_and_turns():
+    threads_store.claim_thread("t1", "alice", "Q")
+    threads_store.append_turn("t1", "q", "r", [])
+    assert threads_store.delete_thread("t1", "bob") is False
+    assert threads_store.get_thread("t1", "alice") is not None
+    assert _turn_count("t1") == 1
+
+
+def test_delete_missing_thread_returns_false():
+    assert threads_store.delete_thread("missing", "alice") is False
