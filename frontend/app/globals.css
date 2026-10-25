@@ -252,12 +252,6 @@
   }
 }
 
-@container workspace (width < 420px) {
-  .conversation-header-actions {
-    display: none;
-  }
-}
-
 * {
   box-sizing: border-box;
 }

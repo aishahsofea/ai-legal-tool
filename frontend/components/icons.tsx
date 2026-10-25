@@ -79,3 +79,11 @@ export function Spinner({ className, size = 14 }: SpinnerProps) {
     </svg>
   );
 }
+
+export function SignOut({ className }: IconProps) {
+  return (
+    <svg data-icon="sign-out" className={className} width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M6.5 2.5h-3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h3M10 5l3 3-3 3M13 8H6" />
+    </svg>
+  );
+}

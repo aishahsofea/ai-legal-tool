@@ -1,5 +1,5 @@
 import { IconButton, Mono } from "@/components/chamber";
-import { Check, PanelLeft, Share } from "@/components/icons";
+import { Check, PanelLeft, Share, SignOut } from "@/components/icons";
 import { threadMarkdown } from "@/lib/threadMarkdown";
 import { useShareText } from "@/lib/useShareText";
 import type { Message } from "./types";
@@ -9,9 +9,10 @@ type Props = {
   messages?: Message[];
   sidebarCollapsed?: boolean;
   onToggleSidebar?: () => void;
+  onSignOut?: () => void;
 };
 
-export function ConversationHeader({ title, messages = [], sidebarCollapsed = false, onToggleSidebar }: Props) {
+export function ConversationHeader({ title, messages = [], sidebarCollapsed = false, onToggleSidebar, onSignOut }: Props) {
   const { copied, share } = useShareText();
   const hasContent = messages.some((m) => m.content);
 
@@ -46,6 +47,11 @@ export function ConversationHeader({ title, messages = [], sidebarCollapsed = fa
           {copied ? <Check /> : <Share />}
           <span aria-live="polite" className={copied ? "font-mono text-xs uppercase tracking-widest" : "sr-only"}>{copied ? "Copied" : ""}</span>
         </IconButton>
+        {onSignOut && (
+          <IconButton type="button" onClick={onSignOut} aria-label="Sign out" title="Sign out">
+            <SignOut />
+          </IconButton>
+        )}
       </div>
     </header>
   );

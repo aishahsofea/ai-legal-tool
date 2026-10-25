@@ -92,3 +92,19 @@ describe("ConversationHeader share", () => {
     expect(text).toContain("Section 3 says X.");
   });
 });
+
+describe("ConversationHeader sign out", () => {
+  it("renders no Sign out button without onSignOut", () => {
+    render(<ConversationHeader title="T" />);
+    expect(screen.queryByRole("button", { name: "Sign out" })).toBeNull();
+  });
+
+  it("renders a Sign out button that calls onSignOut", async () => {
+    const onSignOut = vi.fn();
+    render(<ConversationHeader title="T" onSignOut={onSignOut} />);
+    const button = screen.getByRole("button", { name: "Sign out" });
+    expect(button).toHaveAttribute("title", "Sign out");
+    await userEvent.click(button);
+    expect(onSignOut).toHaveBeenCalledTimes(1);
+  });
+});

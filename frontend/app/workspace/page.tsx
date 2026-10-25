@@ -148,6 +148,8 @@ function WorkspaceInner({ session }: { session: Session }) {
     router.replace(withQuery("/login", q));
   };
 
+  const signOut = () => void getSupabase().auth.signOut();
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     await submitQuery(input);
@@ -233,7 +235,7 @@ function WorkspaceInner({ session }: { session: Session }) {
           switchingDisabled={false}
           userName={account.name}
           userSubtitle={account.subtitle}
-          onSignOut={() => void getSupabase().auth.signOut()}
+          onSignOut={signOut}
         />
 
         <main className="workspace-main relative flex min-h-0 min-w-0 flex-col overflow-hidden bg-(--canvas)">
@@ -242,6 +244,7 @@ function WorkspaceInner({ session }: { session: Session }) {
             messages={loadingThreadId ? [] : messages}
             sidebarCollapsed={sidebarCollapsed}
             onToggleSidebar={toggleSidebarCollapsed}
+            onSignOut={signOut}
           />
           <SidebarResizeHandle
             width={sidebarPaneWidth}
