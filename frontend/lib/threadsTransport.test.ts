@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { fetchThread, fetchThreads } from "./threadsTransport";
+import { deleteThread, fetchThread, fetchThreads } from "./threadsTransport";
 
 vi.mock("@/lib/supabaseClient", () => ({
   authHeaders: async () => ({ Authorization: "Bearer test-token" }),
@@ -34,5 +34,31 @@ describe("threads transport", () => {
   it("throws on a non-ok response", async () => {
     stubFetch({}, false, 404);
     await expect(fetchThread("t1")).rejects.toThrow("HTTP 404");
+  });
+});
+
+describe("deleteThread", () => {
+  it("sends DELETE with the bearer token and encoded id", async () => {
+    const fn = stubFetch(null, true, 204);
+    await deleteThread("a/b");
+    const [url, init] = fn.mock.calls[0] as unknown as [string, RequestInit];
+    expect(url).toMatch(/\/threads\/a%2Fb$/);
+    expect(init.method).toBe("DELETE");
+    expect((init.headers as Record<string, string>).Authorization).toBe("Bearer test-token");
+  });
+
+  it("resolves on 204", async () => {
+    stubFetch(null, true, 204);
+    await expect(deleteThread("t1")).resolves.toBeUndefined();
+  });
+
+  it("resolves on 404 because the thread is already gone", async () => {
+    stubFetch({}, false, 404);
+    await expect(deleteThread("t1")).resolves.toBeUndefined();
+  });
+
+  it("rejects on 500", async () => {
+    stubFetch({}, false, 500);
+    await expect(deleteThread("t1")).rejects.toThrow("HTTP 500");
   });
 });
