@@ -124,25 +124,25 @@ export default function Landing() {
         </div>
       </header>
 
-      <main>
+      <main className="mx-2 md:mx-4 lg:mx-8 xl:mx-16">
         <section className="border-b border-(--line) py-16 lg:py-20">
-          <div className="mb-8 flex flex-wrap items-center gap-3 text-(--text-subtle)">
+          <div className="mb-8 flex flex-wrap items-center justify-center gap-3 text-(--text-subtle)">
             <span className="font-mono text-xs tracking-[0.12em]">MALAYSIA / FEDERAL ACTS</span>
           </div>
 
-          <h1 className="m-0 mb-6 max-w-[18ch] font-serif text-[clamp(40px,6vw,72px)] font-light leading-[1.04] tracking-[-0.03em] text-(--text)">
+          <h1 className="mx-auto mb-6 mt-0 text-center font-serif text-[clamp(40px,6vw,72px)] font-light leading-[1.04] tracking-[-0.03em] text-(--text)">
             The Malaysian statute,
             <br />
             <span className="italic text-(--accent)">made navigable.</span>
           </h1>
 
-          <p className="m-0 mb-10 max-w-[60ch] text-base leading-7 text-(--text-muted)">
+          <p className="mx-auto mb-10 mt-0 max-w-[60ch] text-center text-base leading-7 text-(--text-muted)">
             A focused research workspace for advocates, in-house counsel, and academics.
             Ask a precise question, follow the governing provisions, and work outward from
             primary sources.
           </p>
 
-          <div className="landing-grid-prompt grid max-w-[800px] items-center overflow-hidden rounded-xl border border-(--line) bg-(--surface) shadow-[var(--shadow-raised)] transition-[border-color,box-shadow] duration-200 focus-within:border-(--accent)">
+          <div className="landing-grid-prompt mx-auto grid max-w-[800px] items-center overflow-hidden rounded-xl border border-(--line) bg-(--surface) shadow-[var(--shadow-raised)] transition-[border-color,box-shadow] duration-200 focus-within:border-(--accent)">
             <div className="flex self-stretch items-center border-r border-(--line) px-4 text-(--accent)">
               <span className="font-mono text-xs tracking-[0.12em]">ASK ›</span>
             </div>
@@ -163,7 +163,7 @@ export default function Landing() {
             </button>
           </div>
 
-          <div className="mt-5 flex flex-wrap items-center gap-2">
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
             <span className="mr-2 font-mono text-xs tracking-[0.12em] text-(--text-subtle)">SUGGESTED</span>
             {SUGGESTED.map(({ label, query: suggestedQuery }) => (
               <button
@@ -179,7 +179,7 @@ export default function Landing() {
 
           <div className="landing-grid-trust mt-12 grid gap-3">
             {TRUST_MARKERS.map(({ value, label }) => (
-              <div key={label} className="rounded-xl border border-(--line-soft) bg-(--surface) px-4 py-4 shadow-[var(--shadow-soft)]">
+              <div key={label} className="rounded-xl border border-(--line-soft) bg-(--surface) px-4 py-4 text-center shadow-[var(--shadow-soft)]">
                 <div className="font-serif text-xl font-light tracking-[-0.02em] text-(--text)">{value}</div>
                 <div className="mt-2 font-mono text-[10px] tracking-[0.12em] text-(--text-subtle)">{label}</div>
               </div>
