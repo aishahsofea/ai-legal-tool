@@ -45,6 +45,13 @@ Out of the box, the code uses the GPT-4.1 family, plus Claude for the grounding 
 - A fix to how BM sections are split is not yet loaded into the corpus ([#223](https://github.com/aishahsofea/ai-legal-tool/issues/223)).
 - 23 scanned documents from that fix's re-extraction are unchecked ([#223](https://github.com/aishahsofea/ai-legal-tool/issues/223)).
 
+## What we learned
+
+- Vision models on Nebius read a scanned Act page correctly but invented the word positions, while local Tesseract gives exact, repeatable word coordinates at no cost ([#104](https://github.com/aishahsofea/ai-legal-tool/issues/104)).
+- Our old check that an answer was in BM could never fail, because it matched Malay words as substrings and "dan" sits inside the English "abundant" ([build log, 2026-09-09](docs/build-log.md?plain=1#L11)).
+- The Contracts Act 1950's own enacting clause matched none of our patterns, so the parser found the "BE IT ENACTED" of an amending Act reprinted on page 87 and read the real Act as front matter ([build log, 2026-09-16](docs/build-log.md?plain=1#L179)).
+- On Nebius, Nemotron Ultra gave wrong answers on prompt-cache hits until each call got a unique salt ([#177](https://github.com/aishahsofea/ai-legal-tool/issues/177)), and Nebius cut reasoning off at its 8,192-token `max_tokens` default until we raised it ([#216](https://github.com/aishahsofea/ai-legal-tool/issues/216)).
+
 ## Quick start
 
 Full setup — env vars, database, frontend, evals — lives in [CONTRIBUTING.md](CONTRIBUTING.md). The short version:
