@@ -35,6 +35,16 @@ Out of the box, the code uses the GPT-4.1 family, plus Claude for the grounding 
 - Memory: server-side per-thread history, plus an optional cross-thread semantic memory for a practitioner's preferences and recurring topics.
 - Evaluated: a hand-validated benchmark, deterministic checks (L1) plus an LLM judge (L2), gated in CI.
 
+## Known limitations
+
+- Retrieval ranks the expected section first for 61% of 59 benchmark questions: 41% in BM, 74% in mixed language ([measured 2026-10-26](https://github.com/aishahsofea/ai-legal-tool/issues/267#issuecomment-6407258707)).
+- One English employment question gets no citations because the agent calls no tool ([#214](https://github.com/aishahsofea/ai-legal-tool/issues/214)).
+- An answer that cites section 60A of the Employment Act loses that citation, because the corpus has no chunk for it ([#230](https://github.com/aishahsofea/ai-legal-tool/issues/230)).
+- The synthesiser step can crash when the model hits its reasoning limit ([#195](https://github.com/aishahsofea/ai-legal-tool/issues/195)).
+- The benchmark has no Malay expected answers, so BM answers are judged against English ones ([#73](https://github.com/aishahsofea/ai-legal-tool/issues/73)).
+- A fix to how BM sections are split is not yet loaded into the corpus ([#223](https://github.com/aishahsofea/ai-legal-tool/issues/223)).
+- 23 scanned documents from that fix's re-extraction are unchecked ([#223](https://github.com/aishahsofea/ai-legal-tool/issues/223)).
+
 ## Quick start
 
 Full setup — env vars, database, frontend, evals — lives in [CONTRIBUTING.md](CONTRIBUTING.md). The short version:
