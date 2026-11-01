@@ -163,7 +163,10 @@ def test_ambiguous_and_not_found_never_return_highlights(tmp_path: Path):
 
 @pytest.mark.parametrize(("act_number", "start_page", "quote"), [
     ("56", 72, "In any criminal or civil proceeding a document produced by a computer"),
-    ("265", 30, "not later than the seventh day after the last day of any wage period"),
+    pytest.param(
+        "265", 30, "not later than the seventh day after the last day of any wage period",
+        marks=pytest.mark.xfail(strict=True, raises=AssertionError, reason="#289: Act 265 EN active mapping is the 1975 reprint"),
+    ),
     ("574", 42, "When a criminal act is done by several persons, in furtherance of the common intention of all"),
     ("709", 23, "A data subject shall be given access to his personal data held by a data user"),
     ("777", 157, "Before a distribution is made by a company to any shareholder, such distribution shall be authorized by the directors of the company"),
