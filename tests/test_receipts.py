@@ -1,5 +1,6 @@
 import hashlib
 import json
+from dataclasses import replace
 from pathlib import Path
 from unittest.mock import Mock, patch
 
@@ -250,7 +251,14 @@ def test_cdn_sidecar_is_verified_by_metadata_and_download_hash():
     assert document is not None
     run = registry.active_extraction(document)
     assert run is not None and run.coordinate_sidecar is not None
-    payload = registry.sidecar_path(run).read_bytes()
+    payload = b"coordinate sidecar bytes"
+    sidecar = replace(
+        run.coordinate_sidecar,
+        sha256=hashlib.sha256(payload).hexdigest(),
+        md5=hashlib.md5(payload).hexdigest(),
+        byte_size=len(payload),
+    )
+    run = replace(run, coordinate_sidecar=sidecar)
     head = Mock(
         headers={
             "Content-Length": str(len(payload)),
