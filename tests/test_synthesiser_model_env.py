@@ -12,10 +12,7 @@ from agent.nodes import synthesiser
 
 class SynthesiserModelEnvTests(unittest.TestCase):
     def test_synthesiser_defaults_to_gpt_4_1(self):
-        # Empty rather than absent: reloading the node re-runs load_dotenv(),
-        # which would restore a developer's real .env values over a cleared
-        # environment. load_dotenv never overwrites a var that is already set,
-        # so "" survives the reload and reads as unset.
+        # Reload is patched so a developer's real .env cannot repopulate the dropped model var.
         env = {k: v for k, v in os.environ.items() if k != "SYNTHESISER_MODEL"}
         env["CHAT_BASE_URL"] = ""
         env["CHAT_API_KEY"] = ""
@@ -23,7 +20,8 @@ class SynthesiserModelEnvTests(unittest.TestCase):
             with patch.object(llm_factory, "ChatOpenAI") as mock_openai:
                 with patch.object(llm_factory, "ChatAnthropic") as mock_anthropic:
                     mock_openai.return_value.with_structured_output.return_value = MagicMock()
-                    importlib.reload(synthesiser)
+                    with patch("dotenv.load_dotenv"):
+                        importlib.reload(synthesiser)
                     mock_openai.assert_called_once_with(model="gpt-4.1", temperature=0, base_url=None)
                     mock_anthropic.assert_not_called()
 
@@ -46,7 +44,7 @@ class SynthesiserModelEnvTests(unittest.TestCase):
                     mock_anthropic.assert_not_called()
 
     def _reload_with(self, **overrides):
-        # "" for unset: see the note in test_synthesiser_defaults_to_gpt_4_1.
+        # "" for unset: load_dotenv keeps a var already set, so "" survives the reload.
         env = {"SYNTHESISER_MODEL": "nvidia/Nemotron-3_5-Lightning", "CHAT_BASE_URL": "", "CHAT_API_KEY": "",
                "SYNTHESISER_MAX_TOKENS": "", **overrides}
         with patch.dict(os.environ, env):
