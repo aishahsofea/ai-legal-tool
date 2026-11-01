@@ -473,7 +473,8 @@ def test_corpus_wide_retention_has_not_regressed_below_its_recorded_baseline():
 # reports success while holding almost nothing retrievable — Act 12 EN's only
 # chunk is its list of amendments, 1.3% of the document. Ceiling, not a target: it
 # must not grow silently.
-RECORDED_LOW_YIELD_CEILING = 37
+# 38 includes the scanned Act 114 BM (act-114-bm-sha256-a1d0ab…), 1 chunk.
+RECORDED_LOW_YIELD_CEILING = 38
 
 
 def test_low_yield_ready_documents_have_not_grown_past_their_recorded_ceiling():
@@ -482,7 +483,11 @@ def test_low_yield_ready_documents_have_not_grown_past_their_recorded_ceiling():
     low_yield = [
         item for item in report["documents"]
         if item["status"] == "ready"
-        and (item["chunk_count"] <= 2 or item["assigned_chars"] / item["pdf_chars"] < 0.5)
+        # pdf_chars is 0 on purpose for OCR documents (ADR 0019), so only the chunk bound applies.
+        and (
+            item["chunk_count"] <= 2
+            or (item["pdf_chars"] > 0 and item["assigned_chars"] / item["pdf_chars"] < 0.5)
+        )
     ]
     low_yield_ids = {item["document_id"] for item in low_yield}
     assert len(low_yield) <= RECORDED_LOW_YIELD_CEILING, (
