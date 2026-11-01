@@ -33,6 +33,21 @@ from corpus.registry import CorpusDocumentIntegrityError, CorpusRegistry
 from corpus.validation import validate_manifest
 
 
+def _tessdata_available() -> bool:
+    try:
+        fitz.get_tessdata()
+    except RuntimeError:
+        return False
+    return True
+
+
+requires_tessdata = pytest.mark.skipif(
+    not _tessdata_available(),
+    reason="OCR language data missing: brew install tesseract tesseract-lang, "
+    "then export TESSDATA_PREFIX=/opt/homebrew/share/tessdata",
+)
+
+
 def _pdf(path: Path, lines: list[str] | None = None) -> None:
     document = fitz.open()
     page = document.new_page(width=400, height=500)
@@ -205,6 +220,7 @@ def test_is_scanned_at_the_threshold_boundary(tmp_path: Path):
         assert _is_scanned(pdf) is True
 
 
+@requires_tessdata
 def test_exact_extraction_sidecar_locator_and_scanned_failure(tmp_path: Path):
     asset_root = tmp_path / "assets"
     sidecar_root = tmp_path / "sidecars"
@@ -272,6 +288,7 @@ def test_exact_extraction_sidecar_locator_and_scanned_failure(tmp_path: Path):
         extract_document(scanned_registry, scanned, extraction_root=extraction_root, sidecar_root=sidecar_root)
 
 
+@requires_tessdata
 def test_scanned_document_is_recovered_through_ocr_deterministically(tmp_path: Path):
     asset_root = tmp_path / "assets"
     sidecar_root = tmp_path / "sidecars"
@@ -333,6 +350,7 @@ def test_ocr_config_changes_the_configuration_hash():
     assert changed != CONFIGURATION_HASH
 
 
+@requires_tessdata
 def test_extract_manifest_skips_accounting_for_scanned_documents(tmp_path: Path):
     asset_root = tmp_path / "assets"
     sidecar_root = tmp_path / "sidecars"

@@ -559,7 +559,7 @@ receipt_coverage registered=1124 registered_local=5/1124 active=1117 active_loca
 
 The deployed image carries `data/pdfs/manifest.json` but only the PDFs git tracks. Without `CORPUS_CDN_BASE_URL`, `registered_local` is the number worth reading: every document outside it answers 503 the moment it is activated. `registered_local` and `active_local` are size checks against the manifest, not hashes — they say bytes shipped, not that bytes are intact. With `CORPUS_CDN_BASE_URL` set, `active_cdn` counts active documents whose object passed one `HEAD` check (length, content type, and ETag). The probe stops after 5 seconds total, 2 seconds per request, and `active_cdn` then reports only what it reached. `active_reachable` counts local documents plus the ones the probe reached, so it undercounts when the probe stops early. The report cannot fail the boot.
 
-Run all automated checks from the repository root and frontend respectively:
+Run all automated checks from the repository root and frontend respectively. Three OCR tests skip unless `TESSDATA_PREFIX` is set; the setup is in [step 4](#4-build-the-knowledge-base-one-time-1-hour).
 
 ```bash
 python3 -m pytest -q
