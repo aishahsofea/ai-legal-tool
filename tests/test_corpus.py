@@ -1,5 +1,6 @@
 import hashlib
 import json
+from collections import Counter
 from pathlib import Path
 
 import fitz
@@ -439,7 +440,10 @@ def test_checked_in_coverage_accounts_for_every_source_pdf():
         "10/01/1975", "20/08/2001", "24/01/2006",
         "26/05/2012", "01/02/2023", "02/09/2023",
     }
-    assert len(manifest["extraction_runs"]) == 1079
+    assert Counter(run["extractor_version"] for run in manifest["extraction_runs"]) == {
+        "2.0.0": 1079,
+        "2.7.0": 1122,
+    }
     bm_acts = {item["act_number"] for item in manifest["documents"] if item["language"] == "bm"}
     assert len(bm_acts) == 481
     # The six BM-only Acts registered before the bilingual sweep. Pinning all 481
