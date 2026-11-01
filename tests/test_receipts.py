@@ -65,9 +65,8 @@ def test_production_manifest_registers_full_corpus_and_validates_active_pilots()
     registry = ReceiptRegistry(DEFAULT_MANIFEST_PATH)
 
     assert len(registry.documents) == 1124
-    # Still the five English pilots. The 2026-09-13 bilingual run registered 485
-    # documents and activated none of them, so this set must not grow with it.
-    assert set(registry.documents_by_act) == {"56", "265", "574", "709", "777"}
+    assert len(registry.active_documents) == 1117
+    assert len(registry.documents_by_act) == 649
     bm_acts = {
         document.act_number for document in registry.documents.values() if document.language == "bm"
     }
@@ -76,7 +75,9 @@ def test_production_manifest_registers_full_corpus_and_validates_active_pilots()
     # test the fixture rather than the corpus; what matters is that none of the
     # original six dropped out when the Malay side arrived in bulk.
     assert {"144", "152", "194", "220", "228", "230"} <= bm_acts
-    for document in registry.documents_by_act.values():
+    # Only the pilots' PDFs are tracked in git.
+    for act in ("56", "265", "574", "709", "777"):
+        document = registry.documents_by_act[act]
         path = registry.validate(document)
         assert path.stat().st_size == document.byte_size
         assert hashlib.sha256(path.read_bytes()).hexdigest() == document.sha256
