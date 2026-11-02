@@ -12,10 +12,7 @@ from agent.nodes import router
 
 class RouterModelEnvTests(unittest.TestCase):
     def test_router_defaults_to_gpt_4_1(self):
-        # Empty rather than absent: reloading the node re-runs load_dotenv(),
-        # which would restore a developer's real .env values over a cleared
-        # environment. load_dotenv never overwrites a var that is already set,
-        # so "" survives the reload and reads as unset.
+        # llm_factory loads .env into os.environ at import, so blank the vars the default must not inherit.
         env = {k: v for k, v in os.environ.items() if k != "ROUTER_MODEL"}
         env["CHAT_BASE_URL"] = ""
         env["CHAT_API_KEY"] = ""
@@ -23,7 +20,8 @@ class RouterModelEnvTests(unittest.TestCase):
             with patch.object(llm_factory, "ChatOpenAI") as mock_openai:
                 with patch.object(llm_factory, "ChatAnthropic") as mock_anthropic:
                     mock_openai.return_value.with_structured_output.return_value = MagicMock()
-                    importlib.reload(router)
+                    with patch("dotenv.load_dotenv"):
+                        importlib.reload(router)
                     mock_openai.assert_called_once_with(model="gpt-4.1", temperature=0, base_url=None)
                     mock_anthropic.assert_not_called()
 
