@@ -12,7 +12,7 @@ from agent.nodes import router
 
 class RouterModelEnvTests(unittest.TestCase):
     def test_router_defaults_to_gpt_4_1(self):
-        # Reload is patched so a developer's real .env cannot repopulate the dropped model var.
+        # llm_factory loads .env into os.environ at import, so blank the vars the default must not inherit.
         env = {k: v for k, v in os.environ.items() if k != "ROUTER_MODEL"}
         env["CHAT_BASE_URL"] = ""
         env["CHAT_API_KEY"] = ""

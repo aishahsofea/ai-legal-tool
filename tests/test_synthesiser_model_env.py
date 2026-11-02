@@ -12,10 +12,12 @@ from agent.nodes import synthesiser
 
 class SynthesiserModelEnvTests(unittest.TestCase):
     def test_synthesiser_defaults_to_gpt_4_1(self):
-        # Reload is patched so a developer's real .env cannot repopulate the dropped model var.
+        # llm_factory loads .env into os.environ at import, so blank the vars the default must not inherit.
         env = {k: v for k, v in os.environ.items() if k != "SYNTHESISER_MODEL"}
         env["CHAT_BASE_URL"] = ""
         env["CHAT_API_KEY"] = ""
+        env["SYNTHESISER_MAX_TOKENS"] = ""
+        env["SYNTHESISER_THINKING"] = ""
         with patch.dict(os.environ, env, clear=True):
             with patch.object(llm_factory, "ChatOpenAI") as mock_openai:
                 with patch.object(llm_factory, "ChatAnthropic") as mock_anthropic:
@@ -35,7 +37,8 @@ class SynthesiserModelEnvTests(unittest.TestCase):
                     mock_openai.assert_not_called()
 
     def test_synthesiser_uses_openai_for_gpt_model(self):
-        with patch.dict(os.environ, {"SYNTHESISER_MODEL": "gpt-4o", "CHAT_BASE_URL": "", "CHAT_API_KEY": ""}):
+        with patch.dict(os.environ, {"SYNTHESISER_MODEL": "gpt-4o", "CHAT_BASE_URL": "", "CHAT_API_KEY": "",
+                                     "SYNTHESISER_MAX_TOKENS": "", "SYNTHESISER_THINKING": ""}):
             with patch.object(llm_factory, "ChatOpenAI") as mock_openai:
                 with patch.object(llm_factory, "ChatAnthropic") as mock_anthropic:
                     mock_openai.return_value.with_structured_output.return_value = MagicMock()

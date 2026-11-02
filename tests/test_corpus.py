@@ -36,10 +36,9 @@ from corpus.validation import validate_manifest
 
 def _tessdata_available() -> bool:
     try:
-        fitz.get_tessdata()
+        return Path(fitz.get_tessdata(), "eng.traineddata").is_file()
     except RuntimeError:
         return False
-    return True
 
 
 requires_tessdata = pytest.mark.skipif(
