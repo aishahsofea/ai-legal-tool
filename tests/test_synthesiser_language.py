@@ -20,6 +20,22 @@ _CHUNK = {
     "extraction_id": "extraction-sha256-4ad8efde3b09933e28a63411f7162a910655c520e7a6a6d637e0ccddb27a2382",
 }
 
+
+
+def _fake_receipt_registry():
+    # Real registry reads gitignored data/corpus/sidecars/*, absent on a fresh clone.
+    document = MagicMock(document_id=_CHUNK["document_id"], act_number="574", language="en")
+    return MagicMock(get=MagicMock(return_value=document))
+
+
+def _patched_receipts():
+    return (
+        patch.object(synthesiser, "get_receipt_registry", side_effect=_fake_receipt_registry),
+        patch.object(synthesiser, "validate_available"),
+        patch.object(synthesiser, "validate_coordinate_available"),
+    )
+
+
 _ANSWER = "Di bawah seksyen 34 Kanun Keseksaan, setiap orang yang bertindak bersama adalah bertanggungjawab."
 
 
@@ -81,7 +97,9 @@ class SynthesiserDisclaimerTests(unittest.TestCase):
         self.assertIn("legal research only", result["draft_response"])
 
     def test_citations_resolved_from_chunks(self):
-        result = self._run_node("bm")
+        p1, p2, p3 = _patched_receipts()
+        with p1, p2, p3:
+            result = self._run_node("bm")
         self.assertEqual(len(result["citations"]), 1)
         self.assertEqual(result["citations"][0]["act_number"], "574")
         self.assertEqual(result["citations"][0]["section_number"], "34")
@@ -181,10 +199,12 @@ class SynthesiserDisclaimerTests(unittest.TestCase):
             answer="Section 34 applies.",
             citation_refs=[_CitationRef(act_number="574", section_number="34")],
         )
-        result = synthesiser._finalise(output, {
-            "retrieved_chunks": [chunk],
-            "response_language": "en",
-        })
+        p1, p2, p3 = _patched_receipts()
+        with p1, p2, p3:
+            result = synthesiser._finalise(output, {
+                "retrieved_chunks": [chunk],
+                "response_language": "en",
+            })
         citation = result["citations"][0]
         self.assertEqual(citation["receipt"]["document_id"], _CHUNK["document_id"])
         self.assertEqual(citation["receipt"]["extraction_id"], _CHUNK["extraction_id"])
