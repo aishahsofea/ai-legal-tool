@@ -1,5 +1,6 @@
 import hashlib
 import json
+from collections import Counter
 from pathlib import Path
 
 import fitz
@@ -31,6 +32,20 @@ from corpus.models import ActiveDocument, CoordinateSidecar, CorpusDocument, Ext
 from corpus.registration import register_pdf
 from corpus.registry import CorpusDocumentIntegrityError, CorpusRegistry
 from corpus.validation import validate_manifest
+
+
+def _tessdata_available() -> bool:
+    try:
+        return Path(fitz.get_tessdata(), "eng.traineddata").is_file()
+    except RuntimeError:
+        return False
+
+
+requires_tessdata = pytest.mark.skipif(
+    not _tessdata_available(),
+    reason="OCR language data missing: brew install tesseract tesseract-lang, "
+    "then export TESSDATA_PREFIX=/opt/homebrew/share/tessdata",
+)
 
 
 def _pdf(path: Path, lines: list[str] | None = None) -> None:
@@ -205,6 +220,7 @@ def test_is_scanned_at_the_threshold_boundary(tmp_path: Path):
         assert _is_scanned(pdf) is True
 
 
+@requires_tessdata
 def test_exact_extraction_sidecar_locator_and_scanned_failure(tmp_path: Path):
     asset_root = tmp_path / "assets"
     sidecar_root = tmp_path / "sidecars"
@@ -272,6 +288,7 @@ def test_exact_extraction_sidecar_locator_and_scanned_failure(tmp_path: Path):
         extract_document(scanned_registry, scanned, extraction_root=extraction_root, sidecar_root=sidecar_root)
 
 
+@requires_tessdata
 def test_scanned_document_is_recovered_through_ocr_deterministically(tmp_path: Path):
     asset_root = tmp_path / "assets"
     sidecar_root = tmp_path / "sidecars"
@@ -333,6 +350,7 @@ def test_ocr_config_changes_the_configuration_hash():
     assert changed != CONFIGURATION_HASH
 
 
+@requires_tessdata
 def test_extract_manifest_skips_accounting_for_scanned_documents(tmp_path: Path):
     asset_root = tmp_path / "assets"
     sidecar_root = tmp_path / "sidecars"
@@ -421,7 +439,10 @@ def test_checked_in_coverage_accounts_for_every_source_pdf():
         "10/01/1975", "20/08/2001", "24/01/2006",
         "26/05/2012", "01/02/2023", "02/09/2023",
     }
-    assert len(manifest["extraction_runs"]) == 1079
+    assert Counter(run["extractor_version"] for run in manifest["extraction_runs"]) == {
+        "2.0.0": 1079,
+        "2.7.0": 1122,
+    }
     bm_acts = {item["act_number"] for item in manifest["documents"] if item["language"] == "bm"}
     assert len(bm_acts) == 481
     # The six BM-only Acts registered before the bilingual sweep. Pinning all 481
@@ -451,7 +472,8 @@ def test_corpus_wide_retention_has_not_regressed_below_its_recorded_baseline():
 # reports success while holding almost nothing retrievable — Act 12 EN's only
 # chunk is its list of amendments, 1.3% of the document. Ceiling, not a target: it
 # must not grow silently.
-RECORDED_LOW_YIELD_CEILING = 37
+# 38 includes the scanned Act 114 BM (act-114-bm-sha256-a1d0ab…), 1 chunk.
+RECORDED_LOW_YIELD_CEILING = 38
 
 
 def test_low_yield_ready_documents_have_not_grown_past_their_recorded_ceiling():
@@ -460,7 +482,11 @@ def test_low_yield_ready_documents_have_not_grown_past_their_recorded_ceiling():
     low_yield = [
         item for item in report["documents"]
         if item["status"] == "ready"
-        and (item["chunk_count"] <= 2 or item["assigned_chars"] / item["pdf_chars"] < 0.5)
+        # pdf_chars is 0 on purpose for OCR documents (ADR 0019), so only the chunk bound applies.
+        and (
+            item["chunk_count"] <= 2
+            or (item["pdf_chars"] > 0 and item["assigned_chars"] / item["pdf_chars"] < 0.5)
+        )
     ]
     low_yield_ids = {item["document_id"] for item in low_yield}
     assert len(low_yield) <= RECORDED_LOW_YIELD_CEILING, (
