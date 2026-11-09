@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 import pytest
@@ -36,7 +37,7 @@ def test_python_311(steps):
 
 
 def test_installs_english_tessdata(steps):
-    assert any("tesseract-ocr-eng" in s.get("run", "") for s in steps)
+    assert any(re.search(r"apt-get install\b.*tesseract-ocr-eng", s.get("run", "")) for s in steps)
 
 
 def test_tessdata_guard_runs_before_pytest(steps):
