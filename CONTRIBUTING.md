@@ -561,8 +561,6 @@ The deployed image carries `data/pdfs/manifest.json` but only the PDFs git track
 
 Run all automated checks from the repository root and frontend respectively. Three OCR tests skip unless `TESSDATA_PREFIX` points at tessdata ([step 4](#4-build-the-knowledge-base-one-time-1-hour)).
 
-Every pull request runs `python3 -m pytest -q` in `.github/workflows/tests.yml`, on Python 3.11 with English tessdata installed. The check is advisory for now. The DB tests skip there (no `TEST_DATABASE_URL`). The fastText language-ID tests skip too, because pytest never downloads the 331 MB model.
-
 ```bash
 python3 -m pytest -q
 LANGSMITH_TRACING=false python3 -m pytest -q \
@@ -582,6 +580,8 @@ npm run lint
 npm test
 npm run build
 ```
+
+Every pull request runs `LANGSMITH_TRACING=false python3 -m pytest -q -rs` in `.github/workflows/tests.yml`, on Python 3.11 with English tessdata installed. The check is advisory for now. The DB tests skip there (no `TEST_DATABASE_URL`). The fastText language-ID tests skip too unless the 331 MB model is already cached, because pytest never downloads it.
 
 `npm test` uses Vitest in non-watch CI mode. Receipt interaction tests mock the canvas renderer, assert state/DOM behavior; geometry is verified against real pilot PDFs separately.
 
