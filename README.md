@@ -264,7 +264,7 @@ ai-legal-tool/
 ├── frontend/            # Next.js app-router chat UI (Vercel AI SDK)
 ├── migrations/          # additive SQL: corpus provenance, reference graph, saved threads
 ├── data/                 # scraped corpus + deterministic manifest/coverage and pilot receipt assets
-├── .github/workflows/   # evals.yml smoke run
+├── .github/workflows/   # evals.yml smoke run, tests.yml (pytest on pull requests)
 └── docs/                # PRD, build-log, ADRs, data-pipeline reference
 ```
 

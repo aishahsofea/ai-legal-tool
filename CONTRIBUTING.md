@@ -186,7 +186,7 @@ flowchart TB
 
 ### Prerequisites
 
-- Python 3.11+
+- Python 3.12+
 - Node.js 20+
 - PostgreSQL 16 with the `vector` extension ([pgvector](https://github.com/pgvector/pgvector))
 
@@ -580,6 +580,8 @@ npm run lint
 npm test
 npm run build
 ```
+
+Every pull request runs `LANGSMITH_TRACING=false python3 -m pytest -q -rs` in `.github/workflows/tests.yml`, on Python 3.12 with English tessdata installed. The check is advisory for now. The DB tests skip there (no `TEST_DATABASE_URL`). The fastText language-ID tests skip too unless the 331 MB model is already cached, because pytest never downloads it.
 
 `npm test` uses Vitest in non-watch CI mode. Receipt interaction tests mock the canvas renderer, assert state/DOM behavior; geometry is verified against real pilot PDFs separately.
 
