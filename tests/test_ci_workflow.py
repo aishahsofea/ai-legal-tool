@@ -33,7 +33,7 @@ def test_triggers_on_pull_request_only(wf):
 
 def test_python_311(steps):
     setup = next(s for s in steps if s.get("uses", "").startswith("actions/setup-python"))
-    assert setup["with"]["python-version"] == "3.11"
+    assert setup["with"]["python-version"] == "3.12"
 
 
 def test_installs_english_tessdata(steps):
