@@ -7,6 +7,12 @@ os.environ.setdefault("OPENAI_API_KEY", "test-key")
 
 from agent.nodes import synthesiser
 from agent.nodes.synthesiser import _CitationRef, _DISCLAIMER_BM, _DISCLAIMER_EN, _SynthesiserOutput
+from citation_receipts.registry import (
+    ReceiptDocumentIntegrityError,
+    ReceiptDocumentNotFound,
+    ReceiptManifestError,
+    get_receipt_registry,
+)
 
 _CHUNK = {
     "act_number": "574",
@@ -24,6 +30,19 @@ _ANSWER = "Di bawah seksyen 34 Kanun Keseksaan, setiap orang yang bertindak bers
 
 
 class SynthesiserDisclaimerTests(unittest.TestCase):
+    # skip, don't mock: the real-manifest check is what #283 review protected (#291)
+    def _require_pilot_sidecar(self):
+        extraction_id = _CHUNK["extraction_id"]
+        try:
+            registry = get_receipt_registry()
+        except ReceiptManifestError:
+            self.skipTest(f"receipt manifest failed to load for {extraction_id}")
+        try:
+            document = registry.get(_CHUNK["document_id"])
+            registry.validate_sidecar(registry.validate_exact_extraction(document, extraction_id))
+        except (ReceiptManifestError, ReceiptDocumentIntegrityError, ReceiptDocumentNotFound):
+            self.skipTest(f"pilot sidecar for {extraction_id} missing or unverified under {registry.sidecar_root}")
+
     def _run_node(self, response_language: str, answer: str = _ANSWER):
         output = _SynthesiserOutput(
             answer=answer,
@@ -81,6 +100,7 @@ class SynthesiserDisclaimerTests(unittest.TestCase):
         self.assertIn("legal research only", result["draft_response"])
 
     def test_citations_resolved_from_chunks(self):
+        self._require_pilot_sidecar()
         result = self._run_node("bm")
         self.assertEqual(len(result["citations"]), 1)
         self.assertEqual(result["citations"][0]["act_number"], "574")
@@ -167,6 +187,7 @@ class SynthesiserDisclaimerTests(unittest.TestCase):
         self.assertEqual(prompt.count(_CHUNK["content"]), 1)
 
     def test_reference_target_citation_still_uses_only_chunk_receipt_provenance(self):
+        self._require_pilot_sidecar()
         chunk = {
             **_CHUNK,
             "_reference_context": {
