@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
+import { themeScript } from "./themeScript";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -28,7 +29,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${sourceSerif.variable} ${jetBrainsMono.variable} h-full antialiased`}>
+    <html lang="en" className={`${inter.variable} ${sourceSerif.variable} ${jetBrainsMono.variable} h-full antialiased`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="min-h-full bg-[var(--canvas)] text-[var(--text)]">{children}</body>
     </html>
   );
