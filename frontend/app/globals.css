@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  color-scheme: light;
   --canvas: #f6f1e7;
   --surface: #fffdf8;
   --surface-soft: #eee7dc;
@@ -64,6 +65,73 @@
   --graph-edge-added: #237a62;
   --graph-edge-removed: #a14e32;
   --graph-edge-unchanged: #66726f;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --canvas: #1a1815;
+  --surface: #232019;
+  --surface-soft: #2c2822;
+  --surface-strong: #36312a;
+  --text: #efe9dd;
+  --text-muted: #b3aa9b;
+  --text-subtle: #a39a8b;
+  --line: rgba(239, 233, 221, 0.16);
+  --line-soft: rgba(239, 233, 221, 0.09);
+  --accent: #d98f9b;
+  --accent-deep: #e8adb7;
+  --accent-soft: #3a2428;
+  --accent-tint: #2b1f21;
+  --accent-line: rgba(217, 143, 155, 0.3);
+  --success: #7fb596;
+  --success-soft: #22302a;
+  --danger: #e08a8a;
+  --danger-soft: #3a2323;
+  --warning: #d9a35f;
+  --warning-soft: #3a2c1e;
+  --shadow-soft: 0 12px 32px -20px rgba(0, 0, 0, 0.6);
+  --shadow-raised: 0 20px 48px -28px rgba(0, 0, 0, 0.7);
+  --link-underline: rgba(217, 143, 155, 0.4);
+  --cite-underline: rgba(217, 143, 155, 0.6);
+  --hover-soft: rgba(239, 233, 221, 0.06);
+  --backdrop-faint: rgba(0, 0, 0, 0.3);
+  --backdrop: rgb(0 0 0 / 0.6);
+  --on-accent: #1a1815;
+  --on-danger: #1a1815;
+  --eval-ink: #efe9dd;
+  --eval-muted: #b3aa9b;
+  --eval-line: #3d372f;
+  --eval-page: #1a1815;
+  --eval-panel: #232019;
+  --eval-panel-soft: #2c2822;
+  --eval-accent: #d98f9b;
+  --eval-accent-soft: #3a2428;
+  --eval-pass: #2f4a39;
+  --eval-pass-soft: #22302a;
+  --eval-pass-strong: #2f6f47;
+  --eval-partial: #2e3541;
+  --eval-fail: #5a3033;
+  --eval-fail-soft: #3a2323;
+  --eval-fail-strong: #a8323a;
+  --eval-on-strong: #ffffff;
+  --eval-idle: #36312a;
+  --eval-warning: #e0a08a;
+  --eval-warning-soft: #3a2c1e;
+  --flow-llm-fill: #1e2a40;
+  --flow-llm-stroke: #7aa7f5;
+  --flow-deterministic-fill: #1a3324;
+  --flow-deterministic-stroke: #5fcf8a;
+  --flow-control-fill: #3a2f14;
+  --flow-control-stroke: #f0a53c;
+  --flow-edge: #8a847c;
+  --graph-node: #3fb3a8;
+  --graph-label: #e4efec;
+  --graph-base-border: #d98f6a;
+  --graph-compare-border: #4fc4a0;
+  --graph-boundary: #d9a066;
+  --graph-edge-added: #4fc4a0;
+  --graph-edge-removed: #e0805f;
+  --graph-edge-unchanged: #9aa8a5;
 }
 
 @theme inline {
