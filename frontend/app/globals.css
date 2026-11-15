@@ -56,6 +56,14 @@
   --flow-control-fill: #fef3c7;
   --flow-control-stroke: #d97706;
   --flow-edge: #a8a29e;
+  --graph-node: #175f59;
+  --graph-label: #20322f;
+  --graph-base-border: #8e4f32;
+  --graph-compare-border: #237a62;
+  --graph-boundary: #a66c3d;
+  --graph-edge-added: #237a62;
+  --graph-edge-removed: #a14e32;
+  --graph-edge-unchanged: #66726f;
 }
 
 @theme inline {

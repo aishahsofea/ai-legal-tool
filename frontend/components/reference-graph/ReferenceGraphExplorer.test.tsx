@@ -1,7 +1,7 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { fixedPresetPositions, ReferenceGraphExplorer } from "./ReferenceGraphExplorer";
+import { fixedPresetPositions, ReferenceGraphExplorer, referenceGraphStyle, type ReferenceGraphColors } from "./ReferenceGraphExplorer";
 
 const mocks = vi.hoisted(() => ({
   fetchNeighborhood: vi.fn(),
@@ -319,5 +319,26 @@ describe("reference graph explorer", () => {
       overlay: "compare",
       compare_document_id: compareDocumentId,
     });
+  });
+});
+
+describe("referenceGraphStyle", () => {
+  const colors: ReferenceGraphColors = {
+    node: "n", label: "l", baseBorder: "bb", compareBorder: "cb", boundary: "bd",
+    edgeAdded: "ea", edgeRemoved: "er", edgeUnchanged: "eu",
+  };
+  const style = (selector: string) => referenceGraphStyle(colors).find((rule) => rule.selector === selector)!.style as Record<string, unknown>;
+
+  it("maps node colours to node selectors", () => {
+    expect(style("node")).toMatchObject({ "background-color": "n", color: "l" });
+    expect(style("node[presence = 'base']")).toMatchObject({ "border-color": "bb" });
+    expect(style("node[presence = 'compare']")).toMatchObject({ "border-color": "cb" });
+    expect(style("node[presence = 'boundary']")).toMatchObject({ "background-color": "bd" });
+  });
+
+  it("maps edge colours to edge status selectors", () => {
+    expect(style("edge[status = 'added']")).toMatchObject({ "line-color": "ea", "target-arrow-color": "ea" });
+    expect(style("edge[status = 'removed']")).toMatchObject({ "line-color": "er", "target-arrow-color": "er" });
+    expect(style("edge[status = 'unchanged']")).toMatchObject({ "line-color": "eu", "target-arrow-color": "eu" });
   });
 });

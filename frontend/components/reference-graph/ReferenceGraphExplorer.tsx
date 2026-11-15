@@ -14,6 +14,7 @@ import {
   type LogicalReference,
   type Neighborhood,
 } from "@/lib/referenceGraphTransport";
+import { resolveColors } from "@/lib/cssColors";
 import { receiptPdfUrl } from "@/lib/receiptTransport";
 import { serializeReferenceGraphState } from "@/lib/referenceGraphRoute";
 
@@ -65,6 +66,30 @@ function shortId(value: string) {
 
 function snapshotLabel(snapshot: GraphSnapshot) {
   return `Observed ${snapshot.snapshot_date} · ${snapshot.snapshot_type}`;
+}
+
+const GRAPH_COLOR_VARS = {
+  node: "--graph-node", label: "--graph-label", baseBorder: "--graph-base-border", compareBorder: "--graph-compare-border",
+  boundary: "--graph-boundary", edgeAdded: "--graph-edge-added", edgeRemoved: "--graph-edge-removed", edgeUnchanged: "--graph-edge-unchanged",
+} as const;
+export type ReferenceGraphColors = Record<keyof typeof GRAPH_COLOR_VARS, string>;
+
+function resolveGraphColors(): ReferenceGraphColors {
+  const resolved = resolveColors(Object.values(GRAPH_COLOR_VARS));
+  return Object.fromEntries(Object.entries(GRAPH_COLOR_VARS).map(([key, name]) => [key, resolved[name as (typeof GRAPH_COLOR_VARS)[keyof typeof GRAPH_COLOR_VARS]]])) as ReferenceGraphColors;
+}
+
+export function referenceGraphStyle(c: ReferenceGraphColors): NonNullable<CytoscapeOptions["style"]> & { selector: string; style: object }[] {
+  return [
+    { selector: "node", style: { "background-color": c.node, label: "data(label)", color: c.label, "font-size": "10px", "text-wrap": "wrap", "text-max-width": "120px", "text-valign": "bottom", "text-margin-y": 6 } },
+    { selector: "node[presence = 'base']", style: { shape: "ellipse", "border-width": 2, "border-color": c.baseBorder } },
+    { selector: "node[presence = 'compare']", style: { shape: "diamond", "border-width": 2, "border-color": c.compareBorder } },
+    { selector: "node[presence = 'boundary']", style: { "background-color": c.boundary, shape: "round-rectangle" } },
+    { selector: "edge", style: { width: 2, "target-arrow-shape": "triangle", "curve-style": "bezier" } },
+    { selector: "edge[status = 'added']", style: { "line-color": c.edgeAdded, "target-arrow-color": c.edgeAdded, "line-style": "solid" } },
+    { selector: "edge[status = 'removed']", style: { "line-color": c.edgeRemoved, "target-arrow-color": c.edgeRemoved, "line-style": "dashed", "target-arrow-shape": "tee" } },
+    { selector: "edge[status = 'unchanged']", style: { "line-color": c.edgeUnchanged, "target-arrow-color": c.edgeUnchanged, "line-style": "dotted" } },
+  ];
 }
 
 export function fixedPresetPositions(
@@ -309,16 +334,7 @@ export function ReferenceGraphExplorer({
           ...edgeElements,
         ],
         layout: { name: "preset", fit: true, padding: 24 },
-        style: [
-          { selector: "node", style: { "background-color": "#175f59", label: "data(label)", color: "#20322f", "font-size": "10px", "text-wrap": "wrap", "text-max-width": "120px", "text-valign": "bottom", "text-margin-y": 6 } },
-          { selector: "node[presence = 'base']", style: { shape: "ellipse", "border-width": 2, "border-color": "#8e4f32" } },
-          { selector: "node[presence = 'compare']", style: { shape: "diamond", "border-width": 2, "border-color": "#237a62" } },
-          { selector: "node[presence = 'boundary']", style: { "background-color": "#a66c3d", shape: "round-rectangle" } },
-          { selector: "edge", style: { width: 2, "target-arrow-shape": "triangle", "curve-style": "bezier" } },
-          { selector: "edge[status = 'added']", style: { "line-color": "#237a62", "target-arrow-color": "#237a62", "line-style": "solid" } },
-          { selector: "edge[status = 'removed']", style: { "line-color": "#a14e32", "target-arrow-color": "#a14e32", "line-style": "dashed", "target-arrow-shape": "tee" } },
-          { selector: "edge[status = 'unchanged']", style: { "line-color": "#66726f", "target-arrow-color": "#66726f", "line-style": "dotted" } },
-        ],
+        style: referenceGraphStyle(resolveGraphColors()),
       };
       const cy = (cytoscape as unknown as (config: CytoscapeOptions) => Core)(options);
       cy.on("tap", "node", (event: EventObjectNode) => setSelected(event.target.id()));
