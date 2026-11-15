@@ -4,6 +4,7 @@ import type { Core, CytoscapeOptions, EdgeSingular, EventObject, EventObjectEdge
 import { useEffect, useRef, useState } from "react";
 import { fetchEvalWorkflow, type EvalWorkflow, type WorkflowNode, type WorkflowNodeKind } from "@/lib/evalsTransport";
 import { resolveColors } from "@/lib/cssColors";
+import { useThemeAttribute } from "@/lib/useThemeAttribute";
 import { palette } from "./palette";
 import { Select } from "./Select";
 
@@ -156,6 +157,7 @@ export function WorkflowMap({ activeSet, onSelectSet, onRunSet, running }: { act
   const [lineStyle, setLineStyle] = useState<LineStyle>("curved");
   const containerRef = useRef<HTMLDivElement>(null);
   const cyRef = useRef<Core | null>(null);
+  const theme = useThemeAttribute();
   // cytoscape loads asynchronously, so the effects that style the canvas re-run once it exists.
   const [cyReady, setCyReady] = useState(false);
   // The canvas tap handler is bound once per workflow, so it reads the latest callback through a ref.
@@ -228,6 +230,11 @@ export function WorkflowMap({ activeSet, onSelectSet, onRunSet, running }: { act
     }).catch(() => setError("Workflow map renderer could not be loaded."));
     return () => { cancelled = true; cyRef.current?.destroy(); cyRef.current = null; setCyReady(false); };
   }, [workflow]);
+
+  useEffect(() => {
+    // Restyle in place: rebuilding would move the dragged layout.
+    cyRef.current?.style(workflowStyle(resolveWorkflowColors()));
+  }, [theme]);
 
   useEffect(() => {
     const cy = cyRef.current;

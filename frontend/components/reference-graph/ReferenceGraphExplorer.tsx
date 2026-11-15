@@ -15,6 +15,7 @@ import {
   type Neighborhood,
 } from "@/lib/referenceGraphTransport";
 import { resolveColors } from "@/lib/cssColors";
+import { useThemeAttribute } from "@/lib/useThemeAttribute";
 import { receiptPdfUrl } from "@/lib/receiptTransport";
 import { serializeReferenceGraphState } from "@/lib/referenceGraphRoute";
 
@@ -147,6 +148,7 @@ export function ReferenceGraphExplorer({
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const cyRef = useRef<Core | null>(null);
+  const theme = useThemeAttribute();
   const [baseDocument, setBaseDocument] = useState(documentId);
   const [compareDocument, setCompareDocument] = useState(compareDocumentId);
   const [focus, setFocus] = useState(focusProvisionId);
@@ -342,6 +344,11 @@ export function ReferenceGraphExplorer({
     }).catch(() => setError("Reference graph renderer could not be loaded."));
     return () => { cancelled = true; cyRef.current?.destroy(); cyRef.current = null; };
   }, [comparison, display, neighborhood, positions, view]);
+
+  useEffect(() => {
+    // Restyle in place: rebuilding would reset positions and the selection.
+    cyRef.current?.style(referenceGraphStyle(resolveGraphColors()));
+  }, [theme]);
 
   const [seenFocusProp, setSeenFocusProp] = useState(focusProvisionId);
   if (seenFocusProp !== focusProvisionId) {
