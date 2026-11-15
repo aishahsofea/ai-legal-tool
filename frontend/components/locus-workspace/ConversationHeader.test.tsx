@@ -115,3 +115,13 @@ describe("ConversationHeader home link", () => {
     expect(screen.queryByRole("link", { name: "Home" })).toBeNull();
   });
 });
+
+describe("ConversationHeader theme toggle", () => {
+  it("renders the theme menu button before Share", () => {
+    render(<ConversationHeader title="T" />);
+    const group = screen.getByRole("group", { name: "Thread actions" });
+    const names = Array.from(group.querySelectorAll("button")).map((b) => b.getAttribute("aria-label"));
+    expect(names.indexOf("Theme")).toBeGreaterThanOrEqual(0);
+    expect(names.indexOf("Theme")).toBeLessThan(names.indexOf("Share thread"));
+  });
+});

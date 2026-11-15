@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { ExampleAnswer } from "@/components/landing/ExampleAnswer";
 import { EXAMPLE_MESSAGES, EXAMPLE_META } from "@/lib/fixtures/exampleAnswer";
 
@@ -114,7 +115,8 @@ export default function Landing() {
           <a href="#faq" className="text-sm text-(--text-muted) no-underline transition-colors duration-200 hover:text-(--accent)">Method</a>
         </nav>
 
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-end gap-2">
+          <ThemeToggle />
           <Link
             href="/workspace"
             className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-(--accent) px-4 py-2 text-xs font-semibold tracking-[0.04em] text-(--on-accent) no-underline shadow-[var(--shadow-soft)] transition-colors duration-200 hover:bg-(--accent-deep)"

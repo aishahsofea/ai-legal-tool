@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { signIn } from "./auth";
 
 const CREAM = "rgb(246, 241, 231)";
 const DARK = "rgb(26, 24, 21)";
@@ -50,5 +51,57 @@ test.describe("theme runtime", () => {
     await page.goto("/");
     const seen = await page.evaluate(() => (window as unknown as { __themeSeen: Record<string, string> }).__themeSeen);
     expect(seen).toEqual({ body: "dark", domContentLoaded: "dark" });
+  });
+});
+
+const choose = async (page: import("@playwright/test").Page, name: "Light" | "Dark" | "System") => {
+  await page.getByRole("button", { name: "Theme" }).click();
+  await page.getByRole("menuitemradio", { name }).click();
+};
+
+test.describe("theme toggle", () => {
+  test("landing: Dark survives a reload", async ({ page }) => {
+    await page.emulateMedia({ colorScheme: "light" });
+    await page.goto("/");
+    await choose(page, "Dark");
+    await page.reload();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await expect.poll(() => bodyBackground(page)).toContain(DARK);
+    await page.getByRole("button", { name: "Theme" }).click();
+    await expect(page.getByRole("menuitemradio", { name: "Dark" })).toHaveAttribute("aria-checked", "true");
+  });
+
+  test("workspace: Light survives a reload", async ({ page }) => {
+    await signIn(page);
+    await page.emulateMedia({ colorScheme: "dark" });
+    await page.goto("/workspace");
+    await choose(page, "Light");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+    await page.reload();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+    await page.getByRole("button", { name: "Theme" }).click();
+    await expect(page.getByRole("menuitemradio", { name: "Light" })).toHaveAttribute("aria-checked", "true");
+  });
+
+  test("System follows the OS", async ({ page }) => {
+    await page.emulateMedia({ colorScheme: "light" });
+    await page.goto("/");
+    await choose(page, "Dark");
+    await choose(page, "System");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+    await page.emulateMedia({ colorScheme: "dark" });
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  });
+
+  test.describe("at 375px", () => {
+    test.use({ viewport: { width: 375, height: 812 } });
+
+    test("landing toggle is inside the viewport", async ({ page }) => {
+      await page.goto("/");
+      const box = await page.getByRole("button", { name: "Theme" }).boundingBox();
+      expect(box).not.toBeNull();
+      expect(box!.x).toBeGreaterThanOrEqual(0);
+      expect(box!.x + box!.width).toBeLessThanOrEqual(375);
+    });
   });
 });

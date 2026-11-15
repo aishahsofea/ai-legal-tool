@@ -1,5 +1,5 @@
 import { Citation } from "@/lib/useQuery";
-import { type ButtonHTMLAttributes, type ReactNode, useEffect, useRef, useState } from "react";
+import { type ButtonHTMLAttributes, type ComponentPropsWithRef, type ReactNode, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Trash } from "@/components/icons";
 
@@ -68,7 +68,7 @@ export function IconButton({
   className = "",
   children,
   ...props
-}: ButtonHTMLAttributes<HTMLButtonElement>) {
+}: ComponentPropsWithRef<"button">) {
   return (
     <button
       {...props}
