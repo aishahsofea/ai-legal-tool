@@ -1,6 +1,7 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import cytoscape from "cytoscape";
 import { fixedPresetPositions, ReferenceGraphExplorer, referenceGraphStyle, type ReferenceGraphColors } from "./ReferenceGraphExplorer";
 
 const mocks = vi.hoisted(() => ({
@@ -10,6 +11,7 @@ const mocks = vi.hoisted(() => ({
   nodeTap: { current: undefined as ((event: { target: { id: () => string } }) => void) | undefined },
   cytoscapeOptions: { current: undefined as { elements?: Array<{ data: { id: string; label?: string; source?: string }; position?: { x: number; y: number } }> } | undefined },
   destroy: vi.fn(),
+  style: vi.fn(),
 }));
 
 vi.mock("@/lib/referenceGraphTransport", async () => {
@@ -27,6 +29,7 @@ vi.mock("cytoscape", () => ({
     mocks.cytoscapeOptions.current = options;
     return ({
       destroy: mocks.destroy,
+      style: mocks.style,
       on: (_event: string, _selector: string, handler: typeof mocks.nodeTap.current) => { mocks.nodeTap.current = handler; },
     });
   }),
@@ -61,6 +64,8 @@ function snapshots() {
 describe("reference graph explorer", () => {
   beforeEach(() => {
     mocks.destroy.mockClear();
+    mocks.style.mockClear();
+    vi.mocked(cytoscape).mockClear();
     mocks.nodeTap.current = undefined;
     mocks.cytoscapeOptions.current = undefined;
   });
@@ -85,6 +90,24 @@ describe("reference graph explorer", () => {
     await userEvent.click(screen.getByRole("button", { name: "Focus on selected" }));
     await waitFor(() => expect(mocks.fetchNeighborhood).toHaveBeenCalledWith(documentId, "act:265/section:4", expect.any(AbortSignal)));
     expect(onStateChange).toHaveBeenCalledWith(expect.objectContaining({ focusProvisionId: "act:265/section:4" }), "push");
+  });
+
+  it("restyles in place on a theme change instead of rebuilding the graph", async () => {
+    mocks.fetchSnapshots.mockResolvedValue(snapshots());
+    mocks.fetchNeighborhood.mockResolvedValue({
+      status: "available", document_id: documentId, focus_provision_id: focus,
+      nodes: [node(focus, "v1", "Section 60D"), node("act:265/section:4", "v2", "Section 4")],
+      edges: [edge("edge:1", "section 4", 60)],
+    });
+    render(<ReferenceGraphExplorer documentId={documentId} focusProvisionId={focus} />);
+    await waitFor(() => expect(mocks.nodeTap.current).toBeTypeOf("function"));
+    const builds = vi.mocked(cytoscape).mock.calls.length;
+    mocks.style.mockClear();
+    act(() => { document.documentElement.dataset.theme = "dark"; });
+    await waitFor(() => expect(mocks.style).toHaveBeenCalledTimes(1));
+    expect(vi.mocked(cytoscape).mock.calls).toHaveLength(builds);
+    expect(mocks.destroy).not.toHaveBeenCalled();
+    delete document.documentElement.dataset.theme;
   });
 
   it("uses the exact Phase 1 pending-index message", async () => {

@@ -1,6 +1,7 @@
 import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import cytoscape from "cytoscape";
 import { bendThrough, edgeBend, nodeLabel, WorkflowMap, workflowStyle, type WorkflowColors } from "./WorkflowMap";
 
 type Element = { data: Record<string, string | number>; position?: { x: number; y: number }; classes?: string };
@@ -14,6 +15,7 @@ const mocks = vi.hoisted(() => ({
   toggleEdgeClass: vi.fn(),
   zoom: vi.fn(),
   destroy: vi.fn(),
+  style: vi.fn(),
 }));
 
 vi.mock("@/lib/evalsTransport", async () => ({
@@ -26,6 +28,7 @@ vi.mock("cytoscape", () => ({
     mocks.options.current = options;
     return {
       destroy: mocks.destroy,
+      style: mocks.style,
       on: (event: string, ...rest: unknown[]) => {
         if (event === "tap") mocks.tap.current = rest[1] as typeof mocks.tap.current;
       },
@@ -151,6 +154,17 @@ describe("WorkflowMap", () => {
     await tap("recall");
     expect(screen.getByText("evals/semantic_memory.py")).toBeInTheDocument();
     expect(screen.getByText(/manual, not runnable/)).toBeInTheDocument();
+  });
+
+  it("restyles in place on a theme change, keeping the dragged layout", async () => {
+    await renderMap();
+    expect(mocks.style).not.toHaveBeenCalled();
+    act(() => { document.documentElement.dataset.theme = "dark"; });
+    await waitFor(() => expect(mocks.style).toHaveBeenCalledTimes(1));
+    expect(mocks.style).toHaveBeenLastCalledWith(expect.arrayContaining([expect.objectContaining({ selector: "node" })]));
+    expect(mocks.destroy).not.toHaveBeenCalled();
+    expect(cytoscape).toHaveBeenCalledTimes(1);
+    delete document.documentElement.dataset.theme;
   });
 
   it("shows the error when the fetch fails", async () => {
