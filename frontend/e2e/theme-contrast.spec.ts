@@ -108,12 +108,14 @@ for (const theme of ["light", "dark"] as const) {
       await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
       await expect(page.getByText(/Saved example · produced/)).toBeVisible();
       await expectReadable(page);
+      if (process.env.PIPELINE_EVIDENCE_DIR) await page.screenshot({ path: `${process.env.PIPELINE_EVIDENCE_DIR}/contrast-${theme}-${test.info().title.replace(/\W+/g, "-")}.png` });
     });
 
     test("sign-in", async ({ page }) => {
       await page.goto("/login");
       await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
       await expectReadable(page);
+      if (process.env.PIPELINE_EVIDENCE_DIR) await page.screenshot({ path: `${process.env.PIPELINE_EVIDENCE_DIR}/contrast-${theme}-${test.info().title.replace(/\W+/g, "-")}.png` });
     });
 
     test("workspace home", async ({ page }) => {
@@ -122,6 +124,7 @@ for (const theme of ["light", "dark"] as const) {
       await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
       await expect(page.getByText("Ask about statutory text, amendments, and Acts.")).toBeVisible();
       await expectReadable(page);
+      if (process.env.PIPELINE_EVIDENCE_DIR) await page.screenshot({ path: `${process.env.PIPELINE_EVIDENCE_DIR}/contrast-${theme}-${test.info().title.replace(/\W+/g, "-")}.png` });
     });
 
     test("loaded thread with composer", async ({ page }) => {
@@ -132,6 +135,7 @@ for (const theme of ["light", "dark"] as const) {
       await expect(page.getByText("A question")).toBeVisible();
       await page.getByRole("textbox").fill("Draft question typed into the composer");
       await expectReadable(page);
+      if (process.env.PIPELINE_EVIDENCE_DIR) await page.screenshot({ path: `${process.env.PIPELINE_EVIDENCE_DIR}/contrast-${theme}-${test.info().title.replace(/\W+/g, "-")}.png` });
     });
 
     test("delete dialog", async ({ page }) => {
@@ -141,6 +145,7 @@ for (const theme of ["light", "dark"] as const) {
       await page.getByRole("button", { name: "Delete thread Thread one title" }).click();
       await expect(page.getByRole("dialog", { name: "Delete thread?" })).toBeVisible();
       await expectReadable(page);
+      if (process.env.PIPELINE_EVIDENCE_DIR) await page.screenshot({ path: `${process.env.PIPELINE_EVIDENCE_DIR}/contrast-${theme}-${test.info().title.replace(/\W+/g, "-")}.png` });
     });
 
     test("phone sidebar drawer", async ({ page }) => {
@@ -151,6 +156,7 @@ for (const theme of ["light", "dark"] as const) {
       await page.getByRole("button", { name: "Show thread list" }).click();
       await expect(page.getByRole("button", { name: /^Thread two title/ })).toBeVisible();
       await expectReadable(page);
+      if (process.env.PIPELINE_EVIDENCE_DIR) await page.screenshot({ path: `${process.env.PIPELINE_EVIDENCE_DIR}/contrast-${theme}-${test.info().title.replace(/\W+/g, "-")}.png` });
     });
 
     test("receipt panel", async ({ page }) => {
@@ -181,6 +187,7 @@ for (const theme of ["light", "dark"] as const) {
       await page.getByRole("button", { name: /Open Citation Receipt 8:/ }).click();
       await expect(page.getByTestId("receipt-highlight")).toHaveCount(1);
       await expectReadable(page);
+      if (process.env.PIPELINE_EVIDENCE_DIR) await page.screenshot({ path: `${process.env.PIPELINE_EVIDENCE_DIR}/contrast-${theme}-${test.info().title.replace(/\W+/g, "-")}.png` });
     });
 
     test("reference graph", async ({ page }) => {
@@ -211,6 +218,7 @@ for (const theme of ["light", "dark"] as const) {
       await page.goto("/reference-graph");
       await expect(page.getByRole("complementary", { name: "Selected reference evidence" })).toBeVisible();
       await expectReadable(page);
+      if (process.env.PIPELINE_EVIDENCE_DIR) await page.screenshot({ path: `${process.env.PIPELINE_EVIDENCE_DIR}/contrast-${theme}-${test.info().title.replace(/\W+/g, "-")}.png` });
     });
   });
 }

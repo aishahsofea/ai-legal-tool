@@ -61,4 +61,5 @@ test("receipt PDF page stays white in dark mode and its highlight stays visible"
   const flat = [r, g, b].map((v) => v * alpha + 255 * (1 - alpha));
   const ratio = 1.05 / (luminance(flat) + 0.05);
   expect(ratio).toBeGreaterThanOrEqual(3);
+  if (process.env.PIPELINE_EVIDENCE_DIR) await page.screenshot({ path: `${process.env.PIPELINE_EVIDENCE_DIR}/receipt-dark-white-page.png` });
 });

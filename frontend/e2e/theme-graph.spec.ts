@@ -1,7 +1,21 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 
 // Re-drawing the same layout shifts anti-aliased edge pixels by a few levels; a moved node changes pixels by far more.
 const MOVED_PIXEL_DELTA = 64;
+
+// Only Cytoscape's own canvas layers: the container's CSS background flips with the theme by itself and would hide a missing restyle.
+async function graphLayers(canvas: Locator): Promise<Buffer> {
+  const base64 = await canvas.evaluate((el) => {
+    const layers = [...el.querySelectorAll("canvas")];
+    const out = document.createElement("canvas");
+    out.width = Math.max(...layers.map((l) => l.width));
+    out.height = Math.max(...layers.map((l) => l.height));
+    const context = out.getContext("2d")!;
+    for (const layer of layers) context.drawImage(layer, 0, 0);
+    return out.toDataURL("image/png").split(",")[1];
+  });
+  return Buffer.from(base64, "base64");
+}
 
 async function movedPixels(page: Page, a: Buffer, b: Buffer) {
   return page.evaluate(async ([x, y, threshold]) => {
@@ -64,9 +78,12 @@ test("graph re-colours on theme change without moving nodes or losing the eviden
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   const rowText = await row.innerText();
   // Under load the first layout is still animating; wait until two frames match.
-  let light = await canvas.screenshot({ animations: "disabled" });
+  await expect.poll(() => canvas.evaluate((el) => [...el.querySelectorAll("canvas")].some((l) => l.width > 0))).toBe(true);
+  await page.evaluate(() => document.fonts.ready);
+  let light = await graphLayers(canvas);
   await expect.poll(async () => {
-    const next = await canvas.screenshot({ animations: "disabled" });
+    await page.waitForTimeout(400);
+    const next = await graphLayers(canvas);
     const settled = (await movedPixels(page, light, next)) === 0;
     light = next;
     return settled;
@@ -74,11 +91,12 @@ test("graph re-colours on theme change without moving nodes or losing the eviden
 
   await page.emulateMedia({ colorScheme: "dark" });
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
-  await expect.poll(async () => movedPixels(page, light, await canvas.screenshot({ animations: "disabled" }))).toBeGreaterThan(0);
+  await expect.poll(async () => movedPixels(page, light, await graphLayers(canvas))).toBeGreaterThan(0);
+  if (process.env.PIPELINE_EVIDENCE_DIR) await page.screenshot({ path: `${process.env.PIPELINE_EVIDENCE_DIR}/graph-dark.png` });
 
   await page.emulateMedia({ colorScheme: "light" });
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
-  await expect.poll(async () => movedPixels(page, light, await canvas.screenshot({ animations: "disabled" }))).toBe(0);
+  await expect.poll(async () => movedPixels(page, light, await graphLayers(canvas))).toBe(0);
 
   await expect(page.getByRole("complementary", { name: "Selected reference evidence" })).toBeVisible();
   await expect(row).toHaveCount(1);

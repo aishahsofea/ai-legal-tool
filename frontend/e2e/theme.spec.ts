@@ -14,6 +14,7 @@ test.describe("theme runtime", () => {
     await page.goto("/");
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
     await expect.poll(() => bodyBackground(page)).toContain(DARK);
+    if (process.env.PIPELINE_EVIDENCE_DIR) await page.screenshot({ path: `${process.env.PIPELINE_EVIDENCE_DIR}/os-dark-follows.png` });
   });
 
   test("no saved choice follows a light OS", async ({ page }) => {
@@ -21,6 +22,7 @@ test.describe("theme runtime", () => {
     await page.goto("/");
     await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
     await expect.poll(() => bodyBackground(page)).toContain(CREAM);
+    if (process.env.PIPELINE_EVIDENCE_DIR) await page.screenshot({ path: `${process.env.PIPELINE_EVIDENCE_DIR}/os-light-follows.png` });
   });
 
   test("system choice follows an OS change without reload", async ({ page }) => {
@@ -69,6 +71,7 @@ test.describe("theme toggle", () => {
     await expect.poll(() => bodyBackground(page)).toContain(DARK);
     await page.getByRole("button", { name: "Theme" }).click();
     await expect(page.getByRole("menuitemradio", { name: "Dark" })).toHaveAttribute("aria-checked", "true");
+    if (process.env.PIPELINE_EVIDENCE_DIR) await page.screenshot({ path: `${process.env.PIPELINE_EVIDENCE_DIR}/landing-dark-after-reload.png` });
   });
 
   test("workspace: Light survives a reload", async ({ page }) => {
@@ -81,6 +84,7 @@ test.describe("theme toggle", () => {
     await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
     await page.getByRole("button", { name: "Theme" }).click();
     await expect(page.getByRole("menuitemradio", { name: "Light" })).toHaveAttribute("aria-checked", "true");
+    if (process.env.PIPELINE_EVIDENCE_DIR) await page.screenshot({ path: `${process.env.PIPELINE_EVIDENCE_DIR}/workspace-light-after-reload.png` });
   });
 
   test("System follows the OS", async ({ page }) => {
@@ -91,6 +95,7 @@ test.describe("theme toggle", () => {
     await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
     await page.emulateMedia({ colorScheme: "dark" });
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    if (process.env.PIPELINE_EVIDENCE_DIR) await page.screenshot({ path: `${process.env.PIPELINE_EVIDENCE_DIR}/system-follows-os.png` });
   });
 
   test.describe("at 375px", () => {
@@ -102,6 +107,7 @@ test.describe("theme toggle", () => {
       expect(box).not.toBeNull();
       expect(box!.x).toBeGreaterThanOrEqual(0);
       expect(box!.x + box!.width).toBeLessThanOrEqual(375);
+      if (process.env.PIPELINE_EVIDENCE_DIR) await page.screenshot({ path: `${process.env.PIPELINE_EVIDENCE_DIR}/landing-toggle-375.png` });
     });
   });
 });
