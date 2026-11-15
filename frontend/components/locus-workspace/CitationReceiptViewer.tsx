@@ -289,6 +289,7 @@ export function CitationReceiptViewer({
               loading={<p className="p-6 text-center text-sm text-(--text-muted)" role="status">Loading Receipt Document…</p>}
               error={<p className="p-6 text-center text-sm text-(--danger)" role="alert">Receipt Document is unavailable.</p>}
             >
+              {/* Stays white in dark mode: the scan is the original document and the highlights are drawn on top of it. */}
               <div className="relative mx-auto w-fit overflow-hidden bg-white shadow-xl" data-testid="receipt-pdf-page">
                 <Page
                   pageNumber={pageNumber}
