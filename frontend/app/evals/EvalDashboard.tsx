@@ -108,7 +108,7 @@ function StatusMark({ active, fill, ink, mark }: { active: boolean; fill: string
   return (
     <span
       className={`flex items-center justify-center rounded-full text-xs font-bold ${active ? "h-7 w-7" : "h-6 w-6"}`}
-      style={active ? { background: palette.accent, color: palette.onStrong } : { background: fill, color: ink }}
+      style={active ? { background: palette.accent, color: "var(--on-accent)" } : { background: fill, color: ink }}
     >
       {active ? (
         <>

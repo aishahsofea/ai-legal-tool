@@ -1,7 +1,7 @@
 import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { bendThrough, edgeBend, nodeLabel, WorkflowMap } from "./WorkflowMap";
+import { bendThrough, edgeBend, nodeLabel, WorkflowMap, workflowStyle, type WorkflowColors } from "./WorkflowMap";
 
 type Element = { data: Record<string, string | number>; position?: { x: number; y: number }; classes?: string };
 
@@ -190,5 +190,29 @@ describe("bendThrough", () => {
     const bend = bendThrough({ x: 0, y: 0 }, { x: 200, y: 0 }, { x: 100, y: -50 });
     expect(bend.weight).toBeCloseTo(0.5);
     expect(Math.abs(bend.distance)).toBeCloseTo(100);
+  });
+});
+
+describe("workflowStyle", () => {
+  const colors: WorkflowColors = {
+    ink: "c-ink", muted: "c-muted", page: "c-page", accent: "c-accent", failStrong: "c-fail", edge: "c-edge",
+    llmFill: "c-llm-fill", llmStroke: "c-llm-stroke",
+    deterministicFill: "c-det-fill", deterministicStroke: "c-det-stroke",
+    controlFill: "c-ctl-fill", controlStroke: "c-ctl-stroke",
+  };
+  const style = (selector: string) => workflowStyle(colors).find((rule) => rule.selector === selector)!.style as Record<string, unknown>;
+
+  it("puts each kind's resolved fill and stroke on its node selector", () => {
+    expect(style("node[kind = 'llm']")).toMatchObject({ "background-color": "c-llm-fill", "border-color": "c-llm-stroke" });
+    expect(style("node[kind = 'deterministic']")).toMatchObject({ "background-color": "c-det-fill", "border-color": "c-det-stroke" });
+    expect(style("node[kind = 'control']")).toMatchObject({ "background-color": "c-ctl-fill", "border-color": "c-ctl-stroke" });
+  });
+
+  it("colours edges, labels and selection from the passed colours", () => {
+    expect(style("edge")).toMatchObject({ "line-color": "c-edge", "target-arrow-color": "c-edge", color: "c-muted", "text-background-color": "c-page" });
+    expect(style("node")).toMatchObject({ color: "c-ink" });
+    expect(style("node:selected")).toMatchObject({ "border-color": "c-fail" });
+    expect(style("node.covered")).toMatchObject({ "underlay-color": "c-accent" });
+    expect(style("edge.dragging")).toMatchObject({ "line-color": "c-accent", "target-arrow-color": "c-accent" });
   });
 });

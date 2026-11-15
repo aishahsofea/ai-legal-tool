@@ -30,6 +30,32 @@
   --backdrop: rgb(0 0 0 / 0.4);
   --on-accent: #fffdf8;
   --on-danger: #ffffff;
+  --eval-ink: #1e1d1a;
+  --eval-muted: #645f57;
+  --eval-line: #d8d0c2;
+  --eval-page: #f6f1e7;
+  --eval-panel: #fffdf8;
+  --eval-panel-soft: #eee7dc;
+  --eval-accent: #6e2f3a;
+  --eval-accent-soft: #eee0e1;
+  --eval-pass: #b8cdbd;
+  --eval-pass-soft: #dfe9e1;
+  --eval-pass-strong: #2f6f47;
+  --eval-partial: #d7dde6;
+  --eval-fail: #d9aaad;
+  --eval-fail-soft: #f1dddd;
+  --eval-fail-strong: #a8323a;
+  --eval-on-strong: #ffffff;
+  --eval-idle: #e5ddcf;
+  --eval-warning: #9a5b47;
+  --eval-warning-soft: #f2dfd2;
+  --flow-llm-fill: #dbeafe;
+  --flow-llm-stroke: #2563eb;
+  --flow-deterministic-fill: #dcfce7;
+  --flow-deterministic-stroke: #16a34a;
+  --flow-control-fill: #fef3c7;
+  --flow-control-stroke: #d97706;
+  --flow-edge: #a8a29e;
 }
 
 @theme inline {

@@ -3,6 +3,7 @@
 import type { Core, CytoscapeOptions, EdgeSingular, EventObject, EventObjectEdge, EventObjectNode } from "cytoscape";
 import { useEffect, useRef, useState } from "react";
 import { fetchEvalWorkflow, type EvalWorkflow, type WorkflowNode, type WorkflowNodeKind } from "@/lib/evalsTransport";
+import { resolveColors } from "@/lib/cssColors";
 import { palette } from "./palette";
 import { Select } from "./Select";
 
@@ -17,10 +18,39 @@ const LINE_PX = 13;
 const LINE_CHARS = Math.floor((NODE_WIDTH - 2 * NODE_PAD) / (FONT_PX * 0.6));
 
 const KIND_STYLE: Record<WorkflowNodeKind, { label: string; fill: string; stroke: string }> = {
-  llm: { label: "LLM call", fill: "#dbeafe", stroke: "#2563eb" },
-  deterministic: { label: "deterministic", fill: "#dcfce7", stroke: "#16a34a" },
-  control: { label: "control / bookkeeping", fill: "#fef3c7", stroke: "#d97706" },
+  llm: { label: "LLM call", fill: "var(--flow-llm-fill)", stroke: "var(--flow-llm-stroke)" },
+  deterministic: { label: "deterministic", fill: "var(--flow-deterministic-fill)", stroke: "var(--flow-deterministic-stroke)" },
+  control: { label: "control / bookkeeping", fill: "var(--flow-control-fill)", stroke: "var(--flow-control-stroke)" },
 };
+
+const COLOR_VARS = {
+  ink: "--eval-ink", muted: "--eval-muted", page: "--eval-page", accent: "--eval-accent", failStrong: "--eval-fail-strong", edge: "--flow-edge",
+  llmFill: "--flow-llm-fill", llmStroke: "--flow-llm-stroke",
+  deterministicFill: "--flow-deterministic-fill", deterministicStroke: "--flow-deterministic-stroke",
+  controlFill: "--flow-control-fill", controlStroke: "--flow-control-stroke",
+} as const;
+export type WorkflowColors = Record<keyof typeof COLOR_VARS, string>;
+
+function resolveWorkflowColors(): WorkflowColors {
+  const resolved = resolveColors(Object.values(COLOR_VARS));
+  return Object.fromEntries(Object.entries(COLOR_VARS).map(([key, name]) => [key, resolved[name]])) as WorkflowColors;
+}
+
+export function workflowStyle(c: WorkflowColors): NonNullable<CytoscapeOptions["style"]> & { selector: string; style: object }[] {
+  return [
+    { selector: "node", style: { shape: "round-rectangle", width: NODE_WIDTH, height: "data(height)", label: "data(label)", "font-size": `${FONT_PX}px`, "line-height": LINE_PX / FONT_PX, "text-max-width": `${NODE_WIDTH - 2 * NODE_PAD}px`, "text-overflow-wrap": "anywhere", "font-family": "ui-monospace, monospace", color: c.ink, "text-valign": "center", "text-wrap": "wrap", "border-width": 1.5 } },
+    ...(["llm", "deterministic", "control"] as const).map((kind) => ({
+      selector: `node[kind = '${kind}']`,
+      style: { "background-color": c[`${kind}Fill`], "border-color": c[`${kind}Stroke`] },
+    })),
+    { selector: "node.covered", style: { "underlay-color": c.accent, "underlay-opacity": 0.22, "underlay-padding": 7, "underlay-shape": "round-rectangle" } },
+    { selector: "node:selected", style: { "border-width": 3.5, "border-color": c.failStrong } },
+    { selector: "edge", style: { width: 2, "line-color": c.edge, "target-arrow-color": c.edge, "target-arrow-shape": "triangle", "curve-style": "unbundled-bezier", "control-point-distances": "data(bendDistance)", "control-point-weights": "data(bendWeight)", "edge-distances": "node-position", label: "data(label)", "font-size": "9px", color: c.muted, "text-background-color": c.page, "text-background-opacity": 1, "text-background-padding": "2px" } },
+    { selector: "edge.dragging", style: { "line-color": c.accent, "target-arrow-color": c.accent } },
+    { selector: "edge.right-angle", style: { "curve-style": "taxi", "taxi-direction": "vertical", "taxi-turn": "50%" } },
+    { selector: "edge[conditional = 'yes']", style: { "line-style": "dashed" } },
+  ];
+}
 
 const EYEBROW = "font-mono text-[10px] font-bold uppercase tracking-[0.1em]";
 const TOOL = "rounded-lg border px-2.5 py-1 font-mono text-xs font-semibold";
@@ -174,19 +204,7 @@ export function WorkflowMap({ activeSet, onSelectSet, onRunSet, running }: { act
         layout: { name: "preset", fit: true, padding: 16 },
         minZoom: 0.3,
         maxZoom: 2.5,
-        style: [
-          { selector: "node", style: { shape: "round-rectangle", width: NODE_WIDTH, height: "data(height)", label: "data(label)", "font-size": `${FONT_PX}px`, "line-height": LINE_PX / FONT_PX, "text-max-width": `${NODE_WIDTH - 2 * NODE_PAD}px`, "text-overflow-wrap": "anywhere", "font-family": "ui-monospace, monospace", color: palette.ink, "text-valign": "center", "text-wrap": "wrap", "border-width": 1.5 } },
-          ...(Object.keys(KIND_STYLE) as WorkflowNodeKind[]).map((kind) => ({
-            selector: `node[kind = '${kind}']`,
-            style: { "background-color": KIND_STYLE[kind].fill, "border-color": KIND_STYLE[kind].stroke },
-          })),
-          { selector: "node.covered", style: { "underlay-color": palette.accent, "underlay-opacity": 0.22, "underlay-padding": 7, "underlay-shape": "round-rectangle" } },
-          { selector: "node:selected", style: { "border-width": 3.5, "border-color": palette.failStrong } },
-          { selector: "edge", style: { width: 2, "line-color": "#a8a29e", "target-arrow-color": "#a8a29e", "target-arrow-shape": "triangle", "curve-style": "unbundled-bezier", "control-point-distances": "data(bendDistance)", "control-point-weights": "data(bendWeight)", "edge-distances": "node-position", label: "data(label)", "font-size": "9px", color: palette.muted, "text-background-color": palette.page, "text-background-opacity": 1, "text-background-padding": "2px" } },
-          { selector: "edge.dragging", style: { "line-color": palette.accent, "target-arrow-color": palette.accent } },
-          { selector: "edge.right-angle", style: { "curve-style": "taxi", "taxi-direction": "vertical", "taxi-turn": "50%" } },
-          { selector: "edge[conditional = 'yes']", style: { "line-style": "dashed" } },
-        ],
+        style: workflowStyle(resolveWorkflowColors()),
       };
       const cy = (cytoscape as unknown as (config: CytoscapeOptions) => Core)(options);
       cy.on("tap", "node", (event: EventObjectNode) => pickRef.current(event.target.id()));
