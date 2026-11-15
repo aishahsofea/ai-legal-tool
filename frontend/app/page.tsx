@@ -117,7 +117,7 @@ export default function Landing() {
         <div className="flex items-center justify-end">
           <Link
             href="/workspace"
-            className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-(--accent) px-4 py-2 text-xs font-semibold tracking-[0.04em] text-(--surface) no-underline shadow-[var(--shadow-soft)] transition-colors duration-200 hover:bg-(--accent-deep)"
+            className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-(--accent) px-4 py-2 text-xs font-semibold tracking-[0.04em] text-(--on-accent) no-underline shadow-[var(--shadow-soft)] transition-colors duration-200 hover:bg-(--accent-deep)"
           >
             Sign in <span aria-hidden="true">→</span>
           </Link>
@@ -157,7 +157,7 @@ export default function Landing() {
             <button
               type="button"
               onClick={handleResearch}
-              className="inline-flex self-stretch items-center gap-2 whitespace-nowrap border-none bg-(--accent) px-5 text-xs font-semibold tracking-[0.08em] text-(--surface) transition-colors duration-200 hover:bg-(--accent-deep)"
+              className="inline-flex self-stretch items-center gap-2 whitespace-nowrap border-none bg-(--accent) px-5 text-xs font-semibold tracking-[0.08em] text-(--on-accent) transition-colors duration-200 hover:bg-(--accent-deep)"
             >
               Research <span aria-hidden="true">→</span>
             </button>

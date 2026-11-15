@@ -23,6 +23,13 @@
   --warning-soft: #f2dfd2;
   --shadow-soft: 0 12px 32px -20px rgba(39, 31, 24, 0.28);
   --shadow-raised: 0 20px 48px -28px rgba(39, 31, 24, 0.34);
+  --link-underline: rgba(110, 47, 58, 0.32);
+  --cite-underline: rgba(110, 47, 58, 0.56);
+  --hover-soft: rgba(30, 29, 26, 0.04);
+  --backdrop-faint: rgba(0, 0, 0, 0.1);
+  --backdrop: rgb(0 0 0 / 0.4);
+  --on-accent: #fffdf8;
+  --on-danger: #ffffff;
 }
 
 @theme inline {
@@ -44,19 +51,19 @@
   .chamber-text-ink-2 { color: var(--text-muted); }
   .chamber-text-ink-3 { color: var(--text-subtle); }
   .chamber-text-accent { color: var(--accent); }
-  .chamber-on-accent { color: var(--surface); }
+  .chamber-on-accent { color: var(--on-accent); }
   .chamber-border { border-color: var(--line); }
   .chamber-border-soft { border-color: var(--line-soft); }
   .chamber-border-accent { border-color: var(--accent); }
   .chamber-link {
     color: var(--accent);
     text-decoration: underline;
-    text-decoration-color: rgba(110, 47, 58, 0.32);
+    text-decoration-color: var(--link-underline);
     text-underline-offset: 2px;
   }
   .chamber-cite {
     text-decoration-style: dotted;
-    text-decoration-color: rgba(110, 47, 58, 0.56);
+    text-decoration-color: var(--cite-underline);
     cursor: pointer;
     scroll-margin-top: 16px;
   }
@@ -64,7 +71,7 @@
     text-decoration-color: var(--accent);
     background: var(--accent-tint);
   }
-  .chamber-hover-soft:hover { background: rgba(30, 29, 26, 0.04); }
+  .chamber-hover-soft:hover { background: var(--hover-soft); }
   .chamber-hover-bg-2:hover { background: var(--surface); }
   .chamber-hover-bg-accent:hover { background: var(--accent); }
   .chamber-hover-text-accent:hover { color: var(--accent); }
@@ -139,7 +146,7 @@
   width: 100%;
   height: 100%;
   border: 0;
-  background: rgba(0, 0, 0, 0.1);
+  background: var(--backdrop-faint);
 }
 
 .citation-receipt-panel {
@@ -318,7 +325,7 @@ button:disabled,
     transition: transform 200ms ease, visibility 0s linear 200ms;
   }
   .sidebar-drawer-open .workspace-sidebar { transform: none; visibility: visible; transition-delay: 0s; }
-  .workspace-sidebar-backdrop { position: fixed; inset: 0; z-index: 30; background: rgb(0 0 0 / 0.4); }
+  .workspace-sidebar-backdrop { position: fixed; inset: 0; z-index: 30; background: var(--backdrop); }
   .landing-grid-nav { grid-template-columns: 1fr auto; height: auto; row-gap: 4px; padding-bottom: 8px; }
   .landing-grid-nav > :first-child { padding-top: 8px; }
   .landing-grid-nav > .landing-nav-row { grid-column: 1 / -1; grid-row: 2; padding: 4px 0; }
