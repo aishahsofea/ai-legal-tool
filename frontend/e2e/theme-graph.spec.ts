@@ -63,7 +63,14 @@ test("graph re-colours on theme change without moving nodes or losing the eviden
   await expect(row).toHaveCount(1);
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   const rowText = await row.innerText();
-  const light = await canvas.screenshot({ animations: "disabled" });
+  // Under load the first layout is still animating; wait until two frames match.
+  let light = await canvas.screenshot({ animations: "disabled" });
+  await expect.poll(async () => {
+    const next = await canvas.screenshot({ animations: "disabled" });
+    const settled = (await movedPixels(page, light, next)) === 0;
+    light = next;
+    return settled;
+  }).toBe(true);
 
   await page.emulateMedia({ colorScheme: "dark" });
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
@@ -71,8 +78,7 @@ test("graph re-colours on theme change without moving nodes or losing the eviden
 
   await page.emulateMedia({ colorScheme: "light" });
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
-  const relit = await canvas.screenshot({ animations: "disabled" });
-  expect(await movedPixels(page, light, relit)).toBe(0);
+  await expect.poll(async () => movedPixels(page, light, await canvas.screenshot({ animations: "disabled" }))).toBe(0);
 
   await expect(page.getByRole("complementary", { name: "Selected reference evidence" })).toBeVisible();
   await expect(row).toHaveCount(1);
