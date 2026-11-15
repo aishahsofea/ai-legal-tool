@@ -1,4 +1,5 @@
 import { IconButton, Mono } from "@/components/chamber";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Check, PanelLeft, Share, SignOut } from "@/components/icons";
 import { threadMarkdown } from "@/lib/threadMarkdown";
 import { useShareText } from "@/lib/useShareText";
@@ -36,6 +37,7 @@ export function ConversationHeader({ title, messages = [], sidebarCollapsed = fa
         <h1 className="truncate font-serif text-base font-light tracking-tight text-(--text)">{title}</h1>
       </div>
       <div className="conversation-header-actions flex shrink-0 items-center gap-2" role="group" aria-label="Thread actions">
+        <ThemeToggle />
         <IconButton
           type="button"
           disabled={!hasContent}

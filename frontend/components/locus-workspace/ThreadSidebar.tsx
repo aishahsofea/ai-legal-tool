@@ -62,7 +62,7 @@ export function ThreadSidebar({
       </div>
 
       <div className="mt-auto flex items-center gap-3 border-t border-(--line) px-3 py-3 max-md:hidden">
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-(--accent) text-xs font-semibold text-(--surface)">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-(--accent) text-xs font-semibold text-(--on-accent)">
           {userName.slice(0, 2).toUpperCase()}
         </div>
         <div className="min-w-0 flex-1">

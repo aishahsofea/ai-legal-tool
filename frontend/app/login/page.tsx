@@ -36,7 +36,7 @@ export default function Login() {
           type="button"
           onClick={signIn}
           disabled={session !== null}
-          className="inline-flex min-h-10 w-full items-center justify-center rounded-lg border-none bg-(--accent) px-4 py-2 text-xs font-semibold tracking-[0.04em] text-(--surface) transition-colors duration-200 hover:bg-(--accent-deep) disabled:opacity-60"
+          className="inline-flex min-h-10 w-full items-center justify-center rounded-lg border-none bg-(--accent) px-4 py-2 text-xs font-semibold tracking-[0.04em] text-(--on-accent) transition-colors duration-200 hover:bg-(--accent-deep) disabled:opacity-60"
         >
           Continue with GitHub
         </button>

@@ -1,5 +1,5 @@
 import { Citation } from "@/lib/useQuery";
-import { type ButtonHTMLAttributes, type ReactNode, useEffect, useRef, useState } from "react";
+import { type ButtonHTMLAttributes, type ComponentPropsWithRef, type ReactNode, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Trash } from "@/components/icons";
 
@@ -68,7 +68,7 @@ export function IconButton({
   className = "",
   children,
   ...props
-}: ButtonHTMLAttributes<HTMLButtonElement>) {
+}: ComponentPropsWithRef<"button">) {
   return (
     <button
       {...props}
@@ -173,7 +173,7 @@ function DeleteThreadDialog({
     <div
       data-testid="delete-dialog-backdrop"
       onClick={onCancel}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-(--backdrop) px-4"
     >
       <div
         ref={dialogRef}
@@ -197,7 +197,7 @@ function DeleteThreadDialog({
           <button
             type="button"
             onClick={onConfirm}
-            className="min-h-9 cursor-pointer rounded-lg bg-(--danger) px-4 text-sm text-white transition-opacity duration-200 hover:opacity-90 active:opacity-80"
+            className="min-h-9 cursor-pointer rounded-lg bg-(--danger) px-4 text-sm text-(--on-danger) transition-opacity duration-200 hover:opacity-90 active:opacity-80"
           >
             Delete
           </button>
